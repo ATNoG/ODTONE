@@ -1,0 +1,21 @@
+
+* General
+** TODO fill out the rest of the action_identifier enumeration
+** inc/odtone/mih/header.hpp
+** TODO convert _id according to http://www.ietf.org/rfc/rfc4282.txt
+** inc/odtone/mih/id.hpp
+*** std::vector<uint8> serialize()
+   _id field is sent as plain ASCII, convert to rfc4282 before adding
+   to the archive
+** TODO handle errors gracefully
+   choose an error handling method and stick with it!
+*** src/mih/message.cpp
+*** uint8 __parse_mihfid(mihf::id &id, uint8 type, uint8 *raw, uint8 pos)
+   Method __parse_mihfid throws an exception when an invalid type is
+   parsed. choose to raise an exception or send an error.
+* Remote Messages
+** TODO add method to check if a message is multicast and fix transaction_manager.cpp
+** TODO add table in db for registered remote mihf's (port and ip address)
+
+* MIHF
+** read number of threads to launch for processing messages from config file

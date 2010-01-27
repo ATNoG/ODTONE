@@ -1,0 +1,81 @@
+Project: Odtone - Open Dot Twenty One
+URL: http://helios.av.it.pt/projects/odtone
+
+
+Notes
+-----
+
+Please refer to the included "odtone-configuration.pdf" file for a
+more detailed explanation.
+
+
+Download
+--------
+
+You can download the latest version of Odtone from the following
+website:
+
+	http://helios.av.it.pt/projects/odtone
+
+Alternatively, you can check out the latest version from the Odtone
+Git repository:
+
+	git	clone http://helios.av.it.pt/projects/odtone/git/ odtone
+
+
+Dependencies
+------------
+
+Odtone depends on a few libraries, which need to be installed before
+Odtone can be compiled.
+
+- Boost (version 1.37 or newer): http://www.boost.org
+- Sqlite (version 3.5.9 or newer): http://www.sqlite.org
+
+
+Compilation - Linux
+--------------------
+
+Compiling Odtone is as simple as:
+
+		  ./autogen.sh
+		  ./configure
+		  make
+
+
+Compilation - Windows
+---------------------
+
+Project files are provided for Visual Studio 2008 to build odtone, you will
+need to download and install the boost library (instructions to download,
+compile and install are provided below). Build targets are currently available
+for x86-32, x86-64 and in the future Windows Mobile Platforms.
+
+
+Boost Library Installation Guide
+--------------------------------
+
+1. Download the latest boost library from http://www.boost.org/users/download/ and
+bjam binary for your platform. Ubuntu users can install bjam using the following
+command:
+	$ sudo apt-get install bjam
+
+2. Extract the boost library and navigate to it's root dir in a command line
+3. Compile and install:
+on windows:
+	$ bjam variant=debug link=static runtime-link=static --with-thread --with-system --with-program_options
+	$ bjam variant=release link=static runtime-link=static define=_SECURE_SCL=0 cxxflags=/GL linkflags=/LTCG --with-thread --with-system --with-program_options
+
+	- The libraries will be placed at <boost-root>/stage/lib, you can use the
+	  --libdir=<LIB_DIR> option to specify another path for the boost library
+	  binaries.
+
+	- To build Boost for x86-64 use the option memory-model=64, example:
+		$ bjam variant=debug memory-model=64 link=static runtime-link=static --with-thread --with-system --with-program_options
+
+	- You will also need to set the include and library paths in Visual Studio.
+
+on linux:
+	$ sudo bjam --with-thread --with-system --with-program_options
+
+	- The boost library will be automatically detected by the odtone build.
