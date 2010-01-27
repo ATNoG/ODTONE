@@ -56,7 +56,7 @@ enum command_list_enum {
 	net_ho_commit = 3,
 	n2n_ho_query_resources = 3,
 	n2n_ho_commit = 3,
-	n2n_ho_Complete = 4,
+	n2n_ho_Complete = 3,
 	mn_ho_candidate_query = 4,
 	mn_ho_commit = 4,
 	mn_ho_complete = 4,
