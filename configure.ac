@@ -4,7 +4,7 @@
 
 # prelude
 AC_PREREQ(2.61)
-AC_INIT([odtone], [0.0.1], [odtone@hng.av.it.pt])
+AC_INIT([odtone], [0.1.0], [odtone@hng.av.it.pt])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
 # check for programs
