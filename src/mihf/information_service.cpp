@@ -52,6 +52,7 @@ bool information_service::get_information_request(mih::message_ptr &in,
 			// Kick this message to Information Service.
 			//
 			in->destination(mih::id("miis"));
+			in->opcode(mih::operation::indication);
 			local_transactions->add(in);
 			in->source(mihfid);
 			transmit(in);
@@ -83,6 +84,7 @@ bool information_service::get_information_response(mih::message_ptr &in,
 
 	in->tid(p.tid);
 	in->source(mihfid);
+	in->opcode(mih::operation::confirm);
 	in->destination(mih::id(p.user));
 
 	log(1, "(miis) forwarding Get_Information.response to ", p.user);
