@@ -75,8 +75,7 @@ enum cost_unit
 	};
 
 ///////////////////////////////////////////////////////////////////////////////
-struct cost_value
-{
+struct cost_value {
 	uint32 integer;
 	uint16 fraction;
 
@@ -89,11 +88,11 @@ struct cost_value
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct cost
-{
+struct cost {
 	cost_unit	unit;
 	cost_value	value;
 	cost_curr	curr;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -108,8 +107,7 @@ struct cost
 typedef uint32 data_rate;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct regu_domain
-{
+struct regu_domain {
 	cntry_code	country_code;
 	uint8		regulatory_class;
 
@@ -121,15 +119,14 @@ struct regu_domain
 	}
 };
 
-
 ///////////////////////////////////////////////////////////////////////////////
 typedef std::vector<uint32> freq_bands;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct ch_range
-{
+struct ch_range {
 	uint32 low;
 	uint32 high;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -140,10 +137,10 @@ struct ch_range
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct gap
-{
+struct gap {
 	uint8 ttg[2];
 	uint8 rtg;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -155,10 +152,10 @@ struct gap
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct burst_prof
-{
-	down_bp		downbp;
+struct burst_prof {
+	down_bp 	downbp;
 	up_bp		upbp;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -170,10 +167,10 @@ struct burst_prof
 
 
 ///////////////////////////////////////////////////////////////////////////////
-struct cdma_codes
-{
+struct cdma_codes {
 	init_code	initcode;
 	ho_code		hocode;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -184,8 +181,7 @@ struct cdma_codes
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct dcd_udc
-{
+struct dcd_udc {
 	base_id		baseid;
 	bandwidth	bandwidth_;
 	du_ctr_freq ductrfreq;
@@ -193,6 +189,7 @@ struct dcd_udc
 	gap			gap_;
 	burst_prof	burstprof;
 	cdma_codes	cdmacodes;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -208,10 +205,10 @@ struct dcd_udc
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct sib
-{
+struct sib {
 	cell_id		cellid;
 	fq_code_num fqcodenum;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -222,12 +219,12 @@ struct sib
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct sys_params
-{
+struct sys_params {
 	base_id		baseid;
 	pilot_pn	pilotpn;
 	freq_id		freqid;
 	band_class	bandclass;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -240,11 +237,11 @@ struct sys_params
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct parameters
-{
+struct parameters {
 	dcd_udc		dcdudc;
 	sib			sib_;
 	sys_params	params;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -253,7 +250,6 @@ struct parameters
 		ar & sib_;
 		ar & params;
 	}
-
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -314,11 +310,11 @@ struct network_type {
 
 
 ///////////////////////////////////////////////////////////////////////////////
-struct system_info
-{
+struct system_info {
 	network_type						nettype;
 	link_addr							linkaddr;
 	boost::variant<null, parameters>	params;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -327,7 +323,6 @@ struct system_info
 		ar & linkaddr;
 		ar & params;
 	}
-
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -344,8 +339,7 @@ enum op_namespace
 	};
 
 ///////////////////////////////////////////////////////////////////////////////
-struct operator_id
-{
+struct operator_id {
 	op_name				opname;
 	op_namespace		opnamespace;
 
