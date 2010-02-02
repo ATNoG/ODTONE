@@ -61,18 +61,19 @@ struct cost_curr {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-enum cost_unit
-	{
-		second = 0,
-		minute,
-		hours,
-		day,
-		week,
-		month,
-		year,
-		free,
-		flat_rate
-	};
+enum cost_unit_enum {
+	cost_unit_second = 0,
+	cost_unit_minute,
+	cost_unit_hours,
+	cost_unit_day,
+	cost_unit_week,
+	cost_unit_month,
+	cost_unit_year,
+	cost_unit_free,
+	cost_unit_flat_rate
+};
+
+typedef enumeration<cost_unit_enum> cost_unit;
 
 ///////////////////////////////////////////////////////////////////////////////
 struct cost_value {
@@ -329,14 +330,15 @@ struct system_info {
 typedef octet_string op_name;
 typedef octet_string sp_id;
 
-enum op_namespace
-	{
-		gsm_umts = 0,
-		cdma,
-		realm,
-		itu_t_tsb,
-		general
-	};
+enum op_namespace_enum {
+	op_namespace_gsm_umts = 0,
+	op_namespace_cdma,
+	op_namespace_realm,
+	op_namespace_itu_t_tsb,
+	op_namespace_general
+};
+
+typedef enumeration<op_namespace_enum> op_namespace;
 
 ///////////////////////////////////////////////////////////////////////////////
 struct operator_id {
@@ -354,23 +356,24 @@ struct operator_id {
 typedef std::vector<operator_id> roaming_ptns;
 
 ///////////////////////////////////////////////////////////////////////////////
-enum supported_lcp
-	{
-		lcp_null = 0,
-		lldp = 1,
-		lbyr_with_lldp = 2,
-		lldp_med = 11,
-		lbyr_with_lld_med = 12,
-		u_tdoa = 21,
-		d_tdoa = 22,
-		dhcp = 31,
-		lbyr_with_dhcp = 32,
-		oma_supl = 41,
-		ieee_802_11 = 42,
-		lbyr_with_ieee_802_11 = 43,
-		held = 50,
-		lbyr_with_held = 51
-	};
+enum supported_lcp_enum {
+	supported_lcp_null = 0,
+	supported_lcp_lldp = 1,
+	supported_lcp_lbyr_with_lldp = 2,
+	supported_lcp_lldp_med = 11,
+	supported_lcp_lbyr_with_lld_med = 12,
+	supported_lcp_u_tdoa = 21,
+	supported_lcp_d_tdoa = 22,
+	supported_lcp_dhcp = 31,
+	supported_lcp_lbyr_with_dhcp = 32,
+	supported_lcp_oma_supl = 41,
+	supported_lcp_ieee_802_11 = 42,
+	supported_lcp_lbyr_with_ieee_802_11 = 43,
+	supported_lcp_held = 50,
+	supported_lcp_lbyr_with_held = 51
+};
+
+typedef enumeration<supported_lcp_enum> supported_lcp;
 
 ///////////////////////////////////////////////////////////////////////////////
 typedef boost::variant<ip4_addr, ip6_addr, fqdn> proxy_addr;
