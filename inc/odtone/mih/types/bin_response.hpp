@@ -20,12 +20,30 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/mih/types/base.hpp>
+#include <odtone/mih/tlv.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef std::vector<uint8>       ir_bin_data;
+class ir_bin_data {
+public:
+	ir_bin_data()
+	{ }
+
+	template<class ArchiveT>
+	void serialize(ArchiveT& ar)
+	{
+		ar & _ar.buffer();
+	}
+
+	otlv output() { return otlv(_ar); }
+	itlv input()  { return itlv(_ar); }
+
+private:
+	archive _ar;
+};
+
 typedef std::vector<ir_bin_data> ir_bin_data_list;
 
 ///////////////////////////////////////////////////////////////////////////////
