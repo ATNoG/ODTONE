@@ -65,12 +65,13 @@ typedef boost::variant<device_info, batt_level> dev_states_rsp;
 typedef std::vector<dev_states_rsp>             dev_states_rsp_list;
 
 ///////////////////////////////////////////////////////////////////////////////
-enum link_status_req_enum {
-	link_status_req_op_channel = 0,
-	link_status_req_channel_id = 1,
+enum link_states_req_enum {
+	link_states_req_op_channel = 0,
+	link_states_req_channel_id = 1,
 };
 
-typedef bitmap<16, link_status_req_enum> link_status_req;
+typedef bitmap<16, link_states_req_enum> link_states_req;
+typedef std::vector<link_states_req>     link_states_req_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 struct threshold {
