@@ -29,42 +29,41 @@ typedef uint8 num_cos_types;
 typedef uint8 cos_id;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct min_pk_tx_delay {
+struct pk_delay {
 	cos_id cos;
 	uint16 value;
+
+
+	template<class ArchiveT>
+	void serialize(ArchiveT& ar)
+	{
+		ar & cos;
+		ar & value;
+	}
 };
+
+///////////////////////////////////////////////////////////////////////////////
+struct min_pk_tx_delay : pk_delay { };
 
 typedef std::vector<min_pk_tx_delay> min_pk_tx_delay_list;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct avg_pk_tx_delay {
-	cos_id cos;
-	uint16 value;
-};
+struct avg_pk_tx_delay : pk_delay { };
 
 typedef std::vector<avg_pk_tx_delay> avg_pk_tx_delay_list;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct max_pk_tx_delay {
-	cos_id cos;
-	uint16 value;
-};
+struct max_pk_tx_delay : pk_delay { };
 
 typedef std::vector<max_pk_tx_delay> max_pk_tx_delay_list;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct pk_delay_jitter {
-	cos_id cos;
-	uint16 value;
-};
+struct pk_delay_jitter : pk_delay { };
 
 typedef std::vector<pk_delay_jitter> pk_delay_jitter_list;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct pk_loss_rate {
-	cos_id cos;
-	uint16 value;
-};
+struct pk_loss_rate : pk_delay { };
 
 typedef std::vector<pk_loss_rate> pk_loss_rate_list;
 

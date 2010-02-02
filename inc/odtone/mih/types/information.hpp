@@ -61,22 +61,22 @@ struct cost_curr {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-enum cost_unit
-	{
-		second = 0,
-		minute,
-		hours,
-		day,
-		week,
-		month,
-		year,
-		free,
-		flat_rate
-	};
+enum cost_unit_enum {
+	cost_unit_second = 0,
+	cost_unit_minute,
+	cost_unit_hours,
+	cost_unit_day,
+	cost_unit_week,
+	cost_unit_month,
+	cost_unit_year,
+	cost_unit_free,
+	cost_unit_flat_rate
+};
+
+typedef enumeration<cost_unit_enum> cost_unit;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct cost_value
-{
+struct cost_value {
 	uint32 integer;
 	uint16 fraction;
 
@@ -89,11 +89,11 @@ struct cost_value
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct cost
-{
+struct cost {
 	cost_unit	unit;
 	cost_value	value;
 	cost_curr	curr;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -108,8 +108,7 @@ struct cost
 typedef uint32 data_rate;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct regu_domain
-{
+struct regu_domain {
 	cntry_code	country_code;
 	uint8		regulatory_class;
 
@@ -121,15 +120,14 @@ struct regu_domain
 	}
 };
 
-
 ///////////////////////////////////////////////////////////////////////////////
 typedef std::vector<uint32> freq_bands;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct ch_range
-{
+struct ch_range {
 	uint32 low;
 	uint32 high;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -140,10 +138,10 @@ struct ch_range
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct gap
-{
+struct gap {
 	uint8 ttg[2];
 	uint8 rtg;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -155,10 +153,10 @@ struct gap
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct burst_prof
-{
-	down_bp		downbp;
+struct burst_prof {
+	down_bp 	downbp;
 	up_bp		upbp;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -170,10 +168,10 @@ struct burst_prof
 
 
 ///////////////////////////////////////////////////////////////////////////////
-struct cdma_codes
-{
+struct cdma_codes {
 	init_code	initcode;
 	ho_code		hocode;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -184,8 +182,7 @@ struct cdma_codes
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct dcd_udc
-{
+struct dcd_udc {
 	base_id		baseid;
 	bandwidth	bandwidth_;
 	du_ctr_freq ductrfreq;
@@ -193,6 +190,7 @@ struct dcd_udc
 	gap			gap_;
 	burst_prof	burstprof;
 	cdma_codes	cdmacodes;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -208,10 +206,10 @@ struct dcd_udc
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct sib
-{
+struct sib {
 	cell_id		cellid;
 	fq_code_num fqcodenum;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -222,12 +220,12 @@ struct sib
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct sys_params
-{
+struct sys_params {
 	base_id		baseid;
 	pilot_pn	pilotpn;
 	freq_id		freqid;
 	band_class	bandclass;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -240,11 +238,11 @@ struct sys_params
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct parameters
-{
+struct parameters {
 	dcd_udc		dcdudc;
 	sib			sib_;
 	sys_params	params;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -253,7 +251,6 @@ struct parameters
 		ar & sib_;
 		ar & params;
 	}
-
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -314,11 +311,11 @@ struct network_type {
 
 
 ///////////////////////////////////////////////////////////////////////////////
-struct system_info
-{
+struct system_info {
 	network_type						nettype;
 	link_addr							linkaddr;
 	boost::variant<null, parameters>	params;
+
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -327,25 +324,24 @@ struct system_info
 		ar & linkaddr;
 		ar & params;
 	}
-
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 typedef octet_string op_name;
 typedef octet_string sp_id;
 
-enum op_namespace
-	{
-		gsm_umts = 0,
-		cdma,
-		realm,
-		itu_t_tsb,
-		general
-	};
+enum op_namespace_enum {
+	op_namespace_gsm_umts = 0,
+	op_namespace_cdma,
+	op_namespace_realm,
+	op_namespace_itu_t_tsb,
+	op_namespace_general
+};
+
+typedef enumeration<op_namespace_enum> op_namespace;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct operator_id
-{
+struct operator_id {
 	op_name				opname;
 	op_namespace		opnamespace;
 
@@ -360,23 +356,24 @@ struct operator_id
 typedef std::vector<operator_id> roaming_ptns;
 
 ///////////////////////////////////////////////////////////////////////////////
-enum supported_lcp
-	{
-		lcp_null = 0,
-		lldp = 1,
-		lbyr_with_lldp = 2,
-		lldp_med = 11,
-		lbyr_with_lld_med = 12,
-		u_tdoa = 21,
-		d_tdoa = 22,
-		dhcp = 31,
-		lbyr_with_dhcp = 32,
-		oma_supl = 41,
-		ieee_802_11 = 42,
-		lbyr_with_ieee_802_11 = 43,
-		held = 50,
-		lbyr_with_held = 51
-	};
+enum supported_lcp_enum {
+	supported_lcp_null = 0,
+	supported_lcp_lldp = 1,
+	supported_lcp_lbyr_with_lldp = 2,
+	supported_lcp_lldp_med = 11,
+	supported_lcp_lbyr_with_lld_med = 12,
+	supported_lcp_u_tdoa = 21,
+	supported_lcp_d_tdoa = 22,
+	supported_lcp_dhcp = 31,
+	supported_lcp_lbyr_with_dhcp = 32,
+	supported_lcp_oma_supl = 41,
+	supported_lcp_ieee_802_11 = 42,
+	supported_lcp_lbyr_with_ieee_802_11 = 43,
+	supported_lcp_held = 50,
+	supported_lcp_lbyr_with_held = 51
+};
+
+typedef enumeration<supported_lcp_enum> supported_lcp;
 
 ///////////////////////////////////////////////////////////////////////////////
 typedef boost::variant<ip4_addr, ip6_addr, fqdn> proxy_addr;
