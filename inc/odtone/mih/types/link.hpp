@@ -174,7 +174,7 @@ enum link_gd_reason_enum {
 	link_gd_reason_explicit_disconnect = 0,
 	link_gd_reason_link_parameter_degrading = 1,
 	link_gd_reason_low_power = 2,
-	link_gd_reason_no_resource = 2,
+	link_gd_reason_no_resource = 3,
 };
 
 typedef enumeration<link_gd_reason_enum> link_gd_reason;
