@@ -17,6 +17,7 @@
 #define ODTONE_IES_CONTAINERS_HPP
 
 #include <odtone/base.hpp>
+#include <odtone/cast.hpp>
 #include <odtone/mih/tlv.hpp>
 #include <odtone/miis/information_elements.hpp>
 #include <boost/mpl/bool.hpp>
@@ -86,6 +87,8 @@ struct ie_container_poa
 	}
 };
 
+typedef mih::tlv_fwd<ie_container_poa, mih::tlv4_<0x10000302> > tlv_ie_container_poa;
+
 struct ie_container_network
 {
 	ie_network_type network_type;
@@ -139,11 +142,47 @@ struct ie_container_network
 	}
 };
 
-typedef std::vector< ie_container_network > ie_container_list_of_networks;
+typedef mih::tlv_fwd<ie_container_network, mih::tlv4_<0x10000301> > tlv_ie_container_network;
+
+class ie_container_list_of_networks : private std::vector<ie_container_network> {
+	typedef std::vector<ie_container_network> base;
+
+public:
+	using base::iterator;
+	using base::const_iterator;
+
+	using base::push_back;
+	using base::pop_back;
+	using base::front;
+	using base::back;
+	using base::begin;
+	using base::end;
+	using base::size;
+	using base::resize;
+	using base::operator[];
+
+	void serialize(mih::oarchive& ar_)
+	{
+		mih::otlv ar(ar_);
+		uint len = truncate_cast<uint>(base::size());
+
+		ar_.list_length(len);
+		for (base::iterator i = base::begin(); i != base::end(); ++i)
+			ar & tlv_ie_container_network(*i);
+	}
+
+	void serialize(mih::iarchive& ar_)
+	{
+		mih::itlv ar(ar_);
+		uint len = ar_.list_length();
+
+		base::resize(len);
+		for (uint i = 0; i < len; ++i)
+			ar & tlv_ie_container_network((*this)[i]);
+	}
+};
 
 typedef mih::tlv_fwd<ie_container_list_of_networks, mih::tlv4_<0x10000300> > tlv_ie_container_list_of_networks;
-typedef mih::tlv_fwd<ie_container_network, mih::tlv4_<0x10000301> > tlv_ie_container_networks;
-typedef mih::tlv_fwd<ie_container_poa, mih::tlv4_<0x10000302> > tlv_ie_container_poa;
 
 } /* namespace miis */  }  /* namespace odtone */
 
