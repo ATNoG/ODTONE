@@ -19,10 +19,25 @@
 #include <odtone/base.hpp>
 #include <odtone/mih/tlv.hpp>
 #include <odtone/miis/information_elements.hpp>
+#include <boost/mpl/bool.hpp>
+#include <boost/mpl/if.hpp>
 
 #include <vector>
 
 namespace odtone { namespace miis {
+
+template<class T1, class T2>
+struct is_same_type : boost::mpl::false_ { };
+
+template<class T>
+struct is_same_type<T, T> : boost::mpl::true_ { };
+
+template<class ArchiveT>
+struct select_tlv_archive {
+	typedef typename boost::mpl::if_<is_same_type<ArchiveT, mih::iarchive>,
+									 mih::itlv,
+									 mih::otlv>::type type;
+};
 
 typedef mih::tlv_fwd<ie_network_type, mih::tlv4_<0x10000000> > tlv_ie_network_type;
 typedef mih::tlv_fwd<ie_operator_id, mih::tlv4_<0x10000001> > tlv_ie_operator_id;
