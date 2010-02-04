@@ -17,6 +17,7 @@
 #include <odtone/mih/message.hpp>
 #include <odtone/mih/indication.hpp>
 #include <odtone/mih/response.hpp>
+#include <odtone/mih/request.hpp>
 #include <odtone/mih/types/information.hpp>
 #include <odtone/mih/types/capabilities.hpp>
 #include <odtone/mih/types/capabilities.hpp>
@@ -30,6 +31,8 @@
 #include <unistd.h>
 #include <boost/asio.hpp>
 #include <boost/variant/apply_visitor.hpp>
+
+#include <odtone/miis/information_containers.hpp>
 
 using namespace odtone;
 using boost::asio::ip::udp;
@@ -223,6 +226,79 @@ void send_link_handover_complete_indication(handler &sap, const char *dst)
 	sap.send(p);
 }
 
+void send_get_information_request(handler &sap, const char *dst)
+{
+	mih::message		p;
+
+	miis::ie_container_poa					poa;
+	miis::ie_container_network				net;
+	miis::ie_container_list_of_networks		list;
+
+	// ie_container_poa
+	//
+	miis::ie_poa_link_addr		poa_la;
+	mih::link_addr				la;
+	mih::mac_addr				mac;
+	miis::ie_poa_location		poa_loc;
+	mih::cell_id				poa_cell;
+	mih::ch_range				range;
+
+	mac.address("00:11:22:33:44:55");
+	la	   = mac;
+	poa_la = la;
+
+	poa_cell = 10;				// random value
+	poa_loc	 = poa_cell;
+
+	range.high = 2;
+	range.low  = 1;
+
+	poa.poa_link_addr	  = poa_la;
+	poa.poa_location	  = poa_loc;
+	poa.poa_channel_range = range;
+	//
+
+	// ie_container_network
+	//
+	mih::link_type				lt;
+	miis::ie_network_type		nt;
+	miis::ie_operator_id		opid;
+
+	lt		= mih::link_type_802_11;
+	nt.link = lt;
+
+	opid.opname = "name";
+	opid.opnamespace = mih::op_namespace_gsm_umts;
+
+	net.network_type = nt;
+	net.operator_id = opid;
+
+	net.poas.push_back(poa);
+	//
+
+	// ie_container_list_of_networks
+	//
+	list.push_back(net);
+	//
+
+	//
+	mih::ir_bin_data			bin_data;
+	mih::ir_bin_data_list		bin_data_list;
+
+	bin_data.output() & miis::tlv_ie_container_list_of_networks(list);
+	bin_data_list.push_back(bin_data);
+	//
+
+	p << mih::response(mih::response::get_information)
+		& mih::tlv_info_resp_bin_data_list(bin_data_list);
+
+	p.uir(true);
+	p.source(mih::id("user"));
+	p.destination(mih::id(dst));
+
+	sap.send(p);
+}
+
 
 int main(int argc, char **argv)
 {
@@ -235,23 +311,26 @@ int main(int argc, char **argv)
 
   handler sap("127.0.0.1", argv[2]);
 
-  std::cout << "sent link up indication to mihf" << std::endl;
-  send_link_up_indication(sap, argv[1]);
+  // std::cout << "sent link up indication to mihf" << std::endl;
+  // send_link_up_indication(sap, argv[1]);
 
-  std::cout << "sent link down indication to mihf" << std::endl;
-  send_link_down_indication(sap, argv[1]);
+  // std::cout << "sent link down indication to mihf" << std::endl;
+  // send_link_down_indication(sap, argv[1]);
 
-  std::cout << "sent link detected indication to mihf" << std::endl;
-  send_link_detected_indication(sap, argv[1]);
+  // std::cout << "sent link detected indication to mihf" << std::endl;
+  // send_link_detected_indication(sap, argv[1]);
 
-  std::cout << "sent link going down indication to mihf" << std::endl;
-  send_link_going_down_indication(sap, argv[1]);
+  // std::cout << "sent link going down indication to mihf" << std::endl;
+  // send_link_going_down_indication(sap, argv[1]);
 
-  std::cout << "sent link handover imminent to mihf" << std::endl;
-  send_link_handover_imminent_indication(sap, argv[1]);
+  // std::cout << "sent link handover imminent to mihf" << std::endl;
+  // send_link_handover_imminent_indication(sap, argv[1]);
 
-  std::cout << "sent link handover complete to mihf" << std::endl;
-  send_link_handover_complete_indication(sap, argv[1]);
+  // std::cout << "sent link handover complete to mihf" << std::endl;
+  // send_link_handover_complete_indication(sap, argv[1]);
+
+  std::cout << "sent get information request to mihf" << std::endl;
+  send_get_information_request(sap, argv[1]);
 
   return 0;
 }
