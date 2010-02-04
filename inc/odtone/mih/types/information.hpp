@@ -98,7 +98,7 @@ struct cost {
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
-		ar & (uint8) unit;
+		ar & unit;
 		ar & value;
 		ar & curr;
 	}
