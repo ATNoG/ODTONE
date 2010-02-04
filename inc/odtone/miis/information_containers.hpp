@@ -74,8 +74,10 @@ struct ie_container_poa
 	boost::optional<std::vector<ie_poa_ip_addr> > poa_ip_addr;
 
 	template<class ArchiveT>
-	void serialize(ArchiveT& ar)
+	void serialize(ArchiveT& ar_)
 	{
+		typename select_tlv_archive<ArchiveT>::type ar(ar_);
+
 		ar & tlv_ie_poa_link_addr(poa_link_addr);
 		ar & tlv_ie_poa_location(poa_location);
 		ar & tlv_ie_poa_channel_range(poa_channel_range);
@@ -110,8 +112,10 @@ struct ie_container_network
 	std::vector<ie_container_poa> poas;
 
 	template<class ArchiveT>
-	void serialize(ArchiveT& ar)
+	void serialize(ArchiveT& ar_)
 	{
+		typename select_tlv_archive<ArchiveT>::type ar(ar_);
+
 		ar & tlv_ie_network_type(network_type);
 		ar & tlv_ie_operator_id(operator_id);
 
