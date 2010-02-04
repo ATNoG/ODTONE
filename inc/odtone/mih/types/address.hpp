@@ -156,11 +156,12 @@ typedef std::vector<link_addr> link_addr_list;
 class ip_addr : public transport_addr {
 public:
 	enum type {
+		none = 0,
 		ipv4 = 1,
 		ipv6 = 2,
 	};
 
-	ip_addr(type tp) : transport_addr(tp)
+	ip_addr(type tp = none) : transport_addr(tp)
 	{ }
 
 	ip_addr(type tp, const void* raw, size_t len)
