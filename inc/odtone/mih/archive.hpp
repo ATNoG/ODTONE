@@ -31,7 +31,7 @@ class iarchive;
 class oarchive;
 
 ///////////////////////////////////////////////////////////////////////////////
-class archive : boost::noncopyable {
+class archive {
 public:
 	archive();
 	~archive();

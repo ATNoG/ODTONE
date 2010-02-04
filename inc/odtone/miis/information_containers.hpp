@@ -24,85 +24,6 @@
 
 namespace odtone { namespace miis {
 
-struct ie_container_poa
-{
-	boost::variant<mih::null, ie_poa_link_addr > poa_link_addr;
-	boost::variant<mih::null, ie_poa_location > poa_location;
-	boost::variant<mih::null, ie_poa_channel_range > poa_channel_range;
-	boost::variant<mih::null, std::vector<ie_poa_subnet_info> > poa_subnet_info;
-	boost::variant<mih::null, std::vector<ie_poa_ip_addr> > poa_ip_addr;
-
-	ie_container_poa() :
-		poa_link_addr(mih::null()),
-		poa_location(mih::null()),
-		poa_channel_range(mih::null()),
-		poa_subnet_info(mih::null()),
-		poa_ip_addr(mih::null())
-	{}
-
-	template<class ArchiveT>
-	void serialize(ArchiveT& ar)
-	{
-		ar & poa_link_addr;
-		ar & poa_location;
-		ar & poa_channel_range;
-		ar & poa_subnet_info;
-		ar & poa_ip_addr;
-	}
-};
-
-struct ie_container_network
-{
-	ie_network_type network_type;
-	ie_operator_id operator_id;
-
-	boost::variant<mih::null, ie_service_provider_id > service_provider_id;
-	boost::variant<mih::null, ie_country_code > country_code;
-	boost::variant<mih::null, ie_network_id > network_id;
-	boost::variant<mih::null, ie_network_aux_id > network_aux_id;
-	boost::variant<mih::null, ie_roaming_partners > roaming_partners;
-	boost::variant<mih::null, ie_cost > cost;
-	boost::variant<mih::null, ie_network_qos > network_qos;
-	boost::variant<mih::null, ie_network_data_rate > network_data_rate;
-	boost::variant<mih::null, ie_net_regulat_domain > net_regulat_domain;
-	boost::variant<mih::null, ie_net_frequency_bands > net_frequency_bands;
-	boost::variant<mih::null, ie_net_ip_cfg_methods > net_ip_cfg_methods;
-	boost::variant<mih::null, ie_net_capabilities > net_capabilities;
-	boost::variant<mih::null, ie_net_supported_lcp > net_supported_lcp;
-	boost::variant<mih::null, ie_net_mob_mgmt_prot > net_mob_mgmt_prot;
-	boost::variant<mih::null, ie_net_emserv_proxy > net_emserv_proxy;
-	boost::variant<mih::null, ie_net_ims_proxy_cscf > net_ims_proxy_cscf;
-	boost::variant<mih::null, ie_net_mobile_network > net_mobile_network;
-
-	template<class ArchiveT>
-	void serialize(ArchiveT& ar)
-	{
-		ar & network_type;
-		ar & operator_id;
-
-		ar & service_provider_id;
-		ar & country_code;
-		ar & network_id;
-		ar & network_aux_id;
-		ar & roaming_partners;
-		ar & cost;
-		ar & network_qos;
-		ar & network_data_rate;
-		ar & net_regulat_domain;
-		ar & net_frequency_bands;
-		ar & net_ip_cfg_methods;
-		ar & net_capabilities;
-		ar & net_supported_lcp;
-		ar & net_mob_mgmt_prot;
-		ar & net_emserv_proxy;
-		ar & net_ims_proxy_cscf;
-		ar & net_mobile_network;
-	}
-
-};
-
-typedef std::vector< ie_container_network > ie_container_list_of_networks;
-
 typedef mih::tlv_fwd<ie_network_type, mih::tlv_<0x10000000> > tlv_ie_network_type;
 typedef mih::tlv_fwd<ie_operator_id, mih::tlv_<0x10000001> > tlv_ie_operator_id;
 typedef mih::tlv_fwd<ie_service_provider_id, mih::tlv_<0x10000002> > tlv_ie_service_provider_id;
@@ -128,6 +49,78 @@ typedef mih::tlv_fwd<ie_poa_channel_range, mih::tlv_<0x10000202> > tlv_ie_poa_ch
 typedef mih::tlv_fwd<ie_poa_system_info, mih::tlv_<0x10000203> > tlv_ie_poa_system_info;
 typedef mih::tlv_fwd<ie_poa_subnet_info, mih::tlv_<0x10000204> > tlv_ie_poa_subnet_info;
 typedef mih::tlv_fwd<ie_poa_ip_addr, mih::tlv_<0x10000205> > tlv_ie_poa_ip_addr;
+
+struct ie_container_poa
+{
+	boost::optional<ie_poa_link_addr > poa_link_addr;
+	boost::optional<ie_poa_location > poa_location;
+	boost::optional<ie_poa_channel_range > poa_channel_range;
+	boost::optional<std::vector<ie_poa_subnet_info> > poa_subnet_info;
+	boost::optional<std::vector<ie_poa_ip_addr> > poa_ip_addr;
+
+	template<class ArchiveT>
+	void serialize(ArchiveT& ar)
+	{
+		ar & tlv_ie_poa_link_addr(poa_link_addr);
+		ar & tlv_ie_poa_location(poa_location);
+		ar & tlv_ie_poa_channel_range(poa_channel_range);
+		ar & tlv_ie_poa_subnet_info(poa_subnet_info);
+		ar & tlv_ie_poa_ip_addr(poa_ip_addr);
+	}
+};
+
+struct ie_container_network
+{
+	ie_network_type network_type;
+	ie_operator_id operator_id;
+
+	boost::optional<ie_service_provider_id > service_provider_id;
+	boost::optional<ie_country_code > country_code;
+	boost::optional<ie_network_id > network_id;
+	boost::optional<ie_network_aux_id > network_aux_id;
+	boost::optional<ie_roaming_partners > roaming_partners;
+	boost::optional<ie_cost > cost;
+	boost::optional<ie_network_qos > network_qos;
+	boost::optional<ie_network_data_rate > network_data_rate;
+	boost::optional<ie_net_regulat_domain > net_regulat_domain;
+	boost::optional<ie_net_frequency_bands > net_frequency_bands;
+	boost::optional<ie_net_ip_cfg_methods > net_ip_cfg_methods;
+	boost::optional<ie_net_capabilities > net_capabilities;
+	boost::optional<ie_net_supported_lcp > net_supported_lcp;
+	boost::optional<ie_net_mob_mgmt_prot > net_mob_mgmt_prot;
+	boost::optional<ie_net_emserv_proxy > net_emserv_proxy;
+	boost::optional<ie_net_ims_proxy_cscf > net_ims_proxy_cscf;
+	boost::optional<ie_net_mobile_network > net_mobile_network;
+
+	std::vector<ie_container_poa> poas;
+
+	template<class ArchiveT>
+	void serialize(ArchiveT& ar)
+	{
+		ar & tlv_ie_network_type(network_type);
+		ar & tlv_ie_operator_id(operator_id);
+
+		ar & tlv_ie_service_provider_id(service_provider_id);
+		ar & tlv_ie_country_code(country_code);
+		ar & tlv_ie_network_id(network_id);
+		ar & tlv_ie_network_aux_id(network_aux_id);
+		ar & tlv_ie_roaming_partners(roaming_partners);
+		ar & tlv_ie_cost(cost);
+		ar & tlv_ie_network_qos(network_qos);
+		ar & tlv_ie_network_data_rate(network_data_rate);
+		ar & tlv_ie_net_regulat_domain(net_regulat_domain);
+		ar & tlv_ie_net_frequency_bands(net_frequency_bands);
+		ar & tlv_ie_net_ip_cfg_methods(net_ip_cfg_methods);
+		ar & tlv_ie_net_capabilities(net_capabilities);
+		ar & tlv_ie_net_supported_lcp(net_supported_lcp);
+		ar & tlv_ie_net_mob_mgmt_prot(net_mob_mgmt_prot);
+		ar & tlv_ie_net_emserv_proxy(net_emserv_proxy);
+		ar & tlv_ie_net_ims_proxy_cscf(net_ims_proxy_cscf);
+		ar & tlv_ie_net_mobile_network(net_mobile_network);
+	}
+};
+
+typedef std::vector< ie_container_network > ie_container_list_of_networks;
 
 typedef mih::tlv_fwd<ie_container_list_of_networks, mih::tlv_<0x10000300> > tlv_ie_container_list_of_networks;
 typedef mih::tlv_fwd<ie_container_network, mih::tlv_<0x10000302> > tlv_ie_container_networks;
