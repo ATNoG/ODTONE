@@ -123,8 +123,8 @@ struct ie_container_network
 typedef std::vector< ie_container_network > ie_container_list_of_networks;
 
 typedef mih::tlv_fwd<ie_container_list_of_networks, mih::tlv_<0x10000300> > tlv_ie_container_list_of_networks;
-typedef mih::tlv_fwd<ie_container_network, mih::tlv_<0x10000302> > tlv_ie_container_networks;
-typedef mih::tlv_fwd<ie_container_poa, mih::tlv_<0x10000303> > tlv_ie_container_poa;
+typedef mih::tlv_fwd<ie_container_network, mih::tlv_<0x10000301> > tlv_ie_container_networks;
+typedef mih::tlv_fwd<ie_container_poa, mih::tlv_<0x10000302> > tlv_ie_container_poa;
 
 } /* namespace miis */  }  /* namespace odtone */
 
