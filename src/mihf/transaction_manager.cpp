@@ -65,7 +65,7 @@ std::ostream & operator<<(std::ostream &os, dst_transaction_ptr &t)
 	return os;
 }
 
-std::ostream & operator<<(std::ostream &os, const dst_transaction_ptr &t)
+std::ostream & operator<<(std::ostream &os, const src_transaction_ptr &t)
 {
 	os << "src_transaction: " << t->peer_mihf_id.to_string()
 	   << "::"
