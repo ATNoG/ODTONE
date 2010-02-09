@@ -166,7 +166,6 @@ public:
 		mih::otlv ar(ar_);
 		uint len = truncate_cast<uint>(base::size());
 
-		ar_.list_length(len);
 		for (base::iterator i = base::begin(); i != base::end(); ++i)
 			ar & tlv_ie_container_network(*i);
 	}
@@ -174,11 +173,17 @@ public:
 	void serialize(mih::iarchive& ar_)
 	{
 		mih::itlv ar(ar_);
-		uint len = ar_.list_length();
 
-		base::resize(len);
-		for (uint i = 0; i < len; ++i)
-			ar & tlv_ie_container_network((*this)[i]);
+		try {
+			for (;;) {
+				ie_container_network cn;
+
+				ar & tlv_ie_container_network(cn);
+				base::push_back(cn);
+			}
+
+		} catch (mih::bad_tlv& e) {
+		}
 	}
 };
 

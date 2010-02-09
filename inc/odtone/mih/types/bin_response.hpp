@@ -26,25 +26,120 @@
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
+class ir_bin_iarchive;
+class ir_bin_oarchive;
+
 class ir_bin_data {
+	friend class ir_bin_iarchive;
+	friend class ir_bin_oarchive;
+
+	struct unspecified_bool_t {
+		void true_() {}
+	};
+	typedef void (unspecified_bool_t::*unspecified_bool)();
+
 public:
 	ir_bin_data()
+		: _cnt(0)
 	{ }
 
-	template<class ArchiveT>
-	void serialize(ArchiveT& ar)
+	void serialize(iarchive& ar)
 	{
-		ar & _ar.buffer();
+		_cnt = ar.list_length();
+
+		//TODO: we need to known the actual size in octets to avoid uncessary copies
+		_ar.clear();
+		_ar.append(ar.buffer().begin(), ar.buffer().end());
 	}
 
-	otlv output() { return otlv(_ar); }
-	itlv input()  { return itlv(_ar); }
+	void serialize(oarchive& ar)
+	{
+		ar.list_length(_cnt);
+		ar.append(_ar.buffer().begin(), _ar.buffer().end());
+	}
+
+	ir_bin_iarchive input();
+	ir_bin_oarchive output();
+
+	operator unspecified_bool()
+	{
+		return _cnt ? &unspecified_bool_t::true_ : 0;
+	}
+
+	bool operator!()
+	{
+		return !_cnt;
+	}
 
 private:
 	archive _ar;
+	uint    _cnt;
 };
 
 typedef std::vector<ir_bin_data> ir_bin_data_list;
+
+///////////////////////////////////////////////////////////////////////////////
+class ir_bin_iarchive {
+public:
+	ir_bin_iarchive(ir_bin_data& data)
+		: _data(data)
+	{ }
+
+#ifdef ODTONE_DOXYGEN_INVOKED
+	template<class T, uint32 Value>
+	ir_bin_iarchive& operator&(const tlv_fwd<T, tlv4_<Value> >& val);
+#else
+	template<class T>
+	typename boost::enable_if<is_tlv_fwd<T>, ir_bin_iarchive&>::type operator&(const T& val)
+	{
+		if (!_data._cnt)
+			return *this; //TODO: should we throw an error?
+
+		val.serialize(_data._ar.input());
+		--_data._cnt;
+
+		return *this;
+	}
+#endif
+
+private:
+	ir_bin_data& _data;
+};
+
+class ir_bin_oarchive {
+public:
+	ir_bin_oarchive(ir_bin_data& data)
+		: _data(data)
+	{ }
+
+#ifdef ODTONE_DOXYGEN_INVOKED
+	template<class T, uint32 Value>
+	ir_bin_oarchive& operator&(const tlv_fwd<T, tlv4_<Value> >& val);
+#else
+	template<class T>
+	typename boost::enable_if<is_tlv_fwd<T>, ir_bin_oarchive&>::type operator&(const T& val)
+	{
+		val.serialize(_data._ar.output());
+		++_data._cnt;
+
+		return *this;
+	}
+#endif
+
+private:
+	ir_bin_data& _data;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+inline ir_bin_iarchive ir_bin_data::input()
+{
+	return ir_bin_iarchive(*this);
+}
+
+inline ir_bin_oarchive ir_bin_data::output()
+{
+	return ir_bin_oarchive(*this);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /*namespace odtone */
