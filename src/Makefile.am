@@ -11,7 +11,7 @@ EXTRA_DIST = \
 	odtone.conf \
 	mih_usr.conf
 
-bin_PROGRAMS = odtone client mih_usr
+bin_PROGRAMS = odtone client mih_usr dummyserver
 
 odtone_SOURCES = main.cpp
 
@@ -23,6 +23,11 @@ odtone_LDFLAGS = @BOOST_THREAD_LIB@ @BOOST_SYSTEM_LIB@ @BOOST_PROGRAM_OPTIONS_LI
 client_SOURCES = client.cpp
 client_LDADD = mih/libodtone_mih.a utils/libodtone_utils.a
 client_LDFLAGS = @BOOST_THREAD_LIB@ @BOOST_SYSTEM_LIB@ @BOOST_PROGRAM_OPTIONS_LIB@
+
+dummyserver_SOURCES = dummyserver.cpp
+dummyserver_LDADD = mihf/libodtone_mihf.a mih/libodtone_mih.a utils/libodtone_utils.a
+dummyserver_LDFLAGS = @BOOST_THREAD_LIB@ @BOOST_SYSTEM_LIB@ @BOOST_PROGRAM_OPTIONS_LIB@
+
 
 ##
 ## Where to install mih_usr config file
