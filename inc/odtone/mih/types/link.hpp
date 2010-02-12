@@ -65,12 +65,13 @@ typedef boost::variant<device_info, batt_level> dev_states_rsp;
 typedef std::vector<dev_states_rsp>             dev_states_rsp_list;
 
 ///////////////////////////////////////////////////////////////////////////////
-enum link_status_req_enum {
-	link_status_req_op_channel = 0,
-	link_status_req_channel_id = 1,
+enum link_states_req_enum {
+	link_states_req_op_channel = 0,
+	link_states_req_channel_id = 1,
 };
 
-typedef bitmap<16, link_status_req_enum> link_status_req;
+typedef bitmap<16, link_states_req_enum> link_states_req;
+typedef std::vector<link_states_req>     link_states_req_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 struct threshold {
@@ -174,7 +175,7 @@ enum link_gd_reason_enum {
 	link_gd_reason_explicit_disconnect = 0,
 	link_gd_reason_link_parameter_degrading = 1,
 	link_gd_reason_low_power = 2,
-	link_gd_reason_no_resource = 2,
+	link_gd_reason_no_resource = 3,
 };
 
 typedef enumeration<link_gd_reason_enum> link_gd_reason;
@@ -320,6 +321,32 @@ struct link_param_type {
 
 	uint8 type;
 	uint8 value;
+};
+
+typedef std::vector<link_param_type> link_param_type_list;
+
+///////////////////////////////////////////////////////////////////////////////
+enum link_desc_req_enum {
+	link_desc_req_classes_of_service_supported = 0,
+	link_desc_req_queues_supported = 1,
+};
+
+typedef bitmap<16, link_desc_req_enum> link_desc_req;
+
+///////////////////////////////////////////////////////////////////////////////
+struct link_status_req {
+	link_states_req_list _states_req;
+	link_param_type_list _param_type_list;
+	link_desc_req        _desc_req;
+
+
+	template<class ArchiveT>
+	void serialize(ArchiveT& ar)
+	{
+		ar & _states_req;
+		ar & _param_type_list;
+		ar & _desc_req;
+	}
 };
 
 ///////////////////////////////////////////////////////////////////////////////

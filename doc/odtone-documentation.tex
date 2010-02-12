@@ -1,0 +1,362 @@
+% Created 2009-12-11 Fri 18:50
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{hyperref}
+
+
+\title{ \begin{Huge} \textbf{- ODTONE -} \end{Huge} \\ \vspace*{1cm}
+- \textbf{O}pen \textbf{D}ot \textbf{T}wenty \textbf{One} - \\ \vspace*{3cm}
+Installation Manual \& User Guide \vspace*{3cm}}
+\author{Simao Reis,
+% <\texttt{sreis@av.it.pt}>
+% \\
+Rui Costa
+% <\texttt{rpfcosta@av.it.pt}>
+\vspace*{0.5cm}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\setcounter{tocdepth}{3}
+\tableofcontents
+\vspace*{1cm}
+\newpage
+
+\section{\texttt{ODTONE} Installation}
+\label{sec-1}
+
+As \texttt{ODTONE} is developed in order to work in several platforms, we therefore
+won't provide detailed tutorials for each mainstream operating system. We will rather
+present the main guidelines for installing \texttt{ODTONE} and any relevant notes on
+specific platforms that might prove an obstacle.
+% \subsection{Installation Guide}
+% \label{sec-1.1}
+
+\subsection{Required Dependencies}
+% \label{sec-1.1.1}
+\label{sec-1.1}
+
+In order to correctly use \texttt{ODTONE} you must first make sure you have the
+required dependencies installed.
+
+\begin{itemize}
+\item \textit{Boost} Developer libraries (v1.37 or higher)
+	\subitem	If you do not already have them in your system, you can go to
+			\url{http://www.boost.org/} and download a more recent version
+			of the \textit{Boost} libraries and manually compile them.
+
+% or, if you are running \texttt{Ubuntu 9.10}
+% 			(or higher) just run the following command on
+% 			the shell:
+%
+%    	\texttt{\$ apt-get install libboost-dev}
+
+
+\item \textit{SQLite} Developer library (v3.5.9 or higher)
+	\subitem	If you do not already have them in your system, you can go to
+			\url{http://www.sqlite.org/} and download a more recent version.
+
+
+% 	\subitem	You can install this library by simply running the following
+% 			command on the shell:
+%
+% 	\texttt{ \$ apt-get install libsqlite3-dev}
+
+
+\end{itemize}
+
+\subsection{Getting \texttt{ODTONE}}
+\label{sec-1.2}
+
+
+\begin{itemize}
+\item	In a \textit{tarball}
+	\subitem	You can get the \texttt{ODTONE} source code \textit{tarball}
+from our project page, at \url{http://helios.av.it.pt/projects/odtone/files}. Then
+just unpack it and you are ready to compile and install \texttt{ODTONE}.
+
+\item	From the \textit{git} repository
+You can \textit{clone} the \textit{git} repository, from \href{http://helios.av.it.pt/projects/odtone/git/}{http://helios.av.it.pt/projects/odtone/git/}
+therefore creating your own local copy.
+
+
+
+\end{itemize}
+
+
+
+
+% Unpack the tarball archive, cd into the directory, then
+% compiling the project is as easy as: \\
+% \\
+%    \$ tar xzf odtone-<version>.tar.gz \\
+%    \$ cd odtone-<version>/ \\
+%    \$ ./configure \\
+%    \$ make \\
+
+% You can check out the latest version from the \texttt{ODTONE} \textit{Git} repository by typing the
+% following command in your console:
+%
+%     \$ git clone \href{http://helios.av.it.pt/projects/odtone/git/}{http://helios.av.it.pt/projects/odtone/git/} <local\_odtone\_repository\_folder>
+%
+% This will create the an odtone directory with the source code. To compile the project: \\
+% \\
+%    \$ cd odtone/ \\
+%    \$ ./configure \\
+%    \$ make \\
+
+
+\subsection{Compilling and installing \texttt{ODTONE}}
+\label{sec-1.3}
+
+Once you have obtained the \texttt{ODTONE} source code and have assured you have the
+right dependencies are installed in all machines you intend to use \texttt{ODTONE},
+then you are ready to compile and install.
+
+\begin{itemize}
+\item	Windows
+	\subitem	Using \textit{Visual Studio 2008}, choose the option to open an
+existing project. Browse to the folder \textit{vc90/} on your \texttt{ODTONE} folder and
+select and open the \texttt{ODTONE} project. Then just build the project.
+
+\textbf{NOTE} that this is still an \textit{alpha} version, therefore in future releases \textit{Windows}
+support will be improved, in this manual.
+
+\item	Linux/Unix
+	\subitem	You just need to run the \textit{``./autogen.sh''} script and
+    then run \texttt{./configure} and finally \texttt{make} to compile the code. Install is not yet required, and therefore
+all applications are local and can be found under the \textit{src/} folder.
+
+
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% ====================================================================================================================
+
+\newpage
+\section{\texttt{ODTONE} User Guide}
+\label{sec-2}
+
+   For now the \texttt{MIHF}s capabilities are read from configuration
+   files. Future versions will inquire the available \texttt{Link SAP}s for the
+   required information.
+
+
+\subsection{Local Demo}
+\label{sec-2.1}
+
+The local demo consists in a simple experiment to demonstrate simple message
+exchange between a \texttt{MIHF}, a \texttt{MIH\_User} and a \texttt{Link\_SAP}.
+It allows you to see how evenst are generated by the \texttt{Link\_SAP} and
+reported to a \texttt{MIH\_User} that has subscribed to these events.
+
+\subsubsection{Configuration}
+\label{sec-2.1.1}
+
+   To run the local demo you will need to edit the default
+   configuration file \emph{odtone.conf} that is stored in the \textit{src/}
+   directory. The file is well documented and you will need to edit
+   the \emph{link\_addr\_list} entrance and add the MAC address of your
+   computer's network cards. \\
+
+%
+%    Run the following command to find the required information. \\
+% \\
+%    \$ ifconfig | grep HW
+
+
+\subsubsection{Running the Demo}
+\label{sec-2.1.2}
+
+
+   After editing the configuration file, to run this \texttt{ODTONE} demo the
+   best way is to open 3 terminals. On one terminal start \texttt{ODTONE},
+   and on the next terminal start the \texttt{MIH\_User}. \\
+%
+% by
+%    cd'ing into src/ directory and starting the odtone executable. \\
+% \\
+%     \$ cd odtone/src \\
+%     \$ ./odtone \\
+%
+%     On another terminal start the \texttt{MIH\_User}\\
+% \\
+%     \$ cd odtone/src \\
+%     \$ ./mih\_usr \\
+
+    If all went well the \texttt{MIH\_User} has requested an \texttt{Capability\_Discover}
+    to the local \texttt{MIHF} and printed out some information of the
+    interfaces you previously configured. \\
+
+    Now it's time to start the \texttt{Link\_SAP}, on your third terminal, and
+    send some Link indications to the \texttt{MIHF} and check that the \texttt{MIH\_User}
+    received notifications . \\
+% \\
+%     \$ cd odtone/src/link\_sap \\
+%     \$ ./link\_sap \\
+%
+
+    So that the \texttt{Link\_SAP} detects some events you should now proceed to
+    disconnect, disable or shutdown you network cable/interface or your wireless card according
+    to your configuration file (\textit{odtone.conf}).
+
+%     If your Linux distribution uses Network Manager just right click on
+%     the applet's icon, and then enable/disable networking and/or
+%     wireless.
+%
+%     If you don't have Network Manager just use the \emph{ifconfig}
+%     utility on you terminal. \\
+% \\
+%     To disconnect your ethernet card: \\
+% \\
+%     \$ sudo ifconfig eth0 down \\
+% \\
+%     To bring it back up: \\
+% \\
+%     \$ sudo ifconfig eth0 up
+% \\
+
+
+\subsection{Remote Demo}
+\label{sec-2.2}
+
+The remote demo consists in a local \texttt{MIH\_User} obtaining notifications of events
+that are happening on a \texttt{Link\_SAP} remotely located on another machine.
+You are required to have two machines for this experiment, the first machine hosting an \texttt{ODTONE}
+instance (\texttt{mihf1}) and the \texttt{MIH\_User}, while the second will host a second \texttt{ODTONE}
+instance \texttt{mihf2}) and the \texttt{Link\_SAP}.
+
+
+
+\subsubsection{Configuration}
+\label{sec-2.2.1}
+
+    As was said earlier, automatic remote peer \texttt{MIHF} discovery is not
+    yet implemented, so you need to add the remote \texttt{MIHF}s IP address and port
+    number to the configuration file (\emph{odtone.conf}).
+
+    Edit the file and add an entry to \emph{peers} in the form:\\
+    \\
+    \texttt{<mihf\_id> <ip> <port> \\}
+    \\
+    \texttt{<mihf\_id>} is the identifier of the remote \texttt{MIHF}, \texttt{<ip>}
+    and \texttt{<port>} are self explanatory.\\
+    \\
+    \textbf{NOTE} that you need to edit the configuration file on both
+    machines. \\
+    \\
+%
+%     In this example scenario we assume that mihf1 has one user, and
+%     the mihf2 has one link sap. And we want the user to subscribe to
+%     the remote MIHFs link events.
+
+
+
+\subsubsection{\texttt{mihf1} configuration}
+\label{sec-2.2.2}
+
+
+    On the machine with the \texttt{mihf1} the config file can look like:\\
+    \begin{verbatim}
+    [mihf]
+    id = mihf1
+    local_port = 1025
+    remote_port = 4551
+    peers = mihf2 <mihf2_IP_address> 4551
+    users = user 1234
+    \end{verbatim}
+
+
+\subsubsection{\texttt{mihf2} configuration}
+\label{sec-2.2.3}
+
+    The configuration file of \texttt{mihf2} would be: \\
+    \begin{verbatim}
+    [mihf]
+    id = mihf2
+    local_port = 1025
+    remote_port = 4551
+    peers = mihf1 <mihf1_IP_address> 4551
+    links = link 1235
+    link_addr_list = 802_11 <mac_address>,ethernet <mac_address>
+    event_list = link_detected, link_up, link_down,
+    link_parameters_report, link_going_down,
+    link_handover_imminent, link_handover_complete
+    \end{verbatim}
+
+    \textbf{NOTE} that you need to setup the MAC addresses of the
+    \texttt{mihf2} interfaces. \\
+
+\subsubsection{Running the Demo}
+\label{sec-2.2.4}
+
+\begin{itemize}
+
+ \item  On the machine hosting \texttt{mihf1}, start a terminal and run \texttt{ODTONE}.
+	Then, on another terminal start the \texttt{MIH\_User} adding the parameter
+	\texttt{\textendash\textendash dest mihf2}.
+%
+%
+%
+%
+%
+%     To start the demo:
+%     \begin{verbatim}
+%      $ cd odtone/src
+%      $ ./odtone
+%      \end{verbatim}
+%      In another terminal on the same machine: \\
+%      \begin{verbatim}
+%      $ cd odtone/src
+%      $ ./mih_usr --dest mihf2
+%      \end{verbatim}
+     The \emph{\textendash\textendash dest} option tells the \texttt{MIH\_User} to set the \texttt{802.21}
+     destination field of the frame to \texttt{mihf2}.
+
+ \item  On the machine hosting \texttt{mihf2}, start a terminal and run \texttt{ODTONE}.
+	Then, on another terminal start the \texttt{Link\_SAP}. So that the \texttt{Link\_SAP}
+	detects some events you should now proceed to disconnect, disable or shutdown your
+	network cable/interface or you wireless card according to your configuration file (\textit{odtone.conf}).
+
+%
+%
+%
+%
+%
+%     To start the demo:
+%     \begin{verbatim}
+%     $ cd odtone/src
+%     $ ./odtone
+%     \end{verbatim}
+%      In another terminal on the same machine: \\
+%      \begin{verbatim}
+%      $ cd odtone/src/link_sap
+%      $ ./link_sap
+%      \end{verbatim}
+
+\end{itemize}
+
+
+\end{document}
