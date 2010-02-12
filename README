@@ -76,6 +76,6 @@ on windows:
 	- You will also need to set the include and library paths in Visual Studio.
 
 on linux:
-	$ sudo bjam --with-thread --with-system --with-program_options
+	$ sudo bjam install --with-thread --with-system --with-program_options
 
 	- The boost library will be automatically detected by the odtone build.
