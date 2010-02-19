@@ -127,8 +127,6 @@ struct link_action {
 	link_ac_attr attr;
 };
 
-typedef std::vector<link_action> link_action_list;
-
 ///////////////////////////////////////////////////////////////////////////////
 enum th_action {
 	th_action_normal = 0,
@@ -265,6 +263,8 @@ struct link_action_req {
 		ar & ex_time;
 	}
 };
+
+typedef std::vector<link_action_req> link_action_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 struct link_action_rsp {
