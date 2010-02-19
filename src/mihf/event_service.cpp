@@ -190,7 +190,6 @@ bool event_service::local_event_unsubscribe_request(mih::message_ptr& in,
 	mih::event_list events;
 
 	*in >> mih::request(mih::request::event_unsubscribe)
-		& mih::tlv_status(st)
 		& mih::tlv_link_identifier(link)
 		& mih::tlv_event_list(events);
 
