@@ -27,7 +27,6 @@
 #include <odtone/mihf/transaction_ack_service.hpp>
 #include <odtone/mihf/net_sap.hpp>
 #include <odtone/mihf/comm_handler.hpp>
-#include <odtone/mihf/sqlite_handler.hpp>
 #include <odtone/mihf/transaction_manager.hpp>
 #include <odtone/mihf/service_access_controller.hpp>
 

@@ -24,8 +24,6 @@ AX_BOOST_ASIO
 AX_BOOST_SYSTEM
 AX_BOOST_PROGRAM_OPTIONS
 
-AX_LIB_SQLITE3([3.5.9])
-
 # check for header files
 # check for typedefs, structures, and compiler characteristics
 # check for library functions

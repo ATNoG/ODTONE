@@ -9,7 +9,6 @@ libodtone_mihf_a_SOURCES = service_management.cpp \
 	generic_server.cpp \
 	comm_handler.cpp \
 	mihf.cpp \
-	sqlite_handler.cpp \
 	transaction.cpp \
 	net_sap.cpp \
 	transaction_manager.cpp \

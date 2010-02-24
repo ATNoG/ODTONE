@@ -15,7 +15,6 @@
 
 #include <odtone/mihf/comm_handler.hpp>
 #include <odtone/mihf/service_access_controller.hpp>
-#include <odtone/mihf/sqlite_handler.hpp>
 #include <sstream>
 
 namespace odtone { namespace mihf {

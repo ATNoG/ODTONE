@@ -18,7 +18,7 @@ odtone_SOURCES = main.cpp
 
 odtone_CPPFLAGS = @ODTONE_CONFIG@
 odtone_LDADD = mihf/libodtone_mihf.a mih/libodtone_mih.a utils/libodtone_utils.a
-odtone_LDFLAGS = @BOOST_THREAD_LIB@ @BOOST_SYSTEM_LIB@ @BOOST_PROGRAM_OPTIONS_LIB@ @SQLITE3_LDFLAGS@
+odtone_LDFLAGS = @BOOST_THREAD_LIB@ @BOOST_SYSTEM_LIB@ @BOOST_PROGRAM_OPTIONS_LIB@
 
 client_SOURCES = client.cpp
 client_LDADD = mih/libodtone_mih.a utils/libodtone_utils.a
