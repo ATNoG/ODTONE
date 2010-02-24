@@ -24,7 +24,7 @@ transaction_manager *transaction_manager::ptr_instance = NULL;
 transaction_manager::transaction_manager()
 	: _dst_mutex(),
 	  _src_mutex(),
-	  _timer(netsap->get_io_service(), boost::posix_time::seconds(1)),
+	  _timer(mihf::io_service, boost::posix_time::seconds(1)),
 	  _timer_thread(boost::bind(&transaction_manager::timer, this))
 {
 }
