@@ -85,7 +85,11 @@ if test "x$want_boost" = "xyes"; then
 	else
 		for ac_boost_path_tmp in /usr /usr/local /opt /opt/local ; do
 			if test -d "$ac_boost_path_tmp/include/boost" && test -r "$ac_boost_path_tmp/include/boost"; then
-				BOOST_LDFLAGS="-L$ac_boost_path_tmp/lib"
+			    if test -d "$ac_boost_path_tmp/lib64"; then
+			   	  	BOOST_LDFLAGS="-L$ac_boost_path_tmp/lib64"
+			    else
+					BOOST_LDFLAGS="-L$ac_boost_path_tmp/lib"
+			    fi
 				BOOST_CPPFLAGS="-I$ac_boost_path_tmp/include"
 				break;
 			fi
