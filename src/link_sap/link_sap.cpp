@@ -16,7 +16,6 @@
 //=============================================================================
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "link_sap.hpp"
 #include <odtone/debug.hpp>
 #include <odtone/mih/message.hpp>
 #include <odtone/mih/indication.hpp>
@@ -24,7 +23,9 @@
 #include <odtone/mih/response.hpp>
 #include <odtone/mih/tlv_types.hpp>
 #include <boost/bind.hpp>
-#include <boost/ref.hpp>
+#include "link_sap.hpp"
+
+using odtone::nullref;
 
 ///////////////////////////////////////////////////////////////////////////////
 link_sap::link_sap(const odtone::mih::config& cfg, boost::asio::io_service& io)
@@ -36,21 +37,21 @@ link_sap::~link_sap()
 {
 }
 
-void link_sap::update(interface* it)
+void link_sap::update(odtone::sap::nif::interface* it)
 {
-	interface& ifi = _ifmap.find(it->index());
+	odtone::sap::nif::interface& ifi = _ifmap.find(it->id());
+	std::auto_ptr<odtone::sap::nif::interface> itc(it);
 	bool update = false;
 
 	if (ifi == nullref) {
 		_ifmap.insert(*it);
+		itc.release();
 		update = true;
 
 	} else {
 		boost::logic::tribool prev = ifi.up(it->up());
 
 		update = (prev != it->up());
-
-		delete it;
 		it = &ifi;
 	}
 
