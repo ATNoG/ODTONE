@@ -74,7 +74,7 @@ void link_sap::update(odtone::sap::nif::interface* it)
 		else
 			return;
 
-		_mihf.async_send(msg, boost::bind(&link_sap::cleanup_handler, this, boost::ref(msg), _1));
+		_mihf.async_send(msg);
 	}
 }
 
@@ -100,7 +100,7 @@ void link_sap::default_handler(odtone::mih::message& msg)
 				& odtone::mih::tlv_net_type_addr_list(ll)
 				& odtone::mih::tlv_event_list(el);
 
-			_mihf.async_send(m, boost::bind(&link_sap::cleanup_handler, this, boost::ref(m), _1));
+			_mihf.async_send(m);
 		}
 		break;
 
@@ -113,13 +113,9 @@ void link_sap::default_handler(odtone::mih::message& msg)
 			m << odtone::mih::response(odtone::mih::response::capability_discover)
 				& odtone::mih::tlv_status(st);
 
-			_mihf.async_send(m, boost::bind(&link_sap::cleanup_handler, this, boost::ref(m), _1));
+			_mihf.async_send(m);
 		}
 	}
-}
-
-void link_sap::cleanup_handler(odtone::mih::message& /*msg*/, const boost::system::error_code& /*ec*/)
-{
 }
 
 // EOF ////////////////////////////////////////////////////////////////////////

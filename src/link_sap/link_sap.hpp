@@ -35,7 +35,6 @@ public:
 
 private:
 	void default_handler(odtone::mih::message& msg);
-	void cleanup_handler(odtone::mih::message& msg, const boost::system::error_code& ec);
 
 private:
 	odtone::sap::link               _mihf;
