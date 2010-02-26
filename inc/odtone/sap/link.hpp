@@ -46,7 +46,7 @@ public:
 	link(const mih::config& cfg, boost::asio::io_service& io, const default_handler& h);
 	~link();
 
-	void async_send(mih::message& p, const handler& h);
+	void async_send(mih::message& p, const handler& h = handler());
 
 private:
 	void recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system::error_code& ec);
