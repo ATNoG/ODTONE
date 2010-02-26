@@ -319,10 +319,6 @@
 					Name="nif"
 					>
 					<File
-						RelativePath="..\..\src\sap\nif\ethernet.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\..\src\sap\nif\if_802_11.cpp"
 						>
 					</File>
@@ -355,6 +351,86 @@
 						>
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="mihf"
+				>
+				<File
+					RelativePath="..\..\src\mihf\comm_handler.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\command_service.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\dst_transaction.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\event_service.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\generic_server.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\information_service.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\local_transactions.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\log.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\mihfid.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\net_sap.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\service_access_controller.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\service_management.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\sqlite_handler.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\src_transaction.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\transaction.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\transaction_ack_service.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\transaction_manager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\transmit.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\mihf\utils.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -505,10 +581,6 @@
 					Name="nif"
 					>
 					<File
-						RelativePath="..\..\inc\odtone\sap\nif\ethernet.hpp"
-						>
-					</File>
-					<File
 						RelativePath="..\..\inc\odtone\sap\nif\if_802_11.hpp"
 						>
 					</File>
@@ -517,6 +589,86 @@
 						>
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="mihf"
+				>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\comm_handler.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\command_service.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\dst_transaction.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\event_service.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\generic_server.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\information_service.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\local_transactions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\log.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\mihfid.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\net_sap.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\service_access_controller.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\service_management.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\sqlite_handler.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\src_transaction.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\transaction.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\transaction_ack_service.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\transaction_manager.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\transmit.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\inc\odtone\mihf\utils.hpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
