@@ -23,11 +23,70 @@
 #include <boost/utility.hpp>
 #include <boost/logic/tribool.hpp>
 #include <boost/intrusive/rbtree.hpp>
+#include <boost/type_traits/is_pod.hpp>
 #include <odtone/mih/types/link.hpp>
+#include <algorithm>
 #include <string>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace sap { namespace nif {
+
+///////////////////////////////////////////////////////////////////////////////
+class if_id {
+public:
+	if_id();
+
+	template<class T>
+	explicit if_id(const T* guid);
+
+	bool operator<(if_id const& lhs) const
+	{
+		return std::memcmp(_guid, lhs._guid, sizeof(_guid)) < 0;
+	}
+
+	bool operator<=(if_id const& lhs) const
+	{
+		return std::memcmp(_guid, lhs._guid, sizeof(_guid)) <= 0;
+	}
+
+	bool operator>(if_id const& lhs) const
+	{
+		return std::memcmp(_guid, lhs._guid, sizeof(_guid)) > 0;
+	}
+
+	bool operator>=(if_id const& lhs) const
+	{
+		return std::memcmp(_guid, lhs._guid, sizeof(_guid)) >= 0;
+	}
+
+	bool operator==(if_id const& lhs) const
+	{
+		return std::memcmp(_guid, lhs._guid, sizeof(_guid)) == 0;
+	}
+
+	bool operator!=(if_id const& lhs) const
+	{
+		return std::memcmp(_guid, lhs._guid, sizeof(_guid)) != 0;
+	}
+
+private:
+	uint32 _guid[4];
+};
+
+inline if_id::if_id()
+{
+	std::fill(_guid, _guid + sizeof(_guid), 0);
+}
+
+template<class T>
+inline if_id::if_id(T const* raw)
+{
+	ODTONE_STATIC_ASSERT(sizeof(T) == sizeof(_guid), "T must be the same size as if_id underlying type");
+	ODTONE_STATIC_ASSERT(boost::is_pod<T>::value, "T must be a POD");
+	uint32 const* guid = reinterpret_cast<uint32 const*>(raw);
+
+	std::copy(guid, guid + ODTONE_COUNT_OF(_guid), _guid);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 class interface : boost::noncopyable {
