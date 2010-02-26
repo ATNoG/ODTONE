@@ -404,10 +404,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\mihf\sqlite_handler.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\src\mihf\src_transaction.cpp"
 					>
 				</File>
@@ -639,10 +635,6 @@
 				</File>
 				<File
 					RelativePath="..\..\inc\odtone\mihf\service_management.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\inc\odtone\mihf\sqlite_handler.hpp"
 					>
 				</File>
 				<File
