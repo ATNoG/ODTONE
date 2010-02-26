@@ -22,9 +22,8 @@
 namespace odtone { namespace sap { namespace nif {
 
 ///////////////////////////////////////////////////////////////////////////////
-interface::interface(uint index, odtone::mih::link_type type, const std::string& name, const odtone::mih::link_addr& link_addr)
-	: _index(index), _type(type), _up(boost::logic::indeterminate), _name(name),
-	_link_addr(link_addr)
+interface::interface(if_id const& id, odtone::mih::link_type type)
+	: _id(id), _type(type)
 {
 }
 
@@ -60,14 +59,14 @@ bool interface_map::remove(interface& i)
 	return (_map.erase(i));
 }
 
-bool interface_map::remove(uint index)
+bool interface_map::remove(if_id const& id)
 {
-	return (_map.erase(index, compare()));
+	return (_map.erase(id, compare()));
 }
 
-interface& interface_map::find(uint index)
+interface& interface_map::find(if_id const& id)
 {
-	map::iterator i = _map.find(index, compare());
+	map::iterator i = _map.find(id, compare());
 
 	if (i != _map.end())
 		return *i;
@@ -75,9 +74,9 @@ interface& interface_map::find(uint index)
 	return nullref;
 }
 
-const interface& interface_map::find(uint index) const
+const interface& interface_map::find(if_id const& id) const
 {
-	map::const_iterator i = _map.find(index, compare());
+	map::const_iterator i = _map.find(id, compare());
 
 	if (i != _map.end())
 		return *i;

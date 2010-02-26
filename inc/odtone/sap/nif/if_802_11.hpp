@@ -27,9 +27,7 @@ namespace odtone { namespace sap { namespace nif {
 ///////////////////////////////////////////////////////////////////////////////
 class if_802_11 : public interface {
 public:
-	if_802_11(uint index, const std::string& name, const odtone::mih::mac_addr& link_addr);
-
-private:
+	if_802_11(if_id const& id);
 };
 
 ///////////////////////////////////////////////////////////////////////////////

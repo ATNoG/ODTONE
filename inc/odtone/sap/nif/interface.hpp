@@ -93,10 +93,10 @@ class interface : boost::noncopyable {
 	friend class interface_map;
 
 public:
-	interface(uint index, odtone::mih::link_type type, const std::string& name, const odtone::mih::link_addr& link_addr);
+	interface(if_id const& id, odtone::mih::link_type type);
 	virtual ~interface();
 
-	uint                          index() const     { return _index; }
+	if_id const&                  id() const        { return _id; }
 	odtone::mih::link_type        type() const      { return _type; }
 	const boost::tribool&         up() const        { return _up; }
 	const std::string&            name() const      { return _name; }
@@ -106,9 +106,10 @@ public:
 
 private:
 	boost::intrusive::set_member_hook<> _node;
+	odtone::mih::link_type              _type;
 
-	uint                   _index;
-	odtone::mih::link_type _type;
+protected:
+	if_id		           _id;
 	boost::logic::tribool  _up;
 	std::string            _name;
 	odtone::mih::link_addr _link_addr;
@@ -122,17 +123,17 @@ class interface_map {
 	struct compare {
 		bool operator()(const interface& a, const interface& b) const
 		{
-			return a._index < b._index;
+			return a._id < b._id;
 		}
 
-		bool operator()(const interface& a, const uint index) const
+		bool operator()(const interface& a, if_id const& id) const
 		{
-			return a._index < index;
+			return a._id < id;
 		}
 
-		bool operator()(const uint index, const interface& b) const
+		bool operator()(if_id const& id, const interface& b) const
 		{
-			return index < b._index;
+			return id < b._id;
 		}
 	};
 	typedef boost::intrusive::compare<compare> compare_option;
@@ -146,10 +147,10 @@ public:
 	bool insert(interface& i);
 
 	bool remove(interface& i);
-	bool remove(uint index);
+	bool remove(if_id const& id);
 
-	interface&       find(uint index);
-	const interface& find(uint index) const;
+	interface&       find(if_id const& id);
+	const interface& find(if_id const& id) const;
 
 private:
 	map _map;
