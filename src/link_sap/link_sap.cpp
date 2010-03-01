@@ -25,8 +25,6 @@
 #include <boost/bind.hpp>
 #include "link_sap.hpp"
 
-using odtone::nullref;
-
 ///////////////////////////////////////////////////////////////////////////////
 link_sap::link_sap(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	: _mihf(cfg, io, boost::bind(&link_sap::default_handler, this, _1))

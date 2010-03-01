@@ -120,35 +120,6 @@ struct nullptr_t { template<class T> operator T*() const { return 0; } };
 static const nullptr_t nullptr = nullptr_t();
 
 ///////////////////////////////////////////////////////////////////////////////
-struct nullref_t { template<class T> operator T&() const { return *(T*) 0; } };
-
-static const nullref_t nullref = nullref_t();
-
-template<class T>
-inline bool operator==(nullref_t, const T& r)
-{
-	return &r == nullptr;
-}
-
-template<class T>
-inline bool operator==(const T& r, nullref_t)
-{
-	return &r == nullptr;
-}
-
-template<class T>
-inline bool operator!=(nullref_t, const T& r)
-{
-	return &r != nullptr;
-}
-
-template<class T>
-inline bool operator!=(const T& r, nullref_t)
-{
-	return &r != nullptr;
-}
-
-///////////////////////////////////////////////////////////////////////////////
 template<class MemberT, class ParentT>
 inline MemberT* member_of(ParentT* parent, MemberT ParentT::* Member)
 {
