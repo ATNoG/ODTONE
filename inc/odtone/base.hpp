@@ -19,7 +19,7 @@
 #define ODTONE_BASE__HPP_
 
 ///////////////////////////////////////////////////////////////////////////////
-#define BOOST_ENABLE_ASSERT_HANDLER
+#define BOOST_ENABLE_ASSERT_HANDLER //FIXME: this must be a build configuration setting
 
 #include <cstddef>
 #include <boost/config.hpp>
@@ -56,14 +56,6 @@
 #	define ODTONE_RETURN_ADDRESS _ReturnAddress()
 #else
 #	define ODTONE_RETURN_ADDRESS 0
-#endif
-
-#if defined(__GNUC__)
-#	define ODTONE_THREAD_LOCAL __thread
-#elif defined(BOOST_MSVC)
-#	define ODTONE_THREAD_LOCAL __declspec(thread)
-#else
-#	error no thread local storage
 #endif
 
 #if defined(__GNUC__)
