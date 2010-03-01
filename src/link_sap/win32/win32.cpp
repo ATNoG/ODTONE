@@ -133,11 +133,11 @@ wlan_if_list wlan_enum_interfaces(handle const& h)
 
 	res = ::WlanEnumInterfaces(h.get(), nullptr, &iflist);
 	if (res == ERROR_SUCCESS)
-		return wlan_if_list(iflist, &::WlanFreeMemory);
+		return wlan_if_list(iflist, ::WlanFreeMemory);
 
 	boost::throw_exception(boost::system::system_error(res,
 													   boost::system::get_system_category(),
-													   "win::wlan_if_list::update"));
+													   "win::wlan_enum_interfaces"));
 	return wlan_if_list();
 }
 
