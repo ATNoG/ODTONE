@@ -20,6 +20,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
+#include <odtone/string.hpp>
 #include <boost/utility.hpp>
 #include <boost/logic/tribool.hpp>
 #include <boost/intrusive/rbtree.hpp>
@@ -99,10 +100,11 @@ public:
 	if_id const&                  id() const        { return _id; }
 	odtone::mih::link_type        type() const      { return _type; }
 	const boost::tribool&         up() const        { return _up; }
-	const std::string&            name() const      { return _name; }
+	const string&                 name() const      { return _name; }
 	const odtone::mih::link_addr& link_addr() const { return _link_addr; }
 
 	boost::logic::tribool up(const boost::logic::tribool& tb);
+	void                  name(const string& name);
 
 private:
 	boost::intrusive::set_member_hook<> _node;
@@ -111,7 +113,7 @@ private:
 protected:
 	if_id		           _id;
 	boost::logic::tribool  _up;
-	std::string            _name;
+	string                 _name;
 	odtone::mih::link_addr _link_addr;
 };
 

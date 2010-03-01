@@ -39,6 +39,11 @@ boost::logic::tribool interface::up(const boost::logic::tribool& tb)
 	return prev;
 }
 
+void interface::name(const string& name)
+{
+	_name = name;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 interface_map::interface_map()
 {
