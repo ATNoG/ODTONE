@@ -142,6 +142,23 @@ wlan_if_list wlan_enum_interfaces(handle const& h)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+wlan_profile_list wlan_get_profile_list(const handle& h, const odtone::sap::nif::if_id& id)
+{
+	const GUID* guid = reinterpret_cast<const GUID*>(&id);
+	WLAN_PROFILE_INFO_LIST* plist = nullptr;
+	DWORD res;
+
+	res = ::WlanGetProfileList(h.get(), guid, nullptr, &plist);
+	if (res == ERROR_SUCCESS)
+		return wlan_profile_list(plist, ::WlanFreeMemory);
+
+	boost::throw_exception(boost::system::system_error(res,
+													   boost::system::get_system_category(),
+													   "win::wlan_get_profile_list"));
+	return wlan_profile_list();
+}
+
+///////////////////////////////////////////////////////////////////////////////
 } /* namespace win */
 
 // EOF ////////////////////////////////////////////////////////////////////////
