@@ -39,20 +39,18 @@ link_sap::~link_sap()
 
 void link_sap::update(odtone::sap::nif::interface* it)
 {
-	odtone::sap::nif::interface& ifi = _ifmap.find(it->id());
+	std::pair<odtone::sap::nif::interface_map::iterator, bool> ifi;
 	std::auto_ptr<odtone::sap::nif::interface> itc(it);
 	bool update = false;
 
-	if (ifi == nullref) {
-		_ifmap.insert(*it);
+	ifi = _ifmap.insert(*it);
+	if (ifi.second) {
 		itc.release();
 		update = true;
 
 	} else {
-		boost::logic::tribool prev = ifi.up(it->up());
-
+		boost::logic::tribool prev = ifi.first->up(it->up());
 		update = (prev != it->up());
-		it = &ifi;
 	}
 
 	if (update) {
