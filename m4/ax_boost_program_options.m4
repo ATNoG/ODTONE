@@ -69,33 +69,27 @@ AC_DEFUN([AX_BOOST_PROGRAM_OPTIONS],
 		])
 		if test "$ax_cv_boost_program_options" = yes; then
 				AC_DEFINE(HAVE_BOOST_PROGRAM_OPTIONS,,[define if the Boost::PROGRAM_OPTIONS library is available])
-                  BOOSTLIBDIR=`echo $BOOST_LDFLAGS | sed -e 's/@<:@^\/@:>@*//'`
-                if test "x$ax_boost_user_program_options_lib" = "x"; then
-                for libextension in `ls $BOOSTLIBDIR/libboost_program_options*.so* 2>/dev/null | sed 's,.*/,,' | sed -e 's;^lib\(boost_program_options.*\)\.so.*$;\1;'` `ls $BOOSTLIBDIR/libboost_program_options*.a* 2>/dev/null | sed 's,.*/,,' | sed -e 's;^lib\(boost_program_options.*\)\.a*$;\1;'` ; do
-                     ax_lib=${libextension}
-				    AC_CHECK_LIB($ax_lib, exit,
-                                 [BOOST_PROGRAM_OPTIONS_LIB="-l$ax_lib"; AC_SUBST(BOOST_PROGRAM_OPTIONS_LIB) link_program_options="yes"; break],
-                                 [link_program_options="no"])
+			BN=boost_program_options
+            if test "x$ax_boost_user_program_options_lib" = "x"; then
+				for ax_lib in $BN $BN-mt $BN-$CC $BN-$CC-mt $BN-$CC-mt-s $BN-$CC-s \
+                              lib$BN lib$BN-$CC lib$BN-$CC-mt lib$BN-$CC-mt-s lib$BN-$CC-s \
+                              $BN-mgw $BN-mgw $BN-mgw-mt $BN-mgw-mt-s $BN-mgw-s ; do
+				    AC_CHECK_LIB($ax_lib, main, [BOOST_PROGRAM_OPTIONS_LIB="-l$ax_lib" AC_SUBST(BOOST_PROGRAM_OPTIONS_LIB) link_thread="yes" break],
+                                 [link_thread="no"])
   				done
-                if test "x$link_program_options" != "xyes"; then
-                for libextension in `ls $BOOSTLIBDIR/boost_program_options*.dll* 2>/dev/null | sed 's,.*/,,' | sed -e 's;^\(boost_program_options.*\)\.dll.*$;\1;'` `ls $BOOSTLIBDIR/boost_program_options*.a* 2>/dev/null | sed 's,.*/,,' | sed -e 's;^\(boost_program_options.*\)\.a*$;\1;'` ; do
-                     ax_lib=${libextension}
-				    AC_CHECK_LIB($ax_lib, exit,
-                                 [BOOST_PROGRAM_OPTIONS_LIB="-l$ax_lib"; AC_SUBST(BOOST_PROGRAM_OPTIONS_LIB) link_program_options="yes"; break],
-                                 [link_program_options="no"])
-  				done
-                fi
-                else
-                  for ax_lib in $ax_boost_user_program_options_lib boost_program_options-$ax_boost_user_program_options_lib; do
+            else
+               for ax_lib in $ax_boost_user_program_options_lib $BN-$ax_boost_user_program_options_lib; do
 				      AC_CHECK_LIB($ax_lib, main,
-                                   [BOOST_PROGRAM_OPTIONS_LIB="-l$ax_lib"; AC_SUBST(BOOST_PROGRAM_OPTIONS_LIB) link_program_options="yes"; break],
+                                   [BOOST_PROGRAM_OPTIONS_LIB="-l$ax_lib" AC_SUBST(BOOST_PROGRAM_OPTIONS_LIB) link_program_options="yes" break],
                                    [link_program_options="no"])
                   done
-                fi
-				if test "x$link_program_options" != "xyes"; then
-					AC_MSG_ERROR([Could not link against [$ax_lib] !])
-				fi
+
+            fi
+			if test "x$link_program_options" = "xno"; then
+				AC_MSG_ERROR(Could not link against $ax_lib !)
+			fi
 		fi
+
 		CPPFLAGS="$CPPFLAGS_SAVED"
     	LDFLAGS="$LDFLAGS_SAVED"
 	fi
