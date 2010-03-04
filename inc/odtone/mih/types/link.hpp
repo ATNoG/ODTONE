@@ -305,9 +305,9 @@ struct link_det_cfg {
 	}
 
 
-	boost::variant<null, octet_string> network_id;
+	octet_string                       network_id;
 	boost::variant<null, sig_strength> signal;
-	boost::variant<null, uint32>       link_data_rate;
+	uint32                             link_data_rate;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -401,7 +401,7 @@ struct link_cfg_param {
 
 
 	link_param_type              type;
-	boost::variant<null, uint16> timer_interval;
+	uint16			     timer_interval;
 	th_action                    action;
 	std::vector<threshold>       threshold_list;
 };
