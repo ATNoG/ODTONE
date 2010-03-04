@@ -78,20 +78,29 @@ class interface_map {
 	typedef boost::intrusive::rbtree<interface, compare_option, hook_option> map;
 
 public:
+	typedef map::iterator       iterator;
+	typedef map::const_iterator const_iterator;
+
 	interface_map();
 	~interface_map();
 
-	bool insert(interface& i);
+	std::pair<iterator, bool> insert(interface& i);
+	void erase(const_iterator i);
+	void erase(uint id);
 
-	bool remove(interface& i);
-	bool remove(uint index);
+	iterator       find(uint id);
+	const_iterator find(uint id) const;
 
-	interface&       find(uint index);
-	const interface& find(uint index) const;
+	iterator begin();
+	iterator end();
+
+	const_iterator begin() const;
+	const_iterator end() const;
 
 private:
 	map _map;
 };
+
 
 // EOF ////////////////////////////////////////////////////////////////////////
 #endif /* LINK_SAP_INTERFACE__HPP_ */

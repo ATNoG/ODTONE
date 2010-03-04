@@ -35,10 +35,10 @@ link_sap::~link_sap()
 {
 }
 
-void link_sap::update(odtone::sap::nif::interface* it)
+void link_sap::update(/*odtone::sap::nif::*/interface* it)
 {
-	std::pair<odtone::sap::nif::interface_map::iterator, bool> ifi;
-	std::auto_ptr<odtone::sap::nif::interface> itc(it);
+	std::pair</*odtone::sap::nif::*/interface_map::iterator, bool> ifi;
+	std::auto_ptr</*odtone::sap::nif::*/interface> itc(it);
 	bool update = false;
 
 	ifi = _ifmap.insert(*it);
