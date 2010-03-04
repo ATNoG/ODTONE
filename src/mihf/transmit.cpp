@@ -14,6 +14,7 @@
 //
 
 #include <odtone/mihf/transmit.hpp>
+#include <odtone/mihf/transaction_manager.hpp>x
 #include <odtone/mihf/log.hpp>
 
 namespace odtone { namespace mihf {
@@ -27,7 +28,7 @@ transmit_t::transmit_t()
 transmit_t *transmit_t::instance()
 {
 	if (ptr_instance == NULL)
-        ptr_instance = new transmit_t();
+	   ptr_instance = new transmit_t();
 
 	return ptr_instance;
 }
@@ -53,12 +54,36 @@ void transmit_t::operator()(mih::message_ptr& msg)
 						}
 					else
 						{
-							netsap->send_to(msg, r->ip.c_str(), r->port);
+							tmanager->message_out(msg);
+							// netsap->send_to(msg, r->ip.c_str(), r->port);
 						}
 					return;
 				}
 		}
 }
+
+void transmit_t::send(mih::message_ptr& msg)
+{
+	std::set<registration_t>::iterator r;
+
+	for(r = _registrations.begin(); r != _registrations.end(); r++)
+	{
+		if(msg->destination().to_string().compare(r->name) == 0)
+		{
+			log(1, "(transmit) sending message to: ", r->name, " at ", r->ip, ":", r->port);
+			if ((r->ip.length() == 0) || (r->ip.compare( "127.0.0.1") == 0))
+			{
+				comhand->send_to(msg, "127.0.0.1", r->port);
+			}
+			else
+			{
+				netsap->send_to(msg, r->ip.c_str(), r->port);
+			}
+			return;
+		}
+	}
+}
+
 
 void transmit_t::add(mih::octet_string name, mih::octet_string ip, uint16 port)
 {
