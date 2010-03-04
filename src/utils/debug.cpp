@@ -20,9 +20,6 @@
 #include <cstring>
 
 ///////////////////////////////////////////////////////////////////////////////
-static ODTONE_THREAD_LOCAL odtone::checkpoint* check_point_list;
-
-///////////////////////////////////////////////////////////////////////////////
 namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -40,6 +37,17 @@ char const* k_bug_code_string[] = {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+#if defined(__GNUC__)
+	static __thread odtone::checkpoint* check_point_list;
+#	define ODTONE_CHECKPOINT_SET(x) check_point_list = x
+#elif defined(BOOST_MSVC)
+	static __declspec(thread) odtone::checkpoint* check_point_list;
+#	define ODTONE_CHECKPOINT_SET(x) check_point_list = x
+#else
+	static nullptr_t check_point_list = nullptr_t();
+#	define ODTONE_CHECKPOINT_SET(x)
+#endif
+
 checkpoint* checkpoint::top()
 {
 	return check_point_list;
@@ -48,12 +56,12 @@ checkpoint* checkpoint::top()
 checkpoint::checkpoint(const char* file, uint line, const char* exp)
 	: _prev(check_point_list), _file(file), _line(line), _exp(exp)
 {
-	check_point_list = this;
+	ODTONE_CHECKPOINT_SET(this);
 }
 
 checkpoint::~checkpoint()
 {
-	check_point_list = _prev;
+	ODTONE_CHECKPOINT_SET(_prev);
 }
 
 void crash(bug code, const char* function, const char* file, uint line, const char* expression)

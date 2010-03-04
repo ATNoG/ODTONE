@@ -1,9 +1,9 @@
 //=============================================================================
-// Brief   : Link SAP
+// Brief   : STL Platform Specific Unicode String
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //
 //
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
+// Copyright (C) 2010 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
 //
 // This file is part of ODTONE - Open Dot Twenty One.
 //
@@ -15,31 +15,33 @@
 // This software is distributed without any warranty.
 //=============================================================================
 
-#ifndef LINK_SAP__HPP_
-#define LINK_SAP__HPP_
+#ifndef ODTONE_STRING__HPP_
+#define ODTONE_STRING__HPP_
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "base.hpp"
-#include <odtone/sap/link.hpp>
-#include <odtone/sap/nif/interface.hpp>
-#include <boost/utility.hpp>
-#include <memory>
+#include <odtone/base.hpp>
+#include <string>
 
 ///////////////////////////////////////////////////////////////////////////////
-class link_sap : boost::noncopyable {
-public:
-	link_sap(const odtone::mih::config& cfg, boost::asio::io_service& io);
-	~link_sap();
+namespace odtone {
 
-	void update(odtone::sap::nif::interface* it);
+///////////////////////////////////////////////////////////////////////////////
+#ifdef BOOST_WINDOWS
 
-private:
-	void default_handler(odtone::mih::message& msg);
+#define ODTONE_L     L
+typedef wchar_t      char_t;
+typedef std::wstring string;
 
-private:
-	odtone::sap::link               _mihf;
-	odtone::sap::nif::interface_map _ifmap;
-};
+#else
+
+#define ODTONE_L
+typedef char_t      char_t;
+typedef std::string string;
+
+#endif
+
+///////////////////////////////////////////////////////////////////////////////
+} /* namespace odtone */
 
 // EOF ////////////////////////////////////////////////////////////////////////
-#endif /* LINK_SAP__HPP_ */
+#endif /* ODTONE_STRING__HPP_ */

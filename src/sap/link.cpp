@@ -124,7 +124,8 @@ void link::recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system:
 
 void link::send_handler(mih::frame_vla& /*fm*/, const handler& h, size_t /*sbytes*/, const boost::system::error_code& ec)
 {
-	h(ec);
+	if (h)
+		h(ec);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

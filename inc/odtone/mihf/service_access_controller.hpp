@@ -28,7 +28,6 @@
 #include "service_management.hpp"
 #include "event_service.hpp"
 #include "command_service.hpp"
-#include "sqlite_handler.hpp"
 #include "information_service.hpp"
 
 namespace odtone { namespace mihf {

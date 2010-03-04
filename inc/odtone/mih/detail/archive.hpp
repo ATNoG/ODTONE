@@ -125,51 +125,6 @@ struct serialize<std::list<T> > {
 	}
 };
 
-template<class T, size_t N>
-struct serialize<boost::array<T, N> > {
-	void operator()(iarchive& ar, boost::array<T, N>& val) const
-	{
-		uint pos = ar.position();
-		uint sz = ar.list_length();
-		uint len = sz / sizeof(T);
-
-		val.resize(len);
-		try {
-			typename boost::array<T, N>::iterator it = val.begin();
-
-			while (len--) {
-				ar & *it;
-				++it;
-			}
-
-		} catch (...) {
-			val.clear();
-			ar.rewind(pos);
-			throw;
-		}
-	}
-
-	void operator()(oarchive& ar, boost::array<T, N>& val) const
-	{
-		typename boost::array<T, N>::iterator it = val.begin();
-		uint sz = truncate_cast<uint>(val.size());
-		uint len = sz * sizeof(T);
-		uint pos = ar.position();
-
-		ar.list_length(sz);
-		try {
-			while (len--) {
-				ar & *it;
-				++it;
-			}
-
-		} catch (...) {
-			ar.rewind(pos);
-			throw;
-		}
-	}
-};
-
 template<class T1>
 struct serialize<boost::variant<T1> > {
 	void operator()(iarchive& ar, boost::variant<T1>& val) const

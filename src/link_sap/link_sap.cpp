@@ -16,7 +16,6 @@
 //=============================================================================
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "link_sap.hpp"
 #include <odtone/debug.hpp>
 #include <odtone/mih/message.hpp>
 #include <odtone/mih/indication.hpp>
@@ -24,7 +23,7 @@
 #include <odtone/mih/response.hpp>
 #include <odtone/mih/tlv_types.hpp>
 #include <boost/bind.hpp>
-#include <boost/ref.hpp>
+#include "link_sap.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 link_sap::link_sap(const odtone::mih::config& cfg, boost::asio::io_service& io)
@@ -36,22 +35,20 @@ link_sap::~link_sap()
 {
 }
 
-void link_sap::update(interface* it)
+void link_sap::update(odtone::sap::nif::interface* it)
 {
-	interface& ifi = _ifmap.find(it->index());
+	std::pair<odtone::sap::nif::interface_map::iterator, bool> ifi;
+	std::auto_ptr<odtone::sap::nif::interface> itc(it);
 	bool update = false;
 
-	if (ifi == nullref) {
-		_ifmap.insert(*it);
+	ifi = _ifmap.insert(*it);
+	if (ifi.second) {
+		itc.release();
 		update = true;
 
 	} else {
-		boost::logic::tribool prev = ifi.up(it->up());
-
+		boost::logic::tribool prev = ifi.first->up(it->up());
 		update = (prev != it->up());
-
-		delete it;
-		it = &ifi;
 	}
 
 	if (update) {
@@ -73,7 +70,7 @@ void link_sap::update(interface* it)
 		else
 			return;
 
-		_mihf.async_send(msg, boost::bind(&link_sap::cleanup_handler, this, boost::ref(msg), _1));
+		_mihf.async_send(msg);
 	}
 }
 
@@ -99,7 +96,7 @@ void link_sap::default_handler(odtone::mih::message& msg)
 				& odtone::mih::tlv_net_type_addr_list(ll)
 				& odtone::mih::tlv_event_list(el);
 
-			_mihf.async_send(m, boost::bind(&link_sap::cleanup_handler, this, boost::ref(m), _1));
+			_mihf.async_send(m);
 		}
 		break;
 
@@ -112,13 +109,9 @@ void link_sap::default_handler(odtone::mih::message& msg)
 			m << odtone::mih::response(odtone::mih::response::capability_discover)
 				& odtone::mih::tlv_status(st);
 
-			_mihf.async_send(m, boost::bind(&link_sap::cleanup_handler, this, boost::ref(m), _1));
+			_mihf.async_send(m);
 		}
 	}
-}
-
-void link_sap::cleanup_handler(odtone::mih::message& /*msg*/, const boost::system::error_code& /*ec*/)
-{
 }
 
 // EOF ////////////////////////////////////////////////////////////////////////

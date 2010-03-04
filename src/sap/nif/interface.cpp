@@ -22,9 +22,20 @@
 namespace odtone { namespace sap { namespace nif {
 
 ///////////////////////////////////////////////////////////////////////////////
-interface::interface(uint index, odtone::mih::link_type type, const std::string& name, const odtone::mih::link_addr& link_addr)
-	: _index(index), _type(type), _up(boost::logic::indeterminate), _name(name),
-	_link_addr(link_addr)
+namespace detail {
+
+///////////////////////////////////////////////////////////////////////////////
+static void interface_disposer(interface* p)
+{
+	delete p;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+} /* namespace detail */
+
+///////////////////////////////////////////////////////////////////////////////
+interface::interface(if_id const& id, odtone::mih::link_type type)
+	: _id(id), _type(type)
 {
 }
 
@@ -40,6 +51,11 @@ boost::logic::tribool interface::up(const boost::logic::tribool& tb)
 	return prev;
 }
 
+void interface::name(const string& name)
+{
+	_name = name;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 interface_map::interface_map()
 {
@@ -50,39 +66,49 @@ interface_map::~interface_map()
 	ODTONE_ASSERT(_map.empty());
 }
 
-bool interface_map::insert(interface& i)
+std::pair<interface_map::iterator, bool> interface_map::insert(interface& i)
 {
-	return _map.insert_unique(i).second;
+	return _map.insert_unique(i);
 }
 
-bool interface_map::remove(interface& i)
+void interface_map::erase(const_iterator i)
 {
-	return (_map.erase(i));
+	_map.erase_and_dispose(i, detail::interface_disposer);
 }
 
-bool interface_map::remove(uint index)
+void interface_map::erase(if_id const& id)
 {
-	return (_map.erase(index, compare()));
+	_map.erase_and_dispose(id, compare(), detail::interface_disposer);
 }
 
-interface& interface_map::find(uint index)
+interface_map::iterator interface_map::find(if_id const& id)
 {
-	map::iterator i = _map.find(index, compare());
-
-	if (i != _map.end())
-		return *i;
-
-	return nullref;
+	return _map.find(id, compare());
 }
 
-const interface& interface_map::find(uint index) const
+interface_map::const_iterator interface_map::find(if_id const& id) const
 {
-	map::const_iterator i = _map.find(index, compare());
+	return _map.find(id, compare());
+}
 
-	if (i != _map.end())
-		return *i;
+interface_map::iterator interface_map::begin()
+{
+	return _map.begin();
+}
 
-	return nullref;
+interface_map::iterator interface_map::end()
+{
+	return _map.end();
+}
+
+interface_map::const_iterator interface_map::begin() const
+{
+	return _map.begin();
+}
+
+interface_map::const_iterator interface_map::end() const
+{
+	return _map.end();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

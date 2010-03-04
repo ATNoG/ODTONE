@@ -30,7 +30,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <unistd.h>
 #include <boost/asio.hpp>
 
 
@@ -51,16 +50,22 @@ public:
 protected:
 	void process_message(mih::message_ptr& msg)
 	{
-		mih::ir_bin_data_list		bin_data_list;
+		std::cout << "MIH message: Service=" << msg->sid()
+				  << " Opcode=" << msg->opcode()
+				  << " Action=" << msg->aid()
+				  << std::endl;
 
-		*msg >> mih::response(mih::response::get_information)
-			& mih::tlv_info_resp_bin_data_list(bin_data_list);
+		if (msg->mid() == mih::response::get_information) {
+			mih::ir_bin_data_list bin_data_list;
 
-		mih::ir_bin_data bd = bin_data_list[0];
+			*msg >> mih::response(mih::response::get_information)
+				& mih::tlv_info_resp_bin_data_list(bin_data_list);
 
-		miis::ie_container_list_of_networks l;
-		bd.input() & miis::tlv_ie_container_list_of_networks(l);
+			mih::ir_bin_data bd = bin_data_list[0];
 
+			miis::ie_container_list_of_networks l;
+			bd.input() & miis::tlv_ie_container_list_of_networks(l);
+		}
 	}
 };
 

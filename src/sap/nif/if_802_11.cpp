@@ -21,8 +21,8 @@
 namespace odtone { namespace sap { namespace nif {
 
 ///////////////////////////////////////////////////////////////////////////////
-if_802_11::if_802_11(uint index, const std::string& name, const odtone::mih::mac_addr& link_addr)
-	: interface(index, odtone::mih::link_type_802_11, name, link_addr)
+if_802_11::if_802_11(if_id const& id)
+	: interface(id, odtone::mih::link_type_802_11)
 {
 }
 
