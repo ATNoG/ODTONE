@@ -21,14 +21,17 @@ EXTRA_DIST = \
 #   proceeds to install it.
 #
 install-exec-local:
-	rm -f src/odtone-main.o
-	rm -f src/mih_usr.o
-	rm -f src/link_sap/link_sap-link_sap.o
+	rm -f src/odtone-main.o src/odtone
+	rm -f src/mih_usr-mih_usr.o src/mih_usr
+	rm -f src/link_sap/link_sap-main.o src/link_sap/link_sap
 	mv src/Makefile src/Makefile.tmp ;
-	sed -e 's#^odtone_CPPFLAGS.*#odtone_CPPFLAGS = -DODTONE_CONFIG=\\"$(sysconfdir)/odtone.conf\\"#g' -e 's#^mih_usr_CPPFLAGS.*#mih_usr_CPPFLAGS = -DMIH_USR_CONFIG=\\"$(sysconfdir)/mih_usr.conf\\"#g' src/Makefile.tmp > src/Makefile
-	mv src/link_sap/Makefile src/link_sap/Makefile.tmp
-	sed -e 's#^link_sap_CPPFLAGS.*#link_sap_CPPFLAGS = -DLINK_SAP=\\"$(sysconfdir)/link_sap.conf\\"#g'  src/link_sap/Makefile.tmp > src/link_sap/Makefile
-	make
+	sed -e 's#^odtone_CPPFLAGS.*#odtone_CPPFLAGS = -DODTONE_CONFIG=\\"$(sysconfdir)/odtone/odtone.conf\\"#g' \
+	    -e 's#^mih_usr_CPPFLAGS.*#mih_usr_CPPFLAGS = -DMIH_USR_CONFIG=\\"$(sysconfdir)/odtone/mih_usr.conf\\"#g' \
+	    src/Makefile.tmp > src/Makefile ;
+	mv src/link_sap/Makefile src/link_sap/Makefile.tmp ;
+	sed -e 's#^link_sap_CPPFLAGS.*#link_sap_CPPFLAGS = -DLINK_SAP_CONFIG=\\"$(sysconfdir)/odtone/link_sap.conf\\"#g'  \
+	    src/link_sap/Makefile.tmp > src/link_sap/Makefile ;
+	make ;
 	mv src/Makefile.tmp src/Makefile ;
 	mv src/link_sap/Makefile.tmp src/link_sap/Makefile ;
 
