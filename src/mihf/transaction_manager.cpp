@@ -350,7 +350,10 @@ void transaction_manager::run_transaction(dst_transaction_ptr t)
 	}
 
  _exit_lbl:
-	_dst_transactions.erase(t);
+	{
+		boost::mutex::scoped_lock lock(_dst_mutex);
+		_dst_transactions.erase(t);
+	}
 
 	return;
 }
@@ -472,11 +475,17 @@ void transaction_manager::run_transaction(src_transaction_ptr t)
         t->state = SRC_SUCCESS;
 
         log(5, t);
-        _src_transactions.erase(t);
+		{
+			boost::mutex::scoped_lock lock(_src_mutex);
+			_src_transactions.erase(t);
+		}
 	}
 
  _exit_lbl:
-	_src_transactions.erase(t);
+	{
+		boost::mutex::scoped_lock lock(_src_mutex);
+		_src_transactions.erase(t);
+	}
 
 	return;
 }
