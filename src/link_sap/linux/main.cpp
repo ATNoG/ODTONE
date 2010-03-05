@@ -17,8 +17,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "../link_sap.hpp"
-#include "interface/ethernet.hpp"
-#include "interface/if_802_11.hpp"
+#include "../interface/ethernet.hpp"
+#include "../interface/if_802_11.hpp"
 #include <odtone/debug.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>

@@ -1,0 +1,4 @@
+lib odtone_mih : archive.cpp
+		 config.cpp
+   		 message.cpp
+		 types/address.cpp ;

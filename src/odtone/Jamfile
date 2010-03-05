@@ -1,0 +1,11 @@
+lib odtone_base : debug.cpp
+		  debug_linux.cpp
+		  strutil.cpp 
+		  logger.cpp
+;
+
+lib boost_system : : <name>boost_system <search>/usr/local ;
+lib boost_thread : : <name>boost_thread <search>/usr/local ;
+lib boost_program_options : : <name>boost_program_options <search>/usr/local ;
+
+exe odtone : main.cpp boost_system boost_thread boost_program_options mihf//odtone_mihf mih//odtone_mih .//odtone_base ;
