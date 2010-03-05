@@ -34,7 +34,7 @@ AC_SUBST(LDFLAGS)
 
 # config files
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_FILES([Makefile src/Makefile src/sap/Makefile src/mihf/Makefile src/mih/Makefile src/utils/Makefile src/link_sap/Makefile tests/mih/Makefile])
+AC_CONFIG_FILES([Makefile src/odtone/sap/Makefile src/odtone/mihf/Makefile src/odtone/mih/Makefile src/odtone/Makefile src/link_sap/Makefile tests/mih/Makefile src/client/Makefile src/mih_usr/Makefile src/dummyserver/Makefile])
 AC_PROG_RANLIB
 
 # output files

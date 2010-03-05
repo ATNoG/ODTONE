@@ -30,6 +30,6 @@ link_sap_SOURCES =				\
 	interface/if_802_11.cpp
 
 link_sap_CPPFLAGS = @LINK_SAP_CONFIG@
-link_sap_LDADD   = ../mih/libodtone_mih.a ../sap/libodtone_sap.a ../utils/libodtone_utils.a
+link_sap_LDADD   = ../odtone/mih/libodtone_mih.a ../odtone/sap/libodtone_sap.a ../odtone/libodtone_base.a
 link_sap_LDFLAGS = @BOOST_THREAD_LIB@ @BOOST_SYSTEM_LIB@ @BOOST_PROGRAM_OPTIONS_LIB@
 
