@@ -14,7 +14,7 @@
 //
 
 #include <odtone/mihf/transmit.hpp>
-#include <odtone/mihf/transaction_manager.hpp>x
+#include <odtone/mihf/transaction_manager.hpp>
 #include <odtone/mihf/log.hpp>
 
 namespace odtone { namespace mihf {
