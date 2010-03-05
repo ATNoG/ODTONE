@@ -190,6 +190,81 @@ enum link_mihcap_flag_enum {
 typedef bitmap<8, link_mihcap_flag_enum> link_mihcap_flag;
 
 ///////////////////////////////////////////////////////////////////////////////
+enum link_param_gen_enum {
+	link_param_gen_data_rate = 0,
+	link_param_gen_signal_strengh = 1,
+	link_param_gen_sinr = 2,
+	link_param_gen_throughput = 3,
+	link_param_gen_packet_error_rate = 4,
+};
+
+typedef bitmap<8, link_param_gen_enum> link_param_gen;
+
+///////////////////////////////////////////////////////////////////////////////
+typedef bitmap<8, qos_param_val> link_param_qos;
+
+///////////////////////////////////////////////////////////////////////////////
+enum link_param_gg_enum {
+	link_param_gg_rx_qual = 0,
+	link_param_gg_rs_lev = 1,
+	link_param_gg_mean_bep = 2,
+	link_param_gg_st_dev_bep = 3,
+};
+
+typedef bitmap<8, link_param_gg_enum> link_param_gg;
+
+///////////////////////////////////////////////////////////////////////////////
+typedef uint8 link_param_edge;
+
+///////////////////////////////////////////////////////////////////////////////
+typedef uint8 link_param_eth;
+
+///////////////////////////////////////////////////////////////////////////////
+enum link_param_802_11_enum {
+	link_param_802_11_rssi = 0,
+	link_param_802_11_no_qos = 1,
+	link_param_802_11_multicast_packet_loss_rate = 2,
+};
+
+typedef bitmap<8, link_param_802_11_enum> link_param_802_11;
+
+///////////////////////////////////////////////////////////////////////////////
+enum link_param_c2k_enum {
+	link_param_c2k_pilot_strength = 0,
+};
+
+typedef bitmap<8, link_param_c2k_enum> link_param_c2k;
+
+///////////////////////////////////////////////////////////////////////////////
+enum link_param_ffd_enum {
+	link_param_ffd_cpich_rscp = 0,
+	link_param_ffd_pccpch_rscp = 0,
+	link_param_ffd_ultra_carrie_rssi = 0,
+	link_param_ffd_gsm_carrie_rssi = 0,
+	link_param_ffd_cpich_ec_no = 0,
+	link_param_ffd_transport_channel_bler = 0,
+	link_param_ffd_ue = 0,
+};
+
+typedef bitmap<8, link_param_ffd_enum> link_param_ffd;
+
+///////////////////////////////////////////////////////////////////////////////
+enum link_param_hrpd_enum {
+	link_param_hrpd_pilot_strength = 0,
+};
+
+typedef bitmap<8, link_param_hrpd_enum> link_param_hrpd;
+
+///////////////////////////////////////////////////////////////////////////////
+typedef uint8 link_param_802_16;
+
+///////////////////////////////////////////////////////////////////////////////
+typedef uint8 link_param_802_20;
+
+///////////////////////////////////////////////////////////////////////////////
+typedef uint8 link_param_802_22;
+
+///////////////////////////////////////////////////////////////////////////////
 struct link_id {
 	link_id() : type(link_type_enum(0))
 	{ }
@@ -319,7 +394,18 @@ struct link_param_type {
 		ar & value;
 	}
 
-	uint8 type;
+	boost::variant<link_param_gen,
+			link_param_qos,
+			link_param_gg,
+			link_param_edge,
+			link_param_eth,
+			link_param_802_11,
+			link_param_c2k,
+			link_param_ffd,
+			link_param_hrpd,
+			link_param_802_16,
+			link_param_802_20,
+			link_param_802_22> type;
 	uint8 value;
 };
 
