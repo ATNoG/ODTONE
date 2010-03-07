@@ -24,7 +24,7 @@
 #include <boost/utility.hpp>
 #include <boost/move/move.hpp>
 #include <boost/type_traits/is_pod.hpp>
-#include <boost/type_traits/is_integral.hpp>
+#include <boost/type_traits/is_class.hpp>
 #include <cstdlib>
 #include <cstring>
 
@@ -34,7 +34,7 @@ namespace odtone {
 ///////////////////////////////////////////////////////////////////////////////
 template<class T>
 class buffer {
-	ODTONE_STATIC_ASSERT(boost::is_integral<T>::value, "T must be an integral type");
+	ODTONE_STATIC_ASSERT(boost::is_pod<T>::value, "T must be POD type");
 
 	BOOST_MOVABLE_BUT_NOT_COPYABLE(buffer);
 
@@ -80,7 +80,7 @@ public:
 			void* p = std::realloc(_ptr, len * sizeof(T));
 
 			if (!p && len)
-				throw std::bad_alloc();
+				boost::throw_exception(std::bad_alloc());
 
 			_ptr = reinterpret_cast<T*>(p);
 			_len = len;
@@ -104,7 +104,9 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 template<class T>
 class buffer_vla : buffer<uint8> {
-	ODTONE_STATIC_ASSERT(boost::is_pod<T>::value, "T must be a POD type");
+	ODTONE_STATIC_ASSERT(!boost::is_enum<T>::value    //needed for buggy compilers
+						 && boost::is_pod<T>::value
+						 && boost::is_class<T>::value, "T must be a class/struct POD type");
 
 	BOOST_MOVABLE_BUT_NOT_COPYABLE(buffer_vla);
 
@@ -136,10 +138,8 @@ public:
 		base::size(sizeof(T) + len);
 	}
 
-	void zero()
-	{
-		base::zero();
-	}
+	using base::zero;
+	using base::size;
 
 	T& operator*()  { return *get(); }
 	T* operator->() { return get(); }
@@ -148,8 +148,6 @@ public:
 	const T& operator*() const  { return *get(); }
 	const T* operator->() const { return get(); }
 	const T* get() const        { return reinterpret_cast<const T*>(base::get()); }
-
-	size_t size() const { return base::size(); }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
