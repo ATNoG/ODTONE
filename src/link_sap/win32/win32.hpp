@@ -85,47 +85,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 handle wlan_open();
 
-using std::string;
-using boost::logic::tribool;
-
-enum wlan_notification_type {
-	wlan_notification_autoconf_enabled = 1,
-	wlan_notification_autoconf_disabled,
-	wlan_notification_background_scan_enabled,
-	wlan_notification_background_scan_disabled,
-	wlan_notification_bss_type_change,
-	wlan_notification_power_setting_change,
-	wlan_notification_scan_complete,
-	wlan_notification_scan_fail,
-	wlan_notification_connection_start,
-	wlan_notification_connection_complete,
-	wlan_notification_connection_attempt_fail,
-	wlan_notification_filter_list_change,
-	wlan_notification_interface_arrival,
-	wlan_notification_interface_removal,
-	wlan_notification_profile_change,
-	wlan_notification_profile_name_change,
-	wlan_notification_profiles_exhausted,
-	wlan_notification_network_not_available,
-	wlan_notification_network_available,
-	wlan_notification_disconnecting,
-	wlan_notification_disconnected,
-	wlan_notification_adhoc_network_state_change,
-};
-
-struct wlan_notification_data {
-	wlan_notification_data()
-		: error(0), is_secure(boost::logic::indeterminate)
-	{ }
-
-
-	uint           error;
-	wchar_t const* profile;
-	string         ssid;
-	tribool        is_secure;
-};
-
-typedef boost::function<void(wlan_notification_type, const wlan_notification_data&)> wlan_register_notification_handler;
+typedef boost::function<void(const WLAN_NOTIFICATION_DATA&)> wlan_register_notification_handler;
 
 void wlan_register_notification(const handle& h, const wlan_register_notification_handler& handler);
 

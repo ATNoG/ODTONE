@@ -36,30 +36,14 @@ static void WINAPI wlan_notify_handler(PWLAN_NOTIFICATION_DATA data, void* conte
 {
 	wlan_register_notification_handler* pcb = reinterpret_cast<wlan_register_notification_handler*>(context);
 	wlan_register_notification_handler& cb = *pcb;
-	wlan_notification_data nd;
 
 	if (data->NotificationSource == WLAN_NOTIFICATION_SOURCE_NONE) {
 		delete pcb;
 		return;
 	}
 
-	if (!cb)
-		return;
-
-	switch (data->NotificationCode) {
-	case wlan_notification_acm_connection_start:
-	case wlan_notification_acm_connection_complete:
-	case wlan_notification_acm_connection_attempt_fail: {
-			WLAN_CONNECTION_NOTIFICATION_DATA* dt = reinterpret_cast<WLAN_CONNECTION_NOTIFICATION_DATA*>(data->pData);
-
-			nd.error = dt->wlanReasonCode;
-			nd.profile = dt->strProfileName;
-			nd.ssid.assign(reinterpret_cast<char*>(dt->dot11Ssid.ucSSID), dt->dot11Ssid.uSSIDLength);
-			nd.is_secure = bool(dt->bSecurityEnabled);
-		}
-		break;
-	}
-	cb(wlan_notification_type(data->NotificationCode), nd);
+	if (cb)
+		cb(*data);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

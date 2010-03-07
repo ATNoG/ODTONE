@@ -76,7 +76,7 @@ private:
 
 inline if_id::if_id()
 {
-	std::fill(_guid, _guid + sizeof(_guid), 0);
+	std::fill(_guid, _guid + ODTONE_COUNT_OF(_guid), 0);
 }
 
 template<class T>

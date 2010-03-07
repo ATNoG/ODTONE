@@ -31,23 +31,10 @@
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
-void my_handler(win::wlan_notification_type nt,
-				const win::wlan_notification_data& nd,
-				boost::asio::io_service& ios,
-				odtone::sap::link& ls)
+void wlan_event_handler(const WLAN_NOTIFICATION_DATA& nd, boost::asio::io_service& ios, link_sap* ls)
 {
-	std::cout << "wlan notification[" << nt << "]";
+	std::cout << "wlan notification[" << nd.NotificationCode << "]\n";
 
-	switch (nt) {
-	case win::wlan_notification_connection_start:
-	case win::wlan_notification_connection_complete:
-	case win::wlan_notification_connection_attempt_fail:
-		std::cout << "\n\treason=" << nd.error
-				  << "\n\tprofile = " << nd.profile
-				  << "\n\tssid = " << nd.ssid;
-		break;
-	}
-	std::cout << std::endl;
 }
 
 int main(int argc, char** argv)
@@ -69,7 +56,6 @@ int main(int argc, char** argv)
 		link_sap ls(cfg, ios);
 
 		win::handle lan = win::wlan_open();
-		//win::wlan_register_notification(lan, boost::bind(&my_handler, _1, _2, boost::ref(ios), boost::ref(ls)));
 		win::wlan_if_list iflst = win::wlan_enum_interfaces(lan);
 
 		for (uint i = 0; i < iflst->dwNumberOfItems; ++i) {
