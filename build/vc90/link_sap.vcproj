@@ -347,6 +347,18 @@
 				RelativePath="..\..\src\link_sap\win32\win32.cpp"
 				>
 			</File>
+			<Filter
+				Name="nic"
+				>
+				<File
+					RelativePath="..\..\src\link_sap\interface\if_802_11.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\link_sap\interface\interface.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -365,6 +377,18 @@
 				RelativePath="..\..\src\link_sap\win32\win32.hpp"
 				>
 			</File>
+			<Filter
+				Name="nic"
+				>
+				<File
+					RelativePath="..\..\src\link_sap\interface\if_802_11.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\link_sap\interface\interface.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
