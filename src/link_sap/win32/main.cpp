@@ -31,7 +31,13 @@
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
-void wlan_event_handler(const WLAN_NOTIFICATION_DATA& nd, boost::asio::io_service& ios, link_sap* ls)
+using odtone::sap::nif::interface;
+using odtone::sap::nif::if_802_11;
+using odtone::sap::nif::if_id;
+using odtone::ushort;
+using odtone::uint;
+
+void wlan_event_handler(const WLAN_NOTIFICATION_DATA& nd, boost::asio::io_service& ios, link_sap::link_sap* ls)
 {
 	std::cout << "wlan notification[" << nd.NotificationCode << "]\n";
 
@@ -40,9 +46,6 @@ void wlan_event_handler(const WLAN_NOTIFICATION_DATA& nd, boost::asio::io_servic
 int main(int argc, char** argv)
 {
 	odtone::setup_crash_handler();
-	using odtone::sap::nif::interface;
-	using odtone::sap::nif::if_802_11;
-	using odtone::sap::nif::if_id;
 
 	try {
 		odtone::mih::config cfg(argc, argv, LINK_SAP_CONFIG);
@@ -53,16 +56,16 @@ int main(int argc, char** argv)
 					<< "\"\n";
 
 		boost::asio::io_service ios;
-		link_sap ls(cfg, ios);
+		link_sap::link_sap ls(cfg, ios);
 
-		win::handle lan = win::wlan_open();
-		win::wlan_if_list iflst = win::wlan_enum_interfaces(lan);
+		link_sap::win32::handle lan = link_sap::win32::wlan_open();
+		link_sap::win32::wlan_if_list iflst = link_sap::win32::wlan_enum_interfaces(lan);
 
 		for (uint i = 0; i < iflst->dwNumberOfItems; ++i) {
 			interface* it;
 
 			it = new if_802_11(if_id(&iflst->InterfaceInfo[i].InterfaceGuid));
-			ios.dispatch(boost::bind(&link_sap::update, &ls, it));
+			ios.dispatch(boost::bind(&link_sap::link_sap::update, &ls, it));
 		}
 
 		ios.run();
