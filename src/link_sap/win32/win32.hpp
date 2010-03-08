@@ -20,7 +20,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "../base.hpp"
-#include <odtone/sap/nif/interface.hpp>
+#include "../interface/interface.hpp"
 #include <boost/utility.hpp>
 #include <boost/function.hpp>
 #include <boost/logic/tribool.hpp>
@@ -101,7 +101,7 @@ wlan_if_list wlan_enum_interfaces(handle const& h);
 ///////////////////////////////////////////////////////////////////////////////
 typedef boost::shared_ptr<WLAN_PROFILE_INFO_LIST> wlan_profile_list;
 
-wlan_profile_list wlan_get_profile_list(const handle& h, const odtone::sap::nif::if_id& id);
+wlan_profile_list wlan_get_profile_list(const handle& h, const nic::if_id& id);
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace win32 */ } /* namespace link_sap */

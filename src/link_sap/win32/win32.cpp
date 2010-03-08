@@ -124,7 +124,7 @@ wlan_if_list wlan_enum_interfaces(handle const& h)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-wlan_profile_list wlan_get_profile_list(const handle& h, const odtone::sap::nif::if_id& id)
+wlan_profile_list wlan_get_profile_list(const handle& h, const link_sap::nic::if_id& id)
 {
 	const GUID* guid = reinterpret_cast<const GUID*>(&id);
 	WLAN_PROFILE_INFO_LIST* plist = nullptr;

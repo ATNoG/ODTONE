@@ -21,7 +21,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "base.hpp"
 #include <odtone/sap/link.hpp>
-#include <odtone/sap/nif/interface.hpp>
+#include "interface/interface.hpp"
 #include <boost/utility.hpp>
 #include <memory>
 
@@ -34,14 +34,14 @@ public:
 	link_sap(const odtone::mih::config& cfg, boost::asio::io_service& io);
 	~link_sap();
 
-	void update(odtone::sap::nif::interface* it);
+	void update(nic::interface* it);
 
 private:
 	void default_handler(odtone::mih::message& msg);
 
 private:
-	odtone::sap::link               _mihf;
-	odtone::sap::nif::interface_map _ifmap;
+	odtone::sap::link  _mihf;
+	nic::interface_map _ifmap;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

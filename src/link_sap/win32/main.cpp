@@ -17,8 +17,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "../link_sap.hpp"
+#include "../interface/if_802_11.hpp"
 #include <odtone/debug.hpp>
-#include <odtone/sap/nif/if_802_11.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <iostream>
@@ -31,11 +31,11 @@
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
-using odtone::sap::nif::interface;
-using odtone::sap::nif::if_802_11;
-using odtone::sap::nif::if_id;
-using odtone::ushort;
-using odtone::uint;
+using link_sap::nic::interface;
+using link_sap::nic::if_802_11;
+using link_sap::nic::if_id;
+using link_sap::ushort;
+using link_sap::uint;
 
 void wlan_event_handler(const WLAN_NOTIFICATION_DATA& nd, boost::asio::io_service& ios, link_sap::link_sap* ls)
 {

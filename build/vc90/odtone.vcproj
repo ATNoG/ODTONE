@@ -315,18 +315,6 @@
 					RelativePath="..\..\src\sap\user.cpp"
 					>
 				</File>
-				<Filter
-					Name="nif"
-					>
-					<File
-						RelativePath="..\..\src\sap\nif\if_802_11.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\src\sap\nif\interface.cpp"
-						>
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="mih"
@@ -573,18 +561,6 @@
 					RelativePath="..\..\inc\odtone\sap\user.hpp"
 					>
 				</File>
-				<Filter
-					Name="nif"
-					>
-					<File
-						RelativePath="..\..\inc\odtone\sap\nif\if_802_11.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\inc\odtone\sap\nif\interface.hpp"
-						>
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="mihf"
