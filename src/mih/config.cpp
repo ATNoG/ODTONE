@@ -19,6 +19,11 @@
 #include <odtone/mih/config.hpp>
 #include <fstream>
 
+#ifdef BOOST_MSVC
+#	pragma warning(push)
+#	pragma warning(disable : 4800)
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mih {
 
@@ -183,5 +188,9 @@ void config::init()
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /* namespace odtone */
+
+#ifdef BOOST_MSVC
+#	pragma warning(pop)
+#endif
 
 // EOF ////////////////////////////////////////////////////////////////////////

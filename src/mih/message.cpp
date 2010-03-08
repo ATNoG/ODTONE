@@ -121,7 +121,7 @@ void message::get_frame(frame_vla& fm) const
 	fm->fn(_fn);
 	fm->mid(_mid);
 	fm->tid(_tid);
-	fm->plength(ar.buffer().size());
+	fm->plength(truncate_cast<uint16>(ar.buffer().size()));
 	std::copy(ar.buffer().begin(), ar.buffer().end(), fm->payload());
 }
 

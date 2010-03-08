@@ -18,6 +18,11 @@
 #include <odtone/mih/archive.hpp>
 #include <odtone/cast.hpp>
 
+#ifdef BOOST_MSVC
+#	pragma warning(push)
+#	pragma warning(disable : 4800)
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mih {
 
@@ -312,6 +317,11 @@ oarchive& oarchive::operator&(uint64 val)
 	return *this;
 }
 
+#ifdef BOOST_MSVC
+#	pragma warning(push)
+#	pragma warning(disable : 4700)
+#endif
+
 oarchive& oarchive::operator&(sint8 val)
 {
 	uint8 tmp;
@@ -367,6 +377,10 @@ oarchive& oarchive::operator&(sint64 val)
 
 	return *this;
 }
+
+#ifdef BOOST_MSVC
+#	pragma warning(pop)
+#endif
 
 oarchive& oarchive::operator&(octet_string& val)
 {
@@ -434,5 +448,9 @@ void oarchive::list_length(uint len)
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /* namespace odtone */
+
+#ifdef BOOST_MSVC
+#	pragma warning(pop)
+#endif
 
 // EOF ////////////////////////////////////////////////////////////////////////
