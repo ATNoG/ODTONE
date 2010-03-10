@@ -1,5 +1,5 @@
 
-exe dummyserver : dummyserver.cpp ../odtone/mih//odtone_mih ../odtone/mihf//odtone_mihf ../odtone//odtone_base /odtone//boost_system/<link>shared /odtone//boost_thread/<link>shared /odtone//boost_program_options/<link>shared ;
+exe dummyserver : dummyserver.cpp ../odtone/mih//odtone_mih/<link>static ../odtone/mihf//odtone_mihf/<link>static ../odtone//odtone_base/<link>static /odtone//boost_system/<link>shared /odtone//boost_thread/<link>shared /odtone//boost_program_options/<link>shared ;
 
 install install-bin : dummyserver : <location>"../../build" ;
 

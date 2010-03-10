@@ -1,4 +1,4 @@
-exe mih_usr : mih_usr.cpp ../odtone//odtone_base ../odtone/mih//odtone_mih ../odtone/sap//odtone_sap /odtone//boost_system/<link>shared /odtone//boost_thread/<link>shared /odtone//boost_program_options/<link>shared ;
+exe mih_usr : mih_usr.cpp ../odtone//odtone_base/<link>static ../odtone/mih//odtone_mih/<link>static ../odtone/sap//odtone_sap/<link>static /odtone//boost_system/<link>shared /odtone//boost_thread/<link>shared /odtone//boost_program_options/<link>shared ;
 
 install install-bin : mih_usr : <location>"../../build" ;
 

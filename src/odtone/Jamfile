@@ -6,6 +6,6 @@ lib odtone_base : debug.cpp
 
 install install-lib : odtone_base : <location>"../../../build/lib" ;
 
-exe odtone : main.cpp /odtone//boost_system /odtone//boost_thread /odtone//boost_program_options mihf//odtone_mihf mih//odtone_mih .//odtone_base /odtone//boost_system/<link>shared /odtone//boost_thread/<link>shared /odtone//boost_program_options/<link>shared ;
+exe odtone : main.cpp mihf//odtone_mihf/<link>static mih//odtone_mih/<link>static .//odtone_base/<link>static /odtone//boost_system/<link>shared /odtone//boost_thread/<link>shared /odtone//boost_program_options/<link>shared ;
 
 install install-bin : odtone : <location>"../../build" ;
