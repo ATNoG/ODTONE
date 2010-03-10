@@ -67,6 +67,8 @@ namespace odtone { namespace mihf {
 
       boost::asio::deadline_timer _timer;
       boost::thread               _timer_thread;
+
+	    uint16 _tid;
     };
 
 #define tmanager transaction_manager::instance()

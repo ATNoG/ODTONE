@@ -14,6 +14,7 @@
 //
 
 #include <odtone/mihf/transaction_manager.hpp>
+#include <odtone/random.hpp>
 #include <odtone/mihf/log.hpp>
 #include <odtone/mihf/transmit.hpp>
 
@@ -27,12 +28,13 @@ transaction_manager::transaction_manager()
 	  _timer(mihf::io_service, boost::posix_time::seconds(1)),
 	  _timer_thread(boost::bind(&transaction_manager::timer, this))
 {
+	_tid = mih::rand16();
 }
 
 transaction_manager *transaction_manager::instance()
 {
 	if (ptr_instance == NULL)
-        ptr_instance = new transaction_manager();
+		ptr_instance = new transaction_manager();
 
 	return ptr_instance;
 }
@@ -125,7 +127,12 @@ void transaction_manager::new_src_transaction(mih::message_ptr& m)
 	src_transaction_ptr t(new src_transaction_t);
 
 	m->ackreq(true); // FIXME: read from config file
-	m->tid(1122);  // FIXME: generate random tid and check if not in use
+
+	_tid++;
+	if (_tid == 0)		// don't send a message with a
+		_tid = 1;	// transaction id of 0
+
+	m->tid(_tid);
 
 	t->out = m;
 	t->mid = m->mid();
