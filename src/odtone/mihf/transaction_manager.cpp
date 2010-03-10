@@ -162,6 +162,12 @@ void transaction_manager::message_in(mih::message_ptr& in)
 						tas->ack_requestor(t);
 
 					run_transaction(t);
+
+					if (t->transaction_status != ONGOING)
+					{
+						boost::mutex::scoped_lock lock(_src_mutex);
+						_src_transactions.erase(t);
+					}
 				}
 			else
 				{
@@ -185,6 +191,12 @@ void transaction_manager::message_in(mih::message_ptr& in)
 						tas->ack_responder(t);
 
 					run_transaction(t);
+
+					if (t->transaction_status != ONGOING)
+					{
+						boost::mutex::scoped_lock lock(_dst_mutex);
+						_dst_transactions.erase(t);
+					}
 				}
 			else
 				{
@@ -224,6 +236,12 @@ void transaction_manager::message_out(mih::message_ptr& out)
 					t->msg_out_avail = true;
 
 					run_transaction(t);
+
+					if (t->transaction_status != ONGOING)
+					{
+						boost::mutex::scoped_lock lock(_dst_mutex);
+						_dst_transactions.erase(t);
+					}
 				}
 			else
 				{
@@ -247,6 +265,12 @@ void transaction_manager::message_out(mih::message_ptr& out)
 						tas->ack_responder(t);
 
 					run_transaction(t);
+
+					if (t->transaction_status != ONGOING)
+					{
+						boost::mutex::scoped_lock lock(_src_mutex);
+						_src_transactions.erase(t);
+					}
 				}
 			else
 				{
@@ -338,7 +362,7 @@ void transaction_manager::run_transaction(dst_transaction_ptr t)
 
 		log(5, t);
 
-        goto _exit_lbl;
+		return;
 	}
 
  _success_lbl_:
@@ -347,12 +371,6 @@ void transaction_manager::run_transaction(dst_transaction_ptr t)
         t->transaction_status = SUCCESS;
 
 		log(5, t);
-	}
-
- _exit_lbl:
-	{
-		boost::mutex::scoped_lock lock(_dst_mutex);
-		_dst_transactions.erase(t);
 	}
 
 	return;
@@ -466,7 +484,7 @@ void transaction_manager::run_transaction(src_transaction_ptr t)
         t->state = SRC_FAILURE;
 
         log(5, t);
-        goto _exit_lbl;
+		return;
 	}
 
  _success_lbl_:
@@ -475,17 +493,8 @@ void transaction_manager::run_transaction(src_transaction_ptr t)
         t->state = SRC_SUCCESS;
 
         log(5, t);
-		{
-			boost::mutex::scoped_lock lock(_src_mutex);
-			_src_transactions.erase(t);
-		}
 	}
 
- _exit_lbl:
-	{
-		boost::mutex::scoped_lock lock(_src_mutex);
-		_src_transactions.erase(t);
-	}
 
 	return;
 }
@@ -498,7 +507,6 @@ void transaction_manager::run_timer(Set &set,
 {
 	if (set.size() > 0)
         {
-			boost::mutex::scoped_lock lock(mutex);
 			Set delete_these;
 
 			for(it = set.begin(); it != set.end(); it++)
@@ -524,8 +532,11 @@ void transaction_manager::run_timer(Set &set,
 						delete_these.insert(*it);
 				}
 
-			for (it = delete_these.begin(); it != delete_these.end(); it++)
-				set.erase(*it);
+			{
+				boost::mutex::scoped_lock lock(mutex);
+				for (it = delete_these.begin(); it != delete_these.end(); it++)
+					set.erase(*it);
+			}
         }
 }
 
