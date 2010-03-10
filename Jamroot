@@ -1,12 +1,6 @@
-project odtone
-    : requirements 
-        <include>inc <include>boost
-;
-
 build-project src/odtone ;
 build-project src/mih_usr ;
 build-project src/client ;
 build-project src/dummyserver ;
 build-project src/link_sap ;
-
 

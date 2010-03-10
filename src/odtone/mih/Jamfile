@@ -2,3 +2,5 @@ lib odtone_mih : archive.cpp
 		 config.cpp
    		 message.cpp
 		 types/address.cpp ;
+
+install install-lib : odtone_mih : <location>"../../../build/lib" ;

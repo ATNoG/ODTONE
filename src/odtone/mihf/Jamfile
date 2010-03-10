@@ -16,3 +16,5 @@ lib odtone_mihf : service_management.cpp
 		  command_service.cpp
 	          information_service.cpp
 		  utils.cpp ;
+
+install install-lib : odtone_mihf : <location>"../../../build/lib" ;

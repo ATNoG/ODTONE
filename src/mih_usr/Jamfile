@@ -1,6 +1,5 @@
-lib boost_system : : <name>boost_system <search>/usr/local ;
-lib boost_thread : : <name>boost_thread <search>/usr/local ;
-lib boost_program_options : : <name>boost_program_options <search>/usr/local ;
+exe mih_usr : mih_usr.cpp ../odtone//odtone_base ../odtone/mih//odtone_mih ../odtone/sap//odtone_sap /odtone//boost_system/<link>shared /odtone//boost_thread/<link>shared /odtone//boost_program_options/<link>shared ;
 
-exe mih_usr : mih_usr.cpp boost_system boost_thread boost_program_options ../odtone//odtone_base ../odtone/mih//odtone_mih ../odtone/sap//odtone_sap ;
+install install-bin : mih_usr : <location>"../../build" ;
+
 

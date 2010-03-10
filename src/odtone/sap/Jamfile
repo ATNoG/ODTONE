@@ -2,3 +2,4 @@ lib odtone_sap : sap.cpp
 		 user.cpp
 		 link.cpp ;
 
+install install-lib : odtone_sap : <location>"../../../build/lib" ;
