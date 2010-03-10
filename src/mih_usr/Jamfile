@@ -1,5 +1,36 @@
-exe mih_usr : mih_usr.cpp ../odtone//odtone_base/<link>static ../odtone/mih//odtone_mih/<link>static ../odtone/sap//odtone_sap/<link>static /odtone//boost_system/<link>shared /odtone//boost_thread/<link>shared /odtone//boost_program_options/<link>shared ;
+#=============================================================================
+# Brief   : Odtone Project Build
+# Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
+#-----------------------------------------------------------------------------
+# ODTONE - Open Dot Twenty One
+#
+# Copyright (C) 2010 Universidade Aveiro
+# Copyright (C) 2010 Instituto de Telecomunicações - Pólo Aveiro
+#
+# This software is distributed under a license. The full license
+# agreement can be found in the file LICENSE in this distribution.
+# This software may not be copied, modified, sold or distributed
+# other than expressed in the named license agreement.
+#
+# This software is distributed without any warranty.
+#==========================================================================
 
-install install-bin : mih_usr : <location>"../../build" ;
+project mih_usr ;
 
+SOURCES =
+	mih_usr.cpp
+	;
 
+LIBS =
+	/user-config//boost_thread
+	/user-config//boost_system
+	/user-config//boost_program_options
+	../odtone//odtone_base
+	../odtone/mih//odtone_mih
+	../odtone/sap//odtone_sap
+	;
+
+exe mih_usr :
+	$(SOURCES)
+	$(LIBS)
+	;
