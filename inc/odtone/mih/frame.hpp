@@ -92,7 +92,7 @@ struct frame {
 	static const uint8 mask_opcode  = 0x0d;
 	static const uint8 mask_aid     = 0x03;
 	static const uint8 mask_rsvd2   = 0xf0;
-	static const uint8 mask_tid     = 0x0f;
+	static const uint8 mask_tid     = 0xff;
 
 
 	static frame* cast(void* buff, size_t len)
