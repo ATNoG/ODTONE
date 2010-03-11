@@ -30,10 +30,16 @@ lib odtone_base :
 
 SOURCES = main.cpp ;
 
-LIBS =
-	/user-config//boost_thread
+LIBS_SHARED =
+	mihf//odtone_mihf
+	mih//odtone_mih
+	.//odtone_base
 	/user-config//boost_system
+	/user-config//boost_thread
 	/user-config//boost_program_options
+	;
+
+LIBS_STATIC =
 	mihf//odtone_mihf
 	mih//odtone_mih
 	.//odtone_base
@@ -41,5 +47,12 @@ LIBS =
 
 exe odtone :
 	$(SOURCES)
-	$(LIBS)
+	$(LIBS_SHARED)
+	: <link>shared
+	;
+
+exe odtone :
+	$(SOURCES)
+	$(LIBS_STATIC)
+	: <link>static
 	;

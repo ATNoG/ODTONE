@@ -25,5 +25,5 @@ SOURCES_LIB =
 
 
 lib odtone_sap :
-	$(SOURCES_LIB) ..//odtone_base ../mih//odtone_mih
+	$(SOURCES_LIB)
 	;

@@ -36,23 +36,42 @@ SOURCES_WIN32 =
 	interface/if_802_11.cpp
 	;
 
-LIBS =
-	/user-config//boost_thread
+LIBS_SHARED =
 	/user-config//boost_system
+	/user-config//boost_thread
 	/user-config//boost_program_options
 	../odtone/mih//odtone_mih
 	../odtone/sap//odtone_sap
 	../odtone//odtone_base
 	;
 
+LIBS_STATIC =
+	../odtone/mih//odtone_mih
+	../odtone/sap//odtone_sap
+	../odtone//odtone_base
+	;
+
+
 exe link_sap :
 	$(SOURCES_UNIX)
-	$(LIBS)
-	: <target-os>linux
+	$(LIBS_SHARED)
+	: <target-os>linux <link>shared
 	;
 
 exe link_sap :
 	$(SOURCES_WIN32)
-	$(LIBS)
-	: <target-os>windows
+	$(LIBS_SHARED)
+	: <target-os>windows <link>shared
+	;
+
+exe link_sap :
+	$(SOURCES_UNIX)
+	$(LIBS_STATIC)
+	: <target-os>linux <link>static
+	;
+
+exe link_sap :
+	$(SOURCES_WIN32)
+	$(LIBS_STATIC)
+	: <link>shared <link>static
 	;

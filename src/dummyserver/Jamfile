@@ -21,10 +21,16 @@ SOURCES =
 	dummyserver.cpp
 	;
 
-LIBS =
+LIBS_SHARED =
+	../odtone/mih//odtone_mih
+	../odtone/mihf//odtone_mihf
+	../odtone//odtone_base
 	/user-config//boost_thread
 	/user-config//boost_system
 	/user-config//boost_program_options
+	;
+
+LIBS_STATIC =
 	../odtone/mih//odtone_mih
 	../odtone/mihf//odtone_mihf
 	../odtone//odtone_base
@@ -32,5 +38,12 @@ LIBS =
 
 exe dummyserver :
 	$(SOURCES)
-	$(LIBS)
+	$(LIBS_SHARED)
+	: <link>shared
+	;
+
+exe dummyserver :
+	$(SOURCES)
+	$(LIBS_STATIC)
+	: <link>static
 	;

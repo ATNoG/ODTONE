@@ -16,7 +16,9 @@
 #==========================================================================
 
 project odtone
-    : requirements <include>inc
+    : requirements
+		<include>inc
+		<include>boost
     : build-dir build
 	;
 

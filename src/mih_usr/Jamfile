@@ -21,16 +21,30 @@ SOURCES =
 	mih_usr.cpp
 	;
 
-LIBS =
-	/user-config//boost_thread
+LIBS_SHARED =
+	../odtone//odtone_base
+	../odtone/mih//odtone_mih
+	../odtone/sap//odtone_sap
 	/user-config//boost_system
+	/user-config//boost_thread
 	/user-config//boost_program_options
+	;
+
+LIBS_STATIC =
 	../odtone//odtone_base
 	../odtone/mih//odtone_mih
 	../odtone/sap//odtone_sap
 	;
 
+
 exe mih_usr :
 	$(SOURCES)
-	$(LIBS)
+	$(LIBS_SHARED)
+	: <link>shared
+	;
+
+exe mih_usr :
+	$(SOURCES)
+	$(LIBS_STATIC)
+	: <link>static
 	;

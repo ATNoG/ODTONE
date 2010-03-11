@@ -19,16 +19,29 @@ project client ;
 
 SOURCES = client.cpp ;
 
-LIBS =
-	/user-config//boost_thread
+LIBS_SHARED =
 	/user-config//boost_system
+	/user-config//boost_thread
 	/user-config//boost_program_options
 	../odtone/mih//odtone_mih
 	../odtone//odtone_base
 	;
 
+LIBS_STATIC =
+	../odtone/mih//odtone_mih
+	../odtone//odtone_base
+	;
+
+
 exe client :
 	$(SOURCES)
-	$(LIBS)
+	$(LIBS_SHARED)
+	: <link>shared
+	;
+
+exe client :
+	$(SOURCES)
+	$(LIBS_STATIC)
+	: <link>static
 	;
 
