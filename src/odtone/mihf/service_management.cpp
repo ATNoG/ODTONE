@@ -25,6 +25,10 @@
 #include <odtone/mih/response.hpp>
 #include <odtone/mih/tlv_types.hpp>
 
+// TODO: request from link sap
+extern odtone::mih::event_list		capabilities_event_list;
+extern odtone::mih::net_type_addr_list  capabilities_list_net_type_addr;
+
 namespace odtone { namespace mihf {
 
 bool service_management::capability_discover_request(mih::message_ptr& in,
@@ -32,6 +36,8 @@ bool service_management::capability_discover_request(mih::message_ptr& in,
 {
 	log(1, "(mism) received Capability_Discover.request from ", in->source().to_string());
 	log(2, "(mism) received Capability_Discover.request with destination ", in->destination().to_string());
+
+
 
 	if (utils::is_local_request(in))
 		{

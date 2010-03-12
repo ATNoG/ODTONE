@@ -22,16 +22,11 @@
 
 namespace odtone { namespace mihf {
 
-//
-extern mih::event_list			capabilities_event_list;
-extern mih::net_type_addr_list  capabilities_list_net_type_addr;
-//
 
 class service_management {
 public:
 	bool capability_discover_request(mih::message_ptr &in, mih::message_ptr &out);
 	bool capability_discover_response(mih::message_ptr&in, mih::message_ptr &out);
-
 };
 
 } /* namespace mihf */ } /* namespace odtone */
