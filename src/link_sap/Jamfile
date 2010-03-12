@@ -1,19 +1,77 @@
-exe link_sap : link_sap.cpp
-               linux/main.cpp
-               linux/netlink.cpp
-               linux/rtnetlink.cpp
-               interface/interface.cpp
-               interface/ethernet.cpp
-               interface/if_802_11.cpp 
-	       ../odtone/mih//odtone_mih/<link>static ../odtone/sap//odtone_sap/<link>static ../odtone//odtone_base/<link>static /odtone//boost_system/<link>shared /odtone//boost_thread/<link>shared /odtone//boost_program_options/<link>shared : <target-os>linux ;
+#=============================================================================
+# Brief   : Odtone Project Build
+# Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
+#-----------------------------------------------------------------------------
+# ODTONE - Open Dot Twenty One
+#
+# Copyright (C) 2010 Universidade Aveiro
+# Copyright (C) 2010 Instituto de Telecomunicações - Pólo Aveiro
+#
+# This software is distributed under a license. The full license
+# agreement can be found in the file LICENSE in this distribution.
+# This software may not be copied, modified, sold or distributed
+# other than expressed in the named license agreement.
+#
+# This software is distributed without any warranty.
+#==========================================================================
 
-exe link_sap : link_sap.cpp
-               win32/main.cpp
-               win32/win32.cpp
-               interface/interface.cpp
-               interface/ethernet.cpp
-               interface/if_802_11.cpp 
-	       ../odtone/mih//odtone_mih/<link>static ../odtone/sap//odtone_sap/<link>static ../odtone//odtone_base/<link>static /odtone//boost_system/<link>shared /odtone//boost_thread/<link>shared /odtone//boost_program_options/<link>shared : <target-os>windows ;
+project link_sap ;
 
-install install-bin : link_sap : <location>"../../build" ;
+SOURCES_UNIX =
+	link_sap.cpp
+	linux/main.cpp
+	linux/netlink.cpp
+	linux/rtnetlink.cpp
+	interface/interface.cpp
+	interface/ethernet.cpp
+	interface/if_802_11.cpp
+	;
 
+SOURCES_WIN32 =
+	link_sap.cpp
+	win32/main.cpp
+	win32/win32.cpp
+	interface/interface.cpp
+	interface/ethernet.cpp
+	interface/if_802_11.cpp
+	;
+
+LIBS_SHARED =
+	/user-config//boost_system
+	/user-config//boost_thread
+	/user-config//boost_program_options
+	../odtone/mih//odtone_mih
+	../odtone/sap//odtone_sap
+	../odtone//odtone_base
+	;
+
+LIBS_STATIC =
+	../odtone/mih//odtone_mih
+	../odtone/sap//odtone_sap
+	../odtone//odtone_base
+	;
+
+
+exe link_sap :
+	$(SOURCES_UNIX)
+	$(LIBS_SHARED)
+	: <target-os>linux <link>shared
+	;
+
+exe link_sap :
+	$(SOURCES_WIN32)
+	$(LIBS_SHARED)
+	: <target-os>windows <link>shared
+	;
+
+exe link_sap :
+	$(SOURCES_UNIX)
+	$(LIBS_STATIC)
+	: <target-os>linux <link>static
+	;
+
+exe link_sap :
+	$(SOURCES_WIN32)
+	$(LIBS_STATIC)
+	: <link>shared <link>static
+	;

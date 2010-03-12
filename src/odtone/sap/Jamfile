@@ -1,5 +1,29 @@
-lib odtone_sap : sap.cpp
-		 user.cpp
-		 link.cpp ;
+#=============================================================================
+# Brief   : Odtone Project Build
+# Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
+#-----------------------------------------------------------------------------
+# ODTONE - Open Dot Twenty One
+#
+# Copyright (C) 2010 Universidade Aveiro
+# Copyright (C) 2010 Instituto de Telecomunicações - Pólo Aveiro
+#
+# This software is distributed under a license. The full license
+# agreement can be found in the file LICENSE in this distribution.
+# This software may not be copied, modified, sold or distributed
+# other than expressed in the named license agreement.
+#
+# This software is distributed without any warranty.
+#==========================================================================
 
-install install-lib : odtone_sap : <location>"../../../build/lib" ;
+project sap ;
+
+SOURCES_LIB =
+	sap.cpp
+	user.cpp
+	link.cpp
+	;
+
+
+lib odtone_sap :
+	$(SOURCES_LIB)
+	;
