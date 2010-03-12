@@ -23,6 +23,7 @@ project odtone
 	;
 
 build-project src/odtone ;
+build-project src/odtone/mihf ;
 build-project src/mih_usr ;
 build-project src/client ;
 build-project src/dummyserver ;

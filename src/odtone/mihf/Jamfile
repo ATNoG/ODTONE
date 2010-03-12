@@ -1,43 +1,26 @@
-#=============================================================================
-# Brief   : Odtone Project Build
-# Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-#-----------------------------------------------------------------------------
-# ODTONE - Open Dot Twenty One
-#
-# Copyright (C) 2010 Universidade Aveiro
-# Copyright (C) 2010 Instituto de Telecomunicações - Pólo Aveiro
-#
-# This software is distributed under a license. The full license
-# agreement can be found in the file LICENSE in this distribution.
-# This software may not be copied, modified, sold or distributed
-# other than expressed in the named license agreement.
-#
-# This software is distributed without any warranty.
-#==========================================================================
 
-project mihf ;
+exe odtone : main.cpp
+    	     service_management.cpp
+	     service_access_controller.cpp
+	     event_service.cpp generic_server.cpp
+	     comm_handler.cpp
+	     transaction.cpp
+	     net_sap.cpp
+	     transaction_manager.cpp
+	     dst_transaction.cpp
+	     mihfid.cpp
+	     src_transaction.cpp
+	     transaction_ack_service.cpp
+	     transmit.cpp
+	     log.cpp
+	     local_transactions.cpp
+	     command_service.cpp
+	     information_service.cpp
+	     utils.cpp
+	     ..//mih//odtone_mih/<link>static
+	     ..//odtone_base/<link>static
+	     /odtone//boost_system/<link>shared
+	     /odtone//boost_thread/<link>shared
+	     /odtone//boost_program_options/<link>shared ;
 
-SOURCES_LIB =
-	service_management.cpp
-	service_access_controller.cpp
-	event_service.cpp generic_server.cpp
-	comm_handler.cpp
-	mihf.cpp
-	transaction.cpp
-	net_sap.cpp
-	transaction_manager.cpp
-	dst_transaction.cpp
-	mihfid.cpp
-	src_transaction.cpp
-	transaction_ack_service.cpp
-	transmit.cpp
-	log.cpp
-	local_transactions.cpp
-	command_service.cpp
-	information_service.cpp
-	utils.cpp
-	;
-
-lib odtone_mihf :
-	$(SOURCES_LIB)
-	;
+install install-bin : odtone : <location>"../../../build" ;
