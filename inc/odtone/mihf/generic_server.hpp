@@ -29,8 +29,6 @@
 
 namespace odtone { namespace mihf {
 
-extern boost::asio::io_service io_service;
-
 class generic_server
 	: private boost::noncopyable
 {

@@ -17,7 +17,10 @@
 #include <odtone/mihf/transaction_manager.hpp>
 #include <odtone/mihf/mihfid.hpp>
 
+extern boost::asio::io_service io_service;
+
 namespace odtone { namespace mihf {
+
 
 net_sap *net_sap::ptr_instance = NULL;
 

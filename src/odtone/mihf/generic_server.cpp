@@ -24,8 +24,6 @@
 
 namespace odtone { namespace mihf {
 
-boost::asio::io_service io_service;
-
 generic_server::generic_server(boost::asio::io_service& io)
 	: _sock(io)
 {

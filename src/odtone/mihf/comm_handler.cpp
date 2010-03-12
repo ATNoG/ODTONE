@@ -17,7 +17,11 @@
 #include <odtone/mihf/service_access_controller.hpp>
 #include <sstream>
 
+
+extern boost::asio::io_service io_service;
+
 namespace odtone { namespace mihf {
+
 
 comm_handler *comm_handler::ptr_instance = NULL;
 

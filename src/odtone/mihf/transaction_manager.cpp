@@ -18,6 +18,8 @@
 #include <odtone/mihf/log.hpp>
 #include <odtone/mihf/transmit.hpp>
 
+extern boost::asio::io_service io_service;
+
 namespace odtone { namespace mihf {
 
 transaction_manager *transaction_manager::ptr_instance = NULL;
@@ -25,7 +27,7 @@ transaction_manager *transaction_manager::ptr_instance = NULL;
 transaction_manager::transaction_manager()
 	: _dst_mutex(),
 	  _src_mutex(),
-	  _timer(mihf::io_service, boost::posix_time::seconds(1)),
+	  _timer(io_service, boost::posix_time::seconds(1)),
 	  _timer_thread(boost::bind(&transaction_manager::timer, this))
 {
 	_tid = mih::rand16();
