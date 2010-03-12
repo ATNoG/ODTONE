@@ -27,14 +27,10 @@
 #include <boost/bind.hpp>
 #include <iostream>
 
-// This file defines a macro that contains the path to the default
-// configuration file
-#ifndef MIH_USR_CONFIG
-#define MIH_USR_CONFIG "mih_usr.conf"
-#endif
-
-
 ///////////////////////////////////////////////////////////////////////////////
+
+namespace po = boost::program_options;
+
 using odtone::uint;
 using odtone::ushort;
 
@@ -61,7 +57,7 @@ mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
 {
 	odtone::mih::message msg;
 
-	_mihfid.assign(cfg.get<odtone::mih::octet_string>(odtone::mih::kConf_MIH_SAP_dest).c_str());
+	_mihfid.assign(cfg.get<odtone::mih::octet_string>(odtone::sap::kConf_MIH_SAP_dest).c_str());
 
 	//
 	// Let's fire a capability discover request to get things moving
@@ -187,22 +183,33 @@ int main(int argc, char** argv)
 {
 	odtone::setup_crash_handler();
 
-	try {
-		odtone::mih::config cfg(argc, argv, MIH_USR_CONFIG);
-                std::cout << MIH_USR_CONFIG << std::endl;
-
-		log_(0, "cfg: port=", cfg.get<ushort>(odtone::mih::kConf_Port), " mihf.ip=\"",
-				cfg.get<std::string>(odtone::mih::kConf_MIHF_Ip), " mihf.local_port=\"",
-				cfg.get<ushort>(odtone::mih::kConf_MIHF_Local_Port), '\"');
-
+	// try {
 		boost::asio::io_service ios;
+
+		// declare MIH Usr available options
+		po::options_description desc("MIH Usr Configuration");
+		desc.add_options()
+			("help", "Display configuration options")
+			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1234), "Port")
+			(odtone::sap::kConf_File, po::value<std::string>()->default_value("mih_usr.conf"), "Configuration File")
+			(odtone::sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive Buffer Length")
+			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
+			(odtone::sap::kConf_MIHF_Id, po::value<std::string>()->default_value("mihf"), "Local MIHF Id")
+			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("user"), "User Id")
+			(odtone::sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "MIHF Local Communications Port")
+			(odtone::sap::kConf_MIH_SAP_dest, po::value<std::string>()->default_value(""), "MIH message destination of MIH User");
+
+		odtone::mih::config cfg(desc);
+		cfg.parse(argc, argv, odtone::sap::kConf_File);
+
+
 		mih_user usr(cfg, ios);
 
 		ios.run();
 
-	} catch(std::exception& e) {
-		log_(0, "exception: ", e.what());
-	}
+	// } catch(std::exception& e) {
+	// 	log_(0, "exception: ", e.what());
+	// }
 }
 
 // EOF ////////////////////////////////////////////////////////////////////////
