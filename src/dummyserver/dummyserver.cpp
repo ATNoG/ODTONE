@@ -32,7 +32,6 @@
 #include <iostream>
 #include <boost/asio.hpp>
 
-
 #include <odtone/miis/information_containers.hpp>
 
 using namespace odtone;
@@ -72,10 +71,11 @@ protected:
 
 int main(int argc, char **argv)
 {
-	dummy_server ds(mihf::io_service);
+	boost::asio::io_service io_service;
+	dummy_server ds(io_service);
 	ds.init("127.0.0.1", 4000, 1);
 
-	mihf::io_service.run();
+	io_service.run();
 
 	return 0;
 }
