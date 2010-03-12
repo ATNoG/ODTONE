@@ -16,19 +16,17 @@
 #ifndef ODTONE_MIHF_SERVICE_ACCESS_CONTROLLER_HPP
 #define ODTONE_MIHF_SERVICE_ACCESS_CONTROLLER_HPP
 
-#include <odtone/mih/message.hpp>
-#include <odtone/mih/config.hpp>
-#include <odtone/mih/request.hpp>
-#include <odtone/mih/response.hpp>
-#include <odtone/mih/indication.hpp>
-
-#include <boost/bind.hpp>
-#include <map>
-
+///////////////////////////////////////////////////////////////////////////////
 #include "service_management.hpp"
 #include "event_service.hpp"
 #include "command_service.hpp"
 #include "information_service.hpp"
+
+#include <odtone/base.hpp>
+
+#include <boost/bind.hpp>
+#include <map>
+///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 

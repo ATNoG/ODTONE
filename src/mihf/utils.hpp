@@ -13,30 +13,23 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
+#ifndef ODTONE_MIHF_UTILS_HPP
+#define ODTONE_MIHF_UTILS_HPP
+
 ///////////////////////////////////////////////////////////////////////////////
-#include "mihfid.hpp"
+#include <odtone/base.hpp>
+#include <odtone/mih/message.hpp>
+#include <odtone/mih/types.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace odtone { namespace mihf {
+namespace odtone { namespace mihf { namespace utils {
 
-    mih::id *mihfid_t::ptr_instance = NULL;
+bool is_local_request(mih::message_ptr &in);
 
-    mihfid_t::mihfid_t()
-    {
-    }
+// A user sent a MIH request message, set the MIH source field and
+// forward the message to the required destination.
+bool forward_request(mih::message_ptr &in);
 
-    mihfid_t::~mihfid_t()
-    {
-      if (ptr_instance)
-        delete ptr_instance;
-    }
+} /* namespace utils */ } /* namespace mihf */ } /* namespace odtone */
 
-    mih::id* mihfid_t::instance()
-    {
-      if (ptr_instance == NULL)
-        ptr_instance = new mih::id();
-
-      return ptr_instance;
-    }
-
-  } /* namespace mihf */ } /* namespace odtone */
+#endif

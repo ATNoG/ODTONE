@@ -20,8 +20,8 @@
 #include <odtone/base.hpp>
 #include <odtone/mih/message.hpp>
 #include <odtone/mih/types.hpp>
-
 ///////////////////////////////////////////////////////////////////////////////
+
 namespace odtone { namespace mihf {
 
 class information_service

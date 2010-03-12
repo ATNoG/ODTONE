@@ -16,13 +16,14 @@
 #ifndef ODTONE_MIHF_LOCAL_TRANSACTIONS_HPP
 #define ODTONE_MIHF_LOCAL_TRANSACTIONS_HPP
 
+///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
 #include <odtone/mih/types.hpp>
 #include <odtone/mih/message.hpp>
 
 #include <list>
-
 ///////////////////////////////////////////////////////////////////////////////
+
 namespace odtone { namespace mihf {
 
 

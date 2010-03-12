@@ -13,24 +13,25 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include <iostream>
+///////////////////////////////////////////////////////////////////////////////
+#include "transmit.hpp"
+#include "mihfid.hpp"
+#include "log.hpp"
+#include "transaction_ack_service.hpp"
+#include "net_sap.hpp"
+#include "comm_handler.hpp"
+#include "transaction_manager.hpp"
+#include "service_access_controller.hpp"
 
 #include <odtone/debug.hpp>
-
 #include <odtone/mih/config.hpp>
 
-#include <odtone/mihf/transmit.hpp>
-#include <odtone/mihf/mihfid.hpp>
-#include <odtone/mihf/log.hpp>
-#include <odtone/mihf/transaction_ack_service.hpp>
-#include <odtone/mihf/net_sap.hpp>
-#include <odtone/mihf/comm_handler.hpp>
-#include <odtone/mihf/transaction_manager.hpp>
-#include <odtone/mihf/service_access_controller.hpp>
+#include <iostream>
 
 #include <boost/program_options.hpp>
 #include <boost/tokenizer.hpp>
 #include <boost/foreach.hpp>
+///////////////////////////////////////////////////////////////////////////////
 
 using namespace odtone;
 using namespace odtone::mihf;

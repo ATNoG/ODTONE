@@ -25,7 +25,7 @@
 #include <odtone/mih/tlv.hpp>
 #include <odtone/mih/tlv_types.hpp>
 
-#include <odtone/mihf/generic_server.hpp>
+#include "../mihf/generic_server.hpp"
 
 #include <cstdlib>
 #include <cstring>

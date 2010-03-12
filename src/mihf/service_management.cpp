@@ -13,17 +13,20 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include <odtone/mihf/service_management.hpp>
+///////////////////////////////////////////////////////////////////////////////
+#include "service_management.hpp"
 
-#include <odtone/mihf/log.hpp>
-#include <odtone/mihf/utils.hpp>
+#include "log.hpp"
+#include "utils.hpp"
+#include "mihfid.hpp"
+#include "transmit.hpp"
+#include "local_transactions.hpp"
+
 #include <odtone/mih/types/capabilities.hpp>
-#include <odtone/mihf/local_transactions.hpp>
-#include <odtone/mihf/mihfid.hpp>
-#include <odtone/mihf/transmit.hpp>
 #include <odtone/mih/request.hpp>
 #include <odtone/mih/response.hpp>
 #include <odtone/mih/tlv_types.hpp>
+///////////////////////////////////////////////////////////////////////////////
 
 // TODO: request from link sap
 extern odtone::mih::event_list		capabilities_event_list;

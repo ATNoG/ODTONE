@@ -16,14 +16,17 @@
 #ifndef ODTONE_MIHF_TRANSMIT_HPP
 #define ODTONE_MIHF_TRANSMIT_HPP
 
-#include <set>
-#include <boost/noncopyable.hpp>
+///////////////////////////////////////////////////////////////////////////////
+#include "net_sap.hpp"
+#include "comm_handler.hpp"
 
 #include <odtone/base.hpp>
 #include <odtone/debug.hpp>
 #include <odtone/mih/message.hpp>
-#include <odtone/mihf/net_sap.hpp>
-#include <odtone/mihf/comm_handler.hpp>
+
+#include <set>
+#include <boost/noncopyable.hpp>
+///////////////////////////////////////////////////////////////////////////////
 
 
 namespace odtone { namespace mihf {

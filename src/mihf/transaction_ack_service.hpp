@@ -16,9 +16,11 @@
 #ifndef TRANSACTION_ACK_SERVICE_HPP
 #define TRANSACTION_ACK_SERVICE_HPP
 
-#include <boost/noncopyable.hpp>
-#include <iostream>
+///////////////////////////////////////////////////////////////////////////////
 #include "transmit.hpp"
+
+#include <boost/noncopyable.hpp>
+///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 
@@ -76,7 +78,6 @@ namespace odtone { namespace mihf {
 
       _rsp_return_ack_lbl_:
         {
-          std::cout << "ack responder return ack\n";
           t->ack_rsp_state = ACK_RSP_RETURN_ACK;
           t->ack->mid(t->mid);
 

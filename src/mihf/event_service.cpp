@@ -13,18 +13,19 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include <odtone/mih/tlv_types.hpp>
-#include <odtone/mihf/event_service.hpp>
+#include "event_service.hpp"
+
+#include "log.hpp"
+#include "local_transactions.hpp"
+#include "mihfid.hpp"
+#include "transmit.hpp"
+#include "utils.hpp"
+
 #include <odtone/debug.hpp>
-#include <odtone/mihf/log.hpp>
-#include <odtone/mihf/local_transactions.hpp>
-#include <odtone/mihf/mihfid.hpp>
-#include <odtone/mihf/transaction_manager.hpp>
-#include <odtone/mihf/comm_handler.hpp>
-#include <odtone/mihf/transmit.hpp>
 #include <odtone/mih/request.hpp>
+#include <odtone/mih/response.hpp>
+#include <odtone/mih/indication.hpp>
 #include <odtone/mih/tlv_types.hpp>
-#include <odtone/mihf/utils.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 

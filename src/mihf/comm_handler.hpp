@@ -13,30 +13,34 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
+#ifndef ODTONE_MIH_COMM_HANDLER_HPP
+#define ODTONE_MIH_COMM_HANDLER_HPP
+
 ///////////////////////////////////////////////////////////////////////////////
-#include "mihfid.hpp"
+#include "generic_server.hpp"
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 
-    mih::id *mihfid_t::ptr_instance = NULL;
+class comm_handler
+	: public generic_server
+{
+public:
+	static comm_handler* instance();
+	~comm_handler();
 
-    mihfid_t::mihfid_t()
-    {
-    }
+private:
+	comm_handler(boost::asio::io_service& io);
+	comm_handler();
 
-    mihfid_t::~mihfid_t()
-    {
-      if (ptr_instance)
-        delete ptr_instance;
-    }
+protected:
+	void process_message(mih::message_ptr& msg);
+	static comm_handler *ptr_instance;
+};
 
-    mih::id* mihfid_t::instance()
-    {
-      if (ptr_instance == NULL)
-        ptr_instance = new mih::id();
+#define comhand comm_handler::instance()
 
-      return ptr_instance;
-    }
+  } /* namespace mihf */
+} /* namespace odtone */
 
-  } /* namespace mihf */ } /* namespace odtone */
+#endif

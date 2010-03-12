@@ -16,16 +16,18 @@
 #ifndef GENERIC_SERVER_HPP
 #define GENERIC_SERVER_HPP
 
+///////////////////////////////////////////////////////////////////////////////
+#include "transaction.hpp"
+#include "src_transaction.hpp"
+#include "dst_transaction.hpp"
+
 #include <odtone/debug.hpp>
 #include <odtone/buffer.hpp>
 #include <odtone/mih/message.hpp>
 
 #include <boost/noncopyable.hpp>
 #include <boost/asio.hpp>
-
-#include "transaction.hpp"
-#include "src_transaction.hpp"
-#include "dst_transaction.hpp"
+///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 

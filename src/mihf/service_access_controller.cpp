@@ -13,10 +13,19 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include <odtone/mihf/service_access_controller.hpp>
+///////////////////////////////////////////////////////////////////////////////
+#include "service_access_controller.hpp"
+
+#include "log.hpp"
+#include "transmit.hpp"
+
 #include <odtone/debug.hpp>
-#include <odtone/mihf/log.hpp>
-#include <odtone/mihf/transmit.hpp>
+#include <odtone/mih/message.hpp>
+#include <odtone/mih/config.hpp>
+#include <odtone/mih/request.hpp>
+#include <odtone/mih/response.hpp>
+#include <odtone/mih/indication.hpp>
+///////////////////////////////////////////////////////////////////////////////
 
 #define REGISTER(func, obj, mid) _callbacks[mid] = boost::bind(&func, boost::ref(obj), _1, _2);;
 

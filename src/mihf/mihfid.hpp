@@ -13,33 +13,29 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#ifndef NET_SAP_HPP
-#define NET_SAP_HPP
+#ifndef ODTONE_MIHF_ID_HPP
+#define ODTONE_MIHF_ID_HPP
 
-#include "generic_server.hpp"
+///////////////////////////////////////////////////////////////////////////////
+#include <odtone/mih/types/identification.hpp>
+///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 
-class net_sap
-	: public generic_server
+class mihfid_t
 {
 public:
-	static net_sap* instance();
-	net_sap(boost::asio::io_service& io);
-	~net_sap();
-
-protected:
-	net_sap();
+  static mih::id* instance();
+  ~mihfid_t();
+  // void assign (const char *id);
 
 private:
-	void process_message(mih::message_ptr& msg);
-
-	static net_sap *ptr_instance;
+  mihfid_t();
+  static mih::id *ptr_instance;
 };
 
-#define netsap net_sap::instance()
+#define mihfid *mihfid_t::instance()
 
-  } /* namespace mihf */
-} /* namespace odtone */
+} /* namespace mihf */ } /* namespace odtone */
 
 #endif

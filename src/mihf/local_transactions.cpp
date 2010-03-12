@@ -13,8 +13,10 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include <odtone/mihf/local_transactions.hpp>
-#include <odtone/mihf/log.hpp>
+///////////////////////////////////////////////////////////////////////////////
+#include "local_transactions.hpp"
+#include "log.hpp"
+///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 

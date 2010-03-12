@@ -13,21 +13,16 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include <odtone/mihf/information_service.hpp>
+///////////////////////////////////////////////////////////////////////////////
+#include "information_service.hpp"
+#include "log.hpp"
+#include "utils.hpp"
+#include "local_transactions.hpp"
+#include "mihfid.hpp"
+#include "transmit.hpp"
 
 #include <odtone/debug.hpp>
-
-#include <odtone/mihf/log.hpp>
-#include <odtone/mihf/utils.hpp>
-#include <odtone/mihf/local_transactions.hpp>
-#include <odtone/mihf/mihfid.hpp>
-#include <odtone/mihf/transaction_manager.hpp>
-#include <odtone/mihf/comm_handler.hpp>
-#include <odtone/mihf/transmit.hpp>
-
-
 #include <odtone/mih/request.hpp>
-
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {

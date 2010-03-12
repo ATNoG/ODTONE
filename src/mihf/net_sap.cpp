@@ -13,9 +13,11 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include <odtone/mihf/net_sap.hpp>
-#include <odtone/mihf/transaction_manager.hpp>
-#include <odtone/mihf/mihfid.hpp>
+///////////////////////////////////////////////////////////////////////////////
+#include "net_sap.hpp"
+#include "transaction_manager.hpp"
+#include "mihfid.hpp"
+///////////////////////////////////////////////////////////////////////////////
 
 extern boost::asio::io_service io_service;
 

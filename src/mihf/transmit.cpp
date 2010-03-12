@@ -13,9 +13,11 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include <odtone/mihf/transmit.hpp>
-#include <odtone/mihf/transaction_manager.hpp>
-#include <odtone/mihf/log.hpp>
+///////////////////////////////////////////////////////////////////////////////
+#include "transmit.hpp"
+#include "transaction_manager.hpp"
+#include "log.hpp"
+///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 

@@ -13,30 +13,33 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#ifndef ODTONE_MIH_COMM_HANDLER_HPP
-#define ODTONE_MIH_COMM_HANDLER_HPP
+#ifndef NET_SAP_HPP
+#define NET_SAP_HPP
 
+///////////////////////////////////////////////////////////////////////////////
 #include "generic_server.hpp"
+///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 
-class comm_handler
+class net_sap
 	: public generic_server
 {
 public:
-	static comm_handler* instance();
-	~comm_handler();
-
-private:
-	comm_handler(boost::asio::io_service& io);
-	comm_handler();
+	static net_sap* instance();
+	net_sap(boost::asio::io_service& io);
+	~net_sap();
 
 protected:
+	net_sap();
+
+private:
 	void process_message(mih::message_ptr& msg);
-	static comm_handler *ptr_instance;
+
+	static net_sap *ptr_instance;
 };
 
-#define comhand comm_handler::instance()
+#define netsap net_sap::instance()
 
   } /* namespace mihf */
 } /* namespace odtone */

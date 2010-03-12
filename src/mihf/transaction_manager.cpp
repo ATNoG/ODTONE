@@ -13,10 +13,13 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include <odtone/mihf/transaction_manager.hpp>
+///////////////////////////////////////////////////////////////////////////////
+#include "transaction_manager.hpp"
+#include "log.hpp"
+#include "transmit.hpp"
+
 #include <odtone/random.hpp>
-#include <odtone/mihf/log.hpp>
-#include <odtone/mihf/transmit.hpp>
+///////////////////////////////////////////////////////////////////////////////
 
 extern boost::asio::io_service io_service;
 

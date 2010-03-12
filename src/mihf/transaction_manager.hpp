@@ -16,6 +16,14 @@
 #ifndef TRANSACTION_MANAGER_HPP
 #define TRANSACTION_MANAGER_HPP
 
+///////////////////////////////////////////////////////////////////////////////
+
+#include "dst_transaction.hpp"
+#include "src_transaction.hpp"
+#include "transaction_ack_service.hpp"
+#include "net_sap.hpp"
+#include "service_access_controller.hpp"
+
 #include <odtone/debug.hpp>
 #include <odtone/mih/message.hpp>
 
@@ -24,14 +32,7 @@
 #include <boost/noncopyable.hpp>
 #include <boost/bind.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-
-
-#include "dst_transaction.hpp"
-#include "src_transaction.hpp"
-
-#include "transaction_ack_service.hpp"
-#include "net_sap.hpp"
-#include "service_access_controller.hpp"
+///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 

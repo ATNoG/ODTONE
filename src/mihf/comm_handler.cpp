@@ -13,10 +13,11 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include <odtone/mihf/comm_handler.hpp>
-#include <odtone/mihf/service_access_controller.hpp>
-#include <sstream>
+///////////////////////////////////////////////////////////////////////////////
+#include "comm_handler.hpp"
 
+#include "service_access_controller.hpp"
+///////////////////////////////////////////////////////////////////////////////
 
 extern boost::asio::io_service io_service;
 

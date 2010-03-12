@@ -13,14 +13,16 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
+#include "generic_server.hpp"
+
+#include "mihfid.hpp"
+#include "log.hpp"
+#include "utils.hpp"
+
 #include <odtone/mih/frame.hpp>
-#include <odtone/mihf/generic_server.hpp>
-#include <odtone/mihf/transaction_manager.hpp>
-#include <odtone/mihf/mihfid.hpp>
 #include <odtone/bindrv.hpp>
+
 #include <boost/bind.hpp>
-#include <odtone/mihf/log.hpp>
-#include <odtone/mihf/utils.hpp>
 
 namespace odtone { namespace mihf {
 

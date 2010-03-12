@@ -13,16 +13,17 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include <odtone/mihf/utils.hpp>
+///////////////////////////////////////////////////////////////////////////////
+#include "utils.hpp"
+#include "log.hpp"
+#include "mihfid.hpp"
+#include "local_transactions.hpp"
+#include "transaction_manager.hpp"
 
 #include <odtone/base.hpp>
 #include <odtone/mih/types.hpp>
 #include <odtone/mih/tlv.hpp>
-#include <odtone/mihf/log.hpp>
-#include <odtone/mihf/mihfid.hpp>
-#include <odtone/mihf/local_transactions.hpp>
-#include <odtone/mihf/transaction_manager.hpp>
-
+///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf { namespace utils {
 
@@ -44,6 +45,4 @@ bool forward_request(mih::message_ptr &in)
 	return false;
 }
 
-
-
-} } }
+} /* namespace utils */ } /* namespace mihf */ } /* namespace odtone */

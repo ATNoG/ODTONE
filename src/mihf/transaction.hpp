@@ -16,11 +16,13 @@
 #ifndef TRANSACTION_HPP
 #define TRANSACTION_HPP
 
-#include <boost/shared_ptr.hpp>
-#include <set>
-
+///////////////////////////////////////////////////////////////////////////////
 #include <odtone/mih/message.hpp>
 #include <odtone/mih/types/identification.hpp>
+
+#include <set>
+#include <boost/shared_ptr.hpp>
+///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 

@@ -20,15 +20,11 @@
 #include <odtone/base.hpp>
 #include <odtone/mih/message.hpp>
 #include <odtone/mih/types.hpp>
-#include <odtone/mih/tlv.hpp>
-
-#include <odtone/mihf/utils.hpp>
 
 #include <boost/thread/mutex.hpp>
-#include <map>
-#include <set>
-
+#include <list>
 ///////////////////////////////////////////////////////////////////////////////
+
 namespace odtone { namespace mihf {
 
 

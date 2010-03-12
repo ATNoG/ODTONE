@@ -13,27 +13,24 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#ifndef ODTONE_MIHF_UTILS_HPP
-#define ODTONE_MIHF_UTILS_HPP
+#ifndef ODTONE_MIHF_SERVICE_MANAGEMENT_HPP
+#define ODTONE_MIHF_SERVICE_MANAGEMENT_HPP
 
+///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
-#include <odtone/mih/message.hpp>
 #include <odtone/mih/types.hpp>
+#include <odtone/mih/message.hpp>
+///////////////////////////////////////////////////////////////////////////////
+
+namespace odtone { namespace mihf {
 
 
-namespace odtone { namespace mihf { namespace utils {
+class service_management {
+public:
+	bool capability_discover_request(mih::message_ptr &in, mih::message_ptr &out);
+	bool capability_discover_response(mih::message_ptr&in, mih::message_ptr &out);
+};
 
-bool forward_to_user(uint16 mid, mih::message& in, mih::message& out);
-
-bool is_local_request(mih::message_ptr &in);
-
-// A user sent a MIH request message, set the MIH source field and
-// forward the message to the required destination.
-bool forward_request(mih::message_ptr &in);
-
-
-void register_interface(mih::link_tuple_id &li);
-
-} } }
+} /* namespace mihf */ } /* namespace odtone */
 
 #endif
