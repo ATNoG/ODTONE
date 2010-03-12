@@ -202,6 +202,10 @@ int main(int argc, char** argv)
 		odtone::mih::config cfg(desc);
 		cfg.parse(argc, argv, odtone::sap::kConf_File);
 
+		if (cfg.help()) {
+			std::cerr << desc << std::endl;
+			return EXIT_SUCCESS;
+		}
 
 		mih_user usr(cfg, ios);
 
