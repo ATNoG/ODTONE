@@ -1,10 +1,33 @@
 project dummyserver ;
 
-exe dummyserver : dummyserver.cpp
-    		  ../odtone/mih//odtone_mih/<link>static
-		  ../odtone/mihf/generic_server.cpp
-		  ../odtone/mihf/log.cpp
-		  ../odtone//odtone_base/<link>static
-		  /odtone//boost_system/<link>shared
-		  /odtone//boost_thread/<link>shared
-		  /odtone//boost_program_options/<link>shared ;
+SOURCES =
+	dummyserver.cpp
+	../mihf/generic_server.cpp
+	../mihf/log.cpp
+	;
+
+LIBS_SHARED =
+	../odtone/mih//odtone_mih
+	../odtone//odtone_base
+	/user-config//boost_thread
+	/user-config//boost_system
+	/user-config//boost_program_options
+	;
+
+LIBS_STATIC =
+	../odtone/mih//odtone_mih
+	../odtone//odtone_base
+	;
+
+exe dummyserver :
+	$(SOURCES)
+	$(LIBS_SHARED)
+	: <link>shared
+	;
+
+exe dummyserver :
+	$(SOURCES)
+	$(LIBS_STATIC)
+	: <link>static
+	;
+
