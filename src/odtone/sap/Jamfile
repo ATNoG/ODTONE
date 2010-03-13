@@ -1,7 +1,8 @@
-#=============================================================================
-# Brief   : Odtone Project Build
+#==============================================================================
+# Brief   : Odtone SAP Library Project Build
 # Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-#-----------------------------------------------------------------------------
+#           Bruno Santos     <bsantos@av.it.pt>
+#------------------------------------------------------------------------------
 # ODTONE - Open Dot Twenty One
 #
 # Copyright (C) 2010 Universidade Aveiro
@@ -13,17 +14,17 @@
 # other than expressed in the named license agreement.
 #
 # This software is distributed without any warranty.
-#==========================================================================
+#==============================================================================
 
-project sap ;
-
-SOURCES_LIB =
+SOURCES =
 	sap.cpp
 	user.cpp
 	link.cpp
 	;
 
-
-lib odtone_sap :
-	$(SOURCES_LIB)
+lib odtone_sap
+	: $(SOURCES)
+	  ..//odtone_base
+	  ../mih//odtone_mih
 	;
+

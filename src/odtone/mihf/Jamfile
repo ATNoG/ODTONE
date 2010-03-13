@@ -1,7 +1,8 @@
-#=============================================================================
-# Brief   : Odtone Project Build
+#==============================================================================
+# Brief   : Odtone MIHF Library Project Build
 # Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-#-----------------------------------------------------------------------------
+#           Bruno Santos     <bsantos@av.it.pt>
+#------------------------------------------------------------------------------
 # ODTONE - Open Dot Twenty One
 #
 # Copyright (C) 2010 Universidade Aveiro
@@ -13,11 +14,9 @@
 # other than expressed in the named license agreement.
 #
 # This software is distributed without any warranty.
-#==========================================================================
+#==============================================================================
 
-project mihf ;
-
-SOURCES_LIB =
+SOURCES =
 	service_management.cpp
 	service_access_controller.cpp
 	event_service.cpp generic_server.cpp
@@ -38,6 +37,9 @@ SOURCES_LIB =
 	utils.cpp
 	;
 
-lib odtone_mihf :
-	$(SOURCES_LIB)
+lib odtone_mihf
+	: $(SOURCES)
+	  ..//odtone_base
+	  ../mih//odtone_mih
 	;
+

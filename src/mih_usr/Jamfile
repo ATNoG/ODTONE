@@ -1,7 +1,8 @@
-#=============================================================================
-# Brief   : Odtone Project Build
+#==============================================================================
+# Brief   : User SAP Application Sample Project Build
 # Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-#-----------------------------------------------------------------------------
+#           Bruno Santos     <bsantos@av.it.pt>
+#------------------------------------------------------------------------------
 # ODTONE - Open Dot Twenty One
 #
 # Copyright (C) 2010 Universidade Aveiro
@@ -13,38 +14,23 @@
 # other than expressed in the named license agreement.
 #
 # This software is distributed without any warranty.
-#==========================================================================
-
-project mih_usr ;
+#==============================================================================
 
 SOURCES =
 	mih_usr.cpp
 	;
 
-LIBS_SHARED =
-	../odtone//odtone_base
-	../odtone/mih//odtone_mih
-	../odtone/sap//odtone_sap
-	/user-config//boost_system
-	/user-config//boost_thread
-	/user-config//boost_program_options
-	;
-
-LIBS_STATIC =
+LIBS =
 	../odtone//odtone_base
 	../odtone/mih//odtone_mih
 	../odtone/sap//odtone_sap
 	;
 
-
-exe mih_usr :
-	$(SOURCES)
-	$(LIBS_SHARED)
-	: <link>shared
+exe mih_usr
+	: $(SOURCES)
+	  $(LIBS)
+	: <library>/odtone-config//boost_system
+	  <library>/odtone-config//boost_thread
+	  <library>/odtone-config//boost_program_options
 	;
 
-exe mih_usr :
-	$(SOURCES)
-	$(LIBS_STATIC)
-	: <link>static
-	;

@@ -1,7 +1,8 @@
-#=============================================================================
-# Brief   : Odtone Project Build
+#==============================================================================
+# Brief   : Cliente Application Project Build
 # Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-#-----------------------------------------------------------------------------
+#           Bruno Santos     <bsantos@av.it.pt>
+#------------------------------------------------------------------------------
 # ODTONE - Open Dot Twenty One
 #
 # Copyright (C) 2010 Universidade Aveiro
@@ -13,35 +14,22 @@
 # other than expressed in the named license agreement.
 #
 # This software is distributed without any warranty.
-#==========================================================================
+#==============================================================================
 
-project client ;
+SOURCES =
+	client.cpp
+	;
 
-SOURCES = client.cpp ;
-
-LIBS_SHARED =
-	/user-config//boost_system
-	/user-config//boost_thread
-	/user-config//boost_program_options
-	../odtone/mih//odtone_mih
+LIBS =
 	../odtone//odtone_base
-	;
-
-LIBS_STATIC =
 	../odtone/mih//odtone_mih
-	../odtone//odtone_base
 	;
 
-
-exe client :
-	$(SOURCES)
-	$(LIBS_SHARED)
-	: <link>shared
-	;
-
-exe client :
-	$(SOURCES)
-	$(LIBS_STATIC)
-	: <link>static
+exe client
+	: $(SOURCES)
+	  $(LIBS)
+	: <library>/odtone-config//boost_system
+	  <library>/odtone-config//boost_thread
+	  <library>/odtone-config//boost_program_options
 	;
 

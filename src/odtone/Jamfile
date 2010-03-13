@@ -1,7 +1,8 @@
-#=============================================================================
-# Brief   : Odtone Project Build
+#==============================================================================
+# Brief   : Odtone Base Library Project Build
 # Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-#-----------------------------------------------------------------------------
+#           Bruno Santos     <bsantos@av.it.pt>
+#------------------------------------------------------------------------------
 # ODTONE - Open Dot Twenty One
 #
 # Copyright (C) 2010 Universidade Aveiro
@@ -13,46 +14,44 @@
 # other than expressed in the named license agreement.
 #
 # This software is distributed without any warranty.
-#==========================================================================
+#==============================================================================
 
-project odtone ;
+project
+	: requirements <link>static
+	;
 
-SOURCES_LIB =
+SOURCES =
 	debug.cpp
-	debug_linux.cpp
 	strutil.cpp
 	logger.cpp
 	;
 
-lib odtone_base :
-	$(SOURCES_LIB)
+alias source-list
+	: debug_linux.cpp
+	: <target-os>linux
 	;
 
-SOURCES = main.cpp ;
+alias source-list
+	: debug_win32.cpp
+	: <target-os>windows
+	;
 
-LIBS_SHARED =
-	mihf//odtone_mihf
-	mih//odtone_mih
+lib odtone_base
+	: $(SOURCES)
+	  source-list
+	;
+
+LIBS =
 	.//odtone_base
-	/user-config//boost_system
-	/user-config//boost_thread
-	/user-config//boost_program_options
-	;
-
-LIBS_STATIC =
-	mihf//odtone_mihf
 	mih//odtone_mih
-	.//odtone_base
+	mihf//odtone_mihf
 	;
 
-exe odtone :
-	$(SOURCES)
-	$(LIBS_SHARED)
-	: <link>shared
+exe odtone
+	: main.cpp
+	  $(LIBS)
+	: <library>/odtone-config//boost_system
+	  <library>/odtone-config//boost_thread
+	  <library>/odtone-config//boost_program_options
 	;
 
-exe odtone :
-	$(SOURCES)
-	$(LIBS_STATIC)
-	: <link>static
-	;

@@ -1,7 +1,8 @@
-#=============================================================================
-# Brief   : Odtone Project Build
+#==============================================================================
+# Brief   : Dummy Server Application Project Build
 # Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-#-----------------------------------------------------------------------------
+#           Bruno Santos     <bsantos@av.it.pt>
+#------------------------------------------------------------------------------
 # ODTONE - Open Dot Twenty One
 #
 # Copyright (C) 2010 Universidade Aveiro
@@ -13,37 +14,23 @@
 # other than expressed in the named license agreement.
 #
 # This software is distributed without any warranty.
-#==========================================================================
-
-project dummyserver ;
+#==============================================================================
 
 SOURCES =
 	dummyserver.cpp
 	;
 
-LIBS_SHARED =
+LIBS =
+	../odtone//odtone_base
 	../odtone/mih//odtone_mih
 	../odtone/mihf//odtone_mihf
-	../odtone//odtone_base
-	/user-config//boost_thread
-	/user-config//boost_system
-	/user-config//boost_program_options
 	;
 
-LIBS_STATIC =
-	../odtone/mih//odtone_mih
-	../odtone/mihf//odtone_mihf
-	../odtone//odtone_base
+exe dummyserver
+	: $(SOURCES)
+	  $(LIBS)
+	: <library>/odtone-config//boost_system
+	  <library>/odtone-config//boost_thread
+	  <library>/odtone-config//boost_program_options
 	;
 
-exe dummyserver :
-	$(SOURCES)
-	$(LIBS_SHARED)
-	: <link>shared
-	;
-
-exe dummyserver :
-	$(SOURCES)
-	$(LIBS_STATIC)
-	: <link>static
-	;
