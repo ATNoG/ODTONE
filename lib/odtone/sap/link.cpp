@@ -42,11 +42,11 @@ namespace ip = boost::asio::ip;
  * \throws boost::system::error_code
  */
 link::link(const mih::config& cfg, boost::asio::io_service& io, const default_handler& h)
-	: _handler(h), _sock(io, ip::udp::endpoint(ip::udp::v4(), cfg.get<ushort>(mih::kConf_Port)))
+	: _handler(h), _sock(io, ip::udp::endpoint(ip::udp::v4(), cfg.get<ushort>(kConf_Port)))
 {
-	ip::udp::endpoint ep(ip::address::from_string(cfg.get<std::string>(mih::kConf_MIHF_Ip)),
-						 cfg.get<ushort>(mih::kConf_MIHF_Local_Port));
-	buffer<uint8> buff(cfg.get<uint>(mih::kConf_Receive_Buffer_Len));
+	ip::udp::endpoint ep(ip::address::from_string(cfg.get<std::string>(kConf_MIHF_Ip)),
+						 cfg.get<ushort>(kConf_MIHF_Local_Port));
+	buffer<uint8> buff(cfg.get<uint>(kConf_Receive_Buffer_Len));
 	void* rbuff = buff.get();
 	size_t rlen = buff.size();
 

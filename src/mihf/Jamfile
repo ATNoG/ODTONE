@@ -39,18 +39,18 @@ SOURCES =
 	;
 
 LIBS_SHARED =
-	/user-config//boost_system
-	/user-config//boost_thread
-	/user-config//boost_program_options
-	../odtone/mih//odtone_mih
-	../odtone/sap//odtone_sap
-	../odtone//odtone_base
+	/odtone-config//boost_system
+	/odtone-config//boost_thread
+	/odtone-config//boost_program_options
+	../../lib/odtone/mih//odtone_mih
+	../../lib/odtone/sap//odtone_sap
+	../../lib/odtone//odtone_base
 	;
 
 LIBS_STATIC =
-	../odtone/mih//odtone_mih
-	../odtone/sap//odtone_sap
-	../odtone//odtone_base
+	../../lib/odtone/mih//odtone_mih
+	../../lib/odtone/sap//odtone_sap
+	../../lib/odtone//odtone_base
 	;
 
 exe odtone :

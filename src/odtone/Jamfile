@@ -1,8 +1,0 @@
-lib odtone_base : debug.cpp
-		  debug_linux.cpp
-		  strutil.cpp
-		  logger.cpp
-;
-
-install install-lib : odtone_base : <location>"../../../build/lib" ;
-

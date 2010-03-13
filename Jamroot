@@ -21,9 +21,9 @@ project odtone
     : build-dir build
 	;
 
-build-project app/odtone-mihf ;
+build-project src/mihf ;
+build-project src/dummyserver ;
 build-project app/link_sap ;
 build-project app/mih_usr ;
-build-project app/dummyserver ;
 build-project app/client ;
 
