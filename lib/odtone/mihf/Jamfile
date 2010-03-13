@@ -1,5 +1,5 @@
 #==============================================================================
-# Brief   : Odtone Project Build
+# Brief   : Odtone MIHF Library Project Build
 # Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
 #           Bruno Santos     <bsantos@av.it.pt>
 #------------------------------------------------------------------------------
@@ -16,14 +16,30 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-project odtone
-    : requirements <include>inc
-    : build-dir build
+SOURCES =
+	service_management.cpp
+	service_access_controller.cpp
+	event_service.cpp generic_server.cpp
+	comm_handler.cpp
+	mihf.cpp
+	transaction.cpp
+	net_sap.cpp
+	transaction_manager.cpp
+	dst_transaction.cpp
+	mihfid.cpp
+	src_transaction.cpp
+	transaction_ack_service.cpp
+	transmit.cpp
+	log.cpp
+	local_transactions.cpp
+	command_service.cpp
+	information_service.cpp
+	utils.cpp
 	;
 
-build-project app/odtone-mihf ;
-build-project app/link_sap ;
-build-project app/mih_usr ;
-build-project app/dummyserver ;
-build-project app/client ;
+lib odtone_mihf
+	: $(SOURCES)
+	  ..//odtone_base
+	  ../mih//odtone_mih
+	;
 

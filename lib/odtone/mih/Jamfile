@@ -1,5 +1,5 @@
 #==============================================================================
-# Brief   : Odtone Project Build
+# Brief   : Odtone MIH Library Project Build
 # Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
 #           Bruno Santos     <bsantos@av.it.pt>
 #------------------------------------------------------------------------------
@@ -16,14 +16,15 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-project odtone
-    : requirements <include>inc
-    : build-dir build
+SOURCES =
+	archive.cpp
+	config.cpp
+	message.cpp
+	types/address.cpp
 	;
 
-build-project app/odtone-mihf ;
-build-project app/link_sap ;
-build-project app/mih_usr ;
-build-project app/dummyserver ;
-build-project app/client ;
+lib odtone_mih
+	: $(SOURCES)
+	  ..//odtone_base
+	;
 
