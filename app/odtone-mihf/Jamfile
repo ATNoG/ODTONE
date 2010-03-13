@@ -1,5 +1,5 @@
 #==============================================================================
-# Brief   : Odtone Base Library Project Build
+# Brief   : Odtone MIHF Application Project Build
 # Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
 #           Bruno Santos     <bsantos@av.it.pt>
 #------------------------------------------------------------------------------
@@ -16,28 +16,21 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-project
-	: requirements <link>static
-	;
-
 SOURCES =
-	debug.cpp
-	strutil.cpp
-	logger.cpp
+	main.cpp
 	;
 
-alias source-list
-	: debug_linux.cpp
-	: <target-os>linux
+LIBS =
+	../../src/odtone//odtone_base
+	../../src/odtone/mih//odtone_mih
+	../../src/odtone/mihf//odtone_mihf
 	;
 
-alias source-list
-	: debug_win32.cpp
-	: <target-os>windows
-	;
-
-lib odtone_base
+exe odtone-mihf
 	: $(SOURCES)
-	  source-list
+	  $(LIBS)
+	: <library>/odtone-config//boost_system
+	  <library>/odtone-config//boost_thread
+	  <library>/odtone-config//boost_program_options
 	;
 

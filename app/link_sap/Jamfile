@@ -37,9 +37,9 @@ alias source-list
 	;
 
 LIBS =
-	../odtone//odtone_base
-	../odtone/mih//odtone_mih
-	../odtone/sap//odtone_sap
+	../../src/odtone//odtone_base
+	../../src/odtone/mih//odtone_mih
+	../../src/odtone/sap//odtone_sap
 	;
 
 exe link_sap

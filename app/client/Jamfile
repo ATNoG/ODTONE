@@ -21,8 +21,8 @@ SOURCES =
 	;
 
 LIBS =
-	../odtone//odtone_base
-	../odtone/mih//odtone_mih
+	../../src/odtone//odtone_base
+	../../src/odtone/mih//odtone_mih
 	;
 
 exe client
