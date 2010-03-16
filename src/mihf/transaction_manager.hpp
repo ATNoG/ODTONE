@@ -35,46 +35,38 @@
 
 namespace odtone { namespace mihf {
 
-    class transaction_manager
+class transaction_manager
       : private boost::noncopyable
-    {
-    public:
-      ~transaction_manager();
-      static transaction_manager *instance();
+{
+public:
+	transaction_manager();
 
-      void message_in(mih::message_ptr& msg);
-      void message_out(mih::message_ptr& msg);
+	void message_in(mih::message_ptr& msg);
+	void message_out(mih::message_ptr& msg);
 
-    protected:
+protected:
+	void new_dst_transaction(mih::message_ptr& msg);
+	void run_transaction(dst_transaction_ptr t);
 
-      transaction_manager();
-      static transaction_manager *ptr_instance;
+	void new_src_transaction(mih::message_ptr& msg);
+	void run_transaction(src_transaction_ptr t);
 
-      void new_dst_transaction(mih::message_ptr& msg);
-      void run_transaction(dst_transaction_ptr t);
+	void timer();
+	template <class Set, class SetIterator>
+	void run_timer(Set &set, SetIterator &it, boost::mutex &mutex);
 
-      void new_src_transaction(mih::message_ptr& msg);
-      void run_transaction(src_transaction_ptr t);
+	boost::mutex            _dst_mutex;
+	dst_transaction_set     _dst_transactions;
+	boost::mutex            _src_mutex;
+	src_transaction_set     _src_transactions;
 
-      void timer();
-      template <class Set, class SetIterator>
-      void run_timer(Set &set, SetIterator &it, boost::mutex &mutex);
+	boost::asio::deadline_timer _timer;
+	boost::thread               _timer_thread;
 
-      boost::mutex            _dst_mutex;
-      dst_transaction_set     _dst_transactions;
-      boost::mutex            _src_mutex;
-      src_transaction_set     _src_transactions;
+	uint16 _tid;
+};
 
-      boost::asio::deadline_timer _timer;
-      boost::thread               _timer_thread;
-
-	    uint16 _tid;
-    };
-
-#define tmanager transaction_manager::instance()
-
-  } /* namespace mihf */
-} /* namespace odtone */
+} /* namespace mihf */ } /* namespace odtone */
 
 
 #endif

@@ -40,7 +40,7 @@ bool forward_request(mih::message_ptr &in)
 
 	local_transactions->add(in);
 	in->source(mihfid);
-	tmanager->message_out(in);
+	// tmanager->message_out(in);
 
 	return false;
 }
