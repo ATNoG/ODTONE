@@ -33,10 +33,11 @@ public:
 
 	void start();
 
-	void handle_read(const boost::system::error_code& error, size_t rbytes);
+	void handle_read(odtone::buffer<uint8> &buff,
+			 size_t rbytes,
+			 const boost::system::error_code& error);
 
 private:
-	odtone::buffer<uint8> _buff;
 	ip::tcp::socket _sock;
 };
 

@@ -19,6 +19,7 @@
 #include "log.hpp"
 
 #include <boost/bind.hpp>
+#include <odtone/bindrv.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
@@ -26,8 +27,6 @@ namespace odtone { namespace mihf {
 session::session(io_service &io)
 	: _sock(io)
 {
-	// TODO: read max buffer size from config file (??)
-	_buff = odtone::buffer<uint8>(1500);
 }
 
 ip::tcp::socket& session::socket()
@@ -37,20 +36,28 @@ ip::tcp::socket& session::socket()
 
 void session::start()
 {
-	void *rbuf = _buff.get();
-	size_t rlen = _buff.size();
+	odtone::buffer<uint8> buff = odtone::buffer<uint8>(1500);
+	void *rbuf = buff.get();
+	size_t rlen = buff.size();
 
 	_sock.async_read_some(boost::asio::buffer(rbuf, rlen),
 			      boost::bind(&session::handle_read,
 					  this,
-					  placeholders::error,
-					  placeholders::bytes_transferred));
+					  odtone::bindrv(buff),
+					  placeholders::bytes_transferred,
+					  placeholders::error));
 }
 
-void session::handle_read(const boost::system::error_code &e, size_t rbytes)
+void session::handle_read(odtone::buffer<uint8> &buff,
+			  size_t rbytes,
+			  const boost::system::error_code &e)
 {
 	if (!e) {
 		// TODO: process message
+		log(0, "process message");
+
+		// close socket because we're not using it anymore
+		 _sock.close();
 	} else {
 		delete this;
 	}
@@ -114,7 +121,7 @@ void tcp_server::send(mih::message_ptr &msg, const char *ip, uint16 port)
 	boost::asio::async_write(sock,
 				 boost::asio::buffer(sbuff, slen),
 				 send_handler);
-
+	sock.close();
 }
 
 } /* namespace mifh */ } /* namespace odtone */
