@@ -147,8 +147,8 @@ void transaction_manager::message_in(mih::message_ptr& in)
 			t->in = in;
 			t->msg_in_avail = true;
 
-			if (t->start_ack_requestor)
-				tas->ack_requestor(t);
+			// if (t->start_ack_requestor)
+			// 	tas->ack_requestor(t);
 
 			run_transaction(t);
 
@@ -167,11 +167,11 @@ void transaction_manager::message_in(mih::message_ptr& in)
 			t->in = in;
 			t->msg_in_avail = true;
 
-			if (t->start_ack_requestor)
-				tas->ack_requestor(t);
+			// if (t->start_ack_requestor)
+			// 	tas->ack_requestor(t);
 
-			if (t->start_ack_responder)
-				tas->ack_responder(t);
+			// if (t->start_ack_responder)
+			// 	tas->ack_responder(t);
 
 			run_transaction(t);
 
@@ -228,11 +228,11 @@ void transaction_manager::message_out(mih::message_ptr& out)
 			t->out = out;
 			t->msg_out_avail = true;
 
-			if (t->start_ack_requestor)
-				tas->ack_requestor(t);
+			// if (t->start_ack_requestor)
+			// 	tas->ack_requestor(t);
 
-			if (t->start_ack_responder)
-				tas->ack_responder(t);
+			// if (t->start_ack_responder)
+			// 	tas->ack_responder(t);
 
 			run_transaction(t);
 
@@ -274,8 +274,8 @@ void transaction_manager::run_transaction(dst_transaction_ptr t)
 		t->out.reset(new mih::message);
 		t->msg_out_avail       = sac->process(t->in, t->out);
 
-		if (t->start_ack_responder)
-			tas->ack_responder(t);
+		// if (t->start_ack_responder)
+		// 	tas->ack_responder(t);
 
 		if (t->opcode == mih::operation::request)
 			goto _wait_response_prm_lbl_;
@@ -432,8 +432,8 @@ void transaction_manager::run_transaction(src_transaction_ptr t)
 
 		t->msg_out_avail = false;
 
-		if (t->start_ack_responder)
-			tas->ack_responder(t);
+		// if (t->start_ack_responder)
+		// 	tas->ack_responder(t);
 
 		sac->process(t->in, t->out);
 		t->msg_in_avail = false;
@@ -485,7 +485,7 @@ void transaction_manager::run_timer(Set &set,
 
 			if ((*it)->start_ack_requestor) {
 				if (--((*it)->retransmission_when) == 0) {
-					tas->ack_requestor(*it);
+					// tas->ack_requestor(*it);
 					run_transaction(*it);
 				}
 			}
