@@ -32,28 +32,22 @@ namespace odtone { namespace mihf {
 
 typedef boost::function<bool (mih::message_ptr&, mih::message_ptr&)> handler_t;
 
-class service_access_controller {
+class service_access_controller
+{
 public:
-
-	static service_access_controller *instance();
-	~service_access_controller();
+	service_access_controller();
 
 	bool process(mih::message_ptr& in, mih::message_ptr& out);
 	void dispatch(mih::message_ptr& in);
 
 private:
-	service_access_controller();
-	static service_access_controller *ptr_instance;
-
 	service_management	_sm;
 	event_service		_mies;
 	command_service		_mics;
-	information_service _miis;
+	information_service	_miis;
 
 	std::map<uint, handler_t> _callbacks;
 };
-
-#define sac service_access_controller::instance()
 
 } /* namespace mihf */ } /* namespace odtone */
 

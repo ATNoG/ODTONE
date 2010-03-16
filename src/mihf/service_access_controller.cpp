@@ -31,8 +31,6 @@
 
 namespace odtone { namespace mihf {
 
-service_access_controller *service_access_controller::ptr_instance = NULL;
-
 service_access_controller::service_access_controller()
 {
 	//
@@ -92,20 +90,6 @@ service_access_controller::service_access_controller()
 }
 
 
-service_access_controller *service_access_controller::instance()
-{
-	if (ptr_instance == NULL)
-        ptr_instance = new service_access_controller();
-
-	return ptr_instance;
-}
-
-service_access_controller::~service_access_controller()
-{
-	if (ptr_instance)
-        delete ptr_instance;
-}
-
 void service_access_controller::dispatch(mih::message_ptr& in)
 {
 	/** __no__ authentication at this point */
@@ -113,37 +97,33 @@ void service_access_controller::dispatch(mih::message_ptr& in)
 	uint mid = in->mid();
 
 	log(1, "(sac) dispatching message with mid: ", mid);
-	if(_callbacks.find(mid) != _callbacks.end())
-		{
-			handler_t process_message = _callbacks[mid];
-			mih::message_ptr out(new mih::message);
+	if(_callbacks.find(mid) != _callbacks.end()) {
+		handler_t process_message = _callbacks[mid];
+		mih::message_ptr out(new mih::message);
 
-			out->tid(in->tid());
+		out->tid(in->tid());
 
-			if (process_message(in, out))
-				transmit(out);
-        }
-	else
-		{
-			log(1, "(sac) (warning) message with mid: ", mid, " unknown, discarding.");
-		}
+		if (process_message(in, out))
+			transmit(out);
+        } else {
+		log(1, "(sac) (warning) message with mid: ", mid, " unknown, discarding.");
+	}
 }
 
 bool service_access_controller::process(mih::message_ptr& in,
-										mih::message_ptr& out)
+					mih::message_ptr& out)
 {
 	/** __no__ authentication at this point */
 
 	uint mid = in->mid();
 
-	if (_callbacks.find(mid) != _callbacks.end())
-        {
-			handler_t process_message = _callbacks[mid];
+	if (_callbacks.find(mid) != _callbacks.end()) {
+		handler_t process_message = _callbacks[mid];
 
-			bool rsp = process_message(in, out);
-			out->tid(in->tid());
+		bool rsp = process_message(in, out);
+		out->tid(in->tid());
 
-			return rsp;
+		return rsp;
         }
 
 	return false;

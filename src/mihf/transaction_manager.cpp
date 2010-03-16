@@ -272,7 +272,7 @@ void transaction_manager::run_transaction(dst_transaction_ptr t)
 		log(5, t);
 
 		t->out.reset(new mih::message);
-		t->msg_out_avail       = sac->process(t->in, t->out);
+		// t->msg_out_avail       = sac->process(t->in, t->out);
 
 		// if (t->start_ack_responder)
 		// 	tas->ack_responder(t);
@@ -435,7 +435,7 @@ void transaction_manager::run_transaction(src_transaction_ptr t)
 		// if (t->start_ack_responder)
 		// 	tas->ack_responder(t);
 
-		sac->process(t->in, t->out);
+		// sac->process(t->in, t->out);
 		t->msg_in_avail = false;
 		t->response_received = true;
 
