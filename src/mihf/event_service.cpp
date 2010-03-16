@@ -270,7 +270,7 @@ void event_service::msg_forward(mih::message_ptr	 &msg,
 								mih::link_tuple_id	 &li,
 								mih::event_list_enum  event)
 {
-	std::cout << "number of subs: " << _event_subscriptions.size() << std::endl;
+	log(3,"(mies) number of event subscriptions: ", _event_subscriptions.size());
 	std::list<event_registration_t>::iterator it;
 	int i = 0;
 	for(it = _event_subscriptions.begin(); it != _event_subscriptions.end(); it++, i++)
