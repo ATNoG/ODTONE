@@ -17,9 +17,6 @@
 #define ODTONE_MIHF_TRANSMIT_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "net_sap.hpp"
-#include "comm_handler.hpp"
-
 #include <odtone/base.hpp>
 #include <odtone/debug.hpp>
 #include <odtone/mih/message.hpp>
@@ -33,48 +30,33 @@ namespace odtone { namespace mihf {
 
 struct registration_t
 {
-   mih::octet_string name;
-   uint16 port;
-   mih::octet_string ip;
+	mih::octet_string name;
+	uint16 port;
+	mih::octet_string ip;
 
-   bool operator<(const registration_t &other) const
-	  {
-		  if (name == other.name) {
-			  if (ip == other.ip)
-			  {
-				  return false;
-			  }
-			  else
-			  {
-				  return (port < other.port);
-			  }
-		  }
 
-		  return (name < other.name);
-	  }
+	bool operator<(const registration_t &other) const {
+		if (name == other.name) {
+			if (ip == other.ip)
+				return false;
+			else
+				return (port < other.port);
+		}
+
+		return (name < other.name);
+	}
 };
 
-class transmit_t
+class transmit
 	: private boost::noncopyable
 {
 public:
-   static transmit_t* instance();
-   ~transmit_t();
+	void operator()(mih::message_ptr& msg);
+	void send(mih::message_ptr& msg);
 
-   void operator()(mih::message_ptr& msg);
-   void send(mih::message_ptr& msg);
-
-   void add(mih::octet_string name, mih::octet_string ip, uint16 port);
-
-   std::set<registration_t> _registrations;
-
-protected:
-   transmit_t();
-
-   static transmit_t *ptr_instance;
+	void add(mih::octet_string name, mih::octet_string ip, uint16 port);
+	std::set<registration_t> _registrations;
 };
-
-#define transmit (*transmit_t::instance())
 
 } /* namespace mihf */ } /* namespace odtone */
 

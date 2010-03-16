@@ -18,6 +18,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "transmit.hpp"
+#include "transaction.hpp"
 
 #include <boost/noncopyable.hpp>
 ///////////////////////////////////////////////////////////////////////////////
@@ -81,7 +82,7 @@ namespace odtone { namespace mihf {
           t->ack_rsp_state = ACK_RSP_RETURN_ACK;
           t->ack->mid(t->mid);
 
-          transmit(t->ack);
+          // transmit(t->ack);
 
           if (t->msg_in_avail)
             t->msg_in_avail = false;
@@ -109,7 +110,7 @@ namespace odtone { namespace mihf {
           t->ack_rsp_state = ACK_RSP_RETURN_DUPLICATE;
           if (t->msg_in_avail)
             {
-              transmit(t->dup);
+              // transmit(t->dup);
               t->msg_in_avail = false;
             }
         }
@@ -159,7 +160,7 @@ namespace odtone { namespace mihf {
         {
           t->ack_req_state = ACK_REQ_RETRANSMIT;
 
-          transmit(t->out);
+          // transmit(t->out);
           t->rtxctr++;
 
           goto _req_wait_ack_begin_lbl_;

@@ -18,8 +18,6 @@
 #include "mihfid.hpp"
 #include "log.hpp"
 #include "transaction_ack_service.hpp"
-#include "net_sap.hpp"
-#include "comm_handler.hpp"
 #include "transaction_manager.hpp"
 #include "service_access_controller.hpp"
 
@@ -173,7 +171,7 @@ void set_list_peer_mihfs(mih::octet_string &list)
 		if ((iss >> port_).fail())
 			throw "invalid port";
 
-		transmit.add(id, ip, port_);
+		// transmit.add(id, ip, port_);
 	}
 }
 
@@ -199,7 +197,7 @@ void set_users_links(mih::octet_string &list)
 		if ((iss >> port_).fail())
 			throw "invalid port";
 
-		transmit.add(id, "127.0.0.1", port_);
+		// transmit.add(id, "127.0.0.1", port_);
 	}
 }
 
@@ -231,8 +229,8 @@ void init_services(mih::config &cfg)
 	log(0, lsaps);
 
 	/// initiate listening services
-	comhand->init("127.0.0.1", local_port, 1);
-	netsap->init(mihf_ip.c_str(), remote_port, 1);
+	// comhand->init("127.0.0.1", local_port, 1);
+	// netsap->init(mihf_ip.c_str(), remote_port, 1);
 
 }
 

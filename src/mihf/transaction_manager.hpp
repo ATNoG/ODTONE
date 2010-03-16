@@ -21,7 +21,6 @@
 #include "dst_transaction.hpp"
 #include "src_transaction.hpp"
 #include "transaction_ack_service.hpp"
-#include "net_sap.hpp"
 #include "service_access_controller.hpp"
 
 #include <odtone/debug.hpp>

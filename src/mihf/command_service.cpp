@@ -60,7 +60,7 @@ bool command_service::link_get_parameters_request(mih::message_ptr &in,
 			in->destination(mih::id("link"));
 			local_transactions->add(in);
 			in->source(mihfid);
-			transmit(in);
+			// transmit(in);
 
 			return false;
 		}
@@ -92,7 +92,7 @@ bool command_service::link_get_parameters_response(mih::message_ptr &in,
 
 	log(1, "(mics) forwarding Link_Get_Parameters.response to ", p.user);
 
-	transmit(in);
+	// transmit(in);
 
 	return false;
 }
@@ -119,7 +119,7 @@ bool command_service::link_configure_thresholds_request(mih::message_ptr &in,
 			in->destination(mih::id("link"));
 			local_transactions->add(in);
 			in->source(mihfid);
-			transmit(in);
+			// transmit(in);
 
 			return false;
 		}
@@ -152,7 +152,7 @@ bool command_service::link_configure_thresholds_response(mih::message_ptr &in,
 
 	log(1, "(mics) forwarding Link_Configure_Thresholds.response to ", p.user);
 
-	transmit(in);
+	// transmit(in);
 
 	return false;
 }
@@ -175,7 +175,7 @@ bool command_service::link_actions_request(mih::message_ptr &in,
 			in->destination(mih::id("link"));
 			local_transactions->add(in);
 			in->source(mihfid);
-			transmit(in);
+			// transmit(in);
 
 			return false;
 		}
@@ -208,7 +208,7 @@ bool command_service::link_actions_response(mih::message_ptr &in,
 
 	log(1, "(mics) forwarding Link_Actions.response to ", p.user);
 
-	transmit(in);
+	// transmit(in);
 
 	return false;
 }
@@ -231,7 +231,7 @@ bool generic_command_request(const char *recv_msg,
 			// source identifier is the remote MIHF
 			//
 			log(1, send_msg);
-			transmit(in);
+			// transmit(in);
 
 			return false;
 		}
@@ -261,7 +261,7 @@ bool generic_command_response(const char *recv_msg,
 			//
 			// source identifier is the remote MIHF
 			//
-			transmit(in);
+			// transmit(in);
 
 			return false;
 		}

@@ -86,7 +86,7 @@ bool service_management::capability_discover_response(mih::message_ptr& in,
 	in->tid(p.tid);
 	in->destination(mih::id(p.user));
 
-	transmit(in);
+	// transmit(in);
 
 	return false;
 }

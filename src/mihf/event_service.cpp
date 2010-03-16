@@ -152,7 +152,7 @@ bool event_service::event_subscribe_response(mih::message_ptr& in,
 	log(1, "(mies) forwarding Event_Subscribe.response to ", p.user);
 
 	// forward to user
-	transmit(in);
+	// transmit(in);
 
 	return false;
 }
@@ -260,7 +260,7 @@ bool event_service::event_unsubscribe_response(mih::message_ptr& in,
 	log(1, "(mies) forwarding Event_Unsubscribe.response to ", p.user);
 
 	// forward to user
-	transmit(in);
+	// transmit(in);
 
 	return false;
 }
@@ -280,7 +280,7 @@ void event_service::msg_forward(mih::message_ptr	 &msg,
 					log(3, i, " (mies) found registration of user: ", it->user, " for event type ", event);
 					msg->source(mihfid);
 					msg->destination(mih::id(it->user));
-					transmit(msg);
+					// transmit(msg);
 				}
 		}
 }

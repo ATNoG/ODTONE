@@ -350,7 +350,7 @@ void transaction_manager::run_transaction(dst_transaction_ptr t)
         t->start_ack_requestor  = t->out->ackreq();
         t->ack_requestor_status = ONGOING;
 
-        transmit.send(t->out);
+        // transmit.send(t->out);
 
         // ??
         // if (t->start_ack_requestor)
@@ -417,7 +417,7 @@ void transaction_manager::run_transaction(src_transaction_ptr t)
 
 		log(5, t);
 
-        transmit.send(t->out);
+        // transmit.send(t->out);
 
         if (t->opcode == mih::operation::response)
 			{
