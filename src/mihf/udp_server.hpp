@@ -13,41 +13,42 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
+#ifndef GENERIC_SERVER_HPP
+#define GENERIC_SERVER_HPP
+
 ///////////////////////////////////////////////////////////////////////////////
-#include "net_sap.hpp"
-#include "transaction_manager.hpp"
-#include "mihfid.hpp"
+#include <odtone/debug.hpp>
+#include <odtone/buffer.hpp>
+#include <odtone/mih/message.hpp>
+
+#include <boost/asio.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
-extern boost::asio::io_service io_service;
+using namespace boost::asio;
 
 namespace odtone { namespace mihf {
 
-
-net_sap *net_sap::ptr_instance = NULL;
-
-net_sap *net_sap::instance()
+class udp_server
 {
-      if (ptr_instance == NULL)
-        ptr_instance = new net_sap(io_service);
+public:
+	// bind to @ip and @port and create @num_threads for processing messages
+	udp_server(io_service& io, ip::udp ipv, const char *ip, uint16 port);
 
-	return ptr_instance;
-}
+	void start();
 
-net_sap::net_sap(boost::asio::io_service& io)
-	: generic_server(io)
-{
-}
+	// Send message @msg to @port @ip
+	void send(mih::message_ptr& msg, const char *ip, uint16 port);
 
-net_sap::~net_sap()
-{
-	if(ptr_instance)
-        delete ptr_instance;
-}
+	// Handle completion of an asynchronous accept operation
+	void handle_receive(buffer<uint8>& buff,
+			    size_t rbytes,
+			    const boost::system::error_code& ec);
 
-void net_sap::process_message(mih::message_ptr& msg)
-{
-	tmanager->message_in(msg);
-}
+protected:
+	io_service &_io;
+	ip::udp::socket _sock;
+};
 
 } /* namespace mihf */ } /* namespace odtone */
+
+#endif

@@ -21,10 +21,9 @@ SOURCES =
 	main.cpp
 	service_management.cpp
 	service_access_controller.cpp
-	event_service.cpp generic_server.cpp
-	comm_handler.cpp
+	event_service.cpp
+	udp_server.cpp
 	transaction.cpp
-	net_sap.cpp
 	transaction_manager.cpp
 	dst_transaction.cpp
 	mihfid.cpp
