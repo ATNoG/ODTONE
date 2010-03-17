@@ -28,16 +28,13 @@ using namespace boost::asio;
 
 namespace odtone { namespace mihf {
 
-class udp_server
+class udp_listener
 {
 public:
 	// bind to @ip and @port and create @num_threads for processing messages
-	udp_server(io_service& io, ip::udp ipv, const char *ip, uint16 port);
+	udp_listener(io_service& io, ip::udp ipv, const char *ip, uint16 port);
 
 	void start();
-
-	// Send message @msg to @port @ip
-	void send(mih::message_ptr& msg, const char *ip, uint16 port);
 
 	// Handle completion of an asynchronous accept operation
 	void handle_receive(buffer<uint8>& buff,

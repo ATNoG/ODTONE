@@ -13,7 +13,7 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include "udp_server.hpp"
+#include "udp_listener.hpp"
 
 #include "log.hpp"
 
@@ -24,7 +24,7 @@
 
 namespace odtone { namespace mihf {
 
-udp_server::udp_server(io_service& io, ip::udp ipv, const char *ip, uint16 port)
+udp_listener::udp_listener(io_service& io, ip::udp ipv, const char *ip, uint16 port)
 	: _io(io),
 	  _sock(io)
 {
@@ -33,7 +33,7 @@ udp_server::udp_server(io_service& io, ip::udp ipv, const char *ip, uint16 port)
 	_sock.bind(endpoint);
 }
 
-void udp_server::start()
+void udp_listener::start()
 {
 	// TODO: read concurrency from config file
 	uint16 concurrency = 1;
@@ -49,7 +49,7 @@ void udp_server::start()
 		rlen = buff.size();
 
 		_sock.async_receive(boost::asio::buffer(rbuff, rlen),
-				    boost::bind(&udp_server::handle_receive,
+				    boost::bind(&udp_listener::handle_receive,
 						this,
 						bindrv(buff),
 						placeholders::bytes_transferred,
@@ -58,7 +58,7 @@ void udp_server::start()
 }
 
 
-void udp_server::handle_receive(buffer<uint8>&				buff,
+void udp_listener::handle_receive(buffer<uint8>&				buff,
 				size_t					rbytes,
 				const boost::system::error_code&	e)
 
@@ -78,41 +78,12 @@ void udp_server::handle_receive(buffer<uint8>&				buff,
 		size_t rlen = buff.size();
 
 		_sock.async_receive(asio::buffer(rbuff, rlen),
-				    bind(&udp_server::handle_receive,
+				    bind(&udp_listener::handle_receive,
 					 this,
 					 bindrv(buff),
 					 asio::placeholders::bytes_transferred,
 					 asio::placeholders::error));
         }
-}
-
-void send_handler(size_t, const boost::system::error_code &ec)
-{
-	if (ec) {
-		log(1, "(udp_server) error sending message. Error code: ", ec);
-	}
-}
-
-void udp_server::send(mih::message_ptr &msg, const char *ip, uint16 port)
-{
-	using namespace boost::asio;
-
-	ip::udp::endpoint ep(ip::address::from_string(ip), port);
-
-	//	msg->source(mihfid);
-	mih::frame_vla fm;
-	void *sbuff;
-	size_t slen;
-
-	msg->get_frame(fm);
-	sbuff = fm.get();
-	slen = fm.size();
-
-	_sock.async_send_to(boost::asio::buffer(sbuff, slen),
-			    ep,
-			    boost::bind((&send_handler),
-					placeholders::bytes_transferred,
-					placeholders::error));
 }
 
 
