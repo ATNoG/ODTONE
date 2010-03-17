@@ -14,7 +14,7 @@
 //
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "tcp_server.hpp"
+#include "tcp_listener.hpp"
 
 #include "log.hpp"
 
@@ -63,23 +63,23 @@ void session::handle_read(odtone::buffer<uint8> &buff,
 	}
 }
 
-tcp_server::tcp_server(io_service &io, ip::tcp ipv, const char* ip, uint16 port)
+tcp_listener::tcp_listener(io_service &io, ip::tcp ipv, const char* ip, uint16 port)
 	: _io(io),
 	  _acceptor(io, ip::tcp::endpoint(ip::address::from_string(ip), port))
 {
 }
 
-void tcp_server::start()
+void tcp_listener::start()
 {
 	session *new_session = new session(_io);
 	_acceptor.async_accept(new_session->socket(),
-			       boost::bind(&tcp_server::handle_accept,
+			       boost::bind(&tcp_listener::handle_accept,
 					   this,
 					   new_session,
 					   placeholders::error));
 }
 
-void tcp_server::handle_accept(session *new_session,
+void tcp_listener::handle_accept(session *new_session,
 			       const boost::system::error_code &e)
 {
 	if (!e) {
@@ -87,41 +87,13 @@ void tcp_server::handle_accept(session *new_session,
 		new_session = new session(_io);
 
 		_acceptor.async_accept(new_session->socket(),
-				       boost::bind(&tcp_server::handle_accept,
+				       boost::bind(&tcp_listener::handle_accept,
 						   this,
 						   new_session,
 						   placeholders::error));
 	} else {
 		delete new_session;
 	}
-}
-
-void send_handler(const boost::system::error_code &ec, size_t)
-{
-	if (ec) {
-		log(1, "(tcp_server) error sending message. Error code: ", ec);
-	}
-}
-
-void tcp_server::send(mih::message_ptr &msg, const char *ip, uint16 port)
-{
-	ip::tcp::endpoint ep(ip::address::from_string(ip), port);
-	ip::tcp::socket sock(_io);
-
-	sock.connect(ep);
-
-	mih::frame_vla fm;
-	void *sbuff;
-	size_t slen;
-
-	msg->get_frame(fm);
-	sbuff = fm.get();
-	slen = fm.size();
-
-	boost::asio::async_write(sock,
-				 boost::asio::buffer(sbuff, slen),
-				 send_handler);
-	sock.close();
 }
 
 } /* namespace mifh */ } /* namespace odtone */

@@ -41,15 +41,13 @@ private:
 	ip::tcp::socket _sock;
 };
 
-class tcp_server {
+class tcp_listener {
 public:
-	tcp_server(io_service &io, ip::tcp ipv, const char* ip, uint16 port);
+	tcp_listener(io_service &io, ip::tcp ipv, const char* ip, uint16 port);
 
 	void start();
 
 	void handle_accept(session *s, const boost::system::error_code &e);
-
-	void send(mih::message_ptr &msg, const char *ip, uint16 port);
 
 private:
 	io_service &_io;
