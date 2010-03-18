@@ -38,7 +38,7 @@ class src_transaction_t
 {
 public:
 	src_transaction_t();
-	void dump();
+	void run();
 
 	src_transaction_state_t state;
 };
@@ -47,7 +47,7 @@ public:
 typedef boost::shared_ptr< src_transaction_t > src_transaction_ptr;
 
 typedef std::set<src_transaction_ptr,
-				 transaction_compare<src_transaction_ptr > >src_transaction_set;
+		 transaction_compare<src_transaction_ptr > >src_transaction_set;
 
   } /* namespace mihf */
 } /* namespace odtone */
