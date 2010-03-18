@@ -17,13 +17,16 @@
 #include "utils.hpp"
 #include "log.hpp"
 #include "mihfid.hpp"
-#include "local_transactions.hpp"
-#include "transaction_manager.hpp"
 
 #include <odtone/base.hpp>
 #include <odtone/mih/types.hpp>
 #include <odtone/mih/tlv.hpp>
+
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
 ///////////////////////////////////////////////////////////////////////////////
+
+using namespace boost::asio;
 
 namespace odtone { namespace mihf { namespace utils {
 
@@ -33,12 +36,59 @@ bool is_local_request(mih::message_ptr &in)
 			(mihfid == in->destination()));
 }
 
+static void send_handler(const boost::system::error_code &ec)
+{
+	if (ec)
+		log(1, "Error sending message. Error code: ", ec);
+}
+
+void tcp_send(io_service &io, mih::message_ptr &msg, const char *ip, uint16 port)
+{
+	ip::tcp::endpoint ep(ip::address::from_string(ip), port);
+	ip::tcp::socket sock(io);
+
+	sock.connect(ep);
+
+	mih::frame_vla fm;
+	void *sbuff;
+	size_t slen;
+
+	msg->get_frame(fm);
+	sbuff = fm.get();
+	slen = fm.size();
+
+	boost::asio::async_write(sock,
+				 boost::asio::buffer(sbuff, slen),
+				 boost::bind((&send_handler),
+					     placeholders::error));
+	sock.close();
+}
+
+void udp_send(io_service &io, mih::message_ptr &msg, const char *ip, uint16 port)
+{
+	ip::udp::socket sock(io);
+	ip::udp::endpoint ep(ip::address::from_string(ip), port);
+
+	//	msg->source(mihfid);
+	mih::frame_vla fm;
+	void *sbuff;
+	size_t slen;
+
+	msg->get_frame(fm);
+	sbuff = fm.get();
+	slen = fm.size();
+
+	sock.async_send_to(boost::asio::buffer(sbuff, slen),
+			   ep,
+			   boost::bind((&send_handler),
+				       placeholders::error));
+}
 
 bool forward_request(mih::message_ptr &in)
 {
 	log(1, "(utils) forwarding request to ", in->destination().to_string());
 
-	local_transactions->add(in);
+	// local_transactions->add(in);
 	in->source(mihfid);
 	// tmanager->message_out(in);
 

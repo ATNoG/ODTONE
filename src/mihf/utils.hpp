@@ -24,6 +24,9 @@
 
 namespace odtone { namespace mihf { namespace utils {
 
+void tcp_send(boost::asio::io_service &io, mih::message_ptr &msg, const char *ip, uint16 port);
+void udp_send(boost::asio::io_service &io, mih::message_ptr &msg, const char *ip, uint16 port);
+
 bool is_local_request(mih::message_ptr &in);
 
 // A user sent a MIH request message, set the MIH source field and
