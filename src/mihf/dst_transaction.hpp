@@ -41,15 +41,15 @@ class dst_transaction_t
 public:
 	dst_transaction_t();
 
-	void dump();
+	void run();
 
 	dst_transaction_state_t state;
 };
 
 typedef boost::shared_ptr< dst_transaction_t > dst_transaction_ptr;
 
-typedef std::set< dst_transaction_ptr,
-				  transaction_compare<dst_transaction_ptr > >dst_transaction_set;
+typedef std::set<dst_transaction_ptr,
+		 transaction_compare<dst_transaction_ptr > >dst_transaction_set;
 
   } /* namespace mihf */
 } /* namespace odtone */
