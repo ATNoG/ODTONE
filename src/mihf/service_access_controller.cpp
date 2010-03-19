@@ -110,11 +110,11 @@ void service_access_controller::dispatch(mih::message_ptr& in)
 
 		out->tid(in->tid());
 
-		if (process_message(in, out))
-			transmit(out);
-        } else {
-		log(1, "(sac) (warning) message with mid: ", mid, " unknown, discarding.");
-	}
+		// if (process_message(in, out))
+		// 	transmit(out);
+        }
+	log(1, "(sac) (warning) message with mid: ", mid,
+	    " unknown, discarding.");
 }
 
 bool service_access_controller::process(mih::message_ptr& in,
@@ -131,7 +131,10 @@ bool service_access_controller::process(mih::message_ptr& in,
 		out->tid(in->tid());
 
 		return rsp;
-        }
+	}
+
+	log(1, "(sac) (warning) message with mid: ", mid,
+	    " unknown, discarding.");
 
 	return false;
 }
