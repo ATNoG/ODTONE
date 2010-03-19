@@ -17,45 +17,34 @@
 #define ODTONE_MIHF_TRANSMIT_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
+#include "address_book.hpp"
+#include "message_out.hpp"
+
 #include <odtone/base.hpp>
 #include <odtone/debug.hpp>
 #include <odtone/mih/message.hpp>
 
-#include <set>
+#include <boost/asio.hpp>
 #include <boost/noncopyable.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
+using namespace boost::asio;
 
 namespace odtone { namespace mihf {
-
-struct registration_t
-{
-	mih::octet_string name;
-	uint16 port;
-	mih::octet_string ip;
-
-
-	bool operator<(const registration_t &other) const {
-		if (name == other.name) {
-			if (ip == other.ip)
-				return false;
-			else
-				return (port < other.port);
-		}
-
-		return (name < other.name);
-	}
-};
 
 class transmit
 	: private boost::noncopyable
 {
 public:
-	void operator()(mih::message_ptr& msg);
-	void send(mih::message_ptr& msg);
+	transmit(io_service &io, address_book &abook, message_out &msg_out);
 
-	void add(mih::octet_string name, mih::octet_string ip, uint16 port);
-	std::set<registration_t> _registrations;
+	void operator()(mih::message_ptr& msg);
+
+private:
+	io_service &_io;
+	address_book &_abook;
+	message_out &_msg_out;
+
 };
 
 } /* namespace mihf */ } /* namespace odtone */
