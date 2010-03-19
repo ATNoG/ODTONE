@@ -16,7 +16,6 @@
 #include "event_service.hpp"
 
 #include "log.hpp"
-#include "local_transactions.hpp"
 #include "mihfid.hpp"
 #include "transmit.hpp"
 #include "utils.hpp"
@@ -31,11 +30,8 @@
 
 namespace odtone { namespace mihf {
 
-event_service::event_service()
-{
-}
-
-event_service::~event_service()
+event_service::event_service(local_transaction_pool &lpool)
+	: _lpool(lpool)
 {
 }
 
@@ -43,30 +39,27 @@ event_service::~event_service()
   TODO: add support for evt_cfg_info
 */
 mih::status event_service::subscribe(const mih::id &user,
-									 mih::link_tuple_id &link,
-									 mih::event_list &events)
+				     mih::link_tuple_id &link,
+				     mih::event_list &events)
 {
 	event_registration_t reg;
 	reg.user.assign(user.to_string());
 	reg.link = link;
 
-	{
-		boost::mutex::scoped_lock lock(_event_mutex);
+	boost::mutex::scoped_lock lock(_event_mutex);
 
-		for(int i = 0; i < 32; i++)
-		{
-			if (events.get((mih::event_list_enum) i))
-				{
-					reg.event = (mih::event_list_enum) i;
-					_event_subscriptions.push_back(reg);
+	for(int i = 0; i < 32; i++) {
+		if (events.get((mih::event_list_enum) i)) {
+			reg.event = (mih::event_list_enum) i;
+			_event_subscriptions.push_back(reg);
 
-					if (link.addr.which() == 1)
-						{
-							mih::mac_addr mac = boost::get<mih::mac_addr>(link.addr);
-							log(3, "(mies) added subscription ",
-								reg.user, ":", mac.address(), ":", reg.event);
-						}
-				}
+			if (link.addr.which() == 1) {
+				mih::mac_addr mac =
+					boost::get<mih::mac_addr>(link.addr);
+
+				log(3, "(mies) added subscription ", reg.user,
+				    ":", mac.address(), ":", reg.event);
+			}
 		}
 	}
 
@@ -74,8 +67,8 @@ mih::status event_service::subscribe(const mih::id &user,
 }
 
 
-bool event_service::local_event_subscribe_request(mih::message_ptr& in,
-												  mih::message_ptr& out)
+bool event_service::local_event_subscribe_request(mih::message_ptr &in,
+						  mih::message_ptr &out)
 {
 	mih::event_list		events;
 	mih::link_tuple_id	link;
@@ -99,37 +92,34 @@ bool event_service::local_event_subscribe_request(mih::message_ptr& in,
 }
 
 
-bool event_service::event_subscribe_request(mih::message_ptr& in,
-											mih::message_ptr& out)
+bool event_service::event_subscribe_request(mih::message_ptr &in,
+					    mih::message_ptr &out)
 {
-	log(1, "(mies) received Event_Subscribe.request from ", in->source().to_string());
+	log(1, "(mies) received Event_Subscribe.request from ",
+	    in->source().to_string());
+
 	if (utils::is_local_request(in))
-		{
-			return local_event_subscribe_request(in, out);
-		}
+		return local_event_subscribe_request(in, out);
 	else
-		{
-			return utils::forward_request(in);
-		}
+		return utils::forward_request(in);
 
 	return false;
 }
 
 
-bool event_service::event_subscribe_response(mih::message_ptr& in,
-											 mih::message_ptr& /* out */)
+bool event_service::event_subscribe_response(mih::message_ptr &in,
+					     mih::message_ptr&)
 {
-	log(1, "(mies) received Event_Subscribe.response from ", in->source().to_string());
+	log(1, "(mies) received Event_Subscribe.response from ",
+	    in->source().to_string());
 
 	// do we have a request from a user?
-	pending_transaction_t p;
-	mih::octet_string	  from = in->source().to_string();
-
-	if (!local_transactions->get(from, p))
-		{
-			log(1, "(mies) no pending transaction for this message, discarding");
-			return false;
-		}
+	pending_transaction	p;
+	if (!_lpool.get(in->source().to_string(), p)) {
+		log(1, "(mics) warning: no local transaction for this msg ",
+		    "discarding it");
+		return false;
+	}
 
 	mih::status        st;
 	mih::link_tuple_id link;
@@ -158,33 +148,34 @@ bool event_service::event_subscribe_response(mih::message_ptr& in,
 }
 
 mih::status event_service::unsubscribe(const mih::id &user,
-									   mih::link_tuple_id &link,
-									   mih::event_list &events)
+				       mih::link_tuple_id &link,
+				       mih::event_list &events)
 {
 	boost::mutex::scoped_lock lock(_event_mutex);
 
 	std::list<event_registration_t>::iterator it;
-	for(it = _event_subscriptions.begin(); it != _event_subscriptions.end(); it++)
-		{
-			if (it->link == link && (it->user.compare(user.to_string()) == 0) &&
-				events.get((mih::event_list_enum) it->event))
-				{
-					break;
-				}
-		}
 
-	if (it != _event_subscriptions.end())
-		{
-			_event_subscriptions.erase(it);
-			return mih::status_success;
+	for(it = _event_subscriptions.begin();
+	    it != _event_subscriptions.end();
+	    it++) {
+		if (it->link == link &&
+		    (it->user.compare(user.to_string()) == 0) &&
+		    events.get((mih::event_list_enum) it->event)) {
+			break;
 		}
+	}
+
+	if (it != _event_subscriptions.end()) {
+		_event_subscriptions.erase(it);
+		return mih::status_success;
+	}
 
 	return mih::status_failure;
 }
 
 
-bool event_service::local_event_unsubscribe_request(mih::message_ptr& in,
-													mih::message_ptr& out)
+bool event_service::local_event_unsubscribe_request(mih::message_ptr &in,
+						    mih::message_ptr &out)
 {
 	mih::status st;
 	mih::link_tuple_id link;
@@ -193,7 +184,6 @@ bool event_service::local_event_unsubscribe_request(mih::message_ptr& in,
 	*in >> mih::request(mih::request::event_unsubscribe)
 		& mih::tlv_link_identifier(link)
 		& mih::tlv_event_list(events);
-
 
 	st = unsubscribe(in->source(), link, events);
 
@@ -208,41 +198,39 @@ bool event_service::local_event_unsubscribe_request(mih::message_ptr& in,
 	return true;
 }
 
-bool event_service::event_unsubscribe_request(mih::message_ptr& in,
-											  mih::message_ptr& out)
+bool event_service::event_unsubscribe_request(mih::message_ptr &in,
+					      mih::message_ptr &out)
 {
-	log(1, "(mies) received Event_Unsubscribe.request from ", in->source().to_string());
+	log(1, "(mies) received Event_Unsubscribe.request from ",
+	    in->source().to_string());
+
 	if (utils::is_local_request(in))
-		{
-			return local_event_unsubscribe_request(in, out);
-		}
+		return local_event_unsubscribe_request(in, out);
 	else
-		{
-			return utils::forward_request(in);
-		}
+		return utils::forward_request(in);
 
 	return false;
 }
 
-bool event_service::event_unsubscribe_response(mih::message_ptr& in,
-											   mih::message_ptr& /* out */)
+bool event_service::event_unsubscribe_response(mih::message_ptr &in,
+					       mih::message_ptr &)
 {
-	log(1, "(mies) received Event_Unsubscribe.response from ", in->source().to_string());
+	log(1, "(mies) received Event_Unsubscribe.response from ",
+	    in->source().to_string());
 
 	// do we have a request from a user?
-	pending_transaction_t p;
-	mih::octet_string	  from = in->source().to_string();
+	pending_transaction p;
+	if (!_lpool.get(in->source().to_string(), p)) {
+		log(1, "(mics) warning: no local transaction for this msg ",
+		    "discarding it");
 
-	if (!local_transactions->get(from, p))
-		{
-			log(1, "(mies) no pending transaction for this message, discarding");
-			return false;
-		}
+		return false;
+	}
 
-	mih::status          st;
-	mih::link_tuple_id link;
-	mih::event_list      events;
-	mih::message       pin;
+	mih::status		st;
+	mih::link_tuple_id	link;
+	mih::event_list		events;
+	mih::message		pin;
 
 	// parse incoming message to (event_registration_t) reg
 	*in >>  mih::response()
@@ -266,30 +254,30 @@ bool event_service::event_unsubscribe_response(mih::message_ptr& in,
 }
 
 
-void event_service::msg_forward(mih::message_ptr	 &msg,
-								mih::link_tuple_id	 &li,
-								mih::event_list_enum  event)
+void event_service::msg_forward(mih::message_ptr &msg,
+				mih::link_tuple_id &li,
+				mih::event_list_enum event)
 {
-	std::cout << "number of subs: " << _event_subscriptions.size() << std::endl;
 	std::list<event_registration_t>::iterator it;
-	int i = 0;
-	for(it = _event_subscriptions.begin(); it != _event_subscriptions.end(); it++, i++)
-		{
-			if ((it->event == event) && (it->link == li))
-				{
-					log(3, i, " (mies) found registration of user: ", it->user, " for event type ", event);
-					msg->source(mihfid);
-					msg->destination(mih::id(it->user));
-					// transmit(msg);
-				}
+	int i = 0; // for logging purposes
+	for(it = _event_subscriptions.begin();
+	    it != _event_subscriptions.end();
+	    it++, i++) {
+		if ((it->event == event)  &&(it->link == li)) {
+			log(3, i, " (mies) found registration of user: ",
+			    it->user, " for event type ", event);
+			msg->source(mihfid);
+			msg->destination(mih::id(it->user));
+			// transmit(msg);
 		}
+	}
 }
 
 
 // parse link_identifier from incoming message and the forward
 // message to subscribed users
-void event_service::link_event_forward(mih::message_ptr&	msg,
-									   mih::event_list_enum	event)
+void event_service::link_event_forward(mih::message_ptr &msg,
+				       mih::event_list_enum event)
 {
 	mih::link_tuple_id li;
 	*msg >> mih::response()
@@ -300,12 +288,12 @@ void event_service::link_event_forward(mih::message_ptr&	msg,
 
 
 // log received message type, and forward it
-bool event_service::link_up_indication(mih::message_ptr& in,
-									   mih::message_ptr& /* out */)
+bool event_service::link_up_indication(mih::message_ptr &in, mih::message_ptr&)
 {
 	// if(in->payload().size() == 0)
 	// 	return false;
-	log(1, "(mies) received Link_Up.indication from ", in->source().to_string());
+	log(1, "(mies) received Link_Up.indication from ",
+	    in->source().to_string());
 
 	link_event_forward(in, mih::link_up);
 
@@ -314,12 +302,13 @@ bool event_service::link_up_indication(mih::message_ptr& in,
 
 
 // log received message type, and forward it
-bool event_service::link_down_indication(mih::message_ptr& in,
-										 mih::message_ptr& /* out */)
+bool event_service::link_down_indication(mih::message_ptr &in, mih::message_ptr&)
 {
 	// if(in->payload().size() == 0)
 	// 	return false;
-	log(1, "(mies) received Link_Down.indication from ", in->source().to_string());
+	log(1, "(mies) received Link_Down.indication from ",
+	    in->source().to_string());
+
 	link_event_forward(in, mih::link_down);
 
 	return false;
@@ -328,48 +317,51 @@ bool event_service::link_down_indication(mih::message_ptr& in,
 
 // parse link identifiers from list and for each one forward the
 // message to the subscribed users
-bool event_service::link_detected_indication(mih::message_ptr& in,
-											 mih::message_ptr& out)
+bool event_service::link_detected_indication(mih::message_ptr &in,
+					     mih::message_ptr &out)
 {
 	// if(in->payload().size() == 0)
 	// 	return false;
-	log(1, "(mies) received Link_Detected.indication from ", in->source().to_string());
+
+	log(1, "(mies) received Link_Detected.indication from ",
+	    in->source().to_string());
 	// link detected info from incoming message
 	mih::link_det_info_list		list_ids;
+
 	// link detected info on outgoing message
 	mih::link_det_info_list		list_rsp;
 	mih::link_det_info_list::iterator	it;
 
 	*in >>  mih::response()
-		&	mih::tlv_link_det_info_list(list_ids);
+		& mih::tlv_link_det_info_list(list_ids);
 
-	for(it = list_ids.begin(); it != list_ids.end(); it++)
-		{
-			// construct new link detected indication message
-			// with just the link detected in the payload
-			list_rsp.push_back(*it);
+	for(it = list_ids.begin(); it != list_ids.end(); it++) {
+		// construct new link detected indication message
+		// with just the link detected in the payload
+		list_rsp.push_back(*it);
 
-			*out << mih::indication(mih::indication::link_detected)
-				& mih::tlv_link_det_info_list(list_rsp);
+		*out << mih::indication(mih::indication::link_detected)
+			& mih::tlv_link_det_info_list(list_rsp);
 
-			// forward message to subscribed users
-			msg_forward(out, it->id, mih::link_detected);
+		// forward message to subscribed users
+		msg_forward(out, it->id, mih::link_detected);
 
-			list_rsp.clear();
+		list_rsp.clear();
 
-			// FIXME: clear out before continuing
-		}
+		// FIXME: clear out before continuing
+	}
 
 	return false;
 }
 
 
-bool event_service::link_going_down_indication(mih::message_ptr& in,
-											   mih::message_ptr& /* out */)
+bool event_service::link_going_down_indication(mih::message_ptr &in,
+					       mih::message_ptr&)
 {
 	// if(in->payload().size() == 0)
 	// 	return false;
-	log(1, "(mies) received Link_Going_Down.indication from ", in->source().to_string());
+	log(1, "(mies) received Link_Going_Down.indication from ",
+	    in->source().to_string());
 
 	link_event_forward(in, mih::link_going_down);
 
@@ -377,12 +369,13 @@ bool event_service::link_going_down_indication(mih::message_ptr& in,
 }
 
 
-bool event_service::link_handover_imminent_indication(mih::message_ptr& in,
-													  mih::message_ptr& /*out*/)
+bool event_service::link_handover_imminent_indication(mih::message_ptr &in,
+						      mih::message_ptr&)
 {
 	// if(in->payload().size() == 0)
 	// 	return false;
-	log(1, "(mies) received Link_Handover_Imminent.indication from ", in->source().to_string());
+	log(1, "(mies) received Link_Handover_Imminent.indication from ",
+	    in->source().to_string());
 
 	link_event_forward(in, mih::link_handover_imminent);
 
@@ -390,12 +383,13 @@ bool event_service::link_handover_imminent_indication(mih::message_ptr& in,
 }
 
 
-bool event_service::link_handover_complete_indication(mih::message_ptr& in,
-													  mih::message_ptr& /*out*/)
+bool event_service::link_handover_complete_indication(mih::message_ptr &in,
+						      mih::message_ptr&)
 {
 	// if(in->payload().size() == 0)
 	// 	return false;
-	log(1, "(mies) received Link_Handover_Complete.indication from ", in->source().to_string());
+	log(1, "(mies) received Link_Handover_Complete.indication from ",
+	    in->source().to_string());
 
 	link_event_forward(in, mih::link_handover_complete);
 
@@ -403,12 +397,14 @@ bool event_service::link_handover_complete_indication(mih::message_ptr& in,
 }
 
 
-bool event_service::link_pdu_transmit_status_indication(mih::message_ptr& in,
-														mih::message_ptr&/*out*/)
+bool event_service::link_pdu_transmit_status_indication(mih::message_ptr &in,
+							mih::message_ptr&)
 {
 	// if(in->payload().size() == 0)
 	// 	return false;
-	log(1, "(mies) received Link_PDU_Transmit_Status.indication from ", in->source().to_string());
+	log(1, "(mies) received Link_PDU_Transmit_Status.indication from ",
+	    in->source().to_string());
+
 	link_event_forward(in, mih::link_pdu_transmit_status);
 
 	return false;
