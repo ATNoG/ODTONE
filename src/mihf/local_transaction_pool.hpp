@@ -13,8 +13,8 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#ifndef ODTONE_MIHF_LOCAL_TRANSACTIONS_HPP
-#define ODTONE_MIHF_LOCAL_TRANSACTIONS_HPP
+#ifndef ODTONE_MIHF_LOCAL_TRANSACTION_POOL__HPP
+#define ODTONE_MIHF_LOCAL_TRANSACTION_POOL__HPP
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
@@ -27,31 +27,29 @@
 namespace odtone { namespace mihf {
 
 
-struct pending_transaction_t
+struct pending_transaction
 {
 	mih::octet_string	user;
 	mih::octet_string	destination;
-	uint16				tid;
+	uint16			tid;
 };
 
-class local_transaction_t
+class local_transaction_pool
 {
 public:
-	static local_transaction_t* instance();
-	~local_transaction_t();
+	local_transaction_pool();
 
 	void add(mih::message_ptr& in);
-	void remove(pending_transaction_t &p);
-	std::list<pending_transaction_t>::iterator find(mih::octet_string &from);
-	bool get(mih::octet_string &from, pending_transaction_t &p);
+	void remove(pending_transaction &p);
+
+	std::list<pending_transaction>::iterator
+	find(const mih::octet_string &from);
+
+	bool get(const mih::octet_string &from, pending_transaction &p);
 
 protected:
-	local_transaction_t();
-	static local_transaction_t *ptr_instance;
-	std::list<pending_transaction_t> _pending_transactions;
+	std::list<pending_transaction> _transactions;
 };
-
-#define local_transactions local_transaction_t::instance()
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mihf */ } /* namespace odtone */
