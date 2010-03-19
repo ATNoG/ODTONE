@@ -31,7 +31,14 @@
 
 namespace odtone { namespace mihf {
 
-service_access_controller::service_access_controller()
+service_access_controller::service_access_controller(service_management &sm,
+						     event_service &mies,
+						     command_service &mics,
+						     information_service &miis)
+	: _sm(sm),
+	  _mies(mies),
+	  _mics(mics),
+	  _miis(miis)
 {
 	//
 	//	callbacks for service management messages
