@@ -20,7 +20,6 @@
 #include "utils.hpp"
 #include "mihfid.hpp"
 #include "transmit.hpp"
-#include "local_transactions.hpp"
 
 #include <odtone/mih/types/capabilities.hpp>
 #include <odtone/mih/request.hpp>
@@ -34,52 +33,54 @@ extern odtone::mih::net_type_addr_list  capabilities_list_net_type_addr;
 
 namespace odtone { namespace mihf {
 
-bool service_management::capability_discover_request(mih::message_ptr& in,
-													 mih::message_ptr& out)
+service_management::service_management(local_transaction_pool &lpool)
+	: _lpool(lpool)
 {
-	log(1, "(mism) received Capability_Discover.request from ", in->source().to_string());
-	log(2, "(mism) received Capability_Discover.request with destination ", in->destination().to_string());
+}
 
 
+bool service_management::capability_discover_request(mih::message_ptr& in,
+						     mih::message_ptr& out)
+{
+	log(1, "(mism) received Capability_Discover.request from ",
+	    in->source().to_string());
+	log(2, "(mism) received Capability_Discover.request with destination ",
+	    in->destination().to_string());
 
-	if (utils::is_local_request(in))
-		{
-			log(2, "(mism) local request");
+	if (utils::is_local_request(in)) {
+		log(2, "(mism) local request");
 
-			*out << mih::response(mih::response::capability_discover)
-				& mih::tlv_status(mih::status_success)
-				& mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
-				& mih::tlv_event_list(capabilities_event_list);
+		*out << mih::response(mih::response::capability_discover)
+			& mih::tlv_status(mih::status_success)
+			& mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
+			& mih::tlv_event_list(capabilities_event_list);
 
-			out->tid(in->tid());
-			out->destination(in->source());
-			out->source(mihfid);
+		out->tid(in->tid());
+		out->destination(in->source());
+		out->source(mihfid);
 
-			return true;
-		}
-	else
-		{
-			log(2, "(mism) remote request");
-			return utils::forward_request(in);
-		}
+		return true;
+	} else 	{
+		log(2, "(mism) remote request");
+		return utils::forward_request(in);
+	}
 
 	return false;
 }
 
-bool service_management::capability_discover_response(mih::message_ptr& in,
-													  mih::message_ptr& /*out*/)
+
+bool service_management::capability_discover_response(mih::message_ptr &in,
+						      mih::message_ptr &)
 {
-	log(1, "received Capability_Discover.response from ", in->source().to_string());
+	log(1, "received Capability_Discover.response from ",
+	    in->source().to_string());
 
 	// do we have a request from a user?
-	pending_transaction_t p;
-	mih::octet_string	  from = in->source().to_string();
-
-	if (!local_transactions->get(from, p))
-		{
-			log(1, "no pending transaction for this message, discarding");
-			return false;
-		}
+	pending_transaction p;
+	if (!_lpool.get(in->source().to_string(), p)) {
+		log(1, "no pending transaction for this message, discarding");
+		return false;
+	}
 
 	log(1, "forwarding Capability_Discover.response to ", p.user);
 
