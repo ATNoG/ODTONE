@@ -21,17 +21,18 @@
 #define ODTONE_MIHF_COMMAND_SERVICE_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
-#include <odtone/mih/message.hpp>
+#include "local_transaction_pool.hpp"
 
+#include <odtone/mih/message.hpp>
 ///////////////////////////////////////////////////////////////////////////////
+
 namespace odtone { namespace mihf {
 
 class command_service
 	: boost::noncopyable
 {
 public:
-	command_service();
-	~command_service();
+	command_service(local_transaction_pool &lpool);
 
 	bool link_get_parameters_request(mih::message_ptr &in, mih::message_ptr &out);
 	bool link_get_parameters_response(mih::message_ptr &in, mih::message_ptr &out);
@@ -67,7 +68,7 @@ public:
 	bool n2n_ho_complete_response(mih::message_ptr &in, mih::message_ptr &out);
 
 private:
-
+	local_transaction_pool &_lpool;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
