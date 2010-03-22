@@ -30,8 +30,9 @@
 
 namespace odtone { namespace mihf {
 
-event_service::event_service(local_transaction_pool &lpool)
-	: _lpool(lpool)
+event_service::event_service(local_transaction_pool &lpool, transmit &t)
+	: _lpool(lpool),
+	  _transmit(t)
 {
 }
 
@@ -142,7 +143,7 @@ bool event_service::event_subscribe_response(mih::message_ptr &in,
 	log(1, "(mies) forwarding Event_Subscribe.response to ", p.user);
 
 	// forward to user
-	// transmit(in);
+	_transmit(in);
 
 	return false;
 }
@@ -248,7 +249,7 @@ bool event_service::event_unsubscribe_response(mih::message_ptr &in,
 	log(1, "(mies) forwarding Event_Unsubscribe.response to ", p.user);
 
 	// forward to user
-	// transmit(in);
+	_transmit(in);
 
 	return false;
 }
@@ -268,7 +269,7 @@ void event_service::msg_forward(mih::message_ptr &msg,
 			    it->user, " for event type ", event);
 			msg->source(mihfid);
 			msg->destination(mih::id(it->user));
-			// transmit(msg);
+			_transmit(msg);
 		}
 	}
 }

@@ -18,6 +18,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "local_transaction_pool.hpp"
+#include "transmit.hpp"
 
 #include <odtone/base.hpp>
 #include <odtone/mih/message.hpp>
@@ -42,7 +43,7 @@ struct event_registration_t
 class event_service
 	: boost::noncopyable {
 public:
-	event_service(local_transaction_pool &lpool);
+	event_service(local_transaction_pool &lpool, transmit &t);
 
 	bool event_subscribe_request(mih::message_ptr &in,
 				     mih::message_ptr &out);
@@ -68,7 +69,9 @@ public:
 						 mih::message_ptr &out);
 
 protected:
-	local_transaction_pool		&_lpool;
+	local_transaction_pool	&_lpool;
+	transmit		&_transmit;
+
 	std::list<event_registration_t>	 _event_subscriptions;
 	boost::mutex			 _event_mutex;
 
@@ -88,6 +91,7 @@ protected:
 			      mih::event_list &events);
 	mih::status unsubscribe(const mih::id &user, mih::link_tuple_id &link,
 				mih::event_list &events);
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
