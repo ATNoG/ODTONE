@@ -18,6 +18,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "transaction_pool.hpp"
+#include "utils.hpp"
 
 #include <odtone/debug.hpp>
 #include <odtone/mih/message.hpp>
@@ -31,7 +32,7 @@ class message_out
 	: private boost::noncopyable
 {
 public:
-	message_out(transaction_pool &tpool);
+	message_out(transaction_pool &tpool, handler_t &f);
 
 	void operator()(mih::message_ptr& msg);
 
@@ -40,6 +41,7 @@ protected:
 
 	transaction_pool &_tpool;
 	uint16 _tid;
+	handler_t &process_message;
 };
 
 } /* namespace mihf */ } /* namespace odtone */

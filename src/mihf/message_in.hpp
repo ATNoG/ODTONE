@@ -18,10 +18,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "transaction_pool.hpp"
-
+#include "utils.hpp"
 #include <odtone/debug.hpp>
 #include <odtone/mih/message.hpp>
 
+#include <boost/function.hpp>
 #include <boost/noncopyable.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -31,7 +32,7 @@ class message_in
       : private boost::noncopyable
 {
 public:
-	message_in(transaction_pool &tpool);
+	message_in(transaction_pool &tpool, handler_t &f);
 
 	void operator()(mih::message_ptr& msg);
 
@@ -39,6 +40,7 @@ protected:
 	void new_dst_transaction(mih::message_ptr& msg);
 
 	transaction_pool &_tpool;
+	handler_t &process_message;
 };
 
 } /* namespace mihf */ } /* namespace odtone */

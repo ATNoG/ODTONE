@@ -21,15 +21,16 @@
 
 namespace odtone { namespace mihf {
 
-message_out::message_out(transaction_pool &tpool)
-	: _tpool(tpool)
+message_out::message_out(transaction_pool &tpool, handler_t &f)
+	: _tpool(tpool),
+	  process_message(f)
 {
 	_tid = mih::rand16();
 }
 
 void message_out::new_src_transaction(mih::message_ptr& m)
 {
-	src_transaction_ptr t(new src_transaction_t);
+	src_transaction_ptr t(new src_transaction_t(process_message));
 
 	m->ackreq(true); // FIXME: read from config file
 
