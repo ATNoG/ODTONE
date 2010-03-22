@@ -28,8 +28,9 @@
 
 namespace odtone { namespace mihf {
 
-command_service::command_service(local_transaction_pool &lpool)
-	: _lpool(lpool)
+command_service::command_service(local_transaction_pool &lpool, transmit &t)
+	: _lpool(lpool),
+	  _transmit(t)
 {
 }
 
@@ -56,7 +57,7 @@ bool command_service::link_get_parameters_request(mih::message_ptr &in,
 		in->destination(mih::id("link"));
 		_lpool.add(in);
 		in->source(mihfid);
-		// transmit(in);
+		_transmit(in);
 
 		return false;
 	} else {
@@ -87,7 +88,7 @@ bool command_service::link_get_parameters_response(mih::message_ptr &in,
 
 	log(1, "(mics) forwarding Link_Get_Parameters.response to ", p.user);
 
-	// transmit(in);
+	_transmit(in);
 
 	return false;
 }
@@ -114,7 +115,7 @@ bool command_service::link_configure_thresholds_request(mih::message_ptr &in,
 		in->destination(mih::id("link"));
 		_lpool.add(in);
 		in->source(mihfid);
-		// transmit(in);
+		_transmit(in);
 
 		return false;
 	} else {
@@ -144,7 +145,7 @@ bool command_service::link_configure_thresholds_response(mih::message_ptr &in,
 
 	log(1, "(mics) forwarding Link_Configure_Thresholds.response to ", p.user);
 
-	// transmit(in);
+	_transmit(in);
 
 	return false;
 }
@@ -167,7 +168,7 @@ bool command_service::link_actions_request(mih::message_ptr &in,
 		in->destination(mih::id("link"));
 		_lpool.add(in);
 		in->source(mihfid);
-		// transmit(in);
+		_transmit(in);
 
 		return false;
 	} else {
@@ -197,15 +198,15 @@ bool command_service::link_actions_response(mih::message_ptr &in,
 
 	log(1, "(mics) forwarding Link_Actions.response to ", p.user);
 
-	// transmit(in);
+	_transmit(in);
 
 	return false;
 }
 
-bool generic_command_request(const char *recv_msg,
-			     const char *send_msg,
-			     mih::message_ptr &in,
-			     mih::message_ptr &out)
+bool command_service::generic_command_request(const char *recv_msg,
+					      const char *send_msg,
+					      mih::message_ptr &in,
+					      mih::message_ptr &out)
 {
 	log(1, recv_msg, in->source().to_string());
 
@@ -219,7 +220,7 @@ bool generic_command_request(const char *recv_msg,
 		// source identifier is the remote MIHF
 		//
 		log(1, send_msg);
-		// transmit(in);
+		_transmit(in);
 
 		return false;
 	} else {
@@ -229,10 +230,10 @@ bool generic_command_request(const char *recv_msg,
 	return false;
 }
 
-bool generic_command_response(const char *recv_msg,
-			      const char *send_msg,
-			      mih::message_ptr &in,
-			      mih::message_ptr &out)
+bool command_service::generic_command_response(const char *recv_msg,
+					       const char *send_msg,
+					       mih::message_ptr &in,
+					       mih::message_ptr &out)
 {
 	log(1, recv_msg, in->source().to_string());
 
@@ -246,7 +247,7 @@ bool generic_command_response(const char *recv_msg,
 		//
 		// source identifier is the remote MIHF
 		//
-		// transmit(in);
+		_transmit(in);
 
 		return false;
 	} else {
