@@ -17,40 +17,16 @@
 #define ODTONE_MIHF_SERVICE_ACCESS_CONTROLLER_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "service_management.hpp"
-#include "event_service.hpp"
-#include "command_service.hpp"
-#include "information_service.hpp"
+#include "utils.hpp"
+#include <odtone/mih/message.hpp>
 
-#include <odtone/base.hpp>
-
-#include <boost/bind.hpp>
-#include <map>
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 
-typedef boost::function<bool (mih::message_ptr&, mih::message_ptr&)> handler_t;
-
-class service_access_controller
-{
-public:
-	service_access_controller(service_management &sm,
-				  event_service &mies,
-				  command_service &mics,
-				  information_service &miis);
-
-	bool process(mih::message_ptr& in, mih::message_ptr& out);
-	void dispatch(mih::message_ptr& in);
-
-private:
-	service_management	&_sm;
-	event_service		&_mies;
-	command_service		&_mics;
-	information_service	&_miis;
-
-	std::map<uint, handler_t> _callbacks;
-};
+bool sac_process_message(mih::message_ptr& in, mih::message_ptr& out);
+void sac_dispatch_message(mih::message_ptr& in);
+void sac_register_callback(uint mid, mihf::handler_t f);
 
 } /* namespace mihf */ } /* namespace odtone */
 
