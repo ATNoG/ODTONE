@@ -19,6 +19,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "transaction.hpp"
+#include "utils.hpp"
 
 #include <boost/shared_ptr.hpp>
 ///////////////////////////////////////////////////////////////////////////////
@@ -39,7 +40,7 @@ class dst_transaction_t
 	: public transaction_t
 {
 public:
-	dst_transaction_t();
+	dst_transaction_t(handler_t &process_message);
 
 	void run();
 

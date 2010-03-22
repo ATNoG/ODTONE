@@ -20,7 +20,8 @@
 namespace odtone { namespace mihf {
 
 
-dst_transaction_t::dst_transaction_t()
+dst_transaction_t::dst_transaction_t(handler_t &f)
+	: transaction_t(f)
 {
 	state = DST_INIT;
 }
@@ -49,7 +50,7 @@ void dst_transaction_t::run()
 		msg_in_avail          = false;
 
 		out.reset(new mih::message);
-		// msg_out_avail       = sac->process(in, out);
+		msg_out_avail = process_message(in, out);
 
 		// if (start_ack_responder)
 		// 	tas->ack_responder(t);

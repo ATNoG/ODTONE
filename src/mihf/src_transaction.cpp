@@ -19,10 +19,10 @@
 
 namespace odtone { namespace mihf {
 
-src_transaction_t::src_transaction_t()
-	: transaction_t()
+src_transaction_t::src_transaction_t(handler_t &f)
+	: transaction_t(f)
 {
-	state             = SRC_INIT;
+	state = SRC_INIT;
 }
 
 void src_transaction_t::run()
@@ -106,7 +106,7 @@ void src_transaction_t::run()
 		// if (start_ack_responder)
 		// 	tas->ack_responder(t);
 
-		// sac->process(in, out);
+		process_message(in, out);
 		msg_in_avail = false;
 		response_received = true;
 
