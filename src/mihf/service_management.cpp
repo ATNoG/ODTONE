@@ -33,8 +33,10 @@ extern odtone::mih::net_type_addr_list  capabilities_list_net_type_addr;
 
 namespace odtone { namespace mihf {
 
-service_management::service_management(local_transaction_pool &lpool)
-	: _lpool(lpool)
+service_management::service_management(local_transaction_pool &lpool,
+				       transmit &t)
+	: _lpool(lpool),
+	  _transmit(t)
 {
 }
 
@@ -87,7 +89,7 @@ bool service_management::capability_discover_response(mih::message_ptr &in,
 	in->tid(p.tid);
 	in->destination(mih::id(p.user));
 
-	// transmit(in);
+	_transmit(in);
 
 	return false;
 }

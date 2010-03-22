@@ -18,6 +18,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "local_transaction_pool.hpp"
+#include "transmit.hpp"
 
 #include <odtone/base.hpp>
 #include <odtone/mih/types.hpp>
@@ -29,15 +30,16 @@ namespace odtone { namespace mihf {
 
 class service_management {
 public:
-	service_management(local_transaction_pool &lpool);
+	service_management(local_transaction_pool &lpool, transmit &t);
 
 	bool capability_discover_request(mih::message_ptr &in,
 					 mih::message_ptr &out);
 	bool capability_discover_response(mih::message_ptr&in,
 					  mih::message_ptr &out);
 
-private:
-	local_transaction_pool &_lpool;
+protected:
+	local_transaction_pool	&_lpool;
+	transmit		&_transmit;
 };
 
 } /* namespace mihf */ } /* namespace odtone */
