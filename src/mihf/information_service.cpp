@@ -26,8 +26,10 @@
 
 namespace odtone { namespace mihf {
 
-information_service::information_service(local_transaction_pool &lpool)
-	: _lpool(lpool)
+information_service::information_service(local_transaction_pool &lpool,
+					 transmit &t)
+	: _lpool(lpool),
+	  _transmit(t)
 {
 }
 
@@ -45,7 +47,7 @@ bool information_service::get_information_request(mih::message_ptr &in,
 		in->opcode(mih::operation::indication);
 		_lpool.add(in);
 		in->source(mihfid);
-		// transmit(in);
+		_transmit(in);
 
 		return false;
 	} else 	{
@@ -77,7 +79,7 @@ bool information_service::get_information_response(mih::message_ptr &in,
 
 	log(1, "(miis) forwarding Get_Information.response to ", p.user);
 
-	// transmit(in);
+	_transmit(in);
 
 	return false;
 }
@@ -96,7 +98,7 @@ bool information_service::push_information_request(mih::message_ptr &in,
 		in->destination(mih::id("miis"));
 		_lpool.add(in);
 		in->source(mihfid);
-		// transmit(in);
+		_transmit(in);
 
 		return false;
 	} else {
@@ -128,7 +130,7 @@ bool information_service::push_information_indication(mih::message_ptr &in,
 
 	log(1, "(miis) forwarding Push_Information.indication to ", p.user);
 
-	// transmit(in);
+	_transmit(in);
 
 	return false;
 }
