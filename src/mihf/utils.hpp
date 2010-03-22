@@ -20,9 +20,18 @@
 #include <odtone/base.hpp>
 #include <odtone/mih/message.hpp>
 #include <odtone/mih/types.hpp>
+
+#include <boost/function.hpp>
+#include <boost/bind.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace odtone { namespace mihf { namespace utils {
+namespace odtone { namespace mihf {
+
+//
+//
+typedef boost::function<bool (mih::message_ptr&, mih::message_ptr&)> handler_t;
+
+namespace utils {
 
 void tcp_send(boost::asio::io_service &io, mih::message_ptr &msg, const char *ip, uint16 port);
 void udp_send(boost::asio::io_service &io, mih::message_ptr &msg, const char *ip, uint16 port);
