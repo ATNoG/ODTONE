@@ -16,6 +16,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "transmit.hpp"
 #include "utils.hpp"
+#include "log.hpp"
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
@@ -32,6 +33,8 @@ void transmit::operator()(mih::message_ptr& msg)
 	// TODO: remove try catch
 	try{
 		address_entry a = _abook.get(msg->destination().to_string());
+		log(1, "(transmit) sending local message to: ",
+		    msg->destination().to_string(), " ", a.ip, " ", a.port);
 		utils::udp_send(_io, msg, a.ip.c_str(), a.port);
 	} catch (...) {
 		_msg_out(msg);
