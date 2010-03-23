@@ -18,6 +18,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "utils.hpp"
+#include "transmit.hpp"
 #include <odtone/mih/message.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -25,6 +26,16 @@
 namespace odtone { namespace mihf {
 
 bool sac_process_message(mih::message_ptr& in, mih::message_ptr& out);
+
+class sac_dispatch {
+public:
+	sac_dispatch(transmit &t);
+
+	void operator()(mih::message_ptr &msg);
+protected:
+	transmit &_transmit;
+};
+
 void sac_dispatch_message(mih::message_ptr& in);
 void sac_register_callback(uint mid, mihf::handler_t f);
 

@@ -42,8 +42,12 @@ void sac_register_callback(uint mid, handler_t func)
 	_callbacks[mid] = func;
 }
 
+sac_dispatch::sac_dispatch(transmit &t)
+	: _transmit(t)
+{
+}
 
-void sac_dispatch_message(mih::message_ptr& in)
+void sac_dispatch::operator()(mih::message_ptr& in)
 {
 	/** __no__ authentication at this point */
 
@@ -54,17 +58,20 @@ void sac_dispatch_message(mih::message_ptr& in)
 	// no thread safety because insertion should __only__ be made
 	// on MIHF initialization
 	//
-	if(_callbacks.find(mid) != _callbacks.end()) {
-		handler_t process_message = _callbacks[mid];
+	std::map<uint, handler_t>::iterator it;
+	it = _callbacks.find(mid);
+
+	if(it != _callbacks.end()) {
+		handler_t process_message = it->second;
 		mih::message_ptr out(new mih::message);
 
 		out->tid(in->tid());
-
-		// if (process_message(in, out))
-		// 	transmit(out);
-        }
-	log(1, "(sac) (warning) message with mid: ", mid,
-	    " unknown, discarding.");
+		if (process_message(in, out))
+		 	_transmit(out);
+        } else {
+		log(1, "(sac) (warning) message with mid: ", mid,
+		    " unknown, discarding.");
+	}
 }
 
 bool sac_process_message(mih::message_ptr& in, mih::message_ptr& out)
@@ -77,17 +84,20 @@ bool sac_process_message(mih::message_ptr& in, mih::message_ptr& out)
 	// no thread safety because insertion should __only__ be made
 	// on MIHF initialization
 	//
-	if (_callbacks.find(mid) != _callbacks.end()) {
-		handler_t process_message = _callbacks[mid];
+	std::map<uint, handler_t>::iterator it;
+	it = _callbacks.find(mid);
+
+	if(it != _callbacks.end()) {
+		handler_t process_message = it->second;
 
 		bool rsp = process_message(in, out);
 		out->tid(in->tid());
 
 		return rsp;
+	} else {
+		log(1, "(sac) (warning) message with mid: ", mid,
+		    " unknown, discarding.");
 	}
-
-	log(1, "(sac) (warning) message with mid: ", mid,
-	    " unknown, discarding.");
 
 	return false;
 }
