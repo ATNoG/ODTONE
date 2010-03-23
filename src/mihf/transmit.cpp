@@ -37,6 +37,7 @@ void transmit::operator()(mih::message_ptr& msg)
 		    msg->destination().to_string(), " ", a.ip, " ", a.port);
 		utils::udp_send(_io, msg, a.ip.c_str(), a.port);
 	} catch (...) {
+		log(1, "(transmit) forwarding to message_out");
 		_msg_out(msg);
 	}
 }
