@@ -68,6 +68,7 @@ private:
 	handler								_handler;
 	boost::asio::ip::udp::socket		_sock;
 	mih::id								_id;
+	boost::asio::ip::udp::endpoint _ep;
 
 	boost::mutex _mutex;
 	rmap         _rmap;
