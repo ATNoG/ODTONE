@@ -30,6 +30,7 @@ namespace odtone { namespace mihf {
 //
 //
 typedef boost::function<bool (mih::message_ptr&, mih::message_ptr&)> handler_t;
+typedef boost::function<void (mih::message_ptr&)> dispatch_t;
 
 namespace utils {
 
