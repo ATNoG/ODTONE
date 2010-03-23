@@ -32,7 +32,7 @@ void message_out::new_src_transaction(mih::message_ptr& m)
 {
 	src_transaction_ptr t(new src_transaction_t(process_message));
 
-	m->ackreq(true); // FIXME: read from config file
+	m->ackreq(false); // FIXME: read from config file
 
 	_tid++;
 	if (_tid == 0)		// don't send a message with a
