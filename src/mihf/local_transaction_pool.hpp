@@ -13,46 +13,46 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
+#ifndef ODTONE_MIHF_LOCAL_TRANSACTION_POOL__HPP
+#define ODTONE_MIHF_LOCAL_TRANSACTION_POOL__HPP
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
+#include <odtone/mih/types.hpp>
 #include <odtone/mih/message.hpp>
-#include <odtone/buffer.hpp>
 
-#include <boost/asio.hpp>
+#include <list>
 ///////////////////////////////////////////////////////////////////////////////
-
-using namespace boost::asio;
 
 namespace odtone { namespace mihf {
 
-class session {
-public:
-	session(io_service &io);
 
-	ip::tcp::socket &socket();
-
-	void start();
-
-	void handle_read(const boost::system::error_code& error, size_t rbytes);
-
-private:
-	odtone::buffer<uint8> _buff;
-	ip::tcp::socket _sock;
+struct pending_transaction
+{
+	mih::octet_string	user;
+	mih::octet_string	destination;
+	uint16			tid;
 };
 
-class tcp_server {
+class local_transaction_pool
+{
 public:
-	tcp_server(io_service &io, ip::tcp ipv, const char* ip, uint16 port);
+	local_transaction_pool();
 
-	void start();
+	void add(mih::message_ptr& in);
+	void remove(pending_transaction &p);
 
-	void handle_accept(session *s, const boost::system::error_code &e);
+	std::list<pending_transaction>::iterator
+	find(const mih::octet_string &from);
 
-	void send(mih::message_ptr &msg, const char *ip, uint16 port);
+	bool get(const mih::octet_string &from, pending_transaction &p);
 
-private:
-	io_service &_io;
-	ip::tcp::acceptor _acceptor;
+protected:
+	std::list<pending_transaction> _transactions;
 };
 
-} /* namespace mifh */ } /* namespace odtone */
+///////////////////////////////////////////////////////////////////////////////
+} /* namespace mihf */ } /* namespace odtone */
+
+
+#endif

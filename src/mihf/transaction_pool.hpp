@@ -13,38 +13,50 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#ifndef ODTONE_MIHF_TRANSMIT_HPP
-#define ODTONE_MIHF_TRANSMIT_HPP
+#ifndef ODTONE_MIHF_TRANSACTION_POOL__HPP
+#define ODTONE_MIHF_TRANSACTION_POOL__HPP
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "address_book.hpp"
-#include "message_out.hpp"
-
-#include <odtone/base.hpp>
-#include <odtone/debug.hpp>
-#include <odtone/mih/message.hpp>
+#include "dst_transaction.hpp"
+#include "src_transaction.hpp"
 
 #include <boost/asio.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/thread.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace boost::asio;
 
 namespace odtone { namespace mihf {
 
-class transmit
+class transaction_pool
 	: private boost::noncopyable
 {
 public:
-	transmit(io_service &io, address_book &abook, message_out &msg_out);
+	transaction_pool(io_service &io);
 
-	void operator()(mih::message_ptr& msg);
+	void add(src_transaction_ptr &t);
+	void add(dst_transaction_ptr &t);
 
+	void del(const src_transaction_ptr &t);
+	void del(const dst_transaction_ptr &t);
+
+	void find(const mih::id &id, uint16 tid, src_transaction_ptr &t);
+	void find(const mih::id &id, uint16 tid, dst_transaction_ptr &t);
 private:
-	io_service &_io;
-	address_book &_abook;
-	message_out &_msg_out;
+	void tick();
 
+	template <class Set, class SetIterator>
+	void dec(Set &set, SetIterator &it, boost::mutex &mutex);
+
+	boost::asio::deadline_timer _timer;
+
+	boost::mutex            _dst_mutex;
+	boost::mutex            _src_mutex;
+
+	dst_transaction_set     _dst;
+	src_transaction_set     _src;
 };
 
 } /* namespace mihf */ } /* namespace odtone */

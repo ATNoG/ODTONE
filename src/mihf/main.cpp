@@ -14,32 +14,49 @@
 //
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "transmit.hpp"
+
 #include "mihfid.hpp"
 #include "log.hpp"
-#include "transaction_ack_service.hpp"
+// #include "transaction_ack_service.hpp"
+// #include "transaction_manager.hpp"
+#include "address_book.hpp"
+#include "local_transaction_pool.hpp"
+#include "transaction_pool.hpp"
+
 #include "net_sap.hpp"
-#include "comm_handler.hpp"
-#include "transaction_manager.hpp"
+#include "message_out.hpp"
+#include "transmit.hpp"
+#include "service_management.hpp"
+#include "event_service.hpp"
+#include "command_service.hpp"
+#include "information_service.hpp"
 #include "service_access_controller.hpp"
 
+#include "message_in.hpp"
+#include "udp_listener.hpp"
+
+#include <odtone/base.hpp>
 #include <odtone/debug.hpp>
 #include <odtone/mih/config.hpp>
+#include <odtone/mih/request.hpp>
+#include <odtone/mih/response.hpp>
+#include <odtone/mih/indication.hpp>
+#include <odtone/mih/types/capabilities.hpp>
 
+#include <list>
 #include <iostream>
 
 #include <boost/program_options.hpp>
 #include <boost/tokenizer.hpp>
 #include <boost/foreach.hpp>
+#include <boost/asio.hpp>
 ///////////////////////////////////////////////////////////////////////////////
-
+// using namespace odtone::mihf;
 using namespace odtone;
 using namespace odtone::mihf;
 
-namespace po = boost::program_options;
 
-// TODO: pass a reference to the necessary objects
-boost::asio::io_service io_service;
+namespace po = boost::program_options;
 
 // TODO
 mih::event_list		capabilities_event_list;
@@ -96,7 +113,7 @@ void set_supported_event_list(mih::octet_string &list)
 	enum_map["link_handover_complete"] = (uint16) mih::link_handover_complete;
 
 	BOOST_FOREACH(mih::octet_string event, tokens) {
-		log(0, "evt: ", event);
+		// log(0, "evt: ", event);
 		if(enum_map.find(event) != enum_map.end())
 			capabilities_event_list.set((mih::event_list_enum) enum_map[event]);
 	}
@@ -129,7 +146,7 @@ void set_supported_link_list(mih::octet_string &list)
 		mih::octet_string link_type = *it;
 		++it;
 		mih::octet_string link_addr = *it;
-		log(0, "lt: ", link_type, " la: ", link_addr);
+		// log(0, "lt: ", link_type, " la: ", link_addr);
 		mih::net_type_addr nta;
 
 		if(enum_map.find(link_type) != enum_map.end()) {
@@ -149,7 +166,7 @@ void set_supported_link_list(mih::octet_string &list)
 //
 // example: mihf2 192.168.0.1 4551
 //
-void set_list_peer_mihfs(mih::octet_string &list)
+void set_list_peer_mihfs(mih::octet_string &list, address_book &abook)
 {
 	using namespace boost;
 
@@ -173,11 +190,11 @@ void set_list_peer_mihfs(mih::octet_string &list)
 		if ((iss >> port_).fail())
 			throw "invalid port";
 
-		transmit.add(id, ip, port_);
+		abook.add(id, ip, port_, mih::transport_udp);
 	}
 }
 
-void set_users_links(mih::octet_string &list)
+void set_users_links(mih::octet_string &list, address_book &abook)
 {
 	using namespace boost;
 
@@ -185,8 +202,7 @@ void set_users_links(mih::octet_string &list)
 	char_separator<char> sep2(" ");
 	tokenizer< char_separator<char> > list_tokens(list, sep1);
 
-	BOOST_FOREACH(mih::octet_string str, list_tokens)
-	{
+	BOOST_FOREACH(mih::octet_string str, list_tokens) {
 		tokenizer< char_separator<char> > tokens(str, sep2);
 		tokenizer< char_separator<char> >::iterator it = tokens.begin();
 
@@ -194,51 +210,170 @@ void set_users_links(mih::octet_string &list)
 		++it;
 		mih::octet_string port = *it;
 
+		mih::octet_string ip("127.0.0.1");
 		uint16 port_;
 		std::istringstream iss(port);
 		if ((iss >> port_).fail())
 			throw "invalid port";
 
-		transmit.add(id, "127.0.0.1", port_);
+
+		abook.add(id, ip, port_, mih::transport_udp);
 	}
 }
 
-void init_services(mih::config &cfg)
+void parse_link_capabilities(mih::config &cfg)
 {
-	mih::octet_string	id	= cfg.get<mih::octet_string>(kConf_MIHF_Id);
-	mih::octet_string	mihf_ip	= cfg.get<mih::octet_string>(kConf_MIHF_Ip);
-	mih::octet_string	events	= cfg.get<mih::octet_string>(kConf_MIHF_Evt_List);
-	mih::octet_string	links	= cfg.get<mih::octet_string>(kConf_MIHF_Network_Type);
-	mih::octet_string	mihfs	= cfg.get<mih::octet_string>(kConf_MIHF_Peer_List);
-	mih::octet_string	users	= cfg.get<mih::octet_string>(kConf_MIHF_Users_List);
-	mih::octet_string	lsaps	= cfg.get<mih::octet_string>(kConf_MIHF_Links_List);
-
-	uint16	remote_port = cfg.get<uint16>(kConf_MIHF_Remote_Port);
-	uint16	local_port  = cfg.get<uint16>(kConf_MIHF_Local_Port);
-
-	mihfid_t::instance()->assign(id.c_str());
-	log.level(3);
+	mih::octet_string events = cfg.get<mih::octet_string>(kConf_MIHF_Evt_List);
+	mih::octet_string links	= cfg.get<mih::octet_string>(kConf_MIHF_Network_Type);
 
 	set_supported_event_list(events);
 	set_supported_link_list(links);
-	set_list_peer_mihfs(mihfs);
-	set_users_links(users);
-	set_users_links(lsaps);
+}
 
-	log(0, events);
-	log(0, links);
-	log(0, users);
-	log(0, lsaps);
+void parse_peer_registrations(mih::config &cfg, address_book &abook)
+{
+	mih::octet_string mihfs	= cfg.get<mih::octet_string>(kConf_MIHF_Peer_List);
 
-	/// initiate listening services
-	comhand->init("127.0.0.1", local_port, 1);
-	netsap->init(mihf_ip.c_str(), remote_port, 1);
+	set_list_peer_mihfs(mihfs, abook);
+}
 
+void parse_sap_registrations(mih::config &cfg, address_book &abook)
+{
+	mih::octet_string users	= cfg.get<mih::octet_string>(kConf_MIHF_Users_List);
+	mih::octet_string lsaps	= cfg.get<mih::octet_string>(kConf_MIHF_Links_List);
+
+	set_users_links(users, abook);
+	set_users_links(lsaps, abook);
+}
+
+void sm_register_callbacks(service_management &sm)
+{
+	sac_register_callback(mih::request::capability_discover,
+			      boost::bind(&service_management::capability_discover_request,
+					  boost::ref(sm), _1, _2));
+
+	sac_register_callback(mih::response::capability_discover,
+			      boost::bind(&service_management::capability_discover_response,
+					  boost::ref(sm), _1, _2));
+}
+
+void mies_register_callbacks(event_service &mies)
+{
+	sac_register_callback(mih::request::event_subscribe,
+			      boost::bind(&event_service::event_subscribe_request,
+					  boost::ref(mies), _1, _2));
+	sac_register_callback(mih::response::event_subscribe,
+			      boost::bind(&event_service::event_subscribe_response,
+					  boost::ref(mies), _1,  _2));
+	sac_register_callback(mih::indication::link_up,
+			      boost::bind(&event_service::link_up_indication,
+					  boost::ref(mies), _1, _2));
+	sac_register_callback(mih::indication::link_up,
+			      boost::bind(&event_service::link_up_indication,
+					  boost::ref(mies), _1, _2));
+	sac_register_callback(mih::indication::link_down,
+			      boost::bind(&event_service::link_down_indication,
+					  boost::ref(mies), _1, _2));
+	sac_register_callback(mih::indication::link_detected,
+			      boost::bind(&event_service::link_detected_indication,
+					  boost::ref(mies), _1, _2));
+	sac_register_callback(mih::indication::link_going_down,
+			      boost::bind(&event_service::link_going_down_indication,
+					  boost::ref(mies), _1, _2));
+	sac_register_callback(mih::indication::link_handover_imminent,
+			      boost::bind(&event_service::link_handover_imminent_indication,
+			      boost::ref(mies), _1, _2));
+	sac_register_callback(mih::indication::link_handover_complete,
+			      boost::bind(&event_service::link_handover_complete_indication,
+					  boost::ref(mies), _1, _2));
+	sac_register_callback(mih::request::event_unsubscribe,
+			      boost::bind(&event_service::event_unsubscribe_request,
+			      boost::ref(mies), _1, _2));
+	sac_register_callback(mih::response::event_unsubscribe,
+			      boost::bind(&event_service::event_unsubscribe_response,
+					  boost::ref(mies), _1, _2));
+}
+// REGISTER(event_service::link_pdu_transmit_status_indication)
+
+void mics_register_callbacks(command_service &mics)
+{
+	sac_register_callback(mih::request::link_get_parameters,
+			      boost::bind(&command_service::link_get_parameters_request,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::response::link_get_parameters,
+			      boost::bind(&command_service::link_get_parameters_response,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::request::link_configure_thresholds,
+			      boost::bind(&command_service::link_configure_thresholds_request,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::response::link_configure_thresholds,
+			      boost::bind(&command_service::link_configure_thresholds_response,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::request::link_actions,
+			      boost::bind(&command_service::link_actions_request,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::response::link_actions,
+			      boost::bind(&command_service::link_actions_response,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::request::net_ho_candidate_query,
+			      boost::bind(&command_service::net_ho_candidate_query_request,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::response::net_ho_candidate_query,
+			      boost::bind(&command_service::net_ho_candidate_query_response,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::request::mn_ho_candidate_query,
+			      boost::bind(&command_service::mn_ho_candidate_query_request,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::response::mn_ho_candidate_query,
+			      boost::bind(&command_service::mn_ho_candidate_query_response,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::request::n2n_ho_query_resources,
+			      boost::bind(&command_service::n2n_ho_query_resources_request,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::response::n2n_ho_query_resources,
+			      boost::bind(&command_service::n2n_ho_query_resources_response,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::request::mn_ho_commit,
+			      boost::bind(&command_service::mn_ho_commit_request,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::response::mn_ho_commit,
+			      boost::bind(&command_service::mn_ho_commit_response,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::request::n2n_ho_commit,
+			      boost::bind(&command_service::n2n_ho_commit_request,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::response::n2n_ho_commit,
+			      boost::bind(&command_service::n2n_ho_commit_response,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::request::n2n_ho_complete,
+			      boost::bind(&command_service::n2n_ho_complete_request,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::response::n2n_ho_complete,
+			      boost::bind(&command_service::n2n_ho_complete_response,
+					  boost::ref(mics), _1, _2));
+}
+
+void miis_register_callbacks(information_service &miis)
+{
+	sac_register_callback(mih::request::get_information,
+			      boost::bind(&information_service::get_information_request,
+					  boost::ref(miis), _1, _2));
+	sac_register_callback(mih::response::get_information,
+			      boost::bind(&information_service::get_information_response,
+					  boost::ref(miis), _1, _2));
+	sac_register_callback(mih::request::push_information,
+			      boost::bind(&information_service::push_information_request,
+					  boost::ref(miis), _1, _2));
+	sac_register_callback(mih::indication::push_information,
+			      boost::bind(&information_service::push_information_indication,
+					  boost::ref(miis), _1, _2));
 }
 
 int main(int argc, char **argv)
 {
 	odtone::setup_crash_handler();
+
+	boost::asio::io_service io;
 
 	// declare MIHF supported options
 	po::options_description desc("MIHF Configuration Options");
@@ -265,10 +400,67 @@ int main(int argc, char **argv)
 		return EXIT_SUCCESS;
 	}
 
-	init_services(cfg);
+	parse_link_capabilities(cfg);
 
-	// start
-	io_service.run();
+	//
+	address_book		remote_abook, local_abook;
+	parse_sap_registrations(cfg, local_abook);
+	parse_peer_registrations(cfg, remote_abook);
+	//
+
+	//
+	transaction_pool	tpool(io);
+	local_transaction_pool	lpool;
+	//
+
+	//
+	handler_t process_message = boost::bind(&sac_process_message, _1, _2);
+	//
+
+	//
+	net_sap			netsap(io, remote_abook);
+	message_out		msgout(tpool, process_message, netsap);
+	transmit		trnsmt(io, local_abook, msgout);
+	event_service		mies(lpool, trnsmt);
+	command_service		mics(lpool, trnsmt);
+	information_service	miis(lpool, trnsmt);
+	service_management	sm(lpool, trnsmt);
+
+	// register callbacks with service access controller
+	sm_register_callbacks(sm);
+	mies_register_callbacks(mies);
+	mics_register_callbacks(mics);
+	miis_register_callbacks(miis);
+
+	//
+	// transaction manager for incoming messages
+	message_in msgin(tpool, process_message, netsap);
+	//
+
+	//
+	sac_dispatch sacd(trnsmt);
+	dispatch_t ldispatch = boost::bind(&sac_dispatch::operator(), sacd, _1);
+	//
+	dispatch_t rdispatch = boost::bind(&message_in::operator(), msgin, _1);
+
+	//
+	uint16 lport = cfg.get<uint16>(kConf_MIHF_Local_Port);
+	uint16 rport = cfg.get<uint16>(kConf_MIHF_Remote_Port);
+
+	udp_listener commhand(io, ip::udp::v4(), "127.0.0.1", lport, ldispatch);
+	udp_listener remotelistener(io, ip::udp::v4(), "0.0.0.0", rport, rdispatch);
+	//
+
+	mih::octet_string id = cfg.get<mih::octet_string>(kConf_MIHF_Id);
+	mihfid_t::instance()->assign(id.c_str());
+	log.level(3);
+
+
+	// start listening on local and remote ports
+	commhand.start();
+	remotelistener.start();
+
+	io.run();
 
 	return EXIT_SUCCESS;
 }

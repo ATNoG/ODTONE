@@ -13,35 +13,52 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#ifndef ODTONE_MIHF_NET_SAP__HPP
-#define ODTONE_MIHF_NET_SAP__HPP
-
 ///////////////////////////////////////////////////////////////////////////////
-#include "address_book.hpp"
+#include "utils.hpp"
 
 #include <odtone/base.hpp>
-#include <odtone/debug.hpp>
 #include <odtone/mih/message.hpp>
-#include <odtone/mih/types/capabilities.hpp>
+#include <odtone/buffer.hpp>
 
 #include <boost/asio.hpp>
+///////////////////////////////////////////////////////////////////////////////
 
 using namespace boost::asio;
-///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 
-class net_sap
-{
+class session {
 public:
-	net_sap(io_service &io, address_book &abook);
+	session(io_service &io, dispatch_t &d);
 
-	void send(mih::message_ptr &msg);
+	ip::tcp::socket &socket();
+
+	void start();
+
+	void handle_read(odtone::buffer<uint8> &buff,
+			 size_t rbytes,
+			 const boost::system::error_code& error);
+
 private:
-	io_service &_io;
-	address_book &_abook;
+	ip::tcp::socket	 _sock;
+	dispatch_t	&_dispatch;
 };
 
-} /* namespace mihf */ } /* namespace odtone */
+class tcp_listener {
+public:
+	tcp_listener(io_service &io,
+		     ip::tcp ipv,
+		     const char* ip, uint16 port,
+		     dispatch_t &d);
 
-#endif
+	void start();
+
+	void handle_accept(session *s, const boost::system::error_code &e);
+
+private:
+	io_service &_io;
+	ip::tcp::acceptor _acceptor;
+	dispatch_t &_dispatch;
+};
+
+} /* namespace mifh */ } /* namespace odtone */

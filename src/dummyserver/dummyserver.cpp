@@ -25,8 +25,6 @@
 #include <odtone/mih/tlv.hpp>
 #include <odtone/mih/tlv_types.hpp>
 
-#include "../mihf/generic_server.hpp"
-
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
@@ -34,47 +32,41 @@
 
 #include <odtone/miis/information_containers.hpp>
 
+#include "../mihf/udp_listener.hpp"
+
 using namespace odtone;
 using boost::asio::ip::udp;
 
-class dummy_server
-	: public mihf::generic_server
+static void process_message(mih::message_ptr& msg)
 {
-public:
-	dummy_server(boost::asio::io_service &io)
-		: mihf::generic_server(io)
-	{
+	std::cout << "MIH message: Service=" << msg->sid()
+		  << " Opcode=" << msg->opcode()
+		  << " Action=" << msg->aid()
+		  << std::endl;
+
+	if (msg->mid() == mih::response::get_information) {
+		mih::ir_bin_data_list bin_data_list;
+
+		*msg >> mih::response(mih::response::get_information)
+			& mih::tlv_info_resp_bin_data_list(bin_data_list);
+
+		mih::ir_bin_data bd = bin_data_list[0];
+
+		miis::ie_container_list_of_networks l;
+		bd.input() & miis::tlv_ie_container_list_of_networks(l);
 	}
-
-protected:
-	void process_message(mih::message_ptr& msg)
-	{
-		std::cout << "MIH message: Service=" << msg->sid()
-				  << " Opcode=" << msg->opcode()
-				  << " Action=" << msg->aid()
-				  << std::endl;
-
-		if (msg->mid() == mih::response::get_information) {
-			mih::ir_bin_data_list bin_data_list;
-
-			*msg >> mih::response(mih::response::get_information)
-				& mih::tlv_info_resp_bin_data_list(bin_data_list);
-
-			mih::ir_bin_data bd = bin_data_list[0];
-
-			miis::ie_container_list_of_networks l;
-			bd.input() & miis::tlv_ie_container_list_of_networks(l);
-		}
-	}
-};
+}
 
 
 int main(int argc, char **argv)
 {
 	boost::asio::io_service io_service;
-	dummy_server ds(io_service);
-	ds.init("127.0.0.1", 4000, 1);
 
+	dispatch_t dispatch = boost::bind(process_message, _1);
+	mihf::udp_listener listen(io_service, boost::asio::ip::udp::v4(),
+				  "127.0.0.1", 4000, dispatch);
+
+	listen.start();
 	io_service.run();
 
 	return 0;

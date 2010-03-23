@@ -13,34 +13,46 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#ifndef ODTONE_MIH_COMM_HANDLER_HPP
-#define ODTONE_MIH_COMM_HANDLER_HPP
+#ifndef GENERIC_SERVER_HPP
+#define GENERIC_SERVER_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "generic_server.hpp"
+#include "utils.hpp"
+
+#include <odtone/debug.hpp>
+#include <odtone/buffer.hpp>
+#include <odtone/mih/message.hpp>
+
+#include <boost/asio.hpp>
 ///////////////////////////////////////////////////////////////////////////////
+
+using namespace boost::asio;
 
 namespace odtone { namespace mihf {
 
-class comm_handler
-	: public generic_server
+class udp_listener
 {
 public:
-	static comm_handler* instance();
-	~comm_handler();
+	// bind to @ip and @port and create @num_threads for processing messages
+	udp_listener(io_service& io,
+		     ip::udp ipv,
+		     const char *ip,
+		     uint16 port,
+		     dispatch_t &d);
 
-private:
-	comm_handler(boost::asio::io_service& io);
-	comm_handler();
+	void start();
+
+	// Handle completion of an asynchronous accept operation
+	void handle_receive(buffer<uint8>& buff,
+			    size_t rbytes,
+			    const boost::system::error_code& ec);
 
 protected:
-	void process_message(mih::message_ptr& msg);
-	static comm_handler *ptr_instance;
+	io_service &_io;
+	ip::udp::socket _sock;
+	dispatch_t &_dispatch;
 };
 
-#define comhand comm_handler::instance()
-
-  } /* namespace mihf */
-} /* namespace odtone */
+} /* namespace mihf */ } /* namespace odtone */
 
 #endif

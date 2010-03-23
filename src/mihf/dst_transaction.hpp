@@ -39,17 +39,17 @@ class dst_transaction_t
 	: public transaction_t
 {
 public:
-	dst_transaction_t();
+	dst_transaction_t(handler_t &process_message, net_sap &netsap);
 
-	void dump();
+	void run();
 
 	dst_transaction_state_t state;
 };
 
 typedef boost::shared_ptr< dst_transaction_t > dst_transaction_ptr;
 
-typedef std::set< dst_transaction_ptr,
-				  transaction_compare<dst_transaction_ptr > >dst_transaction_set;
+typedef std::set<dst_transaction_ptr,
+		 transaction_compare<dst_transaction_ptr > >dst_transaction_set;
 
   } /* namespace mihf */
 } /* namespace odtone */

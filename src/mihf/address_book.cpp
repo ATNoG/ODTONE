@@ -14,32 +14,43 @@
 //
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "transaction.hpp"
+#include "address_book.hpp"
+#include "log.hpp"
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 
-transaction_t::transaction_t(handler_t &f, net_sap &netsap)
-	: process_message(f),
-	  _netsap(netsap)
+void address_book::add(const mih::octet_string &id,
+		       mih::octet_string& ip,
+		       uint16 port,
+		       mih::transport_list_enum t)
 {
-	opcode                = 0;
-	mid                   = 0;
-	ack_requestor_status  = ONGOING;
-	transaction_stop_when = 0;
-	retransmission_when   = 0;
-	tid                   = 0;
-	// my_mihf_id         = 0;
-	// peer_mihf_id       = 0;
-	transaction_status    = ONGOING;
-	start_ack_requestor   = false;
-	start_ack_responder   = false;
-	is_multicast          = false;
-	response_received     = false;
-	ack_req_state         = ACK_REQ_INIT;
-	ack_rsp_state         = ACK_RSP_INIT;
-	msg_in_avail			= false;
-	msg_out_avail			= false;
+	// TODO: add thread safety
+	address_entry a;
+
+	a.ip.assign(ip);
+	a.port = port;
+	a.trans = t;
+
+	_abook[id] = a;
+	log(4, "(address_book) added: ", id, " ", ip, " ", port);
 }
+
+void address_book::del(mih::octet_string &id)
+{
+	// TODO finish and add thread safety
+}
+
+const address_entry& address_book::get(const mih::octet_string &id)
+{
+	std::map<mih::octet_string, address_entry>::const_iterator it;
+	it = _abook.find(id);
+
+	if (it == _abook.end())
+		throw ("no entry in address_book for this id");
+
+	return it->second;
+}
+
 
 } /* namespace mihf */ } /* namespace odtone */

@@ -13,32 +13,38 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#ifndef ODTONE_MIHF_SERVICE_ACCESS_CONTROLLER_HPP
-#define ODTONE_MIHF_SERVICE_ACCESS_CONTROLLER_HPP
+#ifndef ODTONE_MIHF_MESSAGE_OUT__HPP
+#define ODTONE_MIHF_MESSAGE_OUT__HPP
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "utils.hpp"
-#include "transmit.hpp"
+#include "transaction_pool.hpp"
+#include "net_sap.hpp"
+
+#include <odtone/debug.hpp>
 #include <odtone/mih/message.hpp>
 
+#include <boost/noncopyable.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 
-bool sac_process_message(mih::message_ptr& in, mih::message_ptr& out);
-
-class sac_dispatch {
+class message_out
+{
 public:
-	sac_dispatch(transmit &t);
+	message_out(transaction_pool &tpool, handler_t &f, net_sap &netsap);
 
-	void operator()(mih::message_ptr &msg);
+	void operator()(mih::message_ptr& msg);
+
 protected:
-	transmit &_transmit;
+	void new_src_transaction(mih::message_ptr& msg);
+
+	transaction_pool &_tpool;
+	uint16 _tid;
+	handler_t &process_message;
+	net_sap &_netsap;
 };
 
-void sac_dispatch_message(mih::message_ptr& in);
-void sac_register_callback(uint mid, handler_t f);
-
 } /* namespace mihf */ } /* namespace odtone */
+
 
 #endif

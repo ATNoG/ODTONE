@@ -13,15 +13,19 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-///////////////////////////////////////////////////////////////////////////////
-#include "transaction_ack_service.hpp"
-///////////////////////////////////////////////////////////////////////////////
+#ifndef ODTONE_MIHF_TYPES_HPP
+#define ODTONE_MIHF_TYPES_HPP
 
-namespace odtone { namespace mihf {
+#include <odtone/base.hpp>
+#include <odtone/mih/message.hpp>
 
-transaction_ack_service::transaction_ack_service()
-{
-}
+#include <boost/function.hpp>
 
+namespace odtone {
 
-} /* namespace mihf */   } /* namespace odtone */
+typedef boost::function<bool (mih::message_ptr&, mih::message_ptr&)> handler_t;
+typedef boost::function<void (mih::message_ptr&)> dispatch_t;
+
+} /* namespace odtone */
+
+#endif

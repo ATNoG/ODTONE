@@ -13,41 +13,38 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-///////////////////////////////////////////////////////////////////////////////
-#include "comm_handler.hpp"
+#ifndef ODTONE_MIHF_MESSAGE_IN__HPP
+#define ODTONE_MIHF_MESSAGE_IN__HPP
 
-#include "service_access_controller.hpp"
 ///////////////////////////////////////////////////////////////////////////////
+#include "transaction_pool.hpp"
+#include "utils.hpp"
+#include "net_sap.hpp"
+#include <odtone/debug.hpp>
+#include <odtone/mih/message.hpp>
 
-extern boost::asio::io_service io_service;
+#include <boost/function.hpp>
+#include <boost/noncopyable.hpp>
+///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 
-
-comm_handler *comm_handler::ptr_instance = NULL;
-
-comm_handler *comm_handler::instance()
+class message_in
 {
-	if (ptr_instance == NULL)
-        ptr_instance = new comm_handler(io_service);
+public:
+	message_in(transaction_pool &tpool, handler_t &f, net_sap &netsap);
 
-	return ptr_instance;
-}
+	void operator()(mih::message_ptr& msg);
 
-comm_handler::comm_handler(boost::asio::io_service& io)
-	: generic_server(io)
-{
-}
+protected:
+	void new_dst_transaction(mih::message_ptr& msg);
 
-comm_handler::~comm_handler()
-{
-	if(ptr_instance)
-        delete ptr_instance;
-}
-
-void comm_handler::process_message(mih::message_ptr& msg)
-{
-	sac->dispatch(msg);
-}
+	transaction_pool &_tpool;
+	handler_t &process_message;
+	net_sap &_netsap;
+};
 
 } /* namespace mihf */ } /* namespace odtone */
+
+
+#endif

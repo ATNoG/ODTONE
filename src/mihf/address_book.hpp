@@ -13,48 +13,38 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#ifndef ODTONE_MIHF_LOCAL_TRANSACTIONS_HPP
-#define ODTONE_MIHF_LOCAL_TRANSACTIONS_HPP
+#ifndef ODTONE_MIHF_ADDRESS_BOOK__HPP
+#define ODTONE_MIHF_ADDRESS_BOOK__HPP
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
-#include <odtone/mih/types.hpp>
 #include <odtone/mih/message.hpp>
+#include <odtone/mih/types/capabilities.hpp>
 
-#include <list>
+#include <boost/bind.hpp>
+#include <map>
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 
-
-struct pending_transaction_t
+struct address_entry
 {
-	mih::octet_string	user;
-	mih::octet_string	destination;
-	uint16				tid;
+	mih::octet_string		ip;
+	uint16				port;
+	mih::transport_list_enum	trans; // send by UDP or TCP
 };
 
-class local_transaction_t
+class address_book
 {
 public:
-	static local_transaction_t* instance();
-	~local_transaction_t();
+	void add(const mih::octet_string &id, mih::octet_string &ip, uint16 port, mih::transport_list_enum t);
+	void del(mih::octet_string &id);
 
-	void add(mih::message_ptr& in);
-	void remove(pending_transaction_t &p);
-	std::list<pending_transaction_t>::iterator find(mih::octet_string &from);
-	bool get(mih::octet_string &from, pending_transaction_t &p);
-
-protected:
-	local_transaction_t();
-	static local_transaction_t *ptr_instance;
-	std::list<pending_transaction_t> _pending_transactions;
+	const address_entry& get(const mih::octet_string &id);
+private:
+	std::map<mih::octet_string, address_entry> _abook;
 };
 
-#define local_transactions local_transaction_t::instance()
-
-///////////////////////////////////////////////////////////////////////////////
 } /* namespace mihf */ } /* namespace odtone */
-
 
 #endif

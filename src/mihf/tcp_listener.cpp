@@ -14,20 +14,20 @@
 //
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "tcp_server.hpp"
+#include "tcp_listener.hpp"
 
 #include "log.hpp"
 
 #include <boost/bind.hpp>
+#include <odtone/bindrv.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 
-session::session(io_service &io)
-	: _sock(io)
+session::session(io_service &io, dispatch_t &d)
+	: _sock(io),
+	  _dispatch(d)
 {
-	// TODO: read max buffer size from config file (??)
-	_buff = odtone::buffer<uint8>(1500);
 }
 
 ip::tcp::socket& session::socket()
@@ -37,84 +37,78 @@ ip::tcp::socket& session::socket()
 
 void session::start()
 {
-	void *rbuf = _buff.get();
-	size_t rlen = _buff.size();
+	odtone::buffer<uint8> buff = odtone::buffer<uint8>(1500);
+	void *rbuf = buff.get();
+	size_t rlen = buff.size();
 
 	_sock.async_read_some(boost::asio::buffer(rbuf, rlen),
 			      boost::bind(&session::handle_read,
 					  this,
-					  placeholders::error,
-					  placeholders::bytes_transferred));
+					  odtone::bindrv(buff),
+					  placeholders::bytes_transferred,
+					  placeholders::error));
 }
 
-void session::handle_read(const boost::system::error_code &e, size_t rbytes)
+void session::handle_read(odtone::buffer<uint8> &buff,
+			  size_t rbytes,
+			  const boost::system::error_code &e)
 {
 	if (!e) {
 		// TODO: process message
+
+		mih::frame *pud = mih::frame::cast(buff.get(), rbytes);
+		if(pud) {
+			log(0, "process message");
+
+			mih::message_ptr in(new mih::message(*pud));
+			_dispatch(in);
+                }
+
+		// _dispatch(in);
+
+		// close socket because we're not using it anymore
+		 _sock.close();
 	} else {
 		delete this;
 	}
 }
 
-tcp_server::tcp_server(io_service &io, ip::tcp ipv, const char* ip, uint16 port)
+tcp_listener::tcp_listener(io_service &io,
+			   ip::tcp ipv,
+			   const char* ip,
+			   uint16 port,
+			   dispatch_t &d)
 	: _io(io),
-	  _acceptor(io, ip::tcp::endpoint(ip::address::from_string(ip), port))
+	  _acceptor(io, ip::tcp::endpoint(ip::address::from_string(ip), port)),
+	  _dispatch(d)
 {
 }
 
-void tcp_server::start()
+void tcp_listener::start()
 {
-	session *new_session = new session(_io);
+	session *new_session = new session(_io, _dispatch);
 	_acceptor.async_accept(new_session->socket(),
-			       boost::bind(&tcp_server::handle_accept,
+			       boost::bind(&tcp_listener::handle_accept,
 					   this,
 					   new_session,
 					   placeholders::error));
 }
 
-void tcp_server::handle_accept(session *new_session,
+void tcp_listener::handle_accept(session *new_session,
 			       const boost::system::error_code &e)
 {
 	if (!e) {
 		new_session->start();
-		new_session = new session(_io);
+		new_session = new session(_io, _dispatch);
 
 		_acceptor.async_accept(new_session->socket(),
-				       boost::bind(&tcp_server::handle_accept,
+				       boost::bind(&tcp_listener::handle_accept,
 						   this,
 						   new_session,
 						   placeholders::error));
 	} else {
 		delete new_session;
 	}
-}
-
-void send_handler(const boost::system::error_code &ec, size_t)
-{
-	if (ec) {
-		log(1, "(tcp_server) error sending message. Error code: ", ec);
-	}
-}
-
-void tcp_server::send(mih::message_ptr &msg, const char *ip, uint16 port)
-{
-	ip::tcp::endpoint ep(ip::address::from_string(ip), port);
-	ip::tcp::socket sock(_io);
-
-	sock.connect(ep);
-
-	mih::frame_vla fm;
-	void *sbuff;
-	size_t slen;
-
-	msg->get_frame(fm);
-	sbuff = fm.get();
-	slen = fm.size();
-
-	boost::asio::async_write(sock,
-				 boost::asio::buffer(sbuff, slen),
-				 send_handler);
-
 }
 
 } /* namespace mifh */ } /* namespace odtone */

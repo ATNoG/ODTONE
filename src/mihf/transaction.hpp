@@ -17,6 +17,9 @@
 #define TRANSACTION_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
+#include "types.hpp"
+#include "net_sap.hpp"
+
 #include <odtone/mih/message.hpp>
 #include <odtone/mih/types/identification.hpp>
 
@@ -58,7 +61,7 @@ enum ack_requestor_state_t
 class transaction_t
 {
 public:
-	transaction_t();
+	transaction_t(handler_t &f, net_sap &netsap);
 
 	// inter-state machine variables
 	uint16   opcode;
@@ -91,6 +94,10 @@ public:
 	mih::message_ptr dup;
 	mih::message_ptr ack;
 	unsigned    rtxctr;
+
+protected:
+	handler_t &process_message;
+	net_sap &_netsap;
 };
 
 // Compare method for inserting transactions in a set
@@ -101,10 +108,10 @@ public:
 	// Check if the peer mihf ids and transaction ids are different
 	bool operator()(const TransactionPtr &a, const TransactionPtr &b)
 	{
-        if (a->peer_mihf_id == b->peer_mihf_id)
+		if (a->peer_mihf_id == b->peer_mihf_id)
 			return (a->tid != b->tid);
 
-        return true;
+		return true;
 	}
 };
 
