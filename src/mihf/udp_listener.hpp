@@ -17,6 +17,8 @@
 #define GENERIC_SERVER_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
+#include "utils.hpp"
+
 #include <odtone/debug.hpp>
 #include <odtone/buffer.hpp>
 #include <odtone/mih/message.hpp>
@@ -32,7 +34,11 @@ class udp_listener
 {
 public:
 	// bind to @ip and @port and create @num_threads for processing messages
-	udp_listener(io_service& io, ip::udp ipv, const char *ip, uint16 port);
+	udp_listener(io_service& io,
+		     ip::udp ipv,
+		     const char *ip,
+		     uint16 port,
+		     dispatch_t &d);
 
 	void start();
 
@@ -44,6 +50,7 @@ public:
 protected:
 	io_service &_io;
 	ip::udp::socket _sock;
+	dispatch_t &_dispatch;
 };
 
 } /* namespace mihf */ } /* namespace odtone */

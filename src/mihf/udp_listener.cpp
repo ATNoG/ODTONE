@@ -24,9 +24,14 @@
 
 namespace odtone { namespace mihf {
 
-udp_listener::udp_listener(io_service& io, ip::udp ipv, const char *ip, uint16 port)
+udp_listener::udp_listener(io_service& io,
+			   ip::udp ipv,
+			   const char *ip,
+			   uint16 port,
+			   dispatch_t &d)
 	: _io(io),
-	  _sock(io)
+	  _sock(io),
+	  _dispatch(d)
 {
 	ip::udp::endpoint endpoint(ip::address::from_string(ip), port);
 	_sock.open(ipv);
@@ -71,7 +76,8 @@ void udp_listener::handle_receive(buffer<uint8>&				buff,
 
 		if(pud) {
 			mih::message_ptr in(new mih::message(*pud));
-			// process_message(in);
+			log(4, *pud);
+			_dispatch(in);
                 }
 
 		void *rbuff = buff.get();
