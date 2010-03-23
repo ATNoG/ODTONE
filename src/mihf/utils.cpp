@@ -39,7 +39,7 @@ bool is_local_request(mih::message_ptr &in)
 static void send_handler(const boost::system::error_code &ec)
 {
 	if (ec)
-		log(1, "Error sending message. Error code: ", ec);
+		log(1, "Error sending message. Error code: ", ec.message());
 }
 
 void tcp_send(io_service &io, mih::message_ptr &msg, const char *ip, uint16 port)
