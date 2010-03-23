@@ -61,7 +61,8 @@ bool command_service::link_get_parameters_request(mih::message_ptr &in,
 
 		return false;
 	} else {
-		return utils::forward_request(in);
+		utils::forward_request(in, _lpool, _transmit);
+		return false;
 	}
 
 	return false;
@@ -119,8 +120,10 @@ bool command_service::link_configure_thresholds_request(mih::message_ptr &in,
 
 		return false;
 	} else {
-		return utils::forward_request(in);
+		utils::forward_request(in, _lpool, _transmit);
+		return false;
 	}
+
 
 
 	return false;
@@ -172,7 +175,8 @@ bool command_service::link_actions_request(mih::message_ptr &in,
 
 		return false;
 	} else {
-		return utils::forward_request(in);
+		utils::forward_request(in, _lpool, _transmit);
+		return false;
 	}
 
 	return false;
@@ -224,7 +228,8 @@ bool command_service::generic_command_request(const char *recv_msg,
 
 		return false;
 	} else {
-		return utils::forward_request(in);
+		utils::forward_request(in, _lpool, _transmit);
+		return false;
 	}
 
 	return false;
@@ -251,7 +256,8 @@ bool command_service::generic_command_response(const char *recv_msg,
 
 		return false;
 	} else {
-		return utils::forward_request(in);
+		utils::forward_request(in, _lpool, _transmit);
+		return false;
 	}
 
 }

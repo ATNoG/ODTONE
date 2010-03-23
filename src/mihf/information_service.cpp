@@ -50,8 +50,9 @@ bool information_service::get_information_request(mih::message_ptr &in,
 		_transmit(in);
 
 		return false;
-	} else 	{
-		return utils::forward_request(in);
+	} else {
+		utils::forward_request(in, _lpool, _transmit);
+		return false;
 	}
 
 	return false;
@@ -102,7 +103,8 @@ bool information_service::push_information_request(mih::message_ptr &in,
 
 		return false;
 	} else {
-		return utils::forward_request(in);
+		utils::forward_request(in, _lpool, _transmit);
+		return false;
 	}
 
 	return false;

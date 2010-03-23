@@ -62,9 +62,9 @@ bool service_management::capability_discover_request(mih::message_ptr& in,
 		out->source(mihfid);
 
 		return true;
-	} else 	{
-		log(2, "(mism) remote request");
-		return utils::forward_request(in);
+	} else {
+		utils::forward_request(in, _lpool, _transmit);
+		return false;
 	}
 
 	return false;
