@@ -2,8 +2,8 @@ project dummyserver ;
 
 SOURCES =
 	dummyserver.cpp
-	../mihf/generic_server.cpp
 	../mihf/log.cpp
+	../mihf/udp_listener.cpp
 	;
 
 LIBS_SHARED =
