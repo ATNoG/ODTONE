@@ -84,15 +84,18 @@ void udp_send(io_service &io, mih::message_ptr &msg, const char *ip, uint16 port
 				       placeholders::error));
 }
 
-bool forward_request(mih::message_ptr &in)
+void forward_request(mih::message_ptr &in,
+		     local_transaction_pool &lpool,
+		     transmit &t)
 {
 	log(1, "(utils) forwarding request to ", in->destination().to_string());
-
-	// local_transactions->add(in);
+	lpool.add(in);
 	in->source(mihfid);
-	// tmanager->message_out(in);
-
-	return false;
+	t(in);
 }
+
+
+
+
 
 } /* namespace utils */ } /* namespace mihf */ } /* namespace odtone */

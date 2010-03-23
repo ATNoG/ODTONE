@@ -17,6 +17,9 @@
 #define ODTONE_MIHF_UTILS_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
+#include "transmit.hpp"
+#include "local_transaction_pool.hpp"
+
 #include <odtone/base.hpp>
 #include <odtone/mih/message.hpp>
 #include <odtone/mih/types.hpp>
@@ -25,23 +28,24 @@
 #include <boost/bind.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace odtone { namespace mihf {
+namespace odtone { namespace mihf { namespace utils {
 
-//
-//
-typedef boost::function<bool (mih::message_ptr&, mih::message_ptr&)> handler_t;
-typedef boost::function<void (mih::message_ptr&)> dispatch_t;
+void tcp_send(boost::asio::io_service &io,
+	      mih::message_ptr &msg,
+	      const char *ip,
+	      uint16 port);
 
-namespace utils {
+void udp_send(boost::asio::io_service &io,
+	      mih::message_ptr &msg,
+	      const char *ip,
+	      uint16 port);
 
-void tcp_send(boost::asio::io_service &io, mih::message_ptr &msg, const char *ip, uint16 port);
-void udp_send(boost::asio::io_service &io, mih::message_ptr &msg, const char *ip, uint16 port);
+void forward_request(mih::message_ptr &in,
+		     local_transaction_pool &lpool,
+		     transmit &t);
 
 bool is_local_request(mih::message_ptr &in);
 
-// A user sent a MIH request message, set the MIH source field and
-// forward the message to the required destination.
-bool forward_request(mih::message_ptr &in);
 
 } /* namespace utils */ } /* namespace mihf */ } /* namespace odtone */
 
