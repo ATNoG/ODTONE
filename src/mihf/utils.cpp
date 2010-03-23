@@ -66,7 +66,7 @@ void tcp_send(io_service &io, mih::message_ptr &msg, const char *ip, uint16 port
 
 void udp_send(io_service &io, mih::message_ptr &msg, const char *ip, uint16 port)
 {
-	ip::udp::socket sock(io);
+	ip::udp::socket sock(io, ip::udp::endpoint(ip::udp::v4(), 0));
 	ip::udp::endpoint ep(ip::address::from_string(ip), port);
 
 	//	msg->source(mihfid);
