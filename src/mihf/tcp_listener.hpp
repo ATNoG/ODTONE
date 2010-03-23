@@ -14,6 +14,8 @@
 //
 
 ///////////////////////////////////////////////////////////////////////////////
+#include "utils.hpp"
+
 #include <odtone/base.hpp>
 #include <odtone/mih/message.hpp>
 #include <odtone/buffer.hpp>
@@ -27,7 +29,7 @@ namespace odtone { namespace mihf {
 
 class session {
 public:
-	session(io_service &io);
+	session(io_service &io, dispatch_t &d);
 
 	ip::tcp::socket &socket();
 
@@ -38,12 +40,16 @@ public:
 			 const boost::system::error_code& error);
 
 private:
-	ip::tcp::socket _sock;
+	ip::tcp::socket	 _sock;
+	dispatch_t	&_dispatch;
 };
 
 class tcp_listener {
 public:
-	tcp_listener(io_service &io, ip::tcp ipv, const char* ip, uint16 port);
+	tcp_listener(io_service &io,
+		     ip::tcp ipv,
+		     const char* ip, uint16 port,
+		     dispatch_t &d);
 
 	void start();
 
@@ -52,6 +58,7 @@ public:
 private:
 	io_service &_io;
 	ip::tcp::acceptor _acceptor;
+	dispatch_t &_dispatch;
 };
 
 } /* namespace mifh */ } /* namespace odtone */

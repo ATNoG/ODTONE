@@ -24,8 +24,9 @@
 
 namespace odtone { namespace mihf {
 
-session::session(io_service &io)
-	: _sock(io)
+session::session(io_service &io, dispatch_t &d)
+	: _sock(io),
+	  _dispatch(d)
 {
 }
 
@@ -54,7 +55,16 @@ void session::handle_read(odtone::buffer<uint8> &buff,
 {
 	if (!e) {
 		// TODO: process message
-		log(0, "process message");
+
+		mih::frame *pud = mih::frame::cast(buff.get(), rbytes);
+		if(pud) {
+			log(0, "process message");
+
+			mih::message_ptr in(new mih::message(*pud));
+			_dispatch(in);
+                }
+
+		// _dispatch(in);
 
 		// close socket because we're not using it anymore
 		 _sock.close();
@@ -63,15 +73,20 @@ void session::handle_read(odtone::buffer<uint8> &buff,
 	}
 }
 
-tcp_listener::tcp_listener(io_service &io, ip::tcp ipv, const char* ip, uint16 port)
+tcp_listener::tcp_listener(io_service &io,
+			   ip::tcp ipv,
+			   const char* ip,
+			   uint16 port,
+			   dispatch_t &d)
 	: _io(io),
-	  _acceptor(io, ip::tcp::endpoint(ip::address::from_string(ip), port))
+	  _acceptor(io, ip::tcp::endpoint(ip::address::from_string(ip), port)),
+	  _dispatch(d)
 {
 }
 
 void tcp_listener::start()
 {
-	session *new_session = new session(_io);
+	session *new_session = new session(_io, _dispatch);
 	_acceptor.async_accept(new_session->socket(),
 			       boost::bind(&tcp_listener::handle_accept,
 					   this,
@@ -84,7 +99,7 @@ void tcp_listener::handle_accept(session *new_session,
 {
 	if (!e) {
 		new_session->start();
-		new_session = new session(_io);
+		new_session = new session(_io, _dispatch);
 
 		_acceptor.async_accept(new_session->socket(),
 				       boost::bind(&tcp_listener::handle_accept,
