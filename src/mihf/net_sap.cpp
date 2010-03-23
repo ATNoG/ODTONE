@@ -39,8 +39,10 @@ void net_sap::send(mih::message_ptr &msg)
 			utils::udp_send(_io, msg, a.ip.c_str(), a.port);
 		else
 			utils::tcp_send(_io, msg, a.ip.c_str(), a.port);
+
+		log(1, "(net sap) sent message to: ", msg->destination().to_string(), a.ip, " ", a.port);
 	} catch(...) {
-		// TODO log;
+		log(1, "(net sap) no registration for: #", msg->destination().to_string(), "#");
 	}
 }
 
