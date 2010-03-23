@@ -18,7 +18,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "transaction_pool.hpp"
-#include "utils.hpp"
+#include "net_sap.hpp"
 
 #include <odtone/debug.hpp>
 #include <odtone/mih/message.hpp>
@@ -29,10 +29,9 @@
 namespace odtone { namespace mihf {
 
 class message_out
-	: private boost::noncopyable
 {
 public:
-	message_out(transaction_pool &tpool, handler_t &f);
+	message_out(transaction_pool &tpool, handler_t &f, net_sap &netsap);
 
 	void operator()(mih::message_ptr& msg);
 
@@ -42,6 +41,7 @@ protected:
 	transaction_pool &_tpool;
 	uint16 _tid;
 	handler_t &process_message;
+	net_sap &_netsap;
 };
 
 } /* namespace mihf */ } /* namespace odtone */

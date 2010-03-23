@@ -19,9 +19,10 @@
 
 namespace odtone { namespace mihf {
 
-message_in::message_in(transaction_pool &tpool, handler_t &f)
+message_in::message_in(transaction_pool &tpool, handler_t &f, net_sap &netsap)
 	: _tpool(tpool),
-	  process_message(f)
+	  process_message(f),
+	  _netsap(netsap)
 {
 }
 
@@ -77,7 +78,7 @@ void message_in::operator()(mih::message_ptr& in)
 
 void message_in::new_dst_transaction(mih::message_ptr& m)
 {
-	dst_transaction_ptr t(new dst_transaction_t(process_message));
+	dst_transaction_ptr t(new dst_transaction_t(process_message, _netsap));
 	t->in = m;
 	t->mid = m->mid();
 	t->msg_in_avail = true;

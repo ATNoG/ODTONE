@@ -19,8 +19,9 @@
 
 namespace odtone { namespace mihf {
 
-transaction_t::transaction_t(handler_t &f)
-	: process_message(f)
+transaction_t::transaction_t(handler_t &f, net_sap &netsap)
+	: process_message(f),
+	  _netsap(netsap)
 {
 	opcode                = 0;
 	mid                   = 0;

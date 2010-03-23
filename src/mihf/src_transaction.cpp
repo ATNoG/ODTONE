@@ -19,8 +19,8 @@
 
 namespace odtone { namespace mihf {
 
-src_transaction_t::src_transaction_t(handler_t &f)
-	: transaction_t(f)
+src_transaction_t::src_transaction_t(handler_t &f, net_sap &netsap)
+	: transaction_t(f, netsap)
 {
 	state = SRC_INIT;
 }
@@ -49,7 +49,7 @@ void src_transaction_t::run()
 		my_mihf_id            = out->source();
 		peer_mihf_id          = out->destination();
 
-		// transmit.send(out);
+		_netsap.send(out);
 
 		if (opcode == mih::operation::response) {
 			if (start_ack_requestor) {

@@ -20,8 +20,8 @@
 namespace odtone { namespace mihf {
 
 
-dst_transaction_t::dst_transaction_t(handler_t &f)
-	: transaction_t(f)
+dst_transaction_t::dst_transaction_t(handler_t &f, net_sap &netsap)
+	: transaction_t(f, netsap)
 {
 	state = DST_INIT;
 }
@@ -82,7 +82,7 @@ void dst_transaction_t::run()
 		start_ack_requestor  = out->ackreq();
 		ack_requestor_status = ONGOING;
 
-		// transmit.send(out);
+		_netsap.send(out);
 
 		// ?? probably not
 		// if (start_ack_requestor)

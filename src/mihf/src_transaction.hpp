@@ -18,7 +18,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "transaction.hpp"
-#include "utils.hpp"
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
@@ -38,7 +37,7 @@ class src_transaction_t
 	: public transaction_t
 {
 public:
-	src_transaction_t(handler_t &f);
+	src_transaction_t(handler_t &f, net_sap &netsap);
 	void run();
 
 	src_transaction_state_t state;
