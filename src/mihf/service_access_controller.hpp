@@ -37,7 +37,7 @@ protected:
 };
 
 void sac_dispatch_message(mih::message_ptr& in);
-void sac_register_callback(uint mid, mihf::handler_t f);
+void sac_register_callback(uint mid, handler_t f);
 
 } /* namespace mihf */ } /* namespace odtone */
 
