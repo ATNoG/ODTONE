@@ -54,8 +54,6 @@ void session::handle_read(odtone::buffer<uint8> &buff,
 			  const boost::system::error_code &e)
 {
 	if (!e) {
-		// TODO: process message
-
 		mih::frame *pud = mih::frame::cast(buff.get(), rbytes);
 		if(pud) {
 			log(0, "process message");
@@ -63,9 +61,6 @@ void session::handle_read(odtone::buffer<uint8> &buff,
 			mih::message_ptr in(new mih::message(*pud));
 			_dispatch(in);
                 }
-
-		// _dispatch(in);
-
 		// close socket because we're not using it anymore
 		 _sock.close();
 	} else {
