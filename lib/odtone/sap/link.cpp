@@ -80,6 +80,7 @@ void link::async_send(mih::message& msg, const handler& h)
 	size_t slen;
 
 	msg.source(odtone::mih::id("link"));
+	msg.destination(odtone::mih::id("local-mihf"));
 	msg.get_frame(fm);
 
 	sbuff = fm.get();

@@ -57,7 +57,13 @@ mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
 {
 	odtone::mih::message msg;
 
-	_mihfid.assign(cfg.get<odtone::mih::octet_string>(odtone::sap::kConf_MIH_SAP_dest).c_str());
+	odtone::mih::octet_string destination = cfg.get<odtone::mih::octet_string>(odtone::sap::kConf_MIH_SAP_dest);
+	// check if the user passed a --dest option in the command
+	// line, if not then use the default MIHF identifier
+	if (destination.length() == 0)
+		destination = cfg.get<odtone::mih::octet_string>(odtone::sap::kConf_MIHF_Id);
+
+	_mihfid.assign(destination.c_str());
 
 	//
 	// Let's fire a capability discover request to get things moving
@@ -183,7 +189,7 @@ int main(int argc, char** argv)
 {
 	odtone::setup_crash_handler();
 
-	// try {
+	try {
 		boost::asio::io_service ios;
 
 		// declare MIH Usr available options
@@ -194,7 +200,7 @@ int main(int argc, char** argv)
 			(odtone::sap::kConf_File, po::value<std::string>()->default_value("mih_usr.conf"), "Configuration File")
 			(odtone::sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive Buffer Length")
 			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
-			(odtone::sap::kConf_MIHF_Id, po::value<std::string>()->default_value("mihf"), "Local MIHF Id")
+			(odtone::sap::kConf_MIHF_Id, po::value<std::string>()->default_value("local-mihf"), "Local MIHF Id")
 			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("user"), "User Id")
 			(odtone::sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "MIHF Local Communications Port")
 			(odtone::sap::kConf_MIH_SAP_dest, po::value<std::string>()->default_value(""), "MIH message destination of MIH User");
@@ -211,9 +217,9 @@ int main(int argc, char** argv)
 
 		ios.run();
 
-	// } catch(std::exception& e) {
-	// 	log_(0, "exception: ", e.what());
-	// }
+	} catch(std::exception& e) {
+		log_(0, "exception: ", e.what());
+	}
 }
 
 // EOF ////////////////////////////////////////////////////////////////////////
