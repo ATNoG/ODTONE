@@ -30,11 +30,19 @@ using namespace boost::asio;
 
 namespace odtone { namespace mihf { namespace utils {
 
-bool is_local_request(mih::message_ptr &in)
+static const mih::id default_local_mihfid = mih::id("local-mihf");
+
+bool is_local_request(mih::message_ptr &msg)
 {
-	return ((in->destination().to_string().length() == 0) ||
-			(mihfid == in->destination()));
+	return ((mihfid == msg->destination()) ||
+		(default_local_mihfid == msg->destination()));
 }
+
+bool is_multicast(mih::message_ptr &msg)
+{
+	return (msg->destination().to_string().length() == 0);
+}
+
 
 static void send_handler(const boost::system::error_code &ec)
 {

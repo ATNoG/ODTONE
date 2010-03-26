@@ -44,7 +44,9 @@ void forward_request(mih::message_ptr &in,
 		     local_transaction_pool &lpool,
 		     transmit &t);
 
-bool is_local_request(mih::message_ptr &in);
+bool is_local_request(mih::message_ptr &msg);
+
+bool is_multicast(mih::message_ptr &msg);
 
 
 } /* namespace utils */ } /* namespace mihf */ } /* namespace odtone */
