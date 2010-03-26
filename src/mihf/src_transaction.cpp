@@ -15,6 +15,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "src_transaction.hpp"
+#include "utils.hpp"
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
@@ -43,8 +44,8 @@ void src_transaction_t::run()
 		response_received     = false;
 		transaction_stop_when = 15; // FIXME: read from config
 		opcode                = out->opcode();
-		//    is_multicast          = out->is_multicast;
-		start_ack_requestor   = out->ackreq() /* && !is_multicast) */;
+		is_multicast          = utils::is_multicast(out);
+		start_ack_requestor   = (out->ackreq() && !is_multicast);
 		tid                   = out->tid();
 		my_mihf_id            = out->source();
 		peer_mihf_id          = out->destination();

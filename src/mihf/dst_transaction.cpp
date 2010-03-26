@@ -15,6 +15,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "dst_transaction.hpp"
+#include "utils.hpp"
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
@@ -42,11 +43,11 @@ void dst_transaction_t::run()
 		transaction_status    = ONGOING;
 		opcode                = in->opcode();
 		tid                   = in->tid();
-		transaction_stop_when = 15; // FIXME
-		//    is_multicast          = in->get_is_multicast();
+		transaction_stop_when = 15; // TODO: read from config
+		is_multicast          = utils::is_multicast(in);
 		peer_mihf_id          = in->source();
 		my_mihf_id            = in->destination();
-		start_ack_responder   = in->ackreq() /*&& !in->is_multicast)*/;
+		start_ack_responder   = (in->ackreq() && !is_multicast);
 		msg_in_avail          = false;
 
 		out.reset(new mih::message);
