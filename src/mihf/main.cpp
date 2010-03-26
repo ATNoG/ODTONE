@@ -400,27 +400,47 @@ int main(int argc, char **argv)
 		return EXIT_SUCCESS;
 	}
 
+	// get command line parameters
+	// bool enable_broadcast = boost::get<bool>(kConf_MIHF_BRDCAST);
+	uint16 lport = cfg.get<uint16>(kConf_MIHF_Local_Port);
+	uint16 rport = cfg.get<uint16>(kConf_MIHF_Remote_Port);
+	mih::octet_string id = cfg.get<mih::octet_string>(kConf_MIHF_Id);
+	uint16 loglevel = 3;
+	//
+
+	// set this mihf id
+	mihfid_t::instance()->assign(id.c_str());
+	// set log level
+	log.level(loglevel);
+
+	// set link capabilities
 	parse_link_capabilities(cfg);
 
-	//
+	// create address books that stores info on how to contact mih
+	// saps and peer mihfs
 	address_book		remote_abook, local_abook;
 	parse_sap_registrations(cfg, local_abook);
 	parse_peer_registrations(cfg, remote_abook);
 	//
 
-	//
+	// pool of pending transactions with peer mihfs
 	transaction_pool	tpool(io);
+
+	// pool of pending transactions with local mih saps (user and
+	// links)
 	local_transaction_pool	lpool;
-	//
 
-	//
+	// handler for remote messages
 	handler_t process_message = boost::bind(&sac_process_message, _1, _2);
-	//
 
-	//
+	// wrapper for sending messages
 	net_sap			netsap(io, remote_abook);
+
+	// transaction manager for outgoing messages
 	message_out		msgout(tpool, process_message, netsap);
 	transmit		trnsmt(io, local_abook, msgout);
+
+	// instantiate mihf services
 	event_service		mies(lpool, trnsmt);
 	command_service		mics(lpool, trnsmt);
 	information_service	miis(lpool, trnsmt);
@@ -432,29 +452,25 @@ int main(int argc, char **argv)
 	mics_register_callbacks(mics);
 	miis_register_callbacks(miis);
 
-	//
 	// transaction manager for incoming messages
 	message_in msgin(tpool, process_message, netsap);
-	//
 
-	//
+	// sac dispatch is for handling messages from local mih saps
+	// (users and links)
 	sac_dispatch sacd(trnsmt);
+
+	// handler of messages received on local port
 	dispatch_t ldispatch = boost::bind(&sac_dispatch::operator(), sacd, _1);
-	//
+	// handler of messages received from peer mihfs
 	dispatch_t rdispatch = boost::bind(&message_in::operator(), msgin, _1);
 
-	//
-	uint16 lport = cfg.get<uint16>(kConf_MIHF_Local_Port);
-	uint16 rport = cfg.get<uint16>(kConf_MIHF_Remote_Port);
-
+	// create and bind to port 'lport' on loopback interface and
+	// call ldispatch when a message is received
 	udp_listener commhand(io, ip::udp::v4(), "127.0.0.1", lport, ldispatch);
+
+	// create and bind to port rport and call rdispatch when a
+	// message is received
 	udp_listener remotelistener(io, ip::udp::v4(), "0.0.0.0", rport, rdispatch);
-	//
-
-	mih::octet_string id = cfg.get<mih::octet_string>(kConf_MIHF_Id);
-	mihfid_t::instance()->assign(id.c_str());
-	log.level(3);
-
 
 	// start listening on local and remote ports
 	commhand.start();
