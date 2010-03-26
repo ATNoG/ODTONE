@@ -52,8 +52,18 @@ static void send_handler(const boost::system::error_code &ec)
 
 void tcp_send(io_service &io, mih::message_ptr &msg, const char *ip, uint16 port)
 {
-	ip::tcp::endpoint ep(ip::address::from_string(ip), port);
 	ip::tcp::socket sock(io);
+
+	//
+	// broadcast if no destination mihf is given
+	//
+	if (is_multicast(msg)) {
+		boost::asio::socket_base::broadcast option(true);
+		sock.set_option(option);
+		ip = "255.255.255.255";
+	}
+
+	ip::tcp::endpoint ep(ip::address::from_string(ip), port);
 
 	sock.connect(ep);
 
@@ -75,6 +85,16 @@ void tcp_send(io_service &io, mih::message_ptr &msg, const char *ip, uint16 port
 void udp_send(io_service &io, mih::message_ptr &msg, const char *ip, uint16 port)
 {
 	ip::udp::socket sock(io, ip::udp::endpoint(ip::udp::v4(), 0));
+
+	//
+	// broadcast if no destination mihf is given
+	//
+	if (is_multicast(msg)) {
+		boost::asio::socket_base::broadcast option(true);
+		sock.set_option(option);
+		ip = "255.255.255.255";
+	}
+
 	ip::udp::endpoint ep(ip::address::from_string(ip), port);
 
 	//	msg->source(mihfid);
