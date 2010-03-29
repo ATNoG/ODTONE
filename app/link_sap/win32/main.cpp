@@ -41,6 +41,28 @@ void wlan_event_handler(const WLAN_NOTIFICATION_DATA& nd, boost::asio::io_servic
 {
 	std::cout << "wlan notification[" << nd.NotificationCode << "]\n";
 
+	if (nd.NotificationSource != WLAN_NOTIFICATION_SOURCE_ACM)
+		return;
+
+	switch (nd.NotificationCode) {
+	case wlan_notification_acm_connection_complete: {
+			WLAN_CONNECTION_NOTIFICATION_DATA* cnd = reinterpret_cast<WLAN_CONNECTION_NOTIFICATION_DATA*>(nd.pData);
+
+			if (cnd->wlanReasonCode == WLAN_REASON_CODE_SUCCESS) {
+				interface* it = new if_802_11(if_id(&nd.InterfaceGuid));
+
+				it->up(true);
+				ios.dispatch(boost::bind(&link_sap::link_sap::update, ls, it));
+			}
+		}
+		break;
+
+	case wlan_notification_acm_disconnected: {
+			interface* it = new if_802_11(if_id(&nd.InterfaceGuid));
+			it->up(false);
+			ios.dispatch(boost::bind(&link_sap::link_sap::update, ls, it));
+		}
+	}
 }
 
 int main(int argc, char** argv)
@@ -65,8 +87,11 @@ int main(int argc, char** argv)
 			interface* it;
 
 			it = new if_802_11(if_id(&iflst->InterfaceInfo[i].InterfaceGuid));
+			it->name(iflst->InterfaceInfo[i].strInterfaceDescription);
 			ios.dispatch(boost::bind(&link_sap::link_sap::update, &ls, it));
 		}
+
+		link_sap::win32::wlan_register_notification(lan, boost::bind(&wlan_event_handler, _1, boost::ref(ios), &ls));
 
 		ios.run();
 
