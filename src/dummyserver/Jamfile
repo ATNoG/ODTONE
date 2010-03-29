@@ -4,6 +4,7 @@ SOURCES =
 	dummyserver.cpp
 	../mihf/log.cpp
 	../mihf/udp_listener.cpp
+	../mihf/meta_message.cpp
 	;
 
 LIBS_SHARED =

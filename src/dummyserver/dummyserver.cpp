@@ -37,7 +37,7 @@
 using namespace odtone;
 using boost::asio::ip::udp;
 
-static void process_message(mih::message_ptr& msg)
+static void process_message(meta_message_ptr& msg)
 {
 	std::cout << "MIH message: Service=" << msg->sid()
 		  << " Opcode=" << msg->opcode()
