@@ -23,8 +23,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "local_transaction_pool.hpp"
 #include "transmit.hpp"
-
-#include <odtone/mih/message.hpp>
+#include "meta_message.hpp"
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
@@ -35,49 +34,49 @@ class command_service
 public:
 	command_service(local_transaction_pool &lpool, transmit &t);
 
-	bool link_get_parameters_request(mih::message_ptr &in, mih::message_ptr &out);
-	bool link_get_parameters_response(mih::message_ptr &in, mih::message_ptr &out);
+	bool link_get_parameters_request(meta_message_ptr &in, meta_message_ptr &out);
+	bool link_get_parameters_response(meta_message_ptr &in, meta_message_ptr &out);
 
-	bool link_configure_thresholds_request(mih::message_ptr &in, mih::message_ptr &out);
-	bool link_configure_thresholds_response(mih::message_ptr &in, mih::message_ptr &out);
+	bool link_configure_thresholds_request(meta_message_ptr &in, meta_message_ptr &out);
+	bool link_configure_thresholds_response(meta_message_ptr &in, meta_message_ptr &out);
 
-	bool link_actions_request(mih::message_ptr &in, mih::message_ptr &out);
-	bool link_actions_response(mih::message_ptr &in, mih::message_ptr &out);
+	bool link_actions_request(meta_message_ptr &in, meta_message_ptr &out);
+	bool link_actions_response(meta_message_ptr &in, meta_message_ptr &out);
 
-	bool net_ho_candidate_query_request(mih::message_ptr &in, mih::message_ptr &out);
-	bool net_ho_candidate_query_response(mih::message_ptr &in, mih::message_ptr &out);
+	bool net_ho_candidate_query_request(meta_message_ptr &in, meta_message_ptr &out);
+	bool net_ho_candidate_query_response(meta_message_ptr &in, meta_message_ptr &out);
 
-	bool mn_ho_candidate_query_request(mih::message_ptr &in, mih::message_ptr &out);
-	bool mn_ho_candidate_query_response(mih::message_ptr &in, mih::message_ptr &out);
+	bool mn_ho_candidate_query_request(meta_message_ptr &in, meta_message_ptr &out);
+	bool mn_ho_candidate_query_response(meta_message_ptr &in, meta_message_ptr &out);
 
-	bool n2n_ho_query_resources_request(mih::message_ptr &in, mih::message_ptr &out);
-	bool n2n_ho_query_resources_response(mih::message_ptr &in, mih::message_ptr &out);
+	bool n2n_ho_query_resources_request(meta_message_ptr &in, meta_message_ptr &out);
+	bool n2n_ho_query_resources_response(meta_message_ptr &in, meta_message_ptr &out);
 
-	bool mn_ho_commit_request(mih::message_ptr &in, mih::message_ptr &out);
-	bool mn_ho_commit_response(mih::message_ptr &in, mih::message_ptr &out);
+	bool mn_ho_commit_request(meta_message_ptr &in, meta_message_ptr &out);
+	bool mn_ho_commit_response(meta_message_ptr &in, meta_message_ptr &out);
 
-	bool net_ho_commit_request(mih::message_ptr &in, mih::message_ptr &out);
-	bool net_ho_commit_response(mih::message_ptr &in, mih::message_ptr &out);
+	bool net_ho_commit_request(meta_message_ptr &in, meta_message_ptr &out);
+	bool net_ho_commit_response(meta_message_ptr &in, meta_message_ptr &out);
 
-	bool n2n_ho_commit_request(mih::message_ptr &in, mih::message_ptr &out);
-	bool n2n_ho_commit_response(mih::message_ptr &in, mih::message_ptr &out);
+	bool n2n_ho_commit_request(meta_message_ptr &in, meta_message_ptr &out);
+	bool n2n_ho_commit_response(meta_message_ptr &in, meta_message_ptr &out);
 
-	bool mn_ho_complete_request(mih::message_ptr &in, mih::message_ptr &out);
-	bool mn_ho_complete_response(mih::message_ptr &in, mih::message_ptr &out);
+	bool mn_ho_complete_request(meta_message_ptr &in, meta_message_ptr &out);
+	bool mn_ho_complete_response(meta_message_ptr &in, meta_message_ptr &out);
 
-	bool n2n_ho_complete_request(mih::message_ptr &in, mih::message_ptr &out);
-	bool n2n_ho_complete_response(mih::message_ptr &in, mih::message_ptr &out);
+	bool n2n_ho_complete_request(meta_message_ptr &in, meta_message_ptr &out);
+	bool n2n_ho_complete_response(meta_message_ptr &in, meta_message_ptr &out);
 
 protected:
 	bool generic_command_request(const char *recv_msg,
 				     const char *send_msg,
-				     mih::message_ptr &in,
-				     mih::message_ptr &out);
+				     meta_message_ptr &in,
+				     meta_message_ptr &out);
 
 	bool generic_command_response(const char *recv_msg,
 				      const char *send_msg,
-				      mih::message_ptr &in,
-				      mih::message_ptr &out);
+				      meta_message_ptr &in,
+				      meta_message_ptr &out);
 
 	local_transaction_pool	&_lpool;
 	transmit		&_transmit;

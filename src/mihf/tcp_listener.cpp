@@ -56,9 +56,9 @@ void session::handle_read(odtone::buffer<uint8> &buff,
 	if (!e) {
 		mih::frame *pud = mih::frame::cast(buff.get(), rbytes);
 		if(pud) {
-			log(0, "process message");
+			log(1, "(tcp) received ", rbytes, " bytes");
 
-			mih::message_ptr in(new mih::message(*pud));
+			meta_message_ptr in(new meta_message(*pud));
 			_dispatch(in);
                 }
 		// close socket because we're not using it anymore

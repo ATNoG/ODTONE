@@ -16,15 +16,15 @@
 #ifndef ODTONE_MIHF_TYPES_HPP
 #define ODTONE_MIHF_TYPES_HPP
 
-#include <odtone/base.hpp>
-#include <odtone/mih/message.hpp>
+#include "meta_message.hpp"
 
+#include <odtone/base.hpp>
 #include <boost/function.hpp>
 
 namespace odtone {
 
-typedef boost::function<bool (mih::message_ptr&, mih::message_ptr&)> handler_t;
-typedef boost::function<void (mih::message_ptr&)> dispatch_t;
+typedef boost::function<bool (meta_message_ptr&, meta_message_ptr&)> handler_t;
+typedef boost::function<void (meta_message_ptr&)> dispatch_t;
 
 } /* namespace odtone */
 

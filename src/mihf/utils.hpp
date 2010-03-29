@@ -21,7 +21,7 @@
 #include "local_transaction_pool.hpp"
 
 #include <odtone/base.hpp>
-#include <odtone/mih/message.hpp>
+#include "meta_message.hpp"
 #include <odtone/mih/types.hpp>
 
 #include <boost/function.hpp>
@@ -31,22 +31,22 @@
 namespace odtone { namespace mihf { namespace utils {
 
 void tcp_send(boost::asio::io_service &io,
-	      mih::message_ptr &msg,
+	      meta_message_ptr &msg,
 	      const char *ip,
 	      uint16 port);
 
 void udp_send(boost::asio::io_service &io,
-	      mih::message_ptr &msg,
+	      meta_message_ptr &msg,
 	      const char *ip,
 	      uint16 port);
 
-void forward_request(mih::message_ptr &in,
+void forward_request(meta_message_ptr &in,
 		     local_transaction_pool &lpool,
 		     transmit &t);
 
-bool is_local_request(mih::message_ptr &msg);
+bool is_local_request(meta_message_ptr &msg);
 
-bool is_multicast(mih::message_ptr &msg);
+bool is_multicast(meta_message_ptr &msg);
 
 
 } /* namespace utils */ } /* namespace mihf */ } /* namespace odtone */

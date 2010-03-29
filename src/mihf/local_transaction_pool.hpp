@@ -17,9 +17,10 @@
 #define ODTONE_MIHF_LOCAL_TRANSACTION_POOL__HPP
 
 ///////////////////////////////////////////////////////////////////////////////
+#include "meta_message.hpp"
+
 #include <odtone/base.hpp>
 #include <odtone/mih/types.hpp>
-#include <odtone/mih/message.hpp>
 
 #include <list>
 ///////////////////////////////////////////////////////////////////////////////
@@ -39,7 +40,7 @@ class local_transaction_pool
 public:
 	local_transaction_pool();
 
-	void add(mih::message_ptr& in);
+	void add(meta_message_ptr& in);
 	void remove(pending_transaction &p);
 
 	std::list<pending_transaction>::iterator

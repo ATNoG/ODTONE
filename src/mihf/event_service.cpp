@@ -68,8 +68,8 @@ mih::status event_service::subscribe(const mih::id &user,
 }
 
 
-bool event_service::local_event_subscribe_request(mih::message_ptr &in,
-						  mih::message_ptr &out)
+bool event_service::local_event_subscribe_request(meta_message_ptr &in,
+						  meta_message_ptr &out)
 {
 	mih::event_list		events;
 	mih::link_tuple_id	link;
@@ -93,8 +93,8 @@ bool event_service::local_event_subscribe_request(mih::message_ptr &in,
 }
 
 
-bool event_service::event_subscribe_request(mih::message_ptr &in,
-					    mih::message_ptr &out)
+bool event_service::event_subscribe_request(meta_message_ptr &in,
+					    meta_message_ptr &out)
 {
 	log(1, "(mies) received Event_Subscribe.request from ",
 	    in->source().to_string());
@@ -110,8 +110,8 @@ bool event_service::event_subscribe_request(mih::message_ptr &in,
 }
 
 
-bool event_service::event_subscribe_response(mih::message_ptr &in,
-					     mih::message_ptr&)
+bool event_service::event_subscribe_response(meta_message_ptr &in,
+					     meta_message_ptr&)
 {
 	log(1, "(mies) received Event_Subscribe.response from ",
 	    in->source().to_string());
@@ -177,8 +177,8 @@ mih::status event_service::unsubscribe(const mih::id &user,
 }
 
 
-bool event_service::local_event_unsubscribe_request(mih::message_ptr &in,
-						    mih::message_ptr &out)
+bool event_service::local_event_unsubscribe_request(meta_message_ptr &in,
+						    meta_message_ptr &out)
 {
 	mih::status st;
 	mih::link_tuple_id link;
@@ -201,8 +201,8 @@ bool event_service::local_event_unsubscribe_request(mih::message_ptr &in,
 	return true;
 }
 
-bool event_service::event_unsubscribe_request(mih::message_ptr &in,
-					      mih::message_ptr &out)
+bool event_service::event_unsubscribe_request(meta_message_ptr &in,
+					      meta_message_ptr &out)
 {
 	log(1, "(mies) received Event_Unsubscribe.request from ",
 	    in->source().to_string());
@@ -217,8 +217,8 @@ bool event_service::event_unsubscribe_request(mih::message_ptr &in,
 	return false;
 }
 
-bool event_service::event_unsubscribe_response(mih::message_ptr &in,
-					       mih::message_ptr &)
+bool event_service::event_unsubscribe_response(meta_message_ptr &in,
+					       meta_message_ptr &)
 {
 	log(1, "(mies) received Event_Unsubscribe.response from ",
 	    in->source().to_string());
@@ -259,7 +259,7 @@ bool event_service::event_unsubscribe_response(mih::message_ptr &in,
 }
 
 
-void event_service::msg_forward(mih::message_ptr &msg,
+void event_service::msg_forward(meta_message_ptr &msg,
 				mih::link_tuple_id &li,
 				mih::event_list_enum event)
 {
@@ -281,7 +281,7 @@ void event_service::msg_forward(mih::message_ptr &msg,
 
 // parse link_identifier from incoming message and the forward
 // message to subscribed users
-void event_service::link_event_forward(mih::message_ptr &msg,
+void event_service::link_event_forward(meta_message_ptr &msg,
 				       mih::event_list_enum event)
 {
 	mih::link_tuple_id li;
@@ -293,7 +293,7 @@ void event_service::link_event_forward(mih::message_ptr &msg,
 
 
 // log received message type, and forward it
-bool event_service::link_up_indication(mih::message_ptr &in, mih::message_ptr&)
+bool event_service::link_up_indication(meta_message_ptr &in, meta_message_ptr&)
 {
 	// if(in->payload().size() == 0)
 	// 	return false;
@@ -307,7 +307,7 @@ bool event_service::link_up_indication(mih::message_ptr &in, mih::message_ptr&)
 
 
 // log received message type, and forward it
-bool event_service::link_down_indication(mih::message_ptr &in, mih::message_ptr&)
+bool event_service::link_down_indication(meta_message_ptr &in, meta_message_ptr&)
 {
 	// if(in->payload().size() == 0)
 	// 	return false;
@@ -322,8 +322,8 @@ bool event_service::link_down_indication(mih::message_ptr &in, mih::message_ptr&
 
 // parse link identifiers from list and for each one forward the
 // message to the subscribed users
-bool event_service::link_detected_indication(mih::message_ptr &in,
-					     mih::message_ptr &out)
+bool event_service::link_detected_indication(meta_message_ptr &in,
+					     meta_message_ptr &out)
 {
 	// if(in->payload().size() == 0)
 	// 	return false;
@@ -360,8 +360,8 @@ bool event_service::link_detected_indication(mih::message_ptr &in,
 }
 
 
-bool event_service::link_going_down_indication(mih::message_ptr &in,
-					       mih::message_ptr&)
+bool event_service::link_going_down_indication(meta_message_ptr &in,
+					       meta_message_ptr&)
 {
 	// if(in->payload().size() == 0)
 	// 	return false;
@@ -374,8 +374,8 @@ bool event_service::link_going_down_indication(mih::message_ptr &in,
 }
 
 
-bool event_service::link_handover_imminent_indication(mih::message_ptr &in,
-						      mih::message_ptr&)
+bool event_service::link_handover_imminent_indication(meta_message_ptr &in,
+						      meta_message_ptr&)
 {
 	// if(in->payload().size() == 0)
 	// 	return false;
@@ -388,8 +388,8 @@ bool event_service::link_handover_imminent_indication(mih::message_ptr &in,
 }
 
 
-bool event_service::link_handover_complete_indication(mih::message_ptr &in,
-						      mih::message_ptr&)
+bool event_service::link_handover_complete_indication(meta_message_ptr &in,
+						      meta_message_ptr&)
 {
 	// if(in->payload().size() == 0)
 	// 	return false;
@@ -402,8 +402,8 @@ bool event_service::link_handover_complete_indication(mih::message_ptr &in,
 }
 
 
-bool event_service::link_pdu_transmit_status_indication(mih::message_ptr &in,
-							mih::message_ptr&)
+bool event_service::link_pdu_transmit_status_indication(meta_message_ptr &in,
+							meta_message_ptr&)
 {
 	// if(in->payload().size() == 0)
 	// 	return false;

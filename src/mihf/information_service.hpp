@@ -19,9 +19,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "local_transaction_pool.hpp"
 #include "transmit.hpp"
+#include "meta_message.hpp"
 
 #include <odtone/base.hpp>
-#include <odtone/mih/message.hpp>
 #include <odtone/mih/types.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -33,15 +33,15 @@ class information_service
 public:
 	information_service(local_transaction_pool &lpool, transmit &t);
 
-	bool get_information_request(mih::message_ptr &in,
-				     mih::message_ptr &out);
-	bool get_information_response(mih::message_ptr &in,
-				      mih::message_ptr &out);
+	bool get_information_request(meta_message_ptr &in,
+				     meta_message_ptr &out);
+	bool get_information_response(meta_message_ptr &in,
+				      meta_message_ptr &out);
 
-	bool push_information_indication(mih::message_ptr &in,
-					 mih::message_ptr &out);
-	bool push_information_request(mih::message_ptr &in,
-				      mih::message_ptr &out);
+	bool push_information_indication(meta_message_ptr &in,
+					 meta_message_ptr &out);
+	bool push_information_request(meta_message_ptr &in,
+				      meta_message_ptr &out);
 
 protected:
 	local_transaction_pool	&_lpool;

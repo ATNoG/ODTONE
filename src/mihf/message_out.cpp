@@ -29,7 +29,7 @@ message_out::message_out(transaction_pool &tpool, handler_t &f, net_sap &netsap)
 	_tid = mih::rand16();
 }
 
-void message_out::new_src_transaction(mih::message_ptr& m)
+void message_out::new_src_transaction(meta_message_ptr& m)
 {
 	src_transaction_ptr t(new src_transaction_t(process_message, _netsap));
 
@@ -52,7 +52,7 @@ void message_out::new_src_transaction(mih::message_ptr& m)
 }
 
 
-void message_out::operator()(mih::message_ptr& out)
+void message_out::operator()(meta_message_ptr& out)
 {
 	if (out->opcode() == mih::operation::response) {
 		dst_transaction_ptr t;

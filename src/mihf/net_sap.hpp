@@ -18,10 +18,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "address_book.hpp"
+#include "meta_message.hpp"
 
 #include <odtone/base.hpp>
 #include <odtone/debug.hpp>
-#include <odtone/mih/message.hpp>
 #include <odtone/mih/types/capabilities.hpp>
 
 #include <boost/asio.hpp>
@@ -36,7 +36,7 @@ class net_sap
 public:
 	net_sap(io_service &io, address_book &abook);
 
-	void send(mih::message_ptr &msg);
+	void send(meta_message_ptr &msg);
 private:
 	io_service &_io;
 	address_book &_abook;

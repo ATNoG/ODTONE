@@ -19,10 +19,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "address_book.hpp"
 #include "message_out.hpp"
+#include "meta_message.hpp"
 
 #include <odtone/base.hpp>
 #include <odtone/debug.hpp>
-#include <odtone/mih/message.hpp>
 
 #include <boost/asio.hpp>
 #include <boost/noncopyable.hpp>
@@ -38,7 +38,7 @@ class transmit
 public:
 	transmit(io_service &io, address_book &abook, message_out &msg_out);
 
-	void operator()(mih::message_ptr& msg);
+	void operator()(meta_message_ptr& msg);
 
 private:
 	io_service &_io;

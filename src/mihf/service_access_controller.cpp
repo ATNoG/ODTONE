@@ -15,11 +15,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "service_access_controller.hpp"
-
+#include "meta_message.hpp"
 #include "log.hpp"
 
 #include <odtone/debug.hpp>
-#include <odtone/mih/message.hpp>
 #include <odtone/mih/config.hpp>
 #include <odtone/mih/request.hpp>
 #include <odtone/mih/response.hpp>
@@ -47,7 +46,7 @@ sac_dispatch::sac_dispatch(transmit &t)
 {
 }
 
-void sac_dispatch::operator()(mih::message_ptr& in)
+void sac_dispatch::operator()(meta_message_ptr& in)
 {
 	/** __no__ authentication at this point */
 
@@ -63,7 +62,7 @@ void sac_dispatch::operator()(mih::message_ptr& in)
 
 	if(it != _callbacks.end()) {
 		handler_t process_message = it->second;
-		mih::message_ptr out(new mih::message);
+		meta_message_ptr out(new meta_message);
 
 		out->tid(in->tid());
 		if (process_message(in, out))
@@ -74,7 +73,7 @@ void sac_dispatch::operator()(mih::message_ptr& in)
 	}
 }
 
-bool sac_process_message(mih::message_ptr& in, mih::message_ptr& out)
+bool sac_process_message(meta_message_ptr& in, meta_message_ptr& out)
 {
 	/** __no__ authentication at this point */
 

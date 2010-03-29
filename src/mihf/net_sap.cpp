@@ -30,7 +30,7 @@ net_sap::net_sap(io_service &io, address_book &abook)
 {
 }
 
-void net_sap::send(mih::message_ptr &msg)
+void net_sap::send(meta_message_ptr &msg)
 {
 	try {
 		address_entry a = _abook.get(msg->destination().to_string());

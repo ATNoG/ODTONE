@@ -27,7 +27,7 @@ message_in::message_in(transaction_pool &tpool, handler_t &f, net_sap &netsap)
 }
 
 
-void message_in::operator()(mih::message_ptr& in)
+void message_in::operator()(meta_message_ptr& in)
 {
 	// TODO: FIXME: check page 143 when adding support for MIH service
 	// specific TLVs or a fragment payload
@@ -76,7 +76,7 @@ void message_in::operator()(mih::message_ptr& in)
 }
 
 
-void message_in::new_dst_transaction(mih::message_ptr& m)
+void message_in::new_dst_transaction(meta_message_ptr& m)
 {
 	dst_transaction_ptr t(new dst_transaction_t(process_message, _netsap));
 	t->in = m;

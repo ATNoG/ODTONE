@@ -41,17 +41,14 @@ service_management::service_management(local_transaction_pool &lpool,
 }
 
 
-bool service_management::capability_discover_request(mih::message_ptr& in,
-						     mih::message_ptr& out)
+bool service_management::capability_discover_request(meta_message_ptr& in,
+						     meta_message_ptr& out)
 {
 	log(1, "(mism) received Capability_Discover.request from ",
-	    in->source().to_string());
-	log(2, "(mism) received Capability_Discover.request with destination ",
+	    in->source().to_string(), " with destination ",
 	    in->destination().to_string());
 
 	if (utils::is_local_request(in)) {
-		log(2, "(mism) local request");
-
 		*out << mih::response(mih::response::capability_discover)
 			& mih::tlv_status(mih::status_success)
 			& mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
@@ -71,8 +68,8 @@ bool service_management::capability_discover_request(mih::message_ptr& in,
 }
 
 
-bool service_management::capability_discover_response(mih::message_ptr &in,
-						      mih::message_ptr &)
+bool service_management::capability_discover_response(meta_message_ptr &in,
+						      meta_message_ptr &)
 {
 	log(1, "received Capability_Discover.response from ",
 	    in->source().to_string());

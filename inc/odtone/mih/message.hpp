@@ -174,8 +174,6 @@ private:
 	mutable archive _payload;
 };
 
-typedef boost::shared_ptr<odtone::mih::message> message_ptr;
-
 /**
  * \brief Set the MIH Message Version
  */

@@ -21,7 +21,6 @@
 
 #include <odtone/debug.hpp>
 #include <odtone/buffer.hpp>
-#include <odtone/mih/message.hpp>
 
 #include <boost/asio.hpp>
 ///////////////////////////////////////////////////////////////////////////////
@@ -48,9 +47,10 @@ public:
 			    const boost::system::error_code& ec);
 
 protected:
-	io_service &_io;
-	ip::udp::socket _sock;
-	dispatch_t &_dispatch;
+	io_service		&_io;
+	ip::udp::socket		 _sock;
+	dispatch_t		&_dispatch;
+
 };
 
 } /* namespace mihf */ } /* namespace odtone */

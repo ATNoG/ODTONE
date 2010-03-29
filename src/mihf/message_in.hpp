@@ -20,8 +20,9 @@
 #include "transaction_pool.hpp"
 #include "utils.hpp"
 #include "net_sap.hpp"
+#include "meta_message.hpp"
+
 #include <odtone/debug.hpp>
-#include <odtone/mih/message.hpp>
 
 #include <boost/function.hpp>
 #include <boost/noncopyable.hpp>
@@ -34,10 +35,10 @@ class message_in
 public:
 	message_in(transaction_pool &tpool, handler_t &f, net_sap &netsap);
 
-	void operator()(mih::message_ptr& msg);
+	void operator()(meta_message_ptr& msg);
 
 protected:
-	void new_dst_transaction(mih::message_ptr& msg);
+	void new_dst_transaction(meta_message_ptr& msg);
 
 	transaction_pool &_tpool;
 	handler_t &process_message;

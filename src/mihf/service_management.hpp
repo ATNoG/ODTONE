@@ -19,10 +19,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "local_transaction_pool.hpp"
 #include "transmit.hpp"
+#include "meta_message.hpp"
 
 #include <odtone/base.hpp>
 #include <odtone/mih/types.hpp>
-#include <odtone/mih/message.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
@@ -32,10 +32,10 @@ class service_management {
 public:
 	service_management(local_transaction_pool &lpool, transmit &t);
 
-	bool capability_discover_request(mih::message_ptr &in,
-					 mih::message_ptr &out);
-	bool capability_discover_response(mih::message_ptr&in,
-					  mih::message_ptr &out);
+	bool capability_discover_request(meta_message_ptr &in,
+					 meta_message_ptr &out);
+	bool capability_discover_response(meta_message_ptr&in,
+					  meta_message_ptr &out);
 
 protected:
 	local_transaction_pool	&_lpool;

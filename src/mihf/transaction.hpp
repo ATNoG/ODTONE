@@ -19,8 +19,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "types.hpp"
 #include "net_sap.hpp"
+#include "meta_message.hpp"
 
-#include <odtone/mih/message.hpp>
 #include <odtone/mih/types/identification.hpp>
 
 #include <set>
@@ -74,9 +74,9 @@ public:
 	uint16             tid;
 	mih::id             my_mihf_id;
 	mih::id             peer_mihf_id;
-	mih::message_ptr in;
+	meta_message_ptr in;
 	bool             msg_in_avail;
-	mih::message_ptr out;
+	meta_message_ptr out;
 	bool             msg_out_avail;
 	status_t         transaction_status;
 	bool             start_ack_requestor;
@@ -91,8 +91,8 @@ public:
 	ack_responder_state_t ack_rsp_state;
 
 	// intra-state
-	mih::message_ptr dup;
-	mih::message_ptr ack;
+	meta_message_ptr dup;
+	meta_message_ptr ack;
 	unsigned    rtxctr;
 
 protected:

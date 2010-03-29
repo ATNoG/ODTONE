@@ -32,13 +32,13 @@ namespace odtone { namespace mihf { namespace utils {
 
 static const mih::id default_local_mihfid = mih::id("local-mihf");
 
-bool is_local_request(mih::message_ptr &msg)
+bool is_local_request(meta_message_ptr &msg)
 {
 	return ((mihfid == msg->destination()) ||
 		(default_local_mihfid == msg->destination()));
 }
 
-bool is_multicast(mih::message_ptr &msg)
+bool is_multicast(meta_message_ptr &msg)
 {
 	return (msg->destination().to_string().length() == 0);
 }
@@ -50,7 +50,7 @@ static void send_handler(const boost::system::error_code &ec)
 		log(1, "Error sending message. Error code: ", ec.message());
 }
 
-void tcp_send(io_service &io, mih::message_ptr &msg, const char *ip, uint16 port)
+void tcp_send(io_service &io, meta_message_ptr &msg, const char *ip, uint16 port)
 {
 	ip::tcp::socket sock(io);
 
@@ -82,7 +82,7 @@ void tcp_send(io_service &io, mih::message_ptr &msg, const char *ip, uint16 port
 	sock.close();
 }
 
-void udp_send(io_service &io, mih::message_ptr &msg, const char *ip, uint16 port)
+void udp_send(io_service &io, meta_message_ptr &msg, const char *ip, uint16 port)
 {
 	ip::udp::socket sock(io, ip::udp::endpoint(ip::udp::v4(), 0));
 
@@ -112,7 +112,7 @@ void udp_send(io_service &io, mih::message_ptr &msg, const char *ip, uint16 port
 				       placeholders::error));
 }
 
-void forward_request(mih::message_ptr &in,
+void forward_request(meta_message_ptr &in,
 		     local_transaction_pool &lpool,
 		     transmit &t)
 {

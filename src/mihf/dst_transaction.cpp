@@ -50,7 +50,7 @@ void dst_transaction_t::run()
 		start_ack_responder   = (in->ackreq() && !is_multicast);
 		msg_in_avail          = false;
 
-		out.reset(new mih::message);
+		out.reset(new meta_message);
 		msg_out_avail = process_message(in, out);
 
 		// if (start_ack_responder)

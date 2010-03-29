@@ -19,9 +19,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "local_transaction_pool.hpp"
 #include "transmit.hpp"
+#include "meta_message.hpp"
 
 #include <odtone/base.hpp>
-#include <odtone/mih/message.hpp>
 #include <odtone/mih/types.hpp>
 
 #include <boost/thread/mutex.hpp>
@@ -45,28 +45,28 @@ class event_service
 public:
 	event_service(local_transaction_pool &lpool, transmit &t);
 
-	bool event_subscribe_request(mih::message_ptr &in,
-				     mih::message_ptr &out);
-	bool event_subscribe_response(mih::message_ptr &in,
-				      mih::message_ptr &out);
-	bool event_unsubscribe_request(mih::message_ptr &in,
-				       mih::message_ptr &out);
-	bool event_unsubscribe_response(mih::message_ptr &in,
-					mih::message_ptr &out);
-	bool link_up_indication(mih::message_ptr &in,
-				mih::message_ptr &out);
-	bool link_down_indication (mih::message_ptr &in,
-				   mih::message_ptr &out);
-	bool link_detected_indication(mih::message_ptr &in,
-				      mih::message_ptr &out);
-	bool link_going_down_indication(mih::message_ptr &in,
-					mih::message_ptr &out);
-	bool link_handover_imminent_indication(mih::message_ptr &in,
-					       mih::message_ptr &out);
-	bool link_handover_complete_indication(mih::message_ptr &in,
-					       mih::message_ptr &out);
-	bool link_pdu_transmit_status_indication(mih::message_ptr &in,
-						 mih::message_ptr &out);
+	bool event_subscribe_request(meta_message_ptr &in,
+				     meta_message_ptr &out);
+	bool event_subscribe_response(meta_message_ptr &in,
+				      meta_message_ptr &out);
+	bool event_unsubscribe_request(meta_message_ptr &in,
+				       meta_message_ptr &out);
+	bool event_unsubscribe_response(meta_message_ptr &in,
+					meta_message_ptr &out);
+	bool link_up_indication(meta_message_ptr &in,
+				meta_message_ptr &out);
+	bool link_down_indication (meta_message_ptr &in,
+				   meta_message_ptr &out);
+	bool link_detected_indication(meta_message_ptr &in,
+				      meta_message_ptr &out);
+	bool link_going_down_indication(meta_message_ptr &in,
+					meta_message_ptr &out);
+	bool link_handover_imminent_indication(meta_message_ptr &in,
+					       meta_message_ptr &out);
+	bool link_handover_complete_indication(meta_message_ptr &in,
+					       meta_message_ptr &out);
+	bool link_pdu_transmit_status_indication(meta_message_ptr &in,
+						 meta_message_ptr &out);
 
 protected:
 	local_transaction_pool	&_lpool;
@@ -75,17 +75,17 @@ protected:
 	std::list<event_registration_t>	 _event_subscriptions;
 	boost::mutex			 _event_mutex;
 
-	void msg_forward(mih::message_ptr& msg,
+	void msg_forward(meta_message_ptr& msg,
 			 mih::link_tuple_id &li,
 			 mih::event_list_enum event);
 
-	void link_event_forward(mih::message_ptr &msg,
+	void link_event_forward(meta_message_ptr &msg,
 				mih::event_list_enum event);
 
-	bool local_event_subscribe_request(mih::message_ptr &in,
-					   mih::message_ptr &out);
-	bool local_event_unsubscribe_request(mih::message_ptr &in,
-					     mih::message_ptr &out);
+	bool local_event_subscribe_request(meta_message_ptr &in,
+					   meta_message_ptr &out);
+	bool local_event_unsubscribe_request(meta_message_ptr &in,
+					     meta_message_ptr &out);
 
 	mih::status subscribe(const mih::id &user, mih::link_tuple_id &link,
 			      mih::event_list &events);

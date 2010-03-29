@@ -28,7 +28,7 @@ transmit::transmit(io_service &io, address_book &abook, message_out &msg_out)
 {
 }
 
-void transmit::operator()(mih::message_ptr& msg)
+void transmit::operator()(meta_message_ptr& msg)
 {
 	// TODO: remove try catch
 	try{

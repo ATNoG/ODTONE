@@ -19,9 +19,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "transaction_pool.hpp"
 #include "net_sap.hpp"
+#include "meta_message.hpp"
 
+#include <odtone/base.hpp>
 #include <odtone/debug.hpp>
-#include <odtone/mih/message.hpp>
 
 #include <boost/noncopyable.hpp>
 ///////////////////////////////////////////////////////////////////////////////
@@ -33,10 +34,10 @@ class message_out
 public:
 	message_out(transaction_pool &tpool, handler_t &f, net_sap &netsap);
 
-	void operator()(mih::message_ptr& msg);
+	void operator()(meta_message_ptr& msg);
 
 protected:
-	void new_src_transaction(mih::message_ptr& msg);
+	void new_src_transaction(meta_message_ptr& msg);
 
 	transaction_pool &_tpool;
 	uint16 _tid;

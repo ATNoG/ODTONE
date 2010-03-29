@@ -33,8 +33,8 @@ information_service::information_service(local_transaction_pool &lpool,
 {
 }
 
-bool information_service::get_information_request(mih::message_ptr &in,
-						  mih::message_ptr &out)
+bool information_service::get_information_request(meta_message_ptr &in,
+						  meta_message_ptr &out)
 {
 	log(1, "(miis) received a Get_Information.request from",
 	    in->source().to_string());
@@ -59,8 +59,8 @@ bool information_service::get_information_request(mih::message_ptr &in,
 }
 
 
-bool information_service::get_information_response(mih::message_ptr &in,
-						   mih::message_ptr &out)
+bool information_service::get_information_response(meta_message_ptr &in,
+						   meta_message_ptr &out)
 {
 	log(1, "(miis) received Get_Information.response from ",
 	    in->source().to_string());
@@ -86,8 +86,8 @@ bool information_service::get_information_response(mih::message_ptr &in,
 }
 
 
-bool information_service::push_information_request(mih::message_ptr &in,
-						   mih::message_ptr &out)
+bool information_service::push_information_request(meta_message_ptr &in,
+						   meta_message_ptr &out)
 {
 	log(1, "(miis) received a Get_Information.request from",
 	    in->source().to_string());
@@ -111,8 +111,8 @@ bool information_service::push_information_request(mih::message_ptr &in,
 }
 
 
-bool information_service::push_information_indication(mih::message_ptr &in,
-						      mih::message_ptr &out)
+bool information_service::push_information_indication(meta_message_ptr &in,
+						      meta_message_ptr &out)
 {
 	log(1, "(miis) received Push_Information.indication from ",
 	    in->source().to_string());

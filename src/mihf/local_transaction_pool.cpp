@@ -24,7 +24,7 @@ local_transaction_pool::local_transaction_pool()
 {
 }
 
-void local_transaction_pool::add(mih::message_ptr& in)
+void local_transaction_pool::add(meta_message_ptr& in)
 {
 	pending_transaction p;
 

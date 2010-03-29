@@ -14,7 +14,7 @@
 //
 
 #include "udp_listener.hpp"
-
+#include "meta_message.hpp"
 #include "log.hpp"
 
 #include <odtone/mih/frame.hpp>
@@ -63,19 +63,22 @@ void udp_listener::start()
 }
 
 
-void udp_listener::handle_receive(buffer<uint8>&				buff,
-				size_t					rbytes,
-				const boost::system::error_code&	e)
+void udp_listener::handle_receive(buffer<uint8>&			 buff,
+				  size_t				 rbytes,
+				  const boost::system::error_code&	 e)
 
 {
 	using namespace boost;
 
 	if (!e) {
-		log(1, "(generic server) received ", rbytes, " bytes.");
+		log(1, "(udp) received ", rbytes, " bytes.");
+		log(0, "(udp) from ", _rmt_endp.address().to_string(),
+		    ":", _rmt_endp.port());
+
 		mih::frame *pud = mih::frame::cast(buff.get(), rbytes);
 
 		if(pud) {
-			mih::message_ptr in(new mih::message(*pud));
+			meta_message_ptr in(new meta_message(*pud));
 			log(4, *pud);
 			_dispatch(in);
                 }
