@@ -38,6 +38,7 @@ SOURCES =
 	transaction_ack_service.cpp
 	transmit.cpp
 	local_transaction_pool.cpp
+	meta_message.cpp
 	;
 
 LIBS =
