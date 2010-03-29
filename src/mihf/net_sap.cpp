@@ -13,36 +13,38 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include <odtone/mihf/net_sap.hpp>
-#include <odtone/mihf/transaction_manager.hpp>
-#include <odtone/mihf/mihfid.hpp>
+///////////////////////////////////////////////////////////////////////////////
+#include "net_sap.hpp"
+#include "address_book.hpp"
+#include "log.hpp"
+#include "utils.hpp"
+
+#include <boost/bind.hpp>
+///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 
-net_sap *net_sap::ptr_instance = NULL;
-
-net_sap *net_sap::instance()
-{
-      if (ptr_instance == NULL)
-        ptr_instance = new net_sap(io_service);
-
-	return ptr_instance;
-}
-
-net_sap::net_sap(boost::asio::io_service& io)
-	: generic_server(io)
+net_sap::net_sap(io_service &io, address_book &abook)
+	: _io(io),
+	  _abook(abook)
 {
 }
 
-net_sap::~net_sap()
+void net_sap::send(mih::message_ptr &msg)
 {
-	if(ptr_instance)
-        delete ptr_instance;
-}
+	try {
+		address_entry a = _abook.get(msg->destination().to_string());
 
-void net_sap::process_message(mih::message_ptr& msg)
-{
-	tmanager->message_in(msg);
+		if (a.trans == mih::transport_udp)
+			utils::udp_send(_io, msg, a.ip.c_str(), a.port);
+		else
+			utils::tcp_send(_io, msg, a.ip.c_str(), a.port);
+
+		log(1, "(net sap) sent message to: ", msg->destination().to_string(), a.ip, " ", a.port);
+	} catch(...) {
+		log(1, "(net sap) no registration for: #", msg->destination().to_string(), "#");
+	}
 }
 
 } /* namespace mihf */ } /* namespace odtone */
+

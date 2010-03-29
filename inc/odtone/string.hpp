@@ -35,7 +35,7 @@ typedef std::wstring string;
 #else
 
 #define ODTONE_L
-typedef char_t      char_t;
+typedef char        char_t;
 typedef std::string string;
 
 #endif

@@ -13,30 +13,15 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include <odtone/mihf/transaction_ack_service.hpp>
+///////////////////////////////////////////////////////////////////////////////
+#include "transaction_ack_service.hpp"
+///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
-
-transaction_ack_service *transaction_ack_service::ptr_instance = NULL;
 
 transaction_ack_service::transaction_ack_service()
 {
 }
 
 
-transaction_ack_service::~transaction_ack_service()
-{
-  if (ptr_instance)
-    delete ptr_instance;
-}
-
-
-transaction_ack_service *transaction_ack_service::instance()
-{
-  if (ptr_instance == NULL)
-    ptr_instance = new transaction_ack_service();
-
-  return ptr_instance;
-}
-
-  } /* namespace mihf */   } /* namespace odtone */
+} /* namespace mihf */   } /* namespace odtone */

@@ -13,15 +13,124 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include <odtone/mihf/src_transaction.hpp>
-#include <ostream>
+///////////////////////////////////////////////////////////////////////////////
+#include "src_transaction.hpp"
+#include "utils.hpp"
+///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
 
-src_transaction_t::src_transaction_t()
-	: transaction_t()
+src_transaction_t::src_transaction_t(handler_t &f, net_sap &netsap)
+	: transaction_t(f, netsap)
 {
-	state             = SRC_INIT;
+	state = SRC_INIT;
+}
+
+void src_transaction_t::run()
+{
+	switch (state)
+        {
+        case SRC_INIT: goto _init_lbl_;
+        case SRC_WAIT_RESPONSE_MSG: goto _wait_response_msg_lbl_;
+        case SRC_WAIT_ACK: goto _wait_ack_lbl_;
+        case SRC_PROCESS_MSG: goto _process_msg_lbl_;
+        case SRC_FAILURE: goto _failure_lbl_;
+        case SRC_SUCCESS: goto _success_lbl_;
+        }
+
+  _init_lbl_:
+	{
+		transaction_status    = ONGOING;
+		response_received     = false;
+		transaction_stop_when = 15; // FIXME: read from config
+		opcode                = out->opcode();
+		is_multicast          = utils::is_multicast(out);
+		start_ack_requestor   = (out->ackreq() && !is_multicast);
+		tid                   = out->tid();
+		my_mihf_id            = out->source();
+		peer_mihf_id          = out->destination();
+
+		_netsap.send(out);
+
+		if (opcode == mih::operation::response) {
+			if (start_ack_requestor) {
+				ack_requestor_status = ONGOING;
+				goto _wait_ack_lbl_;
+			}
+			else
+				goto _success_lbl_;
+		}
+		else if (opcode == mih::operation::indication)
+			goto _success_lbl_;
+		else if (opcode == mih::operation::request)
+			goto _wait_response_msg_lbl_;
+
+		assert(0); // failsafe
+	}
+
+  _wait_ack_lbl_:
+	{
+		state = SRC_WAIT_ACK;
+
+		if (ack_requestor_status == SUCCESS)
+			goto _success_lbl_;
+		else if (ack_requestor_status == FAILURE)
+			goto _failure_lbl_;
+
+		return;
+	}
+
+  _wait_response_msg_lbl_:
+	{
+		state = SRC_WAIT_RESPONSE_MSG;
+
+		if (msg_in_avail)
+			goto _process_msg_lbl_;
+		else if (transaction_stop_when == 0) {
+			if (response_received)
+				goto _success_lbl_;
+			else
+				goto _failure_lbl_;
+		}
+
+		return;
+	}
+
+  _process_msg_lbl_:
+	{
+		state = SRC_PROCESS_MSG;
+
+		start_ack_responder = in->ackreq();
+
+		msg_out_avail = false;
+
+		// if (start_ack_responder)
+		// 	tas->ack_responder(t);
+
+		process_message(in, out);
+		msg_in_avail = false;
+		response_received = true;
+
+		if (is_multicast)
+			goto _wait_response_msg_lbl_;
+		else
+			goto _success_lbl_;
+	}
+
+  _failure_lbl_:
+	{
+		transaction_status = FAILURE;
+		state = SRC_FAILURE;
+		return;
+	}
+
+  _success_lbl_:
+	{
+		transaction_status = SUCCESS;
+		state = SRC_SUCCESS;
+	}
+
+	return;
 }
 
 

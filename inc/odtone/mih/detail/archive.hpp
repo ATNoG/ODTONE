@@ -125,6 +125,18 @@ struct serialize<std::list<T> > {
 	}
 };
 
+template<class T, size_t N>
+struct serialize<boost::array<T, N> > {
+	typedef typename boost::array<T, N> value_type;
+
+	template<class Archive>
+	void operator()(Archive& ar, value_type& val) const
+	{
+		for (size_t i = 0; i < N; ++i)
+			ar & val.elems[i];
+	}
+};
+
 template<class T1>
 struct serialize<boost::variant<T1> > {
 	void operator()(iarchive& ar, boost::variant<T1>& val) const

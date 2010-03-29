@@ -1,0 +1,33 @@
+project dummyserver ;
+
+SOURCES =
+	dummyserver.cpp
+	../mihf/log.cpp
+	../mihf/udp_listener.cpp
+	;
+
+LIBS_SHARED =
+	../../lib/odtone/mih//odtone_mih
+	../../lib/odtone//odtone_base
+	/boost//thread
+	/boost//system
+	/boost//program_options
+	;
+
+LIBS_STATIC =
+	../../lib/odtone/mih//odtone_mih
+	../../lib/odtone//odtone_base
+	;
+
+exe dummyserver :
+	$(SOURCES)
+	$(LIBS_SHARED)
+	: <link>shared
+	;
+
+exe dummyserver :
+	$(SOURCES)
+	$(LIBS_STATIC)
+	: <link>static
+	;
+
