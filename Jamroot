@@ -21,9 +21,13 @@ project odtone
     : build-dir build
 	;
 
+import boost ;
+
+boost.use-project 1.42 ;
+
 build-project src/mihf ;
 build-project src/dummyserver ;
-build-project app/link_sap ;
+#build-project app/link_sap ;
 build-project app/mih_usr ;
 build-project app/client ;
 

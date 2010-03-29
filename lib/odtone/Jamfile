@@ -26,8 +26,15 @@ SOURCES =
 	logger.cpp
 	;
 
+lib pthread 
+	:
+	: <name>pthread
+	  <link>shared
+	;
+
 alias source-list
 	: debug_linux.cpp
+	  pthread
 	: <target-os>linux
 	;
 
@@ -39,5 +46,6 @@ alias source-list
 lib odtone_base
 	: $(SOURCES)
 	  source-list
+	  /boost//system
 	;
 

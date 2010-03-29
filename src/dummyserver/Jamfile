@@ -9,9 +9,9 @@ SOURCES =
 LIBS_SHARED =
 	../../lib/odtone/mih//odtone_mih
 	../../lib/odtone//odtone_base
-	/odtone-config//boost_thread
-	/odtone-config//boost_system
-	/odtone-config//boost_program_options
+	/boost//thread
+	/boost//system
+	/boost//program_options
 	;
 
 LIBS_STATIC =

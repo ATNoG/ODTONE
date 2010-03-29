@@ -15,8 +15,6 @@
 # This software is distributed without any warranty.
 #==========================================================================
 
-project mihf ;
-
 SOURCES =
 	main.cpp
 	service_management.cpp
@@ -42,42 +40,18 @@ SOURCES =
 	local_transaction_pool.cpp
 	;
 
-LIBS_SHARED =
-	/odtone-config//boost_system
-	/odtone-config//boost_thread
-	/odtone-config//boost_program_options
+LIBS =
 	../../lib/odtone/mih//odtone_mih
 	../../lib/odtone/sap//odtone_sap
 	../../lib/odtone//odtone_base
 	;
 
-LIBS_STATIC =
-	../../lib/odtone/mih//odtone_mih
-	../../lib/odtone/sap//odtone_sap
-	../../lib/odtone//odtone_base
+exe odtone
+	: $(SOURCES)
+	  $(LIBS)
+	: <library>/boost//system
+	  <library>/boost//thread
+	  <library>/boost//program_options
 	;
 
-exe odtone :
-	$(SOURCES)
-	$(LIBS_SHARED)
-	: <target-os>linux <link>shared
-	;
-
-exe odtone :
-	$(SOURCES)
-	$(LIBS_SHARED)
-	: <target-os>windows <link>shared
-	;
-
-exe odtone :
-	$(SOURCES)
-	$(LIBS_STATIC)
-	: <target-os>linux <link>static
-	;
-
-exe odtone :
-	$(SOURCES)
-	$(LIBS_STATIC)
-	: <link>shared <link>static
-	;
 

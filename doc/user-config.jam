@@ -1,35 +1,14 @@
 #==============================================================================
 # You must add these definitions to your user-config.jam (must be located in
-# your HOME. Replace 'path-to-boost-include' and 'path-to-boost-libraries' with
-# the proper paths.
+# your HOME. Replace 'path-to-boost' with the proper paths.
 #==============================================================================
 
-BOOST_INC = path-to-boost-include ;
-BOOST_LIB = path-to-boost-libraries ;
-
-project odtone-config
+project user-config
 	: requirements <include>$(BOOST_INC)
 	;
 
-lib boost_system
-	:
-	: <name>boost_system
-	  <search>$(BOOST_LIB)
+using boost
+	: 1.42
+	: <root>path-to-boost
 	;
-
-lib boost_thread
-	:
-	: <name>boost_thread
-	  <search>$(BOOST_LIB)
-	;
-
-lib boost_program_options
-	:
-	: <name>boost_program_options
-	  <search>$(BOOST_LIB)
-	;
-
-explicit boost_system ;
-explicit boost_thread ;
-explicit boost_program_options ;
 

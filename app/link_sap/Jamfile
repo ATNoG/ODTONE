@@ -46,8 +46,8 @@ exe link_sap
 	: $(SOURCES)
 	  source-list
 	  $(LIBS)
-	: <library>/odtone-config//boost_system
-	  <library>/odtone-config//boost_thread
-	  <library>/odtone-config//boost_program_options
+	: <library>/boost//system
+	  <library>/boost//thread
+	  <library>/boost//program_options
 	;
 
