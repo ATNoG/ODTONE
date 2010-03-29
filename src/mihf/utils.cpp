@@ -32,7 +32,7 @@ namespace odtone { namespace mihf { namespace utils {
 
 static const mih::id default_local_mihfid = mih::id("local-mihf");
 
-bool is_local_request(meta_message_ptr &msg)
+bool this_mihf_is_destination(meta_message_ptr &msg)
 {
 	return ((mihfid == msg->destination()) ||
 		(default_local_mihfid == msg->destination()));

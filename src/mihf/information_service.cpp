@@ -39,7 +39,7 @@ bool information_service::get_information_request(meta_message_ptr &in,
 	log(1, "(miis) received a Get_Information.request from",
 	    in->source().to_string());
 
-	if(utils::is_local_request(in)) {
+	if(utils::this_mihf_is_destination(in)) {
 		//
 		// Kick this message to Information Service.
 		//
@@ -92,7 +92,7 @@ bool information_service::push_information_request(meta_message_ptr &in,
 	log(1, "(miis) received a Get_Information.request from",
 	    in->source().to_string());
 
-	if(utils::is_local_request(in)) {
+	if(utils::this_mihf_is_destination(in)) {
 		//
 		// Kick this message to Information Service.
 		//

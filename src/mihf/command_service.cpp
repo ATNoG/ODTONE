@@ -41,7 +41,7 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 	    in->source().to_string());
 
 
-	if(utils::is_local_request(in)) {
+	if(utils::this_mihf_is_destination(in)) {
 		//
 		// Kick this message to MIH_Link SAP.
 		//
@@ -100,7 +100,7 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 	log(1, "(mics) received a Link_Configure_Thresholds.request from",
 	    in->source().to_string());
 
-	if(utils::is_local_request(in)) {
+	if(utils::this_mihf_is_destination(in)) {
 		//
 		// Kick this message to MIH_Link SAP.
 		//
@@ -160,7 +160,7 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 	log(1, "(mics) received a Link_Actions.request from",
 	    in->source().to_string());
 
-	if(utils::is_local_request(in)) {
+	if(utils::this_mihf_is_destination(in)) {
 		//
 		// Kick this message to MIH_Link SAP.
 		//
@@ -214,7 +214,7 @@ bool command_service::generic_command_request(const char *recv_msg,
 {
 	log(1, recv_msg, in->source().to_string());
 
-	if(utils::is_local_request(in)) {
+	if(utils::this_mihf_is_destination(in)) {
 		//
 		// Kick this message to default MIH User as an indication
 		//
@@ -242,7 +242,7 @@ bool command_service::generic_command_response(const char *recv_msg,
 {
 	log(1, recv_msg, in->source().to_string());
 
-	if(utils::is_local_request(in)) {
+	if(utils::this_mihf_is_destination(in)) {
 		//
 		// Kick this message to default MIH User as an indication
 		//

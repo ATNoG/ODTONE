@@ -44,7 +44,7 @@ void forward_request(meta_message_ptr &in,
 		     local_transaction_pool &lpool,
 		     transmit &t);
 
-bool is_local_request(meta_message_ptr &msg);
+bool this_mihf_is_destination(meta_message_ptr &msg);
 
 bool is_multicast(meta_message_ptr &msg);
 

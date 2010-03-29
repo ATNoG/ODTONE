@@ -99,7 +99,7 @@ bool event_service::event_subscribe_request(meta_message_ptr &in,
 	log(1, "(mies) received Event_Subscribe.request from ",
 	    in->source().to_string());
 
-	if (utils::is_local_request(in))  {
+	if (utils::this_mihf_is_destination(in))  {
 		return local_event_subscribe_request(in, out);
 	} else {
 		utils::forward_request(in, _lpool, _transmit);
@@ -207,7 +207,7 @@ bool event_service::event_unsubscribe_request(meta_message_ptr &in,
 	log(1, "(mies) received Event_Unsubscribe.request from ",
 	    in->source().to_string());
 
-	if (utils::is_local_request(in)) {
+	if (utils::this_mihf_is_destination(in)) {
 		return local_event_unsubscribe_request(in, out);
 	} else {
 		utils::forward_request(in, _lpool, _transmit);

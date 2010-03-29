@@ -48,7 +48,7 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 	    in->source().to_string(), " with destination ",
 	    in->destination().to_string());
 
-	if (utils::is_local_request(in)) {
+	if (utils::this_mihf_is_destination(in)) {
 		*out << mih::response(mih::response::capability_discover)
 			& mih::tlv_status(mih::status_success)
 			& mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
