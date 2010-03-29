@@ -83,25 +83,17 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-handle wlan_open();
-
 typedef boost::function<void(const WLAN_NOTIFICATION_DATA&)> wlan_register_notification_handler;
+typedef boost::shared_ptr<WLAN_INTERFACE_INFO_LIST>          wlan_if_list;
 
-void wlan_register_notification(const handle& h, const wlan_register_notification_handler& handler);
-
-std::string wstring_to_string(const wchar_t* str, size_t len);
-
-std::string wstring_to_string(const wchar_t* str);
-
-///////////////////////////////////////////////////////////////////////////////
-typedef boost::shared_ptr<WLAN_INTERFACE_INFO_LIST> wlan_if_list;
-
+handle       wlan_open();
+void         wlan_register_notification(handle const& h, wlan_register_notification_handler const& handler);
 wlan_if_list wlan_enum_interfaces(handle const& h);
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef boost::shared_ptr<WLAN_PROFILE_INFO_LIST> wlan_profile_list;
-
-wlan_profile_list wlan_get_profile_list(const handle& h, const nic::if_id& id);
+std::string wstring_to_string(wchar_t const* str);
+std::string wstring_to_string(wchar_t const* str, size_t len);
+std::string wstring_to_string(std::wstring const& str);
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace win32 */ } /* namespace link_sap */
