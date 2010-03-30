@@ -193,7 +193,7 @@ int main(int argc, char** argv)
 		boost::asio::io_service ios;
 
 		// declare MIH Usr available options
-		po::options_description desc("MIH Usr Configuration");
+		po::options_description desc(odtone::mih::octet_string("MIH Usr Configuration"));
 		desc.add_options()
 			("help", "Display configuration options")
 			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1234), "Port")

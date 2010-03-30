@@ -378,7 +378,7 @@ int main(int argc, char **argv)
 	boost::asio::io_service io;
 
 	// declare MIHF supported options
-	po::options_description desc("MIHF Configuration Options");
+	po::options_description desc(mih::octet_string("MIHF Configuration Options"));
 
 	desc.add_options()
 		("help", "Display configuration options")
