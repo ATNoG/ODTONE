@@ -28,7 +28,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <unistd.h>
 #include <boost/asio.hpp>
 #include <boost/variant/apply_visitor.hpp>
 

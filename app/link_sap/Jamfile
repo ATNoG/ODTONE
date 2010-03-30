@@ -16,11 +16,8 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-SOURCES =
-	link_sap.cpp
-	interface/interface.cpp
-	interface/ethernet.cpp
-	interface/if_802_11.cpp
+project link_sap
+	: requirements <target-os>windows:<define>_WIN32_WINNT=0x0600
 	;
 
 alias source-list
@@ -36,18 +33,15 @@ alias source-list
 	: <target-os>windows
 	;
 
-LIBS =
-	../../lib/odtone//odtone_base
-	../../lib/odtone/mih//odtone_mih
-	../../lib/odtone/sap//odtone_sap
-	;
+explicit source-list ;
 
 exe link_sap
-	: $(SOURCES)
+	: link_sap.cpp
+	  interface/interface.cpp
+	  interface/if_802_11.cpp
 	  source-list
-	  $(LIBS)
-	: <library>/boost//system
-	  <library>/boost//thread
-	  <library>/boost//program_options
+	  ../../lib/odtone//odtone_base
+	  ../../lib/odtone/mih//odtone_mih
+	  ../../lib/odtone/sap//odtone_sap
 	;
 

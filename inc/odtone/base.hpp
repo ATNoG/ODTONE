@@ -19,8 +19,6 @@
 #define ODTONE_BASE__HPP_
 
 ///////////////////////////////////////////////////////////////////////////////
-#define BOOST_ENABLE_ASSERT_HANDLER //FIXME: this must be a build configuration setting
-
 #include <cstddef>
 #include <boost/config.hpp>
 #include <boost/cstdint.hpp>

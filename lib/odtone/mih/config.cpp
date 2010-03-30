@@ -17,6 +17,7 @@
 //=============================================================================
 
 #include <odtone/mih/config.hpp>
+#include <boost/program_options/parsers.hpp>
 #include <fstream>
 
 #ifdef BOOST_MSVC

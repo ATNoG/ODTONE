@@ -23,6 +23,8 @@
 #include <boost/scoped_ptr.hpp>
 #include <cstring>
 
+#pragma comment(lib, "wlanapi.lib")
+
 ///////////////////////////////////////////////////////////////////////////////
 namespace link_sap { namespace win32 { namespace detail {
 

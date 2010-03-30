@@ -24,12 +24,6 @@
 #include <iostream>
 #include "win32.hpp"
 
-// This file defines a macro that contains the path to the default
-// configuration file
-#ifndef LINK_SAP_CONFIG
-#define LINK_SAP_CONFIG "link_sap.conf"
-#endif
-
 ///////////////////////////////////////////////////////////////////////////////
 using link_sap::nic::interface;
 using link_sap::nic::if_802_11;
@@ -65,17 +59,32 @@ void wlan_event_handler(const WLAN_NOTIFICATION_DATA& nd, boost::asio::io_servic
 	}
 }
 
+namespace po = boost::program_options;
+
 int main(int argc, char** argv)
 {
 	odtone::setup_crash_handler();
 
 	try {
-		odtone::mih::config cfg(argc, argv, LINK_SAP_CONFIG);
+		po::options_description desc("MIH Link SAP Configuration");
+		desc.add_options()
+			("help", "Display configuration options")
+			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1234), "Port")
+			(odtone::sap::kConf_File, po::value<std::string>()->default_value("link_sap.conf"), "Configuration File")
+			(odtone::sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive Buffer Length")
+			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
+			(odtone::sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "MIHF Local Communications Port")
+			(odtone::sap::kConf_MIHF_Id, po::value<std::string>()->default_value("local-mihf"), "Local MIHF Id")
+			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("link"), "Link SAP Id");
 
-		std::cout	<< "cfg(" LINK_SAP_CONFIG "): port=" << cfg.get<ushort>(odtone::mih::kConf_Port)
-					<< " mihf.ip=\"" << cfg.get<std::string>(odtone::mih::kConf_MIHF_Ip)
-					<< " mihf.local_port=\"" << cfg.get<ushort>(odtone::mih::kConf_MIHF_Local_Port)
-					<< "\"\n";
+		odtone::mih::config cfg(desc);
+		cfg.parse(argc, argv, odtone::sap::kConf_File);
+
+		std::cout << "cfg:"
+		             " port=" << cfg.get<ushort>(odtone::sap::kConf_Port)
+		          << " mihf.ip=" << cfg.get<std::string>(odtone::sap::kConf_MIHF_Ip)
+		          << " mihf.local_port=" << cfg.get<ushort>(odtone::sap::kConf_MIHF_Local_Port)
+		          << std::endl;
 
 		boost::asio::io_service ios;
 		link_sap::link_sap ls(cfg, ios);

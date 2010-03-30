@@ -38,17 +38,10 @@ link_sap::~link_sap()
 {
 }
 
-<<<<<<< HEAD:src/link_sap/link_sap.cpp
 void link_sap::update(nic::interface* it)
 {
 	std::pair<nic::interface_map::iterator, bool> ifi;
 	std::auto_ptr<nic::interface> itc(it);
-=======
-void link_sap::update(/*odtone::sap::nif::*/interface* it)
-{
-	std::pair</*odtone::sap::nif::*/interface_map::iterator, bool> ifi;
-	std::auto_ptr</*odtone::sap::nif::*/interface> itc(it);
->>>>>>> develop:app/link_sap/link_sap.cpp
 	bool update = false;
 
 	ifi = _ifmap.insert(*it);

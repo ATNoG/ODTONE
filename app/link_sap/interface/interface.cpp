@@ -34,14 +34,8 @@ static void interface_disposer(interface* p)
 } /* namespace detail */
 
 ///////////////////////////////////////////////////////////////////////////////
-<<<<<<< HEAD:src/link_sap/interface/interface.cpp
 interface::interface(if_id const& id, odtone::mih::link_type type)
 	: _id(id), _type(type)
-=======
-interface::interface(uint index, odtone::mih::link_type type, const std::string& name, const odtone::mih::link_addr& link_addr)
-	: _index(index), _type(type), _up(boost::logic::indeterminate), _name(name),
-	_link_addr(link_addr)
->>>>>>> develop:app/link_sap/interface/interface.cpp
 {
 }
 
@@ -82,29 +76,17 @@ void interface_map::erase(const_iterator i)
 	_map.erase_and_dispose(i, detail::interface_disposer);
 }
 
-<<<<<<< HEAD:src/link_sap/interface/interface.cpp
 void interface_map::erase(if_id const& id)
-=======
-void interface_map::erase(uint id)
->>>>>>> develop:app/link_sap/interface/interface.cpp
 {
 	_map.erase_and_dispose(id, compare(), detail::interface_disposer);
 }
 
-<<<<<<< HEAD:src/link_sap/interface/interface.cpp
 interface_map::iterator interface_map::find(if_id const& id)
-=======
-interface_map::iterator interface_map::find(uint id)
->>>>>>> develop:app/link_sap/interface/interface.cpp
 {
 	return _map.find(id, compare());
 }
 
-<<<<<<< HEAD:src/link_sap/interface/interface.cpp
 interface_map::const_iterator interface_map::find(if_id const& id) const
-=======
-interface_map::const_iterator interface_map::find(uint id) const
->>>>>>> develop:app/link_sap/interface/interface.cpp
 {
 	return _map.find(id, compare());
 }

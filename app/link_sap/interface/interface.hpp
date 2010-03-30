@@ -151,17 +151,10 @@ public:
 
 	std::pair<iterator, bool> insert(interface& i);
 	void erase(const_iterator i);
-<<<<<<< HEAD:src/link_sap/interface/interface.hpp
 	void erase(if_id const& id);
 
 	iterator       find(if_id const& id);
 	const_iterator find(if_id const& id) const;
-=======
-	void erase(uint id);
-
-	iterator       find(uint id);
-	const_iterator find(uint id) const;
->>>>>>> develop:app/link_sap/interface/interface.hpp
 
 	iterator begin();
 	iterator end();
@@ -173,11 +166,8 @@ private:
 	map _map;
 };
 
-<<<<<<< HEAD:src/link_sap/interface/interface.hpp
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace nic */ } /* namespace link_sap */
-=======
->>>>>>> develop:app/link_sap/interface/interface.hpp
 
 // EOF ////////////////////////////////////////////////////////////////////////
 #endif /* LINK_SAP_INTERFACE_GENERIC__HPP_ */

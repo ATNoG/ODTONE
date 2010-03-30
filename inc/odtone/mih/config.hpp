@@ -22,7 +22,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
-#include <boost/program_options.hpp>
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/variables_map.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mih {
