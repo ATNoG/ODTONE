@@ -40,8 +40,9 @@ public:
 			 const boost::system::error_code& error);
 
 private:
-	ip::tcp::socket	 _sock;
-	dispatch_t	&_dispatch;
+	ip::tcp::socket		 _sock;
+	ip::tcp::endpoint	 _rmt_endp;
+	dispatch_t		&_dispatch;
 };
 
 class tcp_listener {

@@ -53,8 +53,9 @@ void udp_listener::start()
 		rbuff = buff.get();
 		rlen = buff.size();
 
-		_sock.async_receive(boost::asio::buffer(rbuff, rlen),
-				    boost::bind(&udp_listener::handle_receive,
+		_sock.async_receive_from(boost::asio::buffer(rbuff, rlen),
+					 _rmt_endp,
+					 boost::bind(&udp_listener::handle_receive,
 						this,
 						bindrv(buff),
 						placeholders::bytes_transferred,
@@ -78,7 +79,10 @@ void udp_listener::handle_receive(buffer<uint8>&			 buff,
 		mih::frame *pud = mih::frame::cast(buff.get(), rbytes);
 
 		if(pud) {
-			meta_message_ptr in(new meta_message(*pud));
+			mih::octet_string ip(_rmt_endp.address().to_string());
+			uint16 port = _rmt_endp.port();
+
+			meta_message_ptr in(new meta_message(ip, port, *pud));
 			log(4, *pud);
 			_dispatch(in);
                 }
@@ -86,12 +90,13 @@ void udp_listener::handle_receive(buffer<uint8>&			 buff,
 		void *rbuff = buff.get();
 		size_t rlen = buff.size();
 
-		_sock.async_receive(asio::buffer(rbuff, rlen),
-				    bind(&udp_listener::handle_receive,
-					 this,
-					 bindrv(buff),
-					 asio::placeholders::bytes_transferred,
-					 asio::placeholders::error));
+		_sock.async_receive_from(asio::buffer(rbuff, rlen),
+					 _rmt_endp,
+					 bind(&udp_listener::handle_receive,
+					      this,
+					      bindrv(buff),
+					      asio::placeholders::bytes_transferred,
+					      asio::placeholders::error));
         }
 }
 

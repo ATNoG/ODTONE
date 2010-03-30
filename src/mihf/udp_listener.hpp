@@ -50,6 +50,7 @@ protected:
 	io_service		&_io;
 	ip::udp::socket		 _sock;
 	dispatch_t		&_dispatch;
+	ip::udp::endpoint	 _rmt_endp;
 
 };
 

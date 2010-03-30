@@ -54,11 +54,14 @@ void session::handle_read(odtone::buffer<uint8> &buff,
 			  const boost::system::error_code &e)
 {
 	if (!e) {
+		mih::octet_string ip(_sock.remote_endpoint().address().to_string());
+		uint16 port = _sock.remote_endpoint().port();
+
 		mih::frame *pud = mih::frame::cast(buff.get(), rbytes);
 		if(pud) {
-			log(1, "(tcp) received ", rbytes, " bytes");
+			log(1, "(tcp) received ", rbytes, " bytes from ", ip , ":", port);
 
-			meta_message_ptr in(new meta_message(*pud));
+			meta_message_ptr in(new meta_message(ip, port, *pud));
 			_dispatch(in);
                 }
 		// close socket because we're not using it anymore
