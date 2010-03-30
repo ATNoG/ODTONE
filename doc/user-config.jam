@@ -3,10 +3,6 @@
 # your HOME. Replace 'path-to-boost' with the proper paths.
 #==============================================================================
 
-project user-config
-	: requirements <include>$(BOOST_INC)
-	;
-
 using boost
 	: 1.42
 	: <root>path-to-boost
