@@ -3,7 +3,7 @@
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //
 //
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
+// Copyright (C) 2009-2010 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
 //
 // This file is part of ODTONE - Open Dot Twenty One.
 //
@@ -18,9 +18,15 @@
 #include "if_802_11.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
-if_802_11::if_802_11(uint index, const std::string& name, const odtone::mih::mac_addr& link_addr)
-	: interface(index, odtone::mih::link_type_802_11, name, link_addr)
+namespace link_sap { namespace nic {
+
+///////////////////////////////////////////////////////////////////////////////
+if_802_11::if_802_11(if_id const& id)
+	: interface(id, odtone::mih::link_type_802_11)
 {
 }
+
+///////////////////////////////////////////////////////////////////////////////
+} /* namespace nic */ } /* namespace link_sap */
 
 // EOF ////////////////////////////////////////////////////////////////////////

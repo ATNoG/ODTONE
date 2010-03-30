@@ -23,8 +23,10 @@
 #include <boost/scoped_ptr.hpp>
 #include <cstring>
 
+#pragma comment(lib, "wlanapi.lib")
+
 ///////////////////////////////////////////////////////////////////////////////
-namespace win { namespace detail {
+namespace link_sap { namespace win32 { namespace detail {
 
 ///////////////////////////////////////////////////////////////////////////////
 static void wlan_close(void* h)
@@ -36,36 +38,18 @@ static void WINAPI wlan_notify_handler(PWLAN_NOTIFICATION_DATA data, void* conte
 {
 	wlan_register_notification_handler* pcb = reinterpret_cast<wlan_register_notification_handler*>(context);
 	wlan_register_notification_handler& cb = *pcb;
-	wlan_notification_data nd;
 
 	if (data->NotificationSource == WLAN_NOTIFICATION_SOURCE_NONE) {
 		delete pcb;
 		return;
 	}
 
-	if (!cb)
-		return;
-
-	switch (data->NotificationCode) {
-	case wlan_notification_acm_connection_start:
-	case wlan_notification_acm_connection_complete:
-	case wlan_notification_acm_connection_attempt_fail: {
-			WLAN_CONNECTION_NOTIFICATION_DATA* dt = reinterpret_cast<WLAN_CONNECTION_NOTIFICATION_DATA*>(data->pData);
-
-			nd.error = dt->wlanReasonCode;
-			nd.profile = dt->strProfileName;
-			nd.ssid.assign(reinterpret_cast<char*>(dt->dot11Ssid.ucSSID), dt->dot11Ssid.uSSIDLength);
-			nd.is_secure = bool(dt->bSecurityEnabled);
-		}
-		break;
-	}
-	cb(wlan_notification_type(data->NotificationCode), nd);
+	if (cb)
+		cb(*data);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace detail */
-
-using odtone::nullptr;
 
 ///////////////////////////////////////////////////////////////////////////////
 handle wlan_open()
@@ -83,7 +67,7 @@ handle wlan_open()
 	return handle(h, detail::wlan_close);
 }
 
-void wlan_register_notification(const handle& h, const wlan_register_notification_handler& handler)
+void wlan_register_notification(handle const& h, wlan_register_notification_handler const& handler)
 {
 	wlan_register_notification_handler* cb = new wlan_register_notification_handler(handler);
 	DWORD res;
@@ -100,32 +84,6 @@ void wlan_register_notification(const handle& h, const wlan_register_notificatio
 													   "win::wlan_register_notification"));
 }
 
-std::string wstring_to_string(wchar_t const* str, size_t len)
-{
-	std::string tmp;
-	int res;
-
-	res = ::WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, str, odtone::truncate_cast<int>(len), nullptr, 0, nullptr, FALSE);
-	if (res > 0) {
-		tmp.resize(res);
-		::WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, str, len, &tmp[0], res, nullptr, FALSE);
-		tmp.resize(res - 1);
-
-	} else {
-		boost::throw_exception(boost::system::system_error(::GetLastError(),
-														   boost::system::get_system_category(),
-														   "win::wstring_to_string"));
-	}
-
-	return tmp;
-}
-
-std::string wstring_to_string(const wchar_t* str)
-{
-	return wstring_to_string(str, std::wcslen(str));
-}
-
-///////////////////////////////////////////////////////////////////////////////
 wlan_if_list wlan_enum_interfaces(handle const& h)
 {
 	WLAN_INTERFACE_INFO_LIST* iflist = nullptr;
@@ -142,23 +100,37 @@ wlan_if_list wlan_enum_interfaces(handle const& h)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-wlan_profile_list wlan_get_profile_list(const handle& h, const odtone::sap::nif::if_id& id)
+std::string wstring_to_string(wchar_t const* str, size_t len)
 {
-	const GUID* guid = reinterpret_cast<const GUID*>(&id);
-	WLAN_PROFILE_INFO_LIST* plist = nullptr;
-	DWORD res;
+	std::string tmp;
+	int res;
 
-	res = ::WlanGetProfileList(h.get(), guid, nullptr, &plist);
-	if (res == ERROR_SUCCESS)
-		return wlan_profile_list(plist, ::WlanFreeMemory);
+	res = ::WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, str, odtone::truncate_cast<int>(len), nullptr, 0, nullptr, FALSE);
+	if (res > 0) {
+		tmp.resize(res);
+		::WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, str, odtone::truncate_cast<int>(len), &tmp[0], res, nullptr, FALSE);
+		tmp.resize(res - 1);
 
-	boost::throw_exception(boost::system::system_error(res,
-													   boost::system::get_system_category(),
-													   "win::wlan_get_profile_list"));
-	return wlan_profile_list();
+	} else {
+		boost::throw_exception(boost::system::system_error(::GetLastError(),
+														   boost::system::get_system_category(),
+														   "win::wstring_to_string"));
+	}
+
+	return tmp;
+}
+
+std::string wstring_to_string(wchar_t const* str)
+{
+	return wstring_to_string(str, std::wcslen(str));
+}
+
+std::string wstring_to_string(std::wstring const& str)
+{
+	return wstring_to_string(str.c_str(), str.size());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-} /* namespace win */
+} /* namespace win32 */ } /* namespace link_sap */
 
 // EOF ////////////////////////////////////////////////////////////////////////

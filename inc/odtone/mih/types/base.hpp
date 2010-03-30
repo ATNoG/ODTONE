@@ -28,6 +28,11 @@
 #include <vector>
 #include <ostream>
 
+#ifdef BOOST_MSVC
+#	pragma warning(push)
+#	pragma warning(disable : 4800)
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 // Define a postfix increment operator for enumeration types
 template<class EnumT>
@@ -180,6 +185,10 @@ typedef enumeration<status_enum> status;
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /*namespace odtone */
+
+#ifdef BOOST_MSVC
+#	pragma warning(pop)
+#endif
 
 // EOF ////////////////////////////////////////////////////////////////////////
 #endif /* ODTONE_MIH_TYPES_BASE__HPP_ */

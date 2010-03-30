@@ -16,21 +16,13 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-SOURCES =
-	mih_usr.cpp
-	;
-
-LIBS =
-	../../lib/odtone//odtone_base
-	../../lib/odtone/mih//odtone_mih
-	../../lib/odtone/sap//odtone_sap
+project mih_usr
 	;
 
 exe mih_usr
-	: $(SOURCES)
-	  $(LIBS)
-	: <library>/boost//system
-	  <library>/boost//thread
-	  <library>/boost//program_options
+	: mih_usr.cpp
+	  ../../lib/odtone//odtone_base
+	  ../../lib/odtone/mih//odtone_mih
+	  ../../lib/odtone/sap//odtone_sap
 	;
 

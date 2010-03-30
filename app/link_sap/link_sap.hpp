@@ -21,16 +21,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "base.hpp"
 #include <odtone/sap/link.hpp>
+#include "interface/interface.hpp"
 #include <boost/utility.hpp>
 #include <memory>
 
-#ifdef BOOST_WINDOWS
-#include <odtone/sap/nif/interface.hpp>
-using odtone::sap::nif::interface;
-using odtone::sap::nif::interface_map;
-#else
-#include "interface/interface.hpp"
-#endif
+///////////////////////////////////////////////////////////////////////////////
+namespace link_sap {
 
 ///////////////////////////////////////////////////////////////////////////////
 class link_sap : boost::noncopyable {
@@ -38,15 +34,18 @@ public:
 	link_sap(const odtone::mih::config& cfg, boost::asio::io_service& io);
 	~link_sap();
 
-	void update(/*odtone::sap::nif::*/interface* it);
+	void update(nic::interface* it);
 
 private:
 	void default_handler(odtone::mih::message& msg);
 
 private:
-	odtone::sap::link               _mihf;
-	/*odtone::sap::nif::*/interface_map _ifmap;
+	odtone::sap::link  _mihf;
+	nic::interface_map _ifmap;
 };
+
+///////////////////////////////////////////////////////////////////////////////
+} /* namespace link_sap */
 
 // EOF ////////////////////////////////////////////////////////////////////////
 #endif /* LINK_SAP__HPP_ */

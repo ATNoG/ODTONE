@@ -16,20 +16,12 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-SOURCES =
-	client.cpp
-	;
-
-LIBS =
-	../../lib/odtone//odtone_base
-	../../lib/odtone/mih//odtone_mih
+project client
 	;
 
 exe client
-	: $(SOURCES)
-	  $(LIBS)
-	: <library>/boost//system
-	  <library>/boost//thread
-	  <library>/boost//program_options
+	: client.cpp
+	  ../../lib/odtone//odtone_base
+	  ../../lib/odtone/mih//odtone_mih
 	;
 

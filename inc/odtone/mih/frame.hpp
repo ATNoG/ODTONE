@@ -25,6 +25,11 @@
 #include <boost/utility.hpp>
 #include <ostream>
 
+#ifdef BOOST_MSVC
+#	pragma warning(push)
+#	pragma warning(disable : 4800)
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mih {
 
@@ -339,6 +344,10 @@ inline size_t frame::length() const
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /* namespace odtone */
+
+#ifdef BOOST_MSVC
+#	pragma warning(pop)
+#endif
 
 // EOF ////////////////////////////////////////////////////////////////////////
 #endif /* ODTONE_MIH_FRAME__HPP_ */

@@ -17,7 +17,15 @@
 #==============================================================================
 
 project odtone
-    : requirements <include>inc
+    : requirements
+      <include>inc
+      <link>static
+      <runtime-link>static
+	  <define>BOOST_ENABLE_ASSERT_HANDLER
+	  <toolset>msvc:<define>BOOST_ALL_NO_LIB
+	  <toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
+	  <toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
+	  <toolset>msvc:<define>_SECURE_SCL=0
     : build-dir build
 	;
 
@@ -27,7 +35,7 @@ boost.use-project 1.42 ;
 
 build-project src/mihf ;
 build-project src/dummyserver ;
-#build-project app/link_sap ;
 build-project app/mih_usr ;
+#build-project app/link_usr ; #until the linux version is made up-to-date
 build-project app/client ;
 

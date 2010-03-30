@@ -17,7 +17,13 @@
 //=============================================================================
 
 #include <odtone/mih/config.hpp>
+#include <boost/program_options/parsers.hpp>
 #include <fstream>
+
+#ifdef BOOST_MSVC
+#	pragma warning(push)
+#	pragma warning(disable : 4800)
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mih {
@@ -62,5 +68,9 @@ void config::parse(int argc, char* argv[], const char* conf_file_option)
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /* namespace odtone */
+
+#ifdef BOOST_MSVC
+#	pragma warning(pop)
+#endif
 
 // EOF ////////////////////////////////////////////////////////////////////////

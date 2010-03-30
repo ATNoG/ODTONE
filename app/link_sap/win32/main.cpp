@@ -17,67 +17,90 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "../link_sap.hpp"
+#include "../interface/if_802_11.hpp"
 #include <odtone/debug.hpp>
-#include <odtone/sap/nif/if_802_11.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <iostream>
 #include "win32.hpp"
 
-// This file defines a macro that contains the path to the default
-// configuration file
-#ifndef LINK_SAP_CONFIG
-#define LINK_SAP_CONFIG "link_sap.conf"
-#endif
-
 ///////////////////////////////////////////////////////////////////////////////
-void my_handler(win::wlan_notification_type nt,
-				const win::wlan_notification_data& nd,
-				boost::asio::io_service& ios,
-				odtone::sap::link& ls)
-{
-	std::cout << "wlan notification[" << nt << "]";
+using link_sap::nic::interface;
+using link_sap::nic::if_802_11;
+using link_sap::nic::if_id;
+using link_sap::ushort;
+using link_sap::uint;
 
-	switch (nt) {
-	case win::wlan_notification_connection_start:
-	case win::wlan_notification_connection_complete:
-	case win::wlan_notification_connection_attempt_fail:
-		std::cout << "\n\treason=" << nd.error
-				  << "\n\tprofile = " << nd.profile
-				  << "\n\tssid = " << nd.ssid;
+void wlan_event_handler(const WLAN_NOTIFICATION_DATA& nd, boost::asio::io_service& ios, link_sap::link_sap* ls)
+{
+	std::cout << "wlan notification[" << nd.NotificationCode << "]\n";
+
+	if (nd.NotificationSource != WLAN_NOTIFICATION_SOURCE_ACM)
+		return;
+
+	switch (nd.NotificationCode) {
+	case wlan_notification_acm_connection_complete: {
+			WLAN_CONNECTION_NOTIFICATION_DATA* cnd = reinterpret_cast<WLAN_CONNECTION_NOTIFICATION_DATA*>(nd.pData);
+
+			if (cnd->wlanReasonCode == WLAN_REASON_CODE_SUCCESS) {
+				interface* it = new if_802_11(if_id(&nd.InterfaceGuid));
+
+				it->up(true);
+				ios.dispatch(boost::bind(&link_sap::link_sap::update, ls, it));
+			}
+		}
 		break;
+
+	case wlan_notification_acm_disconnected: {
+			interface* it = new if_802_11(if_id(&nd.InterfaceGuid));
+			it->up(false);
+			ios.dispatch(boost::bind(&link_sap::link_sap::update, ls, it));
+		}
 	}
-	std::cout << std::endl;
 }
+
+namespace po = boost::program_options;
 
 int main(int argc, char** argv)
 {
 	odtone::setup_crash_handler();
-	using odtone::sap::nif::interface;
-	using odtone::sap::nif::if_802_11;
-	using odtone::sap::nif::if_id;
 
 	try {
-		odtone::mih::config cfg(argc, argv, LINK_SAP_CONFIG);
+		po::options_description desc("MIH Link SAP Configuration");
+		desc.add_options()
+			("help", "Display configuration options")
+			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1234), "Port")
+			(odtone::sap::kConf_File, po::value<std::string>()->default_value("link_sap.conf"), "Configuration File")
+			(odtone::sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive Buffer Length")
+			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
+			(odtone::sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "MIHF Local Communications Port")
+			(odtone::sap::kConf_MIHF_Id, po::value<std::string>()->default_value("local-mihf"), "Local MIHF Id")
+			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("link"), "Link SAP Id");
 
-		std::cout	<< "cfg(" LINK_SAP_CONFIG "): port=" << cfg.get<ushort>(odtone::mih::kConf_Port)
-					<< " mihf.ip=\"" << cfg.get<std::string>(odtone::mih::kConf_MIHF_Ip)
-					<< " mihf.local_port=\"" << cfg.get<ushort>(odtone::mih::kConf_MIHF_Local_Port)
-					<< "\"\n";
+		odtone::mih::config cfg(desc);
+		cfg.parse(argc, argv, odtone::sap::kConf_File);
+
+		std::cout << "cfg:"
+		             " port=" << cfg.get<ushort>(odtone::sap::kConf_Port)
+		          << " mihf.ip=" << cfg.get<std::string>(odtone::sap::kConf_MIHF_Ip)
+		          << " mihf.local_port=" << cfg.get<ushort>(odtone::sap::kConf_MIHF_Local_Port)
+		          << std::endl;
 
 		boost::asio::io_service ios;
-		link_sap ls(cfg, ios);
+		link_sap::link_sap ls(cfg, ios);
 
-		win::handle lan = win::wlan_open();
-		//win::wlan_register_notification(lan, boost::bind(&my_handler, _1, _2, boost::ref(ios), boost::ref(ls)));
-		win::wlan_if_list iflst = win::wlan_enum_interfaces(lan);
+		link_sap::win32::handle lan = link_sap::win32::wlan_open();
+		link_sap::win32::wlan_if_list iflst = link_sap::win32::wlan_enum_interfaces(lan);
 
 		for (uint i = 0; i < iflst->dwNumberOfItems; ++i) {
 			interface* it;
 
 			it = new if_802_11(if_id(&iflst->InterfaceInfo[i].InterfaceGuid));
-			ios.dispatch(boost::bind(&link_sap::update, &ls, it));
+			it->name(iflst->InterfaceInfo[i].strInterfaceDescription);
+			ios.dispatch(boost::bind(&link_sap::link_sap::update, &ls, it));
 		}
+
+		link_sap::win32::wlan_register_notification(lan, boost::bind(&wlan_event_handler, _1, boost::ref(ios), &ls));
 
 		ios.run();
 

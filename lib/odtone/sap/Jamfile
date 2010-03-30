@@ -16,15 +16,12 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-SOURCES =
-	sap.cpp
-	user.cpp
-	link.cpp
-	;
-
 lib odtone_sap
-	: $(SOURCES)
+	: sap.cpp
+	  user.cpp
+	  link.cpp
 	  ..//odtone_base
 	  ../mih//odtone_mih
+	  /boost//thread
 	;
 

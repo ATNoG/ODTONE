@@ -16,15 +16,12 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-SOURCES =
-	archive.cpp
-	config.cpp
-	message.cpp
-	types/address.cpp
-	;
-
 lib odtone_mih
-	: $(SOURCES)
+	: archive.cpp
+	  config.cpp
+	  message.cpp
+	  types/address.cpp
 	  ..//odtone_base
+	  /boost//program_options
 	;
 

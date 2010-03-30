@@ -26,6 +26,9 @@
 #include "link_sap.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
+namespace link_sap {
+
+///////////////////////////////////////////////////////////////////////////////
 link_sap::link_sap(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	: _mihf(cfg, io, boost::bind(&link_sap::default_handler, this, _1))
 {
@@ -35,10 +38,10 @@ link_sap::~link_sap()
 {
 }
 
-void link_sap::update(/*odtone::sap::nif::*/interface* it)
+void link_sap::update(nic::interface* it)
 {
-	std::pair</*odtone::sap::nif::*/interface_map::iterator, bool> ifi;
-	std::auto_ptr</*odtone::sap::nif::*/interface> itc(it);
+	std::pair<nic::interface_map::iterator, bool> ifi;
+	std::auto_ptr<nic::interface> itc(it);
 	bool update = false;
 
 	ifi = _ifmap.insert(*it);
@@ -113,5 +116,8 @@ void link_sap::default_handler(odtone::mih::message& msg)
 		}
 	}
 }
+
+///////////////////////////////////////////////////////////////////////////////
+} /* namespace link_sap */
 
 // EOF ////////////////////////////////////////////////////////////////////////
