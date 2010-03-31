@@ -30,16 +30,24 @@ namespace odtone { namespace mihf {
 
 class service_management {
 public:
-	service_management(local_transaction_pool &lpool, transmit &t);
+	service_management(local_transaction_pool &lpool, transmit &t, bool
+			   enable_broadcast = false);
 
 	bool capability_discover_request(meta_message_ptr &in,
 					 meta_message_ptr &out);
 	bool capability_discover_response(meta_message_ptr&in,
 					  meta_message_ptr &out);
 
+private:
+	bool forward_capability_discover_response(meta_message_ptr &in,
+						  pending_transaction &p);
+
 protected:
 	local_transaction_pool	&_lpool;
 	transmit		&_transmit;
+
+	// set to true if this MIHF responds to broadcast messages
+	bool			 _enable_broadcast;
 };
 
 } /* namespace mihf */ } /* namespace odtone */

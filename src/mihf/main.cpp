@@ -450,7 +450,7 @@ int main(int argc, char **argv)
 	event_service		mies(lpool, trnsmt);
 	command_service		mics(lpool, trnsmt);
 	information_service	miis(lpool, trnsmt);
-	service_management	sm(lpool, trnsmt);
+	service_management	sm(lpool, trnsmt, enable_broadcast);
 
 	// register callbacks with service access controller
 	sm_register_callbacks(sm);

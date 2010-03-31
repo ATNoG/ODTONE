@@ -34,10 +34,12 @@ extern odtone::mih::net_type_addr_list  capabilities_list_net_type_addr;
 namespace odtone { namespace mihf {
 
 service_management::service_management(local_transaction_pool &lpool,
-				       transmit &t)
+				       transmit &t,
+	bool enable_broadcast)
 	: _lpool(lpool),
 	  _transmit(t)
 {
+	_enable_broadcast = enable_broadcast;
 }
 
 
@@ -48,21 +50,53 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 	    in->source().to_string(), " with destination ",
 	    in->destination().to_string());
 
-	if (utils::this_mihf_is_destination(in)) {
-		*out << mih::response(mih::response::capability_discover)
+	// user requested broadcasting of a capability discover
+	if (utils::is_multicast(in) && in->is_local()) {
+		// piggyback
+		log(4, "(mism) piggybacking capability discover in broadcast");
+		*in << mih::request(mih::request::capability_discover)
 			& mih::tlv_status(mih::status_success)
 			& mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
 			& mih::tlv_event_list(capabilities_event_list);
 
-		out->tid(in->tid());
-		out->destination(in->source());
-		out->source(mihfid);
+		utils::forward_request(in, _lpool, _transmit);
+		return false;
+		// destination mihf identifier is this mihf
+	} else if (utils::this_mihf_is_destination(in) || utils::is_multicast(in)) {
 
-		return true;
+		if (_enable_broadcast) {
+			log(1, "(mism) setting response to broadcast Capability_Discover.request ");
+			*out << mih::response(mih::response::capability_discover)
+				& mih::tlv_status(mih::status_success)
+				& mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
+				& mih::tlv_event_list(capabilities_event_list);
+
+			out->tid(in->tid());
+			out->destination(in->source());
+			out->source(mihfid);
+
+			return true;
+		} else {
+			log(3, "(mism) response to broadcast Capability_Discover.request disabled ");
+			return false;
+		}
 	} else {
 		utils::forward_request(in, _lpool, _transmit);
 		return false;
 	}
+
+	return false;
+}
+
+bool service_management::forward_capability_discover_response(meta_message_ptr &in,
+							      pending_transaction &p)
+{
+	log(1, "forwarding Capability_Discover.response to ", p.user);
+
+	in->tid(p.tid);
+	in->destination(mih::id(p.user));
+
+	_transmit(in);
 
 	return false;
 }
@@ -76,18 +110,16 @@ bool service_management::capability_discover_response(meta_message_ptr &in,
 
 	// do we have a request from a user?
 	pending_transaction p;
-	if (!_lpool.get(in->source().to_string(), p)) {
-		log(1, "no pending transaction for this message, discarding");
-		return false;
+	if (_lpool.get(in->source().to_string(), p)) {
+		return forward_capability_discover_response(in, p);
 	}
 
-	log(1, "forwarding Capability_Discover.response to ", p.user);
+	// check if there's a broadcast request from a user
+	if (_lpool.get(mih::octet_string(""), p))  {
+		return forward_capability_discover_response(in, p);
+	}
 
-	in->tid(p.tid);
-	in->destination(mih::id(p.user));
-
-	_transmit(in);
-
+	log(1, "no pending transaction for this message, discarding");
 	return false;
 }
 

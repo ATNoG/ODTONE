@@ -41,8 +41,17 @@ void net_sap::send(meta_message_ptr &msg)
 			utils::tcp_send(_io, msg, a.ip.c_str(), a.port);
 
 		log(1, "(net sap) sent message to: ", msg->destination().to_string(), a.ip, " ", a.port);
-	} catch(...) {
-		log(1, "(net sap) no registration for: #", msg->destination().to_string(), "#");
+	} catch(...) { // no registration was found
+
+		// try to broadcast message
+		if (msg->destination().to_string().size() == 0) {
+			utils::udp_send(_io, msg, "255.255.255.255", 4551);
+		// check msg meta data for ip and use it
+		} else if (msg->ip().size() != 0) {
+			utils::udp_send(_io, msg, msg->ip().c_str(), 4551);
+		} else {
+			log(1, "(net sap) no registration for peer mihf with id: ", msg->destination().to_string());
+		}
 	}
 }
 

@@ -17,6 +17,7 @@
 #include "service_access_controller.hpp"
 #include "meta_message.hpp"
 #include "log.hpp"
+#include "mihfid.hpp"
 
 #include <odtone/debug.hpp>
 #include <odtone/mih/config.hpp>
@@ -75,6 +76,10 @@ void sac_dispatch::operator()(meta_message_ptr& in)
 
 bool sac_process_message(meta_message_ptr& in, meta_message_ptr& out)
 {
+	// discard messages that this MIHF broadcasted to itself
+	if (in->source() == mihfid)
+		return false;
+
 	/** __no__ authentication at this point */
 
 	uint mid = in->mid();
@@ -90,6 +95,12 @@ bool sac_process_message(meta_message_ptr& in, meta_message_ptr& out)
 		handler_t process_message = it->second;
 
 		bool rsp = process_message(in, out);
+
+		// set ip and port of response message
+		out->ip(in->ip());
+		out->port(in->port());
+
+		// response message must have the same tid
 		out->tid(in->tid());
 
 		return rsp;
