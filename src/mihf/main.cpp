@@ -75,7 +75,7 @@ static const char* const kConf_MIHF_Remote_Port  = "mihf.remote_port";
 static const char* const kConf_MIHF_Local_Port   = "mihf.local_port";
 static const char* const kConf_MIHF_Evt_List     = "mihf.event_list";
 static const char* const kConf_MIHF_Network_Type = "mihf.link_addr_list";
-static const char* const kConf_MIHF_BRDCAST      = "handle_broadcast";
+static const char* const kConf_MIHF_BRDCAST      = "enable_broadcast";
 static const char* const kConf_MIHF_Verbosity    = "log";
 
 
@@ -393,7 +393,7 @@ int main(int argc, char **argv)
 		(kConf_MIHF_Local_Port, po::value<uint16>()->default_value(1025), "MIHF Local Communications Port")
 		(kConf_MIHF_Evt_List, po::value<std::string>()->default_value(""), "MIHF List of supported events")
 		(kConf_MIHF_Network_Type, po::value<std::string>()->default_value(""), "MIHF Network Type list")
-		(kConf_MIHF_BRDCAST, po::value<bool>()->default_value(false), "MIHF responds to broadcast messages")
+		(kConf_MIHF_BRDCAST,  "MIHF responds to broadcast messages")
 		(kConf_MIHF_Verbosity, po::value<uint16>()->default_value(1), "MIHF log level [0-4]")
 		;
 
@@ -406,7 +406,8 @@ int main(int argc, char **argv)
 	}
 
 	// get command line parameters
-	bool enable_broadcast = cfg.get<bool>(kConf_MIHF_BRDCAST);
+	bool enable_broadcast = (cfg.count(kConf_MIHF_BRDCAST) == 1);
+
 	uint16 lport = cfg.get<uint16>(kConf_MIHF_Local_Port);
 	uint16 rport = cfg.get<uint16>(kConf_MIHF_Remote_Port);
 	mih::octet_string id = cfg.get<mih::octet_string>(kConf_MIHF_Id);
