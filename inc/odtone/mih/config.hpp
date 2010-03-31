@@ -54,7 +54,7 @@ public:
 	 */
 	template<class T>
 	T get(const char* var) const { return _vars[var].as<T>(); }
-
+	uint count(const char *var) { return _vars.count(var); }
 private:
 	po::options_description _desc;
 	po::variables_map       _vars;
