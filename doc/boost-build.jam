@@ -1,12 +1,8 @@
 #==============================================================================
-# You must add these configurations to your user-config.jam or site-config.jam
-# Replace 'path-to-boost' with the proper path.
+# Put his file at the root directory of your project or in any of its parent
+# directories. Replace 'path-to-boost' with the proper path.
 #
 # See the Boost.Build documentation for more details!
 #==============================================================================
 
-using boost
-	: 1.42
-	: <root>path-to-boost
-	;
-
+boost-build C:/SDK/boost_1_42_0/tools/build/v2 ;
