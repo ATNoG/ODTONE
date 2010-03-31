@@ -41,14 +41,24 @@ bool meta_message::is_local()
 	return _local;
 }
 
-const mih::octet_string& meta_message::from_ip()
+const mih::octet_string& meta_message::ip()
 {
 	return _ip;
 }
 
-uint16 meta_message::from_port()
+uint16 meta_message::port()
 {
 	return _port;
+}
+
+void meta_message::ip(const mih::octet_string &ip)
+{
+	_ip.assign(ip);
+}
+
+void meta_message::port(uint16 port)
+{
+	_port = port;
 }
 
 } /* namespace mihf */ } /* namespace odtone */

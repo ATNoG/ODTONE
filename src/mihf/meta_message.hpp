@@ -30,8 +30,11 @@ public:
 	meta_message(mih::octet_string ip, uint16 port, const mih::frame &fm);
 
 	bool is_local();
-	const mih::octet_string& from_ip();
-	uint16 from_port();
+	const mih::octet_string& ip();
+	uint16 port();
+
+	void ip(const mih::octet_string &ip);
+	void port(uint16 p);
 
 protected:
 	// true if message was sent from a local user/link sap
