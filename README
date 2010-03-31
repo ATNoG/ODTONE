@@ -1,12 +1,7 @@
-Project: Odtone - Open Dot Twenty One v0.1.1 Beta
-URL: http://helios.av.it.pt/projects/odtone
-
-
-Notes
------
-
-Please refer to the included "odtone-documentation.pdf" file for a
-more detailed explanation.
+Project : Odtone - Open Dot Twenty One
+Version : 0.1.1 Beta
+URL     : http://helios.av.it.pt/projects/odtone
+Boost   : 1.42
 
 
 Download
@@ -23,59 +18,52 @@ Git repository:
 	git	clone http://helios.av.it.pt/projects/odtone/git/ odtone
 
 
-Dependencies
-------------
+Compilation
+-----------
 
-Odtone depends on a few libraries, which need to be installed before
-Odtone can be compiled.
+The Boost library is required to compile Odtone, more details are provided
+below. Before compiling Odtone you must configure the Boost library in your
+user-config.jam, see the 'doc/user-config.jam' for details.
 
-- Boost (version 1.37 or newer): http://www.boost.org
-- Sqlite (version 3.5.9 or newer): http://www.sqlite.org
+Once the Boost library is properly configured, run 'bjam' to compile odtone.
 
-
-Compilation - Linux
---------------------
-
-Compiling Odtone is as simple as:
-
-		  ./autogen.sh
-		  ./configure
-		  make
+Consult the Boost.Build documentation for more details!
 
 
-Compilation - Windows
----------------------
+Boost Library Quick Guide
+-------------------------
 
-Project files are provided for Visual Studio 2008 to build odtone, you will
-need to download and install the boost library (instructions to download,
-compile and install are provided below). Build targets are currently available
-for x86-32, x86-64 and in the future Windows Mobile Platforms.
+1. Download the Boost library from http://www.boost.org/users/download/ and
+unpack it. See above for the required version of the Boost library.
+
+2. Install Boost.Jam (if your already have it, skip this step). You can either
+use the bootstrap script from the Boost library sources and then copy the
+resulting binary to a proper place (within your $PATH). Or, you can download a
+pre-built binary from http://www.boost.org/users/download/.
+
+3. Setup Boost.Build (if your already have it, skip this step). See the file
+'doc/boost-build.jam' for instructions.
 
 
-Boost Library Installation Guide
---------------------------------
+Platform Notes
+--------------
 
-1. Download the latest boost library from http://www.boost.org/users/download/ and
-bjam binary for your platform. Ubuntu users can install bjam using the following
-command:
-	$ sudo apt-get install bjam
+          -------------------------
+          | x86-32 | x86-64 | ARM |
+-----------------------------------
+| Linux   |   OK   |   OK   |  ?  |
+| Windows |   OK   |   OK   |  ?  |
+-----------------------------------
 
-2. Extract the boost library and navigate to it's root dir in a command line
-3. Compile and install:
-on windows:
-	$ bjam variant=debug link=static runtime-link=static --with-thread --with-system --with-program_options
-	$ bjam variant=release link=static runtime-link=static define=_SECURE_SCL=0 cxxflags=/GL linkflags=/LTCG --with-thread --with-system --with-program_options
+Linux
+ - We recommend GCC. Most distributions already come with the necessary
+ pre-requisites, you may aditionally need to install g++.
 
-	- The libraries will be placed at <boost-root>/stage/lib, you can use the
-	  --libdir=<LIB_DIR> option to specify another path for the boost library
-	  binaries.
+Windows
+ - We recommend MSVC. You will need to download and install the latest Windows
+ SDK. This already comes with all pre-requesite libraries and toolchains.
 
-	- To build Boost for x86-64 use the option memory-model=64, example:
-		$ bjam variant=debug memory-model=64 link=static runtime-link=static --with-thread --with-system --with-program_options
+For more details regarding platforms and toolchains, consult the Boost.Build
+documentation!
 
-	- You will also need to set the include and library paths in Visual Studio.
 
-on linux:
-	$ sudo bjam install --with-thread --with-system --with-program_options
-
-	- The boost library will be automatically detected by the odtone build.
