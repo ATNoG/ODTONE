@@ -42,6 +42,22 @@ service_management::service_management(local_transaction_pool &lpool,
 	_enable_broadcast = enable_broadcast;
 }
 
+bool set_capability_discover_response(meta_message_ptr &in, meta_message_ptr &out)
+{
+	log(1, "(mism) setting response to broadcast Capability_Discover.request ");
+
+	*out << mih::response(mih::response::capability_discover)
+		& mih::tlv_status(mih::status_success)
+		& mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
+		& mih::tlv_event_list(capabilities_event_list);
+
+	out->tid(in->tid());
+	out->destination(in->source());
+	out->source(mihfid);
+
+	return true;
+}
+
 
 bool service_management::capability_discover_request(meta_message_ptr& in,
 						     meta_message_ptr& out)
@@ -61,21 +77,13 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 
 		utils::forward_request(in, _lpool, _transmit);
 		return false;
-		// destination mihf identifier is this mihf
-	} else if (utils::this_mihf_is_destination(in) || utils::is_multicast(in)) {
-
+	// destination mihf identifier is this mihf
+	} else if (utils::this_mihf_is_destination(in)) {
+		return set_capability_discover_response(in, out);
+	// message was broadcasted?
+	} else if (utils::is_multicast(in)) {
 		if (_enable_broadcast) {
-			log(1, "(mism) setting response to broadcast Capability_Discover.request ");
-			*out << mih::response(mih::response::capability_discover)
-				& mih::tlv_status(mih::status_success)
-				& mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
-				& mih::tlv_event_list(capabilities_event_list);
-
-			out->tid(in->tid());
-			out->destination(in->source());
-			out->source(mihfid);
-
-			return true;
+			return set_capability_discover_response(in, out);
 		} else {
 			log(3, "(mism) response to broadcast Capability_Discover.request disabled ");
 			return false;
