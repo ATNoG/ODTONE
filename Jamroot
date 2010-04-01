@@ -20,7 +20,7 @@ project odtone
     : requirements
       <include>inc
       <link>static
-      <runtime-link>static
+	<toolset>msvc:<runtime-link>static
 	  <define>BOOST_ENABLE_ASSERT_HANDLER
 	  <toolset>msvc:<define>BOOST_ALL_NO_LIB
 	  <toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
