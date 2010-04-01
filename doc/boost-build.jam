@@ -5,4 +5,4 @@
 # See the Boost.Build documentation for more details!
 #==============================================================================
 
-boost-build C:/SDK/boost_1_42_0/tools/build/v2 ;
+boost-build path-to-boost/tools/build/v2 ;
