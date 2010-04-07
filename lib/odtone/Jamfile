@@ -16,17 +16,8 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-lib pthread
-	:
-	: <name>pthread
-	  <link>shared
-	;
-
-explicit pthread ;
-
 alias source-list
 	: debug_linux.cpp
-	  pthread
 	: <target-os>linux
 	;
 
