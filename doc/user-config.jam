@@ -1,6 +1,6 @@
 #==============================================================================
 # You must add these configurations to your user-config.jam or site-config.jam
-# Replace 'path-to-boost' with the proper path.
+# Replace 'path-to-xxx' with the proper path.
 #
 # See the Boost.Build documentation for more details!
 #==============================================================================
@@ -10,3 +10,12 @@ using boost
 	: <root>path-to-boost
 	;
 
+#
+# Android toolset configuration
+#
+# using gcc
+#	: android
+#	: path-to-toolset/arm-none-linux-gnueabi-g++
+#	: <linkflags>"-Wl,--whole-archive -lpthread -Wl,--no-whole-archive -lc"
+#	;
+#

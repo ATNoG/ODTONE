@@ -51,7 +51,7 @@ Platform Notes
           -------------------------
           | x86-32 | x86-64 | ARM |
 -----------------------------------
-| Linux   |   OK   |   OK   |  ?  |
+| Linux   |   OK   |   OK   | OK  |
 | Windows |   OK   |   OK   |  ?  |
 -----------------------------------
 
@@ -63,7 +63,20 @@ Windows
  - We recommend MSVC. You will need to download and install the latest Windows
  SDK. This already comes with all pre-requesite libraries and toolchains.
 
+Android
+ - Current Android Bionic headers are still too buggy to compile Odtone. For
+ example, the boost::asio::ip headers does no compile because of buggy
+ <netinet/in.h> and <netinet/in6.h> headers.
+ However, since Android is based on linux, it is possible to compile Odtone
+ with the CodeSourcery GNU Toolchain for ARM Processors, at the expense of a
+ bigger binary, since we have to link all libraries staticaly. The target must
+ be arm-none-linux-gnueabi.
+ - Prebuild binaries are available at http://www.codesourcery.com/sgpp/lite/arm
+ - See 'doc/user-config.jam' on how to configure the toolchain to compile with
+ Boost.Build. To use the Android toolset, pass the command line option
+ 'toolset=gcc-android' to bjam.
+
+
 For more details regarding platforms and toolchains, consult the Boost.Build
 documentation!
-
 
