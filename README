@@ -75,6 +75,8 @@ Android
  - See 'doc/user-config.jam' on how to configure the toolchain to compile with
  Boost.Build. To use the Android toolset, pass the command line option
  'toolset=gcc-android' to bjam.
+ - The Android SDK, not the NDK, is required to run the Odtone binary on a
+ Android device or emulator.
 
 
 For more details regarding platforms and toolchains, consult the Boost.Build
