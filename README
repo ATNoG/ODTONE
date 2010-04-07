@@ -58,6 +58,11 @@ Platform Notes
 Linux
  - We recommend GCC. Most distributions already come with the necessary
  pre-requisites, you may aditionally need to install g++.
+ - If you get link errors relative to undefined pthread symbols, this means
+ that your compiler does not link to pthreads by default. You can either pass
+ the 'linkflags=-lpthread' option to bjam. Or, configure the toolset to link to
+ this library, set "using gcc : : : <linkflags>-lpthread ;" without quotes at
+ your user-config.jam.
 
 Windows
  - We recommend MSVC. You will need to download and install the latest Windows
