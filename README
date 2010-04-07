@@ -7,8 +7,7 @@ Boost   : 1.42
 Download
 --------
 
-You can download the latest version of Odtone from the following
-website:
+You can download the Odtone sources from the following website:
 
 	http://helios.av.it.pt/projects/odtone
 
@@ -80,8 +79,8 @@ Android
  - See 'doc/user-config.jam' on how to configure the toolchain to compile with
  Boost.Build. To use the Android toolset, pass the command line option
  'toolset=gcc-android' to bjam.
- - The Android SDK, not the NDK, is required to run the Odtone binary on a
- Android device or emulator.
+ - The Android SDK has the necessary tools to run, debug and deploy the Odtone
+ binaries.
 
 
 For more details regarding platforms and toolchains, consult the Boost.Build
