@@ -61,7 +61,7 @@ public:
 	mac_addr() : transport_addr(6)
 	{ }
 
-	mac_addr(const octet_string& addr) : transport_addr(6)
+	explicit mac_addr(const octet_string& addr) : transport_addr(6)
 	{
 		this->address(addr);
 	}
