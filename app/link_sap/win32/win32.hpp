@@ -25,9 +25,11 @@
 #include <boost/function.hpp>
 #include <boost/logic/tribool.hpp>
 #include <boost/shared_ptr.hpp>
+#include <ws2tcpip.h>
+#include <Iphlpapi.h>
 #include <string>
-#include <Windows.h>
 #include <Wlanapi.h>
+#pragma comment(lib, "iphlpapi.lib")
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace link_sap { namespace win32 {
@@ -87,8 +89,10 @@ typedef boost::function<void(const WLAN_NOTIFICATION_DATA&)> wlan_register_notif
 typedef boost::shared_ptr<WLAN_INTERFACE_INFO_LIST>          wlan_if_list;
 
 handle       wlan_open();
-void         wlan_register_notification(handle const& h, wlan_register_notification_handler const& handler);
+void       	 wlan_register_notification(handle const& h, wlan_register_notification_handler const& handler);
 wlan_if_list wlan_enum_interfaces(handle const& h);
+MIB_IF_ROW2  get_interface_info(const GUID& guid);
+
 
 ///////////////////////////////////////////////////////////////////////////////
 std::string wstring_to_string(wchar_t const* str);

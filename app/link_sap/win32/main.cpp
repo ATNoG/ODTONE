@@ -23,6 +23,10 @@
 #include <boost/thread.hpp>
 #include <iostream>
 #include "win32.hpp"
+#include <ws2tcpip.h>
+#include <Iphlpapi.h>
+#include <Wlanapi.h>
+#pragma comment(lib, "iphlpapi.lib")
 
 ///////////////////////////////////////////////////////////////////////////////
 using link_sap::nic::interface;
@@ -44,8 +48,12 @@ void wlan_event_handler(const WLAN_NOTIFICATION_DATA& nd, boost::asio::io_servic
 
 			if (cnd->wlanReasonCode == WLAN_REASON_CODE_SUCCESS) {
 				interface* it = new if_802_11(if_id(&nd.InterfaceGuid));
-
 				it->up(true);
+				
+				MIB_IF_ROW2 it_info = link_sap::win32::get_interface_info(nd.InterfaceGuid);
+				it->link_addr(odtone::mih::mac_addr(it_info.PhysicalAddress, 
+				                                    it_info.PhysicalAddressLength));
+
 				ios.dispatch(boost::bind(&link_sap::link_sap::update, ls, it));
 			}
 		}
@@ -54,6 +62,11 @@ void wlan_event_handler(const WLAN_NOTIFICATION_DATA& nd, boost::asio::io_servic
 	case wlan_notification_acm_disconnected: {
 			interface* it = new if_802_11(if_id(&nd.InterfaceGuid));
 			it->up(false);
+			
+			MIB_IF_ROW2 it_info = link_sap::win32::get_interface_info(nd.InterfaceGuid);
+			it->link_addr(odtone::mih::mac_addr(it_info.PhysicalAddress, 
+			                                    it_info.PhysicalAddressLength));
+
 			ios.dispatch(boost::bind(&link_sap::link_sap::update, ls, it));
 		}
 	}
@@ -97,6 +110,11 @@ int main(int argc, char** argv)
 
 			it = new if_802_11(if_id(&iflst->InterfaceInfo[i].InterfaceGuid));
 			it->name(iflst->InterfaceInfo[i].strInterfaceDescription);
+			
+			MIB_IF_ROW2 it_info = link_sap::win32::get_interface_info(iflst->InterfaceInfo[i].InterfaceGuid);
+			it->link_addr(odtone::mih::mac_addr(it_info.PhysicalAddress, 
+			                                    it_info.PhysicalAddressLength));
+						
 			ios.dispatch(boost::bind(&link_sap::link_sap::update, &ls, it));
 		}
 

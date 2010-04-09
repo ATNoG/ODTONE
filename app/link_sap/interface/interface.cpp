@@ -56,6 +56,11 @@ void interface::name(const odtone::string& name)
 	_name = name;
 }
 
+void interface::link_addr(const odtone::mih::link_addr& link_addr)
+{
+	_link_addr = link_addr;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 interface_map::interface_map()
 {
