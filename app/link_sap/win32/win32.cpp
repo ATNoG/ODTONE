@@ -99,6 +99,25 @@ wlan_if_list wlan_enum_interfaces(handle const& h)
 	return wlan_if_list();
 }
 
+MIB_IF_ROW2 get_interface_info(const GUID& guid)
+{
+    MIB_IF_ROW2 iinf;
+
+    std::memset(&iinf, 0, sizeof(iinf));
+        
+    DWORD res = ::ConvertInterfaceGuidToLuid(&guid, &iinf.InterfaceLuid);
+    if(res != NO_ERROR)
+        boost::throw_exception(boost::system::system_error(res,
+														   boost::system::get_system_category(),
+														   "ConvertInterfaceGuidToLuid"));
+    res = ::GetIfEntry2(&iinf);
+    if(res != NO_ERROR)
+        boost::throw_exception(boost::system::system_error(res,
+														   boost::system::get_system_category(),
+														   "GetIfEntry2"));
+    return iinf;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 std::string wstring_to_string(wchar_t const* str, size_t len)
 {
