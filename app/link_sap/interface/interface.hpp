@@ -105,6 +105,7 @@ public:
 
 	boost::logic::tribool up(const boost::logic::tribool& tb);
 	void                  name(const odtone::string& name);
+	void                  link_addr(const odtone::mih::link_addr& link_addr);
 
 private:
 	boost::intrusive::set_member_hook<> _node;
