@@ -28,8 +28,8 @@
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef boost::variant<std::list<link_det_cfg>,
-					   std::list<link_cfg_param> > evt_cfg_info;
+typedef boost::variant<std::vector<link_det_cfg>,
+					   std::vector<link_cfg_param> > evt_cfg_info;
 
 typedef std::vector<evt_cfg_info> evt_cfg_info_list;
 
@@ -70,9 +70,9 @@ enum iq_type_list_enum {
 	iq_type_rdf_data = 1,
 	iq_type_rdf_schema_url = 2,
 	iq_type_rdf_schema = 3,
-	iq_type_ir_network_type = 4,
-	iq_type_operator_id = 5,
-	iq_type_service_provider_id = 6,
+	iq_type_ie_network_type = 4,
+	iq_type_ie_operator_id = 5,
+	iq_type_ie_service_provider_id = 6,
 	iq_type_ie_country_code = 7,
 	iq_type_ie_network_id = 8,
 	iq_type_ie_network_aux_id = 9,
@@ -109,7 +109,7 @@ typedef bitmap<16, transport_list_enum> transport_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 struct mbb_ho_supp {
-	mbb_ho_supp() : supported(false)
+	mbb_ho_supp() : supported(boolean_false)
 	{ }
 
 	template<class ArchiveT>
@@ -123,7 +123,7 @@ struct mbb_ho_supp {
 
 	network_type first;
 	network_type second;
-	bool         supported;
+	boolean      supported;
 };
 
 typedef std::vector<mbb_ho_supp> mbb_ho_supp_list;
