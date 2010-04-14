@@ -40,7 +40,7 @@ enum net_type_inc_enum {
 	net_type_inc_edge = 2,
 	net_type_inc_ethernet = 3,
 	net_type_inc_wireless_other = 4,
-	net_type_inc_ieee802_21 = 5,
+	net_type_inc_ieee802_11 = 5,
 	net_type_inc_cdma2000 = 6,
 	net_type_inc_umts = 7,
 	net_type_inc_cdma2000_hrpd = 8,
