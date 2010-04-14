@@ -107,7 +107,7 @@ public:
 
 	percentage& operator=(uint val)
 	{
-		if (val > 100)
+		if (val > 100 || val < 0)
 			boost::throw_exception(percentage_exception());
 
 		_val = val;
@@ -174,14 +174,22 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 enum status_enum {
-	status_success,
-	status_failure,
-	status_rejected,
-	status_authorization_failure,
-	status_network_error,
+	status_success = 0,
+	status_failure = 1,
+	status_rejected = 2,
+	status_authorization_failure = 3,
+	status_network_error = 4,
 };
 
 typedef enumeration<status_enum> status;
+
+///////////////////////////////////////////////////////////////////////////////
+enum boolean_enum {
+	boolean_false = 0,
+	boolean_true = 1
+};
+
+typedef enumeration<boolean_enum> boolean;
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /*namespace odtone */
