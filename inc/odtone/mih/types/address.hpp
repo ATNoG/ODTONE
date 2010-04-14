@@ -25,7 +25,9 @@
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef uint32 cell_id;
+typedef uint32   cell_id;
+typedef uint16   lac;
+typedef uint16   ci;
 
 ///////////////////////////////////////////////////////////////////////////////
 class transport_addr {
@@ -56,6 +58,14 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+enum transport_type_enum {
+	l2           = 0,
+	l3_or_higher = 1,
+};
+
+typedef enumeration<transport_type_enum> transport_type;
+
+///////////////////////////////////////////////////////////////////////////////
 class mac_addr : public transport_addr {
 public:
 	mac_addr() : transport_addr(6)
@@ -72,12 +82,12 @@ public:
 	octet_string address() const;
 	void         address(const octet_string& addr);
 
-	friend std::ostream& operator<<(std::ostream& os, const mac_addr& tp)
+	friend std::ostream& operator<<(std::ostream& out, const mac_addr& tp)
 	{
-		os << "\ntype: " << tp.type();
-		os << "\naddress: " << tp.address();
+		out << "\ntype: " << tp.type();
+		out << "\naddress: " << tp.address();
 
-		return os;
+		return out;
 	}
 
 	bool operator==(const mac_addr& other) const
@@ -89,8 +99,8 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 struct l2_3gpp_2g_cell_id {
 	uint8  plmn_id[3];
-	uint8  lac[2];
-	uint16 ci;
+	lac    _lac;
+	ci     _ci;
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -98,20 +108,28 @@ struct l2_3gpp_2g_cell_id {
 		ar & plmn_id[0];
 		ar & plmn_id[1];
 		ar & plmn_id[2];
-		ar & lac[0];
-		ar & lac[1];
-		ar & ci;
+		ar & _lac;
+		ar & _ci;
 	}
 
 	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_2g_cell_id&)
 	{
 		return out;
 	}
+
+	bool operator==(const l2_3gpp_2g_cell_id& other) const
+	{
+		return ((_lac == other._lac)
+				&& (_ci == other._ci)
+				&& (plmn_id[0] == other.plmn_id[0])
+				&& (plmn_id[1] == other.plmn_id[1])
+				&& (plmn_id[2] == other.plmn_id[2]));
+	}
 };
 
 struct l2_3gpp_3g_cell_id {
-	uint8  plmn_id[3];
-	uint32 cell_id;
+	uint8    plmn_id[3];
+	cell_id  _cell_id;
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -119,7 +137,7 @@ struct l2_3gpp_3g_cell_id {
 		ar & plmn_id[0];
 		ar & plmn_id[1];
 		ar & plmn_id[2];
-		ar & cell_id;
+		ar & _cell_id;
 	}
 
 	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_3g_cell_id&)
@@ -129,7 +147,7 @@ struct l2_3gpp_3g_cell_id {
 
 	bool operator==(const l2_3gpp_3g_cell_id& other) const
 	{
-		return ((cell_id == other.cell_id)
+		return ((_cell_id == other._cell_id)
 				&& (plmn_id[0] == other.plmn_id[0])
 				&& (plmn_id[1] == other.plmn_id[1])
 				&& (plmn_id[2] == other.plmn_id[2]));
@@ -137,39 +155,110 @@ struct l2_3gpp_3g_cell_id {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef octet_string l2_3gpp_addr;
-typedef octet_string l2_3gpp2_addr;
-typedef octet_string other_l2_addr;
+struct l2_3gpp_addr  {
+	template<class ArchiveT>
+	void serialize(ArchiveT& ar)
+	{
+		ar & value;
+	}
+
+	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_addr&)
+	{
+		return out;
+	}
+
+	bool operator==(const l2_3gpp_addr& other) const
+	{
+		return ((value == other.value));
+	}
+
+	octet_string value;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+struct l2_3gpp2_addr {
+	template<class ArchiveT>
+	void serialize(ArchiveT& ar)
+	{
+		ar & value;
+	}
+
+	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp2_addr&)
+	{
+		return out;
+	}
+
+	bool operator==(const l2_3gpp2_addr& other) const
+	{
+		return ((value == other.value));
+	}
+
+	octet_string value;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+struct other_l2_addr {
+	template<class ArchiveT>
+	void serialize(ArchiveT& ar)
+	{
+		ar & value;
+	}
+
+	friend std::ostream& operator<<(std::ostream& out, const other_l2_addr&)
+	{
+		return out;
+	}
+
+	bool operator==(const other_l2_addr& other) const
+	{
+		return ((value == other.value));
+	}
+
+	octet_string value;
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 typedef boost::variant<mac_addr,
-					   l2_3gpp_3g_cell_id //,
-					   // l2_3gpp_2g_cell_id,
-					   // l2_3gpp_addr,
-					   // l2_3gpp2_addr,
-					   // other_l2_addr
-					   > link_addr;
+			l2_3gpp_3g_cell_id,
+			l2_3gpp_2g_cell_id,
+			l2_3gpp_addr,
+			l2_3gpp2_addr,
+			other_l2_addr
+		      > link_addr;
 
 typedef std::vector<link_addr> link_addr_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 class ip_addr : public transport_addr {
 public:
-	enum type {
+	enum type_ip_enum {
 		none = 0,
 		ipv4 = 1,
 		ipv6 = 2,
 	};
 
-	ip_addr(type tp = none) : transport_addr(tp)
+	ip_addr(type_ip_enum tp = none) : transport_addr(tp)
 	{ }
 
-	ip_addr(type tp, const void* raw, size_t len)
+	ip_addr(type_ip_enum tp, const void* raw, size_t len)
 		: transport_addr(tp, raw, len)
 	{ }
 
-//	octet_string address() const;
-//	void         address(const octet_string& addr);
+	octet_string address() const;
+	void         address(const octet_string& addr);
+
+	friend std::ostream& operator<<(std::ostream& out, const ip_addr& tp)
+	{
+		out << "\ntype: " << tp.type();
+		out << "\naddress: " << tp.address();
+
+		return out;
+	}
+
+	bool operator==(const ip_addr& other) const
+	{
+		return ((type() == other.type()) && (address().compare(other.address()) == 0));
+	}
 };
 
 typedef ip_addr dhcp_serv;
