@@ -1,0 +1,871 @@
+<?xml version="1.0"?>
+<!DOCTYPE rdf:RDF [
+	  <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	  <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	  <!ENTITY mihbasic "URL_TO_BE_ASSIGNED">
+	  <!ENTITY owl "http://www.w3.org/2002/07/owl#">
+	  <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
+	  ]>
+<rdf:RDF xmlns:rdf="&rdf;" xmlns:rdfs="&rdfs;"
+	 xmlns:mihbasic="&mihbasic;" xml:base="&mihbasic;"
+	 xmlns:owl="&owl;" xmlns:xsd="&xsd;">
+  <owl:Ontology rdf:about="">
+    <rdfs:label>
+      Basic Schema for IEEE 802.21 Information Service
+    </rdfs:label>
+    <owl:versionInfo>1.0</owl:versionInfo>
+  </owl:Ontology>
+  <owl:DatatypeProperty rdf:ID="ie_identifier">
+    <rdfs:subPropertyOf rdf:resource="&rdfs;label"/>
+    <rdfs:range rdf:resource="&xsd;hexBinary"/>
+    <rdfs:comment>
+      A type identifier values for Information Elements.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="bit_number">
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+    <rdfs:comment>
+      This property represents a bit number that has
+      the value as true.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="ie_container_list_of_networks">
+    <mihbasic:ie_identifier>0x10000300</mihbasic:ie_identifier>
+    <rdfs:range rdf:resource="#LIST_OF_NETWORKS"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="LIST_OF_NETWORKS">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#ie_container_network"/>
+	<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:ObjectProperty rdf:ID="ie_container_network">
+    <mihbasic:ie_identifier>0x10000301</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#LIST_OF_NETWORKS"/>
+    <rdfs:range rdf:resource="#NETWORK"/>
+    <rdfs:comment>
+      This class contains General Information depicting and Access
+      Network Specific Information.
+    </rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="NETWORK">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#ie_network_type"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#ie_operator_id"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:ObjectProperty rdf:ID="ie_network_type">
+    <mihbasic:ie_identifier>0x10000000</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="#NETWORK_TYPE"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="NETWORK_TYPE">
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="link_type">
+    <rdfs:domain rdf:resource="#NETWORK_TYPE"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+    <rdfs:comment>
+      Link type of a network. The following values are assigned:
+      1: Wireless - GSM
+      2: Wireless - GPRS
+      3: Wireless - EDGE
+      15: Ethernet
+      18: Wireless - Other
+      19: Wireless - IEEE 802.11
+      22: Wireless - CDMA2000
+      23: Wireless - UMTS
+      24: Wireless - cdma-2000-HRPD
+      27: Wireless - IEEE 802.16
+      28: Wireless - IEEE 802.20
+      29: Wireless - IEEE 802.22
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="subtype">
+    <rdfs:subPropertyOf rdf:resource="#bit_number"/>
+    <rdfs:domain rdf:resource="#NETWORK_TYPE"/>
+    <rdfs:comment>
+      The range of #bit_number is 0-63.
+    </rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:ID="type_ext">
+    <rdfs:domain rdf:resource="#NETWORK_TYPE"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="ie_operator_id">
+    <mihbasic:ie_identifier>0x10000001</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="#OPERATOR_ID"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="OPERATOR_ID">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#op_name"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#op_namespace"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="op_name">
+    <rdfs:domain rdf:resource="#OPERATOR_ID"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+    <rdfs:comment>
+      The value is a non NULL terminated
+      string whose length shall not exceed 253 octets.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="op_namespace">
+    <rdfs:domain rdf:resource="#OPERATOR_ID"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+    <rdfs:comment>
+      A value of Operator Type:
+      0: GSM/UMTS
+      1: CDMA
+      2: REALM
+      3: ITU-T/TSB
+      4: General
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="ie_service_provider_id">
+    <mihbasic:ie_identifier>0x10000002</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+    <rdfs:comment>
+      A non-NULL terminated string whose length shall not exceed 253 octets.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="ie_country_code">
+    <mihbasic:ie_identifier>0x10000003</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="ie_network_id">
+    <mihbasic:ie_identifier>0x10000100</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+    <rdfs:comment>
+      A non-NULL terminated string whose length shall not exceed 253 octets.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="ie_network_aux_id">
+    <mihbasic:ie_identifier>0x10000101</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+    <rdfs:comment>
+      It is HESSID if network type is IEEE 802.11.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="ie_roaming_partners">
+    <mihbasic:ie_identifier>0x10000102</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="#OPERATOR_ID"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="ie_cost">
+    <mihbasic:ie_identifier>0x10000103</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="#COST"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="COST">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#cost_unit"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#cost_value"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#cost_curr"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="cost_unit">
+    <rdfs:domain rdf:resource="#COST"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+    <rdfs:comment>
+      The unit of the cost:
+      0: second
+      1: minute
+      2: hours
+      3: day
+      4: week
+      5: month
+      6: year
+      7: free
+      8: flat rate
+      9-255: Reserved
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="cost_value">
+    <rdfs:domain rdf:resource="#COST"/>
+    <rdfs:range rdf:resource="&xsd;double"/>
+    <rdfs:comment>
+      The cost value in Currency/Unit
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="cost_curr">
+    <rdfs:domain rdf:resource="#COST"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+    <rdfs:comment>
+      A three-letter currency code(e.g., "USD") specified by
+      ISO 4217.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="ie_network_qos">
+    <mihbasic:ie_identifier>0x10000105</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="#QOS_LIST"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="QOS_LIST">
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="num_cos_types">
+    <rdfs:domain rdf:resource="#QOS_LIST"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:ID="COS">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#cos_id"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#cos_value"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="cos_id">
+    <rdfs:domain rdf:resource="#COS"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+    <rdfs:comment>
+      A type to represent a class of service identifier.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="cos_value">
+    <rdfs:domain rdf:resource="#COS"/>
+    <rdfs:range rdf:resource="&xsd;unsignedShort"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="min_pk_tx_delay">
+    <rdfs:domain rdf:resource="#QOS_LIST"/>
+    <rdfs:range rdf:resource="#COS"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="avg_pk_tx_delay">
+    <rdfs:domain rdf:resource="#QOS_LIST"/>
+    <rdfs:range rdf:resource="#COS"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="max_pk_tx_delay">
+    <rdfs:domain rdf:resource="#QOS_LIST"/>
+    <rdfs:range rdf:resource="#COS"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="pk_delay_jitter">
+    <rdfs:domain rdf:resource="#QOS_LIST"/>
+    <rdfs:range rdf:resource="#COS"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="pk_loss_rate">
+    <rdfs:domain rdf:resource="#QOS_LIST"/>
+    <rdfs:range rdf:resource="#COS"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:ID="ie_network_data_rate">
+    <mihbasic:ie_identifier>0x10000106</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="&xsd;unsignedInt"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="ie_net_regulat_domain">
+    <mihbasic:ie_identifier>0x10000107</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="#REGU_DOMAIN"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="REGU_DOMAIN">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#regu_domain_country_code"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#regu_class"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="regu_domain_country_code">
+    <rdfs:domain rdf:resource="#REGU_DOMAIN"/>
+    <rdfs:range rdf:resource="&xsd;String"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="regu_class">
+    <rdfs:domain rdf:resource="#REGU_DOMAIN"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="ie_net_frequency_bands">
+    <mihbasic:ie_identifier>0x10000108</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="&xsd;unsignedInt"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="ie_net_ip_cfg_methods">
+    <mihbasic:ie_identifier>0x10000109</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="#IP_CONFIG"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="IP_CONFIG">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#ip_cfg_mthds"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="ip_cfg_mthds">
+    <rdfs:subPropertyOf rdf:resource="#bit_number"/>
+    <rdfs:domain rdf:resource="#IP_CONFIG"/>
+    <rdfs:comment>
+      The range of #bit_number is 0-31.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="dhcp_serv">
+    <rdfs:domain rdf:resource="#IP_CONFIG"/>
+    <rdfs:range rdf:resource="#TRANSPORT_ADDR"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="fn_agnt">
+    <rdfs:domain rdf:resource="#IP_CONFIG"/>
+    <rdfs:range rdf:resource="#TRANSPORT_ADDR"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="acc_rtr">
+    <rdfs:domain rdf:resource="#IP_CONFIG"/>
+    <rdfs:range rdf:resource="#TRANSPORT_ADDR"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="ie_net_capabilities">
+    <mihbasic:ie_identifier>0x1000010A</mihbasic:ie_identifier>
+    <rdfs:subPropertyOf rdf:resource="#bit_number"/>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:comment>
+      The range of #bit_number is 0-31.
+    </rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:ID="ie_net_supported_lcp">
+    <mihbasic:ie_identifier>0x1000010B</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="ie_net_mob_mgmt_prot">
+    <mihbasic:ie_identifier>0x1000010C</mihbasic:ie_identifier>
+    <rdfs:subPropertyOf rdf:resource="#bit_number"/>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:comment>
+      The range of #bit_number is 0-15.
+    </rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="ie_net_emserv_proxy">
+    <mihbasic:ie_identifier>0x1000010D</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="#PROXY_ADDR"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="PROXY_ADDR">
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="proxy_addr_ip">
+    <rdfs:domain rdf:resource="#PROXY_ADDR"/>
+    <rdfs:range rdf:resource="#TRANSPORT_ADDR"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="proxy_addr_fqdn">
+    <rdfs:domain rdf:resource="#PROXY_ADDR"/>
+    <rdfs:range rdf:resource="&xsd;String"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="ie_net_ims_proxy_cscf">
+    <mihbasic:ie_identifier>0x1000010E</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="#PROXY_ADDR"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:ID="ie_net_mobile_network">
+    <mihbasic:ie_identifier>0x1000010F</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="&xsd;boolean"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="ie_container_poa">
+    <mihbasic:ie_identifier>0x10000302</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#NETWORK"/>
+    <rdfs:range rdf:resource="#POA"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="POA">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#ie_poa_link_addr"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#ie_poa_location"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#ie_poa_channel_range"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#ie_poa_system_info"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#ie_poa_subnet_info"/>
+	<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment>
+      This class contains all the information depicting a PoA.
+    </rdfs:comment>
+  </owl:Class>
+  <owl:ObjectProperty rdf:ID="ie_poa_link_addr">
+    <mihbasic:ie_identifier>0x10000200</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#POA"/>
+    <rdfs:range rdf:resource="#LINK_ADDR"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="LINK_ADDR">
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="mac_addr">
+    <rdfs:domain rdf:resource="#LINK_ADDR"/>
+    <rdfs:range rdf:resource="#TRANSPORT_ADDR"/>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:ID="LINK_ADDR_3GPP_3G">
+    <rdfs:subClassOf rdf:resource="#LINK_ADDR"/>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="link_addr_3gpp_3g_cell_id_plmn_id">
+    <rdfs:domain rdf:resource="#LINK_ADDR_3GPP_3G"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="link_addr_3gpp_3g_cell_id_cell_id">
+    <rdfs:domain rdf:resource="#LINK_ADDR_3GPP_3G"/>
+    <rdfs:range rdf:resource="&xsd;unsignedInt"/>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:ID="LINK_ADDR_3GPP_2G">
+    <rdfs:subClassOf rdf:resource="#LINK_ADDR"/>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="link_addr_3gpp_2g_cell_id_plmn_id">
+    <rdfs:domain rdf:resource="#LINK_ADDR_3GPP_2G"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="link_addr_3gpp_2g_cell_id_lac">
+    <rdfs:domain rdf:resource="#LINK_ADDR_3GPP_2G"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="link_addr_3gpp_2g_cell_id_ci">
+    <rdfs:domain rdf:resource="#LINK_ADDR_3GPP_2G"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="_3gpp_addr">
+    <rdfs:domain rdf:resource="#LINK_ADDR"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="_3gpp2_addr">
+    <rdfs:domain rdf:resource="#LINK_ADDR"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="link_addr_other_l2_addr">
+    <rdfs:domain rdf:resource="#LINK_ADDR"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="ie_poa_location">
+    <mihbasic:ie_identifier>0x10000201</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#POA"/>
+    <rdfs:range rdf:resource="#LOCATION"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="LOCATION">
+  </owl:Class>
+  <owl:Class rdf:ID="BIN_GEO_LOC">
+    <rdfs:subClassOf rdf:resource="#LOCATION"/>
+    <rdfs:comment>
+      This class has properties that represent geographic coordinate.
+      The format is based on the Location Configuration Information (LCI)
+      defined in RFC 3825.
+    </rdfs:comment>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="la_res">
+    <rdfs:domain rdf:resource="#BIN_GEO_LOC"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="latitude">
+    <rdfs:domain rdf:resource="#BIN_GEO_LOC"/>
+    <rdfs:range rdf:resource="&xsd;double"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="lo_res">
+    <rdfs:domain rdf:resource="#BIN_GEO_LOC"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="longitude">
+    <rdfs:domain rdf:resource="#BIN_GEO_LOC"/>
+    <rdfs:range rdf:resource="&xsd;double"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="at">
+    <rdfs:domain rdf:resource="#BIN_GEO_LOC"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+    <rdfs:comment>
+      Following codes are defined:
+      1: Meters: in 2s-complement fixed-point 22-bit integer part with
+      8-bit fraction. If AT = 1, an AltRes value 0.0 would indicate
+      unknown altitude. The most precise Altitude would have an AltRes
+      value of 30. Many values of AltRes would obscure any variation
+      due to vertical datum differences.
+      2: Floors: in 2s-complement fixed-point 22-bit integer part with
+      8-bit fraction. AT = 2 for Floors enables representing altitude in
+      a form more relevant in buildings which have different
+      floor-to-floor dimensions.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="alt_res">
+    <rdfs:domain rdf:resource="#BIN_GEO_LOC"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+    <rdfs:comment>
+      Altitude resolution: 6 bits indicating the number of valid bits
+      in the altitude. Values above 30 (decimal) are undefined and
+      reserved.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="altitude">
+    <rdfs:domain rdf:resource="#BIN_GEO_LOC"/>
+    <rdfs:range rdf:resource="&xsd;double"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="datum">
+    <rdfs:domain rdf:resource="#BIN_GEO_LOC"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+    <rdfs:comment>
+      Following codes are defined:
+      1: WGS
+      2: NAD 83 (with associated vertical datum for North American
+      vertical datum for 1998)
+      3: NAD 83 (with associated vertical datum for Mean Lower Low Water
+      (MLLW))
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:ID="XML_GEO_LOC">
+    <rdfs:subClassOf rdf:resource="#LOCATION"/>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="xml_geo_loc">
+    <rdfs:domain rdf:resource="#XML_GEO_LOC"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+    <rdfs:comment>
+      Geo address elements as described in RFC4119.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:ID="BIN_CIVIC_LOC">
+    <rdfs:subClassOf rdf:resource="#LOCATION"/>
+    <rdfs:comment>
+      This class has properties that represent civic address.
+      The format is defined in IETF RFC 4776.
+    </rdfs:comment>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="civic_cntry_code">
+    <rdfs:domain rdf:resource="#BIN_CIVIC_LOC"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+    <rdfs:comment>
+      Two-letter ISO 3166 country code in capital ASCII letters.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="civic_addr">
+    <rdfs:domain rdf:resource="#BIN_CIVIC_LOC"/>
+    <rdfs:range rdf:resource="#CIVIC_ADDR"/>
+    <rdfs:comment>
+      This property contains the civic address elements.
+      The format of the civic address elements is described
+      in Section 3.4 of IETF RFC 4776 with a TLV pair
+      (whereby the Type and Length fields are one octet long).
+    </rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="CIVIC_ADDR">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#catype"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#cavalue"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="catype">
+    <rdfs:domain rdf:resource="#CIVIC_ADDR"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+    <rdfs:comment>
+      A one-octet descriptor of the data civic address value.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="cavalue">
+    <rdfs:domain rdf:resource="#CIVIC_ADDR"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+    <rdfs:comment>
+      The civic address value.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:ID="XML_CIVIC_LOC">
+    <rdfs:subClassOf rdf:resource="#LOCATION"/>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="xml_civic_loc">
+    <rdfs:domain rdf:resource="#XML_CIVIC_LOC"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+    <rdfs:comment>
+      Geo address elements as described in RFC4119.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:ID="LOCATION_CELL_ID">
+    <rdfs:subClassOf rdf:resource="#LOCATION"/>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="location_cell_id">
+    <rdfs:domain rdf:resource="#LOCATION_CELL_ID"/>
+    <rdfs:range rdf:resource="&xsd;unsignedInt"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="ie_poa_channel_range">
+    <mihbasic:ie_identifier>0x10000202</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#POA"/>
+    <rdfs:range rdf:resource="#CH_RANGE"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="CH_RANGE">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#low_ch_range"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#high_ch_range"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="low_ch_range">
+    <rdfs:domain rdf:resource="#CH_RANGE"/>
+    <rdfs:range rdf:resource="&xsd;unsignedInt"/>
+    <rdfs:comment>
+      Lowest channel frequency in MHz
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="high_ch_range">
+    <rdfs:domain rdf:resource="#CH_RANGE"/>
+    <rdfs:range rdf:resource="&xsd;unsignedInt"/>
+    <rdfs:comment>
+      Highest channel frequency in MHz
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="ie_poa_system_info">
+    <mihbasic:ie_identifier>0x10000203</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#POA"/>
+    <rdfs:range rdf:resource="#SYSTEM_INFO"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="SYSTEM_INFO">
+  </owl:Class>
+  <owl:ObjectProperty rdf:ID="system_info_network_type">
+    <rdfs:domain rdf:resource="#SYSTEM_INFO"/>
+    <rdfs:range rdf:resource="#NETWORK_TYPE"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="system_info_link_addr">
+    <rdfs:domain rdf:resource="#SYSTEM_INFO"/>
+    <rdfs:range rdf:resource="#LINK_ADDR"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="system_info_parameters">
+    <rdfs:domain rdf:resource="#SYSTEM_INFO"/>
+    <rdfs:range rdf:resource="#PARAMETERS"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="PARAMETERS">
+  </owl:Class>
+  <owl:Class rdf:ID="DCD_UCD">
+    <rdfs:subClassOf rdf:resource="#PARAMETERS"/>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="dcd_ucd_base_id">
+    <rdfs:domain rdf:resource="#DCD_UCD"/>
+    <rdfs:range rdf:resource="&xsd;unsignedShort"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="bandwidth">
+    <rdfs:domain rdf:resource="#DCD_UCD"/>
+    <rdfs:range rdf:resource="&xsd;unsignedShort"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="du_ctr_freq">
+    <rdfs:domain rdf:resource="#DCD_UCD"/>
+    <rdfs:range rdf:resource="&xsd;unsignedLong"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="eirp">
+    <rdfs:domain rdf:resource="#DCD_UCD"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="ttg">
+    <rdfs:domain rdf:resource="#DCD_UCD"/>
+    <rdfs:range rdf:resource="&xsd;unsignedShort"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="rtg">
+    <rdfs:domain rdf:resource="#DCD_UCD"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="down_bp">
+    <rdfs:subPropertyOf rdf:resource="#bit_number"/>
+    <rdfs:domain rdf:resource="#DCD_UCD"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="up_bp">
+    <rdfs:subPropertyOf rdf:resource="#bit_number"/>
+    <rdfs:domain rdf:resource="#DCD_UCD"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="init_code">
+    <rdfs:domain rdf:resource="#DCD_UCD"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="ho_code">
+    <rdfs:domain rdf:resource="#DCD_UCD"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:ID="SIB">
+    <rdfs:subClassOf rdf:resource="#PARAMETERS"/>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="sib_cell_id">
+    <rdfs:domain rdf:resource="#SIB"/>
+    <rdfs:range rdf:resource="&xsd;unsignedInt"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="fq_code_num">
+    <rdfs:domain rdf:resource="#SIB"/>
+    <rdfs:range rdf:resource="&xsd;unsignedShort"/>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:ID="SYS_PARAMS">
+    <rdfs:subClassOf rdf:resource="#PARAMETERS"/>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="sys_params_base_id">
+    <rdfs:domain rdf:resource="#SYS_PARAMS"/>
+    <rdfs:range rdf:resource="&xsd;unsignedShort"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="pilot_pn">
+    <rdfs:domain rdf:resource="#SYS_PARAMS"/>
+    <rdfs:range rdf:resource="&xsd;unsignedShort"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="freq_id">
+    <rdfs:domain rdf:resource="#SYS_PARAMS"/>
+    <rdfs:range rdf:resource="&xsd;unsignedShort"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="band_class">
+    <rdfs:domain rdf:resource="#SYS_PARAMS"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="ie_poa_subnet_info">
+    <mihbasic:ie_identifier>0x10000204</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#POA"/>
+    <rdfs:range rdf:resource="#IP_SUBNET_INFO"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="IP_SUBNET_INFO">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#ip_prefix_len"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#subnet_address"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="ip_prefix_len">
+    <rdfs:domain rdf:resource="#IP_SUBNET_INFO"/>
+    <rdfs:range rdf:resource="&xsd;unsignedByte"/>
+    <rdfs:comment>
+      The bit length of the prefix of the subnet to which subnet_address
+      property belongs. The prefix_length is less than or equal to 32
+      for IPv4 subnet and less than or equal to 128 for IPv6 subnet.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:ID="subnet_address">
+    <rdfs:domain rdf:resource="#IP_SUBNET_INFO"/>
+    <rdfs:range rdf:resource="#TRANSPORT_ADDR"/>
+    <rdfs:comment>
+      An IP address of the PoA encoded as Address base type defined in
+      RFC3588. The first 2-octet contains AddressType, which may be
+      either 1 (IPv4) or 2 (IPv6). If AddressType==1, the subnet_address
+      property contains a 4-octet IPv4 address. If AddressType==2, the
+      subnet_address property contains a 16-octet IPv6 address.
+    </rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="ie_poa_ip_addr">
+    <mihbasic:ie_identifier>0x10000205</mihbasic:ie_identifier>
+    <rdfs:domain rdf:resource="#POA"/>
+    <rdfs:range rdf:resource="#TRANSPORT_ADDR"/>
+  </owl:ObjectProperty>
+  <owl:Class rdf:ID="TRANSPORT_ADDR">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#addr_family"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+	<owl:onProperty rdf:resource="#addr_value"/>
+	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1
+	</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="addr_family">
+    <rdfs:domain rdf:resource="#TRANSPORT_ADDR"/>
+    <rdfs:range rdf:resource="&xsd;unsignedShort"/>
+    <rdfs:comment>
+      An Address Family defined in
+      http://www.iana.org/assignments/address-family-numbers.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="addr_value">
+    <rdfs:domain rdf:resource="#TRANSPORT_ADDR"/>
+    <rdfs:range rdf:resource="&xsd;hexBinary"/>
+    <rdfs:comment>
+      An address value specific to address_type.
+    </rdfs:comment>
+  </owl:DatatypeProperty>
+</rdf:RDF>
