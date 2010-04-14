@@ -225,7 +225,48 @@ void send_link_handover_complete_indication(handler &sap, const char *dst)
 	sap.send(p);
 }
 
-void send_get_information_request(handler &sap, const char *dst)
+void send_rdf_get_information_request(handler &sap, const char *dst)
+{
+	mih::message		p;
+
+	mih::iq_rdf_data query;
+	mih::iq_rdf_data_list query_list;
+
+	p.source(mih::id("user"));
+	p.destination(mih::id(dst));
+
+	// Below is an example of IS query. The MIH client queries
+	// available networks for a specific location identified by
+	// cellular cell ID “800”. The client requires the server to
+	// return the network_id and link_type of all available
+	// networks for this location.
+	query._data.assign("PREFIX mihbasic: <http://www.mih.org/2006/09/rdf-basic-schema#> \
+	PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>			\
+	SELECT ?network_id ?link_type					\
+	WHERE {								\
+	  ?network mihbasic:ie_network_id ?network_id .			\
+		  ?network mihbasic:ie_network_type ?network_type .	\
+		  ?network_type mihbasic:link_type ?link_type .		\
+		  ?network mihbasic:ie_container_poa ?poa .		\
+		  ?poa mihbasic:ie_poa_location ?x1 .			\
+		  ?x1 mihbasic:location_cell_id \"1\" .		\
+	}");
+
+	// other queries can be added in the request
+	query_list.push_back(query);
+
+	// create and send a Get_Information request
+	p << mih::request(mih::request::get_information)
+		& mih::tlv_info_query_rdf_data_list(query_list);
+
+	sap.send(p);
+}
+
+//
+// example on how to create a TLV binary encoded
+// Get_Information.response
+//
+void send_bin_get_information_response(handler &sap, const char *dst)
 {
 	mih::message		p;
 
@@ -329,7 +370,7 @@ int main(int argc, char **argv)
   // send_link_handover_complete_indication(sap, argv[1]);
 
   std::cout << "sent get information request to mihf" << std::endl;
-  send_get_information_request(sap, argv[1]);
+  send_rdf_get_information_request(sap, argv[1]);
 
   return 0;
 }
