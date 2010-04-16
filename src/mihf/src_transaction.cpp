@@ -104,8 +104,8 @@ void src_transaction_t::run()
 
 		msg_out_avail = false;
 
-		// if (start_ack_responder)
-		// 	tas->ack_responder(t);
+		if (start_ack_responder)
+		 	ack_responder();
 
 		process_message(in, out);
 		msg_in_avail = false;
