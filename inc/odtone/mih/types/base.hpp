@@ -184,14 +184,6 @@ enum status_enum {
 typedef enumeration<status_enum> status;
 
 ///////////////////////////////////////////////////////////////////////////////
-enum boolean_enum {
-	boolean_false = 0,
-	boolean_true = 1
-};
-
-typedef enumeration<boolean_enum> boolean;
-
-///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /*namespace odtone */
 
 #ifdef BOOST_MSVC

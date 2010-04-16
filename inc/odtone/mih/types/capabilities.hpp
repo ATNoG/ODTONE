@@ -109,7 +109,7 @@ typedef bitmap<16, transport_list_enum> transport_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 struct mbb_ho_supp {
-	mbb_ho_supp() : supported(boolean_false)
+	mbb_ho_supp() : supported(false)
 	{ }
 
 	template<class ArchiveT>
@@ -123,7 +123,7 @@ struct mbb_ho_supp {
 
 	network_type first;
 	network_type second;
-	boolean      supported;
+	bool         supported;
 };
 
 typedef std::vector<mbb_ho_supp> mbb_ho_supp_list;
