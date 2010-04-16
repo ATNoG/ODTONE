@@ -73,14 +73,14 @@ ODTONE_STATIC_ASSERT((uint) rtnetlink::if_link::dynamic        == IFF_DYNAMIC, "
 
 ///////////////////////////////////////////////////////////////////////////////
 rtnetlink::if_link::if_link()
-	: _type(0), _index(0), _flags(0), _mtu(nullptr), _link_type(nullptr),
-	_stats(nullptr)
+	: _type(0), _index(0), _flags(0), _mtu(odtone::nullptr), _link_type(odtone::nullptr),
+	_stats(odtone::nullptr)
 {
 }
 
 rtnetlink::if_link::if_link(message& msg)
-	: _type(0), _index(0), _flags(0), _mtu(nullptr), _link_type(nullptr),
-	_stats(nullptr)
+	: _type(0), _index(0), _flags(0), _mtu(odtone::nullptr), _link_type(odtone::nullptr),
+	_stats(odtone::nullptr)
 {
 	*this = msg;
 }
@@ -118,13 +118,13 @@ rtnetlink::if_link& rtnetlink::if_link::operator=(message& msg)
 			break;
 
 		case IFLA_MTU:
-			ODTONE_ASSERT(sizeof(uint) == RTA_PAYLOAD(rta));
-			_mtu = reinterpret_cast<uint*>(RTA_DATA(rta));
+			ODTONE_ASSERT(sizeof(odtone::uint) == RTA_PAYLOAD(rta));
+			_mtu = reinterpret_cast<odtone::uint*>(RTA_DATA(rta));
 			break;
 
 		case IFLA_LINK:
-			ODTONE_ASSERT(sizeof(sint) == RTA_PAYLOAD(rta));
-			_link_type = reinterpret_cast<sint*>(RTA_DATA(rta));
+			ODTONE_ASSERT(sizeof(odtone::sint) == RTA_PAYLOAD(rta));
+			_link_type = reinterpret_cast<odtone::sint*>(RTA_DATA(rta));
 			break;
 
 		case IFLA_QDISC:

@@ -19,6 +19,7 @@
 #define LINK_SAP_LINUX_RTNETLINK__HPP
 
 ///////////////////////////////////////////////////////////////////////////////
+//#include "../base.hpp"
 #include "netlink.hpp"
 #include <ostream>
 
@@ -33,7 +34,7 @@ public:
 		typedef void (safe_bool_t::*safe_bool)();
 
 	public:
-		attr() : _data(nullptr), _len(0)
+		attr() : _data(odtone::nullptr), _len(0)
 		{ }
 		attr(const void* data, size_t len) : _data((const T*) data), _len(len)
 		{ }
@@ -41,8 +42,8 @@ public:
 		const T* get() const  { return _data; }
 		size_t   size() const { return _len; }
 
-		operator safe_bool() const { return _data != nullptr ? &safe_bool_t::true_ : 0; }
-		bool operator!() const     { return _data == nullptr; }
+		operator safe_bool() const { return _data != odtone::nullptr ? &safe_bool_t::true_ : 0; }
+		bool operator!() const     { return _data == odtone::nullptr; }
 
 	private:
 		const T* _data;
@@ -80,7 +81,7 @@ public:
 
 		static inline bool is(const message& msg)
 		{
-			uint m = msg.type();
+			odtone::uint m = msg.type();
 
 			return m >= 16 && m <= 19;
 		}
@@ -90,9 +91,9 @@ public:
 
 		if_link& operator=(message& msg);
 
-		ushort type() const  { return _type; }
-		sint   index() const { return _index; }
-		uint   flags() const { return _flags; }
+		odtone::ushort type() const  { return _type; }
+		odtone::sint   index() const { return _index; }
+		odtone::uint   flags() const { return _flags; }
 
 		bool has_address() const    { return _address; }
 		bool has_bcast_addr() const { return _bcast_addr; }
@@ -104,29 +105,29 @@ public:
 		const attr<void>& address() const    { return _address; }
 		const attr<void>& bcast_addr() const { return _bcast_addr; }
 		std::string       name() const       { return std::string(_name.get(), _name.size()); }
-		uint              mtu() const        { return *_mtu; }
-		sint              link_type() const  { return *_link_type; }
+		odtone::uint      mtu() const        { return *_mtu; }
+		odtone::sint      link_type() const  { return *_link_type; }
 		std::string       qdisc() const      { return std::string(_qdisc.get(), _qdisc.size()); }
 
 	private:
-		ushort     _type;
-		sint       _index;
-		uint       _flags;
-		attr<void> _address;
-		attr<void> _bcast_addr;
-		attr<char> _name;
-		uint*      _mtu;
-		sint*      _link_type;
-		attr<char> _qdisc;
-		void*      _stats;
-		attr<void> _wifi;
+		odtone::ushort _type;
+		odtone::sint   _index;
+		odtone::uint   _flags;
+		attr<void>     _address;
+		attr<void>     _bcast_addr;
+		attr<char>     _name;
+		odtone::uint*  _mtu;
+		odtone::sint*  _link_type;
+		attr<char>     _qdisc;
+		void*          _stats;
+		attr<void>     _wifi;
 	};
 
 	class if_addr : data {
 	public:
 		static inline bool is(const message& msg)
 		{
-			uint m = msg.type();
+			odtone::uint m = msg.type();
 
 			return m >= 20 && m <= 23;
 		}
@@ -136,11 +137,11 @@ public:
 
 		if_addr& operator=(message& msg);
 
-		uchar family() const    { return _family; }
-		uchar prefixlen() const { return _prefixlen; }
-		uchar flags() const     { return _flags; }
-		uchar scope() const     { return _scope; }
-		sint  index() const     { return _index; }
+		odtone::uchar family() const    { return _family; }
+		odtone::uchar prefixlen() const { return _prefixlen; }
+		odtone::uchar flags() const     { return _flags; }
+		odtone::uchar scope() const     { return _scope; }
+		odtone::sint  index() const     { return _index; }
 
 		bool has_address() const   { return _address; }
 		bool has_local() const     { return _local; }
@@ -155,16 +156,16 @@ public:
 		const attr<void>& anycast() const   { return _anycast; }
 
 	private:
-		uchar      _family;
-		uchar      _prefixlen;
-		uchar      _flags;
-		uchar      _scope;
-		sint       _index;
-		attr<void> _address;
-		attr<void> _local;
-		attr<char> _label;
-		attr<void> _broadcast;
-		attr<void> _anycast;
+		odtone::uchar  _family;
+		odtone::uchar  _prefixlen;
+		odtone::uchar  _flags;
+		odtone::uchar  _scope;
+		odtone::sint   _index;
+		attr<void>     _address;
+		attr<void>     _local;
+		attr<char>     _label;
+		attr<void>     _broadcast;
+		attr<void>     _anycast;
 	};
 
 	enum subscription {
@@ -189,7 +190,7 @@ public:
 		ipv6_prefix = 0x20000,
 	};
 
-	rtnetlink(uint subscriptions = 0) : netlink(netlink::route, subscriptions)
+	rtnetlink(odtone::uint subscriptions = 0) : netlink(netlink::route, subscriptions)
 	{ }
 
 };
@@ -197,11 +198,11 @@ public:
 template<class T>
 inline std::ostream& operator<<(std::ostream& os, const rtnetlink::attr<T>& a)
 {
-	const uchar* c = reinterpret_cast<const uchar*>(a.get());
+	const odtone::uchar* c = reinterpret_cast<const odtone::uchar*>(a.get());
 
 	os << std::hex;
 	for (size_t i = 0; i < a.size(); ++i)
-		os << uint(c[i]);
+		os << odtone::uint(c[i]);
 	os << std::dec;
 
 	return os;
