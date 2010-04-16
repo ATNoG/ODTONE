@@ -39,7 +39,6 @@ exe odtone-mihf
 	  transaction.cpp
 	  message_in.cpp
 	  message_out.cpp
-	  transaction_ack_service.cpp
 	  transmit.cpp
 	  local_transaction_pool.cpp
 	  meta_message.cpp
