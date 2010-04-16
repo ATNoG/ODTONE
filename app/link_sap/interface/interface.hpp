@@ -27,7 +27,7 @@
 #include <boost/type_traits/is_pod.hpp>
 #include <odtone/mih/types/link.hpp>
 #include <algorithm>
-#include <string>
+#include <cstring>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace link_sap { namespace nic {
