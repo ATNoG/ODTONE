@@ -37,6 +37,6 @@ boost.use-project 1.42 ;
 build-project src/mihf ;
 build-project src/dummyserver ;
 build-project app/mih_usr ;
-#build-project app/link_usr ; #until the linux version is made up-to-date
+build-project app/link_sap ;
 build-project app/client ;
 
