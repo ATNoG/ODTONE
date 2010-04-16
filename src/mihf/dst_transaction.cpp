@@ -53,8 +53,8 @@ void dst_transaction_t::run()
 		out.reset(new meta_message);
 		msg_out_avail = process_message(in, out);
 
-		// if (start_ack_responder)
-		// 	tas->ack_responder(t);
+		if (start_ack_responder)
+			ack_responder();
 
 		if (opcode == mih::operation::request)
 			goto _wait_response_prm_lbl_;

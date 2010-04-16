@@ -43,7 +43,7 @@ void transaction_pool::dec(Set &set,
 
 			(*it)->transaction_stop_when--;
 			if ((*it)->transaction_stop_when == 0) {
-				// run_transaction(*it);
+				(*it)->run();
 
 				if ((*it)->transaction_status == ONGOING)
 					del_these.insert(*it);
@@ -52,8 +52,8 @@ void transaction_pool::dec(Set &set,
 			if ((*it)->start_ack_requestor) {
 				(*it)->retransmission_when--;
 				if ((*it)->retransmission_when == 0) {
-					// tas->ack_requestor(*it);
-					// run_transaction(*it);
+					(*it)->ack_requestor();
+					(*it)->run();
 				}
 			}
 
