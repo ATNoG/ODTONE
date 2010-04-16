@@ -32,11 +32,11 @@ typedef uint8        batt_level;
 typedef uint8        num_cos;
 typedef uint8        num_queue;
 typedef uint16       channel_id;
-typedef boolean      config_status;
+typedef bool         config_status;
 typedef octet_string device_info;
 typedef uint16       link_ac_ex_time;
 typedef boost::variant<uint8, percentage>   sig_strength;
-typedef boolean      link_res_status;
+typedef bool         link_res_status;
 
 ///////////////////////////////////////////////////////////////////////////////
 enum op_mode_enum {

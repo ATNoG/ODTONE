@@ -22,72 +22,79 @@
 #include "../base.hpp"
 #include <odtone/string.hpp>
 #include <boost/utility.hpp>
+#include <boost/array.hpp>
 #include <boost/logic/tribool.hpp>
 #include <boost/intrusive/rbtree.hpp>
 #include <boost/type_traits/is_pod.hpp>
+#include <boost/mpl/equal.hpp>
 #include <odtone/mih/types/link.hpp>
 #include <algorithm>
-#include <string>
+#include <cstring>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace link_sap { namespace nic {
 
 ///////////////////////////////////////////////////////////////////////////////
 class if_id {
+
+#ifdef BOOST_POSIX_API
+	typedef int                     value_type;
+#elif  BOOST_WINDOWS_API
+	typedef boost::array<uint32, 4> value_type;
+#else
+#	error "Unsupported OS API"
+#endif
+
 public:
-	if_id();
+	if_id()
+		: _id()
+	{ }
+
+	explicit if_id(const value_type& id)
+		: _id(id)
+	{ }
 
 	template<class T>
-	explicit if_id(const T* guid);
+	explicit if_id(const T* pod)
+	{
+		ODTONE_STATIC_ASSERT(sizeof(T) == sizeof(value_type), "T must be the same size as if_id underlying type");
+		ODTONE_STATIC_ASSERT(boost::is_pod<T>::value, "T must be a POD");
+		_id = reinterpret_cast<const value_type&>(*pod);
+	}
 
 	bool operator<(if_id const& lhs) const
 	{
-		return std::memcmp(_guid, lhs._guid, sizeof(_guid)) < 0;
+		return (_id < lhs._id);
 	}
 
 	bool operator<=(if_id const& lhs) const
 	{
-		return std::memcmp(_guid, lhs._guid, sizeof(_guid)) <= 0;
+		return (_id <= lhs._id);
 	}
 
 	bool operator>(if_id const& lhs) const
 	{
-		return std::memcmp(_guid, lhs._guid, sizeof(_guid)) > 0;
+		return (_id > lhs._id);
 	}
 
 	bool operator>=(if_id const& lhs) const
 	{
-		return std::memcmp(_guid, lhs._guid, sizeof(_guid)) >= 0;
+		return (_id >= lhs._id);
 	}
 
 	bool operator==(if_id const& lhs) const
 	{
-		return std::memcmp(_guid, lhs._guid, sizeof(_guid)) == 0;
+		return (_id == lhs._id);
 	}
 
 	bool operator!=(if_id const& lhs) const
 	{
-		return std::memcmp(_guid, lhs._guid, sizeof(_guid)) != 0;
+		return (_id != lhs._id);
 	}
 
 private:
-	uint32 _guid[4];
+	value_type _id;
 };
-
-inline if_id::if_id()
-{
-	std::fill(_guid, _guid + ODTONE_COUNT_OF(_guid), 0);
-}
-
-template<class T>
-inline if_id::if_id(T const* raw)
-{
-	ODTONE_STATIC_ASSERT(sizeof(T) == sizeof(_guid), "T must be the same size as if_id underlying type");
-	ODTONE_STATIC_ASSERT(boost::is_pod<T>::value, "T must be a POD");
-	uint32 const* guid = reinterpret_cast<uint32 const*>(raw);
-
-	std::copy(guid, guid + ODTONE_COUNT_OF(_guid), _guid);
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 class interface : boost::noncopyable {

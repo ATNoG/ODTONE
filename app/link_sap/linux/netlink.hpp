@@ -41,7 +41,7 @@ public:
 	private:
 		void*                 _pos;
 		size_t                _len;
-		odtone::buffer<uchar> _buf;
+		odtone::buffer<odtone::uchar> _buf;
 	};
 
 	class data : boost::noncopyable {

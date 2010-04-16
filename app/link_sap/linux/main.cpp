@@ -17,7 +17,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "../link_sap.hpp"
-#include "../interface/ethernet.hpp"
 #include "../interface/if_802_11.hpp"
 #include <odtone/debug.hpp>
 #include <boost/bind.hpp>
@@ -54,7 +53,7 @@ int main(int argc, char** argv)
 		}
 
 		boost::asio::io_service ios;
-		link_sap ls(cfg, ios);
+		link_sap::link_sap ls(cfg, ios);
 		boost::thread io(boost::bind(&boost::asio::io_service::run, &ios));
 
 		rtnetlink nl(rtnetlink::link        |
@@ -74,7 +73,7 @@ int main(int argc, char** argv)
 
 				if (rtnetlink::if_link::is(msg)) {
 					rtnetlink::if_link lnk(msg);
-					interface* it = nullptr;
+					link_sap::nic::interface* it = odtone::nullptr;
 
 					std::cout << "if_type: " << lnk.type() << std::endl;
 					std::cout << "if_index: " << lnk.index() << std::endl << std::hex;
@@ -93,27 +92,17 @@ int main(int argc, char** argv)
 					if (lnk.has_qdisc())
 						std::cout << "if_qdisc: " << lnk.qdisc() << std::endl;
 
-					switch (lnk.type()) {
-					case rtnetlink::if_link::ethernet:
-						it = new interface_ethernet(lnk.index(), lnk.name(),
-													odtone::mih::mac_addr(lnk.address().get(), lnk.address().size()));
-						break;
 
-					case rtnetlink::if_link::ieee802_11:
-						it = new if_802_11(lnk.index(), lnk.name(),
-										   odtone::mih::mac_addr(lnk.address().get(), lnk.address().size()));
-						break;
-
-					default:
-						continue;
-					}
+					it = new link_sap::nic::if_802_11(link_sap::nic::if_id(lnk.index()));
 
 					if (lnk.flags() & rtnetlink::if_link::up)
 						it->up(true);
 					else
 						it->up(false);
+					it->name(lnk.name());
+					it->link_addr(odtone::mih::mac_addr(lnk.address().get(), lnk.address().size()));
 
-					ios.dispatch(boost::bind(&link_sap::update, &ls, it));
+					ios.dispatch(boost::bind(&link_sap::link_sap::update, &ls, it));
 
 				} else if (rtnetlink::if_addr::is(msg)) {
 					rtnetlink::if_addr addr(msg);

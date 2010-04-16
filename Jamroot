@@ -27,6 +27,8 @@ project odtone
 	  <toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
 	  <toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
 	  <toolset>msvc:<define>_SECURE_SCL=0
+	  <toolset>msvc:<define>BOOST_WINDOWS_API
+	  <toolset>gcc:<define>BOOST_POSIX_API
 	: build-dir bin.v2
 	;
 
@@ -37,7 +39,7 @@ boost.use-project 1.42 ;
 build-project src/mihf ;
 build-project src/dummyserver ;
 build-project app/mih_usr ;
-#build-project app/link_usr ; #until the linux version is made up-to-date
+build-project app/link_sap ;
 build-project app/client ;
 build-project app/miis_rdf_server ;
 

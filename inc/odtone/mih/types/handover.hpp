@@ -73,10 +73,10 @@ struct rq_result {
 	link_poa_list poa_list;
 	qos_list      poa_qos_list;
 
-	boost::variant<null, boolean, ip_cfg_methods> opt_ip_cfg_methods;
-	boost::variant<null, boolean, dhcp_serv>      opt_dhcp_serv;
-	boost::variant<null, boolean, fn_agent>       opt_fn_agnt;
-	boost::variant<null, boolean, acc_rtr>        opt_acc_rtr;
+	boost::variant<null, bool, ip_cfg_methods> opt_ip_cfg_methods;
+	boost::variant<null, bool, dhcp_serv>      opt_dhcp_serv;
+	boost::variant<null, bool, fn_agent>       opt_fn_agnt;
+	boost::variant<null, bool, acc_rtr>        opt_acc_rtr;
 };
 
 typedef std::vector<rq_result> rq_result_list;
