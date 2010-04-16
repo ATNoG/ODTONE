@@ -39,4 +39,5 @@ build-project src/dummyserver ;
 build-project app/mih_usr ;
 #build-project app/link_usr ; #until the linux version is made up-to-date
 build-project app/client ;
+build-project app/miis_rdf_server ;
 

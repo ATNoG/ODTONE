@@ -54,6 +54,7 @@ public:
 
 		push_information								/// MIH_Push_Information.indication
 							= msg_id<4, 3, 2>::value,
+		get_information = msg_id<4, 3, 1>::value, // MIH_Get_Information.indication
 	};
 
 	/**

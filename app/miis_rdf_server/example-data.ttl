@@ -1,0 +1,43 @@
+@prefix : <http://www.mih.org/2006/09/rdf-basic-schema#> .
+
+<http://miisserver/WifiNetwork>
+:ie_network_type [
+       :link_type "19"
+       ];
+:ie_network_id "SomeNetworkID" ;
+:ie_operator_id [
+       :op_name "ExampleOpName" ;
+       :op_namespace "1"
+       ];
+
+:ie_container_poa [
+       :ie_poa_link_addr [
+               :mac_addr "11.22.33.44.55.66"
+       ];
+       :ie_poa_location [
+               :location_cell_id "10";
+               :mac_addr "11.22.33.44.55.66"
+       ]
+] .
+
+<http://miisserver/GSMNetwork>
+:ie_network_type [
+       :link_type "1"
+       ];
+:ie_network_id "SomeOtherNetworkID";
+:ie_operator_id [
+       :op_name "ExampleOpName" ;
+       :op_namespace "1"
+       ];
+
+:ie_container_poa [
+       :ie_poa_location [
+               :location_cell_id "1"
+       ]
+],
+[
+       :ie_poa_location [
+               :location_cell_id "10";
+               :mac_addr "11.22.33.44.55.66"
+       ]
+] .
