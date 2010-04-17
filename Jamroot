@@ -27,8 +27,6 @@ project odtone
 	  <toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
 	  <toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
 	  <toolset>msvc:<define>_SECURE_SCL=0
-	  <toolset>msvc:<define>BOOST_WINDOWS_API
-	  <toolset>gcc:<define>BOOST_POSIX_API
 	: build-dir bin.v2
 	;
 

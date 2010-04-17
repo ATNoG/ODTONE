@@ -75,6 +75,12 @@
 #	define ODTONE_DEPRECATE
 #endif
 
+#if defined(__GNUC__)
+#	define BOOST_POSIX_API
+#elif defined(BOOST_MSVC)
+#	define BOOST_WINDOWS_API
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone {
 

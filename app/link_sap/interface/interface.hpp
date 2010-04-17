@@ -37,9 +37,9 @@ namespace link_sap { namespace nic {
 ///////////////////////////////////////////////////////////////////////////////
 class if_id {
 
-#ifdef BOOST_POSIX_API
+#if defined(BOOST_POSIX_API)
 	typedef int                     value_type;
-#elif  BOOST_WINDOWS_API
+#elif defined(BOOST_WINDOWS_API)
 	typedef boost::array<uint32, 4> value_type;
 #else
 #	error "Unsupported OS API"
