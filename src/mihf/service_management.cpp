@@ -42,6 +42,7 @@ service_management::service_management(local_transaction_pool &lpool,
 	_enable_broadcast = enable_broadcast;
 }
 
+// Add this MIHFs capabilities to response message.
 bool set_capability_discover_response(meta_message_ptr &in, meta_message_ptr &out)
 {
 	log(1, "(mism) setting response to broadcast Capability_Discover.request ");
