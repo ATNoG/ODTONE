@@ -423,18 +423,6 @@ public:
 	otlv(archive& ar) : _ar(ar.output()) {}
 	otlv(oarchive& ar) : _ar(ar) {}
 
-#ifdef ODTONE_DOXYGEN_INVOKED
-	template<class T, uint8 Value>
-	otlv& operator&(const tlv_fwd<T, tlv_<Value> >& val);
-
-	template<class T, uint8 A, uint8 B, uint8 C>
-	otlv& operator&(const tlv_fwd<T, oui_<A, B, C> >& val);
-
-
-	template<class T, uint32 Value>
-	otlv& operator&(const tlv_fwd<T, tlv4_<Value> >& val);
-
-#else
 	template<class T>
 	typename boost::enable_if<is_tlv_fwd<T>, otlv&>::type operator&(const T& val)
 	{
@@ -442,7 +430,14 @@ public:
 
 		return *this;
 	}
-#endif
+
+	template<class T>
+	otlv& operator&(const typename T::tlv_type& val)
+	{
+		val.serialize(_ar);
+
+		return *this;
+	}
 
 private:
 	oarchive& _ar;
@@ -454,17 +449,6 @@ public:
 	itlv(archive& ar) : _ar(ar.input()) {}
 	itlv(iarchive& ar) : _ar(ar) {}
 
-#ifdef ODTONE_DOXYGEN_INVOKED
-	template<class T, uint8 Value>
-	itlv& operator&(const tlv_fwd<T, tlv_<Value> >& val);
-
-	template<class T, uint8 A, uint8 B, uint8 C>
-	itlv& operator&(const tlv_fwd<T, oui_<A, B, C> >& val);
-
-	template<class T, uint32 Value>
-	itlv& operator&(const tlv_fwd<T, tlv4_<Value> >& val);
-
-#else
 	template<class T>
 	typename boost::enable_if<is_tlv_fwd<T>, itlv&>::type operator&(const T& val)
 	{
@@ -472,7 +456,14 @@ public:
 
 		return *this;
 	}
-#endif
+
+	template<class T>
+	itlv& operator&(const typename T::tlv_type& val)
+	{
+		val.serialize(_ar);
+
+		return *this;
+	}
 
 private:
 	iarchive& _ar;
