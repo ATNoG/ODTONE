@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : Archive for MIH Types Serialization
 // Authors : Bruno Santos <bsantos@av.it.pt>
+// ----------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2010 Universidade de Aveiro
+// Copyrigth (C) 2009-2010 Instituto de Telecomunicações - Pólo de Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -58,8 +58,20 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-class iarchive : public archive {
+class iarchive : private archive {
+	friend class archive;
+
 public:
+	typedef iarchive iarchive_type;
+
+public:
+	iarchive()
+	{}
+
+	using archive::buffer;
+	using archive::rewind;
+	using archive::position;
+
 	uint list_length();
 
 	iarchive& operator&(bool& val);
@@ -76,8 +88,20 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-class oarchive : public archive {
+class oarchive : private archive {
+	friend class archive;
+
 public:
+	typedef oarchive oarchive_type;
+
+public:
+	oarchive()
+	{}
+
+	using archive::append;
+	using archive::rewind;
+	using archive::position;
+
 	void list_length(uint len);
 
 	oarchive& operator&(bool val);
