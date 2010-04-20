@@ -33,6 +33,12 @@ information_service::information_service(local_transaction_pool &lpool,
 {
 }
 
+//
+// Currently Information_Service messages are handled by a default local
+// Information server. If this MIHF is the destination of the message,
+// forward it to the default server. Add a local transaction indicating
+// where to send the response.
+//
 bool information_service::get_information_request(meta_message_ptr &in,
 						  meta_message_ptr &out)
 {
@@ -58,7 +64,11 @@ bool information_service::get_information_request(meta_message_ptr &in,
 	return false;
 }
 
-
+//
+// Currently Information_Service messages are handled by a default local
+// server. If this MIHF is the destination of the message, check for a
+// pending transaction and forward the message.
+//
 bool information_service::get_information_response(meta_message_ptr &in,
 						   meta_message_ptr &out)
 {
@@ -82,7 +92,12 @@ bool information_service::get_information_response(meta_message_ptr &in,
 	return false;
 }
 
-
+//
+// Currently Information_Service messages are handled by a default local
+// Information server. If this MIHF is the destination of the message,
+// forward it to the default server. Add a local transaction indicating
+// where to send the response.
+//
 bool information_service::push_information_request(meta_message_ptr &in,
 						   meta_message_ptr &out)
 {
@@ -107,7 +122,11 @@ bool information_service::push_information_request(meta_message_ptr &in,
 	return false;
 }
 
-
+//
+// Currently Information_Service messages are handled by a default local
+// server. If this MIHF is the destination of the message, check for a
+// pending transaction and forward the message.
+//
 bool information_service::push_information_indication(meta_message_ptr &in,
 						      meta_message_ptr &out)
 {
