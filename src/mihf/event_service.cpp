@@ -36,13 +36,14 @@ event_service::event_service(local_transaction_pool &lpool, transmit &t)
 {
 }
 
-/*
-  TODO: add support for evt_cfg_info
-*/
+// subscribe user to all events, set in the events bitmap, from
+// link identifier
 mih::status event_service::subscribe(const mih::id &user,
 				     mih::link_tuple_id &link,
 				     mih::event_list &events)
 {
+//  TODO: add support for evt_cfg_info
+
 	event_registration_t reg;
 	reg.user.assign(user.to_string());
 	reg.link = link;
@@ -67,7 +68,9 @@ mih::status event_service::subscribe(const mih::id &user,
 	return mih::status_success;
 }
 
-
+// This MIHF is the destination of the
+// Event_Subscribe.request. Deserialize the message, subscribe the
+// user and send a response
 bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 						  meta_message_ptr &out)
 {
@@ -92,7 +95,8 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 	return true;
 }
 
-
+// Check if this MIHF is the destination of the message or if it needs
+// to forward the message to a peer MIHF.
 bool event_service::event_subscribe_request(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
@@ -109,7 +113,10 @@ bool event_service::event_subscribe_request(meta_message_ptr &in,
 	return false;
 }
 
-
+// A peer MIHF sent a Event_Subscribe.response, check if we have a
+// pending transaction with a local user. If so, then add a
+// subscription of the user to the link and events that came in the
+// response.
 bool event_service::event_subscribe_response(meta_message_ptr &in,
 					     meta_message_ptr&)
 {
@@ -174,6 +181,8 @@ mih::status event_service::unsubscribe(const mih::id &user,
 }
 
 
+// This MIHF is the destination of the Event_Unsubscribe.request.
+// Deserialize message, unsubscribe user and send a response
 bool event_service::local_event_unsubscribe_request(meta_message_ptr &in,
 						    meta_message_ptr &out)
 {
@@ -198,6 +207,9 @@ bool event_service::local_event_unsubscribe_request(meta_message_ptr &in,
 	return true;
 }
 
+// Check if this MIHF is the destination of the request and
+// proceed to unsubscribe the source mih identifier or if we need to
+// forward the message.
 bool event_service::event_unsubscribe_request(meta_message_ptr &in,
 					      meta_message_ptr &out)
 {
@@ -214,6 +226,10 @@ bool event_service::event_unsubscribe_request(meta_message_ptr &in,
 	return false;
 }
 
+// A peer MIHF sent a Event_Unubscribe.response, check if we have a
+// pending transaction with a local user. If so, then remove the
+// subscription of the user to the link and events that came in the
+// response.
 bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 					       meta_message_ptr &)
 {
@@ -252,20 +268,21 @@ bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 	return false;
 }
 
-
+// send message for all users subscribed to event from link identifier
 void event_service::msg_forward(meta_message_ptr &msg,
 				mih::link_tuple_id &li,
 				mih::event_list_enum event)
 {
 	std::list<event_registration_t>::iterator it;
 	int i = 0; // for logging purposes
+
+	msg->source(mihfid);
 	for(it = _event_subscriptions.begin();
 	    it != _event_subscriptions.end();
 	    it++, i++) {
 		if ((it->event == event)  &&(it->link == li)) {
 			log(3, i, " (mies) found registration of user: ",
 			    it->user, " for event type ", event);
-			msg->source(mihfid);
 			msg->destination(mih::id(it->user));
 			_transmit(msg);
 		}
@@ -273,7 +290,7 @@ void event_service::msg_forward(meta_message_ptr &msg,
 }
 
 
-// parse link_identifier from incoming message and the forward
+// parse link_identifier from incoming message and forward
 // message to subscribed users
 void event_service::link_event_forward(meta_message_ptr &msg,
 				       mih::event_list_enum event)
