@@ -34,6 +34,10 @@ command_service::command_service(local_transaction_pool &lpool, transmit &t)
 {
 }
 
+// This message is handled by the Link SAP.
+//
+// If this MIHF is the destination of the message, forward it to the
+// default Link SAP. If not then forward it to a peer MIHF.
 bool command_service::link_get_parameters_request(meta_message_ptr &in,
 						  meta_message_ptr &out)
 {
@@ -68,6 +72,8 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 	return false;
 }
 
+// Check if there's a pending transaction and forward the message in
+// case there is.
 bool command_service::link_get_parameters_response(meta_message_ptr &in,
 						   meta_message_ptr &out)
 {
@@ -90,6 +96,10 @@ bool command_service::link_get_parameters_response(meta_message_ptr &in,
 	return false;
 }
 
+// This message is handled by the Link SAP.
+//
+// If this MIHF is the destination of the message, forward it to the
+// default Link SAP. If not then forward it to a peer MIHF.
 bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 							meta_message_ptr &out)
 {
@@ -125,6 +135,8 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 	return false;
 }
 
+// Check if there's a pending transaction and forward the message in
+// case there is.
 bool command_service::link_configure_thresholds_response(meta_message_ptr &in,
 							 meta_message_ptr &out)
 {
@@ -146,7 +158,10 @@ bool command_service::link_configure_thresholds_response(meta_message_ptr &in,
 	return false;
 }
 
-
+// This message is handled by the Link SAP.
+//
+// If this MIHF is the destination of the message, forward it to the
+// default Link SAP. If not then forward it to a peer MIHF.
 bool command_service::link_actions_request(meta_message_ptr &in,
 					   meta_message_ptr &out)
 {
@@ -175,7 +190,8 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 	return false;
 }
 
-
+// Check if there's a pending transaction and forward the message in
+// case there is.
 bool command_service::link_actions_response(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
@@ -197,6 +213,12 @@ bool command_service::link_actions_response(meta_message_ptr &in,
 	return false;
 }
 
+//
+// Currently Command_Service messages are handled by a default local
+// user. If this MIHF is the destination of the message, forward it to
+// the default user. Add a local transaction indicating where to send
+// the response.
+//
 bool command_service::generic_command_request(const char *recv_msg,
 					      const char *send_msg,
 					      meta_message_ptr &in,
@@ -225,6 +247,11 @@ bool command_service::generic_command_request(const char *recv_msg,
 	return false;
 }
 
+//
+// Currently Command_Service messages are handled by a default local
+// user. If this MIHF is the destination of the message, check for a
+// pending transaction and forward the message.
+//
 bool command_service::generic_command_response(const char *recv_msg,
 					       const char *send_msg,
 					       meta_message_ptr &in,
