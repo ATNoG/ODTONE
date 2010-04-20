@@ -22,6 +22,7 @@
 #include <odtone/mih/types/capabilities.hpp>
 
 #include <boost/bind.hpp>
+#include <boost/thread.hpp>
 #include <map>
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -43,6 +44,8 @@ public:
 	const address_entry& get(const mih::octet_string &id);
 private:
 	std::map<mih::octet_string, address_entry> _abook;
+
+	boost::mutex _mutex;
 };
 
 } /* namespace mihf */ } /* namespace odtone */

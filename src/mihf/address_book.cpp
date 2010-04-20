@@ -25,6 +25,7 @@ void address_book::add(const mih::octet_string &id,
 		       uint16 port,
 		       mih::transport_list_enum t)
 {
+	boost::mutex::scoped_lock lock(_mutex);
 	// TODO: add thread safety
 	address_entry a;
 
@@ -38,11 +39,15 @@ void address_book::add(const mih::octet_string &id,
 
 void address_book::del(mih::octet_string &id)
 {
-	// TODO finish and add thread safety
+	boost::mutex::scoped_lock lock(_mutex);
+
+	_abook.erase(id);
 }
 
 const address_entry& address_book::get(const mih::octet_string &id)
 {
+	boost::mutex::scoped_lock lock(_mutex);
+
 	std::map<mih::octet_string, address_entry>::const_iterator it;
 	it = _abook.find(id);
 
