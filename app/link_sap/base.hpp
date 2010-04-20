@@ -50,8 +50,6 @@ using odtone::sint64;
 using odtone::sintmax;
 using odtone::uintmax;
 
-using odtone::nullptr;
-
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace link_sap */
 

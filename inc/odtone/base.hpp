@@ -105,9 +105,13 @@ typedef boost::intmax_t    sintmax;
 typedef boost::uintmax_t   uintmax;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct nullptr_t { template<class T> operator T*() const { return 0; } };
+#ifndef BOOST_HAS_NULLPTR
+	struct nullptr_t { template<class T> operator T*() const { return 0; } };
 
-static const nullptr_t nullptr = nullptr_t();
+	static const nullptr_t nullptr = {};
+#else
+	using std::nullptr_t;
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 template<class MemberT, class ParentT>
@@ -129,6 +133,11 @@ inline ParentT* parent_of(MemberT* member, MemberT ParentT::* Member)
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace odtone */
+
+///////////////////////////////////////////////////////////////////////////////
+#ifndef BOOST_HAS_NULLPTR
+	using odtone::nullptr;
+#endif
 
 // EOF ////////////////////////////////////////////////////////////////////////
 #endif /* ODTONE_BASE__HPP_ */
