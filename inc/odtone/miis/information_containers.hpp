@@ -40,31 +40,31 @@ struct select_tlv_archive {
 									 mih::otlv>::type type;
 };
 
-typedef mih::tlv_fwd<ie_network_type, mih::tlv4_<0x10000000> > tlv_ie_network_type;
-typedef mih::tlv_fwd<ie_operator_id, mih::tlv4_<0x10000001> > tlv_ie_operator_id;
-typedef mih::tlv_fwd<ie_service_provider_id, mih::tlv4_<0x10000002> > tlv_ie_service_provider_id;
-typedef mih::tlv_fwd<ie_country_code, mih::tlv4_<0x10000003> > tlv_ie_country_code;
-typedef mih::tlv_fwd<ie_network_id, mih::tlv4_<0x10000100> > tlv_ie_network_id;
-typedef mih::tlv_fwd<ie_network_aux_id, mih::tlv4_<0x10000101> > tlv_ie_network_aux_id;
-typedef mih::tlv_fwd<ie_roaming_partners, mih::tlv4_<0x1000002> > tlv_ie_roaming_partners;
-typedef mih::tlv_fwd<ie_cost, mih::tlv4_<0x10000103> > tlv_ie_cost;
-typedef mih::tlv_fwd<ie_network_qos, mih::tlv4_<0x10000105> > tlv_ie_network_qos;
-typedef mih::tlv_fwd<ie_network_data_rate, mih::tlv4_<0x10000106> > tlv_ie_network_data_rate;
-typedef mih::tlv_fwd<ie_net_regulat_domain, mih::tlv4_<0x10000107> > tlv_ie_net_regulat_domain;
-typedef mih::tlv_fwd<ie_net_frequency_bands, mih::tlv4_<0x10000108> > tlv_ie_net_frequency_bands;
-typedef mih::tlv_fwd<ie_net_ip_cfg_methods, mih::tlv4_<0x10000109> > tlv_ie_net_ip_cfg_methods;
-typedef mih::tlv_fwd<ie_net_capabilities, mih::tlv4_<0x1000010A> > tlv_ie_net_capabilities;
-typedef mih::tlv_fwd<ie_net_supported_lcp, mih::tlv4_<0x1000010B> > tlv_ie_net_supported_lcp;
-typedef mih::tlv_fwd<ie_net_mob_mgmt_prot, mih::tlv4_<0x1000010C> > tlv_ie_net_mob_mgmt_prot;
-typedef mih::tlv_fwd<ie_net_emserv_proxy, mih::tlv4_<0x1000010D> > tlv_ie_net_emserv_proxy;
-typedef mih::tlv_fwd<ie_net_ims_proxy_cscf, mih::tlv4_<0x1000010E> > tlv_ie_net_ims_proxy_cscf;
-typedef mih::tlv_fwd<ie_net_mobile_network, mih::tlv4_<0x1000010F> > tlv_ie_net_mobile_network;
-typedef mih::tlv_fwd<ie_poa_link_addr, mih::tlv4_<0x10000200> > tlv_ie_poa_link_addr;
-typedef mih::tlv_fwd<ie_poa_location, mih::tlv4_<0x10000201> > tlv_ie_poa_location;
-typedef mih::tlv_fwd<ie_poa_channel_range, mih::tlv4_<0x10000202> > tlv_ie_poa_channel_range;
-typedef mih::tlv_fwd<ie_poa_system_info, mih::tlv4_<0x10000203> > tlv_ie_poa_system_info;
-typedef mih::tlv_fwd<ie_poa_subnet_info, mih::tlv4_<0x10000204> > tlv_ie_poa_subnet_info;
-typedef mih::tlv_fwd<ie_poa_ip_addr, mih::tlv4_<0x10000205> > tlv_ie_poa_ip_addr;
+static const mih::tlv_cast_<ie_network_type, mih::tlv4_<0x10000000> > tlv_ie_network_type = {};
+static const mih::tlv_cast_<ie_operator_id, mih::tlv4_<0x10000001> > tlv_ie_operator_id = {};
+static const mih::tlv_cast_<ie_service_provider_id, mih::tlv4_<0x10000002> > tlv_ie_service_provider_id = {};
+static const mih::tlv_cast_<ie_country_code, mih::tlv4_<0x10000003> > tlv_ie_country_code = {};
+static const mih::tlv_cast_<ie_network_id, mih::tlv4_<0x10000100> > tlv_ie_network_id = {};
+static const mih::tlv_cast_<ie_network_aux_id, mih::tlv4_<0x10000101> > tlv_ie_network_aux_id = {};
+static const mih::tlv_cast_<ie_roaming_partners, mih::tlv4_<0x1000002> > tlv_ie_roaming_partners = {};
+static const mih::tlv_cast_<ie_cost, mih::tlv4_<0x10000103> > tlv_ie_cost = {};
+static const mih::tlv_cast_<ie_network_qos, mih::tlv4_<0x10000105> > tlv_ie_network_qos = {};
+static const mih::tlv_cast_<ie_network_data_rate, mih::tlv4_<0x10000106> > tlv_ie_network_data_rate = {};
+static const mih::tlv_cast_<ie_net_regulat_domain, mih::tlv4_<0x10000107> > tlv_ie_net_regulat_domain = {};
+static const mih::tlv_cast_<ie_net_frequency_bands, mih::tlv4_<0x10000108> > tlv_ie_net_frequency_bands = {};
+static const mih::tlv_cast_<ie_net_ip_cfg_methods, mih::tlv4_<0x10000109> > tlv_ie_net_ip_cfg_methods = {};
+static const mih::tlv_cast_<ie_net_capabilities, mih::tlv4_<0x1000010A> > tlv_ie_net_capabilities = {};
+static const mih::tlv_cast_<ie_net_supported_lcp, mih::tlv4_<0x1000010B> > tlv_ie_net_supported_lcp = {};
+static const mih::tlv_cast_<ie_net_mob_mgmt_prot, mih::tlv4_<0x1000010C> > tlv_ie_net_mob_mgmt_prot = {};
+static const mih::tlv_cast_<ie_net_emserv_proxy, mih::tlv4_<0x1000010D> > tlv_ie_net_emserv_proxy = {};
+static const mih::tlv_cast_<ie_net_ims_proxy_cscf, mih::tlv4_<0x1000010E> > tlv_ie_net_ims_proxy_cscf = {};
+static const mih::tlv_cast_<ie_net_mobile_network, mih::tlv4_<0x1000010F> > tlv_ie_net_mobile_network = {};
+static const mih::tlv_cast_<ie_poa_link_addr, mih::tlv4_<0x10000200> > tlv_ie_poa_link_addr = {};
+static const mih::tlv_cast_<ie_poa_location, mih::tlv4_<0x10000201> > tlv_ie_poa_location = {};
+static const mih::tlv_cast_<ie_poa_channel_range, mih::tlv4_<0x10000202> > tlv_ie_poa_channel_range = {};
+static const mih::tlv_cast_<ie_poa_system_info, mih::tlv4_<0x10000203> > tlv_ie_poa_system_info = {};
+static const mih::tlv_cast_<ie_poa_subnet_info, mih::tlv4_<0x10000204> > tlv_ie_poa_subnet_info = {};
+static const mih::tlv_cast_<ie_poa_ip_addr, mih::tlv4_<0x10000205> > tlv_ie_poa_ip_addr = {};
 
 struct ie_container_poa
 {
@@ -87,7 +87,7 @@ struct ie_container_poa
 	}
 };
 
-typedef mih::tlv_fwd<ie_container_poa, mih::tlv4_<0x10000302> > tlv_ie_container_poa;
+static const mih::tlv_cast_<ie_container_poa, mih::tlv4_<0x10000302> > tlv_ie_container_poa;
 
 struct ie_container_network
 {
@@ -142,7 +142,7 @@ struct ie_container_network
 	}
 };
 
-typedef mih::tlv_fwd<ie_container_network, mih::tlv4_<0x10000301> > tlv_ie_container_network;
+static const mih::tlv_cast_<ie_container_network, mih::tlv4_<0x10000301> > tlv_ie_container_network = {};
 
 class ie_container_list_of_networks : private std::vector<ie_container_network> {
 	typedef std::vector<ie_container_network> base;
@@ -187,7 +187,7 @@ public:
 	}
 };
 
-typedef mih::tlv_fwd<ie_container_list_of_networks, mih::tlv4_<0x10000300> > tlv_ie_container_list_of_networks;
+static const mih::tlv_cast_<ie_container_list_of_networks, mih::tlv4_<0x10000300> > tlv_ie_container_list_of_networks = {};
 
 } /* namespace miis */  }  /* namespace odtone */
 

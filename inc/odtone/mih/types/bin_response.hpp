@@ -85,12 +85,8 @@ public:
 		: _data(data)
 	{ }
 
-#ifdef ODTONE_DOXYGEN_INVOKED
-	template<class T, uint32 Value>
-	ir_bin_iarchive& operator&(const tlv_fwd<T, tlv4_<Value> >& val);
-#else
 	template<class T>
-	typename boost::enable_if<is_tlv_fwd<T>, ir_bin_iarchive&>::type operator&(const T& val)
+	typename boost::enable_if<is_tlv_type<T>, ir_bin_iarchive&>::type operator&(const T& val)
 	{
 		if (!_data._cnt)
 			return *this; //TODO: should we throw an error?
@@ -100,7 +96,6 @@ public:
 
 		return *this;
 	}
-#endif
 
 private:
 	ir_bin_data& _data;
@@ -112,19 +107,14 @@ public:
 		: _data(data)
 	{ }
 
-#ifdef ODTONE_DOXYGEN_INVOKED
-	template<class T, uint32 Value>
-	ir_bin_oarchive& operator&(const tlv_fwd<T, tlv4_<Value> >& val);
-#else
 	template<class T>
-	typename boost::enable_if<is_tlv_fwd<T>, ir_bin_oarchive&>::type operator&(const T& val)
+	typename boost::enable_if<is_tlv_type<T>, ir_bin_oarchive&>::type operator&(const T& val)
 	{
 		val.serialize(_data._ar.output());
 		++_data._cnt;
 
 		return *this;
 	}
-#endif
 
 private:
 	ir_bin_data& _data;

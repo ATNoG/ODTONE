@@ -213,140 +213,8 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-template<class T, class ValueT>
-struct tlv_fwd;
-
-template<class T, uint8 Value>
-struct tlv_fwd<T, tlv_<Value> > : boost::noncopyable {
-	typedef uint8 tlv_type;
-	static const tlv_type value = Value;
-
-
-	explicit tlv_fwd(const T& val)
-		: _val(const_cast<T*>(&val)), _is_optional(false)
-	{ }
-
-	explicit tlv_fwd(const boost::optional<T>& val)
-		: _optval(const_cast<boost::optional<T>*>(&val)), _is_optional(true)
-	{ }
-
-	void serialize(iarchive& ar) const
-	{
-		uint pos = ar.position();
-		uint8 tp;
-
-		ar & tp;
-		if (tp == value) {
-			archive tmp;
-
-			ar & tmp.buffer();
-
-			if (_is_optional) {
-				*_optval = T();
-				tmp.input() & (*_optval).get();
-
-			} else {
-				tmp.input() & *_val;
-			}
-
-		} else {
-			if (_is_optional)
-				ar.rewind(pos);
-			else
-				boost::throw_exception(bad_tlv());
-		}
-	}
-
-	void serialize(oarchive& ar) const
-	{
-		if (!_is_optional || *_optval) {
-			archive tmp;
-
-			tmp.output() & (_is_optional ? (*_optval).get() : *_val);
-			ar & value;
-			ar & tmp.buffer();
-		}
-	}
-
-protected:
-	union {
-		mutable T*                  _val;
-		mutable boost::optional<T>* _optval;
-	};
-	bool _is_optional;
-};
-
-template<class T, uint8 A, uint8 B, uint8 C>
-struct tlv_fwd<T, oui_<A, B, C> > : boost::noncopyable {
-	typedef uint8 tlv_type;
-	static const tlv_type value = 100;
-
-
-	explicit tlv_fwd(const T& val)
-		: _val(const_cast<T*>(&val)), _is_optional(false)
-	{ }
-
-	explicit tlv_fwd(const boost::optional<T>& val)
-		: _optval(const_cast<boost::optional<T>*>(&val)), _is_optional(true)
-	{ }
-
-	void serialize(iarchive& ar) const
-	{
-		uint pos = ar.position();
-		uint8 tp;
-
-		ar & tp;
-		if (tp == value) {
-			uint8 oui[3];
-
-			ar & oui[0];
-			ar & oui[1];
-			ar & oui[2];
-
-			if (oui[0] == A && oui[1] == B && oui[2] == C) {
-				archive tmp;
-
-				ar & tmp.buffer();
-
-				*_optval = T();
-				tmp.input() & (*_optval).get();
-
-			} else {
-				ar.rewind(pos);
-			}
-
-		} else {
-			if (_is_optional)
-				ar.rewind(pos);
-			else
-				boost::throw_exception(bad_tlv());
-		}
-	}
-
-	void serialize(oarchive& ar) const
-	{
-		if (!_is_optional || *_optval) {
-			archive tmp;
-
-			tmp.output() & A;
-			tmp.output() & B;
-			tmp.output() & C;
-			tmp.output() & (_is_optional ? (*_optval).get() : *_val);
-			ar & value;
-			ar & tmp.buffer();
-		}
-	}
-
-protected:
-	union {
-		mutable T*                  _val;
-		mutable boost::optional<T>* _optval;
-	};
-	bool _is_optional;
-};
-
 template<class T>
-class is_tlv_fwd {
+class is_tlv_type {
 	typedef char true_t;
 	class false_t { char dummy[2]; };
 
@@ -357,66 +225,6 @@ public:
 	static const bool value = sizeof(test<T>(0)) == sizeof(true_t);
 };
 
-template<class T, uint32 Value>
-struct tlv_fwd<T, tlv4_<Value> > : boost::noncopyable {
-	typedef uint32 tlv_type;
-	static const tlv_type value = Value;
-
-
-	explicit tlv_fwd(const T& val)
-		: _val(const_cast<T*>(&val)), _is_optional(false)
-	{ }
-
-	explicit tlv_fwd(const boost::optional<T>& val)
-		: _optval(const_cast<boost::optional<T>*>(&val)), _is_optional(true)
-	{ }
-
-	void serialize(iarchive& ar) const
-	{
-		uint pos = ar.position();
-		uint32 tp;
-
-		ar & tp;
-		if (tp == value) {
-			archive tmp;
-
-			ar & tmp.buffer();
-
-			if (_is_optional) {
-				*_optval = T();
-				tmp.input() & (*_optval).get();
-
-			} else {
-				tmp.input() & *_val;
-			}
-
-		} else {
-			if (_is_optional)
-				ar.rewind(pos);
-			else
-				boost::throw_exception(bad_tlv());
-		}
-	}
-
-	void serialize(oarchive& ar) const
-	{
-		if (!_is_optional || *_optval) {
-			archive tmp;
-
-			tmp.output() & (_is_optional ? (*_optval).get() : *_val);
-			ar & value;
-			ar & tmp.buffer();
-		}
-	}
-
-protected:
-	union {
-		mutable T*                  _val;
-		mutable boost::optional<T>* _optval;
-	};
-	bool _is_optional;
-};
-
 ///////////////////////////////////////////////////////////////////////////////
 class otlv {
 public:
@@ -424,15 +232,7 @@ public:
 	otlv(oarchive& ar) : _ar(ar) {}
 
 	template<class T>
-	typename boost::enable_if<is_tlv_fwd<T>, otlv&>::type operator&(const T& val)
-	{
-		val.serialize(_ar);
-
-		return *this;
-	}
-
-	template<class T>
-	otlv& operator&(const typename T::tlv_type& val)
+	typename boost::enable_if<is_tlv_type<T>, otlv&>::type operator&(const T& val)
 	{
 		val.serialize(_ar);
 
@@ -450,15 +250,7 @@ public:
 	itlv(iarchive& ar) : _ar(ar) {}
 
 	template<class T>
-	typename boost::enable_if<is_tlv_fwd<T>, itlv&>::type operator&(const T& val)
-	{
-		val.serialize(_ar);
-
-		return *this;
-	}
-
-	template<class T>
-	itlv& operator&(const typename T::tlv_type& val)
+	typename boost::enable_if<is_tlv_type<T>, itlv&>::type operator&(const T& val)
 	{
 		val.serialize(_ar);
 
