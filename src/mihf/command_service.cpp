@@ -74,20 +74,16 @@ bool command_service::link_get_parameters_response(meta_message_ptr &in,
 	log(1, "(mics) received Link_Get_Parameters.response from ",
 	    in->source().to_string());
 
-	pending_transaction p;
-	mih::octet_string from = in->source().to_string();
-
-	if(!_lpool.get(from, p)) {
+	if(!_lpool.set_user_tid(in)) {
 		log(1, "(mics) warning: no local transaction for this msg ",
 			"discarding it");
 		return false;
 	}
 
-	in->tid(p.tid);
 	in->source(mihfid);
-	in->destination(mih::id(p.user));
 
-	log(1, "(mics) forwarding Link_Get_Parameters.response to ", p.user);
+	log(1, "(mics) forwarding Link_Get_Parameters.response to ",
+	    in->destination().to_string());
 
 	_transmit(in);
 
@@ -135,18 +131,15 @@ bool command_service::link_configure_thresholds_response(meta_message_ptr &in,
 	log(1, "(mics) received Link_Configure_Thresholds.response from ",
 	    in->source().to_string());
 
-	pending_transaction p;
-	if(!_lpool.get(in->source().to_string(), p)) {
+	if(!_lpool.set_user_tid(in)) {
 		log(1, "(mics) warning: no local transaction for this msg ",
 		    "discarding it");
 		return false;
 	}
 
-	in->tid(p.tid);
 	in->source(mihfid);
-	in->destination(mih::id(p.user));
 
-	log(1, "(mics) forwarding Link_Configure_Thresholds.response to ", p.user);
+	log(1, "(mics) forwarding Link_Configure_Thresholds.response to ", in->destination().to_string());
 
 	_transmit(in);
 
@@ -189,18 +182,15 @@ bool command_service::link_actions_response(meta_message_ptr &in,
 	log(1, "(mics) received Link_Actions.response from ",
 	    in->source().to_string());
 
-	pending_transaction p;
-	if(!_lpool.get(in->source().to_string(), p))
+	if(!_lpool.set_user_tid(in))
 		{
 			log(1, "(mics) no local pending transaction for this message, discarding");
 			return false;
 		}
 
-	in->tid(p.tid);
 	in->source(mihfid);
-	in->destination(mih::id(p.user));
 
-	log(1, "(mics) forwarding Link_Actions.response to ", p.user);
+	log(1, "(mics) forwarding Link_Actions.response to ", in->destination().to_string());
 
 	_transmit(in);
 

@@ -117,8 +117,7 @@ bool event_service::event_subscribe_response(meta_message_ptr &in,
 	    in->source().to_string());
 
 	// do we have a request from a user?
-	pending_transaction	p;
-	if (!_lpool.get(in->source().to_string(), p)) {
+	if (!_lpool.set_user_tid(in)) {
 		log(1, "(mics) warning: no local transaction for this msg ",
 		    "discarding it");
 		return false;
@@ -137,12 +136,10 @@ bool event_service::event_subscribe_response(meta_message_ptr &in,
 
 	// add a subscription
 	if (st == mih::status_success)
-		st = subscribe(mih::id(p.user), link, events);
+		st = subscribe(mih::id(in->destination().to_string()), link, events);
 
-	in->tid(p.tid);
-	in->destination(mih::id(p.user));
-
-	log(1, "(mies) forwarding Event_Subscribe.response to ", p.user);
+	log(1, "(mies) forwarding Event_Subscribe.response to ",
+	    in->destination().to_string());
 
 	// forward to user
 	_transmit(in);
@@ -224,8 +221,7 @@ bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 	    in->source().to_string());
 
 	// do we have a request from a user?
-	pending_transaction p;
-	if (!_lpool.get(in->source().to_string(), p)) {
+	if (!_lpool.set_user_tid(in)) {
 		log(1, "(mics) warning: no local transaction for this msg ",
 		    "discarding it");
 
@@ -245,12 +241,10 @@ bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 
 	// remove subscription
 	if (st == mih::status_success)
-		st = unsubscribe(mih::id(p.user), link, events);
+		st = unsubscribe(mih::id(in->destination().to_string()), link, events);
 
-	in->tid(p.tid);
-	in->destination(mih::id(p.user));
-
-	log(1, "(mies) forwarding Event_Unsubscribe.response to ", p.user);
+	log(1, "(mies) forwarding Event_Unsubscribe.response to ",
+	    in->destination().to_string());
 
 	// forward to user
 	_transmit(in);

@@ -46,7 +46,7 @@ public:
 	std::list<pending_transaction>::iterator
 	find(const mih::octet_string &from);
 
-	bool get(const mih::octet_string &from, pending_transaction &p);
+	bool set_user_tid(meta_message_ptr &msg);
 
 protected:
 	std::list<pending_transaction> _transactions;

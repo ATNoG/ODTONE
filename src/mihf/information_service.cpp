@@ -65,20 +65,17 @@ bool information_service::get_information_response(meta_message_ptr &in,
 	log(1, "(miis) received Get_Information.response from ",
 	    in->source().to_string());
 
-	pending_transaction p;
-	if(!_lpool.get(in->source().to_string(), p)) {
+	if(!_lpool.set_user_tid(in)) {
 		log(1, "(mics) warning: no local transaction for this msg ",
 		    "discarding it");
 		return false;
 	}
 
-	in->tid(p.tid);
-	in->destination(mih::id(p.user));
-
 	in->source(mihfid);
 	in->opcode(mih::operation::confirm);
 
-	log(1, "(miis) forwarding Get_Information.response to ", p.user);
+	log(1, "(miis) forwarding Get_Information.response to ",
+	    in->destination().to_string());
 
 	_transmit(in);
 
@@ -117,20 +114,17 @@ bool information_service::push_information_indication(meta_message_ptr &in,
 	log(1, "(miis) received Push_Information.indication from ",
 	    in->source().to_string());
 
-	pending_transaction p;
-
-	if(!_lpool.get(in->source().to_string(), p)) {
+	if(!_lpool.set_user_tid(in)) {
 		log(1, "(mics) warning: no local transaction for this msg ",
 		    "discarding it");
 
 		return false;
 	}
 
-	in->tid(p.tid);
 	in->source(mihfid);
-	in->destination(mih::id(p.user));
 
-	log(1, "(miis) forwarding Push_Information.indication to ", p.user);
+	log(1, "(miis) forwarding Push_Information.indication to ",
+	    in->destination().to_string());
 
 	_transmit(in);
 
