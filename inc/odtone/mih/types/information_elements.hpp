@@ -194,23 +194,17 @@ public:
 
 	void serialize(oarchive& ar)
 	{
-		uint len = truncate_cast<uint>(base::size());
-
 		for (base::iterator i = base::begin(); i != base::end(); ++i)
 			ar & tlv_ie_container_network(*i);
 	}
 
 	void serialize(iarchive& ar)
 	{
-		try {
-			for (;;) {
-				ie_container_network cn;
+		while (ar.position() < ar.length()) {
+			base::resize(base::size() + 1);
+			ie_container_network& cn = base::back();
 
-				ar & tlv_ie_container_network(cn);
-				base::push_back(cn);
-			}
-
-		} catch (bad_tlv& e) {
+			ar & tlv_ie_container_network(cn);
 		}
 	}
 };
