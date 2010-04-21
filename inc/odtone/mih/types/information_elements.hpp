@@ -80,7 +80,7 @@ static const tlv_cast_<ie_service_provider_id,        tlv4_<0x10000002> > tlv_ie
 static const tlv_cast_<ie_country_code,               tlv4_<0x10000003> > tlv_ie_country_code = {};
 static const tlv_cast_<ie_network_id,                 tlv4_<0x10000100> > tlv_ie_network_id = {};
 static const tlv_cast_<ie_network_aux_id,             tlv4_<0x10000101> > tlv_ie_network_aux_id = {};
-static const tlv_cast_<ie_roaming_partners,           tlv4_<0x1000002> > tlv_ie_roaming_partners = {};
+static const tlv_cast_<ie_roaming_partners,           tlv4_<0x10000102> > tlv_ie_roaming_partners = {};
 static const tlv_cast_<ie_cost,                       tlv4_<0x10000103> > tlv_ie_cost = {};
 static const tlv_cast_<ie_network_qos,                tlv4_<0x10000105> > tlv_ie_network_qos = {};
 static const tlv_cast_<ie_network_data_rate,          tlv4_<0x10000106> > tlv_ie_network_data_rate = {};
