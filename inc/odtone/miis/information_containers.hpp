@@ -27,19 +27,6 @@
 
 namespace odtone { namespace miis {
 
-template<class T1, class T2>
-struct is_same_type : boost::mpl::false_ { };
-
-template<class T>
-struct is_same_type<T, T> : boost::mpl::true_ { };
-
-template<class ArchiveT>
-struct select_tlv_archive {
-	typedef typename boost::mpl::if_<is_same_type<ArchiveT, mih::iarchive>,
-									 mih::itlv,
-									 mih::otlv>::type type;
-};
-
 static const mih::tlv_cast_<ie_network_type, mih::tlv4_<0x10000000> > tlv_ie_network_type = {};
 static const mih::tlv_cast_<ie_operator_id, mih::tlv4_<0x10000001> > tlv_ie_operator_id = {};
 static const mih::tlv_cast_<ie_service_provider_id, mih::tlv4_<0x10000002> > tlv_ie_service_provider_id = {};
@@ -75,10 +62,8 @@ struct ie_container_poa
 	boost::optional<std::vector<ie_poa_ip_addr> > poa_ip_addr;
 
 	template<class ArchiveT>
-	void serialize(ArchiveT& ar_)
+	void serialize(ArchiveT& ar)
 	{
-		typename select_tlv_archive<ArchiveT>::type ar(ar_);
-
 		ar & tlv_ie_poa_link_addr(poa_link_addr);
 		ar & tlv_ie_poa_location(poa_location);
 		ar & tlv_ie_poa_channel_range(poa_channel_range);
@@ -115,10 +100,8 @@ struct ie_container_network
 	std::vector<ie_container_poa> poas;
 
 	template<class ArchiveT>
-	void serialize(ArchiveT& ar_)
+	void serialize(ArchiveT& ar)
 	{
-		typename select_tlv_archive<ArchiveT>::type ar(ar_);
-
 		ar & tlv_ie_network_type(network_type);
 		ar & tlv_ie_operator_id(operator_id);
 
@@ -161,19 +144,16 @@ public:
 	using base::resize;
 	using base::operator[];
 
-	void serialize(mih::oarchive& ar_)
+	void serialize(mih::oarchive& ar)
 	{
-		mih::otlv ar(ar_);
 		uint len = truncate_cast<uint>(base::size());
 
 		for (base::iterator i = base::begin(); i != base::end(); ++i)
 			ar & tlv_ie_container_network(*i);
 	}
 
-	void serialize(mih::iarchive& ar_)
+	void serialize(mih::iarchive& ar)
 	{
-		mih::itlv ar(ar_);
-
 		try {
 			for (;;) {
 				ie_container_network cn;

@@ -226,6 +226,19 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+template<class T>
+inline typename boost::enable_if<is_tlv_type<T>, iarchive&>::type operator&(iarchive& ar, const T& val)
+{
+	return ar & const_cast<T&>(val);
+}
+
+template<class T>
+inline typename boost::enable_if<is_tlv_type<T>, oarchive&>::type operator&(oarchive& ar, const T& val)
+{
+	return ar & const_cast<T&>(val);
+}
+
+///////////////////////////////////////////////////////////////////////////////
 class otlv {
 public:
 	otlv(archive& ar) : _ar(ar.output()) {}

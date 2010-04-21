@@ -86,7 +86,7 @@ message& message::operator=(const frame& fm)
 	_tid = fm.tid();
 
 	archive ar;
-	itlv in(ar);
+	iarchive& in = ar.input();
 
 	ar.append(fm.payload(), fm.payload() + fm.plength());
 	in & tlv_source_id(_src);
@@ -105,7 +105,7 @@ message& message::operator=(const frame& fm)
 void message::get_frame(frame_vla& fm) const
 {
 	archive ar;
-	otlv out(ar);
+	oarchive& out = ar.output();
 
 	out & tlv_source_id(_src);
 	out & tlv_destination_id(_dst);
