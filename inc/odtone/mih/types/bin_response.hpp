@@ -30,6 +30,9 @@ class ir_bin_iarchive;
 class ir_bin_oarchive;
 
 ///////////////////////////////////////////////////////////////////////////////
+//
+// TODO: need to improve this with a generic IE element, so this can be turned into a std::vector
+//
 class ir_bin_data {
 	friend class ir_bin_iarchive;
 	friend class ir_bin_oarchive;
@@ -48,15 +51,24 @@ public:
 	{
 		_cnt = ar.list_length();
 
-		//TODO: we need to known the actual size in octets to avoid uncessary copies
 		_ar.clear();
-//FIXME:_ar.append(ar.buffer().begin(), ar.buffer().end());
+		for (uint i = 0; i < _cnt; ++i) {
+			uint pos;
+			uint end;
+
+			pos = ar.position();
+			ar.position(pos + 4);
+			end = ar.list_length();
+			end += ar.position();
+			_ar.append(ar.begin() + pos, ar.begin() + end);
+			ar.position(end);
+		}
 	}
 
 	void serialize(oarchive& ar)
 	{
 		ar.list_length(_cnt);
-//FIXME:ar.append(_ar.buffer().begin(), _ar.buffer().end());
+		ar.append(_ar.begin(), _ar.end());
 	}
 
 	ir_bin_iarchive input();
