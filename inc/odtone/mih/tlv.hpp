@@ -1,11 +1,11 @@
 //=============================================================================
-// Brief   : Archive for MIH TLV Serialization
+// Brief   : MIH TLV Serialization DSL
 // Authors : Bruno Santos <bsantos@av.it.pt>
+// ----------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2010 Universidade de Aveiro
+// Copyrigth (C) 2009-2010 Instituto de Telecomunicações - Pólo de Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -34,18 +34,185 @@ struct bad_tlv : virtual public exception {
 	{ }
 };
 
+///////////////////////////////////////////////////////////////////////////////
+template<class ValueT, ValueT Value>
+struct base_tlv_ {
+	template<class T>
+	static bool serialize(iarchive& ar, T& val)
+	{
+		uint pos = ar.position();
+		ValueT tp;
+
+		ar & tp;
+		if (tp != Value) {
+			ar.rewind(pos);
+			return false;
+		}
+
+		archive tmp;
+
+		ar & tmp.buffer();
+		tmp.input() & val;
+		return true;
+	}
+
+	template<class T>
+	static void serialize(oarchive& ar, T& val)
+	{
+		archive tmp;
+
+		tmp.output() & val;
+		ar & Value;
+		ar & tmp.buffer();
+	}
+};
+
 template<uint8 Value>
-struct tlv_ {
+struct tlv_ : base_tlv_<uint8, Value> {
+	typedef tlv_<Value> tlv_serializer;
 };
 
 template<uint32 Value>
-struct tlv4_ {
+struct tlv4_ : base_tlv_<uint32, Value> {
+	typedef tlv4_<Value> tlv_serializer;
 };
 
 template<uint8 A, uint8 B, uint8 C>
 struct oui_ {
+	typedef oui_<A, B, C> tlv_serializer;
+
+	template<class T>
+	static bool serialize(iarchive& ar, T& val)
+	{
+		uint pos = ar.position();
+		uint8 tp;
+
+		ar & tp;
+		if (tp != 100) {
+			ar.rewind(pos);
+			return false;
+		}
+
+
+		uint8 oui[3];
+
+		ar & oui[0];
+		ar & oui[1];
+		ar & oui[2];
+
+		if (oui[0] != A || oui[1] != B || oui[2] != C) {
+			ar.rewind(pos);
+			return false;
+		}
+
+
+		archive tmp;
+
+		ar & tmp.buffer();
+		tmp.input() & val;
+
+		return true;
+	}
+
+	template<class T>
+	static void serialize(oarchive& ar, T& val)
+	{
+		archive tmp;
+		uint8 tp = 100;
+
+		tmp.output() & A;
+		tmp.output() & B;
+		tmp.output() & C;
+		tmp.output() & val;
+		ar & tp;
+		ar & tmp.buffer();
+	}
 };
 
+///////////////////////////////////////////////////////////////////////////////
+template<class T, class TLV>
+class tlv_type_ {
+	typedef typename TLV::tlv_serializer impl;
+
+public:
+	typedef tlv_type_<T, TLV> tlv_type;
+
+public:
+	tlv_type_(T& val)
+		: _val(val)
+	{ }
+
+	void serialize(iarchive& ar) const
+	{
+		bool res = impl::serialize(ar, _val);
+		if (!res)
+			boost::throw_exception(bad_tlv());
+	}
+
+	void serialize(oarchive& ar) const
+	{
+		impl::serialize(ar, _val);
+	}
+
+private:
+	mutable T& _val;
+};
+
+template<class T, class TLV>
+class tlv_type_<boost::optional<T>, TLV> {
+	typedef typename TLV::tlv_serializer impl;
+
+public:
+	typedef tlv_type_<boost::optional<T>, TLV> tlv_type;
+
+public:
+	tlv_type_(boost::optional<T>& val)
+		: _val(val)
+	{ }
+
+	void serialize(iarchive& ar) const
+	{
+		//if (ar.position() >= ar.length())
+		//	return;
+
+		T tmp;
+
+		bool res = impl::serialize(ar, tmp);
+		if (!res)
+			boost::throw_exception(bad_tlv());
+		else
+			_val = tmp;
+	}
+
+	void serialize(oarchive& ar) const
+	{
+		if (_val)
+			impl::serialize(ar, _val.get());
+	}
+
+private:
+	mutable boost::optional<T>& _val;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+template<class T, class TLV>
+class tlv_cast_ {
+	typedef typename tlv_type_<T, TLV>::tlv_type                  tlv_type;
+	typedef typename tlv_type_<boost::optional<T>, TLV>::tlv_type tlv_optional_type;
+
+public:
+	tlv_type operator()(const T& val) const
+	{
+		return tlv_type(const_cast<T&>(val));
+	}
+
+	tlv_optional_type operator()(const boost::optional<T>& val) const
+	{
+		return tlv_optional_type(const_cast<boost::optional<T>&>(val));
+	}
+};
+
+///////////////////////////////////////////////////////////////////////////////
 template<class T, class ValueT>
 struct tlv_fwd;
 
