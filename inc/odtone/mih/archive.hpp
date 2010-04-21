@@ -183,6 +183,32 @@ inline oarchive archive::output()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+template<class T>
+class is_iarchive {
+	typedef char true_t;
+	class false_t { char dummy[2]; };
+
+	template<class U> static true_t  test(typename U::iarchive_type* = 0);
+	template<class U> static false_t test(...);
+
+public:
+	static const bool value = sizeof(test<T>(0)) == sizeof(true_t);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+template<class T>
+class is_oarchive {
+	typedef char true_t;
+	class false_t { char dummy[2]; };
+
+	template<class U> static true_t  test(typename U::oarchive_type* = 0);
+	template<class U> static false_t test(...);
+
+public:
+	static const bool value = sizeof(test<T>(0)) == sizeof(true_t);
+};
+
+///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /*namespace odtone */
 
 ///////////////////////////////////////////////////////////////////////////////
