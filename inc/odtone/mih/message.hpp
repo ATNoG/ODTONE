@@ -154,8 +154,8 @@ public:
 	const id&       source() const;
 	const id&       destination() const;
 
-	iarchive& input()  { return _payload.input(); }
-	oarchive& output() { return _payload.output(); }
+	iarchive& input()  { return _in; }
+	oarchive& output() { return _out; }
 
 	void get_frame(frame_vla& fm) const;
 
@@ -171,6 +171,8 @@ private:
 	id              _src;
 	id              _dst;
 	mutable archive _payload;
+	iarchive        _in;
+	oarchive        _out;
 };
 
 /**

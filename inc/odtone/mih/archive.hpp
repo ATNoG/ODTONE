@@ -29,7 +29,21 @@
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
+struct iarchive_error : virtual public exception { };
+
+struct iarchive_eof_error : virtual public iarchive_error {
+	iarchive_eof_error() : exception("odtone::mih::iarchive: end of stream")
+	{ }
+};
+
+///////////////////////////////////////////////////////////////////////////////
 class archive {
+	friend class iarchive;
+	friend class oarchive;
+
+public:
+	typedef std::vector<uint8>::const_iterator const_iterator;
+
 public:
 	archive();
 	~archive();
@@ -41,16 +55,19 @@ public:
 	template<class InputIteratorT>
 	void append(InputIteratorT begin, InputIteratorT end)
 	{
-		_buf.insert(_buf.end(), begin, end);
+		_buf.insert(_buf.begin() + _pos, begin, end);
 	}
+
+	const_iterator begin() const { return _buf.begin(); }
+	const_iterator end() const   { return _buf.end(); }
 
 	std::vector<uint8>& buffer();
 
-	iarchive& input();
-	oarchive& output();
+	iarchive input();
+	oarchive output();
 
-	void rewind(uint pos = 0);
-	uint position() const { return _pos; }
+	void position(uint pos) { _pos = pos; }
+	uint position() const   { return _pos; }
 
 protected:
 	std::vector<uint8> _buf;
@@ -58,19 +75,35 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-class iarchive : private archive {
-	friend class archive;
-
+class iarchive {
 public:
 	typedef iarchive iarchive_type;
 
 public:
-	iarchive()
-	{}
+	typedef std::vector<uint8>::const_iterator const_iterator;
 
-	using archive::buffer;
-	using archive::rewind;
-	using archive::position;
+public:
+	iarchive(archive& ar)
+		: _buf(ar._buf), _pos(ar._pos), _begin(ar._pos), _length(ar._buf.size())
+	{ }
+	iarchive(archive& ar, uint length)
+		: _buf(ar._buf), _pos(ar._pos), _begin(ar._pos), _length(length)
+	{ }
+	iarchive(iarchive& ar, uint length)
+		: _buf(ar._buf), _pos(ar._pos), _begin(ar._pos), _length(length)
+	{ }
+
+	void reset(archive& ar)
+	{
+		new(this) iarchive(ar);
+	}
+
+	void position(uint pos) { _pos = _begin + pos; }
+	uint position() const   { return _pos - _begin; }
+	uint length() const     { return _length; }
+
+	const_iterator begin() const { return _buf.begin() + _begin; }
+	const_iterator end() const   { return _buf.begin() + _length; }
 
 	uint list_length();
 
@@ -85,22 +118,38 @@ public:
 	iarchive& operator&(sint64& val);
 	iarchive& operator&(octet_string& val);
 	iarchive& operator&(std::vector<uint8>& buf);
+
+private:
+	std::vector<uint8>& _buf;
+	uint&               _pos;
+	uint                _begin;
+	uint                _length;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-class oarchive : private archive {
-	friend class archive;
-
+class oarchive {
 public:
 	typedef oarchive oarchive_type;
 
 public:
-	oarchive()
-	{}
+	oarchive(archive& ar)
+		: _buf(ar._buf), _pos(ar._pos), _begin(ar._pos)
+	{ }
 
-	using archive::append;
-	using archive::rewind;
-	using archive::position;
+	void reset(archive& ar)
+	{
+		new(this) oarchive(ar);
+	}
+
+	template<class InputIteratorT>
+	void append(InputIteratorT begin, InputIteratorT end)
+	{
+		_buf.insert(_buf.begin() + _pos, begin, end);
+	}
+
+	void position(uint pos) { _pos = _begin + pos; }
+	uint position() const   { return _pos - _begin; }
+	uint length() const     { return _buf.size() - _begin; }
 
 	void list_length(uint len);
 
@@ -115,26 +164,23 @@ public:
 	oarchive& operator&(sint64 val);
 	oarchive& operator&(std::string& val);
 	oarchive& operator&(std::vector<uint8>& buf);
+
+private:
+	std::vector<uint8>& _buf;
+	uint&               _pos;
+	uint                _begin;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-inline iarchive& archive::input()
+inline iarchive archive::input()
 {
-	return static_cast<iarchive&>(*this);
+	return iarchive(*this);
 }
 
-inline oarchive& archive::output()
+inline oarchive archive::output()
 {
-	return static_cast<oarchive&>(*this);
+	return oarchive(*this);
 }
-
-///////////////////////////////////////////////////////////////////////////////
-struct iarchive_error : virtual public exception { };
-
-struct iarchive_eof_error : virtual public iarchive_error {
-	iarchive_eof_error() : exception("odtone::mih::iarchive: end of stream")
-	{ }
-};
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /*namespace odtone */

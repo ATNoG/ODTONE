@@ -45,25 +45,38 @@ struct base_tlv_ {
 
 		ar & tp;
 		if (tp != Value) {
-			ar.rewind(pos);
+			ar.position(pos);
 			return false;
 		}
 
-		archive tmp;
+		try {
+			uint len = ar.list_length();
+			iarchive in(ar, len);
+			in & val;
 
-		ar & tmp.buffer();
-		tmp.input() & val;
+		} catch (...) {
+			ar.position(pos);
+			throw;
+		}
 		return true;
 	}
 
 	template<class T>
 	static void serialize(oarchive& ar, T& val)
 	{
+		uint pos = ar.position();
 		archive tmp;
+		oarchive out(tmp);
 
-		tmp.output() & val;
-		ar & Value;
-		ar & tmp.buffer();
+		out & val;
+		try {
+			ar & Value;
+			ar & tmp.buffer();
+
+		} catch (...) {
+			ar.position(pos);
+			throw;
+		}
 	}
 };
 
@@ -89,43 +102,61 @@ struct oui_ {
 
 		ar & tp;
 		if (tp != 100) {
-			ar.rewind(pos);
+			ar.position(pos);
 			return false;
 		}
 
+		try {
+			uint len = ar.list_length();
 
-		uint8 oui[3];
+			if (len < 3) {
+				ar.position(pos);
+				return false;
+			}
 
-		ar & oui[0];
-		ar & oui[1];
-		ar & oui[2];
+			uint8 oui[3];
 
-		if (oui[0] != A || oui[1] != B || oui[2] != C) {
-			ar.rewind(pos);
-			return false;
+			ar & oui[0];
+			ar & oui[1];
+			ar & oui[2];
+
+			if (oui[0] != A || oui[1] != B || oui[2] != C) {
+				ar.position(pos);
+				return false;
+			}
+
+			iarchive in(ar, len - 3);
+
+			in & val;
+
+		} catch (...) {
+			ar.position(pos);
+			throw;
 		}
-
-
-		archive tmp;
-
-		ar & tmp.buffer();
-		tmp.input() & val;
-
 		return true;
 	}
 
 	template<class T>
 	static void serialize(oarchive& ar, T& val)
 	{
+		uint pos = ar.position();
 		archive tmp;
-		uint8 tp = 100;
+		oarchive out(tmp);
 
-		tmp.output() & A;
-		tmp.output() & B;
-		tmp.output() & C;
-		tmp.output() & val;
-		ar & tp;
-		ar & tmp.buffer();
+		out & A;
+		out & B;
+		out & C;
+		out & val;
+		try {
+			uint8 tp = 100;
+
+			ar & tp;
+			ar & tmp.buffer();
+
+		} catch (...) {
+			ar.position(pos);
+			throw;
+		}
 	}
 };
 
@@ -172,8 +203,8 @@ public:
 
 	void serialize(iarchive& ar) const
 	{
-		//if (ar.position() >= ar.length())
-		//	return;
+		if (ar.position() >= ar.length())
+			return;
 
 		T tmp;
 
@@ -237,42 +268,6 @@ inline typename boost::enable_if<is_tlv_type<T>, oarchive&>::type operator&(oarc
 {
 	return ar & const_cast<T&>(val);
 }
-
-///////////////////////////////////////////////////////////////////////////////
-class otlv {
-public:
-	otlv(archive& ar) : _ar(ar.output()) {}
-	otlv(oarchive& ar) : _ar(ar) {}
-
-	template<class T>
-	typename boost::enable_if<is_tlv_type<T>, otlv&>::type operator&(const T& val)
-	{
-		val.serialize(_ar);
-
-		return *this;
-	}
-
-private:
-	oarchive& _ar;
-};
-
-///////////////////////////////////////////////////////////////////////////////
-class itlv {
-public:
-	itlv(archive& ar) : _ar(ar.input()) {}
-	itlv(iarchive& ar) : _ar(ar) {}
-
-	template<class T>
-	typename boost::enable_if<is_tlv_type<T>, itlv&>::type operator&(const T& val)
-	{
-		val.serialize(_ar);
-
-		return *this;
-	}
-
-private:
-	iarchive& _ar;
-};
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /* namespace odtone */

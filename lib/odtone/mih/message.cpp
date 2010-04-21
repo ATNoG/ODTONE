@@ -61,11 +61,12 @@ namespace odtone { namespace mih {
 ///////////////////////////////////////////////////////////////////////////////
 message::message()
 	: _version(1), _ackreq(false), _ackrsp(false), _uir(false), _m(false),
-	_fn(0), _mid(0), _tid(0)
+	_fn(0), _mid(0), _tid(0), _payload(), _in(_payload), _out(_payload)
 {
 }
 
 message::message(const frame& fm)
+	: _payload(), _in(_payload), _out(_payload)
 {
 	*this = fm;
 }
@@ -86,7 +87,7 @@ message& message::operator=(const frame& fm)
 	_tid = fm.tid();
 
 	archive ar;
-	iarchive& in = ar.input();
+	iarchive in(ar);
 
 	ar.append(fm.payload(), fm.payload() + fm.plength());
 	in & tlv_source_id(_src);
@@ -105,7 +106,7 @@ message& message::operator=(const frame& fm)
 void message::get_frame(frame_vla& fm) const
 {
 	archive ar;
-	oarchive& out = ar.output();
+	oarchive out(ar);
 
 	out & tlv_source_id(_src);
 	out & tlv_destination_id(_dst);
