@@ -52,8 +52,8 @@ static void process_message(meta_message_ptr& msg)
 
 		mih::ir_bin_data bd = bin_data_list[0];
 
-		miis::ie_container_list_of_networks l;
-		bd.input() & miis::tlv_ie_container_list_of_networks(l);
+		mih::ie_container_list_of_networks l;
+		bd.input() & mih::tlv_ie_container_list_of_networks(l);
 	}
 }
 

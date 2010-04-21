@@ -229,16 +229,16 @@ void send_get_information_request(handler &sap, const char *dst)
 {
 	mih::message		p;
 
-	miis::ie_container_poa					poa;
-	miis::ie_container_network				net;
-	miis::ie_container_list_of_networks		list;
+	mih::ie_container_poa					poa;
+	mih::ie_container_network				net;
+	mih::ie_container_list_of_networks		list;
 
 	// ie_container_poa
 	//
-	miis::ie_poa_link_addr		poa_la;
+	mih::ie_poa_link_addr		poa_la;
 	mih::link_addr				la;
 	mih::mac_addr				mac;
-	miis::ie_poa_location		poa_loc;
+	mih::ie_poa_location		poa_loc;
 	mih::cell_id				poa_cell;
 	mih::ch_range				range;
 
@@ -260,8 +260,8 @@ void send_get_information_request(handler &sap, const char *dst)
 	// ie_container_network
 	//
 	mih::link_type				lt;
-	miis::ie_network_type		nt;
-	miis::ie_operator_id		opid;
+	mih::ie_network_type		nt;
+	mih::ie_operator_id		opid;
 
 	lt		= mih::link_type_802_11;
 	nt.link = lt;
@@ -284,7 +284,7 @@ void send_get_information_request(handler &sap, const char *dst)
 	mih::ir_bin_data			bin_data;
 	mih::ir_bin_data_list		bin_data_list;
 
-	bin_data.output() & miis::tlv_ie_container_list_of_networks(list);
+	bin_data.output() & mih::tlv_ie_container_list_of_networks(list);
 	bin_data_list.push_back(bin_data);
 	//
 
