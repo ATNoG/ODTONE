@@ -16,6 +16,7 @@
 //=============================================================================
 
 ///////////////////////////////////////////////////////////////////////////////
+#include <odtone/base.hpp>
 #include "../link_sap.hpp"
 #include "../interface/if_802_11.hpp"
 #include <odtone/debug.hpp>
@@ -73,7 +74,7 @@ int main(int argc, char** argv)
 
 				if (rtnetlink::if_link::is(msg)) {
 					rtnetlink::if_link lnk(msg);
-					link_sap::nic::interface* it = odtone::nullptr;
+					link_sap::nic::interface* it = nullptr;
 
 					std::cout << "if_type: " << lnk.type() << std::endl;
 					std::cout << "if_index: " << lnk.index() << std::endl << std::hex;

@@ -57,7 +57,7 @@ struct serialize<std::vector<T> > {
 
 		} catch (...) {
 			val.clear();
-			ar.rewind(pos);
+			ar.position(pos);
 			throw;
 		}
 	}
@@ -76,7 +76,7 @@ struct serialize<std::vector<T> > {
 			}
 
 		} catch (...) {
-			ar.rewind(pos);
+			ar.position(pos);
 			throw;
 		}
 	}
@@ -100,7 +100,7 @@ struct serialize<std::list<T> > {
 
 		} catch (...) {
 			val.clear();
-			ar.rewind(pos);
+			ar.position(pos);
 			throw;
 		}
 	}
@@ -119,7 +119,7 @@ struct serialize<std::list<T> > {
 			}
 
 		} catch (...) {
-			ar.rewind(pos);
+			ar.position(pos);
 			throw;
 		}
 	}

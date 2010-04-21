@@ -59,11 +59,6 @@ std::vector<uint8>& archive::buffer()
 	return _buf;
 }
 
-void archive::rewind(uint pos)
-{
-	_pos = pos;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 iarchive& iarchive::operator&(bool& val)
 {

@@ -39,7 +39,7 @@ class buffer {
 	BOOST_MOVABLE_BUT_NOT_COPYABLE(buffer);
 
 public:
-	buffer() : _ptr(nullptr)
+	buffer() : _ptr(nullptr), _len(0)
 	{ }
 
 	buffer(BOOST_RV_REF(buffer) buff) : _ptr(buff._ptr), _len(buff._len)
