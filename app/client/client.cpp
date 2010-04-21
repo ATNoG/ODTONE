@@ -31,7 +31,7 @@
 #include <boost/asio.hpp>
 #include <boost/variant/apply_visitor.hpp>
 
-#include <odtone/miis/information_containers.hpp>
+#include <odtone/mih/types/information_elements.hpp>
 
 using namespace odtone;
 using boost::asio::ip::udp;

@@ -30,7 +30,7 @@
 #include <iostream>
 #include <boost/asio.hpp>
 
-#include <odtone/miis/information_containers.hpp>
+#include <odtone/mih/types/information_elements.hpp>
 
 #include "../mihf/udp_listener.hpp"
 
