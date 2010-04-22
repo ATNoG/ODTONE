@@ -95,6 +95,7 @@ message& message::operator=(const frame& fm)
 
 	_payload.clear();
 	_payload.append(fm.payload() + ar.position(), fm.payload() + fm.plength());
+	_payload.position(0);
 
 	return *this;
 }

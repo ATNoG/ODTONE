@@ -154,7 +154,7 @@ public:
 	const id&       source() const;
 	const id&       destination() const;
 
-	iarchive& input()  { return _in; }
+	iarchive& input();
 	oarchive& output() { return _out; }
 
 	void get_frame(frame_vla& fm) const;
@@ -381,6 +381,12 @@ inline const id& message::source() const
 inline const id& message::destination() const
 {
 	return _dst;
+}
+
+inline iarchive& message::input()
+{
+	_in.reset(_payload);
+	return _in;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
