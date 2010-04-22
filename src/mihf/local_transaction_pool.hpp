@@ -22,7 +22,9 @@
 #include <odtone/base.hpp>
 #include <odtone/mih/types.hpp>
 
+#include <boost/thread.hpp>
 #include <list>
+
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
@@ -50,6 +52,7 @@ public:
 
 protected:
 	std::list<pending_transaction> _transactions;
+	boost::mutex _mutex;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
