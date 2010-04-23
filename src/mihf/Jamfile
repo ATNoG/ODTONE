@@ -1,0 +1,49 @@
+#==============================================================================
+# Brief   : Odtone Project Build
+# Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
+#           Bruno Santos     <bsantos@av.it.pt>
+#------------------------------------------------------------------------------
+# ODTONE - Open Dot Twenty One
+#
+# Copyright (C) 2010 Universidade Aveiro
+# Copyright (C) 2010 Instituto de Telecomunicações - Pólo Aveiro
+#
+# This software is distributed under a license. The full license
+# agreement can be found in the file LICENSE in this distribution.
+# This software may not be copied, modified, sold or distributed
+# other than expressed in the named license agreement.
+#
+# This software is distributed without any warranty.
+#==============================================================================
+
+project odtone-mihf
+	;
+
+exe odtone-mihf
+	: main.cpp
+	  service_management.cpp
+	  service_access_controller.cpp
+	  event_service.cpp
+	  mihfid.cpp
+	  log.cpp
+	  command_service.cpp
+	  information_service.cpp
+	  utils.cpp
+	  udp_listener.cpp
+	  tcp_listener.cpp
+	  net_sap.cpp
+	  address_book.cpp
+	  transaction_pool.cpp
+	  src_transaction.cpp
+	  dst_transaction.cpp
+	  transaction.cpp
+	  message_in.cpp
+	  message_out.cpp
+	  transmit.cpp
+	  local_transaction_pool.cpp
+	  meta_message.cpp
+	  ../../lib/odtone//odtone_base
+	  ../../lib/odtone/mih//odtone_mih
+	  ../../lib/odtone/sap//odtone_sap
+	;
+

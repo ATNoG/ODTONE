@@ -25,6 +25,11 @@
 #include <boost/utility.hpp>
 #include <ostream>
 
+#ifdef BOOST_MSVC
+#	pragma warning(push)
+#	pragma warning(disable : 4800)
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mih {
 
@@ -92,7 +97,7 @@ struct frame {
 	static const uint8 mask_opcode  = 0x0d;
 	static const uint8 mask_aid     = 0x03;
 	static const uint8 mask_rsvd2   = 0xf0;
-	static const uint8 mask_tid     = 0x0f;
+	static const uint8 mask_tid     = 0xff;
 
 
 	static frame* cast(void* buff, size_t len)
@@ -339,6 +344,10 @@ inline size_t frame::length() const
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /* namespace odtone */
+
+#ifdef BOOST_MSVC
+#	pragma warning(pop)
+#endif
 
 // EOF ////////////////////////////////////////////////////////////////////////
 #endif /* ODTONE_MIH_FRAME__HPP_ */

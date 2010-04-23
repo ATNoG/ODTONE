@@ -13,76 +13,117 @@
 // Author:     Simao Reis <sreis@av.it.pt>
 //
 
-#include <odtone/mihf/utils.hpp>
+///////////////////////////////////////////////////////////////////////////////
+#include "utils.hpp"
+#include "log.hpp"
+#include "mihfid.hpp"
 
 #include <odtone/base.hpp>
 #include <odtone/mih/types.hpp>
 #include <odtone/mih/tlv.hpp>
-#include <odtone/mihf/log.hpp>
-#include <odtone/mihf/mihfid.hpp>
-#include <odtone/mihf/local_transactions.hpp>
-#include <odtone/mihf/transaction_manager.hpp>
-#include <odtone/mihf/sqlite_handler.hpp>
 
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
+///////////////////////////////////////////////////////////////////////////////
+
+using namespace boost::asio;
 
 namespace odtone { namespace mihf { namespace utils {
 
-bool forward_to_user(uint16 mid, mih::message& in, mih::message& out)
+static const mih::id default_local_mihfid = mih::id("local-mihf");
+
+bool this_mihf_is_destination(meta_message_ptr &msg)
 {
-	// out = in;
-
-	// sqlite_result *r = db->get_result("SELECT user, transid FROM pending_transactions WHERE msgid = %d AND destination = %Q ",
-	//                                   mid,
-	//                                   in->source().to_string().c_str());
-	// while(db->fetch_row(r))
-	//   {
-	//     mih::octet_string user    = (mih::octet_string) db->getstr(r);
-	//     uint16            transid = (uint16) db->getval(r);
-
-	//     out->destination(mih::id(user.c_str()));
-	//     out->set_transid(transid);
-
-	//     comhand->send(out);
-	//   }
-	// db->free_result(r);
-
-	// db->execute("DELETE FROM pending_transactions WHERE msgid = %d AND destination = %Q;", mid, in->source().to_string().c_str());
-
-	return false;
+	return ((mihfid == msg->destination()) ||
+		(default_local_mihfid == msg->destination()));
 }
 
-bool is_local_request(mih::message_ptr &in)
+bool is_multicast(meta_message_ptr &msg)
 {
-	return ((in->destination().to_string().length() == 0) ||
-			(mihfid == in->destination()));
+	return (msg->destination().to_string().length() == 0);
 }
 
 
-bool forward_request(mih::message_ptr &in)
+static void send_handler(const boost::system::error_code &ec)
+{
+	if (ec)
+		log(1, "Error sending message. Error code: ", ec.message());
+}
+
+void tcp_send(io_service &io, meta_message_ptr &msg, const char *ip, uint16 port)
+{
+	ip::tcp::socket sock(io);
+
+	//
+	// broadcast if no destination mihf is given
+	//
+	if (is_multicast(msg)) {
+		boost::asio::socket_base::broadcast option(true);
+		sock.set_option(option);
+		ip = "255.255.255.255";
+	}
+
+	ip::tcp::endpoint ep(ip::address::from_string(ip), port);
+
+	sock.connect(ep);
+
+	mih::frame_vla fm;
+	void *sbuff;
+	size_t slen;
+
+	msg->get_frame(fm);
+	sbuff = fm.get();
+	slen = fm.size();
+
+	boost::asio::async_write(sock,
+				 boost::asio::buffer(sbuff, slen),
+				 boost::bind((&send_handler),
+					     placeholders::error));
+	sock.close();
+}
+
+void udp_send(io_service &io, meta_message_ptr &msg, const char *ip, uint16 port)
+{
+	ip::udp::socket sock(io, ip::udp::endpoint(ip::udp::v4(), 0));
+
+	//
+	// broadcast if no destination mihf is given
+	//
+	if (is_multicast(msg)) {
+		boost::asio::socket_base::broadcast option(true);
+		sock.set_option(option);
+		ip = "255.255.255.255";
+	}
+
+	ip::udp::endpoint ep(ip::address::from_string(ip), port);
+
+	//	msg->source(mihfid);
+	mih::frame_vla fm;
+	void *sbuff;
+	size_t slen;
+
+	msg->get_frame(fm);
+	sbuff = fm.get();
+	slen = fm.size();
+
+	sock.async_send_to(boost::asio::buffer(sbuff, slen),
+			   ep,
+			   boost::bind((&send_handler),
+				       placeholders::error));
+}
+
+void forward_request(meta_message_ptr &in,
+		     local_transaction_pool &lpool,
+		     transmit &t)
 {
 	log(1, "(utils) forwarding request to ", in->destination().to_string());
-
-	local_transactions->add(in);
+	lpool.add(in);
 	in->source(mihfid);
-	tmanager->message_out(in);
-
-	return false;
+	t(in);
 }
 
 
-void register_interface(mih::link_tuple_id &li)
-{
-	mih::mac_addr mac = boost::get<mih::mac_addr>(li.addr);
 
-	db->execute("insert into link_addr(link_addr_type, link_addr) values (%d, %Q)", 1, mac.address().c_str());
 
-	uint16 linktype_id = db->getval("select id from link_addr where link_addr_type = %d and link_addr = %Q", 1, mac.address().c_str());
 
-	db->execute("insert into link_id(link_type, link_addr) values (%d, %d)", mac.type(), linktype_id);
-
-	uint linkid_id = db->getval("select id from link_id where link_type = %d and link_addr = %d", mac.type(), linktype_id);
-
-	db->execute("insert into link_tuple_id(link_id) values(%d)", linkid_id);
-}
-
-} } }
+} /* namespace utils */ } /* namespace mihf */ } /* namespace odtone */

@@ -63,14 +63,14 @@ struct cost_curr {
 ///////////////////////////////////////////////////////////////////////////////
 enum cost_unit_enum {
 	cost_unit_second = 0,
-	cost_unit_minute,
-	cost_unit_hours,
-	cost_unit_day,
-	cost_unit_week,
-	cost_unit_month,
-	cost_unit_year,
-	cost_unit_free,
-	cost_unit_flat_rate
+	cost_unit_minute = 1,
+	cost_unit_hours = 2,
+	cost_unit_day = 3,
+	cost_unit_week = 4,
+	cost_unit_month = 5,
+	cost_unit_year = 6,
+	cost_unit_free = 7,
+	cost_unit_flat_rate = 8
 };
 
 typedef enumeration<cost_unit_enum> cost_unit;
@@ -98,7 +98,7 @@ struct cost {
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
-		ar & (uint8) unit;
+		ar & unit;
 		ar & value;
 		ar & curr;
 	}
@@ -276,15 +276,21 @@ enum netsubtype_enum {
 	netsubtype_cdma2000_hrpd_revA = 1,
 	netsubtype_cdma2000_hrpd_revB = 2,
 	netsubtype_cdma2000_hrpd_revC = 3,
+
+	netsubtype_iee80216_2_5GHz = 0,
+	netsubtype_iee80216_3_5GHz = 1,
 };
 
 typedef bitmap<64, netsubtype_enum> netsubtype;
 
 ///////////////////////////////////////////////////////////////////////////////
+typedef octet_string type_ext;
+
+///////////////////////////////////////////////////////////////////////////////
 struct network_type {
-	boost::variant<null, link_type>    link;
-	boost::variant<null, netsubtype>   subtype;
-	boost::variant<null, octet_string> typeext;
+	boost::variant<null, link_type>  link;
+	boost::variant<null, netsubtype> subtype;
+	boost::variant<null, type_ext>   typeext;
 
 
 	network_type() : link(null()), subtype(null()), typeext(null())
@@ -332,10 +338,10 @@ typedef octet_string sp_id;
 
 enum op_namespace_enum {
 	op_namespace_gsm_umts = 0,
-	op_namespace_cdma,
-	op_namespace_realm,
-	op_namespace_itu_t_tsb,
-	op_namespace_general
+	op_namespace_cdma = 1,
+	op_namespace_realm = 2,
+	op_namespace_itu_t_tsb = 3,
+	op_namespace_general = 4
 };
 
 typedef enumeration<op_namespace_enum> op_namespace;
@@ -369,8 +375,8 @@ enum supported_lcp_enum {
 	supported_lcp_oma_supl = 41,
 	supported_lcp_ieee_802_11 = 42,
 	supported_lcp_lbyr_with_ieee_802_11 = 43,
-	supported_lcp_held = 50,
-	supported_lcp_lbyr_with_held = 51
+	supported_lcp_held = 51,
+	supported_lcp_lbyr_with_held = 52
 };
 
 typedef enumeration<supported_lcp_enum> supported_lcp;

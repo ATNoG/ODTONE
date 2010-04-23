@@ -36,6 +36,7 @@ typedef bool         config_status;
 typedef octet_string device_info;
 typedef uint16       link_ac_ex_time;
 typedef boost::variant<uint8, percentage>   sig_strength;
+typedef bool         link_res_status;
 
 ///////////////////////////////////////////////////////////////////////////////
 enum op_mode_enum {
@@ -66,7 +67,7 @@ typedef std::vector<dev_states_rsp>             dev_states_rsp_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 enum link_states_req_enum {
-	link_states_req_op_channel = 0,
+	link_states_req_op_mode = 0,
 	link_states_req_channel_id = 1,
 };
 
@@ -75,28 +76,28 @@ typedef std::vector<link_states_req>     link_states_req_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 struct threshold {
+	enum type_ip_enum {
+		above_threshold = 0,
+		below_threshold = 1,
+	};
+
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
-		ar & val;
-		ar & x_dir;
+		ar & threshold_val;
+		ar & threshold_x_dir;
 	}
 
-
-	uint16 val;
-	uint8  x_dir; //0 - above, 1 - below
+	uint16                     threshold_val;
+	enumeration<type_ip_enum>  threshold_x_dir;
 };
-
-///////////////////////////////////////////////////////////////////////////////
-typedef boost::variant<device_info,
-					   batt_level> dev_states_rsp;
 
 ///////////////////////////////////////////////////////////////////////////////
 enum link_ac_result_enum {
 	link_ac_success   = 0,
 	link_ac_failure   = 1,
 	link_ac_refused   = 2,
-	link_ac_imcapable = 3,
+	link_ac_incapable = 3,
 };
 
 typedef enumeration<link_ac_result_enum> link_ac_result;
@@ -125,9 +126,14 @@ typedef bitmap<8, link_ac_attr_enum> link_ac_attr;
 struct link_action {
 	link_ac_type type;
 	link_ac_attr attr;
-};
 
-typedef std::vector<link_action> link_action_list;
+	template<class ArchiveT>
+	void serialize(ArchiveT& ar)
+	{;
+		ar & type;
+		ar & attr;
+	}
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 enum th_action {
@@ -190,6 +196,81 @@ enum link_mihcap_flag_enum {
 typedef bitmap<8, link_mihcap_flag_enum> link_mihcap_flag;
 
 ///////////////////////////////////////////////////////////////////////////////
+enum link_param_gen_enum {
+	link_param_gen_data_rate = 0,
+	link_param_gen_signal_strength = 1,
+	link_param_gen_sinr = 2,
+	link_param_gen_throughput = 3,
+	link_param_gen_packet_error_rate = 4,
+};
+
+typedef bitmap<8, link_param_gen_enum> link_param_gen;
+
+///////////////////////////////////////////////////////////////////////////////
+typedef uint8 link_param_qos;
+
+///////////////////////////////////////////////////////////////////////////////
+enum link_param_gg_enum {
+	link_param_gg_rx_qual = 0,
+	link_param_gg_rs_lev = 1,
+	link_param_gg_mean_bep = 2,
+	link_param_gg_st_dev_bep = 3,
+};
+
+typedef enumeration<link_param_gg_enum> link_param_gg;
+
+///////////////////////////////////////////////////////////////////////////////
+typedef uint8 link_param_edge;
+
+///////////////////////////////////////////////////////////////////////////////
+typedef uint8 link_param_eth;
+
+///////////////////////////////////////////////////////////////////////////////
+enum link_param_802_11_enum {
+	link_param_802_11_rssi = 0,
+	link_param_802_11_no_qos = 1,
+	link_param_802_11_multicast_packet_loss_rate = 2,
+};
+
+typedef enumeration<link_param_802_11_enum> link_param_802_11;
+
+///////////////////////////////////////////////////////////////////////////////
+enum link_param_c2k_enum {
+	link_param_c2k_pilot_strength = 0,
+};
+
+typedef enumeration<link_param_c2k_enum> link_param_c2k;
+
+///////////////////////////////////////////////////////////////////////////////
+enum link_param_ffd_enum {
+	link_param_ffd_cpich_rscp = 0,
+	link_param_ffd_pccpch_rscp = 1,
+	link_param_ffd_ultra_carrie_rssi = 2,
+	link_param_ffd_gsm_carrie_rssi = 3,
+	link_param_ffd_cpich_ec_no = 4,
+	link_param_ffd_transport_channel_bler = 5,
+	link_param_ffd_ue = 6,
+};
+
+typedef enumeration<link_param_ffd_enum> link_param_ffd;
+
+///////////////////////////////////////////////////////////////////////////////
+enum link_param_hrpd_enum {
+	link_param_hrpd_pilot_strength = 0,
+};
+
+typedef enumeration<link_param_hrpd_enum> link_param_hrpd;
+
+///////////////////////////////////////////////////////////////////////////////
+typedef uint8 link_param_802_16;
+
+///////////////////////////////////////////////////////////////////////////////
+typedef uint8 link_param_802_20;
+
+///////////////////////////////////////////////////////////////////////////////
+typedef uint8 link_param_802_22;
+
+///////////////////////////////////////////////////////////////////////////////
 struct link_id {
 	link_id() : type(link_type_enum(0))
 	{ }
@@ -236,7 +317,7 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////
 struct link_scan_rsp {
-	link_id      id;
+	link_addr    id;
 	octet_string net_id;
 	sig_strength signal;
 
@@ -248,6 +329,8 @@ struct link_scan_rsp {
 		ar & signal;
 	}
 };
+
+typedef std::vector<link_scan_rsp> link_scan_rsp_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 struct link_action_req {
@@ -266,18 +349,20 @@ struct link_action_req {
 	}
 };
 
+typedef std::vector<link_action_req> link_action_list;
+
 ///////////////////////////////////////////////////////////////////////////////
 struct link_action_rsp {
-	link_id                             id;
-	link_ac_result                      result;
-	boost::variant<null, link_scan_rsp> scan;
+	link_id                                  id;
+	link_ac_result                           result;
+	boost::variant<null, link_scan_rsp_list> scan_list;
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
 		ar & id;
 		ar & result;
-		ar & scan;
+		ar & scan_list;
 	}
 };
 
@@ -316,11 +401,20 @@ struct link_param_type {
 	void serialize(ArchiveT& ar)
 	{
 		ar & type;
-		ar & value;
 	}
 
-	uint8 type;
-	uint8 value;
+	boost::variant<link_param_gen,
+			link_param_qos,
+			link_param_gg,
+			link_param_edge,
+			link_param_eth,
+			link_param_802_11,
+			link_param_c2k,
+			link_param_ffd,
+			link_param_hrpd,
+			link_param_802_16,
+			link_param_802_20,
+			link_param_802_22> type;
 };
 
 typedef std::vector<link_param_type> link_param_type_list;
@@ -335,7 +429,7 @@ typedef bitmap<16, link_desc_req_enum> link_desc_req;
 
 ///////////////////////////////////////////////////////////////////////////////
 struct link_status_req {
-	link_states_req_list _states_req;
+	link_states_req      _states_req;
 	link_param_type_list _param_type_list;
 	link_desc_req        _desc_req;
 
@@ -361,10 +455,12 @@ struct link_param {
 		ar & value;
 	}
 
-
 	link_param_type type;
-
-	boost::variant<link_param_val, qos_param_val> value;
+	boost::variant<sig_strength,
+	               uint16,
+	               percentage,
+	               link_param_val,
+	               qos_param_val> value;
 };
 
 typedef std::vector<link_param> link_param_list;
@@ -435,7 +531,7 @@ enum net_caps_enum {
 	net_caps_qos_4 = 5,
 	net_caps_qos_5 = 6,
 	net_caps_internet = 7,
-	net_caps_emergency_services	= 8,
+	net_caps_emergency_services = 8,
 	net_caps_mih = 9,
 };
 
@@ -492,13 +588,13 @@ struct link_status_rsp {
 	{
 		ar & states_rsp_list;
 		ar & param_list;
-		ar & desc_rsp;
+		ar & desc_rsp_list;
 	}
 
 
 	link_states_rsp_list states_rsp_list;
 	link_param_list      param_list;
-	link_desc_rsp_list   desc_rsp;
+	link_desc_rsp_list   desc_rsp_list;
 };
 
 typedef std::vector<link_status_rsp> link_status_rsp_list;

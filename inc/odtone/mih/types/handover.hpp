@@ -74,9 +74,9 @@ struct rq_result {
 	qos_list      poa_qos_list;
 
 	boost::variant<null, bool, ip_cfg_methods> opt_ip_cfg_methods;
-	boost::variant<null, bool, ip_addr>        opt_dhcp_serv;
-	boost::variant<null, bool, ip_addr>        opt_fn_agnt;
-	boost::variant<null, bool, ip_addr>        opt_acc_rtr;
+	boost::variant<null, bool, dhcp_serv>      opt_dhcp_serv;
+	boost::variant<null, bool, fn_agent>       opt_fn_agnt;
+	boost::variant<null, bool, acc_rtr>        opt_acc_rtr;
 };
 
 typedef std::vector<rq_result> rq_result_list;
@@ -98,7 +98,7 @@ typedef boost::variant<tgt_net_info_1, link_addr> tgt_net_info;
 typedef std::vector<tgt_net_info>                 tgt_net_info_list;
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef uint8                                            predef_cfg_id;
+typedef sint8                                            predef_cfg_id;
 typedef octet_string                                     tsp_carrier;
 typedef boost::variant<null, predef_cfg_id, tsp_carrier> tsp_container;
 

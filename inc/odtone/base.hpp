@@ -19,8 +19,6 @@
 #define ODTONE_BASE__HPP_
 
 ///////////////////////////////////////////////////////////////////////////////
-#define BOOST_ENABLE_ASSERT_HANDLER
-
 #include <cstddef>
 #include <boost/config.hpp>
 #include <boost/cstdint.hpp>
@@ -56,14 +54,6 @@
 #	define ODTONE_RETURN_ADDRESS _ReturnAddress()
 #else
 #	define ODTONE_RETURN_ADDRESS 0
-#endif
-
-#if defined(__GNUC__)
-#	define ODTONE_THREAD_LOCAL __thread
-#elif defined(BOOST_MSVC)
-#	define ODTONE_THREAD_LOCAL __declspec(thread)
-#else
-#	error no thread local storage
 #endif
 
 #if defined(__GNUC__)
@@ -115,38 +105,13 @@ typedef boost::intmax_t    sintmax;
 typedef boost::uintmax_t   uintmax;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct nullptr_t { template<class T> operator T*() const { return 0; } };
+#ifndef BOOST_HAS_NULLPTR
+	struct nullptr_t { template<class T> operator T*() const { return 0; } };
 
-static const nullptr_t nullptr = nullptr_t();
-
-///////////////////////////////////////////////////////////////////////////////
-struct nullref_t { template<class T> operator T&() const { return *(T*) 0; } };
-
-static const nullref_t nullref = nullref_t();
-
-template<class T>
-inline bool operator==(nullref_t, const T& r)
-{
-	return &r == nullptr;
-}
-
-template<class T>
-inline bool operator==(const T& r, nullref_t)
-{
-	return &r == nullptr;
-}
-
-template<class T>
-inline bool operator!=(nullref_t, const T& r)
-{
-	return &r != nullptr;
-}
-
-template<class T>
-inline bool operator!=(const T& r, nullref_t)
-{
-	return &r != nullptr;
-}
+	static const nullptr_t nullptr = {};
+#else
+	using std::nullptr_t;
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 template<class MemberT, class ParentT>
@@ -168,6 +133,11 @@ inline ParentT* parent_of(MemberT* member, MemberT ParentT::* Member)
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace odtone */
+
+///////////////////////////////////////////////////////////////////////////////
+#ifndef BOOST_HAS_NULLPTR
+	using odtone::nullptr;
+#endif
 
 // EOF ////////////////////////////////////////////////////////////////////////
 #endif /* ODTONE_BASE__HPP_ */

@@ -28,6 +28,11 @@
 #include <vector>
 #include <ostream>
 
+#ifdef BOOST_MSVC
+#	pragma warning(push)
+#	pragma warning(disable : 4800)
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 // Define a postfix increment operator for enumeration types
 template<class EnumT>
@@ -102,7 +107,7 @@ public:
 
 	percentage& operator=(uint val)
 	{
-		if (val > 100)
+		if (val > 100 || val < 0)
 			boost::throw_exception(percentage_exception());
 
 		_val = val;
@@ -169,17 +174,21 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 enum status_enum {
-	status_success,
-	status_failure,
-	status_rejected,
-	status_authorization_failure,
-	status_network_error,
+	status_success = 0,
+	status_failure = 1,
+	status_rejected = 2,
+	status_authorization_failure = 3,
+	status_network_error = 4,
 };
 
 typedef enumeration<status_enum> status;
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /*namespace odtone */
+
+#ifdef BOOST_MSVC
+#	pragma warning(pop)
+#endif
 
 // EOF ////////////////////////////////////////////////////////////////////////
 #endif /* ODTONE_MIH_TYPES_BASE__HPP_ */

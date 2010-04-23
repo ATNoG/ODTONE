@@ -30,6 +30,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace sap {
 
+static const char* const kConf_MIH_SAP_id	 = "link.id";
+static const char* const kConf_Port              = "link.port";
+
+static const char* const kConf_MIHF_Id		 = "mihf.id";
+static const char* const kConf_MIHF_Ip		 = "mihf.ip";
+static const char* const kConf_MIHF_Local_Port	 = "mihf.local_port";
+
+static const char* const kConf_File               = "conf.file";
+static const char* const kConf_Receive_Buffer_Len = "conf.recv_buff_len";
+
+
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * \brief Link SAP IO Service
@@ -46,7 +57,7 @@ public:
 	link(const mih::config& cfg, boost::asio::io_service& io, const default_handler& h);
 	~link();
 
-	void async_send(mih::message& p, const handler& h);
+	void async_send(mih::message& p, const handler& h = handler());
 
 private:
 	void recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system::error_code& ec);

@@ -31,6 +31,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace sap {
 
+static const char* const kConf_File               = "conf.file";
+static const char* const kConf_Port               = "conf.port";
+static const char* const kConf_Receive_Buffer_Len = "conf.recv_buff_len";
+
+static const char* const kConf_MIH_SAP_id   = "user.id";
+static const char* const kConf_MIH_SAP_dest = "dest";
+
+static const char* const kConf_MIHF_Id         = "mihf.id";
+static const char* const kConf_MIHF_Ip         = "mihf.ip";
+static const char* const kConf_MIHF_Local_Port = "mihf.local_port";
+
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * \brief User SAP IO Service
@@ -57,6 +68,7 @@ private:
 	handler								_handler;
 	boost::asio::ip::udp::socket		_sock;
 	mih::id								_id;
+	boost::asio::ip::udp::endpoint _ep;
 
 	boost::mutex _mutex;
 	rmap         _rmap;

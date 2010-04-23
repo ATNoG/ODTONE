@@ -5,6 +5,7 @@
 
 #include <odtone/debug.hpp>
 #include <odtone/mih/archive.hpp>
+#include <odtone/random.hpp>
 #include <algorithm>
 #include <cstdlib>
 #include <cassert>
@@ -24,20 +25,6 @@ using odtone::sint64;
 //
 // TODO: use a better random number generator
 //
-static sint8 srand8()
-{
-	int n = std::rand();
-
-	return sint8(n << 8) ^ sint8(n);
-}
-
-static sint16 srand16() { return (sint16(srand8()) << 8) | srand8(); }
-static sint32 srand32() { return (sint32(srand16()) << 16) | srand16(); }
-static sint64 srand64() { return (sint64(srand32()) << 32) | srand32(); }
-static uint8  rand8()   { return uint8(srand8()); }
-static uint16 rand16()  { return uint16(srand16()); }
-static uint32 rand32()  { return uint32(srand32()); }
-static uint64 rand64()  { return uint64(srand64()); }
 
 ///////////////////////////////////////////////////////////////////////////////
 void t1000()
@@ -46,14 +33,14 @@ void t1000()
 
 
 	std::string       a1("The quick brown fox jumps over the lazy dog");
-	const uint8       b1 = rand8();
-	const uint16      c1 = rand16();
-	const uint32      d1 = rand32();
-	const uint64      e1 = rand64();
-	const bool        f1 = (rand8() % 2);
-	std::list<uint32> g1(rand16() >> 2);
+	const uint8       b1 = odtone::mih::rand8();
+	const uint16      c1 = odtone::mih::rand16();
+	const uint32      d1 = odtone::mih::rand32();
+	const uint64      e1 = odtone::mih::rand64();
+	const bool        f1 = (odtone::mih::rand8() % 2);
+	std::list<uint32> g1(odtone::mih::rand16() >> 2);
 
-	std::fill(g1.begin(), g1.end(), rand32());
+	std::fill(g1.begin(), g1.end(), odtone::mih::rand32());
 
 	odtone::mih::oarchive& out = arch.output();
 
@@ -72,7 +59,7 @@ void t1000()
 	uint32            d2 = d1 ^ ~0;
 	uint64            e2 = e1 ^ ~0;
 	bool              f2 = !f1;
-	std::list<uint32> g2(rand16());
+	std::list<uint32> g2(odtone::mih::rand16());
 
 	odtone::mih::iarchive& in = arch.input();
 

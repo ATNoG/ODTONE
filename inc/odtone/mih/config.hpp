@@ -22,30 +22,14 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
-#include <boost/program_options.hpp>
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/variables_map.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mih {
 
 namespace po = boost::program_options;
 
-///////////////////////////////////////////////////////////////////////////////
-static const char* const kConf_Port               = "conf.port";
-static const char* const kConf_Receive_Buffer_Len = "conf.recv_buff_len";
-
-static const char* const kConf_MIHF_DB_Path      = "mihf.DBName";
-static const char* const kConf_MIHF_Peer_List    = "mihf.peers";
-static const char* const kConf_MIHF_Users_List   = "mihf.users";
-static const char* const kConf_MIHF_Links_List   = "mihf.links";
-static const char* const kConf_MIHF_Ip           = "mihf.ip";
-static const char* const kConf_MIHF_Id           = "mihf.id";
-static const char* const kConf_MIHF_Remote_Port  = "mihf.remote_port";
-static const char* const kConf_MIHF_Local_Port   = "mihf.local_port";
-static const char* const kConf_MIHF_Evt_List     = "mihf.event_list";
-static const char* const kConf_MIHF_Network_Type = "mihf.link_addr_list";
-
-static const char* const kConf_MIH_SAP_id   = "user.id";
-static const char* const kConf_MIH_SAP_dest = "dest";
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
@@ -57,15 +41,12 @@ static const char* const kConf_MIH_SAP_dest = "dest";
  */
 class config {
 public:
-	config();
-	config(const char* file);
-	config(int argc, char* argv[]);
-	config(int argc, char* argv[], const char* file);
+	config(po::options_description &desc);
 	~config();
 
 	bool help();
-	bool parse(const char* file);
-	void parse(int argc, char* argv[]);
+	void parse(int argc, char* argv[], const char* conf_file_option);
+
 
 	/**
 	 * \brief Get option variable value
@@ -73,10 +54,7 @@ public:
 	 */
 	template<class T>
 	T get(const char* var) const { return _vars[var].as<T>(); }
-
-private:
-	void init();
-
+	uint count(const char *var) { return _vars.count(var); }
 private:
 	po::options_description _desc;
 	po::variables_map       _vars;

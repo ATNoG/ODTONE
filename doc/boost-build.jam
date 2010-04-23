@@ -1,0 +1,8 @@
+#==============================================================================
+# Put his file at the root directory of your project or in any of its parent
+# directories. Replace 'path-to-boost' with the proper path.
+#
+# See the Boost.Build documentation for more details!
+#==============================================================================
+
+boost-build path-to-boost/tools/build/v2 ;
