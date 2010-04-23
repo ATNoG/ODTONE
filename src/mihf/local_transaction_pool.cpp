@@ -35,7 +35,10 @@ void local_transaction_pool::add(meta_message_ptr& in)
 	log(3, "(local transactions) added transaction ", p.user, ":",
 	    p.destination, ":", p.tid);
 
-	_transactions.push_back(p);
+	{
+		boost::mutex::scoped_lock lock(_mutex);
+		_transactions.push_back(p);
+	}
 }
 
 std::list<pending_transaction>::iterator
@@ -50,16 +53,21 @@ local_transaction_pool::find(const mih::octet_string &from)
 	return it;
 }
 
-bool local_transaction_pool::get(const mih::octet_string &from,
-				 pending_transaction &p)
+// check if there's a pending transaction with the msg's mih source
+// identifier and set the transaction id and destination appropriately
+bool local_transaction_pool::set_user_tid(meta_message_ptr &msg)
 {
+	boost::mutex::scoped_lock lock(_mutex);
+
 	std::list<pending_transaction>::iterator it;
-	it = find(from);
+	it = find(msg->source().to_string());
 
 	if (it != _transactions.end()) {
-		p = *it;
-		_transactions.erase(it);
 
+		msg->tid(it->tid);
+		msg->destination(mih::id(it->user));
+
+		_transactions.erase(it);
 		return true;
 	}
 

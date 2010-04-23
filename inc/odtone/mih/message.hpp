@@ -21,10 +21,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
 #include <odtone/mih/frame.hpp>
-#include <odtone/mih/tlv.hpp>
+#include <odtone/mih/archive.hpp>
 #include <odtone/mih/types/identification.hpp>
 #include <boost/utility.hpp>
-#include <boost/shared_ptr.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mih {
@@ -155,8 +154,8 @@ public:
 	const id&       source() const;
 	const id&       destination() const;
 
-	itlv input()  { return itlv(_payload.input()); }
-	otlv output() { return otlv(_payload.output()); }
+	iarchive& input();
+	oarchive& output() { return _out; }
 
 	void get_frame(frame_vla& fm) const;
 
@@ -172,6 +171,8 @@ private:
 	id              _src;
 	id              _dst;
 	mutable archive _payload;
+	iarchive        _in;
+	oarchive        _out;
 };
 
 /**
@@ -382,15 +383,20 @@ inline const id& message::destination() const
 	return _dst;
 }
 
+inline iarchive& message::input()
+{
+	_in.reset(_payload);
+	return _in;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 class message_helper : boost::noncopyable {
 protected:
 	message_helper(uint16 mid, const id* dst) : _mid(mid), _dst(dst)
 	{ }
 
-public:
-	friend otlv operator<<(message& msg, const message_helper& mh);
-	friend itlv operator>>(message& msg, const message_helper& mh);
+	friend oarchive& operator<<(message& msg, const message_helper& mh);
+	friend iarchive& operator>>(message& msg, const message_helper& mh);
 
 private:
 	uint16    _mid;
@@ -403,7 +409,7 @@ private:
  * \param mh message helper
  * \return output TLV archive
  */
-inline otlv operator<<(message& msg, const message_helper& mh)
+inline oarchive& operator<<(message& msg, const message_helper& mh)
 {
 	msg.mid(mh._mid);
 	if (mh._dst)
@@ -418,7 +424,7 @@ inline otlv operator<<(message& msg, const message_helper& mh)
  * \param mh message helper
  * \return input TLV archive
  */
-inline itlv operator>>(message& msg, const message_helper& mh)
+inline iarchive& operator>>(message& msg, const message_helper& mh)
 {
 	ODTONE_ASSERT(mh._mid == msg.mid() || !mh._mid);
 	ODTONE_ASSERT(mh._dst == nullptr);

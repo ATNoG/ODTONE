@@ -1,11 +1,11 @@
 //=============================================================================
-// Brief   : Base Types and Definitions
+// Brief   : Forward declarations for Archive
 // Authors : Bruno Santos <bsantos@av.it.pt>
+// ----------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2010 Universidade de Aveiro
+// Copyrigth (C) 2010 Instituto de Telecomunicações - Pólo de Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -15,43 +15,20 @@
 // This software is distributed without any warranty.
 //=============================================================================
 
-#ifndef LINK_SAP_BASE__HPP_
-#define LINK_SAP_BASE__HPP_
+#ifndef ODTONE_MIH_ARCHIVE_FWD__HPP_
+#define ODTONE_MIH_ARCHIVE_FWD__HPP_
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
-namespace link_sap {
+namespace odtone { namespace mih {
+
+class iarchive;
+class oarchive;
 
 ///////////////////////////////////////////////////////////////////////////////
-using odtone::schar;
-using odtone::sshort;
-using odtone::sint;
-using odtone::slong;
-using odtone::sllong;
-
-using odtone::uchar;
-using odtone::ushort;
-using odtone::uint;
-using odtone::ulong;
-using odtone::ullong;
-
-using odtone::uint8;
-using odtone::uint16;
-using odtone::uint32;
-using odtone::uint64;
-
-using odtone::sint8;
-using odtone::sint16;
-using odtone::sint32;
-using odtone::sint64;
-
-using odtone::sintmax;
-using odtone::uintmax;
-
-///////////////////////////////////////////////////////////////////////////////
-} /* namespace link_sap */
+} /* namespace mih */ } /*namespace odtone */
 
 // EOF ////////////////////////////////////////////////////////////////////////
-#endif /* LINK_SAP_BASE__HPP_ */
+#endif /* ODTONE_MIH_ARCHIVE_FWD__HPP_ */

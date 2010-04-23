@@ -31,10 +31,23 @@
 #include <boost/asio.hpp>
 #include <boost/variant/apply_visitor.hpp>
 
-#include <odtone/miis/information_containers.hpp>
+#include <odtone/mih/types/information_elements.hpp>
 
 using namespace odtone;
 using boost::asio::ip::udp;
+
+namespace po = boost::program_options;
+
+static const char* const kConf_MIH_Dest = "dest";
+static const char* const kConf_MIH_Port = "port";
+static const char* const kConf_File     = "conf.file";
+
+static const char* const kConf_MIH_LinkUp_indication = "indication.link_up";
+static const char* const kConf_MIH_LinkDown_indication = "indication.link_down";
+static const char* const kConf_MIH_LinkDetected_indication = "indication.link_detected";
+static const char* const kConf_MIH_LinkGoingDown_indication = "indication.link_going_down";
+static const char* const kConf_MIH_LinkHandoverImminent_indication = "indication.link_handover_iminent";
+static const char* const kConf_MIH_LinkHandoverComplete_indication = "indication.link_handover_complete";
 
 // /* dummy synchronous mih sap handler */
 class handler
@@ -270,16 +283,16 @@ void send_bin_get_information_response(handler &sap, const char *dst)
 {
 	mih::message		p;
 
-	miis::ie_container_poa					poa;
-	miis::ie_container_network				net;
-	miis::ie_container_list_of_networks		list;
+	mih::ie_container_poa					poa;
+	mih::ie_container_network				net;
+	mih::ie_container_list_of_networks		list;
 
 	// ie_container_poa
 	//
-	miis::ie_poa_link_addr		poa_la;
+	mih::ie_poa_link_addr		poa_la;
 	mih::link_addr				la;
 	mih::mac_addr				mac;
-	miis::ie_poa_location		poa_loc;
+	mih::ie_poa_location		poa_loc;
 	mih::cell_id				poa_cell;
 	mih::ch_range				range;
 
@@ -301,8 +314,8 @@ void send_bin_get_information_response(handler &sap, const char *dst)
 	// ie_container_network
 	//
 	mih::link_type				lt;
-	miis::ie_network_type		nt;
-	miis::ie_operator_id		opid;
+	mih::ie_network_type		nt;
+	mih::ie_operator_id		opid;
 
 	lt		= mih::link_type_802_11;
 	nt.link = lt;
@@ -325,7 +338,7 @@ void send_bin_get_information_response(handler &sap, const char *dst)
 	mih::ir_bin_data			bin_data;
 	mih::ir_bin_data_list		bin_data_list;
 
-	bin_data.output() & miis::tlv_ie_container_list_of_networks(list);
+	bin_data.output() & mih::tlv_ie_container_list_of_networks(list);
 	bin_data_list.push_back(bin_data);
 	//
 
@@ -342,35 +355,67 @@ void send_bin_get_information_response(handler &sap, const char *dst)
 
 int main(int argc, char **argv)
 {
+	po::options_description desc(mih::octet_string("Client Configuration Options"));
 
-  if (argc != 3)
-    {
-      std::cout << "Usage: client mihfid port\n";
-      return -1;
-    }
+	desc.add_options()
+		("help", "Display available Options")
+		(kConf_File, po::value<std::string>()->default_value("client.conf"), "Configuration File")
+		(kConf_MIH_Port, po::value<mih::octet_string>()->default_value("1025"), "MIHFs port")
+		(kConf_MIH_Dest, po::value<mih::octet_string>()->default_value("local-mihf"), "MIH Destination identifier")
+		(kConf_MIH_LinkUp_indication, "Send a MIH_LinkUp.indication to MIHF")
+		(kConf_MIH_LinkDown_indication, "Send a MIH_LinkDown.indication to MIHF")
+		(kConf_MIH_LinkDetected_indication, "Send a MIH_LinkDetected.indication to MIHF")
+		(kConf_MIH_LinkGoingDown_indication, "Send a MIH_LinkGoingDown.indication to MIHF")
+		(kConf_MIH_LinkHandoverImminent_indication, "Send a MIH_LinkHandoverImminent.indicatio to MIHF")
+		(kConf_MIH_LinkHandoverComplete_indication, "Send a MIH_LinkHandoverComplete.indication to MIHF")
+		 ;
+	mih::config cfg(desc);
 
-  handler sap("127.0.0.1", argv[2]);
+	cfg.parse(argc, argv, kConf_File);
 
-  // std::cout << "sent link up indication to mihf" << std::endl;
-  // send_link_up_indication(sap, argv[1]);
+	if (cfg.help() || argc == 1) {
+		std::cerr << desc << std::endl;
+		return EXIT_SUCCESS;
+	}
 
-  // std::cout << "sent link down indication to mihf" << std::endl;
-  // send_link_down_indication(sap, argv[1]);
 
-  // std::cout << "sent link detected indication to mihf" << std::endl;
-  // send_link_detected_indication(sap, argv[1]);
+	mih::octet_string dest = cfg.get<mih::octet_string>(kConf_MIH_Dest);
+	mih::octet_string port = cfg.get<mih::octet_string>(kConf_MIH_Port);
 
-  // std::cout << "sent link going down indication to mihf" << std::endl;
-  // send_link_going_down_indication(sap, argv[1]);
+	handler sap("127.0.0.1", port.c_str());
 
-  // std::cout << "sent link handover imminent to mihf" << std::endl;
-  // send_link_handover_imminent_indication(sap, argv[1]);
+	if (cfg.count(kConf_MIH_LinkUp_indication)) {
+	    std::cout << "sent link up indication to mihf" << std::endl;
+	    send_link_up_indication(sap, dest.c_str());
+	}
 
-  // std::cout << "sent link handover complete to mihf" << std::endl;
-  // send_link_handover_complete_indication(sap, argv[1]);
+	if (cfg.count(kConf_MIH_LinkDown_indication)) {
+		std::cout << "sent link down indication to mihf" << std::endl;
+		send_link_down_indication(sap, dest.c_str());
+	}
 
-  std::cout << "sent get information request to mihf" << std::endl;
-  send_rdf_get_information_request(sap, argv[1]);
+	if (cfg.count(kConf_MIH_LinkDetected_indication)) {
+		std::cout << "sent link detected indication to mihf" << std::endl;
+		send_link_detected_indication(sap, dest.c_str());
+	}
 
-  return 0;
+	if (cfg.count(kConf_MIH_LinkGoingDown_indication)) {
+		std::cout << "sent link going down indication to mihf" << std::endl;
+		send_link_going_down_indication(sap, argv[1]);
+	}
+
+	if (cfg.count(kConf_MIH_LinkHandoverImminent_indication)) {
+		std::cout << "sent link handover imminent to mihf" << std::endl;
+		send_link_handover_imminent_indication(sap, argv[1]);
+	}
+
+	if (cfg.count(kConf_MIH_LinkHandoverComplete_indication)) {
+		std::cout << "sent link handover complete to mihf" << std::endl;
+		send_link_handover_complete_indication(sap, argv[1]);
+	}
+
+  // std::cout << "sent get information request to mihf" << std::endl;
+  // send_get_information_request(sap, argv[1]);
+
+	return 0;
 }

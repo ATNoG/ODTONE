@@ -42,6 +42,7 @@ service_management::service_management(local_transaction_pool &lpool,
 	_enable_broadcast = enable_broadcast;
 }
 
+// Add this MIHFs capabilities to response message.
 bool set_capability_discover_response(meta_message_ptr &in, meta_message_ptr &out)
 {
 	log(1, "(mism) setting response to broadcast Capability_Discover.request ");
@@ -96,19 +97,6 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 	return false;
 }
 
-bool service_management::forward_capability_discover_response(meta_message_ptr &in,
-							      pending_transaction &p)
-{
-	log(1, "forwarding Capability_Discover.response to ", p.user);
-
-	in->tid(p.tid);
-	in->destination(mih::id(p.user));
-
-	_transmit(in);
-
-	return false;
-}
-
 
 bool service_management::capability_discover_response(meta_message_ptr &in,
 						      meta_message_ptr &)
@@ -117,14 +105,21 @@ bool service_management::capability_discover_response(meta_message_ptr &in,
 	    in->source().to_string());
 
 	// do we have a request from a user?
-	pending_transaction p;
-	if (_lpool.get(in->source().to_string(), p)) {
-		return forward_capability_discover_response(in, p);
+	if (_lpool.set_user_tid(in)) {
+		log(1, "forwarding Capability_Discover.response to ",
+		    in->destination().to_string());
+		_transmit(in);
+		return false;
 	}
 
-	// check if there's a broadcast request from a user
-	if (_lpool.get(mih::octet_string(""), p))  {
-		return forward_capability_discover_response(in, p);
+	// set source id to broadcast id and check if there's a
+	// broadcast request from a user
+	in->source(mih::id(""));
+	if (_lpool.set_user_tid(in))  {
+		log(1, "forwarding Capability_Discover.response to ",
+		    in->destination().to_string());
+		_transmit(in);
+		return false;
 	}
 
 	log(1, "no pending transaction for this message, discarding");

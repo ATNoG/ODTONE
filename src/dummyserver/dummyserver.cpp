@@ -30,7 +30,7 @@
 #include <iostream>
 #include <boost/asio.hpp>
 
-#include <odtone/miis/information_containers.hpp>
+#include <odtone/mih/types/information_elements.hpp>
 
 #include "../mihf/udp_listener.hpp"
 
@@ -52,8 +52,8 @@ static void process_message(meta_message_ptr& msg)
 
 		mih::ir_bin_data bd = bin_data_list[0];
 
-		miis::ie_container_list_of_networks l;
-		bd.input() & miis::tlv_ie_container_list_of_networks(l);
+		mih::ie_container_list_of_networks l;
+		bd.input() & mih::tlv_ie_container_list_of_networks(l);
 	}
 }
 

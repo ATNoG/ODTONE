@@ -22,7 +22,9 @@
 #include <odtone/base.hpp>
 #include <odtone/mih/types.hpp>
 
+#include <boost/thread.hpp>
 #include <list>
+
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
@@ -46,10 +48,11 @@ public:
 	std::list<pending_transaction>::iterator
 	find(const mih::octet_string &from);
 
-	bool get(const mih::octet_string &from, pending_transaction &p);
+	bool set_user_tid(meta_message_ptr &msg);
 
 protected:
 	std::list<pending_transaction> _transactions;
+	boost::mutex _mutex;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

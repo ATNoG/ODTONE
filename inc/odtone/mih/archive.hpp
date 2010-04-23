@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : Archive for MIH Types Serialization
 // Authors : Bruno Santos <bsantos@av.it.pt>
+// ----------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2010 Universidade de Aveiro
+// Copyrigth (C) 2009-2010 Instituto de Telecomunicações - Pólo de Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -20,6 +20,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
+#include <odtone/mih/archive_fwd.hpp>
 #include <odtone/mih/types/base.hpp>
 #include <odtone/exception.hpp>
 #include <boost/utility.hpp>
@@ -27,11 +28,22 @@
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mih {
 
-class iarchive;
-class oarchive;
+///////////////////////////////////////////////////////////////////////////////
+struct iarchive_error : virtual public exception { };
+
+struct iarchive_eof_error : virtual public iarchive_error {
+	iarchive_eof_error() : exception("odtone::mih::iarchive: end of stream")
+	{ }
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 class archive {
+	friend class iarchive;
+	friend class oarchive;
+
+public:
+	typedef std::vector<uint8>::const_iterator const_iterator;
+
 public:
 	archive();
 	~archive();
@@ -43,16 +55,19 @@ public:
 	template<class InputIteratorT>
 	void append(InputIteratorT begin, InputIteratorT end)
 	{
-		_buf.insert(_buf.end(), begin, end);
+		_buf.insert(_buf.begin() + _pos, begin, end);
 	}
+
+	const_iterator begin() const { return _buf.begin(); }
+	const_iterator end() const   { return _buf.end(); }
 
 	std::vector<uint8>& buffer();
 
-	iarchive& input();
-	oarchive& output();
+	iarchive input();
+	oarchive output();
 
-	void rewind(uint pos = 0);
-	uint position() const { return _pos; }
+	void position(uint pos) { _pos = pos; }
+	uint position() const   { return _pos; }
 
 protected:
 	std::vector<uint8> _buf;
@@ -60,8 +75,36 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-class iarchive : public archive {
+class iarchive {
 public:
+	typedef iarchive iarchive_type;
+
+public:
+	typedef std::vector<uint8>::const_iterator const_iterator;
+
+public:
+	iarchive(archive& ar)
+		: _buf(ar._buf), _pos(ar._pos), _begin(ar._pos), _length(ar._buf.size())
+	{ }
+	iarchive(archive& ar, uint length)
+		: _buf(ar._buf), _pos(ar._pos), _begin(ar._pos), _length(length)
+	{ }
+	iarchive(iarchive& ar, uint length)
+		: _buf(ar._buf), _pos(ar._pos), _begin(ar._pos), _length(length)
+	{ }
+
+	void reset(archive& ar)
+	{
+		new(this) iarchive(ar);
+	}
+
+	void position(uint pos) { _pos = _begin + pos; }
+	uint position() const   { return _pos - _begin; }
+	uint length() const     { return _length; }
+
+	const_iterator begin() const { return _buf.begin() + _begin; }
+	const_iterator end() const   { return _buf.begin() + _length; }
+
 	uint list_length();
 
 	iarchive& operator&(bool& val);
@@ -75,11 +118,39 @@ public:
 	iarchive& operator&(sint64& val);
 	iarchive& operator&(octet_string& val);
 	iarchive& operator&(std::vector<uint8>& buf);
+
+private:
+	std::vector<uint8>& _buf;
+	uint&               _pos;
+	uint                _begin;
+	uint                _length;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-class oarchive : public archive {
+class oarchive {
 public:
+	typedef oarchive oarchive_type;
+
+public:
+	oarchive(archive& ar)
+		: _buf(ar._buf), _pos(ar._pos), _begin(ar._pos)
+	{ }
+
+	void reset(archive& ar)
+	{
+		new(this) oarchive(ar);
+	}
+
+	template<class InputIteratorT>
+	void append(InputIteratorT begin, InputIteratorT end)
+	{
+		_buf.insert(_buf.begin() + _pos, begin, end);
+	}
+
+	void position(uint pos) { _pos = _begin + pos; }
+	uint position() const   { return _pos - _begin; }
+	uint length() const     { return _buf.size() - _begin; }
+
 	void list_length(uint len);
 
 	oarchive& operator&(bool val);
@@ -93,25 +164,48 @@ public:
 	oarchive& operator&(sint64 val);
 	oarchive& operator&(std::string& val);
 	oarchive& operator&(std::vector<uint8>& buf);
+
+private:
+	std::vector<uint8>& _buf;
+	uint&               _pos;
+	uint                _begin;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-inline iarchive& archive::input()
+inline iarchive archive::input()
 {
-	return static_cast<iarchive&>(*this);
+	return iarchive(*this);
 }
 
-inline oarchive& archive::output()
+inline oarchive archive::output()
 {
-	return static_cast<oarchive&>(*this);
+	return oarchive(*this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-struct iarchive_error : virtual public exception { };
+template<class T>
+class is_iarchive {
+	typedef char true_t;
+	class false_t { char dummy[2]; };
 
-struct iarchive_eof_error : virtual public iarchive_error {
-	iarchive_eof_error() : exception("odtone::mih::iarchive: end of stream")
-	{ }
+	template<class U> static true_t  test(typename U::iarchive_type* = 0);
+	template<class U> static false_t test(...);
+
+public:
+	static const bool value = sizeof(test<T>(0)) == sizeof(true_t);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+template<class T>
+class is_oarchive {
+	typedef char true_t;
+	class false_t { char dummy[2]; };
+
+	template<class U> static true_t  test(typename U::oarchive_type* = 0);
+	template<class U> static false_t test(...);
+
+public:
+	static const bool value = sizeof(test<T>(0)) == sizeof(true_t);
 };
 
 ///////////////////////////////////////////////////////////////////////////////

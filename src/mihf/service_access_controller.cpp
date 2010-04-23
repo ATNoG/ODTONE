@@ -47,6 +47,8 @@ sac_dispatch::sac_dispatch(transmit &t)
 {
 }
 
+// Check if there's a handler for this message and call it, else
+// discard message.
 void sac_dispatch::operator()(meta_message_ptr& in)
 {
 	/** __no__ authentication at this point */
@@ -66,6 +68,7 @@ void sac_dispatch::operator()(meta_message_ptr& in)
 		meta_message_ptr out(new meta_message);
 
 		out->tid(in->tid());
+		// send response if it was generated
 		if (process_message(in, out))
 		 	_transmit(out);
         } else {
