@@ -64,8 +64,9 @@ private:
 	void send_handler(mih::frame_vla& fm, const handler& h, size_t sbytes, const boost::system::error_code& ec);
 
 private:
-	default_handler              _handler;
-	boost::asio::ip::udp::socket _sock;
+	default_handler			_handler;
+	boost::asio::ip::udp::socket	_sock;
+	boost::asio::ip::udp::endpoint	_ep;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
