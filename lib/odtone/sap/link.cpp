@@ -50,7 +50,7 @@ link::link(const mih::config& cfg, boost::asio::io_service& io, const default_ha
 	void* rbuff = buff.get();
 	size_t rlen = buff.size();
 
-	_sock.connect(ep);
+	//_sock.connect(ep);
 	_sock.async_receive(boost::asio::buffer(rbuff, rlen),
 						boost::bind(&link::recv_handler,
 									this,
