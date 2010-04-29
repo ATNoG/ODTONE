@@ -398,7 +398,10 @@ int main(int argc, char **argv)
 		;
 
 	odtone::mih::config cfg(desc);
-	cfg.parse(argc, argv, kConf_File);
+	if (!cfg.parse(argc, argv, kConf_File)) {
+		std::cerr <<  "Error: Couldn't open config file: " << cfg.get<std::string>(kConf_File) << std::endl;
+		return EXIT_FAILURE;
+	}
 
 	if (cfg.help()) {
 		std::cerr << desc << std::endl;
