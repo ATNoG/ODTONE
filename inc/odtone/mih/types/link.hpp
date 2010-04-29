@@ -136,11 +136,13 @@ struct link_action {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-enum th_action {
+enum th_action_enum {
 	th_action_normal = 0,
 	th_action_one_shot = 1,
 	th_action_cancel = 2
 };
+
+typedef enumeration<th_action_enum> th_action;
 
 ///////////////////////////////////////////////////////////////////////////////
 enum link_type_enum {
