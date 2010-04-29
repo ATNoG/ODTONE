@@ -45,7 +45,7 @@ public:
 	~config();
 
 	bool help();
-	void parse(int argc, char* argv[], const char* conf_file_option);
+	bool parse(int argc, char* argv[], const char* conf_file_option);
 
 
 	/**
