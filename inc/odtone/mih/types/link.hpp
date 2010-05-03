@@ -408,14 +408,7 @@ struct link_det_cfg {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct link_param_type {
-	template<class ArchiveT>
-	void serialize(ArchiveT& ar)
-	{
-		ar & type;
-	}
-
-	boost::variant<link_param_gen,
+typedef boost::variant<link_param_gen,
 			link_param_qos,
 			link_param_gg,
 			link_param_edge,
@@ -426,8 +419,7 @@ struct link_param_type {
 			link_param_hrpd,
 			link_param_802_16,
 			link_param_802_20,
-			link_param_802_22> type;
-};
+			link_param_802_22> link_param_type;
 
 typedef std::vector<link_param_type> link_param_type_list;
 
