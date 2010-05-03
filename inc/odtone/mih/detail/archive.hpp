@@ -476,6 +476,676 @@ struct serialize<boost::variant<T1, T2, T3, T4, T5, T6> > {
 	}
 };
 
+template<class T1, class T2, class T3, class T4, class T5, class T6, class T7>
+struct serialize<boost::variant<T1, T2, T3, T4, T5, T6, T7> > {
+	void operator()(iarchive& ar, boost::variant<T1, T2, T3, T4, T5, T6, T7>& val) const
+	{
+		octet selector;
+
+		ar & selector;
+		switch (selector) {
+		case 0:
+			val = T1();
+			ar & boost::get<T1>(val);
+			break;
+
+		case 1:
+			val = T2();
+			ar & boost::get<T2>(val);
+			break;
+
+		case 2:
+			val = T3();
+			ar & boost::get<T3>(val);
+			break;
+
+		case 3:
+			val = T4();
+			ar & boost::get<T4>(val);
+			break;
+
+		case 4:
+			val = T5();
+			ar & boost::get<T5>(val);
+			break;
+
+		case 5:
+			val = T6();
+			ar & boost::get<T6>(val);
+			break;
+
+		case 6:
+			val = T7();
+			ar & boost::get<T7>(val);
+			break;
+
+	//	default:
+	//		ODTONE_NEVER_HERE;
+		}
+	}
+
+	void operator()(oarchive& ar, boost::variant<T1, T2, T3, T4, T5, T6, T7>& val) const
+	{
+		octet selector = val.which();
+
+		ar & selector;
+		switch (selector) {
+		case 0:
+			ar & boost::get<T1>(val);
+			break;
+
+		case 1:
+			ar & boost::get<T2>(val);
+			break;
+
+		case 2:
+			ar & boost::get<T3>(val);
+			break;
+
+		case 3:
+			ar & boost::get<T4>(val);
+			break;
+
+		case 4:
+			ar & boost::get<T5>(val);
+			break;
+
+		case 5:
+			ar & boost::get<T6>(val);
+			break;
+
+		case 6:
+			ar & boost::get<T7>(val);
+			break;
+
+	//	default:
+	//		ODTONE_NEVER_HERE;
+		}
+	}
+};
+
+template<class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8>
+struct serialize<boost::variant<T1, T2, T3, T4, T5, T6, T7, T8> > {
+	void operator()(iarchive& ar, boost::variant<T1, T2, T3, T4, T5, T6, T7, T8>& val) const
+	{
+		octet selector;
+
+		ar & selector;
+		switch (selector) {
+		case 0:
+			val = T1();
+			ar & boost::get<T1>(val);
+			break;
+
+		case 1:
+			val = T2();
+			ar & boost::get<T2>(val);
+			break;
+
+		case 2:
+			val = T3();
+			ar & boost::get<T3>(val);
+			break;
+
+		case 3:
+			val = T4();
+			ar & boost::get<T4>(val);
+			break;
+
+		case 4:
+			val = T5();
+			ar & boost::get<T5>(val);
+			break;
+
+		case 5:
+			val = T6();
+			ar & boost::get<T6>(val);
+			break;
+
+		case 6:
+			val = T7();
+			ar & boost::get<T7>(val);
+			break;
+
+		case 7:
+			val = T8();
+			ar & boost::get<T8>(val);
+			break;
+
+
+	//	default:
+	//		ODTONE_NEVER_HERE;
+		}
+	}
+
+	void operator()(oarchive& ar, boost::variant<T1, T2, T3, T4, T5, T6, T7, T8>& val) const
+	{
+		octet selector = val.which();
+
+		ar & selector;
+		switch (selector) {
+		case 0:
+			ar & boost::get<T1>(val);
+			break;
+
+		case 1:
+			ar & boost::get<T2>(val);
+			break;
+
+		case 2:
+			ar & boost::get<T3>(val);
+			break;
+
+		case 3:
+			ar & boost::get<T4>(val);
+			break;
+
+		case 4:
+			ar & boost::get<T5>(val);
+			break;
+
+		case 5:
+			ar & boost::get<T6>(val);
+			break;
+
+		case 6:
+			ar & boost::get<T7>(val);
+			break;
+
+		case 7:
+			ar & boost::get<T8>(val);
+			break;
+
+	//	default:
+	//		ODTONE_NEVER_HERE;
+		}
+	}
+};
+
+template<class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8, class T9>
+struct serialize<boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9> > {
+	void operator()(iarchive& ar, boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9>& val) const
+	{
+		octet selector;
+
+		ar & selector;
+		switch (selector) {
+		case 0:
+			val = T1();
+			ar & boost::get<T1>(val);
+			break;
+
+		case 1:
+			val = T2();
+			ar & boost::get<T2>(val);
+			break;
+
+		case 2:
+			val = T3();
+			ar & boost::get<T3>(val);
+			break;
+
+		case 3:
+			val = T4();
+			ar & boost::get<T4>(val);
+			break;
+
+		case 4:
+			val = T5();
+			ar & boost::get<T5>(val);
+			break;
+
+		case 5:
+			val = T6();
+			ar & boost::get<T6>(val);
+			break;
+
+		case 6:
+			val = T7();
+			ar & boost::get<T7>(val);
+			break;
+
+		case 7:
+			val = T8();
+			ar & boost::get<T8>(val);
+			break;
+
+		case 8:
+			val = T9();
+			ar & boost::get<T9>(val);
+			break;
+
+
+	//	default:
+	//		ODTONE_NEVER_HERE;
+		}
+	}
+
+	void operator()(oarchive& ar, boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9>& val) const
+	{
+		octet selector = val.which();
+
+		ar & selector;
+		switch (selector) {
+		case 0:
+			ar & boost::get<T1>(val);
+			break;
+
+		case 1:
+			ar & boost::get<T2>(val);
+			break;
+
+		case 2:
+			ar & boost::get<T3>(val);
+			break;
+
+		case 3:
+			ar & boost::get<T4>(val);
+			break;
+
+		case 4:
+			ar & boost::get<T5>(val);
+			break;
+
+		case 5:
+			ar & boost::get<T6>(val);
+			break;
+
+		case 6:
+			ar & boost::get<T7>(val);
+			break;
+
+		case 7:
+			ar & boost::get<T8>(val);
+			break;
+
+		case 8:
+			ar & boost::get<T9>(val);
+			break;
+
+
+	//	default:
+	//		ODTONE_NEVER_HERE;
+		}
+	}
+};
+
+template<class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8, class T9, class T10>
+struct serialize<boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> > {
+	void operator()(iarchive& ar, boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>& val) const
+	{
+		octet selector;
+
+		ar & selector;
+		switch (selector) {
+		case 0:
+			val = T1();
+			ar & boost::get<T1>(val);
+			break;
+
+		case 1:
+			val = T2();
+			ar & boost::get<T2>(val);
+			break;
+
+		case 2:
+			val = T3();
+			ar & boost::get<T3>(val);
+			break;
+
+		case 3:
+			val = T4();
+			ar & boost::get<T4>(val);
+			break;
+
+		case 4:
+			val = T5();
+			ar & boost::get<T5>(val);
+			break;
+
+		case 5:
+			val = T6();
+			ar & boost::get<T6>(val);
+			break;
+
+		case 6:
+			val = T7();
+			ar & boost::get<T7>(val);
+			break;
+
+		case 7:
+			val = T8();
+			ar & boost::get<T8>(val);
+			break;
+
+		case 8:
+			val = T9();
+			ar & boost::get<T9>(val);
+			break;
+
+		case 9:
+			val = T10();
+			ar & boost::get<T10>(val);
+			break;
+
+
+	//	default:
+	//		ODTONE_NEVER_HERE;
+		}
+	}
+
+	void operator()(oarchive& ar, boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>& val) const
+	{
+		octet selector = val.which();
+
+		ar & selector;
+		switch (selector) {
+		case 0:
+			ar & boost::get<T1>(val);
+			break;
+
+		case 1:
+			ar & boost::get<T2>(val);
+			break;
+
+		case 2:
+			ar & boost::get<T3>(val);
+			break;
+
+		case 3:
+			ar & boost::get<T4>(val);
+			break;
+
+		case 4:
+			ar & boost::get<T5>(val);
+			break;
+
+		case 5:
+			ar & boost::get<T6>(val);
+			break;
+
+		case 6:
+			ar & boost::get<T7>(val);
+			break;
+
+		case 7:
+			ar & boost::get<T8>(val);
+			break;
+
+		case 8:
+			ar & boost::get<T9>(val);
+			break;
+
+		case 9:
+			ar & boost::get<T10>(val);
+			break;
+
+
+	//	default:
+	//		ODTONE_NEVER_HERE;
+		}
+	}
+};
+
+template<class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8, class T9, class T10, class T11>
+struct serialize<boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> > {
+	void operator()(iarchive& ar, boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& val) const
+	{
+		octet selector;
+
+		ar & selector;
+		switch (selector) {
+		case 0:
+			val = T1();
+			ar & boost::get<T1>(val);
+			break;
+
+		case 1:
+			val = T2();
+			ar & boost::get<T2>(val);
+			break;
+
+		case 2:
+			val = T3();
+			ar & boost::get<T3>(val);
+			break;
+
+		case 3:
+			val = T4();
+			ar & boost::get<T4>(val);
+			break;
+
+		case 4:
+			val = T5();
+			ar & boost::get<T5>(val);
+			break;
+
+		case 5:
+			val = T6();
+			ar & boost::get<T6>(val);
+			break;
+
+		case 6:
+			val = T7();
+			ar & boost::get<T7>(val);
+			break;
+
+		case 7:
+			val = T8();
+			ar & boost::get<T8>(val);
+			break;
+
+		case 8:
+			val = T9();
+			ar & boost::get<T9>(val);
+			break;
+
+		case 9:
+			val = T10();
+			ar & boost::get<T10>(val);
+			break;
+
+		case 10:
+			val = T11();
+			ar & boost::get<T11>(val);
+			break;
+
+
+	//	default:
+	//		ODTONE_NEVER_HERE;
+		}
+	}
+
+	void operator()(oarchive& ar, boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>& val) const
+	{
+		octet selector = val.which();
+
+		ar & selector;
+		switch (selector) {
+		case 0:
+			ar & boost::get<T1>(val);
+			break;
+
+		case 1:
+			ar & boost::get<T2>(val);
+			break;
+
+		case 2:
+			ar & boost::get<T3>(val);
+			break;
+
+		case 3:
+			ar & boost::get<T4>(val);
+			break;
+
+		case 4:
+			ar & boost::get<T5>(val);
+			break;
+
+		case 5:
+			ar & boost::get<T6>(val);
+			break;
+
+		case 6:
+			ar & boost::get<T7>(val);
+			break;
+
+		case 7:
+			ar & boost::get<T8>(val);
+			break;
+
+		case 8:
+			ar & boost::get<T9>(val);
+			break;
+
+		case 9:
+			ar & boost::get<T10>(val);
+			break;
+
+		case 10:
+			ar & boost::get<T11>(val);
+			break;
+
+	//	default:
+	//		ODTONE_NEVER_HERE;
+		}
+	}
+};
+
+template<class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8, class T9, class T10, class T11, class T12>
+struct serialize<boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> > {
+	void operator()(iarchive& ar, boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>& val) const
+	{
+		octet selector;
+
+		ar & selector;
+		switch (selector) {
+		case 0:
+			val = T1();
+			ar & boost::get<T1>(val);
+			break;
+
+		case 1:
+			val = T2();
+			ar & boost::get<T2>(val);
+			break;
+
+		case 2:
+			val = T3();
+			ar & boost::get<T3>(val);
+			break;
+
+		case 3:
+			val = T4();
+			ar & boost::get<T4>(val);
+			break;
+
+		case 4:
+			val = T5();
+			ar & boost::get<T5>(val);
+			break;
+
+		case 5:
+			val = T6();
+			ar & boost::get<T6>(val);
+			break;
+
+		case 6:
+			val = T7();
+			ar & boost::get<T7>(val);
+			break;
+
+		case 7:
+			val = T8();
+			ar & boost::get<T8>(val);
+			break;
+
+		case 8:
+			val = T9();
+			ar & boost::get<T9>(val);
+			break;
+
+		case 9:
+			val = T10();
+			ar & boost::get<T10>(val);
+			break;
+
+		case 10:
+			val = T11();
+			ar & boost::get<T11>(val);
+			break;
+
+		case 11:
+			val = T12();
+			ar & boost::get<T12>(val);
+			break;
+
+	//	default:
+	//		ODTONE_NEVER_HERE;
+		}
+	}
+
+	void operator()(oarchive& ar, boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>& val) const
+	{
+		octet selector = val.which();
+
+		ar & selector;
+		switch (selector) {
+		case 0:
+			ar & boost::get<T1>(val);
+			break;
+
+		case 1:
+			ar & boost::get<T2>(val);
+			break;
+
+		case 2:
+			ar & boost::get<T3>(val);
+			break;
+
+		case 3:
+			ar & boost::get<T4>(val);
+			break;
+
+		case 4:
+			ar & boost::get<T5>(val);
+			break;
+
+		case 5:
+			ar & boost::get<T6>(val);
+			break;
+
+		case 6:
+			ar & boost::get<T7>(val);
+			break;
+
+		case 7:
+			ar & boost::get<T8>(val);
+			break;
+
+		case 8:
+			ar & boost::get<T9>(val);
+			break;
+
+		case 9:
+			ar & boost::get<T10>(val);
+			break;
+
+		case 10:
+			ar & boost::get<T11>(val);
+			break;
+
+		case 11:
+			ar & boost::get<T12>(val);
+			break;
+
+	//	default:
+	//		ODTONE_NEVER_HERE;
+		}
+	}
+};
+
+
 ///////////////////////////////////////////////////////////////////////////////
 } /* namspace detail */
 
