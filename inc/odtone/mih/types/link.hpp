@@ -222,10 +222,14 @@ enum link_param_gg_enum {
 typedef enumeration<link_param_gg_enum> link_param_gg;
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef uint8 link_param_edge;
+enum link_param_edge_enum {
+};
+typedef enumeration<link_param_edge_enum> link_param_edge;
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef uint8 link_param_eth;
+enum link_param_eth_enum {
+};
+typedef enumeration<link_param_eth_enum> link_param_eth;
 
 ///////////////////////////////////////////////////////////////////////////////
 enum link_param_802_11_enum {
@@ -260,17 +264,23 @@ typedef enumeration<link_param_ffd_enum> link_param_ffd;
 enum link_param_hrpd_enum {
 	link_param_hrpd_pilot_strength = 0,
 };
-
 typedef enumeration<link_param_hrpd_enum> link_param_hrpd;
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef uint8 link_param_802_16;
+enum link_param_802_16_enum {
+};
+typedef enumeration<link_param_802_16_enum> link_param_802_16;
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef uint8 link_param_802_20;
+enum link_param_802_20_enum {
+};
+typedef enumeration<link_param_802_20_enum> link_param_802_20;
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef uint8 link_param_802_22;
+enum link_param_802_22_enum {
+};
+typedef enumeration<link_param_802_22_enum> link_param_802_22;
+
 
 ///////////////////////////////////////////////////////////////////////////////
 struct link_id {
