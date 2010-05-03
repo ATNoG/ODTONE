@@ -206,7 +206,7 @@ enum link_param_gen_enum {
 	link_param_gen_packet_error_rate = 4,
 };
 
-typedef bitmap<8, link_param_gen_enum> link_param_gen;
+typedef enumeration<link_param_gen_enum> link_param_gen;
 
 ///////////////////////////////////////////////////////////////////////////////
 typedef uint8 link_param_qos;
