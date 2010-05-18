@@ -245,7 +245,7 @@ uint iarchive::list_length()
 			boost::throw_exception(iarchive_eof_error());
 		len = 128;
 		while (n--)
-			len += (_buf[pos++] << n*8);
+			len += (_buf[pos++]);
 
 	} else {
 		len = n;
