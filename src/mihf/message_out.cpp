@@ -33,7 +33,7 @@ void message_out::new_src_transaction(meta_message_ptr& m)
 {
 	src_transaction_ptr t(new src_transaction_t(process_message, _netsap));
 
-	m->ackreq(false); // FIXME: read from config file
+	m->ackreq(true); // FIXME: read from config file
 
 	_tid++;
 	if (_tid == 0)		// don't send a message with a

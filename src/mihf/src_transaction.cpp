@@ -52,7 +52,7 @@ void src_transaction_t::run()
 
 		_netsap.send(out);
 
-		if (opcode == mih::operation::response) {
+		if (opcode == mih::operation::indication) {
 			if (start_ack_requestor) {
 				ack_requestor_status = ONGOING;
 				goto _wait_ack_lbl_;
@@ -60,7 +60,7 @@ void src_transaction_t::run()
 			else
 				goto _success_lbl_;
 		}
-		else if (opcode == mih::operation::indication)
+		else if (opcode == mih::operation::response)
 			goto _success_lbl_;
 		else if (opcode == mih::operation::request)
 			goto _wait_response_msg_lbl_;

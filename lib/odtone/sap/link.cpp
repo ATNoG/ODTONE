@@ -42,15 +42,15 @@ namespace ip = boost::asio::ip;
  * \throws boost::system::error_code
  */
 link::link(const mih::config& cfg, boost::asio::io_service& io, const default_handler& h)
-	: _handler(h), _sock(io, ip::udp::endpoint(ip::udp::v4(), cfg.get<ushort>(kConf_Port)))
+	: _handler(h), _sock(io, ip::udp::endpoint(ip::udp::v4(), cfg.get<ushort>(kConf_Port))),
+	  _ep(ip::address::from_string(cfg.get<std::string>(kConf_MIHF_Ip)),
+	      cfg.get<ushort>(kConf_MIHF_Local_Port))
 {
-	ip::udp::endpoint ep(ip::address::from_string(cfg.get<std::string>(kConf_MIHF_Ip)),
-						 cfg.get<ushort>(kConf_MIHF_Local_Port));
 	buffer<uint8> buff(cfg.get<uint>(kConf_Receive_Buffer_Len));
 	void* rbuff = buff.get();
 	size_t rlen = buff.size();
 
-	_sock.connect(ep);
+	//_sock.connect(ep);
 	_sock.async_receive(boost::asio::buffer(rbuff, rlen),
 						boost::bind(&link::recv_handler,
 									this,
@@ -86,13 +86,14 @@ void link::async_send(mih::message& msg, const handler& h)
 	sbuff = fm.get();
 	slen = fm.size();
 
-	_sock.async_send(boost::asio::buffer(sbuff, slen),
-					 boost::bind(&link::send_handler,
-								 this,
-								 bindrv(fm),
-								 h,
-								 boost::asio::placeholders::bytes_transferred,
-								 boost::asio::placeholders::error));
+	_sock.async_send_to(boost::asio::buffer(sbuff, slen),
+			    _ep,
+			    boost::bind(&link::send_handler,
+					this,
+					bindrv(fm),
+					h,
+					boost::asio::placeholders::bytes_transferred,
+					boost::asio::placeholders::error));
 }
 
 void link::recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system::error_code& ec)

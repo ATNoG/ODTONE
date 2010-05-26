@@ -209,9 +209,7 @@ public:
 		T tmp;
 
 		bool res = impl::serialize(ar, tmp);
-		if (!res)
-			boost::throw_exception(bad_tlv());
-		else
+		if (res)
 			_val = tmp;
 	}
 

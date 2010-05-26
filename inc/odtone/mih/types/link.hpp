@@ -136,11 +136,13 @@ struct link_action {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-enum th_action {
+enum th_action_enum {
 	th_action_normal = 0,
 	th_action_one_shot = 1,
 	th_action_cancel = 2
 };
+
+typedef enumeration<th_action_enum> th_action;
 
 ///////////////////////////////////////////////////////////////////////////////
 enum link_type_enum {
@@ -204,7 +206,7 @@ enum link_param_gen_enum {
 	link_param_gen_packet_error_rate = 4,
 };
 
-typedef bitmap<8, link_param_gen_enum> link_param_gen;
+typedef enumeration<link_param_gen_enum> link_param_gen;
 
 ///////////////////////////////////////////////////////////////////////////////
 typedef uint8 link_param_qos;
@@ -220,10 +222,14 @@ enum link_param_gg_enum {
 typedef enumeration<link_param_gg_enum> link_param_gg;
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef uint8 link_param_edge;
+enum link_param_edge_enum {
+};
+typedef enumeration<link_param_edge_enum> link_param_edge;
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef uint8 link_param_eth;
+enum link_param_eth_enum {
+};
+typedef enumeration<link_param_eth_enum> link_param_eth;
 
 ///////////////////////////////////////////////////////////////////////////////
 enum link_param_802_11_enum {
@@ -258,17 +264,23 @@ typedef enumeration<link_param_ffd_enum> link_param_ffd;
 enum link_param_hrpd_enum {
 	link_param_hrpd_pilot_strength = 0,
 };
-
 typedef enumeration<link_param_hrpd_enum> link_param_hrpd;
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef uint8 link_param_802_16;
+enum link_param_802_16_enum {
+};
+typedef enumeration<link_param_802_16_enum> link_param_802_16;
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef uint8 link_param_802_20;
+enum link_param_802_20_enum {
+};
+typedef enumeration<link_param_802_20_enum> link_param_802_20;
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef uint8 link_param_802_22;
+enum link_param_802_22_enum {
+};
+typedef enumeration<link_param_802_22_enum> link_param_802_22;
+
 
 ///////////////////////////////////////////////////////////////////////////////
 struct link_id {
@@ -396,14 +408,7 @@ struct link_det_cfg {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-struct link_param_type {
-	template<class ArchiveT>
-	void serialize(ArchiveT& ar)
-	{
-		ar & type;
-	}
-
-	boost::variant<link_param_gen,
+typedef boost::variant<link_param_gen,
 			link_param_qos,
 			link_param_gg,
 			link_param_edge,
@@ -414,8 +419,7 @@ struct link_param_type {
 			link_param_hrpd,
 			link_param_802_16,
 			link_param_802_20,
-			link_param_802_22> type;
-};
+			link_param_802_22> link_param_type;
 
 typedef std::vector<link_param_type> link_param_type_list;
 

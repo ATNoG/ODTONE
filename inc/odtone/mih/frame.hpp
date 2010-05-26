@@ -205,7 +205,7 @@ inline void frame::uir(bool v)
 
 inline void frame::m(bool v)
 {
-	hdr[0] = (hdr[0] & ~mask_ackreq) | uint8(v);
+	hdr[0] = (hdr[0] & ~mask_m) | uint8(v);
 }
 
 inline void frame::fn(uint8 v)

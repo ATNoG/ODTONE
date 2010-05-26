@@ -240,7 +240,10 @@ bool command_service::generic_command_request(const char *recv_msg,
 
 		return false;
 	} else {
-		utils::forward_request(in, _lpool, _transmit);
+		// try to forward the message, this is to handle the
+		// special case of the user handling MIH commands
+		// sending some MIH command request to a peer mihf
+		_transmit(in);
 		return false;
 	}
 
@@ -273,7 +276,11 @@ bool command_service::generic_command_response(const char *recv_msg,
 
 		return false;
 	} else {
-		utils::forward_request(in, _lpool, _transmit);
+		// forward message but don't add a local transaction
+		// because it's the responsability of the user
+		// handling MIH commands to check these details
+		in->source(mihfid);
+		_transmit(in);
 		return false;
 	}
 

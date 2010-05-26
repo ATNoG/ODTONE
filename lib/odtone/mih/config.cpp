@@ -53,17 +53,20 @@ bool config::help()
 /**
  * \brief Parse the command line
  */
-void config::parse(int argc, char* argv[], const char* conf_file_option)
+bool config::parse(int argc, char* argv[], const char* conf_file_option)
 {
 	po::store(po::parse_command_line(argc, argv, _desc), _vars);
 
 	std::string file = get<std::string>(conf_file_option);
+
 	std::ifstream ifs(file.c_str());
 
 	if (ifs)
 		po::store(po::parse_config_file(ifs, _desc), _vars);
 
 	po::notify(_vars);
+
+	return ifs.is_open();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
