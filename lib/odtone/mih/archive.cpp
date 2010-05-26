@@ -129,28 +129,28 @@ iarchive& iarchive::operator&(sint8& val)
 {
 	uint8 tmp;
 
-	if (val < 0) {
-		tmp = -val;
-		tmp = ~tmp + 1;
-	} else {
-		tmp = val;
-	}
+	*this & tmp;
 
-	return *this & tmp;
+	if (tmp & (1 << 7))
+		val = -sint8(~tmp + 1);
+	else
+		val = tmp;
+
+	return *this;
 }
 
 iarchive& iarchive::operator&(sint16& val)
 {
 	uint16 tmp;
 
-	if (val < 0) {
-		tmp = -val;
-		tmp = ~tmp + 1;
-	} else {
-		tmp = val;
-	}
+	*this & tmp;
 
-	return *this & tmp;
+	if (tmp & (1 << 15))
+		val = -sint16(~tmp + 1);
+	else
+		val = tmp;
+
+	return *this;
 }
 
 
@@ -158,28 +158,28 @@ iarchive& iarchive::operator&(sint32& val)
 {
 	uint32 tmp;
 
-	if (val < 0) {
-		tmp = -val;
-		tmp = ~tmp + 1;
-	} else {
-		tmp = val;
-	}
+	*this & tmp;
 
-	return *this & tmp;
+	if (tmp & (1 << 31))
+		val = -sint32(~tmp + 1);
+	else
+		val = tmp;
+
+	return *this;
 }
 
 iarchive& iarchive::operator&(sint64& val)
 {
 	uint64 tmp;
 
-	if (val < 0) {
-		tmp = -val;
-		tmp = ~tmp + 1;
-	} else {
-		tmp = val;
-	}
+	*this & tmp;
 
-	return *this & tmp;
+	if (tmp & (1ll << 63))
+		val = -sint64(~tmp + 1);
+	else
+		val = tmp;
+
+	return *this;
 }
 
 iarchive& iarchive::operator&(octet_string& val)
@@ -321,56 +321,52 @@ oarchive& oarchive::operator&(sint8 val)
 {
 	uint8 tmp;
 
-	*this & tmp;
-
-	if (tmp & (1 << 7))
-		val = -(sint8(~tmp) + 1);
-	else
-		val = tmp;
-
-	return *this;
+	if (val < 0) {
+		tmp = -val;
+		tmp = ~tmp + 1;
+	} else {
+		tmp = val;
+	}
+	return *this & tmp;
 }
 
 oarchive& oarchive::operator&(sint16 val)
 {
 	uint16 tmp;
 
-	*this & tmp;
-
-	if (tmp & (1 << 15))
-		val = -(sint16(~tmp) + 1);
-	else
-		val = tmp;
-
-	return *this;
+	if (val < 0) {
+		tmp = -val;
+		tmp = ~tmp + 1;
+	} else {
+		tmp = val;
+	}
+	return *this & tmp;
 }
 
 oarchive& oarchive::operator&(sint32 val)
 {
 	uint32 tmp;
 
-	*this & tmp;
-
-	if (tmp & (1 << 31))
-		val = -(sint32(~tmp) + 1);
-	else
-		val = tmp;
-
-	return *this;
+	if (val < 0) {
+		tmp = -val;
+		tmp = ~tmp + 1;
+	} else {
+		tmp = val;
+	}
+	return *this & tmp;
 }
 
 oarchive& oarchive::operator&(sint64 val)
 {
 	uint64 tmp;
 
-	*this & tmp;
-
-	if (tmp & (1ll << 63))
-		val = -(sint64(~tmp) + 1);
-	else
-		val = tmp;
-
-	return *this;
+	if (val < 0) {
+		tmp = -val;
+		tmp = ~tmp + 1;
+	} else {
+		tmp = val;
+	}
+	return *this & tmp;
 }
 
 #ifdef BOOST_MSVC
