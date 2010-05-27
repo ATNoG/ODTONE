@@ -82,7 +82,7 @@ int main(int argc, char** argv)
 		po::options_description desc("MIH Link SAP Configuration");
 		desc.add_options()
 			("help", "Display configuration options")
-			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1234), "Port")
+			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1235), "Port")
 			(odtone::sap::kConf_File, po::value<std::string>()->default_value("link_sap.conf"), "Configuration File")
 			(odtone::sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive Buffer Length")
 			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
