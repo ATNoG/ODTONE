@@ -232,7 +232,7 @@ uint iarchive::list_length()
 {
 	size_t size = _buf.size();
 	uint pos = _pos;
-	uint len;
+	uint len = 0;
 	uint8 n;
 
 	if (pos >= size)
@@ -243,9 +243,9 @@ uint iarchive::list_length()
 		n &= 0x7F;
 		if ((pos + n) >= size)
 			boost::throw_exception(iarchive_eof_error());
-		len = 128;
-		while (n--)
-			len += (_buf[pos++]);
+		for (uint i = 0; i < n; ++i)
+			len = (len << (i * 8)) | _buf[pos++];
+		len += 128;
 
 	} else {
 		len = n;
@@ -420,19 +420,18 @@ void oarchive::list_length(uint len)
 		_buf[pos++] = uint8(len);
 
 	} else {
-		uint r = (len - 128) % 255;
-		uint n = (len - 128) / 255 + bool(r);
+		uint n = 0;
+
+		len -= 128;
+		do
+			++n;
+		while (len >> (n * 8));
 
 		_buf.resize(pos + n + 1);
 		_buf[pos++] = 0x80 | uint8(n);
 
-		while (--n)
-			_buf[pos++] = 255;
-
-		if (r)
-			_buf[pos++] = r;
-		else
-			_buf[pos++] = 255;
+		while (n--)
+			_buf[pos++] = (len >> (n * 8)) & 0xFF;
 	}
 	_pos = pos;
 }
