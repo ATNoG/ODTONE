@@ -460,10 +460,7 @@ struct link_param {
 	}
 
 	link_param_type type;
-	boost::variant<sig_strength,
-	               uint16,
-	               percentage,
-	               link_param_val,
+	boost::variant<link_param_val,
 	               qos_param_val> value;
 };
 
