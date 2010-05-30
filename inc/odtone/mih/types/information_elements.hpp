@@ -176,11 +176,12 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 struct ie_container_poa
 {
-	boost::optional<ie_poa_link_addr > poa_link_addr;
-	boost::optional<ie_poa_location > poa_location;
-	boost::optional<ie_poa_channel_range > poa_channel_range;
-//FIXME:	boost::optional<std::vector<ie_poa_subnet_info> > poa_subnet_info;
-//FIXME:	boost::optional<std::vector<ie_poa_ip_addr> > poa_ip_addr;
+	ie_poa_link_addr          poa_link_addr;
+	ie_poa_location           poa_location;
+	ie_poa_channel_range      poa_channel_range;
+	ie_poa_system_info        poa_system_info;
+	ie_poa_subnet_info_list   poa_subnet_info;
+	ie_poa_ip_addr_list       poa_ip_addr;
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -188,8 +189,9 @@ struct ie_container_poa
 		ar & tlv_ie_poa_link_addr(poa_link_addr);
 		ar & tlv_ie_poa_location(poa_location);
 		ar & tlv_ie_poa_channel_range(poa_channel_range);
-//FIXME:		ar & tlv_ie_poa_subnet_info(poa_subnet_info);
-//FIXME:		ar & tlv_ie_poa_ip_addr(poa_ip_addr);
+		ar & tlv_ie_poa_system_info(poa_system_info);
+		ar & poa_subnet_info;
+		ar & poa_ip_addr;
 	}
 };
 
