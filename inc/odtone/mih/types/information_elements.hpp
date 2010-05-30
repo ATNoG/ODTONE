@@ -253,7 +253,7 @@ struct ie_container_network {
 	boost::optional<ie_net_ims_proxy_cscf > net_ims_proxy_cscf;
 	boost::optional<ie_net_mobile_network > net_mobile_network;
 
-	std::vector<ie_container_poa> poas;
+	ie_container_poa_list poas;
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -278,6 +278,7 @@ struct ie_container_network {
 		ar & tlv_ie_net_emserv_proxy(net_emserv_proxy);
 		ar & tlv_ie_net_ims_proxy_cscf(net_ims_proxy_cscf);
 		ar & tlv_ie_net_mobile_network(net_mobile_network);
+		ar & poas;
 	}
 };
 
