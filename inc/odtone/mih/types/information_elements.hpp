@@ -196,6 +196,41 @@ struct ie_container_poa
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+class ie_container_poa_list : private std::vector<ie_container_poa> {
+	typedef std::vector<ie_container_poa> base;
+
+public:
+	using base::iterator;
+	using base::const_iterator;
+
+	using base::push_back;
+	using base::pop_back;
+	using base::front;
+	using base::back;
+	using base::begin;
+	using base::end;
+	using base::size;
+	using base::resize;
+	using base::operator[];
+
+	void serialize(oarchive& ar)
+	{
+		for (base::iterator i = base::begin(); i != base::end(); ++i)
+			ar & tlv_ie_container_poa(*i);
+	}
+
+	void serialize(iarchive& ar)
+	{
+		while (ar.position() < ar.length()) {
+			base::resize(base::size() + 1);
+			ie_container_poa& cn = base::back();
+
+			ar & tlv_ie_container_poa(cn);
+		}
+	}
+};
+
+///////////////////////////////////////////////////////////////////////////////
 struct ie_container_network {
 	ie_network_type network_type;
 	ie_operator_id operator_id;
