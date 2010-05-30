@@ -104,6 +104,40 @@ static const tlv_cast_<ie_container_network,          tlv4_<0x10000301> > tlv_ie
 static const tlv_cast_<ie_container_list_of_networks, tlv4_<0x10000300> > tlv_ie_container_list_of_networks = {};
 
 ///////////////////////////////////////////////////////////////////////////////
+struct ie_poa_subnet_info_list : private std::vector<ie_poa_subnet_info> {
+	typedef std::vector<ie_poa_subnet_info> base;
+
+public:
+	using base::iterator;
+	using base::const_iterator;
+
+	using base::push_back;
+	using base::pop_back;
+	using base::front;
+	using base::back;
+	using base::begin;
+	using base::end;
+	using base::size;
+	using base::resize;
+	using base::operator[];
+
+	void serialize(oarchive& ar)
+	{
+		for (base::iterator i = base::begin(); i != base::end(); ++i)
+			ar & tlv_ie_poa_subnet_info(*i);
+	}
+
+	void serialize(iarchive& ar)
+	{
+		while (ar.position() < ar.length()) {
+			base::resize(base::size() + 1);
+			ie_poa_subnet_info& cn = base::back();
+
+			ar & tlv_ie_poa_subnet_info(cn);
+		}
+	}
+};
+///////////////////////////////////////////////////////////////////////////////
 struct ie_container_poa
 {
 	boost::optional<ie_poa_link_addr > poa_link_addr;
