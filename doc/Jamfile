@@ -28,6 +28,7 @@ xml linkSapXml      : src/app/link_sap.qbk ;
 xml mihUsrXml       : src/app/mih_usr.qbk ;
 xml mihfXml         : src/app/mihf.qbk ;
 xml libBaseXml      : src/libs/odtone_base.qbk ;
+xml libSapXml       : src/libs/odtone_sap.qbk ;
 
 boostbook odtone_base
     :
@@ -116,6 +117,19 @@ boostbook libBase
         <xsl:param>boost.image.w=100
         <xsl:param>boost.image.h=100
         <xsl:param>nav.layout=none
-        <xsl:param>base.dir=../html/libs/libBase
+        <xsl:param>base.dir=../html/libs/base
+        <xsl:param>root.filename=index
+    ;
+
+boostbook libSap
+    :
+        libSapXml
+    :
+		<xsl:param>boost.image.src="./odtone/images/logo.png"
+		<xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
+        <xsl:param>boost.image.w=100
+        <xsl:param>boost.image.h=100
+        <xsl:param>nav.layout=none
+        <xsl:param>base.dir=../html/libs/sap
         <xsl:param>root.filename=index
     ;
