@@ -1,0 +1,640 @@
+[article ODTONE
+    [quickbook 1.5]
+    [version 0.2]
+    [authors [Guimarães, Carlos]]
+    [copyright 2010 Universidade Aveiro]
+    [copyright 2010 Instituto de Telecomunicações - Pólo Aveiro]
+    [license
+        This software is distributed under a license. The full license
+		agreement can be found in the LICENSE in this distribution.
+		This software may not be copied, modified, sold or distributed
+		other than expressed in the named license agreement.
+
+		This software is distributed without any warranty.
+    ]
+    [source-mode c++]
+]
+
+[section:index Index]
+
+[endsect]
+
+
+[section:intro Introduction]
+
+[h3 What is this?]
+
+ODTONE stands for Open Dot Twenty ONE and is an Open Source implementation of
+the Media Independent Handover framework from the IEEE 802.21 Media Independent
+Handover Services standard, using C++ APIs.
+
+[h3 What does it do?]
+
+ODTONE supplies the implementation of a MIHF, supporting its inherent services
+(Media Independent Event Service (MIES), Media Independent Command Service (MIIS)
+and Media Independent Command Service (MICS), as well as supporting mechanisms
+(Capability Discovery, MIHF Registration, Event Registration, etc.).
+It also provides a set of APIs to enable ODTONE users to implement their own
+MIH-Users and LINK_SAP and interface with ODTONE's MIHF.
+
+[h3 What differences can be found regarding other IEEE 802.21 implementations?]
+
+ODTONE aims to implement a MIHF that is capable of being deployed in multiple
+operating systems. In a first stage, it will support GNU/Linux, followed by
+Microsoft NT-based operating systems and others. This means this implementation
+will be decoupled of highly dependent operating system mechanisms.
+
+[h3 What does this mean?]
+
+ODTONE's implementation aims to provide a MIHF that will work as a base for user's
+scenarios, and which will enable the users to implement their own MIH_SAP and
+MIH_LINK_SAP. ODTONE will provide a simple and flexible interface for the
+development of these SAPs, handling MIH Protocol messages and state transitions.
+
+[h3 How can I contribute?]
+
+As was previously mentioned, ODTONE will focus on the MIHF and API's that will
+enable users to implement their own MIH_SAP and MIH_LINK_SAP. This means that
+it will be entirely up to the user to implement their MIH_USER and LINK technology
+support. We would be more than happy to known about your work on these matters!
+
+[h3 Changes in this release]
+
+ODTONE 0.2 - Open Dot Twenty ONE.
+
+In this release, we keep evolving our implementation with new features and
+usability, such as the MIIS RDF schema and Android compilation support. Major
+changes include:
+
+*Windows Link SAP sample with link up and link down events
+*Audited MIH types for correctness against the standard
+*Android compilation support
+*Add command line options to MIH SAP example application: client
+*MIH_Capability_Discover.request broadcast address support
+*Fixed MIH Information Elements binary encoding
+*Fixed transaction state machine race condition bug
+
+[endsect]
+
+[section:getStart Getting Started]
+
+[section:installation Installation]
+
+As ODTONE is developed in order to work in several platforms, we therefore
+won't provide detailed tutorials for each mainstream operating system. We
+will rather present the main guidelines for installing ODTONE and any relevant
+notes on specific platforms that might prove an obstacle.
+
+[section 1. Required Dependencies]
+
+In order to correctly use ODTONE, you must first make sure that you have the
+required dependencies installed:
+
+* *Boost Developer libraries (v1.37 or higher):* If you do not already have them in
+your system, you can go to [@http://www.boost.org/ boost's website] and
+download a more recent version of the Boost libraries.
+
+[heading 1.1. Boost Library Quick Guide]
+The Boost library is required to compile ODTONE, so in order to correctly use ODTONE
+you must first make sure you have Boost library installed.
+
+#Download the Boost library(v1.37 or higher) [@http://www.boost.org/ boost's website]
+and unpack it.
+
+#Install Boost.Jam (if your already have it, skip this step). You can either
+use the bootstrap script from the Boost library sources and then copy the
+resulting binary to a proper place (within your $PATH). Or, you can download a
+pre-built binary from [@http://www.boost.org/ boost's website].
+
+#Setup Boost.Build (if your already have it, skip this step). Here's an example
+how to setup it:
+
+[table Setup boost-build.jam
+    [
+        [boost-build.jam]
+        [``#==============================================================================
+# Put his file at the root directory of your project or in any of its parent
+# directories. Replace 'path-to-boost' with the proper path.
+#
+# See the Boost.Build documentation for more details!
+#==============================================================================
+
+boost-build path-to-boost/tools/build/v2 ;
+        ``]
+    ]
+]
+
+
+Before compiling ODTONE you must configure the Boost library in your user-config.jam.
+Here's an example how to configure it:
+
+[table Setup user-config.jam
+    [
+        [user-config.jam]
+        [``#==============================================================================
+# You must add these configurations to your user-config.jam or site-config.jam
+# Replace 'path-to-xxx' with the proper path.
+#
+# See the Boost.Build documentation for more details!
+#==============================================================================
+
+using boost
+	: 1.42
+	: <root>path-to-boost
+	;
+		``]
+	]
+]
+
+Once the Boost library is properly configured, run 'bjam' to compile ODTONE.
+
+Consult the Boost.Build documentation for more details!
+
+[endsect]
+
+[section 2. Getting ODTONE]
+
+[*In a tarball]
+
+You can get the ODTONE source code tarball from our project page, at
+[@http://helios.av.it.pt/projects/odtone/files http://helios.av.it.pt/projects/odtone/files].
+Then just unpack it and you are ready to compile and install ODTONE.
+
+[*From the git repository]
+
+Access to the git repository requires installing the HNG IT Aveiro certificates.
+These certificates are available in the "Files" section of the ODTONE project
+page: [@http://helios.av.it.pt/projects/odtone/files http://helios.av.it.pt/projects/odtone/files].
+
+Once you have the certificates added, you can clone the git repository,
+from [@http://helios.av.it.pt/projects/odtone/git/ ODTONE repository]
+therefore creating your own local copy.
+
+   git clone http://helios.av.it.pt/projects/odtone/git/ odtone
+
+[endsect]
+
+[section 3. Compiling and installing ODTONE]
+
+Once you have obtained the ODTONE source code and have assured that you have
+the right dependencies installed in all machines you intend to use ODTONE,
+then you are ready to compile and install.
+
+[table Platform Support
+    [[]        [x86-32] [x86-64] [ARM]]
+    [[Linux]   [OK]     [OK]     [OK] ]
+    [[Windows] [OK]     [OK]     [?]  ]
+]
+
+[note *For Linux*
+
+We recommend GCC. Most distributions already come with the necessary
+pre-requisites, you may additionally need to install g++.
+
+If you get link errors relative to undefined pthread symbols, this means
+that your compiler does not link to pthreads by default. You can either pass
+the "[~linkflags=-lpthread]" option to bjam. Or, you can also configure the
+toolset to link to this library, set "[~using gcc : : : <linkflags>-lpthread ;]"
+without quotes at your user-config.jam.]
+
+[note *For Windows*
+
+We recommend MSVC. You will need to download and install the latest Windows
+SDK. This already comes with all pre-requisite libraries and toolchains.]
+
+[note *For Android*
+
+Current Android Bionic headers are still too buggy to compile ODTONE. For
+example, the boost::asio::ip headers does no compile because of buggy
+<netinet/in.h> and <netinet/in6.h> headers.
+
+However, since Android is based on linux, it is possible to compile ODTONE
+with the CodeSourcery GNU Toolchain for ARM Processors, at the expense of a
+bigger binary, since we have to link all libraries statically. The target must
+be arm-none-linux-gnueabi.
+
+Prebuild binaries are available at
+[@http://www.codesourcery.com/sgpp/lite/arm CodeSourcery]
+
+In order to setup user-config.jam for Android, you must add the following line
+(without qoutes):
+
+"using gcc : android	: path-to-toolset/arm-none-linux-gnueabi-g++ : <linkflags>"-Wl,--whole-archive -lpthread -Wl,--no-whole-archive -lc" ;/"
+
+To use the Android toolset, pass the command line option "[~toolset=gcc-android"]
+to bjam.
+
+The Android SDK has the necessary tools to run, debug and deploy the ODTONE
+binaries.]
+
+[endsect]
+
+[endsect]
+
+[section:userGuide ODTONE User Guide]
+
+[section:configuration Configuration]
+
+[*ODTONE-MIHF]
+
+For now the MIHFs capabilities are read from configuration files. Future
+versions will inquire the available Link SAPs for the required information.
+There are other parameters that can be configured either using an configuration
+file or passing them directly in command line.
+
+	MIHF Configuration Options:
+	   --help                           Display configuration options
+	   --conf.file arg (=odtone.conf)   Configuration File
+	   --conf.recv_buff_len arg (=4096) Receive Buffer Length
+	   --mihf.id arg (=mihf)            MIHF Id
+	   --mihf.ip arg (=127.0.0.1)       MIHF Ip
+	   --mihf.peers arg                 List of peer MIHFs
+	   --mihf.users arg (=user 1234)    List of User SAPs
+	   --mihf.links arg (=link 1235)    List of Links SAPs
+	   --mihf.remote_port arg (=4551)   MIHF Remote Communications Port
+	   --mihf.local_port arg (=1025)    MIHF Local Communications Port
+	   --mihf.event_list arg            MIHF List of supported events
+	   --mihf.link_addr_list arg        MIHF Network Type list
+	   --enable_broadcast               MIHF responds to broadcast messages
+	   --log arg (=1)                   MIHF log level [0-4]
+
+[note
+*List of peer MIHF's*
+
+Comma separated list of remote MIHF's. If you want to test remote MIHF communication
+add an entry here with the IP address of the remote MIHF.
+
+Usage: <mihf id> <ip> <port>
+
+*List of Users SAPs*
+
+Comma separated list of local MIH User SAPs id's and ports. For the default demo
+just use as is.
+
+Usage: <user sap id> <port>
+
+*List of Links SAPs*
+
+Comma separated list of local MIH Link SAPs id's and ports. For the default demo
+just use as is.
+
+Usage: <link sap id> <port>
+
+*MIHF Network Type list*
+
+Comma separated list of network types that we broadcast on Capability_Discover.requests
+For this static configuration, we only support declaring link identifiers with
+the mac address. Future version will inquire the available Link SAPs for their
+capabilities.
+
+Usage: <link identifier> <mac address>
+
+*MIHF List of supported events*
+
+Comma separated list of the MIHF's supported events.
+
+Usage: <link event 1>, <link event 2>, (...), <link event N>
+
+]
+
+[*SAP's]
+
+	MIH Usr Configuration:
+	   --help                           Display configuration options
+	   --conf.port arg (=1234)          Port
+	   --conf.file arg (=mih_usr.conf)  Configuration File
+	   --conf.recv_buff_len arg (=4096) Receive Buffer Length
+	   --mihf.ip arg (=127.0.0.1)       Local MIHF Ip
+	   --mihf.id arg (=local-mihf)      Local MIHF Id
+	   --user.id arg (=user)            User Id
+	   --mihf.local_port arg (=1025)    MIHF Local Communications Port
+	   --dest arg                       MIH message destination of MIH User
+
+
+	MIH Link SAP Configuration:
+	   --help                           Display configuration options
+	   --link.port arg (=1234)          Port
+	   --conf.file arg (=link_sap.conf) Configuration File
+	   --conf.recv_buff_len arg (=4096) Receive Buffer Length
+	   --mihf.ip arg (=127.0.0.1)       Local MIHF Ip
+	   --mihf.local_port arg (=1025)    MIHF Local Communications Port
+	   --mihf.id arg (=local-mihf)      Local MIHF Id
+	   --link.id arg (=link)            Link SAP Id
+
+[endsect]
+
+[section:local Local Demo]
+
+The local demo consists in a simple experiment to demonstrate simple message
+exchange between a MIHF, a MIH_User and a Link_SAP. It allows you to see
+how events are generated by the Link_SAP and reported to a MIH_User that has
+subscribed to these events.
+
+[$./odtone/images/local_demo.png]
+
+[*Configuration]
+
+To run the local demo you will need to edit the default configuration file
+odtone.conf that is stored in the src/mihf directory. You will need to edit the
+link_addr_list entrance and add the MAC address of your computer's network cards.
+
+[*Running Demo]
+
+After editing the configuration file, to run this ODTONE demo the best way is to
+open 3 terminals. On one terminal start ODTONE-MIHF and on the next terminal
+start the MIH_User. If all went well the MIH_User has requested an
+Capability_Discover to the local MIHF and printed out some information of the
+interfaces you previously configured.
+
+Now it's time to start the Link_SAP, on your third terminal, and send some Link
+indications to the MIHF and check that the MIH_User received notifications. So
+that the Link_SAP detects some events, you should now proceed to disconnect,
+disable or shutdown your network cable/interface or your wireless card according
+to your configuration file.
+
+[endsect]
+
+[section:remote Remote Demo]
+The remote demo consists in a local MIH_User obtaining notifications of events
+that are happening on a Link_SAP remotely located on another machine. You are
+required to have two machines for this experiment. The first machine hosting an
+ODTONE-MIHF instance (mihf1) and the MIH_User, while the second will host a
+second ODTONE-MIHF instance (mihf2) and the Link_SAP.
+
+[$./odtone/images/remote_demo.png]
+
+[*Configuration]
+
+As was said earlier, automatic remote peer MIHF discovery is not yet implemented,
+so you need to add the remote MIHF's IP address and port number to the
+configuration file. Edit the file and add an entry to peers in the form:
+<mihf_id> <ip> <port> where <mihf_id> is the identifier of the remote MIHF,
+<ip> and <port> are the IP address and port of the remote MIHF.
+
+[note You need to edit the configuration file on both machines]
+
+On the machine with the mihf1 the configuration file can look like:
+
+	[mihf]
+	id = mihf1
+	local_port = 1025
+	remote_port = 4551
+	peers = mihf2 <mihf1_IP_address> 4551
+	users = user 1234
+
+On the machine with the mihf2 the configuration file can look like:
+
+	[mihf]
+	id = mihf2
+	local_port = 1025
+	remote_port = 4551
+	peers = mihf1 <mihf2_IP_address> 4551
+	links = link 1235
+	link_addr_list = 802_11 <mac_address>,ethernet <mac_address>
+	event_list = link_detected, link_up, link_down,
+	link_parameters_report, link_going_down,
+	link_handover_imminent, link_handover_complete
+
+
+[*Running Demo]
+
+On the machine hosting mihf1, start a terminal and run ODTONE-MIHF. Then, on another
+terminal start the MIH_User adding the parameter ['--dest mihf2]. The ['--dest] option
+tells the MIH_User to set the 802.21 destination field of the frame to mihf2.
+
+On the machine hosting mihf2, start a terminal and run ODTONE-MIHF. Then, on another
+terminal start the Link_SAP. So that the Link_SAP detects some events you should
+now proceed to disconnect, disable or shutdown your network cable/interface or
+you wireless card according to your configuration file.
+
+[endsect]
+
+[endsect]
+
+[endsect]
+
+
+[section:library Libraries]
+
+[variablelist
+    [[[@file:../Libs/ODTONE_Base/index.html ODTONE Base]] [The BASE API contains a set of classes that offers support mechanisms, such as
+    debug, list management, logger, exceptions and generation random values.]]
+
+    [[[@file:../Libs/ODTONE_MIH/index.html ODTONE MIH]] [The MIH API contains a set of classes to generate/parse MIH
+    messages, including the types present in the standard and template classes
+    to ease the definition of new types.]]
+
+    [[[@file:../Libs/ODTONE_SAP/index.html ODTONE SAP]] [The SAP API contains a set of IO service classes to
+    send/receive MIH messages. The implementation is modeled after \a boost::asio
+    and only supports asynchronous operation. IO services (odtone::sap::user and
+    odtone::sap::link) are provided to implement User SAP's and Link SAP's.
+    ]]
+]
+
+[endsect]
+
+
+[section:app Applications]
+
+[variablelist
+
+    [[[@file:../App/MIHF/index.html ODTONE-MIHF]]
+    [The MIHF is a management entity that obtains link-layer
+     information from lower layers of different protocol stacks and also from other
+     remote nodes. The MIHF coordinates handover decision making with other peer MIHF
+     in the network.]]
+
+    [[[@file:../App/MIH_User/index.html MIH_User]]
+    [The MIH_User specifies a media independent interface between the MIHF and
+     upper layers of the mobility management protocol stack. The upper layers need to
+     subscribe with the MIHF as users to receive MIHF-Generated events and also for
+     link-layer events that originate at layers below the MIHF but are passed on to
+     MIHF users through the MIHF. MIHF users directly send commands to the local MIHF
+     using the service primitives of the MIH_User.]]
+
+    [[[@file:../App/Link_SAP/index.html Link_SAP]]
+    [The Link SAP specifies an abstract media dependent interface between the MIHF
+     and lower layers media-specific protocol stacks of technologies such as IEEE 802.3,
+     IEEE 802.11, IEEE 802.16, 3GPP and 3GPP2. For different link-layer technologies,
+     media-specific SAPs provide the functionality of Link SAP. ]]
+
+    [[[@file:../App/Client/index.html Client]]
+    [The ['client] is a simple application that permits to send any kind of message
+     to a particular destination. This way, it is possible to send a specific message
+     to a choose destination in order to test is behaviour easily and quickly.]]
+
+    [[[@file:../App/Dummyserver/index.html Dummyserver]]
+    [The ['dummyserver] is a simple application that, as the name implies, works like
+     a dummy server. It is always listening (at port 4000) for incoming messages and
+     print them in the console.]]
+]
+
+[endsect]
+
+[section:license License]
+[h4 GNU LESSER GENERAL PUBLIC LICENSE]
+
+[h5 Version 3, 29 June 2007]
+
+Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.
+
+This version of the GNU Lesser General Public License incorporates
+the terms and conditions of version 3 of the GNU General Public
+License, supplemented by the additional permissions listed below.
+
+[h6 0. Additional Definitions.]
+
+As used herein, "this License" refers to version 3 of the GNU Lesser
+General Public License, and the "GNU GPL" refers to version 3 of the GNU
+General Public License.
+
+"The Library" refers to a covered work governed by this License,
+other than an Application or a Combined Work as defined below.
+
+An "Application" is any work that makes use of an interface provided
+by the Library, but which is not otherwise based on the Library.
+Defining a subclass of a class defined by the Library is deemed a mode
+of using an interface provided by the Library.
+
+A "Combined Work" is a work produced by combining or linking an
+Application with the Library.  The particular version of the Library
+with which the Combined Work was made is also called the "Linked
+Version".
+
+The "Minimal Corresponding Source" for a Combined Work means the
+Corresponding Source for the Combined Work, excluding any source code
+for portions of the Combined Work that, considered in isolation, are
+based on the Application, and not on the Linked Version.
+
+The "Corresponding Application Code" for a Combined Work means the
+object code and/or source code for the Application, including any data
+and utility programs needed for reproducing the Combined Work from the
+Application, but excluding the System Libraries of the Combined Work.
+
+[h6 1. Exception to Section 3 of the GNU GPL.]
+
+You may convey a covered work under sections 3 and 4 of this License
+without being bound by section 3 of the GNU GPL.
+
+[h6 2. Conveying Modified Versions.]
+
+If you modify a copy of the Library, and, in your modifications, a
+facility refers to a function or data to be supplied by an Application
+that uses the facility (other than as an argument passed when the
+facility is invoked), then you may convey a copy of the modified
+version:
+
+[*a)] under this License, provided that you make a good faith effort to
+ensure that, in the event an Application does not supply the
+function or data, the facility still operates, and performs
+whatever part of its purpose remains meaningful, or
+
+[*b)] under the GNU GPL, with none of the additional permissions of
+this License applicable to that copy.
+
+[h6 3. Object Code Incorporating Material from Library Header Files.]
+
+The object code form of an Application may incorporate material from
+a header file that is part of the Library.  You may convey such object
+code under terms of your choice, provided that, if the incorporated
+material is not limited to numerical parameters, data structure
+layouts and accessors, or small macros, inline functions and templates
+(ten or fewer lines in length), you do both of the following:
+
+[*a)] Give prominent notice with each copy of the object code that the
+Library is used in it and that the Library and its use are
+covered by this License.
+
+[*b)] Accompany the object code with a copy of the GNU GPL and this license
+document.
+
+[h6 4. Combined Works.]
+
+You may convey a Combined Work under terms of your choice that,
+taken together, effectively do not restrict modification of the
+portions of the Library contained in the Combined Work and reverse
+engineering for debugging such modifications, if you also do each of
+the following:
+
+[*a)] Give prominent notice with each copy of the Combined Work that
+the Library is used in it and that the Library and its use are
+covered by this License.
+
+[*b)] Accompany the Combined Work with a copy of the GNU GPL and this license
+document.
+
+[*c)] For a Combined Work that displays copyright notices during
+execution, include the copyright notice for the Library among
+these notices, as well as a reference directing the user to the
+copies of the GNU GPL and this license document.
+
+[*d)] Do one of the following:
+
+[*i)] Convey the Minimal Corresponding Source under the terms of this
+License, and the Corresponding Application Code in a form
+suitable for, and under terms that permit, the user to
+recombine or relink the Application with a modified version of
+the Linked Version to produce a modified Combined Work, in the
+manner specified by section 6 of the GNU GPL for conveying
+Corresponding Source.
+
+[*ii)] Use a suitable shared library mechanism for linking with the
+Library.  A suitable mechanism is one that (a) uses at run time
+a copy of the Library already present on the user's computer
+system, and (b) will operate properly with a modified version
+of the Library that is interface-compatible with the Linked
+Version.
+
+[*e)] Provide Installation Information, but only if you would otherwise
+be required to provide such information under section 6 of the
+GNU GPL, and only to the extent that such information is
+necessary to install and execute a modified version of the
+Combined Work produced by recombining or relinking the
+Application with a modified version of the Linked Version. (If
+you use option 4d0, the Installation Information must accompany
+the Minimal Corresponding Source and Corresponding Application
+Code. If you use option 4d1, you must provide the Installation
+Information in the manner specified by section 6 of the GNU GPL
+for conveying Corresponding Source.)
+
+[h6 5. Combined Libraries.]
+
+You may place library facilities that are a work based on the
+Library side by side in a single library together with other library
+facilities that are not Applications and are not covered by this
+License, and convey such a combined library under terms of your
+choice, if you do both of the following:
+
+[*a)] Accompany the combined library with a copy of the same work based
+on the Library, uncombined with any other library facilities,
+conveyed under the terms of this License.
+
+[*b)] Give prominent notice with the combined library that part of it
+is a work based on the Library, and explaining where to find the
+accompanying uncombined form of the same work.
+
+[h6 6. Revised Versions of the GNU Lesser General Public License.]
+
+The Free Software Foundation may publish revised and/or new versions
+of the GNU Lesser General Public License from time to time. Such new
+versions will be similar in spirit to the present version, but may
+differ in detail to address new problems or concerns.
+
+Each version is given a distinguishing version number. If the
+Library as you received it specifies that a certain numbered version
+of the GNU Lesser General Public License "or any later version"
+applies to it, you have the option of following the terms and
+conditions either of that published version or of any later version
+published by the Free Software Foundation. If the Library as you
+received it does not specify a version number of the GNU Lesser
+General Public License, you may choose any version of the GNU Lesser
+General Public License ever published by the Free Software Foundation.
+
+If the Library as you received it specifies that a proxy can decide
+whether future versions of the GNU Lesser General Public License shall
+apply, that proxy's public statement of acceptance of any version is
+permanent authorization for you to choose that version for the
+Library.
+[endsect]

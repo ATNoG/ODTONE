@@ -21,9 +21,9 @@ project documentation
 using quickbook ;
 import boostbook : boostbook ;
 
+xml odtone 	        : src/odtone.qbk  ;
 
-
-boostbook documentation_base
+boostbook odtone_base
     :
         odtone
     :
@@ -32,4 +32,6 @@ boostbook documentation_base
         <xsl:param>boost.image.w=100
         <xsl:param>boost.image.h=100
         <xsl:param>nav.layout=none
+        <xsl:param>base.dir=../html/
+        <xsl:param>root.filename=index
     ;
