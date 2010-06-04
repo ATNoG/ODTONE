@@ -1,0 +1,601 @@
+[article ODTONE
+    [quickbook 1.5]
+    [version 0.2]
+    [authors [Guimarães, Carlos]]
+    [copyright 2010 Universidade Aveiro]
+    [copyright 2010 Instituto de Telecomunicações - Pólo Aveiro]
+    [license
+        This software is distributed under a license. The full license
+		agreement can be found in the LICENSE in this distribution.
+		This software may not be copied, modified, sold or distributed
+		other than expressed in the named license agreement.
+
+		This software is distributed without any warranty.
+    ]
+    [source-mode c++]
+]
+
+[section:index_base Index]
+[endsect]
+
+[section:base_overview 1. Overview]
+
+The BASE API contains a set of classes that offers support mechanisms, such as
+debug, list management, logger, exceptions and generation random values.
+
+[endsect]
+
+
+[section:base_classes 2. Mechanisms]
+
+[section:base_debug 2.1 Debug]
+
+[heading Detailed Description]
+
+The BASE API offers mechanisms for debugging. This is done using a class named
+['odtone::checkpoint].
+
+[$./images/odtone::checkpoint.png]
+
+It can be viewed as a linked list of checkpoint that maintain the execution
+status of the application. So, when a crash happens it is easy to check the
+last checkpoint and discover why crash happen.
+
+[heading Namespace]
+
+``
+	namespace odtone {
+		// ...
+	} /* namespace odtone */
+``
+
+[heading Public Member Functions]
+
+``
+	checkpoint(const char* file, uint line, const char* exp);
+	~checkpoint();
+
+	static checkpoint* top();
+
+	checkpoint* previous() const;
+	const char* file() const;
+	uint        line() const;
+	const char* expression() const;
+``
+
+[heading Constructor & Destructor Documentation]
+
+``
+	checkpoint(const char* file, uint line, const char* exp);
+``
+
+Construct a Checkpoint.
+
+[*Parameters:]
+
+*[*file] - file name.
+*[*line] - line number.
+*[*exp] - expression.
+
+______________________________________________________________________________
+
+``
+	~checkpoint ();
+``
+Destructor for checkpoint.
+
+[heading Member Function Documentation]
+
+``
+	static checkpoint* top();
+``
+
+Get the check point list.
+
+[*Return:]
+
+* The check point list.
+
+______________________________________________________________________________
+
+``
+	checkpoint* previous() const;
+``
+
+Get the previous checkpoint of the checkpoint that calls this method.
+
+[*Return:]
+
+*The previous checkpoint of the checkpoint that calls this method.
+
+______________________________________________________________________________
+
+``
+	const char* file() const;
+``
+
+Get the file name of the checkpoint.
+
+[*Return:]
+
+* The file name of the checkpoint.
+
+______________________________________________________________________________
+
+``
+	uint line() const;
+
+``
+
+Get the line number of the checkpoint.
+
+[*Return:]
+
+* The line number of the checkpoint.
+
+______________________________________________________________________________
+
+``
+	const char* expression() const;
+``
+
+Get the expression of the checkpoint.
+
+[*Return:]
+
+* The expression of the checkpoint.
+
+[endsect]
+
+[section:base_list 2.2 List Management]
+
+[heading Detailed Description]
+
+[$./images/odtone::list_node.png]
+
+The BASE API offers support mechanisms for list management, providing operations
+to add or remove elements, get or swap elements and to reverse elements.
+
+These can be considered as a double-linked list  that consists of a sequence of
+data records such that in each record there is a field that contains a reference
+to the next record and to the previous record in the sequence.
+
+[$./images/odtone::list_node2.png]
+
+This is done using a class named ['odtone::list_node] that is explain next in
+this section.
+
+[heading Namespace]
+
+``
+	namespace odtone {
+		// ...
+	} /* namespace odtone */
+``
+
+[heading Public Member Functions]
+
+``
+	void init();
+
+	void push_front(list_node* node);
+	void push_back(list_node* node);
+
+	list_node* pop_front();
+	list_node* pop_back();
+
+	list_node* front();
+	list_node* back();
+
+	const list_node* front() const;
+	const list_node* back() const;
+
+	void swap(list_node& y);
+	void reverse();
+
+	void remove();
+	bool empty() const;
+``
+
+[heading Member Function Documentation]
+
+``
+	void init();
+``
+Initialize the list only with the element that calls this method.
+
+______________________________________________________________________________
+
+``
+	void push_front(list_node* node);
+``
+
+Insert a new element in the first position of the list.
+
+[*Parameters:]
+
+*[*node] - the new element to insert in the list.
+
+______________________________________________________________________________
+
+``
+	void push_back(list_node* node);
+``
+
+Insert a new element in the last position of the list.
+
+[*Parameters:]
+
+*[*node] - the new element to insert in the list.
+
+______________________________________________________________________________
+
+``
+	list_node* pop_front();
+``
+
+Remove and return the first element of the list.
+
+[*Return:]
+
+*The first element of the list.
+
+______________________________________________________________________________
+
+``
+	list_node* pop_back();
+``
+
+Remove and return the last element of the list.
+
+[*Return:]
+
+*The last element of the list.
+
+______________________________________________________________________________
+
+``
+	list_node* front();
+``
+
+Return the first element of the list without removing it from the list.
+
+[*Return:]
+
+*The first element of the list.
+
+______________________________________________________________________________
+
+``
+	list_node* back();
+``
+
+Return the last element of the list without removing it from the list.
+
+[*Return:]
+
+*The last element of the list.
+
+______________________________________________________________________________
+
+``
+	const list_node* front() const;
+``
+
+Return the first element of the list without removing it from the list.
+
+[*Return:]
+
+*The first element of the list.
+
+______________________________________________________________________________
+
+``
+	const list_node* back() const;
+``
+
+Return the last element of the list without removing it from the list.
+
+[*Return:]
+
+*The last element of the list.
+
+______________________________________________________________________________
+
+``
+	void swap(list_node& y);
+``
+
+Swap the position of two elements of the list.
+
+[*Parameters:]
+
+*[*node] - the element with which to exchange the position.
+
+______________________________________________________________________________
+
+``
+	void reverse();
+``
+
+Reverse the element in the list. In other words, it exchange the previous element
+with the next element of the checkpoint that calls this method.
+
+______________________________________________________________________________
+
+``
+	void remove();
+``
+
+Remove an element from the list.
+
+______________________________________________________________________________
+
+``
+	bool empty() const;
+``
+
+Check if the element has an null reference for the next element.
+
+[endsect]
+
+
+[section:base_logger 2.3 Logger]
+
+[heading Detailed Description]
+
+The BASE API offers support mechanisms for logging, using ['odtone::logger] class.
+The logger object is used to log messages for a specific system or application
+component. Logger names can be arbitrary strings, but they should normally be
+based on the application that invoke it.
+
+Each logger has a level associated with it. This reflects the maximum level that
+the logger cares about. So if you set level to 2 it only cares about log messages
+belonging to level 0, 1 and 2.
+
+It also has an ['std::ostream] object associated with it. This defines how the logger
+write and format output as sequences of characters. The log messages can have up
+to 10 arguments.
+
+[heading Namespace]
+
+``
+	namespace odtone {
+		// ...
+	} /* namespace odtone */
+``
+
+[heading Public Member Functions]
+
+``
+	logger (char const* const name, logger& log);
+	logger (char const* const name, std::ostream& sink);
+	~logger ();
+
+	void level(uint n);
+	uint level() const;
+	std::ostream& sink () const ;
+``
+
+[heading Constructor & Destructor Documentation]
+
+``
+	logger (char const* const name, logger& log);
+``
+
+Construct a Logger.
+
+[*Parameters:]
+
+*[*name] - logger's name.
+*[*log] - logger from where extract the configurations for the new logger.
+
+______________________________________________________________________________
+
+``
+	logger (char const* const name, std::ostream& sink);
+``
+
+Construct a Logger.
+
+[*Parameters:]
+
+*[*name] - logger's name.
+*[*sink] - ['std::ostream] that defines how the logger will write and format
+output as sequences of characters.
+
+______________________________________________________________________________
+
+``
+	~logger ();
+``
+Destructor for logger.
+
+[heading Member Function Documentation]
+
+``
+	void level(uint n);
+
+``
+
+Set the level configuration.
+
+Each logger has a level associated with it. This reflects the maximum level that
+the logger cares about. So if you set level to 2 it only cares about log messages
+belonging to level 0, 1 and 2.
+
+
+[*Parameters:]
+
+*[*n] - logger level.
+
+______________________________________________________________________________
+
+``
+	uint level() const;
+``
+
+Get the level configuration.
+
+Each logger has a level associated with it. This reflects the maximum level that
+the logger cares about. So if you set level to 2 it only cares about log messages
+belonging to level 0, 1 and 2.
+
+[*Return]
+
+*The logger level.
+
+_____________________________________________________________________________
+
+
+``
+	std::ostream& sink () const ;
+``
+
+Get the std::ostream associated with the logger.
+
+[*Return]
+
+*The std::ostream associated with the logger.
+
+
+
+[endsect]
+
+[section:base_exception 2.4 Exceptions]
+
+The BASE API offers support mechanisms for exceptions support. The
+['odtone::exception] class serves as a base from which derive all exceptions in
+ODTONE. The following image represents all existing exceptions in the actual
+release.
+
+[$./images/odtone::exception.png]
+
+The definition of new exceptions can be easily done. The following piece of code
+shows how it can be done:
+
+``
+	struct new_exception : virtual public odtone::exception {
+		new_exception() : exception("New exception example")
+		{ }
+	};
+``
+
+[endsect]
+
+[section:base_other 2.5 Other]
+
+[section:base_random Random]
+
+The BASE API offers a simple way to generate random values. The following table
+match between the type of the random value with the function that generates it.
+
+[table Base data types
+    [[Data type] 			     		[Data type (ODTONE)]	]
+	[[sint8]							[odtone::mih::srand8()]	]
+	[[sint16]							[odtone::mih::srand16()]]
+	[[sint32]							[odtone::mih::srand32()]]
+	[[sint64]							[odtone::mih::srand64()]]
+	[[uint8]							[odtone::mih::rand8()]	]
+	[[uint16]							[odtone::mih::rand16()]	]
+	[[uint32]							[odtone::mih::rand32()]	]
+	[[uint64]							[odtone::mih::rand64()]	]
+]
+
+[endsect]
+
+[section:base_convert Converter hexadecimal]
+
+This library also offers functions to convert to and from hexadecimal values.
+
+``
+	std::string odtone::to_string_hex(const T& v);
+``
+
+``
+	uchar odtone::hex_to_int(odtone::uchar c);
+``
+
+[endsect]
+
+[section:base_buffer Buffer]
+
+[$./images/odtone::buffer.png]
+
+The BASE API offers two classes that can be used as buffers:
+
+*[*['odtone::buffer]]: a buffer of a generic type.
+*[*['odtone::buffer_vla]]: a buffer of odtone::uint8.
+
+[endsect]
+
+[endsect]
+
+[endsect]
+
+
+[section:base_datatypes 3. Data Types]
+
+[table Base data types
+    [[Data type] 			     		[Data type (ODTONE)]]
+	[[signed char]						[odtone::schar]		]
+	[[signed short]						[odtone::sshort]	]
+	[[signed int]						[odtone::sint]		]
+	[[signed long]						[odtone::slong]		]
+	[[signed long long]					[odtone::sllong]	]
+	[[unsigned char]					[odtone::uchar]		]
+	[[unsigned short]					[odtone::ushort]	]
+	[[unsigned int]						[odtone::uint]		]
+	[[unsigned long]					[odtone::ulong]		]
+	[[unsigned long long]				[odtone::ullong]	]
+	[[boost::uint8_t]					[odtone::uint8]		]
+	[[boost::uint16_t]					[odtone::uint16]	]
+	[[boost::uint32_t]					[odtone::uint32]	]
+	[[boost::uint64_t]					[odtone::uint64]	]
+	[[boost::int8_t]					[odtone::uint8]		]
+	[[boost::int16_t]					[odtone::uint16]	]
+	[[boost::int32_t]					[odtone::uint32]	]
+	[[boost::int64_t]					[odtone::uint64]	]
+	[[boost::intmax_t]					[odtone::sintmax]	]
+	[[boost::uintmax_t]					[odtone::uintmax]	]
+	[[NULL pointer]						[odtone::nullptr_t]	]
+]
+
+
+[section Enumeration]
+``
+	enum bug {
+		bug_on,
+		bug_assert,
+		bug_assert_ptr,
+		bug_not_implemented,
+		bug_never_here,
+		bug_floting_point_exception,
+		bug_invalid_opcode,
+		bug_terminal_interrupt,
+		bug_page_fault,
+		bug_breakpoint,
+	};
+``
+
+[endsect]
+
+[section Exception]
+
+[$./images/odtone::exception1.png]
+
+``
+	struct bad_cast : virtual public exception {
+	};
+``
+
+``
+	struct bad_truncate_cast : virtual public bad_cast {
+		bad_truncate_cast() : exception("odtone::truncate_cast: bad cast")
+		{ }
+	};
+``
+
+[endsect]
+
+[endsect]
