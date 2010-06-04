@@ -23,6 +23,7 @@ import boostbook : boostbook ;
 
 xml odtone 	        : src/odtone.qbk  ;
 xml clientXml       : src/app/client.qbk ;
+xml dummyserverXml  : src/app/dummyserver.qbk ;
 
 boostbook odtone_base
     :
@@ -47,5 +48,18 @@ boostbook client
         <xsl:param>boost.image.h=100
         <xsl:param>nav.layout=none
         <xsl:param>base.dir=../html/app/client
+        <xsl:param>root.filename=index
+    ;
+
+boostbook dummyserver
+    :
+        dummyserverXml
+    :
+		<xsl:param>boost.image.src="./odtone/images/logo.png"
+		<xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
+        <xsl:param>boost.image.w=100
+        <xsl:param>boost.image.h=100
+        <xsl:param>nav.layout=none
+        <xsl:param>base.dir=../html/app/dummyserver
         <xsl:param>root.filename=index
     ;
