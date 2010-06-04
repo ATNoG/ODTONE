@@ -1,0 +1,171 @@
+[article ODTONE
+    [quickbook 1.5]
+    [version 0.2]
+    [authors [Guimarães, Carlos]]
+    [copyright 2010 Universidade Aveiro]
+    [copyright 2010 Instituto de Telecomunicações - Pólo Aveiro]
+    [license
+        This software is distributed under a license. The full license
+		agreement can be found in the LICENSE in this distribution.
+		This software may not be copied, modified, sold or distributed
+		other than expressed in the named license agreement.
+
+		This software is distributed without any warranty.
+    ]
+    [source-mode c++]
+]
+
+[section:mih_usr_index Index]
+[endsect]
+
+[section:mih_usr_overview 1. Overview]
+
+The MIH_User specifies a media independent interface between the MIHF and
+upper layers of the mobility management protocol stack. The upper layers need to
+subscribe with the MIHF as users to receive MIHF-Generated events and also for
+link-layer events that originate at layers below the MIHF but are passed on to
+MIHF users through the MIHF. MIHF users directly send commands to the local MIHF
+using the service primitives of the MIH User.
+
+This implementation of MIH User is very simple. It only support capability
+discover, event subscribe and link events primitives.
+
+[endsect]
+
+[section:mih_usr_getStart 2. Getting Started]
+
+[section Detailed Description]
+
+This implementation of MIH User is very simple. It only support capability
+discover, event subscribe and link events primitives.
+
+[$./odtone/images/mih_usr_state_machine.png]
+
+When MIH User begins to run, it sends a Capability Discover Request to MIHF and
+waits for a Capability Discover Response from the MIHF.
+
+``
+	msg << odtone::mih::request(odtone::mih::request::capability_discover, _mihfid);
+	_mihf.async_send(msg, boost::bind(&mih_user::capability_discover_response, this, _1, _2));
+``
+
+The message is processed and for every interface the MIHF sent in the Capability
+Discover Response, MIH User send an Event Subscribe Request for all available
+events. This implementation supports all events.
+
+``
+	msg >> odtone::mih::response()
+		& odtone::mih::tlv_status(st)
+		& odtone::mih::tlv_net_type_addr_list(ntal)
+		& odtone::mih::tlv_event_list(evt);
+
+	//...
+
+	if (ntal && evt) {
+		for (odtone::mih::net_type_addr_list::iterator i = ntal->begin(); i != ntal->end(); ++i) {
+			odtone::mih::message req;
+
+			// ...
+
+			_mihf.async_send(req, boost::bind(&mih_user::event_subscribe_response, this, _1, _2));
+		}
+	}
+``
+
+For every Event Subscribe Request sent to the MIHF is received a Event Subscribe
+Response.
+
+At this moment, MIHF knows what kind events must send to MIH User. So, MIH User
+is now in listening mode, waiting for events messages from MIHF.
+
+``
+	void event_handler(odtone::mih::message& msg, const boost::system::error_code& ec);
+``
+However, when a event message is received there is no specific behaviour. Instead
+of, MIH User only records in the log what type of message was received.
+
+[endsect]
+
+[section Configuration]
+
+	MIH Usr Configuration:
+	   --help                           Display configuration options
+	   --conf.port arg (=1234)          Port
+	   --conf.file arg (=mih_usr.conf)  Configuration File
+	   --conf.recv_buff_len arg (=4096) Receive Buffer Length
+	   --mihf.ip arg (=127.0.0.1)       Local MIHF Ip
+	   --mihf.id arg (=local-mihf)      Local MIHF Id
+	   --user.id arg (=user)            User Id
+	   --mihf.local_port arg (=1025)    MIHF Local Communications Port
+	   --dest arg                       MIH message destination of MIH User
+
+MIH User can be configured either through a configuration file or passing
+directly, in command line, the configuration options.
+
+For testing remote communication, must be defined ['MIH message destination
+of MIH User] using ['--dest] option in the command line.
+
+
+[endsect]
+
+[section Extending]
+
+It is possible to do several extensions to MIH User in a simple and fast way.
+
+For example, in event handler can be added specific behaviour for an incoming
+event message. So, MIH User can make its own decisions about the actions that
+must be initiated for a particular event, like handovers.
+
+``
+	void mih_user::event_handler(odtone::mih::message& msg, const boost::system::error_code& ec)
+	{
+		// ...
+
+		switch (msg.mid()) {
+		case odtone::mih::indication::link_up:
+			log_(0, "MIH-User has received a local event \"link_up\"");
+
+			// Add some specific behaviour here
+
+			break;
+
+		// ... other link events
+
+		}
+	}
+``
+
+You can also add other handlers for incoming messages:
+``
+	void new_handler(odtone::mih::message& msg, const boost::system::error_code& ec);
+``
+
+Then it must be related with a sent message, so when the response arrives, the handler
+is called:
+``
+	_mihf.async_send(msg, boost::bind(&mih_user::new_handler, this, _1, _2));
+``
+
+The handler can also be the default handler for MIH User:
+``
+	mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
+		: _mihf(cfg, io, boost::bind(&mih_user::new_handler, this, _1, _2))
+``
+
+[endsect]
+
+[section Running]
+
+Before running the MIH User, the local MIHF must have been running first. Otherwise,
+the MIH_User will send the Capability Discover Request and will block (wait)
+because it will never receive the correspondent response, due the messages being
+sent by UDP and no acknowledge exists.
+
+The ['--dest] option must be used for connections to a remote MIHF.
+
+
+[endsect]
+
+
+
+[endsect]
