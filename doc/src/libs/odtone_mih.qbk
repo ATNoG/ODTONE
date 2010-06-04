@@ -1,0 +1,2944 @@
+[article ODTONE
+    [quickbook 1.5]
+    [version 0.2]
+    [authors [Guimarães, Carlos]]
+    [copyright 2010 Universidade Aveiro]
+    [copyright 2010 Instituto de Telecomunicações - Pólo Aveiro]
+    [license
+        This software is distributed under a license. The full license
+		agreement can be found in the LICENSE in this distribution.
+		This software may not be copied, modified, sold or distributed
+		other than expressed in the named license agreement.
+
+		This software is distributed without any warranty.
+    ]
+
+    [source-mode c++]
+]
+
+[section:index_mih Index]
+[endsect]
+
+
+[section:mih_overview 1. Overview]
+
+The MIH API contains a set of classes to generate/parse MIH messages, including
+the types present in the standard and template classes to ease the definition of
+new types.
+
+[endsect]
+
+
+[section:mih_classes 2. Classes]
+
+[@file:./odtone_mih_message_class.html 2.1. odtone::mih::message Class Reference]
+
+[@file:./odtone_mih_message_helper_class.html 2.2. odtone::mih::message_helper Class Reference]
+
+[@file:./odtone_mih_indication_class.html 2.3. odtone::mih::indication Class Reference]
+
+[@file:./odtone_mih_request_class.html 2.4. odtone::mih::request Class Reference]
+
+[@file:./odtone_mih_response_class.html 2.5. odtone::mih::response Class Reference]
+
+[@file:./odtone_mih_config_class.html 2.6. odtone::mih::config Class Reference]
+
+[@file:./odtone_mih_archive_class.html 2.7. odtone::mih::archive Class Reference]
+
+[@file:./odtone_mih_iarchive_class.html 2.8. odtone::mih::iarchive Class Reference]
+
+[@file:./odtone_mih_oarchive_class.html 2.9. odtone::mih::oarchive Class Reference]
+
+[@file:./odtone_mih_is_iarchive_class.html 2.10. odtone::mih::is_iarchive Class Reference]
+
+[@file:./odtone_mih_is_oarchive_class.html 2.11. odtone::mih::is_oarchive Class Reference]
+
+[@file:./odtone_mih_tlv_type_class.html 2.11. odtone::mih::tlv'''_type_''' Class Reference]
+
+[@file:./odtone_mih_tlv_cast_class.html 2.11. odtone::mih::tlv'''_cast_''' Class Reference]
+
+[@file:./odtone_mih_is_tlv_type_class.html 2.11. odtone::mih::is_tlv_type Class Reference]
+
+[endsect]
+
+[section:odtone_mih_message_class 2.1. odtone::mih::message Class Reference]
+
+[heading Detailed Description]
+
+[$./images/odtone::mih::message.png]
+
+[*MIH Message.]
+
+The [link odtone.odtone_mih_message_class odtone::mih::message] is a high level
+representation of an MIH message, it provides access to all fields of the MIH
+message header, the destination and sources ID's that, although it is part of
+payload, it is common to all messages, and also provides
+serialization/deserialization for all the other payload data types
+(see [link odtone.odtone_mih_archive_class odtone::mih::archive]).
+
+The [link odtone.odtone_mih_message_class odtone::mih::message] can be set from
+an odtone::mih::frame that was received or it can create an odtone::mih::frame
+ready to be sent. To send or receive MIH message frames an IO Service is
+required such as the odtone::sap::user and odtone::sap::link.
+
+The payload of a message is a sequence of types that require serialization and
+deserialization support.
+
+For generating/parsing messages, a mini DSL is provided for maximum flexibility
+and extendability.
+
+This class derive from boost::noncopyable in order to prohibit copy construction
+and copy assignment. Thus, [link odtone.odtone_mih_message_class odtone::mih::message]
+class has protected constructor and destructor members and should be used only
+as a base class.
+
+[heading Namespace]
+
+``
+	namespace odtone { namespace mih {
+		// ...
+	} /* namespace mih */ } /* namespace odtone */
+``
+
+[heading Public Member Functions]
+
+``
+	message();
+	message(const frame& fm);
+	~message();
+
+	message& operator=(const frame& fm);
+
+	void version(uint8 v);
+	void ackreq(bool v);
+	void ackrsp(bool v);
+	void uir(bool v);
+	void m(bool v);
+	void fn(uint8 v);
+	void sid(service::type v);
+	void opcode(operation::type v);
+	void aid(action::type v);
+	void mid(uint16 v);
+	void tid(uint16 v);
+	void source(const id& id);
+	void destination(const id& id);
+
+	uint8           version() const;
+	bool            ackreq() const;
+	bool            ackrsp() const;
+	bool            uir() const;
+	bool            m() const;
+	uint8           fn() const;
+	service::type   sid() const;
+	operation::type opcode() const;
+	action::type    aid() const;
+	uint16          mid() const;
+	uint16          tid() const;
+	const id&       source() const;
+	const id&       destination() const;
+
+	iarchive& input();
+	oarchive& output();
+
+	void get_frame(frame_vla& fm) const;
+``
+
+[heading Constructor & Destructor Documentation]
+
+``
+	message();
+``
+
+Construct a default MIH Message.
+
+The defaults for each field are:
+
+	version = 1;
+	ackreq  = false;
+	ackrsp  = false;
+	uir     = false;
+	m       = false;
+	fn      = 0;
+	mid     = 0;
+	tid     = 0;
+
+______________________________________________________________________________
+
+``
+	message(const frame& fm);
+``
+
+Construct a MIH Message parsing all fields from a frame.
+
+[*Parameters:]
+
+*[*fm] - odtone::mih::frame from which to parse information.
+
+______________________________________________________________________________
+
+``
+	~message();
+``
+
+Destructor for MIH Message.
+
+[heading Member Function Documentation]
+
+``
+	message& operator=(const frame& fm);
+``
+
+Extract the MIH Message fields from a given odtone::mih::frame.
+
+[*Parameters:]
+
+*[*fm] - odtone::mih::frame from which to extract information.
+
+[*Return]
+
+*[link odtone.odtone_mih_message_class odtone::mih::message] with the fields
+updated.
+
+______________________________________________________________________________
+
+``
+	void version(uint8 v);
+``
+
+Set the MIH Message Version.
+
+[*Parameters:]
+
+*[*v] - value of MIH Message Version field.
+
+______________________________________________________________________________
+
+``
+	void ackreq(bool v);
+``
+
+Set the MIH Message Acknowledge Request Flag.
+
+[*Parameters:]
+
+*[*v] - value of MIH Message Acknowledge Request Flag field.
+
+______________________________________________________________________________
+
+``
+	void ackrsp(bool v);
+``
+
+Set the MIH Message Acknowledge Response Flag.
+
+[*Parameters:]
+
+*[*v] - value of MIH Message Acknowledge Response Flag field.
+
+______________________________________________________________________________
+
+``
+	void uir(bool v);
+``
+
+Set the MIH Message Unauthenticated Information Request Flag.
+
+[*Parameters:]
+
+*[*v] - value of MIH Message Unauthenticated Information Request Flag.
+
+______________________________________________________________________________
+
+``
+	void m(bool v);
+``
+
+Set the MIH Message More Fragment Flag.
+
+[*Parameters:]
+
+*[*v] - value of MIH Message More Fragment Flag.
+
+______________________________________________________________________________
+
+``
+	void fn(uint8 v);
+``
+
+Set the MIH Message Fragment Number.
+
+[*Parameters:]
+
+*[*v] - value of MIH Message Fragment Number.
+
+______________________________________________________________________________
+
+``
+	void sid(service::type v);
+``
+
+Set the MIH Message ID Service Identifier.
+
+[*Parameters:]
+
+*[*v] - value of MIH Message ID Service Identifier (odtone::mih::service::type).
+
+______________________________________________________________________________
+
+``
+	void opcode(operation::type v);
+``
+
+Set the MIH Message ID Operation Code.
+
+[*Parameters:]
+
+*[*v] - value of MIH Message ID Operation Code (odtone::mih::operation::type).
+
+______________________________________________________________________________
+
+``
+	void aid(action::type v);
+``
+
+Set the MIH Message ID Action Identifier.
+
+[*Parameters:]
+
+*[*v] - value of MIH Message ID Action Identifier (odtone::mih::action::type).
+
+______________________________________________________________________________
+
+``
+	void mid(uint16 v);
+``
+
+Set the MIH Message ID.
+
+[*Parameters:]
+
+*[*v] - value of MIH Message Message ID.
+
+______________________________________________________________________________
+
+``
+	void tid(uint16 v);
+``
+
+Set the MIH Message Transaction ID.
+
+[*Parameters:]
+
+*[*v] - value of MIH Message Transaction ID.
+
+______________________________________________________________________________
+
+``
+	void source(const id& id);
+``
+
+Set the MIH Message Source ID.
+
+[*Parameters:]
+
+*[*v] - MIH Message Source MIHF ID.
+
+______________________________________________________________________________
+
+``
+	void destination(const id& id);
+``
+
+Set the MIH Message Destination ID.
+
+[*Parameters:]
+
+*[*v] - MIH Message Destination MIHF ID.
+
+______________________________________________________________________________
+
+``
+	uint8 version() const;
+``
+
+Get the MIH Message Version.
+
+[*Return]
+
+*Value of MIH Message Version field.
+
+______________________________________________________________________________
+
+``
+	bool ackreq() const;
+``
+
+Get the MIH Message Acknowledge Request Flag.
+
+[*Return]
+
+*Value of MIH Message Acknowledge Request Flag field.
+
+______________________________________________________________________________
+
+``
+	bool ackrsp() const;
+``
+
+Get the MIH Message Acknowledge Response Flag.
+
+[*Return]
+
+*Value of MIH Message Acknowledge Response Flag field.
+
+______________________________________________________________________________
+
+``
+	bool uir() const;
+``
+
+Get the MIH Message Unauthenticated Information Request Flag.
+
+[*Return]
+
+*Value of MIH Message Unauthenticated Information Request Flag.
+
+______________________________________________________________________________
+
+``
+	bool m() const;
+``
+
+Get the MIH Message More Fragment Flag.
+
+[*Return]
+
+*Value of MIH Message More Fragment Flag.
+
+______________________________________________________________________________
+
+``
+	uint8 fn() const;
+``
+
+Get the MIH Message Fragment Number.
+
+[*Return]
+
+*Value of MIH Message Fragment Number.
+
+______________________________________________________________________________
+
+``
+	service::type sid() const;
+``
+
+Get the MIH Message ID Service Identifier.
+
+[*Return]
+
+*Value of MIH Message ID Service Identifier (odtone::mih::service::type).
+
+______________________________________________________________________________
+
+``
+	operation::type opcode() const;
+``
+
+Get the MIH Message ID Operation Code.
+
+[*Return]
+
+*Value of MIH Message ID Operation Code (odtone::mih::operation::type).
+
+______________________________________________________________________________
+
+``
+	action::type aid() const;
+``
+
+Get the MIH Message ID Action Identifier.
+
+[*Return]
+
+*Value of MIH Message ID Action Identifier (odtone::mih::action::type).
+
+______________________________________________________________________________
+
+``
+	uint16 mid() const;
+``
+
+Get the MIH Message ID.
+
+[*Return]
+
+*Value of MIH Message ID.
+
+______________________________________________________________________________
+
+``
+	uint16 tid() const;
+``
+
+Get the MIH Message Transaction ID.
+
+[*Return]
+
+*Value of MIH Message Transaction ID.
+
+______________________________________________________________________________
+
+``
+	const id& source() const;
+``
+
+Get the MIH Message Source ID.
+
+[*Return]
+
+*MIH Message Source MIHF ID.
+
+______________________________________________________________________________
+
+``
+	const id& destination() const;
+``
+
+Get the MIH Message Destination ID.
+
+[*Return]
+
+*MIH Message Destination MIHF ID.
+
+______________________________________________________________________________
+
+``
+	void message::get_frame(frame_vla& fm) const;
+``
+
+Get the MIH Message Frame (odtone::mih::frame).
+
+[*Parameters:]
+
+*[*fm] - a dynamic frame buffer to fill.
+
+[endsect]
+
+
+
+
+
+[section:odtone_mih_message_helper_class 2.2. odtone::mih::message_helper Class Reference]
+
+[heading Detailed Description]
+
+[$./images/odtone::mih::message_helper.png]
+
+[*MIH Message helper.]
+
+Parsing/Generating MIH messages is done with helper classes (
+[link odtone.odtone_mih_request_class odtone::mih::request],
+[link odtone.odtone_mih_response_class odtone::mih::response],
+[link odtone.odtone_mih_indication_class odtone::mih::indication]) and operator
+overloading.
+
+This will be the base class to [link odtone.odtone_mih_request_class odtone::mih::request],
+[link odtone.odtone_mih_response_class odtone::mih::response] and
+[link odtone.odtone_mih_indication_class odtone::mih::indication], as is documented
+later in this document.
+
+This class derive from boost::noncopyable in order to prohibit copy construction
+and copy assignment. Thus, [link odtone.odtone_mih_message_helper_class odtone::mih::message_helper]
+class has protected constructor and destructor members and should be used only
+as a base class.
+
+[heading Namespace]
+
+``
+	namespace odtone { namespace mih {
+		// ...
+	} /* namespace mih */ } /* namespace odtone */
+``
+
+[heading Public Member Functions]
+
+``
+	message_helper(uint16 mid, const id* dst);
+
+	friend oarchive& operator<<(message& msg,const message_helper& mh);
+	friend iarchive& operator>>(message& msg, const message_helper& mh);
+``
+
+[heading Constructor & Destructor Documentation]
+
+``
+	message_helper(uint16 mid,
+	               const id* dst);
+``
+Construct a MIH Message helper.
+
+[*Parameters:]
+
+*[*mid] - value of MIH Message ID.
+*[*dst] - MIH Message Destination MIHF ID.
+
+[heading Member Function Documentation]
+
+``
+	friend oarchive& operator<<(message& msg,
+	                            const message_helper& mh);
+``
+
+Serialize fields of the MIH Message.
+
+[*Parameters:]
+
+*[*msg] - msg destination [link odtone.odtone_mih_message_class odtone::mih::message].
+*[*mh] - message helper.
+
+[*Return]
+
+*Output TLV archive ([link odtone.odtone_mih_oarchive_class odtone::mih::oarchive]).
+
+______________________________________________________________________________
+
+``
+	friend iarchive& operator>>(message& msg,
+	                            const message_helper& mh);
+``
+
+Deserialize fields from a MIH Message.
+
+[*Parameters:]
+
+*[*msg] - msg destination [link odtone.odtone_mih_message_class odtone::mih::message].
+*[*mh] - message helper.
+
+[*Return]
+
+*Input TLV archive ([link odtone.odtone_mih_iarchive_class odtone::mih::iarchive]).
+
+[endsect]
+
+
+
+
+[section:odtone_mih_indication_class 2.3. odtone::mih::indication Class Reference]
+
+[heading Detailed Description]
+
+[$./images/odtone::mih::indication.png]
+
+[*MIH Indication Message helper.]
+
+This class permits parsing/generating MIH Indication messages. It derives from
+[link odtone.odtone_mih_message_helper_class odtone::mih::message_helper] and will
+inherit all the features from base class.
+
+[heading Namespace]
+
+``
+	namespace odtone { namespace mih {
+		// ...
+	} /* namespace mih */ } /* namespace odtone */
+``
+
+[heading Public Member Functions]
+
+``
+	indication();
+	explicit indication(mid m);
+	indication(mid m, const id& destination);
+``
+
+[heading Constructor & Destructor Documentation]
+
+``
+	indication();
+``
+
+Construct an MIH Indication Message helper with MIH Message ID equals to 0 (zero)
+and a [~null] pointer for MIH Message Destination MIHF ID.
+
+______________________________________________________________________________
+
+``
+	explicit indication(mid m);
+``
+Construct an MIH Indication Message helper.
+
+[*Parameters:]
+
+*[*m] - value of MIH Message ID.
+
+______________________________________________________________________________
+
+
+``
+	indication(mid m,
+	           const id& destination);
+``
+Construct an MIH Indication Message helper.
+
+[*Parameters:]
+
+*[*m] - value of MIH Message ID.
+*[*destination] - MIH Message Destination MIHF ID.
+
+
+[heading Data Types]
+
+``
+	enum mid {
+		link_detected           = msg_id<2, 3, 1>::value,    /// MIH_Link_Detected.indication
+		link_up                 = msg_id<2, 3, 2>::value,    /// MIH_Link_Up.indication
+		link_down               = msg_id<2, 3, 3>::value,    /// MIH_Link_Down.indication
+		link_parameters_report  = msg_id<2, 3, 5>::value,    /// MIH_Link_Parameters_Report.indication
+		link_going_down         = msg_id<2, 3, 6>::value,    /// MIH_Link_Going_Down.indication
+		link_handover_imminent  = msg_id<2, 3, 7>::value,    /// MIH_Link_Handover_Imminent.indication
+		link_handover_complete  = msg_id<2, 3, 8>::value,    /// MIH_Link_Handover_Complete.indication
+		push_information        = msg_id<4, 3, 2>::value,    /// MIH_Push_Information.indication
+		get_information         = msg_id<4, 3, 1>::value,    /// MIH_Get_Information.indication
+	};
+``
+
+[endsect]
+
+
+
+
+[section:odtone_mih_request_class 2.4. odtone::mih::request Class Reference]
+
+[heading Detailed Description]
+
+[$./images/odtone::mih::request.png]
+
+[*MIH Request Message helper.]
+
+This class permits parsing/generating MIH Request messages. It derives from
+[link odtone.odtone_mih_message_helper_class odtone::mih::message_helper] and will
+inherit all the features from base class.
+
+[heading Namespace]
+
+``
+	namespace odtone { namespace mih {
+		// ...
+	} /* namespace mih */ } /* namespace odtone */
+``
+
+[heading Public Member Functions]
+
+``
+	request();
+	explicit request(mid m);
+	request(mid m, const id& destination);
+``
+
+[heading Constructor & Destructor Documentation]
+
+``
+	request();
+``
+Construct an MIH Request Message helper with MIH Message ID equals to 0 (zero)
+and a [~null] pointer for MIH Message Destination MIHF ID.
+
+______________________________________________________________________________
+
+
+``
+	explicit request(mid m);
+``
+Construct an MIH Request Message helper.
+
+[*Parameters:]
+
+*[*m] - value of MIH Message ID.
+
+______________________________________________________________________________
+
+
+``
+	request(mid m,
+	        const id& destination);
+``
+Construct an MIH Request Message helper.
+
+[*Parameters:]
+
+*[*m] - value of MIH Message ID.
+*[*destination] - MIH Message Destination MIHF ID.
+
+[heading Data Types]
+
+``
+	enum mid {
+		capability_discover       = msg_id<1, 1, 1>::value,     /// MIH_Capability_Discover.request
+		mih_register              = msg_id<1, 1, 2>::value,     /// MIH_Register.request
+		mih_deregister            = msg_id<1, 1, 3>::value,     /// MIH_DeRegister.request
+		event_subscribe           = msg_id<1, 1, 4>::value,     /// MIH_Event_Subscribe.request
+		event_unsubscribe         = msg_id<1, 1, 5>::value,     /// MIH_Event_Unsubscribe.request
+		link_get_parameters       = msg_id<3, 1, 1>::value,     /// MIH_Link_Get_Parameters.request
+		link_configure_thresholds = msg_id<3, 1, 2>::value,     /// MIH_Link_Configure_Thresholds.request
+		link_actions              = msg_id<3, 1, 3>::value,     /// MIH_Link_Actions.request
+		net_ho_candidate_query    = msg_id<3, 1, 4>::value,     /// MIH_Net_HO_Candidate_Query.request
+		mn_ho_candidate_query     = msg_id<3, 1, 5>::value,     /// MIH_MN_HO_Candidate_Query.request
+		n2n_ho_query_resources    = msg_id<3, 1, 6>::value,     /// MIH_N2N_HO_Query_Resources.request
+		mn_ho_commit              = msg_id<3, 1, 7>::value,     /// MIH_MN_HO_Commit.request
+		net_ho_commit             = msg_id<3, 1, 8>::value,     /// MIH_Net_HO_Commit.request
+		n2n_ho_commit             = msg_id<3, 1, 9>::value,     /// MIH_N2N_HO_Commit.request
+		mn_ho_complete            = msg_id<3, 1, 10>::value,    /// MIH_N2N_HO_Complete.request
+		n2n_ho_complete           = msg_id<3, 1, 11>::value,    /// MIH_N2N_HO_Commlete.request
+		get_information           = msg_id<4, 1, 1>::value,     /// MIH_Get_Information.request
+		push_information          = msg_id<4, 1, 2>::value,     /// MIH_Push_Information.request
+	};
+``
+
+[endsect]
+
+
+
+[section:odtone_mih_response_class 2.5. odtone::mih::response Class Reference]
+
+[heading Detailed Description]
+
+[$./images/odtone::mih::response.png]
+
+[*MIH Response Message helper.]
+
+This class permits parsing/generating MIH Response messages. It derives from
+[link odtone.odtone_mih_message_helper_class odtone::mih::message_helper] and
+will inherit all the features from base class.
+
+[heading Namespace]
+
+``
+	namespace odtone { namespace mih {
+		// ...
+	} /* namespace mih */ } /* namespace odtone */
+``
+
+[heading Public Member Functions]
+
+``
+	response();
+	explicit response(mid m);
+	response(mid m, const id& destination);
+
+``
+
+[heading Constructor & Destructor Documentation]
+
+``
+	response();
+``
+Construct an MIH Response Message helper with MIH Message ID equals to 0 (zero)
+and a [~null] pointer for MIH Message Destination MIHF ID.
+
+______________________________________________________________________________
+
+``
+	explicit response(mid m);
+``
+Construct an MIH Response Message helper.
+
+[*Parameters:]
+
+*[*m] - value of MIH Message ID.
+
+______________________________________________________________________________
+
+``
+	response(mid m,
+	         const id& destination);
+``
+Construct an MIH Response Message helper.
+
+[*Parameters:]
+
+*[*m] - value of MIH Message ID.
+*[*destination] - MIH Message Destination MIHF ID.
+
+[heading Data Types]
+
+``
+	enum mid {
+		capability_discover       = msg_id<1, 2, 1>::value,          /// MIH_Capability_Discover.response
+		mih_register              = msg_id<1, 2, 2>::value,          /// MIH_Register.response
+		mih_deregister            = msg_id<1, 2, 3>::value,          /// MIH_DeRegister.response
+		event_subscribe           = msg_id<1, 2, 4>::value,          /// MIH_Event_Subscribe.response
+		event_unsubscribe         = msg_id<1, 2, 5>::value,          /// MIH_Event_Unsubscribe.response
+		link_get_parameters       = msg_id<3, 2, 1>::value,          /// MIH_Link_Get_Parameters.response
+		link_configure_thresholds = msg_id<3, 2, 2>::value,          /// MIH_Link_Configure_Thresholds.response
+		link_actions              = msg_id<3, 2, 3>::value,          /// MIH_Link_Actions.response
+		net_ho_candidate_query    = msg_id<3, 2, 4>::value,          /// MIH_Net_HO_Candidate_Query.response
+		mn_ho_candidate_query     = msg_id<3, 2, 5>::value,          /// MIH_MN_HO_Candidate_Query.response
+		n2n_ho_query_resources    = msg_id<3, 2, 6>::value,          /// MIH_N2N_HO_Query_Resources.response
+		mn_ho_commit              = msg_id<3, 2, 7>::value,          /// MIH_MN_HO_Commit.response
+		net_ho_commit             = msg_id<3, 2, 8>::value,          /// MIH_Net_HO_Commit.response
+		n2n_ho_commit             = msg_id<3, 2, 9>::value,          /// MIH_N2N_HO_Commit.response
+		mn_ho_complete            = msg_id<3, 2, 10>::value,         /// MIH_N2N_HO_Complete.response
+		n2n_ho_complete           = msg_id<3, 2, 11>::value,         /// MIH_N2N_HO_Commlete.response
+		get_information           = msg_id<4, 2, 1>::value,          /// MIH_Get_Information.response
+	};
+``
+
+[endsect]
+
+
+
+
+
+[section:odtone_mih_config_class 2.6. odtone::mih::config Class Reference]
+
+[heading Detailed Description]
+
+[*Configuration and command line options parser.]
+
+This class provides parsing for command line options and configuration files for
+a set of predefined options description. It's used for configuring the
+odtone::sap IO services and the odtone MIHF implementation.
+
+[heading Namespace]
+
+``
+	namespace odtone { namespace mih {
+		// ...
+	} /* namespace mih */ } /* namespace odtone */
+``
+
+[heading Public Member Functions]
+
+``
+	config(boost::program_options::options_description &desc);
+	~config();
+
+	bool help();
+	void parse(int argc, char* argv[], const char* conf_file_option);
+
+	template<class T>
+	T get(const char* var) const;
+	uint count(const char *var);
+``
+
+[heading Constructor & Destructor Documentation]
+
+``
+	config(boost::program_options::options_description &desc);
+``
+
+Construct a Configuration and Command Line Options Parser.
+
+[*Parameters:]
+
+*[*desc] - a set of option descriptions.
+
+______________________________________________________________________________
+
+``
+	~config();
+``
+
+Destructor for Configuration and Command Line Options Parser.
+
+[heading Member Function Documentation]
+
+``
+	bool help();
+``
+
+Check if the ['help] option was specified
+
+[*Return]
+
+*[*true] if the ['help] option is present or [*false] otherwise.
+
+______________________________________________________________________________
+
+``
+	void parse(int argc,
+	           char* argv[],
+	           const char* conf_file_option);
+``
+
+Parse the command line arguments.
+
+[*Parameters:]
+
+*[*argc] - number of arguments passed through the command line.
+*[*argv] - arguments passed through the command line.
+*[*conf_file_option] - name of configuration file.
+
+______________________________________________________________________________
+
+
+``
+	template<class T>
+	T get(const char* var) const;
+``
+
+Get option variable value.
+
+[*Parameters:]
+
+*[*var] - variable name.
+
+[*Return]
+
+*Option variable value.
+
+______________________________________________________________________________
+
+``
+	uint count(const char *var);
+``
+
+Get number of option variable.
+
+[*Parameters:]
+
+*[*var] - variable name.
+
+[*Return]
+
+*Number of option variable.
+
+[endsect]
+
+
+
+
+
+
+[section:odtone_mih_archive_class 2.7. odtone::mih::archive Class Reference]
+
+[heading Detailed Description]
+
+[*Archive.]
+
+Provides serialization/deserialization for all payload data types, except
+destination and source ID's that are serialize/deserialize in
+[link odtone.odtone_mih_archive_class odtone::mih::message].
+
+[heading Namespace]
+
+``
+	namespace odtone { namespace mih {
+		// ...
+	} /* namespace mih */ } /* namespace odtone */
+``
+
+[heading Public Member Functions]
+
+``
+	archive();
+	~archive();
+
+	void clear();
+	void swap(std::vector<uint8>& buffer);
+	void buffer(const uint8* buf, size_t len);
+
+	template<class InputIteratorT>
+	void append(InputIteratorT begin, InputIteratorT end);
+
+	const_iterator begin() const;
+	const_iterator end() const;
+
+	std::vector<uint8>& buffer();
+
+	iarchive input();
+	oarchive output();
+
+	void position(uint pos);
+	uint position() const;
+``
+
+[heading Constructor & Destructor Documentation]
+
+``
+	archive();
+``
+Construct an archive.
+
+______________________________________________________________________________
+
+``
+	~archive();
+``
+
+Destructor for archive.
+
+[heading Member Function Documentation]
+
+``
+	void clear();
+``
+
+Clear the contents of the archive.
+
+Its size is set to 0 (zero) and the actual position is set to 0 (zero) too.
+
+______________________________________________________________________________
+
+``
+	void swap(std::vector<uint8>& buffer);
+``
+
+Exchanges the content of the vector by the content of ['buffer], which is another
+vector of the same type. Sizes may differ.
+
+After the call to this member function, the elements in this container are those
+which were in ['buffer] before the call, and the elements of ['buffer] are those
+which were in this. All iterators, references and pointers remain valid for the
+swapped vectors.
+
+[*Parameters:]
+
+*[*buffer] - a vector providing the elements to be swapped, or a vector whose
+elements are to be exchanged with the actual ones.
+
+______________________________________________________________________________
+
+``
+	void buffer(const uint8* buf,
+	            size_t len);
+``
+
+Fills archive's contents.
+
+[*Parameters:]
+
+*[*buf] - the elements to be copied to the archive.
+*[*len] - new archive's size.
+
+______________________________________________________________________________
+
+``
+	template<class InputIteratorT>
+	void append(InputIteratorT begin,
+	            InputIteratorT end);
+
+``
+
+Inserts an element or a number of elements or a range of elements into the
+archive at a specified position.
+
+[*Parameters:]
+
+*[*begin] - the position of the first element in the range of elements to be
+copied.
+
+*[*end] - The position of the first element beyond the range of elements to be
+copied.
+
+______________________________________________________________________________
+
+``
+	const_iterator begin() const;
+``
+
+A random-access iterator addressing the first element in the archive or to the
+location succeeding an empty archive. You should always compare the value returned
+with vector::end to ensure it is valid.
+
+[*Return]
+
+*Returns a random-access iterator to the first element in the container.
+
+______________________________________________________________________________
+
+``
+	const_iterator end() const;
+``
+
+A random-access iterator to the end of the archive object. If the archive is
+empty, vector::end == vector::begin.
+
+[*Return]
+
+*Returns a random-access iterator that points just beyond the end of the archive.
+
+______________________________________________________________________________
+
+``
+	std::vector<uint8>& buffer();
+``
+
+Get archive's contents.
+
+[*Return]
+
+*The archive's contents.
+
+______________________________________________________________________________
+
+``
+	iarchive input();
+``
+
+Get the corresponding [link odtone.odtone_mih_iarchive_class odtone::mih::iarchive].
+
+[*Return]
+
+*The corresponding [link odtone.odtone_mih_iarchive_class odtone::mih::iarchive].
+
+______________________________________________________________________________
+
+``
+	oarchive output();
+``
+
+Get the corresponding [link odtone.odtone_mih_oarchive_class odtone::mih::oarchive].
+
+[*Return]
+
+*The corresponding [link odtone.odtone_mih_oarchive_class odtone::mih::oarchive].
+
+______________________________________________________________________________
+
+``
+	void position(uint pos);
+``
+
+Point to a new position in the archive.
+
+[*Parameters:]
+
+*[*pos] - new position in the archive where to point.
+
+______________________________________________________________________________
+
+``
+	uint position() const;
+``
+
+Get the current position in the archive.
+
+[*Return]
+
+*The current position in the archive
+
+[endsect]
+
+
+
+
+
+[section:odtone_mih_iarchive_class 2.8. odtone::mih::iarchive Class Reference]
+
+[heading Detailed Description]
+
+[*Input Archive.]
+
+The MIH types support deserialization for the odtone::mih::iarchive. This
+particular archive does not include the TLV field, that is necessary in order to
+support defining new sequence types from existing MIH types.
+
+[heading Namespace]
+
+``
+	namespace odtone { namespace mih {
+		// ...
+	} /* namespace mih */ } /* namespace odtone */
+``
+
+[heading Public Member Functions]
+
+``
+	iarchive(archive& ar);
+	iarchive(archive& ar, uint length);
+	iarchive(iarchive& ar, uint length);
+
+	void reset(archive& ar);
+
+	void position(uint pos);
+	uint position() const;
+	uint length() const;
+
+	const_iterator begin() const;
+	const_iterator end() const;
+
+	uint list_length();
+
+	iarchive& operator&(bool& val);
+	iarchive& operator&(uint8& val);
+	iarchive& operator&(uint16& val);
+	iarchive& operator&(uint32& val);
+	iarchive& operator&(uint64& val);
+	iarchive& operator&(sint8& val);
+	iarchive& operator&(sint16& val);
+	iarchive& operator&(sint32& val);
+	iarchive& operator&(sint64& val);
+	iarchive& operator&(octet_string& val);
+	iarchive& operator&(std::vector<uint8>& buf);
+``
+
+[heading Constructor & Destructor Documentation]
+``
+	iarchive(archive& ar);
+``
+
+Construct an input archive.
+
+[*Parameters:]
+
+*[*ar] - [link odtone.odtone_mih_archive_class odtone::mih::archive] from where
+parse the values.
+
+______________________________________________________________________________
+
+``
+	iarchive(archive& ar, uint length);
+``
+
+Construct an input archive.
+
+[*Parameters:]
+
+*[*ar] - [link odtone.odtone_mih_archive_class odtone::mih::archive] from where
+parse the values.
+*[*length] - length for the input archive.
+
+______________________________________________________________________________
+
+``
+	iarchive(iarchive& ar, uint length);
+``
+
+Construct an input archive.
+
+[*Parameters:]
+
+*[*ar] - [link odtone.odtone_mih_iarchive_class odtone::mih::iarchive] from where
+parse the values.
+*[*length] - length for the input archive.
+
+[heading Member Function Documentation]
+
+``
+	void reset(archive& ar);
+``
+
+Construct a new input archive.
+
+[*Parameters:]
+
+*[*ar] - [link odtone.odtone_mih_archive_class odtone::mih::archive] from where
+parse the new values.
+
+______________________________________________________________________________
+
+``
+	void position(uint pos);
+``
+
+Point to a new position in the input archive.
+
+[*Parameters:]
+
+*[*pos] - new position in the archive where to point.
+
+______________________________________________________________________________
+
+``
+	uint position() const;
+``
+
+Get the current position in the input archive.
+
+[*Return]
+
+*The current position in the input archive
+
+______________________________________________________________________________
+
+``
+	uint length() const;
+``
+
+Get the length of the input archive.
+
+[*Return]
+
+*The length of the input archive.
+
+______________________________________________________________________________
+
+``
+	const_iterator begin() const;
+``
+
+A random-access iterator addressing the first element in the input archive or to the
+location succeeding an empty input archive. You should always compare the value
+returned with vector::end to ensure it is valid.
+
+[*Return]
+
+*Returns a random-access iterator to the first element in the container.
+
+______________________________________________________________________________
+
+``
+	const_iterator end() const;
+``
+
+A random-access iterator to the end of the input archive object. If the input
+archive is empty, vector::end == vector::begin.
+
+[*Return]
+
+*Returns a random-access iterator that points just beyond the end of the input
+archive.
+
+______________________________________________________________________________
+
+``
+	uint list_length();
+``
+
+Get the size of a list of a particular type.
+
+[*Return]
+
+*The size of a list of a particular type.
+
+______________________________________________________________________________
+
+``
+	iarchive& operator&(bool& val);
+``
+
+Get a boolean type value from the current position in the input archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to save the value.
+
+[*Return]
+
+*Returns the input archive.
+
+______________________________________________________________________________
+
+``
+	iarchive& operator&(uint8& val);
+``
+
+Get a uint8 type value from the current position in the input archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to save the value.
+
+[*Return]
+
+*Returns the input archive.
+
+__________________________________________________________________
+
+``
+	iarchive& operator&(uint16& val);
+``
+
+Get a uint16 type value from the current position in the input archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to save the value.
+
+[*Return]
+
+*Returns the input archive.
+
+__________________________________________________________________
+
+``
+	iarchive& operator&(uint32& val);
+``
+
+Get a uint32 type value from the current position in the input archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to save the value.
+
+[*Return]
+
+*Returns the input archive.
+
+__________________________________________________________________
+
+``
+	iarchive& operator&(uint64& val);
+``
+
+Get a uint64 type value from the current position in the input archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to save the value.
+
+[*Return]
+
+*Returns the input archive.
+
+__________________________________________________________________
+
+``
+	iarchive& operator&(sint8& val);
+``
+
+Get a sint8 type value from the current position in the input archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to save the value.
+
+[*Return]
+
+*Returns the input archive.
+
+__________________________________________________________________
+
+``
+	iarchive& operator&(sint16& val);
+``
+
+Get a sint16 type value from the current position in the input archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to save the value.
+
+[*Return]
+
+*Returns the input archive.
+
+__________________________________________________________________
+
+``
+	iarchive& operator&(sint32& val);
+``
+
+Get a sint32 type value from the current position in the input archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to save the value.
+
+[*Return]
+
+*Returns the input archive.
+
+__________________________________________________________________
+
+``
+	iarchive& operator&(sint64& val);
+``
+
+Get a sint64 type value from the current position in the input archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to save the value.
+
+[*Return]
+
+*Returns the input archive.
+
+__________________________________________________________________
+
+``
+	iarchive& operator&(octet_string& val);
+``
+
+Get a odtone::mih::octet_string type value from the current position in the input
+archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to save the value.
+
+[*Return]
+
+*Returns the input archive.
+
+__________________________________________________________________
+
+``
+	iarchive& operator&(std::vector<uint8>& buf);
+``
+
+Get a list of a particular type value from the current position in the input
+archive.
+
+[*Parameters:]
+
+*[*buf] - Reference where to save the list.
+
+[*Return]
+
+*Returns the input archive.
+
+[endsect]
+
+
+
+
+
+
+
+
+[section:odtone_mih_oarchive_class 2.9. odtone::mih::oarchive Class Reference]
+
+[heading Detailed Description]
+
+[*Output Archive.]
+
+The MIH types support serialization for the odtone::mih::oarchive. This
+particular archive does not include the TLV field, that is necessary in order to
+support defining new sequence types from existing MIH types.
+
+[heading Namespace]
+
+``
+	namespace odtone { namespace mih {
+		// ...
+	} /* namespace mih */ } /* namespace odtone */
+``
+
+[heading Public Member Functions]
+
+``
+	oarchive(archive& ar);
+
+	void reset(archive& ar);
+
+	template<class InputIteratorT>
+	void append(InputIteratorT begin, InputIteratorT end);
+
+	void position(uint pos);
+	uint position() const;
+	uint length() const;
+
+	void list_length(uint len);
+
+	oarchive& operator&(bool& val);
+	oarchive& operator&(uint8& val);
+	oarchive& operator&(uint16& val);
+	oarchive& operator&(uint32& val);
+	oarchive& operator&(uint64& val);
+	oarchive& operator&(sint8& val);
+	oarchive& operator&(sint16& val);
+	oarchive& operator&(sint32& val);
+	oarchive& operator&(sint64& val);
+	oarchive& operator&(octet_string& val);
+	oarchive& operator&(std::vector<uint8>& buf);
+``
+
+[heading Constructor & Destructor Documentation]
+
+``
+	oarchive(archive& ar);
+``
+
+Construct an output archive.
+
+[*Parameters:]
+
+*[*ar] - [link odtone.odtone_mih_archive_class odtone::mih::archive] from where
+parse the values.
+
+[heading Member Function Documentation]
+
+``
+	void reset(archive& ar);
+``
+
+Construct a new output archive.
+
+[*Parameters:]
+
+*[*ar] - [link odtone.odtone_mih_archive_class odtone::mih::archive] from where
+parse the new values.
+
+______________________________________________________________________________
+
+``
+	template<class InputIteratorT>
+	void append(InputIteratorT begin, InputIteratorT end);
+
+``
+
+Inserts an element or a number of elements or a range of elements into the
+output archive at a specified position.
+
+[*Parameters:]
+
+*[*begin] - the position of the first element in the range of elements to be
+copied.
+
+*[*end] - The position of the first element beyond the range of elements to be
+copied.
+
+______________________________________________________________________________
+
+``
+	void position(uint pos);
+``
+
+Point to a new position in the output archive.
+
+[*Parameters:]
+
+*[*pos] - new position in the output archive where to point.
+
+______________________________________________________________________________
+
+``
+	uint position() const;
+``
+
+Get the current position in the output archive.
+
+[*Return]
+
+*The current position in the output archive
+
+______________________________________________________________________________
+
+``
+	uint length() const;
+``
+
+Get the length of the output archive.
+
+[*Return]
+
+*The length of the output archive.
+
+______________________________________________________________________________
+
+``
+	void list_length(uint len);
+``
+
+Inserts the size of a list of a particular type.
+
+[*Parameters:]
+
+*[*len] - the size of a list of a particular type.
+
+______________________________________________________________________________
+
+``
+	oarchive& operator&(bool& val);
+``
+
+Inserts a boolean type value from the current position in the output archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to get the value to insert.
+
+[*Return]
+
+*Returns the output archive.
+
+______________________________________________________________________________
+
+``
+	oarchive& operator&(uint8& val);
+``
+
+Inserts a uint8 type value from the current position in the output archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to get the value to insert.
+
+[*Return]
+
+*Returns the output archive.
+
+__________________________________________________________________
+
+``
+	oarchive& operator&(uint16& val);
+``
+
+Inserts a uint16 type value from the current position in the output archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to get the value to insert.
+
+[*Return]
+
+*Returns the output archive.
+
+__________________________________________________________________
+
+``
+	oarchive& operator&(uint32& val);
+``
+
+Inserts a uint32 type value from the current position in the output archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to get the value to insert.
+
+[*Return]
+
+*Returns the output archive.
+
+__________________________________________________________________
+
+``
+	oarchive& operator&(uint64& val);
+``
+
+Inserts a uint64 type value from the current position in the output archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to get the value to insert.
+
+[*Return]
+
+*Returns the output archive.
+
+__________________________________________________________________
+
+``
+	oarchive& operator&(sint8& val);
+``
+
+Inserts a sint8 type value from the current position in the output archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to get the value to insert.
+
+[*Return]
+
+*Returns the output archive.
+
+__________________________________________________________________
+
+``
+	oarchive& operator&(sint16& val);
+``
+
+Inserts a sint16 type value from the current position in the output archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to get the value to insert.
+
+[*Return]
+
+*Returns the output archive.
+
+__________________________________________________________________
+
+``
+	oarchive& operator&(sint32& val);
+``
+
+Inserts a sint32 type value from the current position in the output archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to get the value to insert.
+
+[*Return]
+
+*Returns the output archive.
+
+__________________________________________________________________
+
+``
+	oarchive& operator&(sint64& val);
+``
+
+Inserts a sint64 type value from the current position in the output archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to get the value to insert.
+
+[*Return]
+
+*Returns the output archive.
+
+__________________________________________________________________
+
+``
+	oarchive& operator&(octet_string& val);
+``
+
+Inserts a odtone::mih::octet_string type value from the current position in the
+output archive.
+
+[*Parameters:]
+
+*[*val] - Reference where to get the value to insert.
+
+[*Return]
+
+*Returns the output archive.
+
+__________________________________________________________________
+
+``
+	oarchive& operator&(std::vector<uint8>& buf);
+``
+
+Inserts a list of a particular type value from the current position in the output
+archive.
+
+[*Parameters:]
+
+*[*buf] - Reference where to get the list to insert.
+
+[*Return]
+
+*Returns the output archive.
+
+[endsect]
+
+
+
+
+
+
+
+[section:odtone_mih_is_iarchive_class 2.10. odtone::mih::is_iarchive Class Reference]
+
+[heading Detailed Description]
+
+This class permits to check if a given class is an input archive.
+
+It has only a boolean value that is true when the given class is an input archive,
+or false otherwise.
+
+[heading Namespace]
+
+``
+	namespace odtone { namespace mih {
+		// ...
+	} /* namespace mih */ } /* namespace odtone */
+``
+
+[endsect]
+
+
+
+
+
+[section:odtone_mih_is_oarchive_class 2.11. odtone::mih::is_oarchive Class Reference]
+
+[heading Detailed Description]
+
+This class permits to check if a given class is an output archive.
+
+It has only a boolean value that is true when the given class is an output archive,
+or false otherwise.
+
+[heading Namespace]
+
+``
+	namespace odtone { namespace mih {
+		// ...
+	} /* namespace mih */ } /* namespace odtone */
+``
+
+[endsect]
+
+
+
+
+[section:odtone_mih_tlv_type_class 2.12. odtone::mih::tlv'''_type_''' Class Reference]
+
+[heading Detailed Description]
+
+[*TLV Type.]
+
+The MIH types support serialization and deserialization for the
+[link odtone.odtone_mih_iarchive_class odtone::mih::iarchive] and
+[link odtone.odtone_mih_oarchive_class odtone::mih::oarchive], however those
+particular archives does not include the TLVs fields.
+
+So odtone::mih::tlv'''_type_''' is responsible to manage TLVs and offers
+mechanisms to serialize and deserialize them.
+
+There are 2 types of this class. However, since they are similar, we will
+explain them generically:
+
+*odtone::mih::tlv'''_type_'''< T, TLV >
+*odtone::mih::tlv'''_type_'''< boost::optional< T >, TLV >
+
+[heading Namespace]
+
+``
+	namespace odtone { namespace mih {
+		// ...
+	} /* namespace mih */ } /* namespace odtone */
+``
+
+[heading Public Member Functions]
+
+``
+	tlv_type_(T& val);
+
+	void serialize(iarchive& ar) const;
+	void serialize(oarchive& ar) const;
+``
+
+[heading Constructor & Destructor Documentation]
+``
+	tlv_type_(T& val);
+``
+
+Construct a TLV of a particular type.
+
+[*Parameters:]
+
+*[*val] - value of the TLV.
+
+[heading Member Function Documentation]
+
+``
+	void serialize(iarchive& ar) const;
+``
+
+Deserialize the TLV type value from the input archive.
+
+[*Parameters:]
+
+*[*ar] - [link odtone.odtone_mih_iarchive_class odtone::mih::iarchive] from where
+parse the TLV value.
+
+______________________________________________________________________________
+
+``
+	void serialize(oarchive& ar) const;
+``
+
+Serialize the TLV type value to the output archive.
+
+[*Parameters:]
+
+*[*ar] - [link odtone.odtone_mih_oarchive_class odtone::mih::oarchive] to where
+serialize the TLV value.
+
+[endsect]
+
+
+
+
+
+
+[section:odtone_mih_tlv_cast_class 2.13. odtone::mih::tlv'''_cast_'''<T, TLV> Class Reference]
+
+[heading Detailed Description]
+
+[*TLV Cast.]
+
+This class permits the cast between the number of TLV and the data type presented
+in it, and the correspondent TLV type.
+
+[heading Namespace]
+
+``
+	namespace odtone { namespace mih {
+		// ...
+	} /* namespace mih */ } /* namespace odtone */
+``
+
+[heading Public Member Functions]
+
+``
+	tlv_type operator()(const T& val) const;
+	tlv_optional_type operator()(const boost::optional<T>& val) const;
+``
+
+[heading Member Function Documentation]
+
+``
+	tlv_type operator()(const T& val) const;
+``
+
+Cast between the number of TLV and the data type presented in it, and the
+correspondent TLV type.
+
+[*Parameters:]
+
+*[*val] - value of the TLV.
+
+[*Return:]
+
+*The correspondent TLV type.
+
+______________________________________________________________________________
+
+``
+	tlv_optional_type operator()(const boost::optional<T>& val) const;
+``
+
+Cast between the number of TLV and the data type presented in it, and the
+correspondent TLV type.
+
+However it supports optional value.
+
+[*Parameters:]
+
+*[*val] - value of the TLV.
+
+[*Return:]
+
+*The correspondent TLV type.
+
+
+[endsect]
+
+
+
+[section:odtone_mih_is_tlv_type_class 2.14. odtone::mih::is_tlv_type Class Reference]
+
+[heading Detailed Description]
+
+This class permits to check if a given class is a TLV.
+
+It has only a boolean value that is true when the given class is a TLV, or false
+otherwise.
+
+[heading Namespace]
+
+``
+	namespace odtone { namespace mih {
+		// ...
+	} /* namespace mih */ } /* namespace odtone */
+``
+
+[endsect]
+
+
+
+[section:mih_data_types 3. Data Types]
+
+[heading Namespace]
+
+``
+	namespace odtone { namespace mih {
+		// ...
+	} /* namespace mih */ } /* namespace odtone */
+``
+
+
+[table Basic data types
+    [[Data type (Standard)]      		[Data type (ODTONE)]]
+    [[BITMAP(size)] 					[bitmap]			]
+    [[CHOICE\(DATATYPE1, DATATYPE2\[,...\]\)] 	[boost::variant(DATATYPE1, DATATYPE2\[,...\])]]
+	[[INFO_ELEMENT]						[see inc/odtone/mih/types/information_elements.hpp]]
+	[[INTEGER(size)]					[sint]				]
+	[[LIST(DATATYPE)]					[data types that can be grouped in a list have a proper type named <data type>_list]]
+	[[NULL]								[null]				]
+	[[OCTET(size)]						[octet]				]
+	[[SEQUENCE\(DATATYPE1, DATATYPE2\[,...\]\)]	[All sequence types defined on standard are properly defined in the correspondent data type]]
+	[[UNSIGNED_INT(size)]				[uint]				]
+]
+
+[table General data types
+    [[Data type (Standard)]				[Data type (ODTONE)]]
+    [[ENUMERATED] 						[enumeration]		]
+    [[BOOLEAN]							[bool]				]
+	[[OCTET_STRING]						[octet_string]		]
+	[[PERCENTAGE]						[percentage]		]
+	[[STATUS]							[status]			]
+]
+
+[table Data types for address
+    [[Data type (Standard)]    			[Data type (ODTONE)]]
+    [[3GPP_2G_CELL_ID] 					[l2_3gpp_2g_cell_id]]
+    [[3GPP_3G_CELL_ID]					[l2_3gpp_3g_cell_id]]
+	[[3GPP_ADDR]						[l2_3gpp_addr]		]
+	[[3GPP2_ADDR]						[l2_3gpp2_addr]		]
+	[[CELL_ID]							[cell_id]			]
+	[[CI]								[ci]				]
+	[[IP_ADDR]							[ip_addr]			]
+	[[LAC]								[lac]				]
+	[[LINK_ADDR]						[link_addr]			]
+	[[MAC_ADDR]							[mac_addr]			]
+	[[OTHER_L2_ADDR]					[other_l2_addr]		]
+	[[PLMN_ID]							[uint8\[3\]]		]
+	[[TRANSPORT_ADDR]					[transport_addr]	]
+]
+
+[table Data types for links
+    [[Data type (Standard)]      		[Data type (ODTONE)]]
+    [[BATT_LEVEL] 						[batt_level]		]
+    [[CHANNEL_ID]						[channel_id]		]
+	[[CONFIG_STATUS]					[config_status]		]
+	[[DEVICE_INFO]						[device_info]		]
+	[[DEV_STATES_REQ]					[dev_states_req]	]
+	[[DEV_STATES_RSP]					[dev_states_rsp]	]
+	[[LINK_AC_EX_TIME]					[link_ac_ex_time]	]
+	[[LINK_AC_RESULT]					[link_ac_result]	]
+	[[LINK_ACTION]						[link_action]		]
+	[[LINK_AC_ATTR]						[link_ac_attr]		]
+	[[LINK_ACTION_REQ]					[link_action_req]	]
+	[[LINK_ACTION_RSP]					[link_action_rsp]	]
+	[[LINK_AC_TYPE]						[link_ac_type]		]
+	[[LINK_CFG_PARAM]					[link_cfg_param]	]
+	[[LINK_CFG_STATUS]					[link_cfg_status]	]
+	[[LINK_DESC_REQ]					[link_desc_req]		]
+	[[LINK_DESC_RSP]					[link_desc_rsp]		]
+	[[LINK_DATA_RATE]					[data_rate]			]
+	[[LINK_DN_REASON]					[link_dn_reason]	]
+	[[LINK_EVENT_LIST]					[event_list]		]
+	[[LINK_GD_REASON]					[link_gd_reason]	]
+	[[LINK_ID]							[link_id]			]
+	[[LINK_MIHCAP_FLAG]					[link_mihcap_flag]	]
+	[[LINK_PARAM]						[link_param]		]
+	[[LINK_PARAM_802_11]				[link_param_802_11]	]
+	[[LINK_PARAM_802_16]				[link_param_802_16]	]
+	[[LINK_PARAM_802_20]				[link_param_802_20]	]
+	[[LINK_PARAM_802_22]				[link_param_802_22]	]
+	[[LINK_PARAM_C2K]					[link_param_c2k]	]
+	[[LINK_PARAM_HRPD]					[link_param_hrpd]	]
+	[[LINK_PARAM_EDGE]					[link_param_edge]	]
+	[[LINK_PARAM_ETH]					[link_param_eth]	]
+	[[LINK_PARAM_GEN]					[link_param_gen]	]
+	[[LINK_PARAM_GG]					[link_param_gg]		]
+	[[LINK_PARAM_QOS]					[link_param_qos]	]
+	[[LINK_PARAM_RPT]					[link_param_report]	]
+	[[LINK_PARAM_TYPE]					[link_param_type]	]
+	[[LINK_PARAM_VAL]					[link_param_val]	]
+	[[LINK_PARAM_FDD]					[link_param_ffd]	]
+	[[LINK_POA_LIST]					[link_poa_list]		]
+	[[LINK_RES_STATUS]					[link_res_status]	]
+	[[LINK_SCAN_RSP]					[link_scan_rsp]		]
+	[[LINK_STATES_REQ]					[link_states_req]	]
+	[[LINK_STATES_RSP]					[link_states_rsp]	]
+	[[LINK_STATUS_REQ]					[link_status_req]	]
+	[[LINK_STATUS_RSP]					[link_status_rsp]	]
+	[[LINK_TUPLE_ID]					[link_tuple_id]		]
+	[[LINK_TYPE]						[link_type]			]
+	[[NUM_COS]							[num_cos]			]
+	[[NUM_QUEUE]						[num_queue]			]
+	[[OP_MODE]							[op_mode]			]
+	[[SIG_STRENGTH]						[sig_strength]		]
+	[[TH_ACTION]						[th_action]			]
+	[[THRESHOLD]						[threshold]			]
+	[[THRESHOLD_VAL]					[uint16]			]
+	[[THRESHOLD_X_DIR]					[enumeration<threshold::type_ip_enum>]]
+	[[TIMER_INTERVAL]					[uint16]			]
+]
+
+[table Data types for QoS
+    [[Data type (Standard)]      		[Data type (ODTONE)]]
+    [[QOS_LIST] 						[qos_list]			]
+    [[NUM_COS_TYPES]					[num_cos_types]		]
+	[[MIN_PK_TX_DELAY]					[min_pk_tx_delay]	]
+	[[AVG_PK_TX_DELAY]					[avg_pk_tx_delay]	]
+	[[MAX_PK_TX_DELAY]					[max_pk_tx_delay]	]
+	[[PK_DELAY_JITTER]					[pk_delay_jitter]	]
+	[[PK_LOSS_RATE]						[pk_loss_rate]		]
+	[[COS_ID]							[cos_id]			]
+	[[QOS_PARAM_VAL]					[qos_param_val]		]
+]
+
+[table Data types for location
+    [[Data type (Standard)]      		[Data type (ODTONE)]]
+	[[LOCATION]							[location]			]
+	[[CIVIL_LOC]						[civic_location]	]
+	[[BIN_CIVIC_LOC]					[bin_civic_location]]
+	[[XML_CIVIC_LOC]					[xml_civic_location]]
+	[[CIVIC_ADDR]						[civic_addr]		]
+	[[GEO_LOC]							[geo_location]		]
+	[[BIN_GEO_LOC]						[bin_geo_location]	]
+	[[XML_GEO_LOC]						[xml_geo_location]	]
+]
+
+[table Data types for IP configuration
+    [[Data type (Standard)]      		[Data type (ODTONE)]]
+	[[IP_CFG_MTHDS]						[ip_cfg_methods]	]
+	[[IP_MOB_MGMT]						[ip_mob_mgmt]		]
+	[[IP_PREFIX_LEN]					[ip_prefix_len]		]
+	[[IP_RENEWAL_FLAG]					[ip_renewal_flag]	]
+	[[IP_SUBNET_INFO]					[ip_subnet_info]	]
+]
+
+[table Data types for information elements
+    [[Data type (Standard)]      		[Data type (ODTONE)]]
+	[[NET_AUX_ID]						[net_aux_id]		]
+	[[NETWORK_ID]						[network_id]		]
+	[[BAND_CLASS]						[band_class]		]
+	[[BANDWIDTH]						[bandwidth]			]
+	[[BASE_ID]							[base_id]			]
+	[[BURST_PROF]						[burst_prof]		]
+	[[CH_RANGE]							[ch_range]			]
+	[[COST]								[cost]				]
+	[[COST_CURR]						[cost_curr]			]
+	[[COST_UNIT]						[cost_unit]			]
+	[[COST_VALUE]						[cost_value]		]
+	[[CNTRY_CODE]						[cntry_code]		]
+	[[DATA_RATE]						[data_rate]			]
+	[[DCD_UCD]							[dcd_udc]			]
+	[[DOWN_BP]							[down_bp]			]
+	[[EIRP]								[eirp]				]
+	[[FQDN]								[fqdn]				]
+	[[DU_CTR_FREQ]						[du_ctr_freq]		]
+	[[FREQ_BANDS]						[freq_bands]		]
+	[[FREQ_ID]							[freq_id]			]
+	[[FQ_CODE_NUM]						[fq_code_num]		]
+	[[GAP]								[gap]				]
+	[[HO_CODE]							[ho_code]			]
+	[[INIT_CODE]						[init_code]			]
+	[[IP4_ADDR]							[ip4_addr]			]
+	[[IP6_ADDR]							[ip6_addr]			]
+	[[IP_CONFIG]						[ip_config]			]
+	[[NET_CAPS]							[net_caps]			]
+	[[NETWORK_TYPE]						[network_type]		]
+	[[OPERATOR_ID]						[operator_id]		]
+	[[OP_NAME]							[op_name]			]
+	[[OP_NAMESPACE]						[op_namespace]		]
+	[[PARAMETERS]						[parameters]		]
+	[[PILOT_PN]							[pilot_pn]			]
+	[[PROXY_ADDR]						[proxy_addr]		]
+	[[CDMA_CODES]						[cdma_codes]		]
+	[[REGU_DOMAIN]						[regu_domain]		]
+	[[SUBTYPE]							[netsubtype]		]
+	[[SIB]								[sib]				]
+	[[SUPPORTED_LCP]					[supported_lcp]		]
+	[[SYSTEM_INFO]						[system_info]		]
+	[[SYS_PARAMS]						[sys_params]		]
+	[[TYPE_EXT]							[type_ext]			]
+	[[UP_BP]							[up_bp]				]
+]
+
+[table Data types for binary query
+    [[Data type (Standard)]      		[Data type (ODTONE)]]
+    [[CURR_PREF] 						[curr_pref]			]
+    [[IE_TYPE]							[ie_type]			]
+	[[IQ_BIN_DATA]						[iq_bin_data]		]
+	[[NGHB_RADIUS]						[nghb_radius]		]
+	[[NETWK_INC]						[netwk_inc]			]
+	[[NET_TYPE_INC]						[net_type_inc]		]
+	[[QUERIER_LOC]						[querier_loc]		]
+	[[RPT_LIMIT]						[rpt_limit]			]
+	[[RPT_TEMPL]						[rpt_templ]			]
+]
+
+[table Data type for RDF query
+    [[Data type (Standard)]      		[Data type (ODTONE)]]
+    [[IQ_RDF_SCHM] 						[iq_rdf_schema]		]
+    [[IQ_RDF_DATA]						[iq_rdf_data]		]
+	[[MIME_TYPE]						[boost::variant<null, octet_string>]]
+]
+
+[table Data type for binary information query response
+    [[Data type (Standard)]      		[Data type (ODTONE)]]
+    [[IR_BIN_DATA]						[ir_bin_data]		]
+]
+
+[table Data type for RDF information query response
+    [[Data type (Standard)]      		[Data type (ODTONE)]]
+    [[IR_RDF_DATA] 						[ir_rdf_data]		]
+    [[IR_SCHM_URL]						[ir_rdf_schem_url]	]
+	[[IR_RDF_SCHM]						[ir_rdf_schem]		]
+]
+
+[table Data type for MIHF identification
+    [[Data type (Standard)]      		[Data type (ODTONE)]]
+    [[MIHF_ID] 							[id]				]
+    [[EVT_CFG_INFO]						[evt_cfg_info]		]
+	[[LINK_DET_CFG]						[link_det_cfg]		]
+	[[LINK_DET_INFO]					[link_det_info]		]
+	[[MBB_HO_SUPP]						[mbb_ho_supp]		]
+	[[MIH_CMD_LIST]						[command_list]		]
+	[[MIH_EVT_LIST]						[event_list]		]
+	[[MIH_IQ_TYPE_LST]					[iq_type_list]		]
+	[[MIH_TRANS_LST]					[transport_list]	]
+	[[NET_TYPE_ADDR]					[net_type_addr]		]
+]
+
+[table Data type for MIH registration
+    [[Data type (Standard)]      		[Data type (ODTONE)]]
+    [[REG_REQUEST_CODE]					[reg_request_code]	]
+]
+
+[table Data type for handover operation
+    [[Data type (Standard)]      		[Data type (ODTONE)]]
+    [[ASGN_RES_SET] 					[asgn_res_set]		]
+    [[HO_CAUSE]							[ho_cause]			]
+	[[HO_RESULT]						[ho_result]			]
+	[[HO_STATUS]						[ho_status]			]
+	[[PREDEF_CFG_ID]					[predef_cfg_id]		]
+	[[RQ_RESULT]						[rq_result]			]
+	[[DHCP_SERV]						[dhcp_serv]			]
+	[[FN_AGNT]							[fn_agent]			]
+	[[ACC_RTR]							[acc_rtr]			]
+	[[REQ_RES_SET]						[rq_res_set]		]
+	[[TGT_NET_INFO]						[tgt_net_info]		]
+	[[TSP_CARRIER]						[tsp_carrier]		]
+	[[TSP_CONTAINER]					[tsp_container]		]
+]
+
+[table Data type for MIH_NET_SAP primitives
+    [[Data type (Standard)]      		[Data type (ODTONE)]]
+    [[TRANSPORT_TYPE]					[transport_type]	]
+]
+
+
+[section Enumeration]
+
+``
+	enum status_enum {
+		status_success = 0,
+		status_failure = 1,
+		status_rejected = 2,
+		status_authorization_failure = 3,
+		status_network_error = 4,
+	};
+``
+
+``
+	enum transport_type_enum {
+		l2           = 0,
+		l3_or_higher = 1,
+	};
+``
+
+``
+	enum net_type_inc_enum {
+		net_type_inc_gsm = 0,
+		net_type_inc_gprs = 1,
+		net_type_inc_edge = 2,
+		net_type_inc_ethernet = 3,
+		net_type_inc_wireless_other = 4,
+		net_type_inc_ieee802_11 = 5,
+		net_type_inc_cdma2000 = 6,
+		net_type_inc_umts = 7,
+		net_type_inc_cdma2000_hrpd = 8,
+		net_type_inc_ieee802_16 = 9,
+		net_type_inc_ieee802_20 = 10,
+		net_type_inc_ieee802_22 = 11,
+	};
+``
+
+``
+	enum event_list_enum {
+		link_detected = 0,
+		link_up = 1,
+		link_down = 2,
+		link_parameters_report = 3,
+		link_going_down = 4,
+		link_handover_imminent = 5,
+		link_handover_complete = 6,
+		link_pdu_transmit_status = 7,
+	};
+``
+
+``
+	enum command_list_enum {
+		link_get_parameters = 0,
+		link_configure_thresholds = 1,
+		link_actions = 2,
+		net_ho_candidate_query = 3,
+		net_ho_commit = 3,
+		n2n_ho_query_resources = 3,
+		n2n_ho_commit = 3,
+		n2n_ho_Complete = 3,
+		mn_ho_candidate_query = 4,
+		mn_ho_commit = 4,
+		mn_ho_complete = 4,
+	};
+``
+
+``
+	enum iq_type_list_enum {
+		iq_type_binary_data = 0,
+		iq_type_rdf_data = 1,
+		iq_type_rdf_schema_url = 2,
+		iq_type_rdf_schema = 3,
+		iq_type_ie_network_type = 4,
+		iq_type_ie_operator_id = 5,
+		iq_type_ie_service_provider_id = 6,
+		iq_type_ie_country_code = 7,
+		iq_type_ie_network_id = 8,
+		iq_type_ie_network_aux_id = 9,
+		iq_type_ie_roaming_parteners = 10,
+		iq_type_ie_cost = 11,
+		iq_type_ie_network_qos = 12,
+		iq_type_ie_network_data_rate = 13,
+		iq_type_ie_net_regult_domain = 14,
+		iq_type_ie_net_frequency_bands = 15,
+		iq_type_ie_net_ip_cfg_methods = 16,
+		iq_type_ie_net_capabilities = 17,
+		iq_type_ie_net_supported_lcp = 18,
+		iq_type_ie_net_mob_mgmt_prot = 19,
+		iq_type_ie_net_emserv_proxy = 20,
+		iq_type_ie_net_ims_proxy_cscf = 21,
+		iq_type_ie_net_mobile_network = 22,
+		iq_type_ie_poa_link_addr = 23,
+		iq_type_ie_poa_location = 24,
+		iq_type_ie_poa_channel_range = 25,
+		iq_type_ie_poa_system_info = 26,
+		iq_type_ie_poa_subnet_info = 27,
+		iq_type_ie_poa_ip_addr = 28,
+	};
+``
+
+``
+	enum transport_list_enum {
+		transport_udp = 0,
+		transport_tcp = 1,
+	};
+``
+
+``
+	enum ho_status_enum {
+		ho_status_permitted = 0,
+		ho_status_declined = 1,
+	};
+``
+
+``
+	enum ho_result_enum {
+		ho_result_success = 0,
+		ho_result_failure = 1,
+		ho_result_rejected = 3,
+	};
+``
+
+``
+	enum ho_cause_enum {
+		ho_cause_explicit_disconnect = 0,
+		ho_cause_packet_timeout = 1,
+		ho_cause_no_resource = 2,
+		ho_cause_no_broadcast = 3,
+		ho_cause_authentication_failure = 4,
+		ho_cause_billing_failure = 5,
+	};
+``
+
+``
+	enum cost_unit_enum {
+		cost_unit_second = 0,
+		cost_unit_minute = 1,
+		cost_unit_hours = 2,
+		cost_unit_day = 3,
+		cost_unit_week = 4,
+		cost_unit_month = 5,
+		cost_unit_year = 6,
+		cost_unit_free = 7,
+		cost_unit_flat_rate = 8
+	};
+``
+
+``
+	enum netsubtype_enum {
+		netsubtype_eth10   = 0,
+		netsubtype_eth100  = 1,
+		netsubtype_eth1000 = 2,
+
+		netsubtype_iee80211_2_4GHz  = 0,
+		netsubtype_iee80211_5GHz    = 1,
+		netsubtype_iee80211_4_9GHz  = 2,
+		netsubtype_iee80211_3_65GHz = 3,
+		netsubtype_iee80211_316THz  = 4,
+
+		netsubtype_umts_rel99      = 0,
+		netsubtype_umts_rel4       = 1,
+		netsubtype_umts_rel5_hsdpa = 2,
+		netsubtype_umts_rel6_hsupa = 3,
+		netsubtype_umts_rel7_mimo  = 4,
+		netsubtype_umts_rel8       = 5,
+
+		netsubtype_cdma2000_hrpd_rev0 = 0,
+		netsubtype_cdma2000_hrpd_revA = 1,
+		netsubtype_cdma2000_hrpd_revB = 2,
+		netsubtype_cdma2000_hrpd_revC = 3,
+
+		netsubtype_iee80216_2_5GHz = 0,
+		netsubtype_iee80216_3_5GHz = 1,
+	};
+``
+
+``
+	enum op_namespace_enum {
+		op_namespace_gsm_umts = 0,
+		op_namespace_cdma = 1,
+		op_namespace_realm = 2,
+		op_namespace_itu_t_tsb = 3,
+		op_namespace_general = 4
+	};
+``
+
+``
+	enum supported_lcp_enum {
+		supported_lcp_null = 0,
+		supported_lcp_lldp = 1,
+		supported_lcp_lbyr_with_lldp = 2,
+		supported_lcp_lldp_med = 11,
+		supported_lcp_lbyr_with_lld_med = 12,
+		supported_lcp_u_tdoa = 21,
+		supported_lcp_d_tdoa = 22,
+		supported_lcp_dhcp = 31,
+		supported_lcp_lbyr_with_dhcp = 32,
+		supported_lcp_oma_supl = 41,
+		supported_lcp_ieee_802_11 = 42,
+		supported_lcp_lbyr_with_ieee_802_11 = 43,
+		supported_lcp_held = 51,
+		supported_lcp_lbyr_with_held = 52
+	};
+``
+
+``
+	enum ip_cfg_methods_enum {
+		ip_cfg_ipv4_static = 0,
+		ip_cfg_ipv4_dynamic = 1,
+		ip_cfg_ipv4_mobile_fa = 2,
+		ip_cfg_ipv4_mobile = 3,
+
+		ip_cfg_ipv6_stateless = 11,
+		ip_cfg_ipv6_stateful = 12,
+		ip_cfg_ipv6_manual = 13,
+	};
+``
+
+``
+	enum ip_mob_mgmt_enum {
+		ip_mob_ipv4 = 0,
+		ip_mob_ipv4_regional_registration = 1,
+		ip_mob_ipv6 = 2,
+		ip_mob_hierarchical_ipv6 = 3,
+		ip_mob_low_latency_handoffs	= 4,
+		ip_mob_ipv6_fast_handovers = 5,
+		ip_mob_IKEv2 = 6,
+	};
+``
+
+``
+	enum op_mode_enum {
+		op_mode_normal = 0,
+		op_mode_power_saving = 1,
+		op_mode_powered_down = 2,
+	};
+``
+
+``
+	enum dev_states_req_enum {
+		dev_state_device_info = 0,
+		dev_state_batt_level  = 1,
+	};
+``
+
+``
+	enum link_states_req_enum {
+		link_states_req_op_mode = 0,
+		link_states_req_channel_id = 1,
+	};
+``
+
+``
+	enum link_ac_result_enum {
+		link_ac_success   = 0,
+		link_ac_failure   = 1,
+		link_ac_refused   = 2,
+		link_ac_incapable = 3,
+	};
+``
+
+``
+	enum link_ac_type_enum {
+		link_ac_type_none       = 0,
+		link_ac_type_disconnect = 1,
+		link_ac_type_low_power  = 2,
+		link_ac_type_power_down = 3,
+		link_ac_type_power_up   = 4,
+	};
+``
+
+``
+	enum link_ac_attr_enum {
+		link_ac_attr_scan         = 0,
+		link_ac_attr_res_retain   = 1,
+		link_ac_attr_data_fwd_req = 2,
+	};
+``
+
+``
+	enum th_action_enum {
+		th_action_normal = 0,
+		th_action_one_shot = 1,
+		th_action_cancel = 2
+	};
+``
+
+``
+	enum link_type_enum {
+		link_type_gsm = 1,
+		link_type_gprs = 2,
+		link_type_edge = 3,
+
+		link_type_ethernet = 15,
+
+		link_type_wireless_other = 18,
+		link_type_802_11 = 19,
+
+		link_type_cdma2000 = 22,
+		link_type_umts = 23,
+		link_type_cdma2000_hrpd = 24,
+
+		link_type_802_16 = 27,
+		link_type_802_20 = 28,
+		link_type_802_22 = 29
+	};
+``
+
+``
+	enum link_dn_reason_enum {
+		link_dn_reason_explicit_disconnect = 0,
+		link_dn_reason_packet_timeout = 1,
+		link_dn_reason_no_resource = 2,
+		link_dn_reason_no_broadcast = 3,
+		link_dn_reason_authentication_failure = 4,
+		link_dn_reason_billing_failure = 5,
+	};
+``
+
+``
+	enum link_gd_reason_enum {
+		link_gd_reason_explicit_disconnect = 0,
+		link_gd_reason_link_parameter_degrading = 1,
+		link_gd_reason_low_power = 2,
+		link_gd_reason_no_resource = 3,
+	};
+``
+
+``
+	enum link_mihcap_flag_enum {
+		link_mihcap_event_service = 1,
+		link_mihcap_command_service = 2,
+		link_mihcap_information_service = 3,
+	};
+``
+
+``
+	enum link_param_gen_enum {
+		link_param_gen_data_rate = 0,
+		link_param_gen_signal_strength = 1,
+		link_param_gen_sinr = 2,
+		link_param_gen_throughput = 3,
+		link_param_gen_packet_error_rate = 4,
+	};
+``
+
+``
+	enum link_param_gg_enum {
+		link_param_gg_rx_qual = 0,
+		link_param_gg_rs_lev = 1,
+		link_param_gg_mean_bep = 2,
+		link_param_gg_st_dev_bep = 3,
+	};
+``
+
+``
+	enum link_param_802_11_enum {
+		link_param_802_11_rssi = 0,
+		link_param_802_11_no_qos = 1,
+		link_param_802_11_multicast_packet_loss_rate = 2,
+	};
+``
+
+``
+	enum link_param_c2k_enum {
+		link_param_c2k_pilot_strength = 0,
+	};
+``
+
+``
+	enum link_param_ffd_enum {
+		link_param_ffd_cpich_rscp = 0,
+		link_param_ffd_pccpch_rscp = 1,
+		link_param_ffd_ultra_carrie_rssi = 2,
+		link_param_ffd_gsm_carrie_rssi = 3,
+		link_param_ffd_cpich_ec_no = 4,
+		link_param_ffd_transport_channel_bler = 5,
+		link_param_ffd_ue = 6,
+	};
+``
+
+``
+	enum link_param_hrpd_enum {
+		link_param_hrpd_pilot_strength = 0,
+	};
+``
+
+``
+	enum link_cmd_list_enum {
+		link_cmd_event_subscribe      = 1,
+		link_cmd_event_unsubscribe    = 2,
+		link_cmd_get_parameters       = 3,
+		link_cmd_configure_thresholds = 4,
+		link_cmd_action               = 5,
+	};
+``
+
+``
+	enum link_desc_req_enum {
+		link_desc_req_classes_of_service_supported = 0,
+		link_desc_req_queues_supported = 1,
+	};
+``
+
+``
+	enum net_caps_enum {
+		net_caps_security = 0,
+		net_caps_qos_0 = 1,
+		net_caps_qos_1 = 2,
+		net_caps_qos_2 = 3,
+		net_caps_qos_3 = 4,
+		net_caps_qos_4 = 5,
+		net_caps_qos_5 = 6,
+		net_caps_internet = 7,
+		net_caps_emergency_services = 8,
+		net_caps_mih = 9,
+	};
+``
+
+``
+	enum reg_request_code_enum {
+		reg_request_registration = 0,
+		reg_request_re_registration = 1,
+	};
+``
+
+[endsect]
+
+[section Exception]
+
+[$./images/odtone::mih_library_exception.png]
+
+``
+	struct iarchive_error : virtual public exception { };
+``
+
+``
+	struct iarchive_eof_error : virtual public iarchive_error {
+		iarchive_eof_error() : exception("odtone::mih::iarchive: end of stream")
+		{ }
+	};
+``
+
+``
+	struct bad_tlv : virtual public exception {
+		bad_tlv() : exception("odtone::mih::tlv_fwd::serialize(iarchive&): TLV missmatch")
+		{ }
+	};
+``
+
+``
+	struct percentage_exception : virtual public exception {
+		percentage_exception() : exception("odtone::mih::percentage: out of range")
+		{ }
+	};
+``
+
+``
+	struct ir_bin_iarchive_error : virtual public exception {
+		ir_bin_iarchive_error() : exception("odtone::mih::ir_bin_iarchive: invalid number of elements")
+		{ }
+	};
+``
+
+[endsect]
+
+[endsect]
+
+
+
+
+
+
+
+
+
+
+
+[section:mih_tutorial 4. Tutorial]
+The tutorial programs in this section show how to use ODTONE MIH.
+
+[*Generate and send MIH Messages]
+
+To generate and send a MIH message:
+``
+	odtone::mih::message msg;
+	odtone::mih::link_tuple_id li;
+	odtone::mih::event_list evts;
+
+	//...
+
+	msg << odtone::mih::request(odtone::mih::request::event_subscribe)
+	    & odtone::mih::tlv_link_identifier(li)
+	    & odtone::mih::tlv_event_list(evts);
+
+	io_service.async_send(msg, &event_subscribe_response_handler);
+``
+
+Notice that we start with the message and then we use the operator << to
+begin the generation of the message, followed by on of the
+[link odtone.odtone_mih_message_helper_class odtone::mih::message_helper]
+classes ([link odtone.odtone_mih_request_class odtone::mih::request],
+[link odtone.odtone_mih_response_class odtone::mih::response],
+[link odtone.odtone_mih_indication_class odtone::mih::indication])
+and then we can pass the parameters starting with the operator & followed by
+the [link odtone.odtone_mih_tlv_type_class odtone::mih::tlv'''_type_'''] classes.
+
+
+To receive and parse a MIH message:
+
+``
+    //...
+
+    msg << odtone::mih::request(odtone::mih::request::capability_discover);
+
+    user_sap_ios.async_send(msg, &capability_discover_response);
+
+    //...
+``
+
+
+In this case, to begin parsing we use operator >>. Everything else is similar to
+generating a message:
+
+``
+void capability_discovery_response(odtone::mih::message& msg, const boost::system::error_code& ec)
+{
+    if (ec) {
+        // do something with the error and don't parse the msg or else,
+        // an iarchive_eof_error exception is thrown
+
+        return;
+    }
+
+    odtone::mih::status st;
+    boost::optional<odtone::mih::net_type_addr_list> ntal;
+    boost::optional<odtone::mih::event_list> evt;
+
+    msg >> odtone::mih::response()
+        & odtone::mih::tlv_status(st)
+        & odtone::mih::tlv_net_type_addr_list(ntal)
+        & odtone::mih::tlv_event_list(evt);
+
+   //...
+}
+``
+
+[endsect]
