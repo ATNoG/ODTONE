@@ -24,6 +24,7 @@ import boostbook : boostbook ;
 xml odtone 	        : src/odtone.qbk  ;
 xml clientXml       : src/app/client.qbk ;
 xml dummyserverXml  : src/app/dummyserver.qbk ;
+xml linkSapXml      : src/app/link_sap.qbk ;
 
 boostbook odtone_base
     :
@@ -61,5 +62,18 @@ boostbook dummyserver
         <xsl:param>boost.image.h=100
         <xsl:param>nav.layout=none
         <xsl:param>base.dir=../html/app/dummyserver
+        <xsl:param>root.filename=index
+    ;
+
+boostbook link_sap
+    :
+        linkSapXml
+    :
+		<xsl:param>boost.image.src="./odtone/images/logo.png"
+		<xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
+        <xsl:param>boost.image.w=100
+        <xsl:param>boost.image.h=100
+        <xsl:param>nav.layout=none
+        <xsl:param>base.dir=../html/app/link_sap
         <xsl:param>root.filename=index
     ;
