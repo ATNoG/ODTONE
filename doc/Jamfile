@@ -52,14 +52,14 @@ boostbook client
     :
         clientXml
     :
-		<xsl:param>boost.image.src="./odtone/images/logo.png"
+		<xsl:param>boost.image.src="./../../images/logo.png"
 		<xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
 		<xsl:param>boost.image.w=100
 		<xsl:param>boost.image.h=100
 		<xsl:param>nav.layout=none
-		<xsl:param>base.dir=../html/app/
+		<xsl:param>base.dir=../html/app/client/
 		<xsl:param>root.filename=index
-		<xsl:param>html.stylesheet=./boostbook.css
+		<xsl:param>html.stylesheet=./../../boostbook.css
 		<xsl:param>generate.manifest=0
 		<dependency>css
 		<dependency>images
