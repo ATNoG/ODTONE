@@ -162,13 +162,9 @@ Then just unpack it and you are ready to compile and install ODTONE.
 
 [*From the git repository]
 
-Access to the git repository requires installing the HNG IT Aveiro certificates.
-These certificates are available in the "Files" section of the ODTONE project
-page: [@http://helios.av.it.pt/projects/odtone/files http://helios.av.it.pt/projects/odtone/files].
-
-Once you have the certificates added, you can clone the git repository,
-from [@http://helios.av.it.pt/projects/odtone/git/ ODTONE repository]
-therefore creating your own local copy.
+You can clone the git repository, from
+[@http://helios.av.it.pt/projects/odtone/git/ ODTONE repository] therefore
+creating your own local copy.
 
    git clone http://helios.av.it.pt/projects/odtone/git/ odtone
 
