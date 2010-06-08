@@ -98,7 +98,7 @@ download a more recent version of the Boost libraries.
 The Boost library is required to compile ODTONE, so in order to correctly use ODTONE
 you must first make sure you have Boost library installed.
 
-#Download the Boost library(v1.37 or higher) [@http://www.boost.org/ boost's website]
+#Download the Boost library(v1.42) [@http://www.boost.org/ boost's website]
 and unpack it.
 
 #Install Boost.Jam (if your already have it, skip this step). You can either
