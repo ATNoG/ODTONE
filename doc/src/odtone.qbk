@@ -417,14 +417,14 @@ you wireless card according to your configuration file.
 [section:library Libraries]
 
 [variablelist
-    [[[@file:../Libs/ODTONE_Base/index.html ODTONE Base]] [The BASE API contains a set of classes that offers support mechanisms, such as
+    [[[@file:../libs/baseLib/index.html ODTONE Base]] [The BASE API contains a set of classes that offers support mechanisms, such as
     debug, list management, logger, exceptions and generation random values.]]
 
-    [[[@file:../Libs/ODTONE_MIH/index.html ODTONE MIH]] [The MIH API contains a set of classes to generate/parse MIH
+    [[[@file:../libs/mihLib/index.html ODTONE MIH]] [The MIH API contains a set of classes to generate/parse MIH
     messages, including the types present in the standard and template classes
     to ease the definition of new types.]]
 
-    [[[@file:../Libs/ODTONE_SAP/index.html ODTONE SAP]] [The SAP API contains a set of IO service classes to
+    [[[@file:../libs/sapLib/index.html ODTONE SAP]] [The SAP API contains a set of IO service classes to
     send/receive MIH messages. The implementation is modeled after \a boost::asio
     and only supports asynchronous operation. IO services (odtone::sap::user and
     odtone::sap::link) are provided to implement User SAP's and Link SAP's.
@@ -438,13 +438,13 @@ you wireless card according to your configuration file.
 
 [variablelist
 
-    [[[@file:../App/MIHF/index.html ODTONE-MIHF]]
+    [[[@file:../app/mihf/index.html ODTONE-MIHF]]
     [The MIHF is a management entity that obtains link-layer
      information from lower layers of different protocol stacks and also from other
      remote nodes. The MIHF coordinates handover decision making with other peer MIHF
      in the network.]]
 
-    [[[@file:../App/MIH_User/index.html MIH_User]]
+    [[[@file:../app/mih_usr/index.html MIH_User]]
     [The MIH_User specifies a media independent interface between the MIHF and
      upper layers of the mobility management protocol stack. The upper layers need to
      subscribe with the MIHF as users to receive MIHF-Generated events and also for
@@ -452,18 +452,18 @@ you wireless card according to your configuration file.
      MIHF users through the MIHF. MIHF users directly send commands to the local MIHF
      using the service primitives of the MIH_User.]]
 
-    [[[@file:../App/Link_SAP/index.html Link_SAP]]
+    [[[@file:../app/link_sap/index.html Link_SAP]]
     [The Link SAP specifies an abstract media dependent interface between the MIHF
      and lower layers media-specific protocol stacks of technologies such as IEEE 802.3,
      IEEE 802.11, IEEE 802.16, 3GPP and 3GPP2. For different link-layer technologies,
      media-specific SAPs provide the functionality of Link SAP. ]]
 
-    [[[@file:../App/Client/index.html Client]]
+    [[[@file:../app/client/index.html Client]]
     [The ['client] is a simple application that permits to send any kind of message
      to a particular destination. This way, it is possible to send a specific message
      to a choose destination in order to test is behaviour easily and quickly.]]
 
-    [[[@file:../App/Dummyserver/index.html Dummyserver]]
+    [[[@file:../app/dummyserver/index.html Dummyserver]]
     [The ['dummyserver] is a simple application that, as the name implies, works like
      a dummy server. It is always listening (at port 4000) for incoming messages and
      print them in the console.]]
