@@ -2140,16 +2140,16 @@ otherwise.
 
 
 [table Basic data types
-    [[Data type (Standard)]      		[Data type (ODTONE)]]
-    [[BITMAP(size)] 					[bitmap]			]
-    [[CHOICE\(DATATYPE1, DATATYPE2\[,...\]\)] 	[boost::variant(DATATYPE1, DATATYPE2\[,...\])]]
+	[[Data type (Standard)]      		[Data type (ODTONE)]	]
+	[[BITMAP(size)] 					[bitmap]				]
+	[[CHOICE\(DATATYPE1, DATATYPE2\[,...\]\)] 	[boost::variant(DATATYPE1, DATATYPE2\[,...\])]]
 	[[INFO_ELEMENT]						[see inc/odtone/mih/types/information_elements.hpp]]
-	[[INTEGER(size)]					[sint]				]
-	[[LIST(DATATYPE)]					[data types that can be grouped in a list have a proper type named <data type>_list]]
-	[[NULL]								[null]				]
-	[[OCTET(size)]						[octet]				]
-	[[SEQUENCE\(DATATYPE1, DATATYPE2\[,...\]\)]	[All sequence types defined on standard are properly defined in the correspondent data type]]
-	[[UNSIGNED_INT(size)]				[uint]				]
+	[[INTEGER(size)]					[sint]					]
+	[[LIST(DATATYPE)]					[std::vector<DATATYPE>]	]
+	[[NULL]								[null]					]
+	[[OCTET(size)]						[octet]					]
+	[[SEQUENCE\(DATATYPE1, DATATYPE2\[,...\]\)]	[struct]		]
+	[[UNSIGNED_INT(size)]				[uint]					]
 ]
 
 [table General data types
