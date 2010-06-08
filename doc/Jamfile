@@ -35,13 +35,17 @@ boostbook odtone_base
     :
         odtone
     :
-		<xsl:param>boost.image.src="./odtone/images/logo.png"
+		<xsl:param>boost.image.src="./images/logo.png"
 		<xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
-        <xsl:param>boost.image.w=100
-        <xsl:param>boost.image.h=100
-        <xsl:param>nav.layout=none
-        <xsl:param>base.dir=../html/
-        <xsl:param>root.filename=index
+		<xsl:param>boost.image.w=100
+		<xsl:param>boost.image.h=100
+		<xsl:param>nav.layout=none
+		<xsl:param>base.dir=../html/
+		<xsl:param>root.filename=index
+		<xsl:param>html.stylesheet=./boostbook.css
+		<xsl:param>generate.manifest=0
+		<dependency>css
+		<dependency>images
     ;
 
 boostbook client
@@ -50,100 +54,137 @@ boostbook client
     :
 		<xsl:param>boost.image.src="./odtone/images/logo.png"
 		<xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
-        <xsl:param>boost.image.w=100
-        <xsl:param>boost.image.h=100
-        <xsl:param>nav.layout=none
-        <xsl:param>base.dir=../html/app/client
-        <xsl:param>root.filename=index
+		<xsl:param>boost.image.w=100
+		<xsl:param>boost.image.h=100
+		<xsl:param>nav.layout=none
+		<xsl:param>base.dir=../html/app/
+		<xsl:param>root.filename=index
+		<xsl:param>html.stylesheet=./boostbook.css
+		<xsl:param>generate.manifest=0
+		<dependency>css
+		<dependency>images
     ;
 
 boostbook dummyserver
     :
         dummyserverXml
     :
-		<xsl:param>boost.image.src="./odtone/images/logo.png"
+		<xsl:param>boost.image.src="./../../images/logo.png"
 		<xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
-        <xsl:param>boost.image.w=100
-        <xsl:param>boost.image.h=100
-        <xsl:param>nav.layout=none
-        <xsl:param>base.dir=../html/app/dummyserver
-        <xsl:param>root.filename=index
+		<xsl:param>boost.image.w=100
+		<xsl:param>boost.image.h=100
+		<xsl:param>nav.layout=none
+		<xsl:param>base.dir=../html/app/dummyserver/
+		<xsl:param>root.filename=index
+		<xsl:param>html.stylesheet=./../../boostbook.css
+		<xsl:param>generate.manifest=0
+		<dependency>css
+		<dependency>images
     ;
 
 boostbook link_sap
     :
         linkSapXml
     :
-		<xsl:param>boost.image.src="./odtone/images/logo.png"
+		<xsl:param>boost.image.src="./../../images/logo.png"
 		<xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
-        <xsl:param>boost.image.w=100
-        <xsl:param>boost.image.h=100
-        <xsl:param>nav.layout=none
-        <xsl:param>base.dir=../html/app/link_sap
-        <xsl:param>root.filename=index
+		<xsl:param>boost.image.w=100
+		<xsl:param>boost.image.h=100
+		<xsl:param>nav.layout=none
+		<xsl:param>base.dir=../html/app/link_sap/
+		<xsl:param>root.filename=index
+		<xsl:param>html.stylesheet=./../../boostbook.css
+		<xsl:param>generate.manifest=0
+		<dependency>css
+		<dependency>images
     ;
 
 boostbook mih_usr
     :
         mihUsrXml
     :
-		<xsl:param>boost.image.src="./odtone/images/logo.png"
+		<xsl:param>boost.image.src="./../../images/logo.png"
 		<xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
-        <xsl:param>boost.image.w=100
-        <xsl:param>boost.image.h=100
-        <xsl:param>nav.layout=none
-        <xsl:param>base.dir=../html/app/mih_usr
-        <xsl:param>root.filename=index
+		<xsl:param>boost.image.w=100
+		<xsl:param>boost.image.h=100
+		<xsl:param>nav.layout=none
+		<xsl:param>base.dir=../html/app/mih_usr/
+		<xsl:param>root.filename=index
+		<xsl:param>html.stylesheet=./../../boostbook.css
+		<xsl:param>generate.manifest=0
+		<dependency>css
+		<dependency>images
     ;
 
 boostbook mihf
     :
         mihfXml
     :
-		<xsl:param>boost.image.src="./odtone/images/logo.png"
+		<xsl:param>boost.image.src="./../../images/logo.png"
 		<xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
-        <xsl:param>boost.image.w=100
-        <xsl:param>boost.image.h=100
-        <xsl:param>nav.layout=none
-        <xsl:param>base.dir=../html/app/mihf
-        <xsl:param>root.filename=index
+		<xsl:param>boost.image.w=100
+		<xsl:param>boost.image.h=100
+		<xsl:param>nav.layout=none
+		<xsl:param>base.dir=../html/app/mihf/
+		<xsl:param>root.filename=index
+		<xsl:param>html.stylesheet=./../../boostbook.css
+		<xsl:param>generate.manifest=0
+		<dependency>css
+		<dependency>images
     ;
 
 boostbook libBase
     :
         libBaseXml
     :
-		<xsl:param>boost.image.src="./odtone/images/logo.png"
+		<xsl:param>boost.image.src="./../../images/logo.png"
 		<xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
-        <xsl:param>boost.image.w=100
-        <xsl:param>boost.image.h=100
-        <xsl:param>nav.layout=none
-        <xsl:param>base.dir=../html/libs/base
-        <xsl:param>root.filename=index
+		<xsl:param>boost.image.w=100
+		<xsl:param>boost.image.h=100
+		<xsl:param>nav.layout=none
+		<xsl:param>base.dir=../html/libs/baseLib/
+		<xsl:param>root.filename=index
+		<xsl:param>html.stylesheet=./../../boostbook.css
+		<xsl:param>generate.manifest=0
+		<dependency>css
+		<dependency>images
     ;
 
 boostbook libSap
     :
         libSapXml
     :
-		<xsl:param>boost.image.src="./odtone/images/logo.png"
+		<xsl:param>boost.image.src="./../../images/logo.png"
 		<xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
-        <xsl:param>boost.image.w=100
-        <xsl:param>boost.image.h=100
-        <xsl:param>nav.layout=none
-        <xsl:param>base.dir=../html/libs/sap
-        <xsl:param>root.filename=index
+		<xsl:param>boost.image.w=100
+		<xsl:param>boost.image.h=100
+		<xsl:param>nav.layout=none
+		<xsl:param>base.dir=../html/libs/sapLib/
+		<xsl:param>root.filename=index
+		<xsl:param>html.stylesheet=./../../boostbook.css
+		<xsl:param>generate.manifest=0
+		<dependency>css
+		<dependency>images
     ;
 
 boostbook libMih
     :
         libMihXml
     :
-		<xsl:param>boost.image.src="./odtone/images/logo.png"
+		<xsl:param>boost.image.src="./../../images/logo.png"
 		<xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
-        <xsl:param>boost.image.w=100
-        <xsl:param>boost.image.h=100
-        <xsl:param>nav.layout=none
-        <xsl:param>base.dir=../html/libs/mih
-        <xsl:param>root.filename=index
+		<xsl:param>boost.image.w=100
+		<xsl:param>boost.image.h=100
+		<xsl:param>nav.layout=none
+		<xsl:param>base.dir=../html/libs/mihLib/
+		<xsl:param>root.filename=index
+		<xsl:param>html.stylesheet=./../../boostbook.css
+		<xsl:param>generate.manifest=0
+		<dependency>css
+		<dependency>images
     ;
+
+install css : [ glob ./*.css ] : <location>../html ;
+explicit css ;
+install images : [ glob ./images/*.png ] : <location>../html/images ;
+explicit images ;
