@@ -42,7 +42,7 @@ boostbook odtone_base
 		<xsl:param>nav.layout=none
 		<xsl:param>base.dir=../html/
 		<xsl:param>root.filename=index
-		<xsl:param>html.stylesheet=./boostbook.css
+		<xsl:param>html.stylesheet=./odtone.css
 		<xsl:param>generate.manifest=0
 		<dependency>css
 		<dependency>images
@@ -59,7 +59,7 @@ boostbook client
 		<xsl:param>nav.layout=none
 		<xsl:param>base.dir=../html/app/client/
 		<xsl:param>root.filename=index
-		<xsl:param>html.stylesheet=./../../boostbook.css
+		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
 		<dependency>css
 		<dependency>images
@@ -76,7 +76,7 @@ boostbook dummyserver
 		<xsl:param>nav.layout=none
 		<xsl:param>base.dir=../html/app/dummyserver/
 		<xsl:param>root.filename=index
-		<xsl:param>html.stylesheet=./../../boostbook.css
+		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
 		<dependency>css
 		<dependency>images
@@ -93,7 +93,7 @@ boostbook link_sap
 		<xsl:param>nav.layout=none
 		<xsl:param>base.dir=../html/app/link_sap/
 		<xsl:param>root.filename=index
-		<xsl:param>html.stylesheet=./../../boostbook.css
+		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
 		<dependency>css
 		<dependency>images
@@ -110,7 +110,7 @@ boostbook mih_usr
 		<xsl:param>nav.layout=none
 		<xsl:param>base.dir=../html/app/mih_usr/
 		<xsl:param>root.filename=index
-		<xsl:param>html.stylesheet=./../../boostbook.css
+		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
 		<dependency>css
 		<dependency>images
@@ -127,7 +127,7 @@ boostbook mihf
 		<xsl:param>nav.layout=none
 		<xsl:param>base.dir=../html/app/mihf/
 		<xsl:param>root.filename=index
-		<xsl:param>html.stylesheet=./../../boostbook.css
+		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
 		<dependency>css
 		<dependency>images
@@ -144,7 +144,7 @@ boostbook libBase
 		<xsl:param>nav.layout=none
 		<xsl:param>base.dir=../html/libs/baseLib/
 		<xsl:param>root.filename=index
-		<xsl:param>html.stylesheet=./../../boostbook.css
+		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
 		<dependency>css
 		<dependency>images
@@ -161,7 +161,7 @@ boostbook libSap
 		<xsl:param>nav.layout=none
 		<xsl:param>base.dir=../html/libs/sapLib/
 		<xsl:param>root.filename=index
-		<xsl:param>html.stylesheet=./../../boostbook.css
+		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
 		<dependency>css
 		<dependency>images
@@ -178,7 +178,7 @@ boostbook libMih
 		<xsl:param>nav.layout=none
 		<xsl:param>base.dir=../html/libs/mihLib/
 		<xsl:param>root.filename=index
-		<xsl:param>html.stylesheet=./../../boostbook.css
+		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
 		<dependency>css
 		<dependency>images
