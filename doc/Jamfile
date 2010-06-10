@@ -26,6 +26,7 @@ xml clientXml       : src/app/client.qbk ;
 xml dummyserverXml  : src/app/dummyserver.qbk ;
 xml linkSapXml      : src/app/link_sap.qbk ;
 xml mihUsrXml       : src/app/mih_usr.qbk ;
+xml miisXml         : src/app/miis.qbk ;
 xml mihfXml         : src/app/mihf.qbk ;
 xml libBaseXml      : src/libs/odtone_base.qbk ;
 xml libSapXml       : src/libs/odtone_sap.qbk ;
@@ -109,6 +110,23 @@ boostbook mih_usr
 		<xsl:param>boost.image.h=100
 		<xsl:param>nav.layout=none
 		<xsl:param>base.dir=../html/app/mih_usr/
+		<xsl:param>root.filename=index
+		<xsl:param>html.stylesheet=./../../odtone.css
+		<xsl:param>generate.manifest=0
+		<dependency>css
+		<dependency>images
+    ;
+
+boostbook miis
+    :
+        miisXml
+    :
+		<xsl:param>boost.image.src="./../../images/logo.png"
+		<xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
+		<xsl:param>boost.image.w=100
+		<xsl:param>boost.image.h=100
+		<xsl:param>nav.layout=none
+		<xsl:param>base.dir=../html/app/miis/
 		<xsl:param>root.filename=index
 		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0

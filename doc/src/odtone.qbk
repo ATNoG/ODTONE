@@ -480,6 +480,11 @@ you wireless card according to your configuration file.
     [The ['dummyserver] is a simple application that, as the name implies, works like
      a dummy server. It is always listening (at port 4000) for incoming messages and
      print them in the console.]]
+
+    [[[@file:../app/miis/index.html MIIS Server]]
+    [The MIIS Server provides details on the characteristics and
+	services provided by the serving and neighboring networks. The information
+	enables effective system access and effective handover decisions.]]
 ]
 
 [endsect]
