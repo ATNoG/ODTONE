@@ -96,7 +96,7 @@ in this document.
 
 [heading Detailed Description]
 
-[$./images/odtone::sap::user.png]
+[$./../../../images/odtone::sap::user.png]
 
 [*User SAP IO Service]
 
@@ -188,7 +188,7 @@ This method returns immediately.
 
 [heading Detailed Description]
 
-[$./images/odtone::sap::link.png]
+[$./../../../images/odtone::sap::link.png]
 
 [*Link SAP IO Service.]
 

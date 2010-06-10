@@ -83,7 +83,7 @@ new types.
 
 [heading Detailed Description]
 
-[$./images/odtone::mih::message.png]
+[$./../../../images/odtone::mih::message.png]
 
 [*MIH Message.]
 
@@ -551,7 +551,7 @@ Get the MIH Message Frame (odtone::mih::frame).
 
 [heading Detailed Description]
 
-[$./images/odtone::mih::message_helper.png]
+[$./../../../images/odtone::mih::message_helper.png]
 
 [*MIH Message helper.]
 
@@ -646,7 +646,7 @@ Deserialize fields from a MIH Message.
 
 [heading Detailed Description]
 
-[$./images/odtone::mih::indication.png]
+[$./../../../images/odtone::mih::indication.png]
 
 [*MIH Indication Message helper.]
 
@@ -730,7 +730,7 @@ Construct an MIH Indication Message helper.
 
 [heading Detailed Description]
 
-[$./images/odtone::mih::request.png]
+[$./../../../images/odtone::mih::request.png]
 
 [*MIH Request Message helper.]
 
@@ -821,7 +821,7 @@ Construct an MIH Request Message helper.
 
 [heading Detailed Description]
 
-[$./images/odtone::mih::response.png]
+[$./../../../images/odtone::mih::response.png]
 
 [*MIH Response Message helper.]
 
@@ -1037,7 +1037,7 @@ Get number of option variable.
 
 Provides serialization/deserialization for all payload data types, except
 destination and source ID's that are serialize/deserialize in
-[link odtone.odtone_mih_archive_class odtone::mih::message].
+[link odtone.odtone_mih_message_class odtone::mih::message].
 
 [heading Namespace]
 
@@ -2842,7 +2842,7 @@ otherwise.
 
 [section Exception]
 
-[$./images/odtone::mih_library_exception.png]
+[$./../../../images/odtone::mih_library_exception.png]
 
 ``
 	struct iarchive_error : virtual public exception { };

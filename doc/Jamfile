@@ -204,5 +204,5 @@ boostbook libMih
 
 install css : [ glob ./*.css ] : <location>../html ;
 explicit css ;
-install images : [ glob ./images/*.png ] : <location>../html/images ;
+install images : [ glob ./images/* ] : <location>../html/images ;
 explicit images ;

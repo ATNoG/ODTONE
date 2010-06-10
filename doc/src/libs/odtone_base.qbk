@@ -52,7 +52,7 @@ debug, list management, logger, exceptions and generation random values.
 The BASE API offers mechanisms for debugging. This is done using a class named
 ['odtone::checkpoint].
 
-[$./images/odtone::checkpoint.png]
+[$./../../../images/odtone::checkpoint.png]
 
 It can be viewed as a linked list of checkpoint that maintain the execution
 status of the application. So, when a crash happens it is easy to check the
@@ -168,7 +168,7 @@ Get the expression of the checkpoint.
 
 [heading Detailed Description]
 
-[$./images/odtone::list_node.png]
+[$./../../../images/odtone::list_node.png]
 
 The BASE API offers support mechanisms for list management, providing operations
 to add or remove elements, get or swap elements and to reverse elements.
@@ -177,7 +177,7 @@ These can be considered as a double-linked list  that consists of a sequence of
 data records such that in each record there is a field that contains a reference
 to the next record and to the previous record in the sequence.
 
-[$./images/odtone::list_node2.png]
+[$./../../../images/odtone::list_node2.png]
 
 This is done using a class named ['odtone::list_node] that is explain next in
 this section.
@@ -486,7 +486,7 @@ The BASE API offers support mechanisms for exceptions support. The
 ODTONE. The following image represents all existing exceptions in the actual
 release.
 
-[$./images/odtone::exception.png]
+[$./../../../images/odtone::exception.png]
 
 The definition of new exceptions can be easily done. The following piece of code
 shows how it can be done:
@@ -537,7 +537,7 @@ This library also offers functions to convert to and from hexadecimal values.
 
 [section:base_buffer Buffer]
 
-[$./images/odtone::buffer.png]
+[$./../../../images/odtone::buffer.png]
 
 The BASE API offers two classes that can be used as buffers:
 
@@ -599,7 +599,7 @@ The BASE API offers two classes that can be used as buffers:
 
 [section Exception]
 
-[$./images/odtone::exception1.png]
+[$./../../../images/odtone::exception1.png]
 
 ``
 	struct bad_cast : virtual public exception {

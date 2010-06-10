@@ -56,7 +56,7 @@ discover, event subscribe and link events primitives.
 This implementation of MIH User is very simple. It only support capability
 discover, event subscribe and link events primitives.
 
-[$./odtone/images/mih_usr_state_machine.png]
+[$./../../images/mih_usr_state_machine.png]
 
 When MIH User begins to run, it sends a Capability Discover Request to MIHF and
 waits for a Capability Discover Response from the MIHF.

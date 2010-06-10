@@ -58,7 +58,7 @@ implementation use Windows SDK libraries.
 
 As this is a simple Link SAP, it only supports link down and link up events.
 
-[$./odtone/images/link_sap_state_machine.png]
+[$./../../images/link_sap_state_machine.png]
 
 When Link SAP begins to run, it stays in a state of waiting for messages from the
 network interfaces. When an incoming message is receive, Link SAP sends it to the
