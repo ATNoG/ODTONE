@@ -288,7 +288,9 @@ communications, respectively.
 
 [h5 meta_message]
 
-A ['meta_message] is a derived class from mih::message with added metadata.
+A ['meta_message] is a derived class from
+[@file:../../../libs/mihLib/odtone/odtone_mih_message_class.html odtone::mih::message]
+with added metadata.
 
 The metadata indicates if the message was received on the loopback interface,
 and also the IP and port of the sender of the message. It's useful mostly due to

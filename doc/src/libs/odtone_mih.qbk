@@ -97,7 +97,9 @@ serialization/deserialization for all the other payload data types
 The [link odtone.odtone_mih_message_class odtone::mih::message] can be set from
 an odtone::mih::frame that was received or it can create an odtone::mih::frame
 ready to be sent. To send or receive MIH message frames an IO Service is
-required such as the odtone::sap::user and odtone::sap::link.
+required such as the
+[@file:./../../sapLib/odtone/odtone_sap_user_class.html odtone::sap::user] and
+[@file:./../../sapLib/odtone/odtone_sap_link_class.html odtone::sap::link].
 
 The payload of a message is a sequence of types that require serialization and
 deserialization support.
@@ -916,7 +918,8 @@ Construct an MIH Response Message helper.
 
 This class provides parsing for command line options and configuration files for
 a set of predefined options description. It's used for configuring the
-odtone::sap IO services and the odtone MIHF implementation.
+[@./../sapLib/odtone/odtone_sap_class.html odtone::sap] IO services and
+the odtone MIHF implementation.
 
 [heading Namespace]
 
@@ -1249,9 +1252,10 @@ Get the current position in the archive.
 
 [*Input Archive.]
 
-The MIH types support deserialization for the odtone::mih::iarchive. This
-particular archive does not include the TLV field, that is necessary in order to
-support defining new sequence types from existing MIH types.
+The MIH types support deserialization for the
+[link odtone.odtone_mih_iarchive_class odtone::mih::iarchive]. This particular
+archive does not include the TLV field, that is necessary in order to support
+defining new sequence types from existing MIH types.
 
 [heading Namespace]
 
@@ -1614,9 +1618,10 @@ archive.
 
 [*Output Archive.]
 
-The MIH types support serialization for the odtone::mih::oarchive. This
-particular archive does not include the TLV field, that is necessary in order to
-support defining new sequence types from existing MIH types.
+The MIH types support serialization for the
+[link odtone.odtone_mih_oarchive_class odtone::mih::oarchive]. This particular
+archive does not include the TLV field, that is necessary in order to support
+defining new sequence types from existing MIH types.
 
 [heading Namespace]
 
@@ -1938,9 +1943,11 @@ archive.
 
 [heading Detailed Description]
 
-This class permits to check if a given class is an input archive.
+This class permits to check if a given class is an input archive
+([link odtone.odtone_mih_iarchive_class odtone::mih::iarchive]).
 
-It has only a boolean value that is true when the given class is an input archive,
+It has only a boolean value that is true when the given class is an input archive
+([link odtone.odtone_mih_iarchive_class odtone::mih::iarchive]),
 or false otherwise.
 
 [heading Namespace]
@@ -1961,9 +1968,11 @@ or false otherwise.
 
 [heading Detailed Description]
 
-This class permits to check if a given class is an output archive.
+This class permits to check if a given class is an output archive
+([link odtone.odtone_mih_oarchive_class odtone::mih::oarchive]).
 
-It has only a boolean value that is true when the given class is an output archive,
+It has only a boolean value that is true when the given class is an output archive
+([link odtone.odtone_mih_oarchive_class odtone::mih::oarchive]),
 or false otherwise.
 
 [heading Namespace]
@@ -1990,8 +1999,9 @@ The MIH types support serialization and deserialization for the
 [link odtone.odtone_mih_oarchive_class odtone::mih::oarchive], however those
 particular archives does not include the TLVs fields.
 
-So odtone::mih::tlv'''_type_''' is responsible to manage TLVs and offers
-mechanisms to serialize and deserialize them.
+So [link odtone.odtone_mih_tlv_type_class odtone::mih::tlv'''_type_'''] is
+responsible to manage TLVs and offers mechanisms to serialize and deserialize
+them.
 
 There are 2 types of this class. However, since they are similar, we will
 explain them generically:

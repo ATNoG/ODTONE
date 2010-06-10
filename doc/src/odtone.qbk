@@ -442,9 +442,11 @@ you wireless card according to your configuration file.
     to ease the definition of new types.]]
 
     [[[@file:../libs/sapLib/index.html ODTONE SAP]] [The SAP API contains a set of IO service classes to
-    send/receive MIH messages. The implementation is modeled after \a boost::asio
-    and only supports asynchronous operation. IO services (odtone::sap::user and
-    odtone::sap::link) are provided to implement User SAP's and Link SAP's.
+    send/receive MIH messages. The implementation is modeled after boost::asio
+    and only supports asynchronous operation. IO services
+    ([@file:../libs/sapLib/odtone/odtone_sap_user_class.html odtone::sap::user] and
+    [@file:../libs/sapLib/odtone/odtone_sap_link_class.html odtone::sap::link])
+    are provided to implement User SAP's and Link SAP's.
     ]]
 ]
 

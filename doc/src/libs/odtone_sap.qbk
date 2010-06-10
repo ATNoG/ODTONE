@@ -32,14 +32,7 @@
     [source-mode c++]
 ]
 
-[section:index_sap ODTONE SAP Library]
-
-[@file:./sap_overview.html 1. Overview]
-
-[@file:./sap_classes.html 2. Classes]
-
-[@file:./sap_tutorial.html 3. Tutorial]
-
+[section:index_sap Index]
 [endsect]
 
 [section:sap_overview 1. Overview]
@@ -70,13 +63,14 @@ to be familiar with boost::function and boost::bind.
 
 [heading Detailed Description]
 
-[$./images/odtone::sap::sap.png]
+[$./../../../images/odtone::sap::sap.png]
 
 [*SAP Base Class]
 
 This class derive from boost::noncopyable in order to prohibit copy construction
-and copy assignment. Thus, *odtone::sap::sap* class has protected constructor and
-destructor members and should be used only as a base class.
+and copy assignment. Thus, [link odtone.odtone_sap_class odtone::sap::sap]
+class has protected constructor and destructor members and should be used only
+as a base class.
 
 This will be the base class to [link odtone.odtone_sap_user_class odtone::sap::user]
 and [link odtone.odtone_sap_link_class odtone::sap::link] as is documented later
