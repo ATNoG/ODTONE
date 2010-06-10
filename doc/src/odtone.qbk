@@ -232,9 +232,9 @@ Prebuild binaries are available at
 In order to setup user-config.jam for Android, you must add the following line
 (without qoutes):
 
-"using gcc : android	: path-to-toolset/arm-none-linux-gnueabi-g++ : <linkflags>"-Wl,--whole-archive -lpthread -Wl,--no-whole-archive -lc" ;/"
+"[~using gcc : android	: path-to-toolset/arm-none-linux-gnueabi-g++ : <linkflags>"-Wl,--whole-archive -lpthread -Wl,--no-whole-archive -lc" ;]"
 
-To use the Android toolset, pass the command line option "[~toolset=gcc-android"]
+To use the Android toolset, pass the command line option "[~toolset=gcc-android]"
 to bjam.
 
 The Android SDK has the necessary tools to run, debug and deploy the ODTONE
@@ -408,6 +408,10 @@ On the machine with the mihf2 the configuration file can look like:
 	link_parameters_report, link_going_down,
 	link_handover_imminent, link_handover_complete
 
+[note Note that using Android emulator, web traffic is routed through your
+development machine. So, the IP address assigned to Android emulator is the IP
+address of your machine. The development machine can be reached from Android
+emulator through 10.0.2.2.]
 
 [*Running Demo]
 
