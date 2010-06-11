@@ -107,7 +107,7 @@ notes on specific platforms that might prove an obstacle.
 In order to correctly use ODTONE, you must first make sure that you have the
 required dependencies installed:
 
-* *Boost Developer libraries (v1.42 or higher):* If you do not already have them in
+* *Boost Developer libraries (v1.42):* If you do not already have them in
 your system, you can go to [@http://www.boost.org/ boost's website] and
 download a more recent version of the Boost libraries.
 
