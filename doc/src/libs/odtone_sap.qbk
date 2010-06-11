@@ -79,9 +79,7 @@ in this document.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace sap {
-		// ...
-	} /* namespace sap */ } /* namespace odtone */
+	namespace odtone::sap
 ``
 
 [endsect]
@@ -105,9 +103,7 @@ to report the success or failure in delivering a sent message.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace sap {
-		// ...
-	} /* namespace sap */ } /* namespace odtone */
+	namespace odtone::sap
 ``
 
 [heading Public Member Functions]
@@ -197,9 +193,7 @@ to report the success or failure in delivering a sent message.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace sap {
-		// ...
-	} /* namespace sap */ } /* namespace odtone */
+	namespace odtone::sap
 ``
 
 [heading Public Member Functions]

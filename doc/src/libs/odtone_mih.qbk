@@ -115,9 +115,7 @@ as a base class.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace mih {
-		// ...
-	} /* namespace mih */ } /* namespace odtone */
+	namespace odtone::mih
 ``
 
 [heading Public Member Functions]
@@ -576,9 +574,7 @@ as a base class.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace mih {
-		// ...
-	} /* namespace mih */ } /* namespace odtone */
+	namespace odtone::mih
 ``
 
 [heading Public Member Functions]
@@ -659,9 +655,7 @@ inherit all the features from base class.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace mih {
-		// ...
-	} /* namespace mih */ } /* namespace odtone */
+	namespace odtone::mih
 ``
 
 [heading Public Member Functions]
@@ -743,9 +737,7 @@ inherit all the features from base class.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace mih {
-		// ...
-	} /* namespace mih */ } /* namespace odtone */
+	namespace odtone::mih
 ``
 
 [heading Public Member Functions]
@@ -834,9 +826,7 @@ will inherit all the features from base class.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace mih {
-		// ...
-	} /* namespace mih */ } /* namespace odtone */
+	namespace odtone::mih
 ``
 
 [heading Public Member Functions]
@@ -924,9 +914,7 @@ the odtone MIHF implementation.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace mih {
-		// ...
-	} /* namespace mih */ } /* namespace odtone */
+	namespace odtone::mih
 ``
 
 [heading Public Member Functions]
@@ -1045,9 +1033,7 @@ destination and source ID's that are serialize/deserialize in
 [heading Namespace]
 
 ``
-	namespace odtone { namespace mih {
-		// ...
-	} /* namespace mih */ } /* namespace odtone */
+	namespace odtone::mih
 ``
 
 [heading Public Member Functions]
@@ -1260,9 +1246,7 @@ defining new sequence types from existing MIH types.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace mih {
-		// ...
-	} /* namespace mih */ } /* namespace odtone */
+	namespace odtone::mih
 ``
 
 [heading Public Member Functions]
@@ -1626,9 +1610,7 @@ defining new sequence types from existing MIH types.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace mih {
-		// ...
-	} /* namespace mih */ } /* namespace odtone */
+	namespace odtone::mih
 ``
 
 [heading Public Member Functions]
@@ -1953,9 +1935,7 @@ or false otherwise.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace mih {
-		// ...
-	} /* namespace mih */ } /* namespace odtone */
+	namespace odtone::mih
 ``
 
 [endsect]
@@ -1978,9 +1958,7 @@ or false otherwise.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace mih {
-		// ...
-	} /* namespace mih */ } /* namespace odtone */
+	namespace odtone::mih
 ``
 
 [endsect]
@@ -2012,9 +1990,7 @@ explain them generically:
 [heading Namespace]
 
 ``
-	namespace odtone { namespace mih {
-		// ...
-	} /* namespace mih */ } /* namespace odtone */
+	namespace odtone::mih
 ``
 
 [heading Public Member Functions]
@@ -2082,9 +2058,7 @@ in it, and the correspondent TLV type.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace mih {
-		// ...
-	} /* namespace mih */ } /* namespace odtone */
+	namespace odtone::mih
 ``
 
 [heading Public Member Functions]
@@ -2147,9 +2121,7 @@ otherwise.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace mih {
-		// ...
-	} /* namespace mih */ } /* namespace odtone */
+	namespace odtone::mih
 ``
 
 [endsect]
@@ -2161,9 +2133,7 @@ otherwise.
 [heading Namespace]
 
 ``
-	namespace odtone { namespace mih {
-		// ...
-	} /* namespace mih */ } /* namespace odtone */
+	namespace odtone::mih
 ``
 
 

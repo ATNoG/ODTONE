@@ -61,9 +61,7 @@ last checkpoint and discover why it happen.
 [heading Namespace]
 
 ``
-	namespace odtone {
-		// ...
-	} /* namespace odtone */
+	namespace odtone
 ``
 
 [heading Public Member Functions]
@@ -185,9 +183,7 @@ this section.
 [heading Namespace]
 
 ``
-	namespace odtone {
-		// ...
-	} /* namespace odtone */
+	namespace odtone
 ``
 
 [heading Public Member Functions]
@@ -382,9 +378,7 @@ to 10 arguments.
 [heading Namespace]
 
 ``
-	namespace odtone {
-		// ...
-	} /* namespace odtone */
+	namespace odtone
 ``
 
 [heading Public Member Functions]
