@@ -116,7 +116,7 @@
 		font-size: 85%;
 		margin: 1pc 5% 0pc 5%;
 		padding: 0.5pc 0.5pc 0.5pc 0.5pc;
-		border: 1px solid gray;
+		border: 1px solid #DCDCE1;
 	}
 
 	.programlisting,
@@ -354,3 +354,21 @@
 		color: #777777;
 		font-size: small;
 	}
+
+/*******************************************************************************
+    Notes
+*******************************************************************************/
+    div.note,
+    div.tip,
+    div.important,
+    div.caution,
+    div.warning,
+    p.blurb
+    {
+        font-size: 10pt;
+        line-height: 1.5;
+        display: block;
+        margin: 1pc 5% 2pc 5%;
+        padding: 0.5pc 0.5pc 0.5pc 0.5pc;
+		border: 1px solid #DCDCE1;
+    }
