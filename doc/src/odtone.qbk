@@ -194,9 +194,9 @@ the right dependencies installed in all machines you intend to use ODTONE,
 then you are ready to compile and install.
 
 [table Platform Support
-    [[]        [x86-32] [x86-64] [ARM]]
-    [[Linux]   [OK]     [OK]     [OK] ]
-    [[Windows] [OK]     [OK]     [?]  ]
+    [[]        [x86-32]                 [x86-64]                 [ARM]]
+    [[Linux]   [[$./images/check.png]]  [[$./images/check.png]]  [[$./images/check.png]] ]
+    [[Windows] [[$./images/check.png]]  [[$./images/check.png]]  [[$./images/interrogation.png]]  ]
 ]
 
 [note *For Linux*
@@ -230,7 +230,7 @@ Prebuild binaries are available at
 [@http://www.codesourcery.com/sgpp/lite/arm CodeSourcery]
 
 In order to setup user-config.jam for Android, you must add the following line
-(without qoutes):
+(without quotes):
 
 "[~using gcc : android	: path-to-toolset/arm-none-linux-gnueabi-g++ : <linkflags>"-Wl,--whole-archive -lpthread -Wl,--no-whole-archive -lc" ;]"
 

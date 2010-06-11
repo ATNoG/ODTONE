@@ -119,8 +119,8 @@ of, MIH User only records in the log what type of message was received.
 MIH User can be configured either through a configuration file or passing
 directly, in command line, the configuration options.
 
-For testing remote communication, must be defined ['MIH message destination
-of MIH User] using ['--dest] option in the command line.
+For testing remote communication, must be defined MIH message destination
+of MIH User using ['--dest] option in the command line.
 
 
 [endsect]

@@ -54,9 +54,9 @@ The BASE API offers mechanisms for debugging. This is done using a class named
 
 [$./../../../images/odtone::checkpoint.png]
 
-It can be viewed as a linked list of checkpoint that maintain the execution
+It can be viewed as a linked list of checkpoints that maintain the execution
 status of the application. So, when a crash happens it is easy to check the
-last checkpoint and discover why crash happen.
+last checkpoint and discover why it happen.
 
 [heading Namespace]
 
@@ -107,11 +107,11 @@ Destructor for checkpoint.
 	static checkpoint* top();
 ``
 
-Get the check point list.
+Get the checkpoint list.
 
 [*Return:]
 
-* The check point list.
+* The checkpoint list.
 
 ______________________________________________________________________________
 
@@ -352,7 +352,12 @@ ______________________________________________________________________________
 	bool empty() const;
 ``
 
-Check if the element has an null reference for the next element.
+Check if the element has a null reference for the next element.
+
+[*Return:]
+
+*True if has a null reference for the next element or false otherwise.
+
 
 [endsect]
 
