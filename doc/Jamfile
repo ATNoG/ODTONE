@@ -15,10 +15,9 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-project documentation
+project doc
 	;
 
-using quickbook ;
 import boostbook : boostbook ;
 
 xml odtone 	        : src/odtone.qbk  ;
@@ -41,12 +40,10 @@ boostbook odtone_base
 		<xsl:param>boost.image.w=100
 		<xsl:param>boost.image.h=100
 		<xsl:param>nav.layout=none
-		<xsl:param>base.dir=../html/
+		<xsl:param>base.dir=../doc/html/
 		<xsl:param>root.filename=index
 		<xsl:param>html.stylesheet=./odtone.css
 		<xsl:param>generate.manifest=0
-		<dependency>css
-		<dependency>images
     ;
 
 boostbook client
@@ -58,12 +55,10 @@ boostbook client
 		<xsl:param>boost.image.w=100
 		<xsl:param>boost.image.h=100
 		<xsl:param>nav.layout=none
-		<xsl:param>base.dir=../html/app/client/
+		<xsl:param>base.dir=../doc/html/app/client/
 		<xsl:param>root.filename=index
 		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
-		<dependency>css
-		<dependency>images
     ;
 
 boostbook dummyserver
@@ -75,12 +70,10 @@ boostbook dummyserver
 		<xsl:param>boost.image.w=100
 		<xsl:param>boost.image.h=100
 		<xsl:param>nav.layout=none
-		<xsl:param>base.dir=../html/app/dummyserver/
+		<xsl:param>base.dir=../doc/html/app/dummyserver/
 		<xsl:param>root.filename=index
 		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
-		<dependency>css
-		<dependency>images
     ;
 
 boostbook link_sap
@@ -92,12 +85,10 @@ boostbook link_sap
 		<xsl:param>boost.image.w=100
 		<xsl:param>boost.image.h=100
 		<xsl:param>nav.layout=none
-		<xsl:param>base.dir=../html/app/link_sap/
+		<xsl:param>base.dir=../doc/html/app/link_sap/
 		<xsl:param>root.filename=index
 		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
-		<dependency>css
-		<dependency>images
     ;
 
 boostbook mih_usr
@@ -109,12 +100,10 @@ boostbook mih_usr
 		<xsl:param>boost.image.w=100
 		<xsl:param>boost.image.h=100
 		<xsl:param>nav.layout=none
-		<xsl:param>base.dir=../html/app/mih_usr/
+		<xsl:param>base.dir=../doc/html/app/mih_usr/
 		<xsl:param>root.filename=index
 		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
-		<dependency>css
-		<dependency>images
     ;
 
 boostbook miis
@@ -126,12 +115,10 @@ boostbook miis
 		<xsl:param>boost.image.w=100
 		<xsl:param>boost.image.h=100
 		<xsl:param>nav.layout=none
-		<xsl:param>base.dir=../html/app/miis/
+		<xsl:param>base.dir=../doc/html/app/miis/
 		<xsl:param>root.filename=index
 		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
-		<dependency>css
-		<dependency>images
     ;
 
 boostbook mihf
@@ -143,12 +130,10 @@ boostbook mihf
 		<xsl:param>boost.image.w=100
 		<xsl:param>boost.image.h=100
 		<xsl:param>nav.layout=none
-		<xsl:param>base.dir=../html/app/mihf/
+		<xsl:param>base.dir=../doc/html/app/mihf/
 		<xsl:param>root.filename=index
 		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
-		<dependency>css
-		<dependency>images
     ;
 
 boostbook libBase
@@ -160,12 +145,10 @@ boostbook libBase
 		<xsl:param>boost.image.w=100
 		<xsl:param>boost.image.h=100
 		<xsl:param>nav.layout=none
-		<xsl:param>base.dir=../html/libs/baseLib/
+		<xsl:param>base.dir=../doc/html/libs/baseLib/
 		<xsl:param>root.filename=index
 		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
-		<dependency>css
-		<dependency>images
     ;
 
 boostbook libSap
@@ -177,12 +160,10 @@ boostbook libSap
 		<xsl:param>boost.image.w=100
 		<xsl:param>boost.image.h=100
 		<xsl:param>nav.layout=none
-		<xsl:param>base.dir=../html/libs/sapLib/
+		<xsl:param>base.dir=../doc/html/libs/sapLib/
 		<xsl:param>root.filename=index
 		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
-		<dependency>css
-		<dependency>images
     ;
 
 boostbook libMih
@@ -194,15 +175,8 @@ boostbook libMih
 		<xsl:param>boost.image.w=100
 		<xsl:param>boost.image.h=100
 		<xsl:param>nav.layout=none
-		<xsl:param>base.dir=../html/libs/mihLib/
+		<xsl:param>base.dir=../doc/html/libs/mihLib/
 		<xsl:param>root.filename=index
 		<xsl:param>html.stylesheet=./../../odtone.css
 		<xsl:param>generate.manifest=0
-		<dependency>css
-		<dependency>images
     ;
-
-install css : [ glob ./*.css ] : <location>../html ;
-explicit css ;
-install images : [ glob ./images/* ] : <location>../html/images ;
-explicit images ;
