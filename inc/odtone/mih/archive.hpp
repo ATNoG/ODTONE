@@ -84,7 +84,7 @@ public:
 
 public:
 	iarchive(archive& ar)
-		: _buf(ar._buf), _pos(ar._pos), _begin(ar._pos), _length(ar._buf.size())
+		: _buf(ar._buf), _pos(ar._pos), _begin(ar._pos), _length(ar._buf.size() - ar._pos)
 	{ }
 	iarchive(archive& ar, uint length)
 		: _buf(ar._buf), _pos(ar._pos), _begin(ar._pos), _length(length)
