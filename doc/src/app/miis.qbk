@@ -73,8 +73,6 @@ use other database previously created.
 	example-data.ttl.]]
 ]
 
-TODO: Need image here
-
 When a MIH_Get_Information.indication is received the message is deserialized
 and the Sparql queries are fetch. The queries are run and the results serialized
 and sent in a MIH_Get_Information.response to the MIHF.

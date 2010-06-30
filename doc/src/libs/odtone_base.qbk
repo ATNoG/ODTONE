@@ -160,6 +160,8 @@ Get the expression of the checkpoint.
 
 * The expression of the checkpoint.
 
+______________________________________________________________________________
+
 [endsect]
 
 [section:base_list 2.2 List Management]
@@ -354,6 +356,7 @@ Check if the element has a null reference for the next element.
 
 *True if has a null reference for the next element or false otherwise.
 
+______________________________________________________________________________
 
 [endsect]
 
@@ -474,7 +477,7 @@ Get the std::ostream associated with the logger.
 
 *The std::ostream associated with the logger.
 
-
+______________________________________________________________________________
 
 [endsect]
 

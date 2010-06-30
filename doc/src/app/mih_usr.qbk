@@ -175,8 +175,8 @@ The handler can also be the default handler for MIH User:
 
 Before running the MIH User, the local MIHF must have been running first. Otherwise,
 the MIH_User will send the Capability Discover Request and will block (wait)
-because it will never receive the correspondent response, due the messages being
-sent by UDP and no acknowledge exists.
+because it will never receive the correspondent response, due the local messages
+being sent by UDP and no acknowledge exists.
 
 The ['--dest] option must be used for connections to a remote MIHF.
 

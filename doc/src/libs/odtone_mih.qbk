@@ -90,7 +90,7 @@ new types.
 The [link odtone.odtone_mih_message_class odtone::mih::message] is a high level
 representation of an MIH message, it provides access to all fields of the MIH
 message header, the destination and sources ID's that, although it is part of
-payload, it is common to all messages, and also provides
+payload, it is common to all messages. It also provides
 serialization/deserialization for all the other payload data types
 (see [link odtone.odtone_mih_archive_class odtone::mih::archive]).
 
@@ -106,11 +106,6 @@ deserialization support.
 
 For generating/parsing messages, a mini DSL is provided for maximum flexibility
 and extendability.
-
-This class derive from boost::noncopyable in order to prohibit copy construction
-and copy assignment. Thus, [link odtone.odtone_mih_message_class odtone::mih::message]
-class has protected constructor and destructor members and should be used only
-as a base class.
 
 [heading Namespace]
 
@@ -199,6 +194,9 @@ ______________________________________________________________________________
 ``
 
 Destructor for MIH Message.
+
+______________________________________________________________________________
+
 
 [heading Member Function Documentation]
 
@@ -555,8 +553,8 @@ Get the MIH Message Frame (odtone::mih::frame).
 
 [*MIH Message helper.]
 
-Parsing/Generating MIH messages is done with helper classes (
-[link odtone.odtone_mih_request_class odtone::mih::request],
+Parsing/Generating MIH messages is done with helper classes
+([link odtone.odtone_mih_request_class odtone::mih::request],
 [link odtone.odtone_mih_response_class odtone::mih::response],
 [link odtone.odtone_mih_indication_class odtone::mih::indication]) and operator
 overloading.
@@ -582,9 +580,12 @@ as a base class.
 ``
 	message_helper(uint16 mid, const id* dst);
 
-	friend oarchive& operator<<(message& msg,const message_helper& mh);
+	friend oarchive& operator<<(message& msg, const message_helper& mh);
 	friend iarchive& operator>>(message& msg, const message_helper& mh);
 ``
+
+______________________________________________________________________________
+
 
 [heading Constructor & Destructor Documentation]
 
@@ -615,7 +616,7 @@ Serialize fields of the MIH Message.
 
 [*Return]
 
-*Output TLV archive ([link odtone.odtone_mih_oarchive_class odtone::mih::oarchive]).
+*Output archive ([link odtone.odtone_mih_oarchive_class odtone::mih::oarchive]).
 
 ______________________________________________________________________________
 
@@ -633,7 +634,7 @@ Deserialize fields from a MIH Message.
 
 [*Return]
 
-*Input TLV archive ([link odtone.odtone_mih_iarchive_class odtone::mih::iarchive]).
+*Input archive ([link odtone.odtone_mih_iarchive_class odtone::mih::iarchive]).
 
 [endsect]
 
@@ -700,20 +701,38 @@ Construct an MIH Indication Message helper.
 *[*m] - value of MIH Message ID.
 *[*destination] - MIH Message Destination MIHF ID.
 
+______________________________________________________________________________
+
 
 [heading Data Types]
 
 ``
 	enum mid {
-		link_detected           = msg_id<2, 3, 1>::value,    /// MIH_Link_Detected.indication
-		link_up                 = msg_id<2, 3, 2>::value,    /// MIH_Link_Up.indication
-		link_down               = msg_id<2, 3, 3>::value,    /// MIH_Link_Down.indication
-		link_parameters_report  = msg_id<2, 3, 5>::value,    /// MIH_Link_Parameters_Report.indication
-		link_going_down         = msg_id<2, 3, 6>::value,    /// MIH_Link_Going_Down.indication
-		link_handover_imminent  = msg_id<2, 3, 7>::value,    /// MIH_Link_Handover_Imminent.indication
-		link_handover_complete  = msg_id<2, 3, 8>::value,    /// MIH_Link_Handover_Complete.indication
-		push_information        = msg_id<4, 3, 2>::value,    /// MIH_Push_Information.indication
-		get_information         = msg_id<4, 3, 1>::value,    /// MIH_Get_Information.indication
+		capability_discover       = msg_id<1, 3, 1>::value,     /// MIH_Capability_Discover.indication
+		mih_register              = msg_id<1, 3, 2>::value,     /// MIH_Register.indication
+		mih_deregister            = msg_id<1, 3, 3>::value,     /// MIH_DeRegister.indication
+		event_subscribe           = msg_id<1, 3, 4>::value,     /// MIH_Event_Subscribe.indication
+		event_unsubscribe         = msg_id<1, 3, 5>::value,     /// MIH_Event_Unsubscribe.indication
+		link_detected             = msg_id<2, 3, 1>::value,     /// MIH_Link_Detected.indication
+		link_up                   = msg_id<2, 3, 2>::value,     /// MIH_Link_Up.indication
+		link_down                 = msg_id<2, 3, 3>::value,     /// MIH_Link_Down.indication
+		link_parameters_report    = msg_id<2, 3, 5>::value,     /// MIH_Link_Parameters_Report.indication
+		link_going_down           = msg_id<2, 3, 6>::value,     /// MIH_Link_Going_Down.indication
+		link_handover_imminent    = msg_id<2, 3, 7>::value,     /// MIH_Link_Handover_Imminent.indication
+		link_handover_complete    = msg_id<2, 3, 8>::value,     /// MIH_Link_Handover_Complete.indication
+		link_get_parameters       = msg_id<3, 3, 1>::value,     /// MIH_Link_Get_Parameters.indication
+		link_configure_thresholds = msg_id<3, 3, 2>::value,     /// MIH_Link_Configure_Thresholds.indication
+		link_actions              = msg_id<3, 3, 3>::value,     /// MIH_Link_Actions.indication
+		net_ho_candidate_query    = msg_id<3, 3, 4>::value,     /// MIH_Net_HO_Candidate_Query.indication
+		mn_ho_candidate_query     = msg_id<3, 3, 5>::value,     /// MIH_MN_HO_Candidate_Query.indication
+		n2n_ho_query_resources    = msg_id<3, 3, 6>::value,     /// MIH_N2N_HO_Query_Resources.indication
+		mn_ho_commit              = msg_id<3, 3, 7>::value,     /// MIH_MN_HO_Commit.indication
+		net_ho_commit             = msg_id<3, 3, 8>::value,     /// MIH_Net_HO_Commit.indication
+		n2n_ho_commit             = msg_id<3, 3, 9>::value,     /// MIH_N2N_HO_Commit.indication
+		mn_ho_complete            = msg_id<3, 3, 10>::value,    /// MIH_N2N_HO_Complete.indication
+		n2n_ho_complete           = msg_id<3, 3, 11>::value,    /// MIH_N2N_HO_Commlete.indication
+		get_information           = msg_id<4, 3, 1>::value,     /// MIH_Get_Information.indication
+		push_information          = msg_id<4, 3, 2>::value,     /// MIH_Push_Information.indication
 	};
 ``
 
@@ -781,6 +800,9 @@ Construct an MIH Request Message helper.
 
 *[*m] - value of MIH Message ID.
 *[*destination] - MIH Message Destination MIHF ID.
+
+______________________________________________________________________________
+
 
 [heading Data Types]
 
@@ -870,6 +892,9 @@ Construct an MIH Response Message helper.
 *[*m] - value of MIH Message ID.
 *[*destination] - MIH Message Destination MIHF ID.
 
+______________________________________________________________________________
+
+
 [heading Data Types]
 
 ``
@@ -898,8 +923,6 @@ Construct an MIH Response Message helper.
 
 
 
-
-
 [section:odtone_mih_config_class 2.6. odtone::mih::config Class Reference]
 
 [heading Detailed Description]
@@ -909,7 +932,7 @@ Construct an MIH Response Message helper.
 This class provides parsing for command line options and configuration files for
 a set of predefined options description. It's used for configuring the
 [@./../sapLib/odtone/odtone_sap_class.html odtone::sap] IO services and
-the odtone MIHF implementation.
+the MIHF implementation.
 
 [heading Namespace]
 
@@ -950,6 +973,9 @@ ______________________________________________________________________________
 ``
 
 Destructor for Configuration and Command Line Options Parser.
+
+______________________________________________________________________________
+
 
 [heading Member Function Documentation]
 
@@ -1017,9 +1043,6 @@ Get number of option variable.
 
 
 
-
-
-
 [section:odtone_mih_archive_class 2.7. odtone::mih::archive Class Reference]
 
 [heading Detailed Description]
@@ -1075,6 +1098,9 @@ ______________________________________________________________________________
 ``
 
 Destructor for archive.
+
+______________________________________________________________________________
+
 
 [heading Member Function Documentation]
 
@@ -1320,6 +1346,9 @@ Construct an input archive.
 parse the values.
 *[*length] - length for the input archive.
 
+______________________________________________________________________________
+
+
 [heading Member Function Documentation]
 
 ``
@@ -1343,7 +1372,7 @@ Point to a new position in the input archive.
 
 [*Parameters:]
 
-*[*pos] - new position in the archive where to point.
+*[*pos] - new position in the input archive where to point.
 
 ______________________________________________________________________________
 
@@ -1431,7 +1460,7 @@ ______________________________________________________________________________
 	iarchive& operator&(uint8& val);
 ``
 
-Get a uint8 type value from the current position in the input archive.
+Get a odtone::uint8 type value from the current position in the input archive.
 
 [*Parameters:]
 
@@ -1447,7 +1476,7 @@ __________________________________________________________________
 	iarchive& operator&(uint16& val);
 ``
 
-Get a uint16 type value from the current position in the input archive.
+Get a odtone::uint16 type value from the current position in the input archive.
 
 [*Parameters:]
 
@@ -1463,7 +1492,7 @@ __________________________________________________________________
 	iarchive& operator&(uint32& val);
 ``
 
-Get a uint32 type value from the current position in the input archive.
+Get a odtone::uint32 type value from the current position in the input archive.
 
 [*Parameters:]
 
@@ -1479,7 +1508,7 @@ __________________________________________________________________
 	iarchive& operator&(uint64& val);
 ``
 
-Get a uint64 type value from the current position in the input archive.
+Get a odtone::uint64 type value from the current position in the input archive.
 
 [*Parameters:]
 
@@ -1495,7 +1524,7 @@ __________________________________________________________________
 	iarchive& operator&(sint8& val);
 ``
 
-Get a sint8 type value from the current position in the input archive.
+Get a odtone::sint8 type value from the current position in the input archive.
 
 [*Parameters:]
 
@@ -1511,7 +1540,7 @@ __________________________________________________________________
 	iarchive& operator&(sint16& val);
 ``
 
-Get a sint16 type value from the current position in the input archive.
+Get a odtone::sint16 type value from the current position in the input archive.
 
 [*Parameters:]
 
@@ -1527,7 +1556,7 @@ __________________________________________________________________
 	iarchive& operator&(sint32& val);
 ``
 
-Get a sint32 type value from the current position in the input archive.
+Get a odtone::sint32 type value from the current position in the input archive.
 
 [*Parameters:]
 
@@ -1543,7 +1572,7 @@ __________________________________________________________________
 	iarchive& operator&(sint64& val);
 ``
 
-Get a sint64 type value from the current position in the input archive.
+Get a odtone::sint64 type value from the current position in the input archive.
 
 [*Parameters:]
 
@@ -1655,6 +1684,9 @@ Construct an output archive.
 *[*ar] - [link odtone.odtone_mih_archive_class odtone::mih::archive] from where
 parse the values.
 
+______________________________________________________________________________
+
+
 [heading Member Function Documentation]
 
 ``
@@ -1757,7 +1789,7 @@ ______________________________________________________________________________
 	oarchive& operator&(uint8& val);
 ``
 
-Inserts a uint8 type value from the current position in the output archive.
+Inserts a odtone::uint8 type value from the current position in the output archive.
 
 [*Parameters:]
 
@@ -1773,7 +1805,7 @@ __________________________________________________________________
 	oarchive& operator&(uint16& val);
 ``
 
-Inserts a uint16 type value from the current position in the output archive.
+Inserts a odtone::uint16 type value from the current position in the output archive.
 
 [*Parameters:]
 
@@ -1789,7 +1821,7 @@ __________________________________________________________________
 	oarchive& operator&(uint32& val);
 ``
 
-Inserts a uint32 type value from the current position in the output archive.
+Inserts a odtone::uint32 type value from the current position in the output archive.
 
 [*Parameters:]
 
@@ -1805,7 +1837,7 @@ __________________________________________________________________
 	oarchive& operator&(uint64& val);
 ``
 
-Inserts a uint64 type value from the current position in the output archive.
+Inserts a odtone::uint64 type value from the current position in the output archive.
 
 [*Parameters:]
 
@@ -1821,7 +1853,7 @@ __________________________________________________________________
 	oarchive& operator&(sint8& val);
 ``
 
-Inserts a sint8 type value from the current position in the output archive.
+Inserts a odtone::sint8 type value from the current position in the output archive.
 
 [*Parameters:]
 
@@ -1837,7 +1869,7 @@ __________________________________________________________________
 	oarchive& operator&(sint16& val);
 ``
 
-Inserts a sint16 type value from the current position in the output archive.
+Inserts a odtone::sint16 type value from the current position in the output archive.
 
 [*Parameters:]
 
@@ -1853,7 +1885,7 @@ __________________________________________________________________
 	oarchive& operator&(sint32& val);
 ``
 
-Inserts a sint32 type value from the current position in the output archive.
+Inserts a odtone::sint32 type value from the current position in the output archive.
 
 [*Parameters:]
 
@@ -1869,7 +1901,7 @@ __________________________________________________________________
 	oarchive& operator&(sint64& val);
 ``
 
-Inserts a sint64 type value from the current position in the output archive.
+Inserts a odtone::sint64 type value from the current position in the output archive.
 
 [*Parameters:]
 
@@ -2013,6 +2045,9 @@ Construct a TLV of a particular type.
 
 *[*val] - value of the TLV.
 
+______________________________________________________________________________
+
+
 [heading Member Function Documentation]
 
 ``
@@ -2067,6 +2102,9 @@ in it, and the correspondent TLV type.
 	tlv_type operator()(const T& val) const;
 	tlv_optional_type operator()(const boost::optional<T>& val) const;
 ``
+
+______________________________________________________________________________
+
 
 [heading Member Function Documentation]
 
@@ -2903,20 +2941,6 @@ the [link odtone.odtone_mih_tlv_type_class odtone::mih::tlv'''_type_'''] classes
 To receive and parse a MIH message:
 
 ``
-    //...
-
-    msg << odtone::mih::request(odtone::mih::request::capability_discover);
-
-    user_sap_ios.async_send(msg, &capability_discover_response);
-
-    //...
-``
-
-
-In this case, to begin parsing we use operator >>. Everything else is similar to
-generating a message:
-
-``
 void capability_discovery_response(odtone::mih::message& msg, const boost::system::error_code& ec)
 {
     if (ec) {
@@ -2938,5 +2962,8 @@ void capability_discovery_response(odtone::mih::message& msg, const boost::syste
    //...
 }
 ``
+
+In this case, to begin parsing we use operator >>. Everything else is similar to
+generating a message.
 
 [endsect]

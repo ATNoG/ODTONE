@@ -130,8 +130,7 @@ way to process incoming messages.
 The signature of the callback is:
 
 ``
-	void(odtone::mih::message&,
-	     const boost::system::error_code&)
+	void(odtone::mih::message&, const boost::system::error_code&)
 ``
 
 [*Parameters:]
@@ -151,6 +150,9 @@ ______________________________________________________________________________
 ``
 
 Destructor for User SAP IO Service.
+
+______________________________________________________________________________
+
 
 [heading Member Function Documentation]
 
@@ -231,6 +233,7 @@ and receive buffer size.
 *[*h] - handler callback as a function pointer/object.
 
 [*Throws:]
+
 *boost::system::error_code
 
 ______________________________________________________________________________
@@ -240,6 +243,9 @@ ______________________________________________________________________________
 ``
 
 Destructor for Link SAP IO Service.
+
+______________________________________________________________________________
+
 
 [heading Member Function Documentation]
 ``
@@ -268,7 +274,7 @@ simple SAPs.
 [*Receiving MIH Messages]
 
 In this example we have very basic running MIH User SAP that only receives
-MIH messages (MIH Link SAP implementation are similar):
+MIH messages (MIH Link SAP implementation is similar):
 
 To receive messages, we need a callback handler:
 
@@ -307,7 +313,7 @@ And a simple main:
 [*Sending MIH Messages]
 
 In this second example we added the ability to send MIH messages
-(MIH Link SAP implementation are similar):
+(MIH Link SAP implementation is similar):
 
 To send messages, we need a callback handler:
 
@@ -328,7 +334,7 @@ To send messages, we need a callback handler:
 	}
 ``
 
-And a few modifications in main to send the message:
+And a few modifications in the main to send the message:
 
 ``
 	int main()

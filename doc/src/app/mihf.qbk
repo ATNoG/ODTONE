@@ -199,7 +199,7 @@ transaction state machines, as defined in the standard. If it is from a local
 SAP the transaction state machines are bypassed to reduce the number of messages
 exchanged locally.
 
-A dispatch method is supplied when a listening service is instantiated, and is
+A dispatch method is supplied when a listening service is instantiated and is
 called when a valid message is received.
 
 If the listening service is responsible for remote communications, a reference
@@ -223,7 +223,7 @@ Then proceeds to run the newly created, or found, transaction.
 
 The service access controller is split in ['sac_dispatch] and ['sac_process_message],
 because the transaction state machines, defined in the standard, expect a
-global function that processes the incoming message, and returns a boolean
+global function that processes the incoming message and returns a boolean
 indicating that a response message was generated. This complicates matters
 because we don't want to run the local messages through the transaction
 state machines.
@@ -255,7 +255,7 @@ forward it the response some state must be stored.
 
 [$./../../images/transmit.jpg]
 
-This class is used by the MIHFs services, and checks if the MIH destination
+This class is used by the MIHFs services and checks if the MIH destination
 identifier of the message is in the local address book. If it is, the message is
 for a local SAP and the udp_send method is called to send the message. If it's
 not in the local address book the message is forwarded to the ['message_out].
@@ -292,9 +292,9 @@ A ['meta_message] is a derived class from
 [@file:../../../libs/mihLib/odtone/odtone_mih_message_class.html odtone::mih::message]
 with added metadata.
 
-The metadata indicates if the message was received on the loopback interface,
-and also the IP and port of the sender of the message. It's useful mostly due to
-broadcast messages.
+The metadata indicates if the message was received on the loopback interface
+and also the IP address and port of the sender of the message. It's useful mostly
+due to broadcast messages.
 
 [h5 address_book]
 
@@ -399,7 +399,7 @@ method for reading from the configuration file and enabling TCP support, for
 the MIHF is not implemented.
 
 The ['tcp_listener] class was discussed in detail in a
-[link odtone.mihf_internal_arch.listening_services__classes__emphasis_udp_listner__emphasis__and__emphasis_tcp_listner__emphasis_ previous chapter.]
+[link odtone.mihf_internal_arch.listening_services__classes__emphasis_udp_listner__emphasis__and__emphasis_tcp_listner__emphasis_ previous section.]
 
 [endsect]
 
