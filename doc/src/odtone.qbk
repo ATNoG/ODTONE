@@ -32,11 +32,6 @@
     [source-mode c++]
 ]
 
-[section:index Index]
-
-[endsect]
-
-
 [section:intro Introduction]
 
 [h3 What is this?]
@@ -95,14 +90,14 @@ changes include:
 
 [section:getStart Getting Started]
 
-[section:installation Installation]
+[h1 Installation]
 
 As ODTONE is developed in order to work in several platforms, we therefore
 won't provide detailed tutorials for each mainstream operating system. We
 will rather present the main guidelines for installing ODTONE and any relevant
 notes on specific platforms that might prove an obstacle.
 
-[section 1. Required Dependencies]
+[h3 1. Required Dependencies]
 
 In order to correctly use ODTONE, you must first make sure that you have the
 required dependencies installed:
@@ -111,7 +106,7 @@ required dependencies installed:
 your system, you can go to [@http://www.boost.org/ boost's website] and
 download a more recent version of the Boost libraries.
 
-[heading 1.1. Boost Library Quick Guide]
+[h4 1.1. Boost Library Quick Guide]
 The Boost library is required to compile ODTONE, so in order to correctly use ODTONE
 you must first make sure you have Boost library installed.
 
@@ -167,9 +162,8 @@ Once the Boost library is properly configured, run 'bjam' to compile ODTONE.
 
 Consult the Boost.Build documentation for more details!
 
-[endsect]
 
-[section 2. Getting ODTONE]
+[h3 2. Getting ODTONE]
 
 [*In a tarball]
 
@@ -185,9 +179,8 @@ creating your own local copy.
 
    git clone http://helios.av.it.pt/projects/odtone/git/ odtone
 
-[endsect]
 
-[section 3. Compiling and installing ODTONE]
+[h3 3. Compiling and installing ODTONE]
 
 Once you have obtained the ODTONE source code and have assured that you have
 the right dependencies installed in all machines you intend to use ODTONE,
@@ -240,13 +233,9 @@ to bjam.
 The Android SDK has the necessary tools to run, debug and deploy the ODTONE
 binaries.]
 
-[endsect]
+[heading ODTONE User Guide]
 
-[endsect]
-
-[section:userGuide ODTONE User Guide]
-
-[section:configuration Configuration]
+[h4 Configuration]
 
 [*ODTONE-MIHF]
 
@@ -334,9 +323,7 @@ Usage: <link event 1>, <link event 2>, (...), <link event N>
 	   --mihf.id arg (=local-mihf)      Local MIHF Id
 	   --link.id arg (=link)            Link SAP Id
 
-[endsect]
-
-[section:local Local Demo]
+[h4 Local Demo]
 
 The local demo consists in a simple experiment to demonstrate simple message
 exchange between a MIHF, a MIH_User and a Link_SAP. It allows you to see
@@ -365,9 +352,7 @@ that the Link_SAP detects some events, you should now proceed to disconnect,
 disable or shutdown your network cable/interface or your wireless card according
 to your configuration file.
 
-[endsect]
-
-[section:remote Remote Demo]
+[h4 Remote Demo]
 The remote demo consists in a local MIH_User obtaining notifications of events
 that are happening on a Link_SAP remotely located on another machine. You are
 required to have two machines for this experiment. The first machine hosting an
@@ -426,29 +411,29 @@ you wireless card according to your configuration file.
 
 [endsect]
 
-[endsect]
-
-[endsect]
-
 
 [section:library Libraries]
 
 [variablelist
-    [[[@file:../libs/baseLib/index.html ODTONE Base]] [The BASE API contains a set of classes that offers support mechanisms, such as
+    [[[link odtone.library.index_base ODTONE Base]] [The BASE API contains a set of classes that offers support mechanisms, such as
     debug, list management, logger, exceptions and generation random values.]]
 
-    [[[@file:../libs/mihLib/index.html ODTONE MIH]] [The MIH API contains a set of classes to generate/parse MIH
+    [[[link odtone.library.index_mih ODTONE MIH]] [The MIH API contains a set of classes to generate/parse MIH
     messages, including the types present in the standard and template classes
     to ease the definition of new types.]]
 
-    [[[@file:../libs/sapLib/index.html ODTONE SAP]] [The SAP API contains a set of IO service classes to
+    [[[link odtone.library.index_sap ODTONE SAP]] [The SAP API contains a set of IO service classes to
     send/receive MIH messages. The implementation is modeled after boost::asio
     and only supports asynchronous operation. IO services
-    ([@file:../libs/sapLib/odtone/odtone_sap_user_class.html odtone::sap::user] and
-    [@file:../libs/sapLib/odtone/odtone_sap_link_class.html odtone::sap::link])
+    ([link odtone.library.index_sap.odtone_sap_user_class odtone::sap::user] and
+    [link odtone.library.index_sap.odtone_sap_link_class odtone::sap::link])
     are provided to implement User SAP's and Link SAP's.
     ]]
 ]
+
+[include libs/odtone_base.qbk]
+[include libs/odtone_mih.qbk]
+[include libs/odtone_sap.qbk]
 
 [endsect]
 
@@ -457,13 +442,13 @@ you wireless card according to your configuration file.
 
 [variablelist
 
-    [[[@file:../app/mihf/index.html ODTONE-MIHF]]
+    [[[link odtone.app.mihf_index ODTONE-MIHF]]
     [The MIHF is a management entity that obtains link-layer
      information from lower layers of different protocol stacks and also from other
      remote nodes. The MIHF coordinates handover decision making with other peer MIHF
      in the network.]]
 
-    [[[@file:../app/mih_usr/index.html MIH_User]]
+    [[[link odtone.app.mih_usr_index MIH_User]]
     [The MIH_User specifies a media independent interface between the MIHF and
      upper layers of the mobility management protocol stack. The upper layers need to
      subscribe with the MIHF as users to receive MIHF-Generated events and also for
@@ -471,27 +456,34 @@ you wireless card according to your configuration file.
      MIHF users through the MIHF. MIHF users directly send commands to the local MIHF
      using the service primitives of the MIH_User.]]
 
-    [[[@file:../app/link_sap/index.html Link_SAP]]
+    [[[link odtone.app.miis_index MIIS Server]]
+    [The MIIS Server provides details on the characteristics and
+	services provided by the serving and neighboring networks. The information
+	enables effective system access and effective handover decisions.]]
+
+    [[[link odtone.app.link_sap_index Link_SAP]]
     [The Link SAP specifies an abstract media dependent interface between the MIHF
      and lower layers media-specific protocol stacks of technologies such as IEEE 802.3,
      IEEE 802.11, IEEE 802.16, 3GPP and 3GPP2. For different link-layer technologies,
      media-specific SAPs provide the functionality of Link SAP. ]]
 
-    [[[@file:../app/client/index.html Client]]
+    [[[link odtone.app.client_index Client]]
     [The ['client] is a simple application that permits to send any kind of message
      to a particular destination. This way, it is possible to send a specific message
      to a choose destination in order to test is behaviour easily and quickly.]]
 
-    [[[@file:../app/dummyserver/index.html Dummyserver]]
+    [[[link odtone.app.dummyserver_index Dummyserver]]
     [The ['dummyserver] is a simple application that, as the name implies, works like
      a dummy server. It is always listening (at port 4000) for incoming messages and
      print them in the console.]]
-
-    [[[@file:../app/miis/index.html MIIS Server]]
-    [The MIIS Server provides details on the characteristics and
-	services provided by the serving and neighboring networks. The information
-	enables effective system access and effective handover decisions.]]
 ]
+
+[include app/mihf.qbk]
+[include app/mih_usr.qbk]
+[include app/miis.qbk]
+[include app/link_sap.qbk]
+[include app/client.qbk]
+[include app/dummyserver.qbk]
 
 [endsect]
 

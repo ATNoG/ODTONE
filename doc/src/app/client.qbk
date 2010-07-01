@@ -15,27 +15,7 @@
  / This software is distributed without any warranty.
  /=============================================================================]
 
-[article ODTONE
-    [quickbook 1.5]
-    [version 0.2]
-    [authors [Guimarães, Carlos]]
-    [copyright 2010 Universidade Aveiro]
-    [copyright 2010 Instituto de Telecomunicações - Pólo Aveiro]
-    [license
-        This software is distributed under a license. The full license
-		agreement can be found in the LICENSE in this distribution.
-		This software may not be copied, modified, sold or distributed
-		other than expressed in the named license agreement.
-
-		This software is distributed without any warranty.
-    ]
-    [source-mode c++]
-]
-
-[section:cliente_index Index]
-[endsect]
-
-[section:cliente_overview 1. Overview]
+[section:client_index Client]
 
 The ['client] is a simple application that permits to send any kind of message
 to a particular destination. This way, it is possible to send a specific message
@@ -43,13 +23,11 @@ to a choose destination in order to test is behaviour easily and quickly.
 
 The destination could be either a MIHF or a MIH SAP.
 
-[endsect]
-
-[section:cliente_getStart 2. Getting Started]
+[section:client_getStart Getting Started]
 
 [section Configuration]
 
-The configuration of the cliente consist in defining the IP address and the
+The configuration of the client consist in defining the IP address and the
 listening port of message's destination.
 
 The IP address must be configured in a configuration file:
@@ -121,10 +99,8 @@ the command line.
 
 After the ['client] send the message the application will terminate.
 
-
-
 [endsect]
 
-
+[endsect]
 
 [endsect]

@@ -15,27 +15,7 @@
  / This software is distributed without any warranty.
  /=============================================================================]
 
-[article ODTONE
-    [quickbook 1.5]
-    [version 0.2]
-    [authors [Guimarães, Carlos]]
-    [copyright 2010 Universidade Aveiro]
-    [copyright 2010 Instituto de Telecomunicações - Pólo Aveiro]
-    [license
-        This software is distributed under a license. The full license
-		agreement can be found in the LICENSE in this distribution.
-		This software may not be copied, modified, sold or distributed
-		other than expressed in the named license agreement.
-
-		This software is distributed without any warranty.
-    ]
-    [source-mode c++]
-]
-
-[section:cliente_index Index]
-[endsect]
-
-[section:cliente_overview 1. Overview]
+[section:dummyserver_index Dummyserver]
 
 The ['dummyserver] is a simple application that, as the name implies, works like
 a dummy server. It is always listening (at port 4000) for incoming messages and
@@ -43,9 +23,8 @@ print them in the console.
 
 This pretends to simulate either a MIHF or a MIH SAP.
 
-[endsect]
 
-[section:cliente_getStart 2. Getting Started]
+[section:dummyserver_getStart Getting Started]
 
 [section Extending]
 
@@ -78,6 +57,6 @@ Just run dummyserver and wait for incoming messages!
 
 [endsect]
 
-
+[endsect]
 
 [endsect]

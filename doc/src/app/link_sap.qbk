@@ -15,27 +15,7 @@
  / This software is distributed without any warranty.
  /=============================================================================]
 
-[article ODTONE
-    [quickbook 1.5]
-    [version 0.2]
-    [authors [Guimarães, Carlos]]
-    [copyright 2010 Universidade Aveiro]
-    [copyright 2010 Instituto de Telecomunicações - Pólo Aveiro]
-    [license
-        This software is distributed under a license. The full license
-		agreement can be found in the LICENSE in this distribution.
-		This software may not be copied, modified, sold or distributed
-		other than expressed in the named license agreement.
-
-		This software is distributed without any warranty.
-    ]
-    [source-mode c++]
-]
-
-[section:link_sap_index Index]
-[endsect]
-
-[section:link_sap_overview 1. Overview]
+[section:link_sap_index Link SAP]
 
 The Link SAP specifies an abstract media dependent interface between the MIHF
 and lower layers media-specific protocol stacks of technologies such as IEEE 802.3,
@@ -45,9 +25,7 @@ media-specific SAPs provide the functionality of Link SAP.
 This implementation of Link SAP is very simple. It only support 2 kinds of events:
 link down and link up events.
 
-[endsect]
-
-[section:link_sap_getStart 2. Getting Started]
+[section:link_sap_getStart Getting Started]
 
 [section Detailed Description]
 
@@ -58,7 +36,7 @@ implementation use Windows SDK libraries.
 
 As this is a simple Link SAP, it only supports link down and link up events.
 
-[$./../../images/link_sap_state_machine.png]
+[$./images/link_sap_state_machine.png]
 
 When Link SAP begins to run, it stays in a state of waiting for messages from the
 network interfaces. When an incoming message is receive, Link SAP sends it to the
@@ -122,6 +100,6 @@ to your configuration file.
 
 [endsect]
 
-
+[endsect]
 
 [endsect]

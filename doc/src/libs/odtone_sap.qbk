@@ -15,46 +15,24 @@
  / This software is distributed without any warranty.
  /=============================================================================]
 
-[article ODTONE
-    [quickbook 1.5]
-    [version 0.2]
-    [authors [Guimarães, Carlos]]
-    [copyright 2010 Universidade Aveiro]
-    [copyright 2010 Instituto de Telecomunicações - Pólo Aveiro]
-    [license
-        This software is distributed under a license. The full license
-		agreement can be found in the LICENSE in this distribution.
-		This software may not be copied, modified, sold or distributed
-		other than expressed in the named license agreement.
-
-		This software is distributed without any warranty.
-    ]
-    [source-mode c++]
-]
-
-[section:index_sap Index]
-[endsect]
-
-[section:sap_overview 1. Overview]
+[section:index_sap ODTONE SAP]
 
 The SAP API contains a set of IO service classes to send and receive MIH messages.
 The implementation is modeled after boost::asio and only supports asynchronous
-operation. IO services ([link odtone.odtone_sap_user_class odtone::sap::user]
- and [link odtone.odtone_sap_link_class odtone::sap::link]) are provided to
+operation. IO services ([link odtone.library.index_sap.odtone_sap_user_class odtone::sap::user]
+ and [link odtone.library.index_sap.odtone_sap_link_class odtone::sap::link]) are provided to
 implement User SAP's and Link SAP's.
 
 It's important to be familiar with the boost::asio library. It's also recommend
 to be familiar with boost::function and boost::bind.
 
-[endsect]
-
 [section:sap_classes 2. Classes]
 
-[@file:./odtone_sap_class.html 2.1. odtone::sap::sap Class Reference]
+[link odtone.library.index_sap.odtone_sap_class 2.1. odtone::sap::sap Class Reference]
 
-[@file:./odtone_sap_user_class.html 2.2. odtone::sap::user Class Reference]
+[link odtone.library.index_sap.odtone_sap_user_class 2.2. odtone::sap::user Class Reference]
 
-[@file:./odtone_sap_link_class.html 2.3. odtone::sap::link Class Reference]
+[link odtone.library.index_sap.odtone_sap_link_class 2.3. odtone::sap::link Class Reference]
 
 [endsect]
 
@@ -68,12 +46,12 @@ to be familiar with boost::function and boost::bind.
 [*SAP Base Class]
 
 This class derive from boost::noncopyable in order to prohibit copy construction
-and copy assignment. Thus, [link odtone.odtone_sap_class odtone::sap::sap]
+and copy assignment. Thus, [link odtone.library.index_sap.odtone_sap_class odtone::sap::sap]
 class has protected constructor and destructor members and should be used only
 as a base class.
 
-This will be the base class to [link odtone.odtone_sap_user_class odtone::sap::user]
-and [link odtone.odtone_sap_link_class odtone::sap::link] as is documented later
+This will be the base class to [link odtone.library.index_sap.odtone_sap_user_class odtone::sap::user]
+and [link odtone.library.index_sap.odtone_sap_link_class odtone::sap::link] as is documented later
 in this document.
 
 [heading Namespace]
@@ -350,5 +328,7 @@ And a few modifications in the main to send the message:
 		ios.run();
 	}
 ``
+
+[endsect]
 
 [endsect]

@@ -15,27 +15,7 @@
  / This software is distributed without any warranty.
  /=============================================================================]
 
-[article ODTONE
-    [quickbook 1.5]
-    [version 0.2]
-    [authors [Guimarães, Carlos]]
-    [copyright 2010 Universidade Aveiro]
-    [copyright 2010 Instituto de Telecomunicações - Pólo Aveiro]
-    [license
-        This software is distributed under a license. The full license
-		agreement can be found in the LICENSE in this distribution.
-		This software may not be copied, modified, sold or distributed
-		other than expressed in the named license agreement.
-
-		This software is distributed without any warranty.
-    ]
-    [source-mode c++]
-]
-
-[section:miis_index Index]
-[endsect]
-
-[section:miis_overview 1. Overview]
+[section:miis_index MIIS Server]
 
 The MIIS Server provides details on the characteristics and
 services provided by the serving and neighboring networks. The information
@@ -44,9 +24,8 @@ enables effective system access and effective handover decisions.
 This MIIS Server is only an example that uses the Redland RDF libraries for
 parsing and querying a sqlite database.
 
-[endsect]
 
-[section:miis_getStart 2. Getting Started]
+[section:miis_getStart Getting Started]
 
 [section Detailed Description]
 
@@ -131,6 +110,8 @@ can make its own decisions about the actions that must be initiated.
 
 There is no running recommendation for MIIS Server. It can be run after or before
 the local MIHF.
+
+[endsect]
 
 [endsect]
 

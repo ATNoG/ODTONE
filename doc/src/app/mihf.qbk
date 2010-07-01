@@ -15,27 +15,7 @@
  / This software is distributed without any warranty.
  /=============================================================================]
 
-[article ODTONE
-    [quickbook 1.5]
-    [version 0.2]
-    [authors [Guimarães, Carlos]]
-    [copyright 2010 Universidade Aveiro]
-    [copyright 2010 Instituto de Telecomunicações - Pólo Aveiro]
-    [license
-        This software is distributed under a license. The full license
-		agreement can be found in the LICENSE in this distribution.
-		This software may not be copied, modified, sold or distributed
-		other than expressed in the named license agreement.
-
-		This software is distributed without any warranty.
-    ]
-    [source-mode c++]
-]
-
-[section:mihf_index Index]
-[endsect]
-
-[section:mihf_overview 1. Overview]
+[section:mihf_index ODTONE-MIHF]
 
 MIHF is a logical entity that facilitates handover decision making. MIH Users
 make handover decisions based on inputs from the MIHF. It provides abstracted
@@ -59,11 +39,9 @@ the interaction of the MIHF with other elements of the system. All exchanges
 between the MIHF and other functional entities occur through service primitives,
 grouped in service access points (SAPs).
 
-[$./../../images/mihf.png]
+[$./images/mihf.png]
 
-[endsect]
-
-[section:mihf_getStart 2. Getting Started]
+[section:mihf_getStart Getting Started]
 
 
 [section Configuration]
@@ -179,7 +157,7 @@ E.g.: ./odtone-mihf --conf.file=./src/mihf/odtone.conf
 
 [section MIHF Architecture overview]
 
-[$./../../images/mihf_arch.jpg]
+[$./images/mihf_arch.jpg]
 
 [endsect]
 
@@ -187,7 +165,7 @@ E.g.: ./odtone-mihf --conf.file=./src/mihf/odtone.conf
 
 [h5 Listening Services: classes ['udp_listner] and ['tcp_listner]]
 
-[$./../../images/listening_services.jpg]
+[$./images/listening_services.jpg]
 
 The classes ['udp_listener] and ['tcp_listener] are wrappers around the
 boost::asio::ip::udp and boost::asio::ip::tcp and are responsible for handling
@@ -209,7 +187,7 @@ should be supplied.
 
 [h5 message_in]
 
-[$./../../images/message_in.jpg]
+[$./images/message_in.jpg]
 
 The ['message_in] checks the transaction_pool for a pending transaction for
 the incoming message, or if a new source transaction must be created and
@@ -219,7 +197,7 @@ Then proceeds to run the newly created, or found, transaction.
 
 [h5 Service Access Controller]
 
-[$./../../images/service_access_controller.jpg]
+[$./images/service_access_controller.jpg]
 
 The service access controller is split in ['sac_dispatch] and ['sac_process_message],
 because the transaction state machines, defined in the standard, expect a
@@ -241,7 +219,7 @@ Registering a callback handler for a MIH message is done with the
 
 [h5 MIHF Services]
 
-[$./../../images/mihf_services.jpg]
+[$./images/mihf_services.jpg]
 
 These refer to the Event Service, Command Service, Service Management and
 Information Service that are responsible for handling the different kind of
@@ -253,7 +231,7 @@ forward it the response some state must be stored.
 
 [h5 transmit]
 
-[$./../../images/transmit.jpg]
+[$./images/transmit.jpg]
 
 This class is used by the MIHFs services and checks if the MIH destination
 identifier of the message is in the local address book. If it is, the message is
@@ -262,14 +240,14 @@ not in the local address book the message is forwarded to the ['message_out].
 
 [h5 message_out]
 
-[$./../../images/message_out.jpg]
+[$./images/message_out.jpg]
 
 Checks, in the transaction pool, if the outgoing message belongs to a pending
 transaction, if so the transaction is run and eventually the message is sent.
 
 [h5 net_sap]
 
-[$./../../images/net_sap.jpg]
+[$./images/net_sap.jpg]
 
 This class, when called, checks if the MIH destination identifier is in the
 remote address book, if so the message is sent using on of ['udp_send] or
@@ -277,7 +255,7 @@ remote address book, if so the message is sent using on of ['udp_send] or
 
 [h5 udp_send and tcp_send]
 
-[$./../../images/udp_send_and_tcp_send.jpg]
+[$./images/udp_send_and_tcp_send.jpg]
 
 These are functions that send a message using the specified protocol.
 
@@ -289,7 +267,7 @@ communications, respectively.
 [h5 meta_message]
 
 A ['meta_message] is a derived class from
-[@file:../../../libs/mihLib/odtone/odtone_mih_message_class.html odtone::mih::message]
+[link odtone.library.index_mih.odtone_mih_message_class odtone::mih::message]
 with added metadata.
 
 The metadata indicates if the message was received on the loopback interface
@@ -317,7 +295,7 @@ MIHFs.
 
 2) MIHF sends a Capability Discover Response to the User.
 
-[$./../../images/local_mih_capability_discover_request(mih_user).png]
+[$./images/local_mih_capability_discover_request(mih_user).png]
 
 [endsect]
 
@@ -329,7 +307,7 @@ MIHFs.
 
 2) Local MIHF forwards request to peer MIHF.
 
-[$./../../images/remote_mih_capability_discover_request(mih_user).png]
+[$./images/remote_mih_capability_discover_request(mih_user).png]
 
 [endsect]
 
@@ -341,7 +319,7 @@ MIHFs.
 
 2) MIHF sends a Capability Discover Response to the peer MIHF.
 
-[$./../../images/remote_mih_capability_discover_request(peer_mihf).png]
+[$./images/remote_mih_capability_discover_request(peer_mihf).png]
 
 [endsect]
 
@@ -354,7 +332,7 @@ Capability Discover Response.
 
 2) Local MIHF sends a Capability Discover Confirm to the User.
 
-[$./../../images/remote_mih_capability_discover_response(peer_mihf).png]
+[$./images/remote_mih_capability_discover_response(peer_mihf).png]
 
 [endsect]
 
@@ -399,7 +377,7 @@ method for reading from the configuration file and enabling TCP support, for
 the MIHF is not implemented.
 
 The ['tcp_listener] class was discussed in detail in a
-[link odtone.mihf_internal_arch.listening_services__classes__emphasis_udp_listner__emphasis__and__emphasis_tcp_listner__emphasis_ previous section.]
+[link odtone.app.mihf_index.mihf_internal_arch.listening_services__classes__emphasis_udp_listner__emphasis__and__emphasis_tcp_listner__emphasis_ previous section.]
 
 [endsect]
 
@@ -419,16 +397,18 @@ support.
 [heading ACK Requestor State Machine]
 
 [table ACK requestor state machine differences
-    [[Standard]      													[ODTONE]]
-    [[[$./../../images/ack_requestor_state_machine_standard.png]]		[[$./../../images/ack_requestor_state_machine_odtone.png]]	]
+    [[Standard]      											[ODTONE]]
+    [[[$./images/ack_requestor_state_machine_standard.png]]		[[$./images/ack_requestor_state_machine_odtone.png]]	]
 ]
 
 [heading ACK Responder State Machine]
 
 [table ACK responder state machine differences
-    [[Standard]      													[ODTONE]]
-    [[[$./../../images/ack_responder_state_machine_standard.png]]		[[$./../../images/ack_responder_state_machine_odtone.png]]	]
+    [[Standard]      										    [ODTONE]]
+    [[[$./images/ack_responder_state_machine_standard.png]]		[[$./images/ack_responder_state_machine_odtone.png]]	]
 ]
+
+[endsect]
 
 [endsect]
 

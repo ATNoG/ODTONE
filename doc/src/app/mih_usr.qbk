@@ -15,27 +15,7 @@
  / This software is distributed without any warranty.
  /=============================================================================]
 
-[article ODTONE
-    [quickbook 1.5]
-    [version 0.2]
-    [authors [Guimarães, Carlos]]
-    [copyright 2010 Universidade Aveiro]
-    [copyright 2010 Instituto de Telecomunicações - Pólo Aveiro]
-    [license
-        This software is distributed under a license. The full license
-		agreement can be found in the LICENSE in this distribution.
-		This software may not be copied, modified, sold or distributed
-		other than expressed in the named license agreement.
-
-		This software is distributed without any warranty.
-    ]
-    [source-mode c++]
-]
-
-[section:mih_usr_index Index]
-[endsect]
-
-[section:mih_usr_overview 1. Overview]
+[section:mih_usr_index MIH User]
 
 The MIH_User specifies a media independent interface between the MIHF and
 upper layers of the mobility management protocol stack. The upper layers need to
@@ -47,16 +27,15 @@ using the service primitives of the MIH User.
 This implementation of MIH User is very simple. It only support capability
 discover, event subscribe and link events primitives.
 
-[endsect]
 
-[section:mih_usr_getStart 2. Getting Started]
+[section:mih_usr_getStart Getting Started]
 
 [section Detailed Description]
 
 This implementation of MIH User is very simple. It only support capability
 discover, event subscribe and link events primitives.
 
-[$./../../images/mih_usr_state_machine.png]
+[$./images/mih_usr_state_machine.png]
 
 When MIH User begins to run, it sends a Capability Discover Request to MIHF and
 waits for a Capability Discover Response from the MIHF.
@@ -183,6 +162,6 @@ The ['--dest] option must be used for connections to a remote MIHF.
 
 [endsect]
 
-
+[endsect]
 
 [endsect]

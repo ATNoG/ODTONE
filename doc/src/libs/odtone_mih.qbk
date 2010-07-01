@@ -14,68 +14,41 @@
  /
  / This software is distributed without any warranty.
  /=============================================================================]
-
-
-[article ODTONE
-    [quickbook 1.5]
-    [version 0.2]
-    [authors [Guimarães, Carlos]]
-    [copyright 2010 Universidade Aveiro]
-    [copyright 2010 Instituto de Telecomunicações - Pólo Aveiro]
-    [license
-        This software is distributed under a license. The full license
-		agreement can be found in the LICENSE in this distribution.
-		This software may not be copied, modified, sold or distributed
-		other than expressed in the named license agreement.
-
-		This software is distributed without any warranty.
-    ]
-
-    [source-mode c++]
-]
-
-[section:index_mih Index]
-[endsect]
-
-
-[section:mih_overview 1. Overview]
+[section:index_mih ODTONE MIH]
 
 The MIH API contains a set of classes to generate/parse MIH messages, including
 the types present in the standard and template classes to ease the definition of
 new types.
 
-[endsect]
-
-
 [section:mih_classes 2. Classes]
 
-[@file:./odtone_mih_message_class.html 2.1. odtone::mih::message Class Reference]
+[link odtone.library.index_mih.odtone_mih_message_class 2.1. odtone::mih::message Class Reference]
 
-[@file:./odtone_mih_message_helper_class.html 2.2. odtone::mih::message_helper Class Reference]
+[link odtone.library.index_mih.odtone_mih_message_helper_class 2.2. odtone::mih::message_helper Class Reference]
 
-[@file:./odtone_mih_indication_class.html 2.3. odtone::mih::indication Class Reference]
+[link odtone.library.index_mih.odtone_mih_indication_class 2.3. odtone::mih::indication Class Reference]
 
-[@file:./odtone_mih_request_class.html 2.4. odtone::mih::request Class Reference]
+[link odtone.library.index_mih.odtone_mih_request_class 2.4. odtone::mih::request Class Reference]
 
-[@file:./odtone_mih_response_class.html 2.5. odtone::mih::response Class Reference]
+[link odtone.library.index_mih.odtone_mih_response_class 2.5. odtone::mih::response Class Reference]
 
-[@file:./odtone_mih_config_class.html 2.6. odtone::mih::config Class Reference]
+[link odtone.library.index_mih.odtone_mih_config_class 2.6. odtone::mih::config Class Reference]
 
-[@file:./odtone_mih_archive_class.html 2.7. odtone::mih::archive Class Reference]
+[link odtone.library.index_mih.odtone_mih_archive_class 2.7. odtone::mih::archive Class Reference]
 
-[@file:./odtone_mih_iarchive_class.html 2.8. odtone::mih::iarchive Class Reference]
+[link odtone.library.index_mih.odtone_mih_iarchive_class 2.8. odtone::mih::iarchive Class Reference]
 
-[@file:./odtone_mih_oarchive_class.html 2.9. odtone::mih::oarchive Class Reference]
+[link odtone.library.index_mih.odtone_mih_oarchive_class 2.9. odtone::mih::oarchive Class Reference]
 
-[@file:./odtone_mih_is_iarchive_class.html 2.10. odtone::mih::is_iarchive Class Reference]
+[link odtone.library.index_mih.odtone_mih_is_iarchive_class 2.10. odtone::mih::is_iarchive Class Reference]
 
-[@file:./odtone_mih_is_oarchive_class.html 2.11. odtone::mih::is_oarchive Class Reference]
+[link odtone.library.index_mih.odtone_mih_is_oarchive_class 2.11. odtone::mih::is_oarchive Class Reference]
 
-[@file:./odtone_mih_tlv_type_class.html 2.11. odtone::mih::tlv'''_type_''' Class Reference]
+[link odtone.library.index_mih.odtone_mih_tlv_type_class 2.11. odtone::mih::tlv'''_type_''' Class Reference]
 
-[@file:./odtone_mih_tlv_cast_class.html 2.11. odtone::mih::tlv'''_cast_''' Class Reference]
+[link odtone.library.index_mih.odtone_mih_tlv_cast_class 2.11. odtone::mih::tlv'''_cast_''' Class Reference]
 
-[@file:./odtone_mih_is_tlv_type_class.html 2.11. odtone::mih::is_tlv_type Class Reference]
+[link odtone.library.index_mih.odtone_mih_is_tlv_type_class 2.11. odtone::mih::is_tlv_type Class Reference]
 
 [endsect]
 
@@ -87,19 +60,19 @@ new types.
 
 [*MIH Message.]
 
-The [link odtone.odtone_mih_message_class odtone::mih::message] is a high level
+The [link odtone.library.index_mih.odtone_mih_message_class odtone::mih::message] is a high level
 representation of an MIH message, it provides access to all fields of the MIH
 message header, the destination and sources ID's that, although it is part of
 payload, it is common to all messages. It also provides
 serialization/deserialization for all the other payload data types
-(see [link odtone.odtone_mih_archive_class odtone::mih::archive]).
+(see [link odtone.library.index_mih.odtone_mih_archive_class odtone::mih::archive]).
 
-The [link odtone.odtone_mih_message_class odtone::mih::message] can be set from
+The [link odtone.library.index_mih.odtone_mih_message_class odtone::mih::message] can be set from
 an odtone::mih::frame that was received or it can create an odtone::mih::frame
 ready to be sent. To send or receive MIH message frames an IO Service is
 required such as the
-[@file:./../../sapLib/odtone/odtone_sap_user_class.html odtone::sap::user] and
-[@file:./../../sapLib/odtone/odtone_sap_link_class.html odtone::sap::link].
+[link odtone.library.index_sap.odtone_sap_user_class odtone::sap::user] and
+[link odtone.library.index_sap.odtone_sap_link_class odtone::sap::link].
 
 The payload of a message is a sequence of types that require serialization and
 deserialization support.
@@ -212,7 +185,7 @@ Extract the MIH Message fields from a given odtone::mih::frame.
 
 [*Return]
 
-*[link odtone.odtone_mih_message_class odtone::mih::message] with the fields
+*[link odtone.library.index_mih.odtone_mih_message_class odtone::mih::message] with the fields
 updated.
 
 ______________________________________________________________________________
@@ -554,18 +527,18 @@ Get the MIH Message Frame (odtone::mih::frame).
 [*MIH Message helper.]
 
 Parsing/Generating MIH messages is done with helper classes
-([link odtone.odtone_mih_request_class odtone::mih::request],
-[link odtone.odtone_mih_response_class odtone::mih::response],
-[link odtone.odtone_mih_indication_class odtone::mih::indication]) and operator
+([link odtone.library.index_mih.odtone_mih_request_class odtone::mih::request],
+[link odtone.library.index_mih.odtone_mih_response_class odtone::mih::response],
+[link odtone.library.index_mih.odtone_mih_indication_class odtone::mih::indication]) and operator
 overloading.
 
-This will be the base class to [link odtone.odtone_mih_request_class odtone::mih::request],
-[link odtone.odtone_mih_response_class odtone::mih::response] and
-[link odtone.odtone_mih_indication_class odtone::mih::indication], as is documented
+This will be the base class to [link odtone.library.index_mih.odtone_mih_request_class odtone::mih::request],
+[link odtone.library.index_mih.odtone_mih_response_class odtone::mih::response] and
+[link odtone.library.index_mih.odtone_mih_indication_class odtone::mih::indication], as is documented
 later in this document.
 
 This class derive from boost::noncopyable in order to prohibit copy construction
-and copy assignment. Thus, [link odtone.odtone_mih_message_helper_class odtone::mih::message_helper]
+and copy assignment. Thus, [link odtone.library.index_mih.odtone_mih_message_helper_class odtone::mih::message_helper]
 class has protected constructor and destructor members and should be used only
 as a base class.
 
@@ -611,12 +584,12 @@ Serialize fields of the MIH Message.
 
 [*Parameters:]
 
-*[*msg] - msg destination [link odtone.odtone_mih_message_class odtone::mih::message].
+*[*msg] - msg destination [link odtone.library.index_mih.odtone_mih_message_class odtone::mih::message].
 *[*mh] - message helper.
 
 [*Return]
 
-*Output archive ([link odtone.odtone_mih_oarchive_class odtone::mih::oarchive]).
+*Output archive ([link odtone.library.index_mih.odtone_mih_oarchive_class odtone::mih::oarchive]).
 
 ______________________________________________________________________________
 
@@ -629,12 +602,12 @@ Deserialize fields from a MIH Message.
 
 [*Parameters:]
 
-*[*msg] - msg destination [link odtone.odtone_mih_message_class odtone::mih::message].
+*[*msg] - msg destination [link odtone.library.index_mih.odtone_mih_message_class odtone::mih::message].
 *[*mh] - message helper.
 
 [*Return]
 
-*Input archive ([link odtone.odtone_mih_iarchive_class odtone::mih::iarchive]).
+*Input archive ([link odtone.library.index_mih.odtone_mih_iarchive_class odtone::mih::iarchive]).
 
 [endsect]
 
@@ -650,7 +623,7 @@ Deserialize fields from a MIH Message.
 [*MIH Indication Message helper.]
 
 This class permits parsing/generating MIH Indication messages. It derives from
-[link odtone.odtone_mih_message_helper_class odtone::mih::message_helper] and will
+[link odtone.library.index_mih.odtone_mih_message_helper_class odtone::mih::message_helper] and will
 inherit all the features from base class.
 
 [heading Namespace]
@@ -750,7 +723,7 @@ ______________________________________________________________________________
 [*MIH Request Message helper.]
 
 This class permits parsing/generating MIH Request messages. It derives from
-[link odtone.odtone_mih_message_helper_class odtone::mih::message_helper] and will
+[link odtone.library.index_mih.odtone_mih_message_helper_class odtone::mih::message_helper] and will
 inherit all the features from base class.
 
 [heading Namespace]
@@ -842,7 +815,7 @@ ______________________________________________________________________________
 [*MIH Response Message helper.]
 
 This class permits parsing/generating MIH Response messages. It derives from
-[link odtone.odtone_mih_message_helper_class odtone::mih::message_helper] and
+[link odtone.library.index_mih.odtone_mih_message_helper_class odtone::mih::message_helper] and
 will inherit all the features from base class.
 
 [heading Namespace]
@@ -931,7 +904,7 @@ ______________________________________________________________________________
 
 This class provides parsing for command line options and configuration files for
 a set of predefined options description. It's used for configuring the
-[@./../sapLib/odtone/odtone_sap_class.html odtone::sap] IO services and
+[link odtone.library.index_sap.odtone_sap_class odtone::sap] IO services and
 the MIHF implementation.
 
 [heading Namespace]
@@ -1051,7 +1024,7 @@ Get number of option variable.
 
 Provides serialization/deserialization for all payload data types, except
 destination and source ID's that are serialize/deserialize in
-[link odtone.odtone_mih_message_class odtone::mih::message].
+[link odtone.library.index_mih.odtone_mih_message_class odtone::mih::message].
 
 [heading Namespace]
 
@@ -1210,11 +1183,11 @@ ______________________________________________________________________________
 	iarchive input();
 ``
 
-Get the corresponding [link odtone.odtone_mih_iarchive_class odtone::mih::iarchive].
+Get the corresponding [link odtone.library.index_mih.odtone_mih_iarchive_class odtone::mih::iarchive].
 
 [*Return]
 
-*The corresponding [link odtone.odtone_mih_iarchive_class odtone::mih::iarchive].
+*The corresponding [link odtone.library.index_mih.odtone_mih_iarchive_class odtone::mih::iarchive].
 
 ______________________________________________________________________________
 
@@ -1222,11 +1195,11 @@ ______________________________________________________________________________
 	oarchive output();
 ``
 
-Get the corresponding [link odtone.odtone_mih_oarchive_class odtone::mih::oarchive].
+Get the corresponding [link odtone.library.index_mih.odtone_mih_oarchive_class odtone::mih::oarchive].
 
 [*Return]
 
-*The corresponding [link odtone.odtone_mih_oarchive_class odtone::mih::oarchive].
+*The corresponding [link odtone.library.index_mih.odtone_mih_oarchive_class odtone::mih::oarchive].
 
 ______________________________________________________________________________
 
@@ -1265,7 +1238,7 @@ Get the current position in the archive.
 [*Input Archive.]
 
 The MIH types support deserialization for the
-[link odtone.odtone_mih_iarchive_class odtone::mih::iarchive]. This particular
+[link odtone.library.index_mih.odtone_mih_iarchive_class odtone::mih::iarchive]. This particular
 archive does not include the TLV field, that is necessary in order to support
 defining new sequence types from existing MIH types.
 
@@ -1315,7 +1288,7 @@ Construct an input archive.
 
 [*Parameters:]
 
-*[*ar] - [link odtone.odtone_mih_archive_class odtone::mih::archive] from where
+*[*ar] - [link odtone.library.index_mih.odtone_mih_archive_class odtone::mih::archive] from where
 parse the values.
 
 ______________________________________________________________________________
@@ -1328,7 +1301,7 @@ Construct an input archive.
 
 [*Parameters:]
 
-*[*ar] - [link odtone.odtone_mih_archive_class odtone::mih::archive] from where
+*[*ar] - [link odtone.library.index_mih.odtone_mih_archive_class odtone::mih::archive] from where
 parse the values.
 *[*length] - length for the input archive.
 
@@ -1342,7 +1315,7 @@ Construct an input archive.
 
 [*Parameters:]
 
-*[*ar] - [link odtone.odtone_mih_iarchive_class odtone::mih::iarchive] from where
+*[*ar] - [link odtone.library.index_mih.odtone_mih_iarchive_class odtone::mih::iarchive] from where
 parse the values.
 *[*length] - length for the input archive.
 
@@ -1359,7 +1332,7 @@ Construct a new input archive.
 
 [*Parameters:]
 
-*[*ar] - [link odtone.odtone_mih_archive_class odtone::mih::archive] from where
+*[*ar] - [link odtone.library.index_mih.odtone_mih_archive_class odtone::mih::archive] from where
 parse the new values.
 
 ______________________________________________________________________________
@@ -1632,7 +1605,7 @@ archive.
 [*Output Archive.]
 
 The MIH types support serialization for the
-[link odtone.odtone_mih_oarchive_class odtone::mih::oarchive]. This particular
+[link odtone.library.index_mih.odtone_mih_oarchive_class odtone::mih::oarchive]. This particular
 archive does not include the TLV field, that is necessary in order to support
 defining new sequence types from existing MIH types.
 
@@ -1681,7 +1654,7 @@ Construct an output archive.
 
 [*Parameters:]
 
-*[*ar] - [link odtone.odtone_mih_archive_class odtone::mih::archive] from where
+*[*ar] - [link odtone.library.index_mih.odtone_mih_archive_class odtone::mih::archive] from where
 parse the values.
 
 ______________________________________________________________________________
@@ -1697,7 +1670,7 @@ Construct a new output archive.
 
 [*Parameters:]
 
-*[*ar] - [link odtone.odtone_mih_archive_class odtone::mih::archive] from where
+*[*ar] - [link odtone.library.index_mih.odtone_mih_archive_class odtone::mih::archive] from where
 parse the new values.
 
 ______________________________________________________________________________
@@ -1958,10 +1931,10 @@ archive.
 [heading Detailed Description]
 
 This class permits to check if a given class is an input archive
-([link odtone.odtone_mih_iarchive_class odtone::mih::iarchive]).
+([link odtone.library.index_mih.odtone_mih_iarchive_class odtone::mih::iarchive]).
 
 It has only a boolean value that is true when the given class is an input archive
-([link odtone.odtone_mih_iarchive_class odtone::mih::iarchive]),
+([link odtone.library.index_mih.odtone_mih_iarchive_class odtone::mih::iarchive]),
 or false otherwise.
 
 [heading Namespace]
@@ -1981,10 +1954,10 @@ or false otherwise.
 [heading Detailed Description]
 
 This class permits to check if a given class is an output archive
-([link odtone.odtone_mih_oarchive_class odtone::mih::oarchive]).
+([link odtone.library.index_mih.odtone_mih_oarchive_class odtone::mih::oarchive]).
 
 It has only a boolean value that is true when the given class is an output archive
-([link odtone.odtone_mih_oarchive_class odtone::mih::oarchive]),
+([link odtone.library.index_mih.odtone_mih_oarchive_class odtone::mih::oarchive]),
 or false otherwise.
 
 [heading Namespace]
@@ -2005,11 +1978,11 @@ or false otherwise.
 [*TLV Type.]
 
 The MIH types support serialization and deserialization for the
-[link odtone.odtone_mih_iarchive_class odtone::mih::iarchive] and
-[link odtone.odtone_mih_oarchive_class odtone::mih::oarchive], however those
+[link odtone.library.index_mih.odtone_mih_iarchive_class odtone::mih::iarchive] and
+[link odtone.library.index_mih.odtone_mih_oarchive_class odtone::mih::oarchive], however those
 particular archives does not include the TLVs fields.
 
-So [link odtone.odtone_mih_tlv_type_class odtone::mih::tlv'''_type_'''] is
+So [link odtone.library.index_mih.odtone_mih_tlv_type_class odtone::mih::tlv'''_type_'''] is
 responsible to manage TLVs and offers mechanisms to serialize and deserialize
 them.
 
@@ -2058,7 +2031,7 @@ Deserialize the TLV type value from the input archive.
 
 [*Parameters:]
 
-*[*ar] - [link odtone.odtone_mih_iarchive_class odtone::mih::iarchive] from where
+*[*ar] - [link odtone.library.index_mih.odtone_mih_iarchive_class odtone::mih::iarchive] from where
 parse the TLV value.
 
 ______________________________________________________________________________
@@ -2071,7 +2044,7 @@ Serialize the TLV type value to the output archive.
 
 [*Parameters:]
 
-*[*ar] - [link odtone.odtone_mih_oarchive_class odtone::mih::oarchive] to where
+*[*ar] - [link odtone.library.index_mih.odtone_mih_oarchive_class odtone::mih::oarchive] to where
 serialize the TLV value.
 
 [endsect]
@@ -2899,15 +2872,6 @@ otherwise.
 [endsect]
 
 
-
-
-
-
-
-
-
-
-
 [section:mih_tutorial 4. Tutorial]
 The tutorial programs in this section show how to use ODTONE MIH.
 
@@ -2930,12 +2894,12 @@ To generate and send a MIH message:
 
 Notice that we start with the message and then we use the operator << to
 begin the generation of the message, followed by on of the
-[link odtone.odtone_mih_message_helper_class odtone::mih::message_helper]
-classes ([link odtone.odtone_mih_request_class odtone::mih::request],
-[link odtone.odtone_mih_response_class odtone::mih::response],
-[link odtone.odtone_mih_indication_class odtone::mih::indication])
+[link odtone.library.index_mih.odtone_mih_message_helper_class odtone::mih::message_helper]
+classes ([link odtone.library.index_mih.odtone_mih_request_class odtone::mih::request],
+[link odtone.library.index_mih.odtone_mih_response_class odtone::mih::response],
+[link odtone.library.index_mih.odtone_mih_indication_class odtone::mih::indication])
 and then we can pass the parameters starting with the operator & followed by
-the [link odtone.odtone_mih_tlv_type_class odtone::mih::tlv'''_type_'''] classes.
+the [link odtone.library.index_mih.odtone_mih_tlv_type_class odtone::mih::tlv'''_type_'''] classes.
 
 
 To receive and parse a MIH message:
@@ -2965,5 +2929,7 @@ void capability_discovery_response(odtone::mih::message& msg, const boost::syste
 
 In this case, to begin parsing we use operator >>. Everything else is similar to
 generating a message.
+
+[endsect]
 
 [endsect]
