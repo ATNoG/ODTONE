@@ -129,11 +129,23 @@ public:
 
 	void serialize(iarchive& ar)
 	{
+		int num = 0;
 		while (ar.position() < ar.length()) {
 			base::resize(base::size() + 1);
+			num++;
 			ie_poa_subnet_info& cn = base::back();
 
-			ar & tlv_ie_poa_subnet_info(cn);
+			try {
+				ar & tlv_ie_poa_subnet_info(cn);
+			}
+			catch(bad_tlv) {
+				base::resize(base::size() - 1);
+
+				// The first IE_POA_SUBNET_INFO is mandatory
+				if(num == 1)
+					boost::throw_exception(bad_tlv());
+				break;
+			}
 		}
 	}
 };
@@ -168,7 +180,13 @@ public:
 			base::resize(base::size() + 1);
 			ie_poa_ip_addr& cn = base::back();
 
-			ar & tlv_ie_poa_ip_addr(cn);
+			try {
+				ar & tlv_ie_poa_ip_addr(cn);
+			}
+			catch(bad_tlv) {
+				base::resize(base::size() - 1);
+				break;
+			}
 		}
 	}
 };
@@ -225,7 +243,13 @@ public:
 			base::resize(base::size() + 1);
 			ie_container_poa& cn = base::back();
 
-			ar & tlv_ie_container_poa(cn);
+			try {
+				ar & tlv_ie_container_poa(cn);
+			}
+			catch(bad_tlv) {
+				base::resize(base::size() - 1);
+				break;
+			}
 		}
 	}
 };
@@ -308,11 +332,24 @@ public:
 
 	void serialize(iarchive& ar)
 	{
+		int num = 0;
+
 		while (ar.position() < ar.length()) {
 			base::resize(base::size() + 1);
+			num++;
 			ie_container_network& cn = base::back();
 
-			ar & tlv_ie_container_network(cn);
+			try {
+				ar & tlv_ie_container_network(cn);
+			}
+			catch(bad_tlv) {
+				base::resize(base::size() - 1);
+
+				// The first IE_CONTAINER_NETWORK is mandatory
+				if(num == 1)
+					boost::throw_exception(bad_tlv());
+				break;
+			}
 		}
 	}
 };
