@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : Buffer
 // Authors : Bruno Santos <bsantos@av.it.pt>
+// ----------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2010 Universidade de Aveiro
+// Copyrigth (C) 2009-2010 Instituto de Telecomunicações - Pólo de Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -20,9 +20,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
+#include <odtone/move.hpp>
 #include <odtone/debug.hpp>
 #include <boost/utility.hpp>
-#include <boost/move/move.hpp>
 #include <boost/type_traits/is_pod.hpp>
 #include <boost/type_traits/is_class.hpp>
 #include <cstdlib>
@@ -36,19 +36,22 @@ template<class T>
 class buffer {
 	ODTONE_STATIC_ASSERT(boost::is_pod<T>::value, "T must be POD type");
 
-	BOOST_MOVABLE_BUT_NOT_COPYABLE(buffer);
+	ODTONE_MOVABLE_BUT_NOT_COPYABLE(buffer)
 
 public:
-	buffer() : _ptr(nullptr), _len(0)
+	buffer()
+		: _ptr(nullptr), _len(0)
 	{ }
 
-	buffer(BOOST_RV_REF(buffer) buff) : _ptr(buff._ptr), _len(buff._len)
+	buffer(move_<buffer>& buff)
+		: _ptr(buff._ptr), _len(buff._len)
 	{
 		buff._ptr = nullptr;
 		buff._len = 0;
 	}
 
-	buffer(size_t len) : _ptr(nullptr)
+	buffer(size_t len)
+		: _ptr(nullptr)
 	{
 		size(len);
 	}
@@ -58,7 +61,7 @@ public:
 		std::free(_ptr);
 	}
 
-	buffer& operator=(BOOST_RV_REF(buffer) buff)
+	buffer& operator=(move_<buffer>& buff)
 	{
 		if (this != boost::addressof(buff)) {
 			std::free(_ptr);
@@ -108,25 +111,28 @@ class buffer_vla : buffer<uint8> {
 						 && boost::is_pod<T>::value
 						 && boost::is_class<T>::value, "T must be a class/struct POD type");
 
-	BOOST_MOVABLE_BUT_NOT_COPYABLE(buffer_vla);
-
 	typedef buffer<uint8> base;
 
+	ODTONE_MOVABLE_BUT_NOT_COPYABLE(buffer_vla)
+
 public:
-	buffer_vla() : base()
+	buffer_vla()
+		: base()
 	{ }
 
-	buffer_vla(size_t len) : base(sizeof(T) + len)
+	buffer_vla(size_t len)
+		: base(sizeof(T) + len)
 	{
 		ODTONE_ASSERT((sizeof(T) + len) > len);
 	}
 
-	buffer_vla(BOOST_RV_REF(buffer_vla) buff) : base(boost::move<base>(buff))
+	buffer_vla(move_<buffer_vla>& buff)
+		: base(move(static_cast<base&>(buff)))
 	{ }
 
-	buffer_vla& operator=(BOOST_RV_REF(buffer_vla) buff)
+	buffer_vla& operator=(move_<buffer_vla>& buff)
 	{
-		static_cast<base&>(*this) = boost::move<base>(buff);
+		static_cast<base&>(*this) = move(static_cast<base&>(buff));
 
 		return *this;
 	}

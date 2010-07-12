@@ -15,11 +15,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "tcp_listener.hpp"
-
 #include "log.hpp"
-
 #include <boost/bind.hpp>
-#include <odtone/bindrv.hpp>
+
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
@@ -44,7 +42,7 @@ void session::start()
 	_sock.async_read_some(boost::asio::buffer(rbuf, rlen),
 			      boost::bind(&session::handle_read,
 					  this,
-					  odtone::bindrv(buff),
+					  odtone::move(buff),
 					  placeholders::bytes_transferred,
 					  placeholders::error));
 }

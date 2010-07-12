@@ -16,10 +16,7 @@
 #include "udp_listener.hpp"
 #include "meta_message.hpp"
 #include "log.hpp"
-
 #include <odtone/mih/frame.hpp>
-#include <odtone/bindrv.hpp>
-
 #include <boost/bind.hpp>
 
 namespace odtone { namespace mihf {
@@ -57,7 +54,7 @@ void udp_listener::start()
 					 _rmt_endp,
 					 boost::bind(&udp_listener::handle_receive,
 						this,
-						bindrv(buff),
+						move(buff),
 						placeholders::bytes_transferred,
 						placeholders::error));
 	}
@@ -94,7 +91,7 @@ void udp_listener::handle_receive(buffer<uint8>&			 buff,
 					 _rmt_endp,
 					 bind(&udp_listener::handle_receive,
 					      this,
-					      bindrv(buff),
+					      move(buff),
 					      asio::placeholders::bytes_transferred,
 					      asio::placeholders::error));
         }
