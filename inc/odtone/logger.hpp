@@ -21,7 +21,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
 #include <boost/utility.hpp>
-#include <boost/move/move.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/mutex.hpp>
 #include <ostream>
