@@ -20,6 +20,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
+#include <odtone/debug.hpp>
 #include <odtone/mih/archive_fwd.hpp>
 #include <odtone/mih/types/base.hpp>
 #include <odtone/exception.hpp>
@@ -102,8 +103,15 @@ public:
 	uint position() const   { return _pos - _begin; }
 	uint length() const     { return _length; }
 
-	const_iterator begin() const { return _buf.begin() + _begin; }
-	const_iterator end() const   { return _buf.begin() + _length; }
+	void advance(uint pos)
+	{
+		ODTONE_ASSERT((_pos + pos) <= _buf.size());
+		_pos += pos;
+	}
+
+	const_iterator begin() const   { return _buf.begin() + _begin; }
+	const_iterator current() const { return _buf.begin() + _pos; }
+	const_iterator end() const     { return _buf.begin() + _length; }
 
 	uint list_length();
 

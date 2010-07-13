@@ -211,6 +211,8 @@ public:
 		bool res = impl::serialize(ar, tmp);
 		if (res)
 			_val = tmp;
+		else
+			_val = boost::none;
 	}
 
 	void serialize(oarchive& ar) const
