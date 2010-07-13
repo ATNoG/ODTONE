@@ -16,7 +16,7 @@
 //=============================================================================
 
 #include <odtone/sap/link.hpp>
-#include <odtone/bindrv.hpp>
+#include <odtone/buffer.hpp>
 #include <boost/bind.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ link::link(const mih::config& cfg, boost::asio::io_service& io, const default_ha
 	_sock.async_receive(boost::asio::buffer(rbuff, rlen),
 						boost::bind(&link::recv_handler,
 									this,
-									bindrv(buff),
+									move(buff),
 									boost::asio::placeholders::bytes_transferred,
 									boost::asio::placeholders::error));
 }
@@ -90,7 +90,7 @@ void link::async_send(mih::message& msg, const handler& h)
 			    _ep,
 			    boost::bind(&link::send_handler,
 					this,
-					bindrv(fm),
+					move(fm),
 					h,
 					boost::asio::placeholders::bytes_transferred,
 					boost::asio::placeholders::error));
@@ -119,7 +119,7 @@ void link::recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system:
 	_sock.async_receive(boost::asio::buffer(rbuff, rlen),
 						boost::bind(&link::recv_handler,
 									this,
-									bindrv(buff),
+									move(buff),
 									boost::asio::placeholders::bytes_transferred,
 									boost::asio::placeholders::error));
 }

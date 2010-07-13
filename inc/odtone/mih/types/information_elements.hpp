@@ -29,6 +29,7 @@
 #include <odtone/mih/types/link.hpp>
 #include <odtone/mih/types/ipconfig.hpp>
 #include <odtone/mih/types/qos.hpp>
+#include <odtone/mih/types/vendor_ie.hpp>
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -118,6 +119,7 @@ public:
 	using base::begin;
 	using base::end;
 	using base::size;
+	using base::clear;
 	using base::resize;
 	using base::operator[];
 
@@ -125,17 +127,30 @@ public:
 	{
 		for (base::iterator i = base::begin(); i != base::end(); ++i)
 			ar & tlv_ie_poa_subnet_info(*i);
+
+		vendor_ies.serialize(ar);
 	}
 
 	void serialize(iarchive& ar)
 	{
 		while (ar.position() < ar.length()) {
-			base::resize(base::size() + 1);
-			ie_poa_subnet_info& cn = base::back();
+			boost::optional<ie_poa_subnet_info> cn;
 
 			ar & tlv_ie_poa_subnet_info(cn);
+			if (!cn)
+				break;
+
+			base::push_back(*cn);
 		}
+
+		if(base::size() < 1)
+			boost::throw_exception(bad_tlv()); //FIXME: set proper exception
+
+		vendor_ies.serialize(ar);
 	}
+
+public:
+	vendor_ie_list vendor_ies;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -153,6 +168,7 @@ public:
 	using base::begin;
 	using base::end;
 	using base::size;
+	using base::clear;
 	using base::resize;
 	using base::operator[];
 
@@ -160,17 +176,30 @@ public:
 	{
 		for (base::iterator i = base::begin(); i != base::end(); ++i)
 			ar & tlv_ie_poa_ip_addr(*i);
+
+		vendor_ies.serialize(ar);
 	}
 
 	void serialize(iarchive& ar)
 	{
 		while (ar.position() < ar.length()) {
-			base::resize(base::size() + 1);
-			ie_poa_ip_addr& cn = base::back();
+			boost::optional<ie_poa_ip_addr> cn;
 
 			ar & tlv_ie_poa_ip_addr(cn);
+			if (!cn)
+				break;
+
+			base::push_back(*cn);
 		}
+
+		if(base::size() < 1)
+			boost::throw_exception(bad_tlv()); //FIXME: set proper exception
+
+		vendor_ies.serialize(ar);
 	}
+
+public:
+	vendor_ie_list vendor_ies;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -182,6 +211,7 @@ struct ie_container_poa
 	ie_poa_system_info        poa_system_info;
 	ie_poa_subnet_info_list   poa_subnet_info;
 	ie_poa_ip_addr_list       poa_ip_addr;
+	vendor_ie_list            vendor_ies;
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -190,8 +220,46 @@ struct ie_container_poa
 		ar & tlv_ie_poa_location(poa_location);
 		ar & tlv_ie_poa_channel_range(poa_channel_range);
 		ar & tlv_ie_poa_system_info(poa_system_info);
-		ar & poa_subnet_info;
-		ar & poa_ip_addr;
+
+		serialize_opt_lists(ar);
+
+		vendor_ies.serialize(ar);
+	}
+
+	void serialize_opt_lists(iarchive& ar)
+	{
+		poa_subnet_info.clear();
+
+		while (ar.position() < ar.length()) {
+			boost::optional<ie_poa_subnet_info> cn;
+
+			ar & tlv_ie_poa_subnet_info(cn);
+			if (!cn)
+				break;
+
+			poa_subnet_info.push_back(*cn);
+		}
+
+		poa_ip_addr.clear();
+
+		while (ar.position() < ar.length()) {
+			boost::optional<ie_poa_ip_addr> cn;
+
+			ar & tlv_ie_poa_ip_addr(cn);
+			if (!cn)
+				break;
+
+			poa_ip_addr.push_back(*cn);
+		}
+	}
+
+	void serialize_opt_lists(oarchive& ar)
+	{
+		for (ie_poa_subnet_info_list::iterator i = poa_subnet_info.begin(), e = poa_subnet_info.end(); i != e; ++i)
+			ar & tlv_ie_poa_subnet_info(*i);
+
+		for (ie_poa_ip_addr_list::iterator i = poa_ip_addr.begin(), e = poa_ip_addr.end(); i != e; ++i)
+			ar & tlv_ie_poa_ip_addr(*i);
 	}
 };
 
@@ -210,6 +278,7 @@ public:
 	using base::begin;
 	using base::end;
 	using base::size;
+	using base::clear;
 	using base::resize;
 	using base::operator[];
 
@@ -217,17 +286,32 @@ public:
 	{
 		for (base::iterator i = base::begin(); i != base::end(); ++i)
 			ar & tlv_ie_container_poa(*i);
+
+		vendor_ies.serialize(ar);
 	}
 
 	void serialize(iarchive& ar)
 	{
+		base::clear();
+
 		while (ar.position() < ar.length()) {
-			base::resize(base::size() + 1);
-			ie_container_poa& cn = base::back();
+			boost::optional<ie_container_poa> cn;
 
 			ar & tlv_ie_container_poa(cn);
+			if (!cn)
+				break;
+
+			base::push_back(*cn);
 		}
+
+		if(base::size() < 1)
+			boost::throw_exception(bad_tlv()); //FIXME: set proper exception
+
+		vendor_ies.serialize(ar);
 	}
+
+public:
+	vendor_ie_list vendor_ies;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -254,6 +338,7 @@ struct ie_container_network {
 	boost::optional<ie_net_mobile_network > net_mobile_network;
 
 	ie_container_poa_list poas;
+	vendor_ie_list        vendor_ies;
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -278,7 +363,31 @@ struct ie_container_network {
 		ar & tlv_ie_net_emserv_proxy(net_emserv_proxy);
 		ar & tlv_ie_net_ims_proxy_cscf(net_ims_proxy_cscf);
 		ar & tlv_ie_net_mobile_network(net_mobile_network);
-		ar & poas;
+
+		serialize_opt_lists(ar);
+
+		vendor_ies.serialize(ar);
+	}
+
+	void serialize_opt_lists(iarchive& ar)
+	{
+		poas.clear();
+
+		while (ar.position() < ar.length()) {
+			boost::optional<ie_container_poa> cn;
+
+			ar & tlv_ie_container_poa(cn);
+			if (!cn)
+				break;
+
+			poas.push_back(*cn);
+		}
+	}
+
+	void serialize_opt_lists(oarchive& ar)
+	{
+		for (ie_container_poa_list::iterator i = poas.begin(), e = poas.end(); i != e; ++i)
+			ar & tlv_ie_container_poa(*i);
 	}
 };
 
@@ -297,24 +406,40 @@ public:
 	using base::begin;
 	using base::end;
 	using base::size;
+	using base::clear;
 	using base::resize;
 	using base::operator[];
 
 	void serialize(oarchive& ar)
 	{
-		for (base::iterator i = base::begin(); i != base::end(); ++i)
+		for (base::iterator i = base::begin(), e = base::end(); i != e; ++i)
 			ar & tlv_ie_container_network(*i);
+
+		vendor_ies.serialize(ar);
 	}
 
 	void serialize(iarchive& ar)
 	{
+		base::clear();
+
 		while (ar.position() < ar.length()) {
-			base::resize(base::size() + 1);
-			ie_container_network& cn = base::back();
+			boost::optional<ie_container_network> cn;
 
 			ar & tlv_ie_container_network(cn);
+			if (!cn)
+				break;
+
+			base::push_back(*cn);
 		}
+
+		if(base::size() < 1)
+			boost::throw_exception(bad_tlv()); //FIXME: set proper exception
+
+		vendor_ies.serialize(ar);
 	}
+
+public:
+	vendor_ie_list vendor_ies;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

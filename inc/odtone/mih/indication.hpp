@@ -37,6 +37,17 @@ public:
 	 * \brief MIH Indication Message ID
 	 */
 	enum mid {
+		capability_discover									/// MIH_Capability_Discover.indication
+								= msg_id<1, 3, 1>::value,
+		mih_register										/// MIH_Register.indication
+								= msg_id<1, 3, 2>::value,
+		mih_deregister										/// MIH_DeRegister.indication
+								= msg_id<1, 3, 3>::value,
+		event_subscribe										/// MIH_Event_Subscribe.indication
+								= msg_id<1, 3, 4>::value,
+		event_unsubscribe									/// MIH_Event_Unsubscribe.indication
+								= msg_id<1, 3, 5>::value,
+
 		link_detected										/// MIH_Link_Detected.indication
 								= msg_id<2, 3, 1>::value,
 		link_up												/// MIH_Link_Up.indication
@@ -52,9 +63,33 @@ public:
 		link_handover_complete								/// MIH_Link_Handover_Complete.indication
 								= msg_id<2, 3, 8>::value,
 
-		push_information								/// MIH_Push_Information.indication
-							= msg_id<4, 3, 2>::value,
-		get_information = msg_id<4, 3, 1>::value, // MIH_Get_Information.indication
+		link_get_parameters									/// MIH_Link_Get_Parameters.indication
+								= msg_id<3, 3, 1>::value,
+		link_configure_threshold							/// MIH_Link_Configure_Thresholds.indication
+								= msg_id<3, 3, 2>::value,
+		link_actions										/// MIH_Link_Actions.indication
+								= msg_id<3, 3, 3>::value,
+		net_ho_candidate_query								/// MIH_Net_HO_Candidate_Query.indication
+								= msg_id<3, 3, 4>::value,
+		mn_ho_candidate_query								/// MIH_MN_HO_Candidate_Query.indication
+								= msg_id<3, 3, 5>::value,
+		n2n_ho_query_resources								/// MIH_N2N_HO_Query_Resources.indication
+								= msg_id<3, 3, 6>::value,
+		mn_ho_commit										/// MIH_MN_HO_Commit.indication
+								= msg_id<3, 3, 7>::value,
+		net_ho_commit										/// MIH_Net_HO_Commit.indication
+								= msg_id<3, 3, 8>::value,
+		n2n_ho_commit										/// MIH_N2N_HO_Commit.indication
+								= msg_id<3, 3, 9>::value,
+		mn_ho_complete										/// MIH_N2N_HO_Complete.indication
+								= msg_id<3, 3, 10>::value,
+		n2n_ho_complete										/// MIH_N2N_HO_Commlete.indication
+								= msg_id<3, 3, 11>::value,
+
+		get_information 									/// MIH_Get_Information.indication
+								= msg_id<4, 3, 1>::value,
+		push_information									/// MIH_Push_Information.indication
+								= msg_id<4, 3, 2>::value
 	};
 
 	/**

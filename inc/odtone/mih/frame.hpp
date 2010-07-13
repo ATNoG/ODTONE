@@ -274,7 +274,7 @@ inline bool frame::ackrsp() const
 
 inline bool frame::uir() const
 {
-	return (hdr[0] & mask_uir) >> 4;
+	return (hdr[0] & mask_uir) >> 1;
 }
 
 inline bool frame::m() const
