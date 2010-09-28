@@ -17,7 +17,7 @@
 
 #include <odtone/debug.hpp>
 #include <odtone/list_node.hpp>
-#include <boost/move/move.hpp>
+#include <odtone/move.hpp>
 #include <boost/utility.hpp>
 #include <boost/assert.hpp>
 #include <boost/array.hpp>
@@ -39,11 +39,11 @@ using odtone::ulong;
 
 ///////////////////////////////////////////////////////////////////////////
 class process {
-	BOOST_MOVABLE_BUT_NOT_COPYABLE(process);
+	ODTONE_MOVABLE_BUT_NOT_COPYABLE(process)
 
 public:
-	process(BOOST_RV_REF(process) ps);
-	process& operator=(BOOST_RV_REF(process) ps);
+	process(move_<process>& ps);
+	process& operator=(move_<process>& ps);
 
 public:
 	struct console {
@@ -69,7 +69,7 @@ private:
 	int _stderr;
 };
 
-process::process(BOOST_RV_REF(process) ps)
+process::process(move_<process>& ps)
 {
 	std::swap(_pid, ps._pid);
 	std::swap(_stdin, ps._stdin);
@@ -77,7 +77,7 @@ process::process(BOOST_RV_REF(process) ps)
 	std::swap(_stderr, ps._stderr);
 }
 
-process& process::operator=(BOOST_RV_REF(process) ps)
+process& process::operator=(move_<process>& ps)
 {
 	if (this != &ps) {
 		std::swap(_pid, ps._pid);
