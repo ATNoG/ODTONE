@@ -186,7 +186,7 @@ public:
 	}
 
 private:
-	mutable T& _val;
+	T& _val;
 };
 
 template<class T, class TLV>
@@ -222,7 +222,7 @@ public:
 	}
 
 private:
-	mutable boost::optional<T>& _val;
+	boost::optional<T>& _val;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

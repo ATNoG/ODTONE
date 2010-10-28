@@ -107,7 +107,7 @@ public:
 
 	percentage& operator=(uint val)
 	{
-		if (val > 100 || val < 0)
+		if (val > 100)
 			boost::throw_exception(percentage_exception());
 
 		_val = val;
