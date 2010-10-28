@@ -16,6 +16,8 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
+import boost ;
+
 project odtone
 	: requirements
 	  <include>inc
@@ -31,14 +33,23 @@ project odtone
 	: build-dir bin.v2
 	;
 
-import boost ;
+boost.use-project ;
 
-boost.use-project 1.42 ;
+local rule explicit-alias ( id : targets + )
+{
+    alias $(id) : $(targets) ;
+    explicit $(id) ;
+}
 
 build-project src/mihf ;
-build-project src/dummyserver ;
 build-project app/mih_usr ;
 build-project app/link_sap ;
-build-project app/client ;
-#build-project app/miis_rdf_server ;
 
+alias install
+	: src/mihf//install
+	  app/link_sap//install
+	;
+
+explicit-alias base : lib/odtone//odtone_base ;
+explicit-alias mih  : lib/odtone/mih//odtone_mih ;
+explicit-alias sap  : lib/odtone/sap//odtone_sap ;

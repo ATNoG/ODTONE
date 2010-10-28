@@ -16,6 +16,9 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
+project odtone/sap
+	;
+
 lib odtone_sap
 	: sap.cpp
 	  user.cpp
@@ -24,4 +27,3 @@ lib odtone_sap
 	  ../mih//odtone_mih
 	  /boost//thread
 	;
-

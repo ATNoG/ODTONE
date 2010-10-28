@@ -1,0 +1,73 @@
+#==============================================================================
+# Brief   : ODTOne library support module
+# Authors : Bruno Santos <bsantos@av.it.pt>
+# -----------------------------------------------------------------------------
+# Copyright (C) 2010 Universidade de Aveiro
+# Copyright (C) 2010 Instituto de Telecomunicações - Pólo de Aveiro
+#
+# This software is distributed under a license. The full license
+# agreement can be found in the file LICENSE in this distribution.
+# This software may not be copied, modified, sold or distributed
+# other than expressed in the named license agreement.
+#
+# This software is distributed without any warranty.
+# -----------------------------------------------------------------------------
+#
+# -----------------------------------------------------------------------------
+# The module can be configured from the *-config.jam files:
+#
+# using odtone : path-to-odtone-root ;
+#
+# To use this module, place it at your boost build root:
+#
+# import odtone ;
+#
+# odtone.use-project ;
+#
+# The library can be referenced with the project identifier '/odtone'.
+#==============================================================================
+
+import modules ;
+import errors ;
+import project ;
+
+if [ MATCH (--debug-configuration) : [ modules.peek : ARGV ] ]
+{
+	.debug-configuration = true ;
+}
+
+rule init ( root )
+{
+	if $(.initialized) {
+		errors.user-error
+			"Odtone already configured." ;
+
+	} else {
+		if $(.debug-configuration) {
+			echo notice: configuring odtone library ;
+		}
+		.initialized = $(root) ;
+	}
+}
+
+rule use-project ( )
+{
+	if ( ! $(.using) ) {
+		if $(.initialized) {
+			.using =  $(.initialized) ;
+
+			if $(.debug-configuration) {
+				echo notice: using odtone library at $(.using) ;
+			}
+
+			local prj = [ project.current ] ;
+			local mod = [ $(prj).project-module ] ;
+
+			modules.call-in $(mod) : use-project odtone : $(.using) ;
+
+		} else {
+		    errors.user-error
+		        "Unconfigured odtone module." ;
+		}
+	}
+}

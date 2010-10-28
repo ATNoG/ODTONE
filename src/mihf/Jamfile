@@ -47,3 +47,8 @@ exe odtone-mihf
 	  ../../lib/odtone/sap//odtone_sap
 	;
 
+install install
+	: odtone-mihf
+	  odtone.conf
+	: <location>../../dist
+	;

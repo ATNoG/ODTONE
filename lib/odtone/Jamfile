@@ -16,6 +16,9 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
+project odtone/base
+	;
+
 alias source-list
 	: debug_linux.cpp
 	: <target-os>linux
@@ -35,4 +38,3 @@ lib odtone_base
 	  source-list
 	  /boost//system
 	;
-

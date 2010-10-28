@@ -1,6 +1,6 @@
 #==============================================================================
 # You must add these configurations to your user-config.jam or site-config.jam
-# Replace 'path-to-xxx' with the proper path.
+# or project-config.jam. Replace 'path-to-xxx' with the proper path.
 #
 # See the Boost.Build documentation for more details!
 #==============================================================================

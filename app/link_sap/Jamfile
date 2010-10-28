@@ -45,3 +45,8 @@ exe link_sap
 	  ../../lib/odtone/sap//odtone_sap
 	;
 
+install install
+	: link_sap
+	  link_sap.conf
+	: <location>../../dist
+	;

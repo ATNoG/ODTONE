@@ -16,6 +16,9 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
+project odtone/mih
+	;
+
 lib odtone_mih
 	: archive.cpp
 	  config.cpp
@@ -24,4 +27,3 @@ lib odtone_mih
 	  ..//odtone_base
 	  /boost//program_options
 	;
-
