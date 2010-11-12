@@ -127,6 +127,14 @@ void message::get_frame(frame_vla& fm) const
 	std::copy(ar.buffer().begin(), ar.buffer().end(), fm->payload());
 }
 
+/**
+ * \brief Check if the message contains MIH service specific TLVs
+ */
+bool message::has_service_specific_tlv()
+{
+	return !(_payload.begin() == _payload.end());
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /* namespace odtone */
 

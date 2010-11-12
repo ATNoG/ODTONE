@@ -158,6 +158,7 @@ public:
 	oarchive& output() { return _out; }
 
 	void get_frame(frame_vla& fm) const;
+	bool has_service_specific_tlv();
 
 private:
 	uint8           _version;
