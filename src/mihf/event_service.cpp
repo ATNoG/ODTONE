@@ -91,6 +91,7 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 	out->tid(in->tid());
 	out->source(mihfid);
 	out->destination(in->source());
+	out->ackreq(in->ackreq());
 
 	return true;
 }
@@ -202,7 +203,9 @@ bool event_service::local_event_unsubscribe_request(meta_message_ptr &in,
 		& mih::tlv_event_list(events);
 
 	out->tid(in->tid());
+	out->source(mihfid);
 	out->destination(in->source());
+	out->ackreq(in->ackreq());
 
 	return true;
 }

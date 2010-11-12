@@ -31,9 +31,10 @@ void local_transaction_pool::add(meta_message_ptr& in)
 	p.user.assign(in->source().to_string());
 	p.destination.assign(in->destination().to_string());
 	p.tid = in->tid();
+	p.ack = in->ackreq();
 
 	log(3, "(local transactions) added transaction ", p.user, ":",
-	    p.destination, ":", p.tid);
+	    p.destination, ":", p.tid, ":", p.ack);
 
 	{
 		boost::mutex::scoped_lock lock(_mutex);
@@ -66,6 +67,7 @@ bool local_transaction_pool::set_user_tid(meta_message_ptr &msg)
 
 		msg->tid(it->tid);
 		msg->destination(mih::id(it->user));
+		msg->ackreq(it->ack);
 
 		_transactions.erase(it);
 		return true;

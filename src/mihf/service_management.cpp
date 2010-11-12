@@ -55,6 +55,7 @@ bool set_capability_discover_response(meta_message_ptr &in, meta_message_ptr &ou
 	out->tid(in->tid());
 	out->destination(in->source());
 	out->source(mihfid);
+	out->ackreq(in->ackreq());
 
 	return true;
 }
