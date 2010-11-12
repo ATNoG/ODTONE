@@ -52,6 +52,9 @@ void src_transaction_t::run()
 
 		_netsap.send(out);
 
+		if(start_ack_requestor)
+			ack_requestor();
+
 		if (opcode == mih::operation::indication) {
 			if (start_ack_requestor) {
 				ack_requestor_status = ONGOING;

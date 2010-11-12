@@ -64,6 +64,12 @@ void message_out::operator()(meta_message_ptr& out)
 			t->out = out;
 			t->msg_out_avail = true;
 
+			if (t->start_ack_requestor)
+				t->ack_requestor();
+
+			if (t->start_ack_responder)
+				t->ack_responder();
+
 			t->run();
 
 			if (t->transaction_status != ONGOING)

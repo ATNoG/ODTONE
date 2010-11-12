@@ -29,10 +29,13 @@ message_in::message_in(transaction_pool &tpool, handler_t &f, net_sap &netsap)
 
 void message_in::operator()(meta_message_ptr& in)
 {
-	// TODO: FIXME: check page 143 when adding support for MIH service
-	// specific TLVs or a fragment payload
-	if (in->ackrsp() ||
-	    ((in->opcode() == mih::operation::response) && !in->ackrsp())) {
+	// TODO: FIXME: check page 143 when adding support for fragment payload
+	if ((in->ackrsp() && (in->opcode() == mih::operation::request || in->opcode() == mih::operation::indication))
+		    ||
+	   (!in->ackrsp() && in->opcode() == mih::operation::response)
+	        ||
+	   (in->ackrsp() && in->opcode() == mih::operation::response && in->has_service_specific_tlv()))
+	{		
 		// src
 		src_transaction_ptr t;
 		_tpool.find(in->source(), in->tid(), t);
@@ -44,7 +47,11 @@ void message_in::operator()(meta_message_ptr& in)
 			if (t->start_ack_requestor)
 				t->ack_requestor();
 
-			t->run();
+			if (t->start_ack_responder)
+				t->ack_responder();
+
+			if(!(in->ackrsp() == true && in->opcode() == mih::operation::request))
+				t->run();
 
 			if (t->transaction_status != ONGOING)
 				_tpool.del(t);
@@ -53,7 +60,7 @@ void message_in::operator()(meta_message_ptr& in)
 		}
         } else {
 		dst_transaction_ptr t;
-		_tpool.find(in->destination(), in->tid(), t);
+		_tpool.find(in->source(), in->tid(), t);
 
 		if (t) {
 			t->in = in;
@@ -62,10 +69,10 @@ void message_in::operator()(meta_message_ptr& in)
 			if (t->start_ack_requestor)
 				t->ack_requestor();
 
-			if (t->start_ack_responder)
-				t->ack_responder();
-
 			t->run();
+
+			if (t->start_ack_responder && t->state == ONGOING)
+				t->ack_responder();
 
 			if (t->transaction_status != ONGOING)
 				_tpool.del(t);

@@ -112,17 +112,23 @@ public:
 		  _rsp_init_lbl_:
 			{
 				// ack = (new mih::message);
-
+				ack->ackreq(false);
 				ack->ackrsp(true);
 				ack->opcode((mih::operation::type)opcode);
 				ack->tid(tid);
+				ack->mid(in->mid());
 				ack->source(my_mihf_id);
 				ack->destination(peer_mihf_id);
 
 				if (msg_out_avail)
 					goto _rsp_piggybacking_lbl_;
 				else
+				{			
+					_netsap.send(ack);
+					msg_in_avail = false;
 					goto _rsp_return_ack_lbl_;
+				}
+					
 
 				return;
 			}
@@ -130,12 +136,11 @@ public:
 		  _rsp_return_ack_lbl_:
 			{
 				ack_rsp_state = ACK_RSP_RETURN_ACK;
-				ack->mid(mid);
-
-				_netsap.send(ack);
-
-				if (msg_in_avail)
+				if(msg_in_avail)
+				{					
+					_netsap.send(ack);
 					msg_in_avail = false;
+				}
 				else if (msg_out_avail)
 					goto _rsp_piggybacking_lbl_;
 
