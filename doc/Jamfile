@@ -1,0 +1,59 @@
+#==============================================================================
+# Brief   : Quickbook Documentation Project Build
+# Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
+#------------------------------------------------------------------------------
+# ODTONE - Open Dot Twenty One
+#
+# Copyright (C) 2010 Universidade Aveiro
+# Copyright (C) 2010 Instituto de Telecomunicações - Pólo Aveiro
+#
+# This software is distributed under a license. The full license
+# agreement can be found in the file LICENSE in this distribution.
+# This software may not be copied, modified, sold or distributed
+# other than expressed in the named license agreement.
+#
+# This software is distributed without any warranty.
+#==============================================================================
+
+project odtone/doc ;
+
+xml odtone-doc
+	: src/odtone.qbk
+	;
+
+boostbook doc-html
+	: odtone-doc
+	: <xsl:param>boost.image.src="./images/logo.png"
+	  <xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
+	  <xsl:param>boost.image.w=100
+	  <xsl:param>boost.image.h=100
+
+	  <xsl:param>nav.layout=none
+	  <xsl:param>navig.graphics=1
+
+	  <xsl:param>chunk.section.depth=3
+	  <xsl:param>chunk.first.sections=1
+	  <xsl:param>toc.section.depth=2
+	  <xsl:param>toc.max.depth=4
+	  <xsl:param>generate.section.toc.level=1
+	  <xsl:param>index.on.type=1
+
+	  <xsl:param>generate.manifest=0
+	;
+
+install images
+	: [ glob src/images/*.png ]
+	: <location>html/images
+	;
+
+install css
+	: src/boostbook.css
+	: <location>html
+	;
+
+#install pdf
+#	: doc-html/<format>pdf
+#	: <location>pdf
+#	;
+
+alias html : doc-html images css ;
