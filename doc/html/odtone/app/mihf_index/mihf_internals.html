@@ -1,0 +1,191 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>5. ODTONE MIHF internals</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../../index.html" title="ODTONE 0.2">
+<link rel="up" href="../mihf_index.html" title="ODTONE-MIHF">
+<link rel="prev" href="mihf_backtrace.html" title="4. Function Backtrace">
+<link rel="next" href="../mih_usr_index.html" title="MIH User">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="mihf_backtrace.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../mihf_index.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../mih_usr_index.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.mihf_index.mihf_internals"></a><a class="link" href="mihf_internals.html" title="5. ODTONE MIHF internals"> 5. ODTONE MIHF
+        internals</a>
+</h4></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mihf_index.mihf_internals.internal_communications_use_udp_sockets_on_loopback_interface"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.internal_communications_use_udp_sockets_on_loopback_interface" title="Internal Communications use UDP sockets on loopback interface">Internal
+          Communications use UDP sockets on loopback interface</a>
+</h5></div></div></div>
+<p>
+            Internal communications are communications between the MIHF and local
+            SAPs (users and link). ODTONE uses UDP sockets binded to the loopback
+            interface (127.0.0.1) for exchanging messages between these entities.
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mihf_index.mihf_internals.mih_confirm_messages_must_set_the_opcode_to_0__zero_"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.mih_confirm_messages_must_set_the_opcode_to_0__zero_" title="MIH confirm messages must set the opcode to 0 (zero)">MIH
+          confirm messages must set the opcode to 0 (zero)</a>
+</h5></div></div></div>
+<p>
+            Chapter 7 of the MIH standard defines the primitives that should be supported
+            by an implementation. These primitives show how a SAP can interact with
+            a MIHF.
+          </p>
+<p>
+            Chapter 8, of the same standard, defines the message MIH protocol messages
+            for remote communications (communications between MIHFs).
+          </p>
+<p>
+            The ODTONE implementation uses the messages defined on chapter 8 to implement
+            the primitives of chapter 7.
+          </p>
+<p>
+            Please note that the MIHF sends confirm messages to SAPs and response
+            messages to MIHFs, and that the MIH protocol allocates 16 bits for the
+            MIH message ID, 2 of those are for the opcode. The opcode defines if
+            a message is a request, response or indication. So, with 2 bits we can
+            encode 4 values, 3 are already taken, this leaves 1 available combination
+            for the missing confirm primitives. Confirm primitives set the opcode
+            to 0 (zero).
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mihf_index.mihf_internals.tcp_support_not_enabled_but_supported"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.tcp_support_not_enabled_but_supported" title="TCP Support not enabled but supported">TCP
+          Support not enabled but supported</a>
+</h5></div></div></div>
+<p>
+            There is a wrapper (<span class="emphasis"><em>tcp_listener</em></span>) for handling TCP
+            communications, but a method for reading from the configuration file
+            and enabling TCP support, for the MIHF is not implemented.
+          </p>
+<p>
+            The <span class="emphasis"><em>tcp_listener</em></span> class was discussed in detail in
+            a <a class="link" href="mihf_internal_arch.html#odtone.app.mihf_index.mihf_internal_arch.listening_services__classes__emphasis_udp_listner__emphasis__and__emphasis_tcp_listner__emphasis_">previous
+            section.</a>
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mihf_index.mihf_internals.ipv6_not_enabled_but_supported"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.ipv6_not_enabled_but_supported" title="IPv6 not enabled but supported">IPv6
+          not enabled but supported</a>
+</h5></div></div></div>
+<p>
+            By default all communications are IPv4. To enable IPv6 a configuration
+            option should be supplied and checked on MIHF boostrap. This should be
+            trivial to support.
+          </p>
+<pre class="programlisting"><span class="identifier">Example</span><span class="special">,</span> <span class="identifier">on</span> <span class="identifier">src</span><span class="special">/</span><span class="identifier">mihf</span><span class="special">/</span><span class="identifier">main</span><span class="special">.</span><span class="identifier">cpp</span><span class="special">:</span><span class="number">479</span> <span class="identifier">change</span> <span class="identifier">to</span><span class="special">:</span>
+   <span class="identifier">udp_listener</span> <span class="identifier">remotelistener</span><span class="special">(</span><span class="identifier">io</span><span class="special">,</span> <span class="identifier">ip</span><span class="special">::</span><span class="identifier">udp</span><span class="special">::</span><span class="identifier">v6</span><span class="special">(),</span> <span class="string">"::::"</span><span class="special">,</span> <span class="identifier">rport</span><span class="special">,</span> <span class="identifier">rdispatch</span><span class="special">);</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mihf_index.mihf_internals.differences_in_the_state_machines"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.differences_in_the_state_machines" title="Differences in the state machines">Differences
+          in the state machines</a>
+</h5></div></div></div>
+<a name="odtone.app.mihf_index.mihf_internals.differences_in_the_state_machines.ack_requestor_state_machine"></a><h6>
+<a name="id851973"></a>
+            <a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.differences_in_the_state_machines.ack_requestor_state_machine">ACK
+            Requestor State Machine</a>
+          </h6>
+<div class="table">
+<a name="odtone.app.mihf_index.mihf_internals.differences_in_the_state_machines.ack_requestor_state_machine_differences"></a><p class="title"><b>Table&#160;22.&#160;ACK requestor state machine differences</b></p>
+<div class="table-contents"><table class="table" summary="ACK requestor state machine differences">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Standard
+                </p>
+                </th>
+<th>
+                <p>
+                  ODTONE
+                </p>
+                </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                <p>
+                  <span class="inlinemediaobject"><img src="../../.././images/ack_requestor_state_machine_standard.png" alt="ack_requestor_state_machine_standard"></span>
+                </p>
+                </td>
+<td>
+                <p>
+                  <span class="inlinemediaobject"><img src="../../.././images/ack_requestor_state_machine_odtone.png" alt="ack_requestor_state_machine_odtone"></span>
+                </p>
+                </td>
+</tr></tbody>
+</table></div>
+</div>
+<br class="table-break"><a name="odtone.app.mihf_index.mihf_internals.differences_in_the_state_machines.ack_responder_state_machine"></a><h6>
+<a name="id852081"></a>
+            <a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.differences_in_the_state_machines.ack_responder_state_machine">ACK
+            Responder State Machine</a>
+          </h6>
+<div class="table">
+<a name="odtone.app.mihf_index.mihf_internals.differences_in_the_state_machines.ack_responder_state_machine_differences"></a><p class="title"><b>Table&#160;23.&#160;ACK responder state machine differences</b></p>
+<div class="table-contents"><table class="table" summary="ACK responder state machine differences">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Standard
+                </p>
+                </th>
+<th>
+                <p>
+                  ODTONE
+                </p>
+                </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                <p>
+                  <span class="inlinemediaobject"><img src="../../.././images/ack_responder_state_machine_standard.png" alt="ack_responder_state_machine_standard"></span>
+                </p>
+                </td>
+<td>
+                <p>
+                  <span class="inlinemediaobject"><img src="../../.././images/ack_responder_state_machine_odtone.png" alt="ack_responder_state_machine_odtone"></span>
+                </p>
+                </td>
+</tr></tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2010 Universidade Aveiro<br>Copyright &#169; 2010 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="mihf_backtrace.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../mihf_index.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../mih_usr_index.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
