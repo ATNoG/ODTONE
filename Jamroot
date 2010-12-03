@@ -41,5 +41,4 @@ build-project app/mih_usr ;
 build-project app/link_sap ;
 build-project app/client ;
 build-project app/miis_rdf_server ;
-build-project doc ;
 
