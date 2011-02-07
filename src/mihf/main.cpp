@@ -75,54 +75,12 @@ static const char* const kConf_MIHF_Users_List   = "mihf.users";
 static const char* const kConf_MIHF_Links_List   = "mihf.links";
 static const char* const kConf_MIHF_Remote_Port  = "mihf.remote_port";
 static const char* const kConf_MIHF_Local_Port   = "mihf.local_port";
-static const char* const kConf_MIHF_Evt_List     = "mihf.event_list";
 static const char* const kConf_MIHF_Network_Type = "mihf.link_addr_list";
 static const char* const kConf_MIHF_BRDCAST      = "enable_broadcast";
 static const char* const kConf_MIHF_Verbosity    = "log";
 
 
 //
-// The following code is to extract from the config file
-// the capabilities for the mihf and store them in the service
-// management object.
-//
-// The next version will query the underlying link sap for it's
-// capabilities.
-
-void __trim(mih::octet_string &str, const char chr)
-{
-	str.erase(std::remove(str.begin(), str.end(), chr), str.end());
-}
-
-//
-// @param evts is a comma separated string whith the list of supported
-// events
-//
-void set_supported_event_list(mih::octet_string &list)
-{
-	__trim(list, ' ');
-	using namespace boost;
-
-	char_separator<char> sep(",");
-	tokenizer< char_separator<char> > tokens(list, sep);
-
-	std::map<std::string, uint16> enum_map;
-
-	enum_map["link_detected"]	   = (uint16) mih::link_detected;
-	enum_map["link_up"]		   = (uint16) mih::link_up;
-	enum_map["link_down"]		   = (uint16) mih::link_down;
-	enum_map["link_parameters_report"] = (uint16) mih::link_parameters_report;
-	enum_map["link_going_down"]	   = (uint16) mih::link_going_down;
-	enum_map["link_handover_imminent"] = (uint16) mih::link_handover_imminent;
-	enum_map["link_handover_complete"] = (uint16) mih::link_handover_complete;
-
-	BOOST_FOREACH(mih::octet_string event, tokens) {
-		// log(0, "evt: ", event);
-		if(enum_map.find(event) != enum_map.end())
-			capabilities_event_list.set((mih::event_list_enum) enum_map[event]);
-	}
-}
-
 
 //
 // list is a comma separated string with the network types
@@ -227,10 +185,8 @@ void set_users(mih::octet_string &list, user_book &ubook)
 
 void parse_link_capabilities(mih::config &cfg)
 {
-	mih::octet_string events = cfg.get<mih::octet_string>(kConf_MIHF_Evt_List);
 	mih::octet_string links	= cfg.get<mih::octet_string>(kConf_MIHF_Network_Type);
 
-	set_supported_event_list(events);
 	set_supported_link_list(links);
 }
 
@@ -391,7 +347,6 @@ int main(int argc, char **argv)
 		(kConf_MIHF_Links_List, po::value<std::string>()->default_value("link 1235"), "List of Links SAPs")
 		(kConf_MIHF_Remote_Port, po::value<uint16>()->default_value(4551), "MIHF Remote Communications Port")
 		(kConf_MIHF_Local_Port, po::value<uint16>()->default_value(1025), "MIHF Local Communications Port")
-		(kConf_MIHF_Evt_List, po::value<std::string>()->default_value(""), "MIHF List of supported events")
 		(kConf_MIHF_Network_Type, po::value<std::string>()->default_value(""), "MIHF Network Type list")
 		(kConf_MIHF_BRDCAST,  "MIHF responds to broadcast messages")
 		(kConf_MIHF_Verbosity, po::value<uint16>()->default_value(1), "MIHF log level [0-4]")
