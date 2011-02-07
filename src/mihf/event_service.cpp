@@ -86,7 +86,7 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 
 		*out << mih::response(mih::response::event_subscribe)
 			& mih::tlv_status(st)
-//FIXME:			& mih::tlv_link_identifier(link)
+			& mih::tlv_link_identifier(link)
 			& mih::tlv_event_list(events);
 
 		out->tid(in->tid());
@@ -100,13 +100,16 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 		return true;
 	}
 	else { // Subscribe requested events with Link SAP
-		*in << mih::request(mih::request::event_subscribe)
+		*out << mih::request(mih::request::event_subscribe)
 			& mih::tlv_event_list(events);
 
-		in->destination(mih::id(link_id));
-		_lpool.add(in);
-		in->source(mihfid);
-		_transmit(in);
+		out->destination(mih::id(link_id));
+		out->tid(in->tid());
+		out->source(in->source());
+		_lpool.add(out);
+		log(1, "(mies) forwarding Event_Subscribe.request to ",
+		    out->destination().to_string());
+		_transmit(out);
 
 		return false;
 	}
@@ -155,20 +158,12 @@ bool event_service::event_subscribe_response(meta_message_ptr &in,
 	// parse incoming message to (event_registration_t) reg
 	*in >> mih::response()
 		& mih::tlv_status(st)
-//FIXME:		& mih::tlv_link_identifier(link)
+		& mih::tlv_link_identifier(link)
 		& mih::tlv_event_list(events);
 
 	// add a subscription
 	if (st == mih::status_success) {
 		// TODO: Optimize in order to have a mapping of subscriptions in peer MIHFs.
-
-		// FIXME: DELETE
-		mih::mac_addr mac;
-		mac.address("00:11:22:33:44:55");
-		link.type = mih::link_type_802_11;
-		link.addr = mac;
-		// FIXME: DELETE
-
 		st = subscribe(mih::id(in->destination().to_string()), link, events.get());
 	}
 
@@ -203,7 +198,7 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 
 	*in << mih::confirm(mih::confirm::event_subscribe)
 		& mih::tlv_status(st)
-//FIXME:		& mih::tlv_link_identifier(link)
+		& mih::tlv_link_identifier(link)
 		& mih::tlv_event_list(events);
 
 	// do we have a request from a user?
@@ -215,13 +210,6 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 
 	// add a subscription
 	if (st == mih::status_success) {
-		// FIXME: DELETE
-		mih::mac_addr mac;
-		mac.address("00:11:22:33:44:55");
-		link.type = mih::link_type_802_11;
-		link.addr = mac;
-		// FIXME: DELETE
-
 		_link_subscriptions[in->source().to_string()].merge(events.get());
 		st = subscribe(mih::id(in->destination().to_string()), link, events.get());
 	}
