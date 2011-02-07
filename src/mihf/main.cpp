@@ -475,14 +475,16 @@ int main(int argc, char **argv)
 
 	// create and bind to port 'lport' on loopback interface and
 	// call ldispatch when a message is received
-	udp_listener commhand(io, ip::udp::v4(), "127.0.0.1", lport, ldispatch);
+	udp_listener commhandv4(io, ip::udp::v4(), "127.0.0.1", lport, ldispatch);
+	udp_listener commhandv6(io, ip::udp::v6(), "::1", lport, ldispatch);
 
 	// create and bind to port rport and call rdispatch when a
 	// message is received
-	udp_listener remotelistener(io, ip::udp::v4(), "0.0.0.0", rport, rdispatch);
+	udp_listener remotelistener(io, ip::udp::v6(), "::", rport, rdispatch);
 
 	// start listening on local and remote ports
-	commhand.start();
+	commhandv4.start();
+	commhandv6.start();
 	remotelistener.start();
 
 	io.run();

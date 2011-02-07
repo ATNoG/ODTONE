@@ -32,7 +32,7 @@ meta_message::meta_message(mih::octet_string ip, uint16 port, const mih::frame &
 	: mih::message(fm),
 	  _ip(ip)
 {
-	_local = (_ip.compare("127.0.0.1") == 0);
+	_local = (_ip.compare("127.0.0.1") == 0 || _ip.compare("::1") == 0);
 	_port = port;
 }
 

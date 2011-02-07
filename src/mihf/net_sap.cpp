@@ -45,7 +45,7 @@ void net_sap::send(meta_message_ptr &msg)
 
 		// try to broadcast message
 		if (msg->destination().to_string().size() == 0) {
-			utils::udp_send(_io, msg, "255.255.255.255", 4551);
+			utils::udp_send(_io, msg, "ff02::1", 4551);
 		// check msg meta data for ip and use it
 		} else if (msg->ip().size() != 0) {
 			utils::udp_send(_io, msg, msg->ip().c_str(), 4551);

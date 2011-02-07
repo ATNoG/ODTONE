@@ -60,7 +60,7 @@ void tcp_send(io_service &io, meta_message_ptr &msg, const char *ip, uint16 port
 	if (is_multicast(msg)) {
 		boost::asio::socket_base::broadcast option(true);
 		sock.set_option(option);
-		ip = "255.255.255.255";
+		ip = "ff02::1";
 	}
 
 	ip::tcp::endpoint ep(ip::address::from_string(ip), port);
@@ -92,7 +92,7 @@ void udp_send(io_service &io, meta_message_ptr &msg, const char *ip, uint16 port
 	if (is_multicast(msg)) {
 		boost::asio::socket_base::broadcast option(true);
 		sock.set_option(option);
-		ip = "255.255.255.255";
+		ip = "ff02::1";
 	}
 
 	ip::udp::endpoint ep(ip::address::from_string(ip), port);
