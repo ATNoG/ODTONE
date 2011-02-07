@@ -39,6 +39,12 @@ public:
 private:
 	void default_handler(odtone::mih::message& msg);
 
+	/**
+	 * Initialization of Link SAP. Responsible for sending Link SAP register message
+	 * to the local MIHF.
+	 */
+	void init();
+
 private:
 	odtone::sap::link  _mihf;
 	nic::interface_map _ifmap;

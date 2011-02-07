@@ -11,12 +11,14 @@
 // This software is distributed without any warranty.
 //
 // Author:     Simao Reis <sreis@av.it.pt>
+//             Carlos Guimarães <cguimaraes@av.it.pt>
 //
 
 #ifndef ODTONE_MIHF_SERVICE_MANAGEMENT_HPP
 #define ODTONE_MIHF_SERVICE_MANAGEMENT_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
+#include "link_response_pool.hpp"
 #include "local_transaction_pool.hpp"
 #include "transmit.hpp"
 #include "meta_message.hpp"
@@ -30,8 +32,21 @@ namespace odtone { namespace mihf {
 
 class service_management {
 public:
-	service_management(local_transaction_pool &lpool, transmit &t, bool
-			   enable_broadcast = false);
+	/**
+	 * Service management constructor.
+	 *
+	 * @param lpool local transction pool
+	 * @param link_abook link addres book
+	 * @param t transmit module
+	 * @param cpool capability discovery pool
+	 * @param enable_broadcast true if response to broadcast
+	 *                         Capability_Discover.request is enable or false otherwise
+	 */
+	service_management(local_transaction_pool &lpool,
+			   link_book &link_abook,
+			   transmit &t,
+			   link_response_pool &lrpool,
+			   bool enable_broadcast = false);
 
 	bool capability_discover_request(meta_message_ptr &in,
 					 meta_message_ptr &out);
@@ -43,8 +58,10 @@ private:
 						  pending_transaction &p);
 
 protected:
-	local_transaction_pool	&_lpool;
-	transmit		&_transmit;
+	local_transaction_pool   &_lpool;
+	link_book                &_link_abook;
+	transmit                 &_transmit;
+	link_response_pool       &_lrpool;
 
 	// set to true if this MIHF responds to broadcast messages
 	bool			 _enable_broadcast;

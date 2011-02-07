@@ -62,6 +62,7 @@ public:
 	~link();
 
 	void async_send(mih::message& p, const handler& h = handler());
+	void sync_send(mih::message& p);
 
 private:
 	void recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system::error_code& ec);
@@ -71,6 +72,8 @@ private:
 	default_handler			_handler;
 	boost::asio::ip::udp::socket	_sock;
 	boost::asio::ip::udp::endpoint	_ep;
+	odtone::mih::id                 _link_id;
+	odtone::mih::id                 _mihf_id;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

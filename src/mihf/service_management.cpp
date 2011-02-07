@@ -128,4 +128,31 @@ bool service_management::capability_discover_response(meta_message_ptr &in,
 }
 
 
+/**
+ * Link Register Indication message handler.
+ *
+ * @param in input message
+ * @param out output message
+ * @return always false, because it does not send any response directly
+ */
+bool service_management::link_register_indication(meta_message_ptr &in,
+	                                       meta_message_ptr &out)
+{
+	log(1, "(mism) received Link_Register.indication from ",
+	    in->source().to_string());
+
+	// Add Link SAP to the list of known Link SAPs
+	mih::status st;
+	mih::link_id link_id;
+
+	mih::octet_string ip(in->ip());
+
+	*in >> odtone::mih::indication()
+		& odtone::mih::tlv_interface_type_addr(link_id);
+
+	_link_abook.add(in->source().to_string(), ip, in->port(), link_id);
+
+	return false;
+}
+
 } /* namespace mihf */ } /* namespace odtone */

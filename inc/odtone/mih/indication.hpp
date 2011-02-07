@@ -89,7 +89,12 @@ public:
 		get_information 									/// MIH_Get_Information.indication
 								= msg_id<4, 3, 1>::value,
 		push_information									/// MIH_Push_Information.indication
-								= msg_id<4, 3, 2>::value
+								= msg_id<4, 3, 2>::value,
+
+
+// ODTONE specific messages
+link_register										/// Link_Register.indication
+								= msg_id<1, 3, 6>::value
 	};
 
 	/**

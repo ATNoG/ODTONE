@@ -17,6 +17,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/debug.hpp>
+#include <odtone/mih/types/base.hpp>
 #include <odtone/mih/message.hpp>
 #include <odtone/mih/indication.hpp>
 #include <odtone/mih/request.hpp>
@@ -26,12 +27,14 @@
 #include "link_sap.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
+extern odtone::mih::link_id      link_id;
 namespace link_sap {
 
 ///////////////////////////////////////////////////////////////////////////////
 link_sap::link_sap(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	: _mihf(cfg, io, boost::bind(&link_sap::default_handler, this, _1))
 {
+	init();
 }
 
 link_sap::~link_sap()
@@ -115,6 +118,20 @@ void link_sap::default_handler(odtone::mih::message& msg)
 			_mihf.async_send(m);
 		}
 	}
+}
+
+/**
+ * Initialization of Link SAP. Responsible for sending Link SAP register message
+ * to the local MIHF.
+ */
+void link_sap::init()
+{
+	odtone::mih::message m;
+
+	m << odtone::mih::indication(odtone::mih::indication::link_register)
+	    & odtone::mih::tlv_interface_type_addr(link_id);
+
+	_mihf.sync_send(m);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

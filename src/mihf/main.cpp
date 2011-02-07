@@ -60,68 +60,20 @@ using namespace odtone::mihf;
 
 namespace po = boost::program_options;
 
-// TODO
-mih::event_list		capabilities_event_list;
-mih::net_type_addr_list capabilities_list_net_type_addr;
-
 // available config options
-static const char* const kConf_File               = "conf.file";
-static const char* const kConf_Receive_Buffer_Len = "conf.recv_buff_len";
-
-static const char* const kConf_MIHF_Id           = "mihf.id";
-static const char* const kConf_MIHF_Ip           = "mihf.ip";
-static const char* const kConf_MIHF_Peer_List    = "mihf.peers";
-static const char* const kConf_MIHF_Users_List   = "mihf.users";
-static const char* const kConf_MIHF_Links_List   = "mihf.links";
-static const char* const kConf_MIHF_Remote_Port  = "mihf.remote_port";
-static const char* const kConf_MIHF_Local_Port   = "mihf.local_port";
-static const char* const kConf_MIHF_Network_Type = "mihf.link_addr_list";
-static const char* const kConf_MIHF_BRDCAST      = "enable_broadcast";
-static const char* const kConf_MIHF_Verbosity    = "log";
+static const char* const kConf_File                    = "conf.file";
+static const char* const kConf_Receive_Buffer_Len      = "conf.recv_buff_len";
+static const char* const kConf_MIHF_Id                 = "mihf.id";
+static const char* const kConf_MIHF_Ip                 = "mihf.ip";
+static const char* const kConf_MIHF_Peer_List          = "mihf.peers";
+static const char* const kConf_MIHF_Users_List         = "mihf.users";
+static const char* const kConf_MIHF_Remote_Port        = "mihf.remote_port";
+static const char* const kConf_MIHF_Local_Port         = "mihf.local_port";
+static const char* const kConf_MIHF_Link_Discover_Time = "mihf.link_discover_time";
+static const char* const kConf_MIHF_BRDCAST            = "enable_broadcast";
+static const char* const kConf_MIHF_Verbosity          = "log";
 
 
-//
-
-//
-// list is a comma separated string with the network types
-//
-// example: ethernet 00:11:22:33:44:55, 802_11 55:66:77:88:99:00
-//
-//
-void set_supported_link_list(mih::octet_string &list)
-{
-	using namespace boost;
-
-	std::map<std::string, mih::link_type_enum> enum_map;
-
-	enum_map["ethernet"] = mih::link_type_ethernet;
-	enum_map["802_11"]   = mih::link_type_802_11;
-
-	char_separator<char> sep1(",");
-	char_separator<char> sep2(" ");
-	tokenizer< char_separator<char> > list_tokens(list, sep1);
-
-	BOOST_FOREACH(mih::octet_string str, list_tokens) {
-		tokenizer< char_separator<char> > tokens(str, sep2);
-		tokenizer< char_separator<char> >::iterator it = tokens.begin();
-
-		mih::octet_string link_type = *it;
-		++it;
-		mih::octet_string link_addr = *it;
-		// log(0, "lt: ", link_type, " la: ", link_addr);
-		mih::net_type_addr nta;
-
-		if(enum_map.find(link_type) != enum_map.end()) {
-			mih::mac_addr mac;
-			mac.address(link_addr);
-
-			nta.addr = mac;
-			nta.nettype.link = mih::link_type(enum_map[link_type]);
-
-			capabilities_list_net_type_addr.push_back(nta);
-		}
-	}
-}
 
 //
 // list is a comma separated list of mihf id ip and port
@@ -183,13 +135,6 @@ void set_users(mih::octet_string &list, user_book &ubook)
 	}
 }
 
-void parse_link_capabilities(mih::config &cfg)
-{
-	mih::octet_string links	= cfg.get<mih::octet_string>(kConf_MIHF_Network_Type);
-
-	set_supported_link_list(links);
-}
-
 void parse_peer_registrations(mih::config &cfg, address_book &abook)
 {
 	mih::octet_string mihfs	= cfg.get<mih::octet_string>(kConf_MIHF_Peer_List);
@@ -212,6 +157,10 @@ void sm_register_callbacks(service_management &sm)
 
 	sac_register_callback(mih::response::capability_discover,
 			      boost::bind(&service_management::capability_discover_response,
+					  boost::ref(sm), _1, _2));
+
+	sac_register_callback(mih::indication::link_register,
+			      boost::bind(&service_management::link_register_indication,
 					  boost::ref(sm), _1, _2));
 }
 
@@ -344,10 +293,8 @@ int main(int argc, char **argv)
 		(kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "MIHF Ip")
 		(kConf_MIHF_Peer_List, po::value<std::string>()->default_value(""), "List of peer MIHFs")
 		(kConf_MIHF_Users_List, po::value<std::string>()->default_value("user 1234"), "List of User SAPs")
-		(kConf_MIHF_Links_List, po::value<std::string>()->default_value("link 1235"), "List of Links SAPs")
 		(kConf_MIHF_Remote_Port, po::value<uint16>()->default_value(4551), "MIHF Remote Communications Port")
 		(kConf_MIHF_Local_Port, po::value<uint16>()->default_value(1025), "MIHF Local Communications Port")
-		(kConf_MIHF_Network_Type, po::value<std::string>()->default_value(""), "MIHF Network Type list")
 		(kConf_MIHF_BRDCAST,  "MIHF responds to broadcast messages")
 		(kConf_MIHF_Verbosity, po::value<uint16>()->default_value(1), "MIHF log level [0-4]")
 		;
@@ -376,8 +323,6 @@ int main(int argc, char **argv)
 	mihfid_t::instance()->assign(id.c_str());
 	// set log level
 	log.level(loglevel);
-	// set link capabilities
-	parse_link_capabilities(cfg);
 
 	// create address books that stores info on how to contact mih
 	// saps and peer mihfs
@@ -394,6 +339,9 @@ int main(int argc, char **argv)
 	// pool of pending transactions with local mih saps (user and links)
 	local_transaction_pool	lpool;
 
+	// pool of pending capability discover requests
+	link_response_pool lrpool;
+
 	// handler for remote messages
 	handler_t process_message = boost::bind(&sac_process_message, _1, _2);
 
@@ -408,7 +356,7 @@ int main(int argc, char **argv)
 	event_service		mies(lpool, trnsmt);
 	command_service		mics(lpool, trnsmt);
 	information_service	miis(lpool, trnsmt);
-	service_management	sm(lpool, trnsmt, enable_broadcast);
+	service_management	sm(lpool, link_abook, trnsmt, lrpool, enable_broadcast);
 
 	// register callbacks with service access controller
 	sm_register_callbacks(sm);

@@ -90,6 +90,10 @@ static const tlv_cast_<bool,                  tlv_<61> > tlv_unauthenticated_inf
 static const tlv_cast_<network_type,          tlv_<62> > tlv_network_type = {};
 static const tlv_cast_<rq_res_set,            tlv_<63> > tlv_request_resource_set = {};
 
+// ODTONE specific TLVs
+static const tlv_cast_<link_id,               tlv_<101> > tlv_interface_type_addr = {};
+
+
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /* namespace odtone */
 

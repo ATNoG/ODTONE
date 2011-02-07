@@ -44,7 +44,9 @@ namespace ip = boost::asio::ip;
 link::link(const mih::config& cfg, boost::asio::io_service& io, const default_handler& h)
 	: _handler(h), _sock(io, ip::udp::endpoint(ip::udp::v4(), cfg.get<ushort>(kConf_Port))),
 	  _ep(ip::address::from_string(cfg.get<std::string>(kConf_MIHF_Ip)),
-	      cfg.get<ushort>(kConf_MIHF_Local_Port))
+	      cfg.get<ushort>(kConf_MIHF_Local_Port)),
+	  _link_id(odtone::mih::id(cfg.get<std::string>(kConf_MIH_SAP_id))),
+	  _mihf_id(odtone::mih::id(cfg.get<std::string>(kConf_MIHF_Id)))
 {
 	buffer<uint8> buff(cfg.get<uint>(kConf_Receive_Buffer_Len));
 	void* rbuff = buff.get();
@@ -79,8 +81,9 @@ void link::async_send(mih::message& msg, const handler& h)
 	void* sbuff;
 	size_t slen;
 
-	msg.source(odtone::mih::id("link"));
-	msg.destination(odtone::mih::id("local-mihf"));
+	msg.source(_link_id);
+	msg.destination(_mihf_id);
+
 	msg.get_frame(fm);
 
 	sbuff = fm.get();
@@ -94,6 +97,32 @@ void link::async_send(mih::message& msg, const handler& h)
 					h,
 					boost::asio::placeholders::bytes_transferred,
 					boost::asio::placeholders::error));
+}
+
+/**
+ * \brief Send the MIH message to the local MIHF synchronously
+ * \param msg MIH message to send
+ * \param h Completion callback handler as a function pointer/object
+ *
+ * After the message is sended, the callback is called to report
+ * the success or failure in delivering the message to the MIHF.
+ *
+ * \remarks This method retuns immediately.
+ */
+void link::sync_send(mih::message& msg)
+{
+	mih::frame_vla fm;
+	void* sbuff;
+	size_t slen;
+
+	msg.source(_link_id);
+	msg.destination(_mihf_id);
+	msg.get_frame(fm);
+
+	sbuff = fm.get();
+	slen = fm.size();
+
+	_sock.send_to(boost::asio::buffer(sbuff, slen), _ep);
 }
 
 void link::recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system::error_code& ec)
