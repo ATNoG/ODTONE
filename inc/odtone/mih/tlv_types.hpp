@@ -92,6 +92,15 @@ static const tlv_cast_<rq_res_set,            tlv_<63> > tlv_request_resource_se
 
 // ODTONE specific TLVs
 static const tlv_cast_<link_id,               tlv_<101> > tlv_interface_type_addr = {};
+static const tlv_cast_<link_param_type_list,  tlv_<102> > tlv_link_parameters_req = {};
+static const tlv_cast_<link_param_list,       tlv_<103> > tlv_link_parameters_status_list = {};
+static const tlv_cast_<link_states_req,       tlv_<104> > tlv_link_states_req = {};
+static const tlv_cast_<link_states_rsp_list,  tlv_<105> > tlv_link_states_rsp = {};
+static const tlv_cast_<link_desc_req,         tlv_<106> > tlv_link_descriptor_req = {};
+static const tlv_cast_<link_desc_rsp_list,    tlv_<107> > tlv_link_descriptor_rsp = {};
+static const tlv_cast_<link_action,           tlv_<108> > tlv_link_action = {};
+static const tlv_cast_<link_ac_result,        tlv_<109> > tlv_link_ac_result = {};
+static const tlv_cast_<link_scan_rsp_list,    tlv_<110> > tlv_link_scan_rsp_list = {};
 
 
 ///////////////////////////////////////////////////////////////////////////////

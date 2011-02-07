@@ -21,6 +21,7 @@
 #include <odtone/mih/request.hpp>
 #include <odtone/mih/response.hpp>
 #include <odtone/mih/indication.hpp>
+#include <odtone/mih/confirm.hpp>
 #include <odtone/mih/tlv_types.hpp>
 #include <odtone/sap/user.hpp>
 #include <boost/utility.hpp>
@@ -44,7 +45,7 @@ public:
 
 protected:
 	void event_handler(odtone::mih::message& msg, const boost::system::error_code& ec);
-	void capability_discover_response(odtone::mih::message& msg, const boost::system::error_code& ec);
+	void capability_discover_confirm(odtone::mih::message& msg, const boost::system::error_code& ec);
 	void event_subscribe_response(odtone::mih::message& msg, const boost::system::error_code& ec);
 
 private:
@@ -70,7 +71,7 @@ mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	//
 	msg << odtone::mih::request(odtone::mih::request::capability_discover, _mihfid);
 
-	_mihf.async_send(msg, boost::bind(&mih_user::capability_discover_response, this, _1, _2));
+	_mihf.async_send(msg, boost::bind(&mih_user::capability_discover_confirm, this, _1, _2));
 
 	log_(0, "MIH-User has sent a Capability_Discover.request towards its local MIHF");
 }
@@ -112,7 +113,7 @@ void mih_user::event_handler(odtone::mih::message& msg, const boost::system::err
 	}
 }
 
-void mih_user::capability_discover_response(odtone::mih::message& msg, const boost::system::error_code& ec)
+void mih_user::capability_discover_confirm(odtone::mih::message& msg, const boost::system::error_code& ec)
 {
 	if (ec) {
 		log_(0, __FUNCTION__, " error: ", ec.message());
@@ -123,7 +124,7 @@ void mih_user::capability_discover_response(odtone::mih::message& msg, const boo
 	boost::optional<odtone::mih::net_type_addr_list> ntal;
 	boost::optional<odtone::mih::event_list> evt;
 
-	msg >> odtone::mih::response()
+	msg >> odtone::mih::confirm()
 		& odtone::mih::tlv_status(st)
 		& odtone::mih::tlv_net_type_addr_list(ntal)
 		& odtone::mih::tlv_event_list(evt);

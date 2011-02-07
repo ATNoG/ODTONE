@@ -42,6 +42,20 @@ void local_transaction_pool::add(meta_message_ptr& in)
 	}
 }
 
+void local_transaction_pool::del(const mih::octet_string user,
+                                 uint16 tid)
+{
+	std::list<pending_transaction>::iterator it;
+	it = find(user);
+
+	if (it != _transactions.end()) {
+		if(it->tid == tid) {
+			boost::mutex::scoped_lock lock(_mutex);
+			_transactions.erase(it);
+		}
+	}
+}
+
 std::list<pending_transaction>::iterator
 local_transaction_pool::find(const mih::octet_string &from)
 {

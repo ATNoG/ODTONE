@@ -16,6 +16,7 @@
 #include "event_service.hpp"
 
 #include "log.hpp"
+#include "link_book.hpp"
 #include "mihfid.hpp"
 #include "transmit.hpp"
 #include "utils.hpp"
@@ -23,6 +24,7 @@
 #include <odtone/debug.hpp>
 #include <odtone/mih/request.hpp>
 #include <odtone/mih/response.hpp>
+#include <odtone/mih/confirm.hpp>
 #include <odtone/mih/indication.hpp>
 #include <odtone/mih/tlv_types.hpp>
 
@@ -30,9 +32,10 @@
 
 namespace odtone { namespace mihf {
 
-event_service::event_service(local_transaction_pool &lpool, transmit &t)
+event_service::event_service(local_transaction_pool &lpool, transmit &t, link_book &lbook)
 	: _lpool(lpool),
-	  _transmit(t)
+	  _transmit(t),
+	  _link_abook(lbook)
 {
 }
 
@@ -42,8 +45,6 @@ mih::status event_service::subscribe(const mih::id &user,
 				     mih::link_tuple_id &link,
 				     mih::event_list &events)
 {
-//  TODO: add support for evt_cfg_info
-
 	event_registration_t reg;
 	reg.user.assign(user.to_string());
 	reg.link = link;
@@ -54,14 +55,8 @@ mih::status event_service::subscribe(const mih::id &user,
 		if (events.get((mih::event_list_enum) i)) {
 			reg.event = (mih::event_list_enum) i;
 			_event_subscriptions.push_back(reg);
-
-			if (link.addr.which() == 1) {
-				mih::mac_addr mac =
-					boost::get<mih::mac_addr>(link.addr);
-
-				log(3, "(mies) added subscription ", reg.user,
-				    ":", mac.address(), ":", reg.event);
-			}
+			log(3, "(mies) added subscription ", reg.user,
+			    ":", reg.link.addr, ":", reg.event);
 		}
 	}
 
@@ -81,19 +76,41 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 		& mih::tlv_link_identifier(link)
 		& mih::tlv_event_list(events);
 
-	mih::status st = subscribe(in->source(), link, events);
+	// If the MIHF already subscribed the requested events with Link SAP
+	mih::octet_string link_id = _link_abook.search_interface(link.type, link.addr);
+	mih::event_list event_tmp = _link_subscriptions.find(link_id)->second;
+	event_tmp.common(events);
 
-	*out << mih::response(mih::response::event_subscribe)
-		& mih::tlv_status(st)
-		& mih::tlv_link_identifier(link)
-		& mih::tlv_event_list(events);
+	if(events == event_tmp) {
+		mih::status st = subscribe(in->source(), link, events);
 
-	out->tid(in->tid());
-	out->source(mihfid);
-	out->destination(in->source());
-	out->ackreq(in->ackreq());
+		*out << mih::response(mih::response::event_subscribe)
+			& mih::tlv_status(st)
+//FIXME:			& mih::tlv_link_identifier(link)
+			& mih::tlv_event_list(events);
 
-	return true;
+		out->tid(in->tid());
+		out->source(mihfid);
+		out->destination(in->source());
+		out->ackreq(in->ackreq());
+
+		log(1, "(mies) forwarding Event_Subscribe.response to ",
+		    in->destination().to_string());
+
+		return true;
+	}
+	else { // Subscribe requested events with Link SAP
+		*in << mih::request(mih::request::event_subscribe)
+			& mih::tlv_event_list(events);
+
+		in->destination(mih::id(link_id));
+		_lpool.add(in);
+		in->source(mihfid);
+		_transmit(in);
+
+		return false;
+	}
+
 }
 
 // Check if this MIHF is the destination of the message or if it needs
@@ -126,33 +143,143 @@ bool event_service::event_subscribe_response(meta_message_ptr &in,
 
 	// do we have a request from a user?
 	if (!_lpool.set_user_tid(in)) {
-		log(1, "(mics) warning: no local transaction for this msg ",
+		log(1, "(mies) warning: no local transaction for this msg ",
 		    "discarding it");
 		return false;
 	}
 
 	mih::status        st;
 	mih::link_tuple_id link;
-	mih::event_list    events;
-	mih::message       pin;
+	boost::optional<mih::event_list>    events;
 
 	// parse incoming message to (event_registration_t) reg
-	*in >>  mih::response()
+	*in >> mih::response()
 		& mih::tlv_status(st)
-		& mih::tlv_link_identifier(link)
+//FIXME:		& mih::tlv_link_identifier(link)
 		& mih::tlv_event_list(events);
 
 	// add a subscription
-	if (st == mih::status_success)
-		st = subscribe(mih::id(in->destination().to_string()), link, events);
+	if (st == mih::status_success) {
+		// TODO: Optimize in order to have a mapping of subscriptions in peer MIHFs.
+
+		// FIXME: DELETE
+		mih::mac_addr mac;
+		mac.address("00:11:22:33:44:55");
+		link.type = mih::link_type_802_11;
+		link.addr = mac;
+		// FIXME: DELETE
+
+		st = subscribe(mih::id(in->destination().to_string()), link, events.get());
+	}
 
 	log(1, "(mies) forwarding Event_Subscribe.response to ",
 	    in->destination().to_string());
 
 	// forward to user
+	in->opcode(mih::operation::confirm);
 	_transmit(in);
 
 	return false;
+}
+
+// Check if this MIHF is the destination of the message or if it needs
+// to forward the message to a peer MIHF.
+bool event_service::event_subscribe_confirm(meta_message_ptr &in,
+					    meta_message_ptr &out)
+{
+	log(1, "(mies) received Event_Subscribe.confirm from ",
+	    in->source().to_string());
+
+	mih::status        st;
+	boost::optional<mih::event_list>    events;
+
+	*in >> mih::confirm()
+		& mih::tlv_status(st)
+		& mih::tlv_event_list(events);
+
+	mih::link_tuple_id link;
+	link.type = _link_abook.get(in->source().to_string()).link_id.type;
+	link.addr = _link_abook.get(in->source().to_string()).link_id.addr;
+
+	*in << mih::confirm(mih::confirm::event_subscribe)
+		& mih::tlv_status(st)
+//FIXME:		& mih::tlv_link_identifier(link)
+		& mih::tlv_event_list(events);
+
+	// do we have a request from a user?
+	if (!_lpool.set_user_tid(in)) {
+		log(1, "(mies) warning: no local transaction for this msg ",
+		    "discarding it");
+		return false;
+	}
+
+	// add a subscription
+	if (st == mih::status_success) {
+		// FIXME: DELETE
+		mih::mac_addr mac;
+		mac.address("00:11:22:33:44:55");
+		link.type = mih::link_type_802_11;
+		link.addr = mac;
+		// FIXME: DELETE
+
+		_link_subscriptions[in->source().to_string()].merge(events.get());
+		st = subscribe(mih::id(in->destination().to_string()), link, events.get());
+	}
+
+	log(1, "(mies) forwarding Event_Subscribe.confirm to ",
+	    in->destination().to_string());
+
+	// forward to user
+	in->source(mihfid);
+	_transmit(in);
+
+	return false;
+}
+
+void event_service::link_unsubscribe(meta_message_ptr &in,
+                                     mih::link_tuple_id &link,
+                                     mih::event_list &events)
+{
+	boost::mutex::scoped_lock lock(_event_mutex);
+
+	std::list<event_registration_t>::iterator it;
+	mih::event_list el;
+
+	// Get all subscriptions for the given Link SAP
+	for(it = _event_subscriptions.begin();
+	    it != _event_subscriptions.end();
+	    it++) {
+			if (it->link == link) {
+				el.set(it->event);
+			}
+	}
+
+	// Check which events can be unsubscribed with Link SAP
+	bool send_msg = false;
+	mih::octet_string link_id = _link_abook.search_interface(link.type, link.addr);
+	mih::event_list link_event = _link_subscriptions.find(link_id)->second;
+	for(int i = 0; i < 32; i++) {
+		if((events.get((mih::event_list_enum) i) == link_event.get((mih::event_list_enum) i)) &&
+		   (el.get((mih::event_list_enum) i) != events.get((mih::event_list_enum) i))) {
+				el.set((mih::event_list_enum) i);
+				send_msg = true;
+		}
+		else {
+			el.clear((mih::event_list_enum) i);
+		}
+	}
+
+	// Only send message to Link SAP if there is any event to unsubscribed
+	if(send_msg)
+	{
+		*in << mih::request(mih::request::event_unsubscribe)
+				& mih::tlv_event_list(el);
+
+		mih::octet_string link_id = _link_abook.search_interface(link.type, link.addr);
+		in->destination(mih::id(link_id));
+		in->source(mihfid);
+		_transmit(in);
+	}
 }
 
 mih::status event_service::unsubscribe(const mih::id &user,
@@ -163,29 +290,28 @@ mih::status event_service::unsubscribe(const mih::id &user,
 
 	std::list<event_registration_t>::iterator it;
 
-	for(it = _event_subscriptions.begin();
-	    it != _event_subscriptions.end();
-	    it++) {
+	it = _event_subscriptions.begin();
+	while (it != _event_subscriptions.end())
+	{
 		if (it->link == link &&
 		    (it->user.compare(user.to_string()) == 0) &&
 		    events.get((mih::event_list_enum) it->event)) {
-			break;
+				log(3, "(mies) removed subscription ", it->user,
+				    ":", it->link.addr ,":", it->event);
+				_event_subscriptions.erase(it++);
+		}
+		else {
+			it++;
 		}
 	}
 
-	if (it != _event_subscriptions.end()) {
-		_event_subscriptions.erase(it);
-		return mih::status_success;
-	}
-
-	return mih::status_failure;
+	return mih::status_success;
 }
-
 
 // This MIHF is the destination of the Event_Unsubscribe.request.
 // Deserialize message, unsubscribe user and send a response
 bool event_service::local_event_unsubscribe_request(meta_message_ptr &in,
-						    meta_message_ptr &out)
+													meta_message_ptr &out)
 {
 	mih::status st;
 	mih::link_tuple_id link;
@@ -206,6 +332,9 @@ bool event_service::local_event_unsubscribe_request(meta_message_ptr &in,
 	out->source(mihfid);
 	out->destination(in->source());
 	out->ackreq(in->ackreq());
+
+	// Check if there is any request for the events
+	link_unsubscribe(in, link, events);
 
 	return true;
 }
@@ -247,10 +376,9 @@ bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 		return false;
 	}
 
-	mih::status		st;
-	mih::link_tuple_id	link;
-	mih::event_list		events;
-	mih::message		pin;
+	mih::status	       st;
+	mih::link_tuple_id link;
+	boost::optional<mih::event_list> events;
 
 	// parse incoming message to (event_registration_t) reg
 	*in >>  mih::response()
@@ -259,14 +387,49 @@ bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 		& mih::tlv_event_list(events);
 
 	// remove subscription
-	if (st == mih::status_success)
-		st = unsubscribe(mih::id(in->destination().to_string()), link, events);
+	if (st == mih::status_success) {
+		st = unsubscribe(mih::id(in->destination().to_string()), link, events.get());
+	}
 
 	log(1, "(mies) forwarding Event_Unsubscribe.response to ",
 	    in->destination().to_string());
 
 	// forward to user
+	in->opcode(mih::operation::confirm);
 	_transmit(in);
+
+	return false;
+}
+
+// A peer MIHF sent a Event_Unubscribe.response, check if we have a
+// pending transaction with a local user. If so, then remove the
+// subscription of the user to the link and events that came in the
+// response.
+bool event_service::event_unsubscribe_confirm(meta_message_ptr &in,
+					       meta_message_ptr &)
+{
+	log(1, "(mies) received Event_Unsubscribe.confirm from ",
+	    in->source().to_string());
+
+	mih::status	st;
+	boost::optional<mih::event_list> events;
+
+	// parse incoming message to (event_registration_t) reg
+	*in >> mih::confirm()
+		& mih::tlv_status(st)
+		& mih::tlv_event_list(events);
+
+	if (st == mih::status_success) {
+		// Update events subscribed information
+		for(int i = 0; i < 32; i++) {
+			if(events.get().get((mih::event_list_enum)i) == true) {
+				_link_subscriptions[in->source().to_string()].clear((mih::event_list_enum)i);
+			}
+		}
+
+		log(1, "(mies) Events successfully unsubscribed in Link SAP ",
+			in->source().to_string());
+	}
 
 	return false;
 }
@@ -283,7 +446,7 @@ void event_service::msg_forward(meta_message_ptr &msg,
 	for(it = _event_subscriptions.begin();
 	    it != _event_subscriptions.end();
 	    it++, i++) {
-		if ((it->event == event)  &&(it->link == li)) {
+		if ((it->event == event) && (it->link == li)) {
 			log(3, i, " (mies) found registration of user: ",
 			    it->user, " for event type ", event);
 			msg->destination(mih::id(it->user));

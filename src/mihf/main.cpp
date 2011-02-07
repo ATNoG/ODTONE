@@ -43,6 +43,7 @@
 #include <odtone/mih/request.hpp>
 #include <odtone/mih/response.hpp>
 #include <odtone/mih/indication.hpp>
+#include <odtone/mih/confirm.hpp>
 #include <odtone/mih/types/capabilities.hpp>
 
 #include <list>
@@ -73,6 +74,7 @@ static const char* const kConf_MIHF_Link_Discover_Time = "mihf.link_discover_tim
 static const char* const kConf_MIHF_BRDCAST            = "enable_broadcast";
 static const char* const kConf_MIHF_Verbosity          = "log";
 
+uint16 kConf_MIHF_Link_Discover_Time_Value;
 
 
 //
@@ -159,6 +161,10 @@ void sm_register_callbacks(service_management &sm)
 			      boost::bind(&service_management::capability_discover_response,
 					  boost::ref(sm), _1, _2));
 
+	sac_register_callback(mih::confirm::capability_discover,
+			      boost::bind(&service_management::capability_discover_confirm,
+					  boost::ref(sm), _1, _2));
+
 	sac_register_callback(mih::indication::link_register,
 			      boost::bind(&service_management::link_register_indication,
 					  boost::ref(sm), _1, _2));
@@ -171,6 +177,9 @@ void mies_register_callbacks(event_service &mies)
 					  boost::ref(mies), _1, _2));
 	sac_register_callback(mih::response::event_subscribe,
 			      boost::bind(&event_service::event_subscribe_response,
+					  boost::ref(mies), _1,  _2));
+	sac_register_callback(mih::confirm::event_subscribe,
+			      boost::bind(&event_service::event_subscribe_confirm,
 					  boost::ref(mies), _1,  _2));
 	sac_register_callback(mih::indication::link_up,
 			      boost::bind(&event_service::link_up_indication,
@@ -199,6 +208,9 @@ void mies_register_callbacks(event_service &mies)
 	sac_register_callback(mih::response::event_unsubscribe,
 			      boost::bind(&event_service::event_unsubscribe_response,
 					  boost::ref(mies), _1, _2));
+	sac_register_callback(mih::confirm::event_unsubscribe,
+			      boost::bind(&event_service::event_unsubscribe_confirm,
+					  boost::ref(mies), _1, _2));
 }
 // REGISTER(event_service::link_pdu_transmit_status_indication)
 
@@ -210,17 +222,26 @@ void mics_register_callbacks(command_service &mics)
 	sac_register_callback(mih::response::link_get_parameters,
 			      boost::bind(&command_service::link_get_parameters_response,
 					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::confirm::link_get_parameters,
+			      boost::bind(&command_service::link_get_parameters_confirm,
+					  boost::ref(mics), _1, _2));
 	sac_register_callback(mih::request::link_configure_thresholds,
 			      boost::bind(&command_service::link_configure_thresholds_request,
 					  boost::ref(mics), _1, _2));
 	sac_register_callback(mih::response::link_configure_thresholds,
 			      boost::bind(&command_service::link_configure_thresholds_response,
 					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::confirm::link_configure_thresholds,
+			      boost::bind(&command_service::link_configure_thresholds_confirm,
+					  boost::ref(mics), _1, _2));
 	sac_register_callback(mih::request::link_actions,
 			      boost::bind(&command_service::link_actions_request,
 					  boost::ref(mics), _1, _2));
 	sac_register_callback(mih::response::link_actions,
 			      boost::bind(&command_service::link_actions_response,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::confirm::link_actions,
+			      boost::bind(&command_service::link_actions_confirm,
 					  boost::ref(mics), _1, _2));
 	sac_register_callback(mih::request::net_ho_candidate_query,
 			      boost::bind(&command_service::net_ho_candidate_query_request,
@@ -295,6 +316,7 @@ int main(int argc, char **argv)
 		(kConf_MIHF_Users_List, po::value<std::string>()->default_value("user 1234"), "List of User SAPs")
 		(kConf_MIHF_Remote_Port, po::value<uint16>()->default_value(4551), "MIHF Remote Communications Port")
 		(kConf_MIHF_Local_Port, po::value<uint16>()->default_value(1025), "MIHF Local Communications Port")
+		(kConf_MIHF_Link_Discover_Time, po::value<uint16>()->default_value(100), "MIHF Link Capability Discover waiting time")
 		(kConf_MIHF_BRDCAST,  "MIHF responds to broadcast messages")
 		(kConf_MIHF_Verbosity, po::value<uint16>()->default_value(1), "MIHF log level [0-4]")
 		;
@@ -317,6 +339,7 @@ int main(int argc, char **argv)
 	uint16 rport = cfg.get<uint16>(kConf_MIHF_Remote_Port);
 	mih::octet_string id = cfg.get<mih::octet_string>(kConf_MIHF_Id);
 	uint16 loglevel = cfg.get<uint16>(kConf_MIHF_Verbosity);
+	kConf_MIHF_Link_Discover_Time_Value = cfg.get<uint16>(kConf_MIHF_Link_Discover_Time);
 	//
 
 	// set this mihf id
@@ -353,8 +376,8 @@ int main(int argc, char **argv)
 	transmit		trnsmt(io, user_abook, link_abook, msgout);
 
 	// instantiate mihf services
-	event_service		mies(lpool, trnsmt);
-	command_service		mics(lpool, trnsmt);
+	event_service		mies(lpool, trnsmt, link_abook);
+	command_service		mics(lpool, trnsmt, link_abook, lrpool);
 	information_service	miis(lpool, trnsmt);
 	service_management	sm(lpool, link_abook, trnsmt, lrpool, enable_broadcast);
 

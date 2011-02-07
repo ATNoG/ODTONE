@@ -38,7 +38,7 @@ public:
 	 * @param lpool local transction pool
 	 * @param link_abook link addres book
 	 * @param t transmit module
-	 * @param cpool capability discovery pool
+	 * @param lrpool link response pool
 	 * @param enable_broadcast true if response to broadcast
 	 *                         Capability_Discover.request is enable or false otherwise
 	 */
@@ -48,14 +48,66 @@ public:
 			   link_response_pool &lrpool,
 			   bool enable_broadcast = false);
 
+	/**
+	 * Capability Discover Request message handler.
+	 *
+	 * @param in input message
+	 * @param out output message
+	 * @return ????
+	 */
 	bool capability_discover_request(meta_message_ptr &in,
-					 meta_message_ptr &out);
+	                                 meta_message_ptr &out);
+
+	/**
+	 * Capability Discover Request message handler.
+	 *
+	 * @param in input message
+	 * @param out output message
+	 * @return ????
+	 */
 	bool capability_discover_response(meta_message_ptr&in,
-					  meta_message_ptr &out);
+	                                  meta_message_ptr &out);
+
+	/**
+	 * Capability Discover Request message handler.
+	 *
+	 * @param in input message
+	 * @param out output message
+	 * @return ????
+	 */
+	bool capability_discover_confirm(meta_message_ptr&in,
+	                                 meta_message_ptr &out);
+
+	/**
+	 * Link Register Indication message handler.
+	 *
+	 * @param in input message
+	 * @param out output message
+	 * @return always false
+	 */
+	bool link_register_indication(meta_message_ptr &in,
+	                              meta_message_ptr &out);
 
 private:
+	/**
+	 * Asks for local Link SAPs capabilities by sending a Capability Request message
+	 * to all known Link SAPs. Also responsible for launch the thread that will
+	 * respond to the requestor.
+	 *
+	 * @param in input message
+	 * @return always false, because it does not send any response directly.
+	 */
 	bool forward_capability_discover_response(meta_message_ptr &in,
-						  pending_transaction &p);
+	                                          pending_transaction &p);
+	/**
+	 * Asks for local Link SAPs capabilities by sending a Capability Request message
+	 * to all known Link SAPs. Also responsible for launch the thread that will
+	 * respond to the requestor.
+	 *
+	 * @param in input message
+	 * @return always false, because it does not send any response directly.
+	 */
+	bool forward_to_link_capability_discover_request(meta_message_ptr &in);
 
 protected:
 	local_transaction_pool   &_lpool;

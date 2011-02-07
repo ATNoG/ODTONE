@@ -18,6 +18,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "local_transaction_pool.hpp"
+#include "link_book.hpp"
 #include "transmit.hpp"
 #include "meta_message.hpp"
 
@@ -36,23 +37,26 @@ struct event_registration_t
 	mih::octet_string	user;
 	mih::link_tuple_id	link;
 	mih::event_list_enum	event;
-	// mih::list<evt_cfg_info>	cfg_list;
 };
 
 
 class event_service
 	: boost::noncopyable {
 public:
-	event_service(local_transaction_pool &lpool, transmit &t);
+	event_service(local_transaction_pool &lpool, transmit &t, link_book &lbook);
 
 	bool event_subscribe_request(meta_message_ptr &in,
 				     meta_message_ptr &out);
 	bool event_subscribe_response(meta_message_ptr &in,
 				      meta_message_ptr &out);
+	bool event_subscribe_confirm(meta_message_ptr &in,
+				     meta_message_ptr &out);
 	bool event_unsubscribe_request(meta_message_ptr &in,
 				       meta_message_ptr &out);
 	bool event_unsubscribe_response(meta_message_ptr &in,
 					meta_message_ptr &out);
+	bool event_unsubscribe_confirm(meta_message_ptr &in,
+				       meta_message_ptr &out);
 	bool link_up_indication(meta_message_ptr &in,
 				meta_message_ptr &out);
 	bool link_down_indication (meta_message_ptr &in,
@@ -71,6 +75,8 @@ public:
 protected:
 	local_transaction_pool	&_lpool;
 	transmit		&_transmit;
+	link_book               &_link_abook;
+	std::map<mih::octet_string, mih::event_list> _link_subscriptions;
 
 	std::list<event_registration_t>	 _event_subscriptions;
 	boost::mutex			 _event_mutex;
@@ -91,6 +97,10 @@ protected:
 			      mih::event_list &events);
 	mih::status unsubscribe(const mih::id &user, mih::link_tuple_id &link,
 				mih::event_list &events);
+
+	void link_unsubscribe(meta_message_ptr &in,
+	                      mih::link_tuple_id &link,
+	                      mih::event_list &events);
 
 };
 

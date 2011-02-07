@@ -11,6 +11,7 @@
 // This software is distributed without any warranty.
 //
 // Author:     Simao Reis <sreis@av.it.pt>
+//             Carlos Guimarães <cguimaraes@av.it.pt>
 //
 
 //=============================================================================
@@ -21,9 +22,11 @@
 #define ODTONE_MIHF_COMMAND_SERVICE_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
+#include "link_response_pool.hpp"
 #include "local_transaction_pool.hpp"
 #include "transmit.hpp"
 #include "meta_message.hpp"
+#include "link_book.hpp"
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
@@ -32,16 +35,22 @@ class command_service
 	: boost::noncopyable
 {
 public:
-	command_service(local_transaction_pool &lpool, transmit &t);
+	command_service(local_transaction_pool &lpool,
+	                transmit &t,
+	                link_book &link_abook,
+			link_response_pool &lrpool);
 
 	bool link_get_parameters_request(meta_message_ptr &in, meta_message_ptr &out);
 	bool link_get_parameters_response(meta_message_ptr &in, meta_message_ptr &out);
+	bool link_get_parameters_confirm(meta_message_ptr &in, meta_message_ptr &out);
 
 	bool link_configure_thresholds_request(meta_message_ptr &in, meta_message_ptr &out);
 	bool link_configure_thresholds_response(meta_message_ptr &in, meta_message_ptr &out);
+	bool link_configure_thresholds_confirm(meta_message_ptr &in, meta_message_ptr &out);
 
 	bool link_actions_request(meta_message_ptr &in, meta_message_ptr &out);
 	bool link_actions_response(meta_message_ptr &in, meta_message_ptr &out);
+	bool link_actions_confirm(meta_message_ptr &in, meta_message_ptr &out);
 
 	bool net_ho_candidate_query_request(meta_message_ptr &in, meta_message_ptr &out);
 	bool net_ho_candidate_query_response(meta_message_ptr &in, meta_message_ptr &out);
@@ -80,6 +89,8 @@ protected:
 
 	local_transaction_pool	&_lpool;
 	transmit		&_transmit;
+	link_book               &_link_abook;
+	link_response_pool      &_lrpool;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

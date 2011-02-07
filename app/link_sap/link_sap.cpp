@@ -22,11 +22,14 @@
 #include <odtone/mih/indication.hpp>
 #include <odtone/mih/request.hpp>
 #include <odtone/mih/response.hpp>
+#include <odtone/mih/confirm.hpp>
 #include <odtone/mih/tlv_types.hpp>
 #include <boost/bind.hpp>
 #include "link_sap.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
+extern odtone::mih::event_list   capabilities_event_list;
+extern odtone::mih::command_list capabilities_command_list;
 extern odtone::mih::link_id      link_id;
 namespace link_sap {
 
@@ -88,19 +91,14 @@ void link_sap::default_handler(odtone::mih::message& msg)
 	case odtone::mih::request::capability_discover:
 		{
 			odtone::mih::message m;
-			odtone::mih::net_type_addr_list ll;
-			odtone::mih::event_list el;
 
+			// fill the status
 			st = odtone::mih::status_success;
-			el.set(odtone::mih::link_up);
-			el.set(odtone::mih::link_down);
 
-			//TODO: fill the net_type_addr_list
-
-			m << odtone::mih::response(odtone::mih::response::capability_discover)
+			m << odtone::mih::confirm(odtone::mih::confirm::capability_discover)
 				& odtone::mih::tlv_status(st)
-				& odtone::mih::tlv_net_type_addr_list(ll)
-				& odtone::mih::tlv_event_list(el);
+				& odtone::mih::tlv_event_list(capabilities_event_list)
+				& odtone::mih::tlv_command_list(capabilities_command_list);
 
 			_mihf.async_send(m);
 		}
@@ -112,7 +110,7 @@ void link_sap::default_handler(odtone::mih::message& msg)
 
 			st = odtone::mih::status_failure;
 
-			m << odtone::mih::response(odtone::mih::response::capability_discover)
+			m << odtone::mih::confirm(odtone::mih::confirm::capability_discover)
 				& odtone::mih::tlv_status(st);
 
 			_mihf.async_send(m);

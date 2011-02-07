@@ -44,7 +44,7 @@ public:
 	local_transaction_pool();
 
 	void add(meta_message_ptr& in);
-	void remove(pending_transaction &p);
+	void del(const mih::octet_string user, uint16 tid);
 
 	std::list<pending_transaction>::iterator
 	find(const mih::octet_string &from);
