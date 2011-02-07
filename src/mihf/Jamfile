@@ -33,6 +33,8 @@ exe odtone-mihf
 	  tcp_listener.cpp
 	  net_sap.cpp
 	  address_book.cpp
+	  link_book.cpp
+	  user_book.cpp
 	  transaction_pool.cpp
 	  src_transaction.cpp
 	  dst_transaction.cpp

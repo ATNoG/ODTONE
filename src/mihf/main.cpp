@@ -20,6 +20,8 @@
 // #include "transaction_ack_service.hpp"
 // #include "transaction_manager.hpp"
 #include "address_book.hpp"
+#include "link_book.hpp"
+#include "user_book.hpp"
 #include "local_transaction_pool.hpp"
 #include "transaction_pool.hpp"
 
@@ -196,7 +198,7 @@ void set_list_peer_mihfs(mih::octet_string &list, address_book &abook)
 	}
 }
 
-void set_users_links(mih::octet_string &list, address_book &abook)
+void set_users(mih::octet_string &list, user_book &ubook)
 {
 	using namespace boost;
 
@@ -219,7 +221,7 @@ void set_users_links(mih::octet_string &list, address_book &abook)
 			throw "invalid port";
 
 
-		abook.add(id, ip, port_, mih::transport_udp);
+		ubook.add(id, ip, port_);
 	}
 }
 
@@ -239,13 +241,11 @@ void parse_peer_registrations(mih::config &cfg, address_book &abook)
 	set_list_peer_mihfs(mihfs, abook);
 }
 
-void parse_sap_registrations(mih::config &cfg, address_book &abook)
+void parse_sap_registrations(mih::config &cfg, user_book &ubook)
 {
 	mih::octet_string users	= cfg.get<mih::octet_string>(kConf_MIHF_Users_List);
-	mih::octet_string lsaps	= cfg.get<mih::octet_string>(kConf_MIHF_Links_List);
 
-	set_users_links(users, abook);
-	set_users_links(lsaps, abook);
+	set_users(users, ubook);
 }
 
 void sm_register_callbacks(service_management &sm)
@@ -421,33 +421,33 @@ int main(int argc, char **argv)
 	mihfid_t::instance()->assign(id.c_str());
 	// set log level
 	log.level(loglevel);
-
 	// set link capabilities
 	parse_link_capabilities(cfg);
 
 	// create address books that stores info on how to contact mih
 	// saps and peer mihfs
-	address_book		remote_abook, local_abook;
-	parse_sap_registrations(cfg, local_abook);
-	parse_peer_registrations(cfg, remote_abook);
+	address_book mihf_abook;
+	user_book user_abook;
+	link_book link_abook;
+	parse_sap_registrations(cfg, user_abook);
+	parse_peer_registrations(cfg, mihf_abook);
 	//
 
 	// pool of pending transactions with peer mihfs
 	transaction_pool	tpool(io);
 
-	// pool of pending transactions with local mih saps (user and
-	// links)
+	// pool of pending transactions with local mih saps (user and links)
 	local_transaction_pool	lpool;
 
 	// handler for remote messages
 	handler_t process_message = boost::bind(&sac_process_message, _1, _2);
 
 	// wrapper for sending messages
-	net_sap			netsap(io, remote_abook);
+	net_sap			netsap(io, mihf_abook);
 
 	// transaction manager for outgoing messages
 	message_out		msgout(tpool, process_message, netsap);
-	transmit		trnsmt(io, local_abook, msgout);
+	transmit		trnsmt(io, user_abook, link_abook, msgout);
 
 	// instantiate mihf services
 	event_service		mies(lpool, trnsmt);

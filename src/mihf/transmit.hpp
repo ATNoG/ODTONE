@@ -17,7 +17,8 @@
 #define ODTONE_MIHF_TRANSMIT_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "address_book.hpp"
+#include "link_book.hpp"
+#include "user_book.hpp"
 #include "message_out.hpp"
 #include "meta_message.hpp"
 
@@ -36,13 +37,17 @@ class transmit
 	: private boost::noncopyable
 {
 public:
-	transmit(io_service &io, address_book &abook, message_out &msg_out);
+	transmit(io_service &io,
+			 user_book &user_abook,
+			 link_book &link_abook,
+			 message_out &msg_out);
 
 	void operator()(meta_message_ptr& msg);
 
 private:
 	io_service &_io;
-	address_book &_abook;
+	user_book &_user_abook;
+	link_book &_link_abook;
 	message_out &_msg_out;
 
 };

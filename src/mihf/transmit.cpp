@@ -21,9 +21,13 @@
 
 namespace odtone { namespace mihf {
 
-transmit::transmit(io_service &io, address_book &abook, message_out &msg_out)
+transmit::transmit(io_service &io,
+		           user_book &user_abook,
+		           link_book &link_abook,
+		           message_out &msg_out)
 	: _io(io),
-	  _abook(abook),
+	  _user_abook(user_abook),
+	  _link_abook(link_abook),
 	  _msg_out(msg_out)
 {
 }
@@ -32,11 +36,24 @@ void transmit::operator()(meta_message_ptr& msg)
 {
 	// TODO: remove try catch
 	try{
-		address_entry a = _abook.get(msg->destination().to_string());
-		log(1, "(transmit) sending local message to: ",
-		    msg->destination().to_string(), " ", a.ip, " ", a.port);
-		utils::udp_send(_io, msg, a.ip.c_str(), a.port);
+		// FIXME: Response shouldn't be send to MIH Users
+		if(msg->opcode() != mih::operation::request) {
+			user_entry user = _user_abook.get(msg->destination().to_string());
+			utils::udp_send(_io, msg, user.ip.c_str(), user.port);
+			log(1, "(transmit) sending local message to: ",
+			    msg->destination().to_string(), " ", user.ip, " ", user.port);
+		}
+		else {
+			link_entry link = _link_abook.get(msg->destination().to_string());
+			utils::udp_send(_io, msg, link.ip.c_str(), link.port);
+			log(1, "(transmit) sending local message to: ",
+			    msg->destination().to_string(), " ", link.ip, " ", link.port);
+		}
 	} catch (...) {
+		if(msg->opcode() == mih::operation::confirm)
+		{
+			msg->opcode(mih::operation::response);
+		}
 		log(1, "(transmit) forwarding to message_out");
 		_msg_out(msg);
 	}
