@@ -82,6 +82,36 @@ public:
 	void set(EnumT pos)       { _bitmap[uint(pos) / 8] |= (1 << (uint(pos) % 8)); }
 	bool get(EnumT pos) const { return _bitmap[uint(pos) / 8] & (1 << (uint(pos) % 8)); }
 
+	void merge(bitmap b) {
+		for (size_t i = 0; i < sizeof(_bitmap); ++i)
+			_bitmap[i] |= b._bitmap[i];
+	}
+
+	void common(bitmap b) {
+		for (size_t i = 0; i < sizeof(_bitmap); ++i)
+			_bitmap[i] &= b._bitmap[i];
+	}
+
+	void full() {
+		for (size_t i = 0; i < sizeof(_bitmap); ++i)
+			_bitmap[i] = 0xFF;
+	}
+
+	bool operator==(const bitmap& bit) const {
+		if(sizeof(_bitmap) == sizeof(bit._bitmap)) {
+			for (size_t i = 0; i < sizeof(_bitmap); ++i) {
+				if(_bitmap[i] != bit._bitmap[i]) {
+					return false;
+				}
+			}
+		}
+		else {
+			return false;
+		}
+
+		return true;
+	}
+
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
