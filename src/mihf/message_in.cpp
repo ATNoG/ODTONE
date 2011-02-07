@@ -71,7 +71,7 @@ void message_in::operator()(meta_message_ptr& in)
 
 			t->run();
 
-			if (t->start_ack_responder && t->state == ONGOING)
+			if (t->start_ack_responder && t->transaction_status == ONGOING)
 				t->ack_responder();
 
 			if (t->transaction_status != ONGOING)
