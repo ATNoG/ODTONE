@@ -1,7 +1,12 @@
+//==============================================================================
+// Brief   : Service Management
+// Authors : Simao Reis <sreis@av.it.pt>
+//           Carlos Guimarães <cguimaraes@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-// Copyright (c) 2007-2009 2009 Universidade Aveiro - Instituto de
-// Telecomunicacoes Polo Aveiro
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -9,10 +14,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//
-// Author(s):     Simao Reis <sreis@av.it.pt>
-//                Carlos Guimarães <cguimaraes@av.it.pt>
-//
+//==============================================================================
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "service_management.hpp"
@@ -41,12 +43,12 @@ namespace odtone { namespace mihf {
 /**
  * Service management constructor.
  *
- * @param lpool local transction pool
- * @param link_abook link address book
- * @param t transmit module
- * @param lrpool link response pool
+ * @param lpool local transction pool.
+ * @param link_abook link book.
+ * @param t transmit module.
+ * @param lrpool link response pool.
  * @param enable_broadcast true if response to broadcast
- *                         Capability_Discover.request is enable or false otherwise
+ *                         Capability_Discover.request is enable or false otherwise.
  */
 service_management::service_management(local_transaction_pool &lpool,
 										link_book &link_abook,
@@ -66,12 +68,12 @@ service_management::service_management(local_transaction_pool &lpool,
  * process those capabilities and answer with a Capability Discover response
  * message to the requestor.
  *
- * @param src_id MIHF ID from the requestor
- * @param tid transaction if
- * @param t transmit module
- * @param lpool local transction pool
- * @param link_abook link addres book
- * @param lrpool link response pool
+ * @param src_id MIHF ID from the requestor.
+ * @param tid MIH Transaction ID.
+ * @param t transmit module.
+ * @param lpool local transction pool.
+ * @param link_abook link book.
+ * @param lrpool link response pool.
  */
 void link_capability_discover_response_handler(mih::id src_id,
 	                                           uint16 tid,
@@ -147,7 +149,7 @@ void link_capability_discover_response_handler(mih::id src_id,
  * to all known Link SAPs. Also responsible for launch the thread that will
  * respond to the requestor.
  *
- * @param in input message
+ * @param in input message.
  * @return always false, because it does not send any response directly.
  */
 bool service_management::forward_to_link_capability_discover_request(meta_message_ptr &in)
@@ -184,8 +186,9 @@ bool service_management::forward_to_link_capability_discover_request(meta_messag
 /**
  * Capability Discover Request message handler.
  *
- * @param in input message
- * @param out output message
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
  */
 bool service_management::capability_discover_request(meta_message_ptr& in,
 						     meta_message_ptr& out)
@@ -233,9 +236,9 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 /**
  * Capability Discover Response message handler.
  *
- * @param in input message
- * @param out output message
- * @return always false, because it does not send any response directly
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
  */
 bool service_management::capability_discover_response(meta_message_ptr &in,
 						      meta_message_ptr &)
@@ -270,9 +273,9 @@ bool service_management::capability_discover_response(meta_message_ptr &in,
 /**
  * Capability Discover Confirm message handler.
  *
- * @param in input message
- * @param out output message
- * @return always false because it does not send any response directly
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
  */
 bool service_management::capability_discover_confirm(meta_message_ptr &in,
 						      meta_message_ptr &out)
@@ -307,9 +310,9 @@ bool service_management::capability_discover_confirm(meta_message_ptr &in,
 /**
  * Link Register Indication message handler.
  *
- * @param in input message
- * @param out output message
- * @return always false, because it does not send any response directly
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
  */
 bool service_management::link_register_indication(meta_message_ptr &in,
 	                                       meta_message_ptr &out)

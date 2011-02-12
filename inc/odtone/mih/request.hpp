@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : MIH Message Request Helper
 // Authors : Bruno Santos <bsantos@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -13,7 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #ifndef ODTONE_MIH_REQUEST__HPP_
 #define ODTONE_MIH_REQUEST__HPP_
@@ -29,13 +29,12 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * \brief MIH Request Message helper
+ * This class permits parsing/generating MIH Request messages. It derives from
+ * odtone::mih::message_helper and will inherit all the features from base class.
  */
 class request : public message_helper {
 public:
-	/**
-	 * \brief MIH Request Message ID
-	 */
+
 	enum mid {
 		capability_discover								/// MIH_Capability_Discover.request
 							= msg_id<1, 1, 1>::value,
@@ -75,26 +74,33 @@ public:
 						= msg_id<4, 1, 1>::value,
 
 		push_information							/// MIH_Push_Information.request
-		= msg_id<4, 1, 2>::value,
+						= msg_id<4, 1, 2>::value,
+
+		// ODTONE specific messages
+		link_register										/// Link_Register.indication
+									= msg_id<1, 1, 6>::value
 	};
 
 	/**
-	 * \brief Construct a MIH Request Message helper
+	 * Construct an MIH Request Message helper with MIH Message ID equals to
+	 * 0 (zero) and a null pointer for MIH Message Destination MIHF ID.
 	 */
 	request() : message_helper(0, nullptr)
 	{ }
 
 	/**
-	 * \brief Construct an MIH Request Message helper
-	 * \param m MIH Message ID
+	 * Construct an MIH Request Message helper
+	 *
+	 * @param m MIH Message ID
 	 */
 	explicit request(mid m) : message_helper(m, nullptr)
 	{ }
 
 	/**
-	 * \brief Construct an MIH Request Message helper
-	 * \param m MIH Message ID
-	 * \param destination MIH Message Destination MIHF ID
+	 * Construct an MIH Request Message helper
+	 *
+	 * @param m MIH Message ID
+	 * @param destination MIH Message Destination MIHF ID
 	 */
 	request(mid m, const id& destination) :message_helper(m, &destination)
 	{ }

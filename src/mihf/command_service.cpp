@@ -1,7 +1,12 @@
+//==============================================================================
+// Brief   : Command Service
+// Authors : Simao Reis <sreis@av.it.pt>
+//           Carlos Guimarães <cguimaraes@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-// Copyright (c) 2007-2009 2009 Universidade Aveiro - Instituto de
-// Telecomunicacoes Polo Aveiro
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -9,10 +14,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//
-// Author:     Simao Reis <sreis@av.it.pt>
-//             Carlos Guimarães <cguimaraes@av.it.pt>
-//
+//==============================================================================
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "command_service.hpp"
@@ -34,6 +36,14 @@ extern odtone::uint16 kConf_MIHF_Link_Discover_Time_Value;
 
 namespace odtone { namespace mihf {
 
+/**
+ * Command service constructor.
+ *
+ * @param lpool local transction pool.
+ * @param t transmit module.
+ * @param link_abook link book.
+ * @param link_response_pool link response pool.
+ */
 command_service::command_service(local_transaction_pool &lpool,
 	                         transmit &t,
 	                         link_book &link_abook,
@@ -118,10 +128,13 @@ void link_get_parameters_response_handler(mih::id src_id,
 	t(out);
 }
 
-// This message is handled by the Link SAP.
-//
-// If this MIHF is the destination of the message, forward it to the
-// default Link SAP. If not then forward it to a peer MIHF.
+/**
+ * Link Get Parameters Request message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::link_get_parameters_request(meta_message_ptr &in,
 						  meta_message_ptr &out)
 {
@@ -188,8 +201,13 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 	return false;
 }
 
-// Check if there's a pending transaction and forward the message in
-// case there is.
+/**
+ * Link Get Parameters Response message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::link_get_parameters_response(meta_message_ptr &in,
 						   meta_message_ptr &out)
 {
@@ -212,6 +230,13 @@ bool command_service::link_get_parameters_response(meta_message_ptr &in,
 	return false;
 }
 
+/**
+ * Link Get Parameters Confirm message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::link_get_parameters_confirm(meta_message_ptr &in,
 						   meta_message_ptr &out)
 {
@@ -249,10 +274,13 @@ bool command_service::link_get_parameters_confirm(meta_message_ptr &in,
 	return false;
 }
 
-// This message is handled by the Link SAP.
-//
-// If this MIHF is the destination of the message, forward it to the
-// default Link SAP. If not then forward it to a peer MIHF.
+/**
+ * Link Configure Thresholds Request message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 							meta_message_ptr &out)
 {
@@ -291,8 +319,13 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 	return false;
 }
 
-// Check if there's a pending transaction and forward the message in
-// case there is.
+/**
+ * Link Configure Thresholds Response message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::link_configure_thresholds_response(meta_message_ptr &in,
 							 meta_message_ptr &out)
 {
@@ -314,8 +347,13 @@ bool command_service::link_configure_thresholds_response(meta_message_ptr &in,
 	return false;
 }
 
-// Check if there's a pending transaction and forward the message in
-// case there is.
+/**
+ * Link Configure Thresholds Confirm message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::link_configure_thresholds_confirm(meta_message_ptr &in,
 							 meta_message_ptr &out)
 {
@@ -413,10 +451,13 @@ void link_actions_response_handler(mih::id src_id,
 
 }
 
-// This message is handled by the Link SAP.
-//
-// If this MIHF is the destination of the message, forward it to the
-// default Link SAP. If not then forward it to a peer MIHF.
+/**
+ * Link Actions Request message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::link_actions_request(meta_message_ptr &in,
 					   meta_message_ptr &out)
 {
@@ -482,8 +523,13 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 	return false;
 }
 
-// Check if there's a pending transaction and forward the message in
-// case there is.
+/**
+ * Link Actions Response message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::link_actions_response(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
@@ -506,6 +552,13 @@ bool command_service::link_actions_response(meta_message_ptr &in,
 	return false;
 }
 
+/**
+ * Link Actions Confirm message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::link_actions_confirm(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
@@ -537,12 +590,18 @@ bool command_service::link_actions_confirm(meta_message_ptr &in,
 
 }
 
-//
-// Currently Command_Service messages are handled by a default local
-// user. If this MIHF is the destination of the message, forward it to
-// the default user. Add a local transaction indicating where to send
-// the response.
-//
+/**
+ * Currently Command_Service messages are handled by a default local
+ * user. If this MIHF is the destination of the message, forward it to
+ * the default user. Add a local transaction indicating where to send
+ * the response.
+ *
+ * @param recv_msg recv message bytes.
+ * @param send_msg send message bytes.
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::generic_command_request(const char *recv_msg,
 					      const char *send_msg,
 					      meta_message_ptr &in,
@@ -574,11 +633,17 @@ bool command_service::generic_command_request(const char *recv_msg,
 	return false;
 }
 
-//
-// Currently Command_Service messages are handled by a default local
-// user. If this MIHF is the destination of the message, check for a
-// pending transaction and forward the message.
-//
+/**
+ * Currently Command_Service messages are handled by a default local
+ * user. If this MIHF is the destination of the message, check for a
+ * pending transaction and forward the message.
+ *
+ * @param recv_msg recv message bytes.
+ * @param send_msg send message bytes.
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::generic_command_response(const char *recv_msg,
 					       const char *send_msg,
 					       meta_message_ptr &in,
@@ -610,8 +675,13 @@ bool command_service::generic_command_response(const char *recv_msg,
 
 }
 
-////
-
+/**
+ * Net Handover Candidate Query Request message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::net_ho_candidate_query_request(meta_message_ptr &in,
 						     meta_message_ptr &out)
 {
@@ -620,6 +690,13 @@ bool command_service::net_ho_candidate_query_request(meta_message_ptr &in,
 				       in, out);
 }
 
+/**
+ * Net Handover Candidate Query Response message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::net_ho_candidate_query_response(meta_message_ptr &in,
 						      meta_message_ptr &out)
 {
@@ -628,8 +705,13 @@ bool command_service::net_ho_candidate_query_response(meta_message_ptr &in,
 					in, out);
 }
 
-/////
-
+/**
+ * MN Handover Query Request message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::mn_ho_candidate_query_request(meta_message_ptr &in,
 						    meta_message_ptr &out)
 {
@@ -638,6 +720,13 @@ bool command_service::mn_ho_candidate_query_request(meta_message_ptr &in,
 				       in, out);
 }
 
+/**
+ * MN Handover Query Response message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::mn_ho_candidate_query_response(meta_message_ptr &in,
 						     meta_message_ptr &out)
 {
@@ -646,7 +735,13 @@ bool command_service::mn_ho_candidate_query_response(meta_message_ptr &in,
 					in, out);
 }
 
-
+/**
+ * N2N Handover Query Resources Request message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::n2n_ho_query_resources_request(meta_message_ptr &in,
 						     meta_message_ptr &out)
 {
@@ -655,6 +750,13 @@ bool command_service::n2n_ho_query_resources_request(meta_message_ptr &in,
 				       in, out);
 }
 
+/**
+ * N2N Handover Query Resources Response message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::n2n_ho_query_resources_response(meta_message_ptr &in,
 						      meta_message_ptr &out)
 {
@@ -664,6 +766,13 @@ bool command_service::n2n_ho_query_resources_response(meta_message_ptr &in,
 }
 
 
+/**
+ * MN Handover Commit Request message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::mn_ho_commit_request(meta_message_ptr &in,
 					   meta_message_ptr &out)
 {
@@ -672,6 +781,13 @@ bool command_service::mn_ho_commit_request(meta_message_ptr &in,
 				       in, out);
 }
 
+/**
+ * MN Handover Commit Response message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::mn_ho_commit_response(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
@@ -680,7 +796,13 @@ bool command_service::mn_ho_commit_response(meta_message_ptr &in,
 					in, out);
 }
 
-
+/**
+ * Net Handover Commit Request message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::net_ho_commit_request(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
@@ -689,6 +811,13 @@ bool command_service::net_ho_commit_request(meta_message_ptr &in,
 				       in, out);
 }
 
+/**
+ * Net Handover Commit Response message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::net_ho_commit_response(meta_message_ptr &in,
 					     meta_message_ptr &out)
 {
@@ -697,8 +826,13 @@ bool command_service::net_ho_commit_response(meta_message_ptr &in,
 					in, out);
 }
 
-//
-
+/**
+ * MN Handover Complete Request message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::mn_ho_complete_request(meta_message_ptr &in,
 					     meta_message_ptr &out)
 {
@@ -707,6 +841,13 @@ bool command_service::mn_ho_complete_request(meta_message_ptr &in,
 				       in, out);
 }
 
+/**
+ * MN Handover Complete Response message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::mn_ho_complete_response(meta_message_ptr &in,
 					      meta_message_ptr &out)
 {
@@ -715,7 +856,13 @@ bool command_service::mn_ho_complete_response(meta_message_ptr &in,
 					in, out);
 }
 
-
+/**
+ * N2N Handover Commit Request message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::n2n_ho_commit_request(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
@@ -724,6 +871,13 @@ bool command_service::n2n_ho_commit_request(meta_message_ptr &in,
 				       in, out);
 }
 
+/**
+ * N2N Handover Commit Response message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::n2n_ho_commit_response(meta_message_ptr &in,
 					     meta_message_ptr &out)
 {
@@ -733,6 +887,13 @@ bool command_service::n2n_ho_commit_response(meta_message_ptr &in,
 }
 
 
+/**
+ * N2N Handover Complete Request message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::n2n_ho_complete_request(meta_message_ptr &in,
 					      meta_message_ptr &out)
 {
@@ -741,6 +902,13 @@ bool command_service::n2n_ho_complete_request(meta_message_ptr &in,
 				       in, out);
 }
 
+/**
+ * N2N Handover Complete Response message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool command_service::n2n_ho_complete_response(meta_message_ptr &in,
 					       meta_message_ptr &out)
 {

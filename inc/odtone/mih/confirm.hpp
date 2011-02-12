@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2010 Universidade Aveiro
-// Copyright (C) 2010 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -29,13 +29,13 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * \brief MIH Confirm Message helper
+ * This class permits parsing/generating MIH Confirm messages. It derives
+ * from odtone::mih::message_helper and will inherit all the features from base
+ * class.
  */
 class confirm : public message_helper {
 public:
-	/**
-	 * \brief MIH Confirm Message ID
-	 */
+
 	enum mid {
 		capability_discover									/// MIH_Capability_Discover.indication
 									= msg_id<1, 0, 1>::value,
@@ -58,22 +58,25 @@ public:
 	};
 
 	/**
-	 * \brief Construct a MIH Confirm Message helper
+	 * Construct an MIH Confirm Message helper with MIH Message ID equals to
+	 * 0 (zero) and a null pointer for MIH Message Destination MIHF ID.
 	 */
 	confirm() : message_helper(0, nullptr)
 	{ }
 
 	/**
-	 * \brief Construct an MIH Confirm Message helper
-	 * \param m MIH Message ID
+	 * Construct an MIH Confirm Message helper
+	 *
+	 * @param m MIH Message ID
 	 */
 	explicit confirm(mid m) : message_helper(m, nullptr)
 	{ }
 
 	/**
-	 * \brief Construct an MIH Confirm Message helper
-	 * \param m MIH Message ID
-	 * \param destination MIH Message Destination MIHF ID
+	 * Construct an MIH Confirm Message helper
+	 *
+	 * @param m MIH Message ID
+	 * @param destination MIH Message Destination MIHF ID
 	 */
 	confirm(mid m, const id& destination) : message_helper(m, &destination)
 	{ }

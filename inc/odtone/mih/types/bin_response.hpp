@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : MIH Binary Information Query Response Types
 // Authors : Bruno Santos <bsantos@av.it.pt>
-// ----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2010 Universidade de Aveiro
-// Copyrigth (C) 2009-2010 Instituto de Telecomunicações - Pólo de Aveiro
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -13,7 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #ifndef ODTONE_MIH_TYPES_BIN_RESPONSE__HPP_
 #define ODTONE_MIH_TYPES_BIN_RESPONSE__HPP_
@@ -30,10 +30,13 @@ class ir_bin_iarchive;
 class ir_bin_oarchive;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define IR_BIN_DATA data type.
+ */
+class ir_bin_data {
 //
 // TODO: need to improve this with a generic IE element, so this can be turned into a std::vector
 //
-class ir_bin_data {
 	friend class ir_bin_iarchive;
 	friend class ir_bin_oarchive;
 
@@ -89,6 +92,9 @@ private:
 	uint    _cnt;
 };
 
+/**
+ * Define LIST(IR_BIN_DATA) data type.
+ */
 typedef std::vector<ir_bin_data> ir_bin_data_list;
 
 ///////////////////////////////////////////////////////////////////////////////

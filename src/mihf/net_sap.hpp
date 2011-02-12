@@ -1,7 +1,11 @@
+//==============================================================================
+// Brief   : Netsap
+// Authors : Simao Reis <sreis@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-// Copyright (c) 2007-2009 2009 Universidade Aveiro - Instituto de
-// Telecomunicacoes Polo Aveiro
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -9,9 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//
-// Author:     Simao Reis <sreis@av.it.pt>
-//
+//==============================================================================
 
 #ifndef ODTONE_MIHF_NET_SAP__HPP
 #define ODTONE_MIHF_NET_SAP__HPP
@@ -31,11 +33,26 @@ using namespace boost::asio;
 
 namespace odtone { namespace mihf {
 
+/**
+ * This class, when called, checks if the MIH destination identifier is in the
+ * remote address book, if so the message is sent using on of udp_send or tcp_send.
+ */
 class net_sap
 {
 public:
+	/**
+	 * Netsap constructor.
+	 *
+	 * @param io io_service.
+	 * @param abook address_book module.
+	 */
 	net_sap(io_service &io, address_book &abook);
 
+	/**
+	 * Send the message to the peer MIHF.
+	 *
+	 * @param msg output message.
+	 */
 	void send(meta_message_ptr &msg);
 private:
 	io_service &_io;

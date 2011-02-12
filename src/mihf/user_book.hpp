@@ -1,7 +1,11 @@
+//==============================================================================
+// Brief   : User Book
+// Authors : Carlos Guimarães <cguimaraes@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-// Copyright (c) 2007-2009 2009 Universidade Aveiro - Instituto de
-// Telecomunicacoes Polo Aveiro
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -9,9 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//
-// Author:     Carlos Guimarães <cguimaraes@av.it.pt>
-//
+//==============================================================================
 
 #ifndef ODTONE_MIHF_USER_BOOK__HPP
 #define ODTONE_MIHF_USER_BOOK__HPP
@@ -27,46 +29,54 @@
 
 namespace odtone { namespace mihf {
 
+/**
+ * Struct to store MIHF information like IP Address, listening port.
+ */
 struct user_entry
 {
 	mih::octet_string        ip;
 	uint16                   port;
 };
 
+/**
+ * This class is used to store information about all known MIH Users. It makes
+ * the correspondence between the MIH User MIH Identifier and the informations
+ * stored in the user_entry struct.
+ */
 class user_book
 {
 public:
 
 	/**
-	 * Add a new MIH User.
+	 * Add a new MIH User entry in the user book.
 	 *
-	 * @param id MIH User MIHF ID
-	 * @param ip MIH User IP address
-	 * @param port MIH User listening port
+	 * @param id MIH User MIH Identifier.
+	 * @param ip MIH User IP address.
+	 * @param port MIH User listening port.
 	 */
 	void add(const mih::octet_string &id,
 	         mih::octet_string &ip,
 	         uint16 port);
 
 	/**
-	 * Remove a known MIH User.
+	 * Remove a existing MIH User entry from the link book.
 	 *
-	 * @param id MIH User MIHF ID
+	 * @param id MIH User MIH Identifier.
 	 */
 	void del(mih::octet_string &id);
 
 	/**
-	 * Get all informations stored from a given MIH User
+	 * Get all informations stored from a given MIH User.
 	 *
-	 * @param id MIH User MIHF ID
-	 * @return all informations stored from a given MIH User
+	 * @param id MIH User MIH Identifier.
+	 * @return All informations stored from a given MIH User.
 	 */
 	const user_entry& get(const mih::octet_string &id);
 
 	/**
-	 * Get the list of all known MIH Users
+	 * Get the list of all known MIH Users.
 	 *
-	 * @return the list of all known MIH Users
+	 * @return The list of all known MIH Users.
 	 */
 	const std::vector<mih::octet_string> get_ids();
 private:

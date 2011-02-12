@@ -1,7 +1,11 @@
+//==============================================================================
+// Brief   : UDP Listener
+// Authors : Simao Reis <sreis@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-// Copyright (c) 2007-2009 2009 Universidade Aveiro - Instituto de
-// Telecomunicacoes Polo Aveiro
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -9,9 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//
-// Author:     Simao Reis <sreis@av.it.pt>
-//
+//==============================================================================
 
 #include "udp_listener.hpp"
 #include "meta_message.hpp"
@@ -21,6 +23,15 @@
 
 namespace odtone { namespace mihf {
 
+/**
+ * UDP Listener constructor.
+ *
+ * @param io io_service.
+ * @param ipv IP protocol.
+ * @param ip IP Address.
+ * @param port listening port.
+ * @param d dispatch function.
+ */
 udp_listener::udp_listener(io_service& io,
 			   ip::udp ipv,
 			   const char *ip,
@@ -35,6 +46,9 @@ udp_listener::udp_listener(io_service& io,
 	_sock.bind(endpoint);
 }
 
+/**
+ * Start UDP listener socket.
+ */
 void udp_listener::start()
 {
 	// TODO: read concurrency from config file
@@ -60,7 +74,13 @@ void udp_listener::start()
 	}
 }
 
-
+/**
+ * Handle completion of an asynchronous accept operation.
+ *
+ * @param buff input message bytes.
+ * @param rbytes number of bytes of the input message.
+ * @param error error code.
+ */
 void udp_listener::handle_receive(buffer<uint8>&			 buff,
 				  size_t				 rbytes,
 				  const boost::system::error_code&	 e)

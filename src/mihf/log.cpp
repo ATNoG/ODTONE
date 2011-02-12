@@ -1,7 +1,11 @@
+//==============================================================================
+// Brief   : Logger
+// Authors : Simao Reis <sreis@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-// Copyright (c) 2007-2009 2009 Universidade Aveiro - Instituto de
-// Telecomunicacoes Polo Aveiro
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -9,9 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//
-// Author:     Simao Reis <sreis@av.it.pt>
-//
+//==============================================================================
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "log.hpp"
@@ -22,6 +24,9 @@ namespace odtone { namespace mihf {
 
 logger *log_t::ptr_instance = NULL;
 
+/**
+ * Create a instance of the logger.
+ */
 logger* log_t::instance()
 {
 	if (ptr_instance == NULL)
@@ -32,6 +37,9 @@ logger* log_t::instance()
 	return ptr_instance;
 }
 
+/**
+ * Destructor of the logger.
+ */
 log_t::~log_t()
 {
 	if(ptr_instance)

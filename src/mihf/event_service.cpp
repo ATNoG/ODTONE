@@ -1,7 +1,12 @@
+//==============================================================================
+// Brief   : Event Service
+// Authors : Simao Reis <sreis@av.it.pt>
+//           Carlos Guimarães <cguimaraes@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-// Copyright (c) 2007-2009 2009 Universidade Aveiro - Instituto de
-// Telecomunicacoes Polo Aveiro
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -9,9 +14,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//
-// Author:     Simao Reis <sreis@av.it.pt>
-//
+//==============================================================================
 
 #include "event_service.hpp"
 
@@ -31,7 +34,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
-
+/**
+ * Event service constructor.
+ *
+ * @param lpool local transction pool.
+ * @param t transmit module.
+ * @param link_abook link book.
+ */
 event_service::event_service(local_transaction_pool &lpool, transmit &t, link_book &lbook)
 	: _lpool(lpool),
 	  _transmit(t),
@@ -39,8 +48,15 @@ event_service::event_service(local_transaction_pool &lpool, transmit &t, link_bo
 {
 }
 
-// subscribe user to all events, set in the events bitmap, from
-// link identifier
+/**
+ * Subscribe user to all events, set in the events bitmap, from
+ * link identifier.
+ *
+ * @param user user that request the subscription.
+ * @param link link to make the subscription.
+ * @param events events to subscribe.
+ * @return MIH Status value of the operation.
+ */
 mih::status event_service::subscribe(const mih::id &user,
 				     mih::link_tuple_id &link,
 				     mih::event_list &events)
@@ -63,9 +79,16 @@ mih::status event_service::subscribe(const mih::id &user,
 	return mih::status_success;
 }
 
-// This MIHF is the destination of the
-// Event_Subscribe.request. Deserialize the message, subscribe the
-// user and send a response
+/**
+ * This MIHF is the destination of the Event_Subscribe.request.
+ * Deserialize the message, subscribe the user and send a response immediatly
+ * if the events are already subscribed with the Link SAP. Otherwise, the MIHF
+ * send a request to the Link SAP to subscribe the desired events.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 						  meta_message_ptr &out)
 {
@@ -116,8 +139,13 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 
 }
 
-// Check if this MIHF is the destination of the message or if it needs
-// to forward the message to a peer MIHF.
+/**
+ * Event Subscribe Request message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool event_service::event_subscribe_request(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
@@ -134,10 +162,13 @@ bool event_service::event_subscribe_request(meta_message_ptr &in,
 	return false;
 }
 
-// A peer MIHF sent a Event_Subscribe.response, check if we have a
-// pending transaction with a local user. If so, then add a
-// subscription of the user to the link and events that came in the
-// response.
+/**
+ * Event Subscribe Response message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool event_service::event_subscribe_response(meta_message_ptr &in,
 					     meta_message_ptr&)
 {
@@ -177,8 +208,13 @@ bool event_service::event_subscribe_response(meta_message_ptr &in,
 	return false;
 }
 
-// Check if this MIHF is the destination of the message or if it needs
-// to forward the message to a peer MIHF.
+/**
+ * Event Subscribe Confirm message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
@@ -224,6 +260,14 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 	return false;
 }
 
+/**
+ * Check if there is events subscribed to a given Link SAP that are not needed
+ * anymore.
+ *
+ * @param in input message.
+ * @param link link to make the unsubscription.
+ * @param events events to unsubscribed.
+ */
 void event_service::link_unsubscribe(meta_message_ptr &in,
                                      mih::link_tuple_id &link,
                                      mih::event_list &events)
@@ -270,6 +314,15 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
 	}
 }
 
+/**
+ * Unsubscribe user to all events, set in the events bitmap, from
+ * link identifier.
+ *
+ * @param user user that request the unsubscription.
+ * @param link link to make the unsubscription.
+ * @param events events to unsubscribe.
+ * @return MIH Status value of the operation.
+ */
 mih::status event_service::unsubscribe(const mih::id &user,
 				       mih::link_tuple_id &link,
 				       mih::event_list &events)
@@ -296,8 +349,14 @@ mih::status event_service::unsubscribe(const mih::id &user,
 	return mih::status_success;
 }
 
-// This MIHF is the destination of the Event_Unsubscribe.request.
-// Deserialize message, unsubscribe user and send a response
+/**
+ * This MIHF is the destination of the Event_Unsubscribe.request.
+ * Deserialize message, unsubscribe user and send a response
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool event_service::local_event_unsubscribe_request(meta_message_ptr &in,
 													meta_message_ptr &out)
 {
@@ -327,9 +386,13 @@ bool event_service::local_event_unsubscribe_request(meta_message_ptr &in,
 	return true;
 }
 
-// Check if this MIHF is the destination of the request and
-// proceed to unsubscribe the source mih identifier or if we need to
-// forward the message.
+/**
+ * Event Unsubscribe Request message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool event_service::event_unsubscribe_request(meta_message_ptr &in,
 					      meta_message_ptr &out)
 {
@@ -346,10 +409,13 @@ bool event_service::event_unsubscribe_request(meta_message_ptr &in,
 	return false;
 }
 
-// A peer MIHF sent a Event_Unubscribe.response, check if we have a
-// pending transaction with a local user. If so, then remove the
-// subscription of the user to the link and events that came in the
-// response.
+/**
+ * Event Unsubscribe Response message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 					       meta_message_ptr &)
 {
@@ -389,10 +455,13 @@ bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 	return false;
 }
 
-// A peer MIHF sent a Event_Unubscribe.response, check if we have a
-// pending transaction with a local user. If so, then remove the
-// subscription of the user to the link and events that came in the
-// response.
+/**
+ * Event Unsubscribe Confirm message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool event_service::event_unsubscribe_confirm(meta_message_ptr &in,
 					       meta_message_ptr &)
 {
@@ -422,7 +491,13 @@ bool event_service::event_unsubscribe_confirm(meta_message_ptr &in,
 	return false;
 }
 
-// send message for all users subscribed to event from link identifier
+/**
+ * Send message for all users subscribed to event from link identifier
+ *
+ * @param msg MIH Message.
+ * @param li link identifier
+ * @param event event
+ */
 void event_service::msg_forward(meta_message_ptr &msg,
 				mih::link_tuple_id &li,
 				mih::event_list_enum event)
@@ -444,8 +519,13 @@ void event_service::msg_forward(meta_message_ptr &msg,
 }
 
 
-// parse link_identifier from incoming message and forward
-// message to subscribed users
+/**
+ * Parse link_identifier from incoming message and forward
+ * message to subscribed users
+ *
+ * @param msg MIH Message.
+ * @param event event
+ */
 void event_service::link_event_forward(meta_message_ptr &msg,
 				       mih::event_list_enum event)
 {
@@ -457,7 +537,13 @@ void event_service::link_event_forward(meta_message_ptr &msg,
 }
 
 
-// log received message type, and forward it
+/**
+ * Link Up Indication message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool event_service::link_up_indication(meta_message_ptr &in, meta_message_ptr&)
 {
 	// if(in->payload().size() == 0)
@@ -471,7 +557,13 @@ bool event_service::link_up_indication(meta_message_ptr &in, meta_message_ptr&)
 }
 
 
-// log received message type, and forward it
+/**
+ * Link Down Indication message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool event_service::link_down_indication(meta_message_ptr &in, meta_message_ptr&)
 {
 	// if(in->payload().size() == 0)
@@ -485,8 +577,13 @@ bool event_service::link_down_indication(meta_message_ptr &in, meta_message_ptr&
 }
 
 
-// parse link identifiers from list and for each one forward the
-// message to the subscribed users
+/**
+ * Link Detected Indication message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool event_service::link_detected_indication(meta_message_ptr &in,
 					     meta_message_ptr &out)
 {
@@ -524,7 +621,13 @@ bool event_service::link_detected_indication(meta_message_ptr &in,
 	return false;
 }
 
-
+/**
+ * Link Going Down Indication message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool event_service::link_going_down_indication(meta_message_ptr &in,
 					       meta_message_ptr&)
 {
@@ -538,7 +641,13 @@ bool event_service::link_going_down_indication(meta_message_ptr &in,
 	return false;
 }
 
-
+/**
+ * Link Handover Imminent Indication message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool event_service::link_handover_imminent_indication(meta_message_ptr &in,
 						      meta_message_ptr&)
 {
@@ -552,7 +661,13 @@ bool event_service::link_handover_imminent_indication(meta_message_ptr &in,
 	return false;
 }
 
-
+/**
+ * Link Handover Complete Indication message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool event_service::link_handover_complete_indication(meta_message_ptr &in,
 						      meta_message_ptr&)
 {
@@ -566,7 +681,13 @@ bool event_service::link_handover_complete_indication(meta_message_ptr &in,
 	return false;
 }
 
-
+/**
+ * Link PDU Transmit Status Indication message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
 bool event_service::link_pdu_transmit_status_indication(meta_message_ptr &in,
 							meta_message_ptr&)
 {

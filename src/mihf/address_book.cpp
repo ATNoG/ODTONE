@@ -1,7 +1,11 @@
+//==============================================================================
+// Brief   : Address Book
+// Authors : Simao Reis <sreis@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-// Copyright (c) 2007-2009 2009 Universidade Aveiro - Instituto de
-// Telecomunicacoes Polo Aveiro
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -9,9 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//
-// Author:     Simao Reis <sreis@av.it.pt>
-//
+//==============================================================================
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "address_book.hpp"
@@ -20,6 +22,14 @@
 
 namespace odtone { namespace mihf {
 
+/**
+ * Add a new MIHF entry in the address book.
+ *
+ * @param id MIHF MIH Identifier.
+ * @param ip MIHF IP Address.
+ * @param port MIHF listening port.
+ * @param t MIHF transport protocol.
+ */
 void address_book::add(const mih::octet_string &id,
 		       mih::octet_string& ip,
 		       uint16 port,
@@ -37,6 +47,11 @@ void address_book::add(const mih::octet_string &id,
 	log(4, "(address_book) added: ", id, " ", ip, " ", port);
 }
 
+/**
+ * Remove a existing MIHF entry from the address book
+ *
+ * @param id MIHF MIH Identifier.
+ */
 void address_book::del(mih::octet_string &id)
 {
 	boost::mutex::scoped_lock lock(_mutex);
@@ -44,6 +59,12 @@ void address_book::del(mih::octet_string &id)
 	_abook.erase(id);
 }
 
+/**
+ * Get the address_entry of a given MIHF presented in the address book.
+ *
+ * @param id MIHF MIH Identifier.
+ * @return All informations stored from a given MIHF.
+ */
 const address_entry& address_book::get(const mih::octet_string &id)
 {
 	boost::mutex::scoped_lock lock(_mutex);

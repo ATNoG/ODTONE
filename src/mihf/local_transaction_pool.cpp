@@ -1,7 +1,11 @@
+//==============================================================================
+// Brief   : Local Transaction Pool
+// Authors : Simao Reis <sreis@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-// Copyright (c) 2007-2009 2009 Universidade Aveiro - Instituto de
-// Telecomunicacoes Polo Aveiro
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -9,9 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//
-// Author:     Simao Reis <sreis@av.it.pt>
-//
+//==============================================================================
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "local_transaction_pool.hpp"
@@ -20,10 +22,18 @@
 
 namespace odtone { namespace mihf {
 
+/**
+ * Local Transaction Pool constructor.
+ */
 local_transaction_pool::local_transaction_pool()
 {
 }
 
+/**
+ * Add a new local transaction entry in the Local Transaction Pool.
+ *
+ * @param in input message.
+ */
 void local_transaction_pool::add(meta_message_ptr& in)
 {
 	pending_transaction p;
@@ -42,6 +52,12 @@ void local_transaction_pool::add(meta_message_ptr& in)
 	}
 }
 
+/**
+ * Remove a existing local transaction entry from the Link Transaction Pool
+ *
+ * @param id MIH User MIH Identifier.
+ * @param tid MIH Message Transaction ID.
+ */
 void local_transaction_pool::del(const mih::octet_string user,
                                  uint16 tid)
 {
@@ -56,6 +72,11 @@ void local_transaction_pool::del(const mih::octet_string user,
 	}
 }
 
+/**
+ * Find a local transaction entry in the Local Transaction Pool
+ *
+ * @param from MIH Identifier.
+ */
 std::list<pending_transaction>::iterator
 local_transaction_pool::find(const mih::octet_string &from)
 {
@@ -68,8 +89,13 @@ local_transaction_pool::find(const mih::octet_string &from)
 	return it;
 }
 
-// check if there's a pending transaction with the msg's mih source
-// identifier and set the transaction id and destination appropriately
+/**
+ * Check if there is a pending transaction with the msg's mih source
+ * identifier and set the transaction id and destination appropriately.
+ *
+ * @param msg MIH Message.
+ * @return true if there is a pending transaction or false otherwise.
+ */
 bool local_transaction_pool::set_user_tid(meta_message_ptr &msg)
 {
 	boost::mutex::scoped_lock lock(_mutex);

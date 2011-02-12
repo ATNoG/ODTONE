@@ -1,7 +1,11 @@
+//==============================================================================
+// Brief   : ODTONE MIHF
+// Authors : Simao Reis <sreis@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-// Copyright (c) 2007-2009 2009 Universidade Aveiro - Instituto de
-// Telecomunicacoes Polo Aveiro
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -9,9 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//
-// Author:     Simao Reis <sreis@av.it.pt>
-//
+//==============================================================================
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -70,11 +72,11 @@ static const char* const kConf_MIHF_Peer_List          = "mihf.peers";
 static const char* const kConf_MIHF_Users_List         = "mihf.users";
 static const char* const kConf_MIHF_Remote_Port        = "mihf.remote_port";
 static const char* const kConf_MIHF_Local_Port         = "mihf.local_port";
-static const char* const kConf_MIHF_Link_Discover_Time = "mihf.link_discover_time";
+static const char* const kConf_MIHF_Link_Response_Time = "mihf.link_response_time";
 static const char* const kConf_MIHF_BRDCAST            = "enable_broadcast";
 static const char* const kConf_MIHF_Verbosity          = "log";
 
-uint16 kConf_MIHF_Link_Discover_Time_Value;
+uint16 kConf_MIHF_Link_Response_Time_Value;
 
 
 //
@@ -316,7 +318,7 @@ int main(int argc, char **argv)
 		(kConf_MIHF_Users_List, po::value<std::string>()->default_value("user 1234"), "List of User SAPs")
 		(kConf_MIHF_Remote_Port, po::value<uint16>()->default_value(4551), "MIHF Remote Communications Port")
 		(kConf_MIHF_Local_Port, po::value<uint16>()->default_value(1025), "MIHF Local Communications Port")
-		(kConf_MIHF_Link_Discover_Time, po::value<uint16>()->default_value(100), "MIHF Link Capability Discover waiting time")
+		(kConf_MIHF_Link_Response_Time, po::value<uint16>()->default_value(100), "MIHF Link Response waiting time (milliseconds)")
 		(kConf_MIHF_BRDCAST,  "MIHF responds to broadcast messages")
 		(kConf_MIHF_Verbosity, po::value<uint16>()->default_value(1), "MIHF log level [0-4]")
 		;
@@ -339,7 +341,7 @@ int main(int argc, char **argv)
 	uint16 rport = cfg.get<uint16>(kConf_MIHF_Remote_Port);
 	mih::octet_string id = cfg.get<mih::octet_string>(kConf_MIHF_Id);
 	uint16 loglevel = cfg.get<uint16>(kConf_MIHF_Verbosity);
-	kConf_MIHF_Link_Discover_Time_Value = cfg.get<uint16>(kConf_MIHF_Link_Discover_Time);
+	kConf_MIHF_Link_Response_Time_Value = cfg.get<uint16>(kConf_MIHF_Link_Response_Time);
 	//
 
 	// set this mihf id

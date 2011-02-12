@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : MIH Message
 // Authors : Bruno Santos <bsantos@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -13,7 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #ifndef ODTONE_MIH_MESSAGE__HPP_
 #define ODTONE_MIH_MESSAGE__HPP_
@@ -36,8 +36,7 @@ struct msg_id {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * \brief MIH Message
-
+ * MIH Message
  *
  * The odtone::mih::message is high level representation of an MIH message, it
  * provides access to all fields of the MIH message header, the destination and
@@ -51,12 +50,11 @@ struct msg_id {
  * odtone::sap::user and odtone::sap::link.
  *
  * Parsing/Generating MIH messages is done with helper classes (odtone::mih::request,
- * odtone::mih::response, odtone::mih::indication, odtone::mih::tlv_fwd) and operator
- * overloading. This basicaly defines a mini DSL for parsing and generating MIH
- * messages.
+ * odtone::mih::response, odtone::mih::indication, odtone::mih::confirm,
+ * odtone::mih::tlv_fwd) and operator overloading. This basicaly defines a mini
+ * DSL for parsing and generating MIH messages.
  *
- *
- * \b Examples:
+ * Examples:
  *
  * To generate and send a MIH message:
  * \code
@@ -120,44 +118,249 @@ struct msg_id {
  */
 class message : boost::noncopyable {
 public:
+	/**
+	* Construct a default MIH Message.
+	*
+	* The defaults for each field are:
+	*    version = 1;
+	*    ackreq  = false;
+	*    ackrsp  = false;
+	*    uir     = false;
+	*    m       = false;
+	*    fn      = 0;
+	*    mid     = 0;
+	*    tid     = 0;
+	*/
 	message();
+
+	/**
+	 * Construct a MIH Message parsing all fields from a frame.
+	 *
+	 * @param fm odtone::mih::frame from which to parse information.
+	 */
 	message(const frame& fm);
+
+	/**
+	 * Destruct a MIH Message.
+	 */
 	~message();
 
+	/**
+	 * Extract the MIH Message fields from a given odtone::mih::frame.
+	 *
+	 * @param fm odtone::mih::frame from which to extract information.
+	 * @return odtone::mih::message with the fields updated.
+	 */
 	message& operator=(const frame& fm);
 
+	/**
+	 * Set the MIH Message Version.
+	 *
+	 * @param v value of MIH Message Version field.
+	 */
 	void version(uint8 v);
+
+	/**
+	 * Set the MIH Message Acknowledge Request Flag.
+	 *
+	 * @param v value of MIH Message Acknowledge Request Flag field.
+	 */
 	void ackreq(bool v);
+
+	/**
+	 * Set the MIH Message Acknowledge Response Flag.
+	 *
+	 * @param v value of MIH Message Acknowledge Response Flag field.
+	 */
 	void ackrsp(bool v);
+
+	/**
+	 * Set the MIH Message Unauthenticated Information Request Flag.
+	 *
+	 * @param v value of MIH Message Unauthenticated Information Request Flag.
+	 */
 	void uir(bool v);
+
+	/**
+	 * Set the MIH Message More Fragment Flag.
+	 *
+	 * @param v value of MIH Message More Fragment Flag.
+	 */
 	void m(bool v);
+
+	/**
+	 * Set the MIH Message Fragment Number.
+	 *
+	 * @param v value of MIH Message Fragment Number.
+	 */
 	void fn(uint8 v);
+
+	/**
+	 * Set the MIH Message ID Service Identifier.
+	 *
+	 * @param v value of MIH Message ID Service Identifier (odtone::mih::service::type).
+	 */
 	void sid(service::type v);
+
+	/**
+	 * Set the MIH Message ID Operation Code.
+	 *
+	 * @param v value of MIH Message ID Operation Code (odtone::mih::operation::type).
+	 */
 	void opcode(operation::type v);
+
+	/**
+	 * Set the MIH Message ID Action Identifier.
+	 *
+	 * @param v value of MIH Message ID Action Identifier (odtone::mih::action::type).
+	 */
 	void aid(action::type v);
+
+	/**
+	 * Set the MIH Message ID.
+	 *
+	 * @param v value of MIH Message Message ID.
+	 */
 	void mid(uint16 v);
+
+	/**
+	 * Set the MIH Message Transaction ID.
+	 *
+	 * @param v value of MIH Message Transaction ID.
+	 */
 	void tid(uint16 v);
+
+	/**
+	 * Set the MIH Message Source ID.
+	 *
+	 * @param v MIH Message Source MIHF ID.
+	 */
 	void source(const id& id);
+
+	/**
+	 * Set the MIH Message Destination ID.
+	 *
+	 * @param v MIH Message Destination MIHF ID.
+	 */
 	void destination(const id& id);
 
-	uint8           version() const;
-	bool            ackreq() const;
-	bool            ackrsp() const;
-	bool            uir() const;
-	bool            m() const;
-	uint8           fn() const;
-	service::type   sid() const;
+	/**
+	 * Get the MIH Message Version.
+	 *
+	 * @return Value of MIH Message Version field.
+	 */
+	uint8 version() const;
+
+	/**
+	 * Get the MIH Message Acknowledge Request Flag.
+	 *
+	 * @return Value of MIH Message Acknowledge Request Flag.
+	 */
+	bool ackreq() const;
+
+	/**
+	 * Get the MIH Message Acknowledge Response Flag.
+	 *
+	 * @return Value of MIH Message Acknowledge Response Flag field.
+	 */
+	bool ackrsp() const;
+
+	/**
+	 * Get the MIH Message Unauthenticated Information Request Flag.
+	 *
+	 * @return Value of MIH Message Unauthenticated Information Request Flag.
+	 */
+	bool uir() const;
+
+	/**
+	 * Get the MIH Message More Fragment Flag.
+	 *
+	 * @return Value of MIH Message More Fragment Flag.
+	 */
+	bool m() const;
+
+	/**
+	 * Get the MIH Message Fragment Number.
+	 *
+	 * @return Value of MIH Message Fragment Number.
+	 */
+	uint8 fn() const;
+
+	/**
+	 * Get the MIH Message ID Service Identifier.
+	 *
+	 * @return Value of MIH Message ID Service Identifier (odtone::mih::service::type).
+	 */
+	service::type sid() const;
+
+	/**
+	 * Get the MIH Message ID Operation Code.
+	 *
+	 * @return Value of MIH Message ID Operation Code (odtone::mih::operation::type).
+	 */
 	operation::type opcode() const;
-	action::type    aid() const;
-	uint16          mid() const;
-	uint16          tid() const;
+
+	/**
+	 * Get the MIH Message ID Action Identifier.
+	 *
+	 * @return Value of MIH Message ID Action Identifier (odtone::mih::action::type).
+	 */
+	action::type aid() const;
+
+	/**
+	 * Get the MIH Message ID.
+	 *
+	 * @return Value of MIH Message ID.
+	 */
+	uint16 mid() const;
+
+	/**
+	 * Get the MIH Message Transaction ID.
+	 *
+	 * @return Value of MIH Message Transaction ID.
+	 */
+	uint16 tid() const;
+
+	/**
+	 * Get the MIH Message Source ID.
+	 *
+	 * @return MIH Message Source MIHF ID.
+	 */
 	const id&       source() const;
+
+	/**
+	 * Get the MIH Message Destination ID.
+	 *
+	 * @return MIH Message Destination MIHF ID.
+	 */
 	const id&       destination() const;
 
+	/**
+	 * Get the input archive (odtone::mih::iarchive).
+	 *
+	 * @return The input archive (odtone::mih::iarchive).
+	 */
 	iarchive& input();
+
+	/**
+	 * Get the output archive (odtone::mih::oarchive).
+	 *
+	 * @return The output archive (odtone::mih::oarchive).
+	 */
 	oarchive& output() { return _out; }
 
+	/**
+	 * Get the MIH Message Frame (odtone::mih::frame).
+	 *
+	 * @param fm a dynamic frame buffer to fill.
+	 */
 	void get_frame(frame_vla& fm) const;
+
+	/**
+	 * Check if the MIH Message has service specific TLVs
+	 *
+	 * @return true if has service specific TLVs or false otherwise.
+	 */
 	bool has_service_specific_tlv();
 
 private:
@@ -177,7 +380,9 @@ private:
 };
 
 /**
- * \brief Set the MIH Message Version
+ * Set the MIH Message Version.
+ *
+ * @param v value of MIH Message Version field.
  */
 inline void message::version(uint8 v)
 {
@@ -185,7 +390,9 @@ inline void message::version(uint8 v)
 }
 
 /**
- * \brief Set the MIH Message Acknowledge Request Flag
+ * Set the MIH Message Acknowledge Request Flag.
+ *
+ * @param v value of MIH Message Acknowledge Request Flag field.
  */
 inline void message::ackreq(bool v)
 {
@@ -193,7 +400,9 @@ inline void message::ackreq(bool v)
 }
 
 /**
- * \brief Set the MIH Message Acknowledge Response Flag
+ * Set the MIH Message Acknowledge Response Flag.
+ *
+ * @param v value of MIH Message Acknowledge Response Flag field.
  */
 inline void message::ackrsp(bool v)
 {
@@ -201,7 +410,9 @@ inline void message::ackrsp(bool v)
 }
 
 /**
- * \brief Set the MIH Message Unauthenticated Information Request Flag
+ * Set the MIH Message Unauthenticated Information Request Flag.
+ *
+ * @param v value of MIH Message Unauthenticated Information Request Flag.
  */
 inline void message::uir(bool v)
 {
@@ -209,7 +420,9 @@ inline void message::uir(bool v)
 }
 
 /**
- * \brief Set the MIH Message More Fragment Flag
+ * Set the MIH Message More Fragment Flag.
+ *
+ * @param v value of MIH Message More Fragment Flag.
  */
 inline void message::m(bool v)
 {
@@ -217,7 +430,9 @@ inline void message::m(bool v)
 }
 
 /**
- * \brief Set the MIH Message Fragment Number
+ * Set the MIH Message Fragment Number.
+ *
+ * @param v value of MIH Message Fragment Number.
  */
 inline void message::fn(uint8 v)
 {
@@ -225,7 +440,9 @@ inline void message::fn(uint8 v)
 }
 
 /**
- * \brief Set the MIH Message ID Service Identifier
+ * Set the MIH Message ID Service Identifier.
+ *
+ * @param v value of MIH Message ID Service Identifier (odtone::mih::service::type).
  */
 inline void message::sid(service::type v)
 {
@@ -233,7 +450,9 @@ inline void message::sid(service::type v)
 }
 
 /**
- * \brief Set the MIH Message ID Operation Code
+ * Set the MIH Message ID Operation Code.
+ *
+ * @param v value of MIH Message ID Operation Code (odtone::mih::operation::type).
  */
 inline void message::opcode(operation::type v)
 {
@@ -241,7 +460,9 @@ inline void message::opcode(operation::type v)
 }
 
 /**
- * \brief Set the MIH Message ID Action Identifier
+ * Set the MIH Message ID Action Identifier.
+ *
+ * @param v value of MIH Message ID Action Identifier (odtone::mih::action::type).
  */
 inline void message::aid(action::type v)
 {
@@ -249,7 +470,9 @@ inline void message::aid(action::type v)
 }
 
 /**
- * \brief Set the MIH Message ID
+ * Set the MIH Message ID.
+ *
+ * @param v value of MIH Message Message ID.
  */
 inline void message::mid(uint16 v)
 {
@@ -257,7 +480,9 @@ inline void message::mid(uint16 v)
 }
 
 /**
- * \brief Set the MIH Message Transaction ID
+ * Set the MIH Message Transaction ID.
+ *
+ * @param v value of MIH Message Transaction ID.
  */
 inline void message::tid(uint16 v)
 {
@@ -265,7 +490,9 @@ inline void message::tid(uint16 v)
 }
 
 /**
- * \brief Set the MIH Message Source ID
+ * Set the MIH Message Source ID.
+ *
+ * @param v MIH Message Source MIHF ID.
  */
 inline void message::source(const id& id)
 {
@@ -273,7 +500,9 @@ inline void message::source(const id& id)
 }
 
 /**
- * \brief Set the MIH Message Destination ID
+ * Set the MIH Message Destination ID.
+ *
+ * @param v MIH Message Destination MIHF ID.
  */
 inline void message::destination(const id& id)
 {
@@ -281,7 +510,9 @@ inline void message::destination(const id& id)
 }
 
 /**
- * \brief Get the MIH Message Version
+ * Get the MIH Message Version.
+ *
+ * @return Value of MIH Message Version field.
  */
 inline uint8 message::version() const
 {
@@ -289,7 +520,9 @@ inline uint8 message::version() const
 }
 
 /**
- * \brief Get the MIH Message Acknowledge Request Flag
+ * Get the MIH Message Acknowledge Request Flag.
+ *
+ * @return Value of MIH Message Acknowledge Request Flag.
  */
 inline bool message::ackreq() const
 {
@@ -297,7 +530,9 @@ inline bool message::ackreq() const
 }
 
 /**
- * \brief Get the MIH Message Acknowledge Response Flag
+ * Get the MIH Message Acknowledge Response Flag.
+ *
+ * @return Value of MIH Message Acknowledge Response Flag field.
  */
 inline bool message::ackrsp() const
 {
@@ -305,7 +540,9 @@ inline bool message::ackrsp() const
 }
 
 /**
- * \brief Get the MIH Message Unauthenticated Information Request Flag
+ * Get the MIH Message Unauthenticated Information Request Flag.
+ *
+ * @return Value of MIH Message Unauthenticated Information Request Flag.
  */
 inline bool message::uir() const
 {
@@ -313,7 +550,9 @@ inline bool message::uir() const
 }
 
 /**
- * \brief Get the MIH Message More Fragment Flag
+ * Get the MIH Message More Fragment Flag.
+ *
+ * @return Value of MIH Message More Fragment Flag.
  */
 inline bool message::m() const
 {
@@ -321,7 +560,9 @@ inline bool message::m() const
 }
 
 /**
- * \brief Get the MIH Message Fragment Number
+ * Get the MIH Message Fragment Number.
+ *
+ * @return Value of MIH Message Fragment Number.
  */
 inline uint8 message::fn() const
 {
@@ -329,7 +570,9 @@ inline uint8 message::fn() const
 }
 
 /**
- * \brief Get the MIH Message ID Service Identifier
+ * Get the MIH Message ID Service Identifier.
+ *
+ * @return Value of MIH Message ID Service Identifier (odtone::mih::service::type).
  */
 inline service::type message::sid() const
 {
@@ -337,7 +580,9 @@ inline service::type message::sid() const
 }
 
 /**
- * \brief Get the MIH Message ID Operation Code
+ * Get the MIH Message ID Operation Code.
+ *
+ * @return Value of MIH Message ID Operation Code (odtone::mih::operation::type).
  */
 inline operation::type message::opcode() const
 {
@@ -345,7 +590,9 @@ inline operation::type message::opcode() const
 }
 
 /**
- * \brief Get the MIH Message ID Action Identifier
+ * Get the MIH Message ID Action Identifier.
+ *
+ * @return Value of MIH Message ID Action Identifier (odtone::mih::action::type).
  */
 inline action::type message::aid() const
 {
@@ -353,7 +600,9 @@ inline action::type message::aid() const
 }
 
 /**
- * \brief Get the MIH Message ID
+ * Get the MIH Message ID.
+ *
+ * @return Value of MIH Message ID.
  */
 inline uint16 message::mid() const
 {
@@ -361,7 +610,9 @@ inline uint16 message::mid() const
 }
 
 /**
- * \brief Get the MIH Message Transaction ID
+ * Get the MIH Message Transaction ID.
+ *
+ * @return Value of MIH Message Transaction ID.
  */
 inline uint16 message::tid() const
 {
@@ -369,7 +620,9 @@ inline uint16 message::tid() const
 }
 
 /**
- * \brief Get the MIH Message Source ID
+ * Get the MIH Message Source ID.
+ *
+ * @return MIH Message Source MIHF ID.
  */
 inline const id& message::source() const
 {
@@ -377,13 +630,20 @@ inline const id& message::source() const
 }
 
 /**
- * \brief Get the MIH Message Destination ID
+ * Get the MIH Message Destination ID.
+ *
+ * @return MIH Message Destination MIHF ID.
  */
 inline const id& message::destination() const
 {
 	return _dst;
 }
 
+/**
+ * Get the input archive (odtone::mih::iarchive).
+ *
+ * @return The input archive (odtone::mih::iarchive).
+ */
 inline iarchive& message::input()
 {
 	_in.reset(_payload);
@@ -391,12 +651,44 @@ inline iarchive& message::input()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Parsing/Generating MIH messages is done with helper classes
+ * (odtone::mih::request, odtone::mih::response, odtone::mih::indication,
+ * odtone::mih::confirm) and operator overloading.
+ * This will be the base class to odtone::mih::request, odtone::mih::response,
+ * odtone::mih::indication and odtone::mih::confirm, as is documented later in
+ * this document.
+ *
+ * This class derive from boost::noncopyable in order to prohibit copy construction
+ * and copy assignment. Thus, odtone::mih::message_helper class has protected
+ * constructor and destructor members and should be used only as a base class.
+ */
 class message_helper : boost::noncopyable {
 protected:
+	/**
+	 * Construct a MIH Message helper.
+	 *
+	 * @param mid value of MIH Message ID.
+	 * @param dst MIH Message Destination MIHF ID.
+	 */
 	message_helper(uint16 mid, const id* dst) : _mid(mid), _dst(dst)
 	{ }
 
+	/**
+	 * Serialize parameters to an MIH Message
+	 *
+	 * @param msg destination odtone::mih::message
+	 * @param mh message helper
+	 * @return output TLV archive
+	 */
 	friend oarchive& operator<<(message& msg, const message_helper& mh);
+
+	/**
+	 * Deserialize parameters from an MIH Message
+	 * @param msg destination odtone::mih::message
+	 * @param mh message helper
+	 * @return input TLV archive
+	 */
 	friend iarchive& operator>>(message& msg, const message_helper& mh);
 
 private:
@@ -405,10 +697,11 @@ private:
 };
 
 /**
- * \brief Serialize parameters to an MIH Message
- * \param msg destination odtone::mih::message
- * \param mh message helper
- * \return output TLV archive
+ * Serialize parameters to an MIH Message
+ *
+ * @param msg destination odtone::mih::message
+ * @param mh message helper
+ * @return output TLV archive
  */
 inline oarchive& operator<<(message& msg, const message_helper& mh)
 {
@@ -420,10 +713,10 @@ inline oarchive& operator<<(message& msg, const message_helper& mh)
 }
 
 /**
- * \brief Deserialize parameters from an MIH Message
- * \param msg destination odtone::mih::message
- * \param mh message helper
- * \return input TLV archive
+ * Deserialize parameters from an MIH Message
+ * @param msg destination odtone::mih::message
+ * @param mh message helper
+ * @return input TLV archive
  */
 inline iarchive& operator>>(message& msg, const message_helper& mh)
 {

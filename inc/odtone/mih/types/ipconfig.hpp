@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : MIH IP Configuration Types
 // Authors : Bruno Santos <bsantos@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -13,7 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #ifndef ODTONE_MIH_TYPES_IPCONFIG__HPP_
 #define ODTONE_MIH_TYPES_IPCONFIG__HPP_
@@ -27,6 +27,9 @@
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * The enumeration of IP_CFG_METHODS data type.
+ */
 enum ip_cfg_methods_enum {
 	ip_cfg_ipv4_static = 0,
 	ip_cfg_ipv4_dynamic = 1,
@@ -38,6 +41,9 @@ enum ip_cfg_methods_enum {
 	ip_cfg_ipv6_manual = 13,
 };
 
+/**
+ * Define IP_CFG_METHODS data type.
+ */
 typedef bitmap<32, ip_cfg_methods_enum> ip_cfg_methods;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -51,9 +57,15 @@ enum ip_mob_mgmt_enum {
 	ip_mob_IKEv2 = 6,
 };
 
+/**
+ * Define IP_MOB_MGMT data type.
+ */
 typedef bitmap<16, ip_mob_mgmt_enum> ip_mob_mgmt;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define IP4_ADDR data type.
+ */
 struct ip4_addr
 {
 	uint8 addr[4];
@@ -69,6 +81,9 @@ struct ip4_addr
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define IP6_ADDR data type.
+ */
 struct ip6_addr
 {
 	uint8 addr[16];
@@ -83,9 +98,15 @@ struct ip6_addr
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define FQDN data type.
+ */
 typedef octet_string fqdn;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define IP_CONFIG data type.
+ */
 struct ip_config
 {
 	ip_cfg_methods						ipcfgmethods;
@@ -104,12 +125,21 @@ struct ip_config
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define IP_PREFIX_LEN data type.
+ */
 typedef uint8 ip_prefix_len;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define IP_RENEWAL_FLAG data type.
+ */
 typedef bool ip_renewal_flag;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define IP_SUBNET_INFO data type.
+ */
 struct ip_subnet_info
 {
 	ip_prefix_len		ipprefixlen;

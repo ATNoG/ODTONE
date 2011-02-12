@@ -1,7 +1,11 @@
+//==============================================================================
+// Brief   : Transaction
+// Authors : Simao Reis <sreis@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-// Copyright (c) 2007-2009 2009 Universidade Aveiro - Instituto de
-// Telecomunicacoes Polo Aveiro
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -9,9 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//
-// Author:     Simao Reis <sreis@av.it.pt>
-//
+//==============================================================================
 
 #ifndef TRANSACTION_HPP
 #define TRANSACTION_HPP
@@ -29,11 +31,9 @@
 
 namespace odtone { namespace mihf {
 
-// forward declare mihf class, and the global variable to access other
-// services, such as the trasaction_manager and net_sap
-// class mihf;
-// extern mihf mihf;
-
+/**
+ * Transaction Status.
+ */
 enum status_t
 	{
         ONGOING,
@@ -41,6 +41,9 @@ enum status_t
         FAILURE
 	};
 
+/**
+ * Acknowledge Responder State Machine States.
+ */
 enum ack_responder_state_t
 	{
         ACK_RSP_INIT,
@@ -49,6 +52,9 @@ enum ack_responder_state_t
         ACK_RSP_RETURN_DUPLICATE
 	};
 
+/**
+ * Acknowledge Requestor State Machine States.
+ */
 enum ack_requestor_state_t
 	{
         ACK_REQ_INIT,
@@ -58,9 +64,18 @@ enum ack_requestor_state_t
         ACK_REQ_FAILURE
 	};
 
+/**
+ * This class represents a communication transaction.
+ */
 class transaction_t
 {
 public:
+	/**
+	 * Constructor for message transaction.
+	 *
+	 * @param f transaction handler.
+	 * @param netsap netsap module.
+	 */
 	transaction_t(handler_t &f, net_sap &netsap);
 
 	// inter-state machine variables
@@ -69,6 +84,7 @@ public:
 	status_t ack_requestor_status;
 	unsigned transaction_stop_when;
 	unsigned retransmission_when;
+	//
 
 	// exported state machine variables
 	uint16             tid;
@@ -81,20 +97,27 @@ public:
 	status_t         transaction_status;
 	bool             start_ack_requestor;
 	bool             start_ack_responder;
+	//
 
 	// intra-state machine variables
 	bool        is_multicast;
 	bool        response_received;
+	//
 
 	// ack related variables
 	ack_requestor_state_t ack_req_state;
 	ack_responder_state_t ack_rsp_state;
+	//
 
 	// intra-state
 	meta_message_ptr dup;
 	meta_message_ptr ack;
 	unsigned    rtxctr;
+	//
 
+	/**
+	 * Run Acknowledge Responder State Machine transaction.
+	 */
 	void ack_responder()
 		{
 			switch(ack_rsp_state)
@@ -170,6 +193,9 @@ public:
 			}
 		}
 
+	/**
+	 * Run Acknowledge Requestor State Machine transaction.
+	 */
 	void ack_requestor()
 		{
 			switch (ack_req_state)
@@ -236,12 +262,20 @@ protected:
 	net_sap &_netsap;
 };
 
-// Compare method for inserting transactions in a set
+/**
+ * Compare method for inserting transactions in a set.
+ */
 template <class TransactionPtr>
 class transaction_compare
 {
 public:
-	// Check if the peer mihf ids and transaction ids are different
+	/**
+	 * Check if the peer MIHF ID and Transaction ID are different.
+	 *
+	 * @param a peer MIHF ID.
+	 * @param b Transaction ID.
+	 * @return true if the peer MIHF ID and Transaction ID are different, or false otherwise.
+	 */
 	bool operator()(const TransactionPtr &a, const TransactionPtr &b)
 	{
 		if (a->peer_mihf_id == b->peer_mihf_id)

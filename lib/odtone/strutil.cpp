@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : String Utilities
 // Authors : Bruno Santos <bsantos@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -13,7 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #include <odtone/strutil.hpp>
 #include <odtone/debug.hpp>
@@ -22,6 +22,13 @@
 namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Convert a value to hexadecimal values.
+ *
+ * @param src value to convert.
+ * @param len length of the value to convert.
+ * @return The hexadecimal value string.
+ */
 std::string to_string_hex(const void* src, size_t len)
 {
 	std::string str;

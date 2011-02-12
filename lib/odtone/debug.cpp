@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : Debug Helpers
 // Authors : Bruno Santos <bsantos@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -13,7 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #include <odtone/debug.hpp>
 #include <boost/assert.hpp>
@@ -48,17 +48,32 @@ char const* k_bug_code_string[] = {
 #	define ODTONE_CHECKPOINT_SET(x)
 #endif
 
+/**
+ * Get the checkpoint list.
+ *
+ * @return The checkpoint list.
+ */
 checkpoint* checkpoint::top()
 {
 	return check_point_list;
 }
 
+/**
+ * Construct a Checkpoint.
+ *
+ * @param file file name
+ * @param line line number
+ * @param exp expression
+ */
 checkpoint::checkpoint(const char* file, uint line, const char* exp)
 	: _prev(check_point_list), _file(file), _line(line), _exp(exp)
 {
 	ODTONE_CHECKPOINT_SET(this);
 }
 
+/**
+ * Destruct for Checkpoint.
+ */
 checkpoint::~checkpoint()
 {
 	ODTONE_CHECKPOINT_SET(_prev);

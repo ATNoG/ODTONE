@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : MIH Response Message Helper
 // Authors : Bruno Santos <bsantos@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -13,7 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #ifndef ODTONE_MIH_RESPONSE__HPP_
 #define ODTONE_MIH_RESPONSE__HPP_
@@ -29,13 +29,13 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * \brief MIH Response Message helper
+ * This class permits parsing/generating MIH Response messages. It derives
+ * from odtone::mih::message_helper and will inherit all the features from base
+ * class.
  */
 class response : public message_helper {
 public:
-	/**
-	 * \brief MIH Response Message ID
-	 */
+
 	enum mid {
 		capability_discover								/// MIH_Capability_Discover.response
 							= msg_id<1, 2, 1>::value,
@@ -76,22 +76,25 @@ public:
 	};
 
 	/**
-	 * \brief Construct a MIH Response Message helper
+	 * Construct an MIH Response Message helper with MIH Message ID equals to
+	 * 0 (zero) and a null pointer for MIH Message Destination MIHF ID.
 	 */
 	response() : message_helper(0, nullptr)
 	{ }
 
 	/**
-	 * \brief Construct an MIH Request Message helper
-	 * \param m MIH Message ID
+	 * Construct an MIH Response Message helper
+	 *
+	 * @param m MIH Message ID
 	 */
 	explicit response(mid m) : message_helper(m, nullptr)
 	{ }
 
 	/**
-	 * \brief Construct an MIH Request Message helper
-	 * \param m MIH Message ID
-	 * \param destination MIH Message Destination MIHF ID
+	 * Construct an MIH Response Message helper
+	 *
+	 * @param m MIH Message ID
+	 * @param destination MIH Message Destination MIHF ID
 	 */
 	response(mid m, const id& destination) : message_helper(m, &destination)
 	{ }

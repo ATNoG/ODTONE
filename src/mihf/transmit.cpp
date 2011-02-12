@@ -1,7 +1,11 @@
+//==============================================================================
+// Brief   : Transmit
+// Authors : Simao Reis <sreis@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-// Copyright (c) 2007-2009 2009 Universidade Aveiro - Instituto de
-// Telecomunicacoes Polo Aveiro
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -9,9 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//
-// Author:     Simao Reis <sreis@av.it.pt>
-//
+//==============================================================================
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "transmit.hpp"
@@ -21,6 +23,14 @@
 
 namespace odtone { namespace mihf {
 
+/**
+ * Transmit module constructor.
+ *
+ * @param io io_service.
+ * @param user_abook user book module.
+ * @param link_abook link book module.
+ * @param msg_out output message.
+ */
 transmit::transmit(io_service &io,
 		           user_book &user_abook,
 		           link_book &link_abook,
@@ -32,6 +42,12 @@ transmit::transmit(io_service &io,
 {
 }
 
+/**
+ * Send message to a local entity. If the output message destination is a peer
+ * MIHF redirect it to the message_out module.
+ *
+ * @param msg output message.
+ */
 void transmit::operator()(meta_message_ptr& msg)
 {
 	// TODO: remove try catch

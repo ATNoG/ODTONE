@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : Vendor Information Element
 // Authors : Bruno Santos <bsantos@av.it.pt>
-// ----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2010 Universidade de Aveiro
-// Copyrigth (C) 2010 Instituto de Telecomunicações - Pólo de Aveiro
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -13,7 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #ifndef ODTONE_MIH_TYPES_VENDOR_IE__HPP_
 #define ODTONE_MIH_TYPES_VENDOR_IE__HPP_
@@ -39,6 +39,9 @@ inline bool is_vendor_ie(uint32 id)
 #endif
 }
 
+/**
+ * Define VENDOR_IE data type.
+ */
 class vendor_ie {
 public:
 	vendor_ie()
@@ -98,6 +101,9 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define LIST(VENDOR_IE) data type.
+ */
 class vendor_ie_list : std::vector<vendor_ie> {
 	typedef std::vector<vendor_ie> base;
 
