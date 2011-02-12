@@ -27,6 +27,7 @@ boostbook doc-html
 	  <xsl:param>boost.image.alt="'ODTONE - Open Dot Twenty One'"
 	  <xsl:param>boost.image.w=100
 	  <xsl:param>boost.image.h=100
+	  <xsl:param>base.dir=../doc/html/
 
 	  <xsl:param>nav.layout=none
 	  <xsl:param>navig.graphics=1
@@ -42,13 +43,13 @@ boostbook doc-html
 	;
 
 install images
-	: [ glob src/images/*.png ]
-	: <location>html/images
+	: [ glob src/images/*.* ]
+	: <location>./html/images
 	;
 
 install css
 	: src/boostbook.css
-	: <location>html
+	: <location>./html/
 	;
 
 #install pdf

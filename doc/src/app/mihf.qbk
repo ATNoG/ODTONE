@@ -59,11 +59,8 @@ file or passing them directly in command line.
 	   --mihf.ip arg (=127.0.0.1)       MIHF Ip
 	   --mihf.peers arg                 List of peer MIHFs
 	   --mihf.users arg (=user 1234)    List of User SAPs
-	   --mihf.links arg (=link 1235)    List of Links SAPs
 	   --mihf.remote_port arg (=4551)   MIHF Remote Communications Port
 	   --mihf.local_port arg (=1025)    MIHF Local Communications Port
-	   --mihf.event_list arg            MIHF List of supported events
-	   --mihf.link_addr_list arg        MIHF Network Type list
 	   --enable_broadcast               MIHF responds to broadcast messages
 	   --log arg (=1)                   MIHF log level [0-4]
 
@@ -81,28 +78,6 @@ Comma separated list of local MIH User SAPs id's and ports. For the default demo
 just use as is.
 
 Usage: <user sap id> <port>
-
-*List of Links SAPs*
-
-Comma separated list of local MIH Link SAPs id's and ports. For the default demo
-just use as is.
-
-Usage: <link sap id> <port>
-
-*MIHF Network Type list*
-
-Comma separated list of network types that we broadcast on Capability_Discover.requests
-For this static configuration, we only support declaring link identifiers with
-the mac address. Future version will inquire the available Link SAPs for their
-capabilities.
-
-Usage: <link identifier> <mac address>
-
-*MIHF List of supported events*
-
-Comma separated list of the MIHF's supported events.
-
-Usage: <link event 1>, <link event 2>, (...), <link event N>
 ]
 
 [heading Example]
@@ -131,13 +106,6 @@ On the machine with the mihf2 the configuration file can look like:
 	local_port = 1025
 	remote_port = 4551
 	peers = mihf1 <mihf2_IP_address> 4551
-	links = link 1235
-	link_addr_list = 802_11 <mac_address>,ethernet <mac_address>
-	event_list = link_detected, link_up, link_down,
-	link_parameters_report, link_going_down,
-	link_handover_imminent, link_handover_complete
-
-
 
 [endsect]
 
@@ -153,11 +121,11 @@ E.g.: ./odtone-mihf --conf.file=./src/mihf/odtone.conf
 
 [endsect]
 
-[section:mihf_internal_arch 3. MIHF Internal Architecture]
+[section:mihf_internal_arch MIHF Internal Architecture]
 
 [section MIHF Architecture overview]
 
-[$./images/mihf_arch.jpg]
+[$./images/mihf_arch.png]
 
 [endsect]
 
@@ -274,73 +242,41 @@ The metadata indicates if the message was received on the loopback interface
 and also the IP address and port of the sender of the message. It's useful mostly
 due to broadcast messages.
 
-[h5 address_book]
+[h5 Entities books]
 
-This class is used to store information on how to communicate with other
-entities. An address book (local_abook) is instantiated to store information on
-local SAPs. Another (remote_abook) is instantiated to store information of peer
-MIHFs.
+[$./images/entities_book.jpg]
 
-[endsect]
+[*address_book]
 
-[endsect]
+Address book is used to store information about all known peer MIHFs. It makes
+the correspondence between the MIHF MIH Identifier and the informations stored
+in the address_entry struct.
 
-[section:mihf_backtrace 4. Function Backtrace]
+[*link_book]
 
-[section Local MIH Capability Discover Request (MIH_User)]
+Link book is used to store information about all known Link SAPs. It makes
+the correspondence between the Link SAP MIH Identifier and the informations
+stored in the link_entry struct.
 
-[*Description]
+[*user_book]
 
-1) User sends a Capability Discover Request to find the Local MIHFs capabilities.
+User book is used to store information about all known MIH Users. It makes
+the correspondence between the MIH User MIH Identifier and the informations
+stored in the user_entry struct.
 
-2) MIHF sends a Capability Discover Response to the User.
+[h5 Transactions]
 
-[$./images/local_mih_capability_discover_request(mih_user).png]
+[$./images/transaction_pool.jpg]      [$./images/local_transaction_pool.jpg]
 
-[endsect]
-
-[section Remote MIH Capability Discover Request (MIH_User)]
-
-[*Description]
-
-1) User sends a Capability Discover Request to find a peer MIHFs capabilities.
-
-2) Local MIHF forwards request to peer MIHF.
-
-[$./images/remote_mih_capability_discover_request(mih_user).png]
-
-[endsect]
-
-[section Remote MIH Capability Discover Request (Peer MIHF)]
-
-[*Description]
-
-1) MIHF receives a Capability Discover Request from a peer MIHF.
-
-2) MIHF sends a Capability Discover Response to the peer MIHF.
-
-[$./images/remote_mih_capability_discover_request(peer_mihf).png]
-
-[endsect]
-
-[section Remote MIH Capability Discover Response (Peer MIHF)]
-
-[*Description]
-
-1) Peer MIHF received Capability Discover Request and has responded with a
-Capability Discover Response.
-
-2) Local MIHF sends a Capability Discover Confirm to the User.
-
-[$./images/remote_mih_capability_discover_response(peer_mihf).png]
+The classes ['transaction_pool] and ['local_transaction_pool] are responsible
+for handling active remote and local transactions, respectively.
 
 [endsect]
 
 [endsect]
 
 
-
-[section:mihf_internals 5. ODTONE MIHF internals]
+[section:mihf_internals ODTONE MIHF internals]
 
 [section Internal Communications use UDP sockets on loopback interface]
 
@@ -381,34 +317,178 @@ The ['tcp_listener] class was discussed in detail in a
 
 [endsect]
 
-[section IPv6 not enabled but supported]
+[section Internal discovery]
 
-By default all communications are IPv4. To enable IPv6 a configuration option
-should be supplied and checked on MIHF boostrap. This should be trivial to
-support.
+The interval discovery refers to the procedure that allows one MIHF to discovery
+its Link SAPs and their capabilities. It is intent that a Link SAP is able to send
+information about itself to the MIHF, so that MIHF knows which technology and
+interfaces each Link SAP is responsible for. Thus, the “intelligence” about the
+capabilities of each network interface is the responsibility of their Link SAP
+and the MIHF asks for them when needed.
 
-	Example, on src/mihf/main.cpp:479 change to:
-    udp_listener remotelistener(io, ip::udp::v6(), "::::", rport, rdispatch);
+Because there is no primitive/message in the 802.21 standard that allows Link SAP
+to send that information to the MIHF was created a new message named
+“Link_Register.indication”. This message allows the Link SAP to send informations
+to the MIHF about which technology supports and which interface it manages.
+Associated with the creation of this new message type was also created a new
+TLV type named “Interface Type Addr TLV” whose correspondent data type is “Link ID”.
+
+[$./images/link_register_indication_message.png]
+
+The mechanism of internal discovery involves the discovery of Link SAPs and storage
+of information in the MIHF. It is also intended to detect the presence or absence
+of known Link SAPs. So the proposed mechanism involves three essential parts:
+register, presence and unlearning.
+
+[$./images/Internal_discovery.png]
+
+The register part begins when the Link SAP initializes and announces its presence
+to the MIHF by sending a Link_Register.indication message. The MIHF processes the
+message and learns about the Link SAP by storing its ID, listening port, link-layer
+technology and list of link addresses. This will allow the MIHF to discovery Link SAPs
+dynamically and also allows the MIHF to know the information necessarily to redirect
+the messages to the respective Link SAPs in a efficient way.
+
+When the MIHF retransmits a request to a given Link SAP, it waits a time interval
+for the response. If the response is received within the time interval the MIHF
+detects the presence of the Link SAP, ie, the MIHF knows that the Link SAP is
+still active and can be contacted. This correspond to the second part: the presence.
+
+If the response is not received within the time interval it could mean that the
+Link SAP is not available anymore. Thus, the MIHF may unlearning the Link SAP.
+However, there are several reasons why the response is not received within the
+time interval, like delay in the network, packet lost, the Link SAP does not
+support the desired request, among other  reasons. So, there must be a confirmation
+that the Link SAP is really down. When the MIHF does not receive the response
+message it sends a keep alive message (defined in the figure XXX) to the Link SAP
+which responds with a  Link_Register.indication message. The Link SAP is just
+forgotten in the case of no response to the keep alive message.
+
+[note The waiting time interval for response message can be defined at the MIHF
+configuration file.]
 
 [endsect]
 
-[section Differences in the state machines]
+[section Multiple Link SAP support]
 
-[heading ACK Requestor State Machine]
+With the implementation of dynamic Link SAP discovery mechanisms, it was necessary
+that ODTONE supports multiple Link SAP. So, when a new request is received at
+the MIHF and whose destination is a Link SAP, the MIHF processes it and redirects
+the request to the proper Link SAP, based on the information collected by the
+internal discovery mechanism.
 
-[table ACK requestor state machine differences
-    [[Standard]      											[ODTONE]]
-    [[[$./images/ack_requestor_state_machine_standard.png]]		[[$./images/ack_requestor_state_machine_odtone.png]]	]
-]
+However, there are cases where the destination could be a set of Link SAPs.
+In those cases, the MIHF sends a message to all destinations Link SAPs and waits
+a time interval for all the responses of Link SAPs. After that time, the MIHF
+processes all informations received by the several confirm messages sent by the
+Link SAPs and sends the response to the requestor.
 
-[heading ACK Responder State Machine]
+In order to optimize the process of subscription/unsubscription of events at
+the MIHF it was reduce the number of messages changed between the local entities,
+ie, between the MIHF and Link SAPs.
 
-[table ACK responder state machine differences
-    [[Standard]      										    [ODTONE]]
-    [[[$./images/ack_responder_state_machine_standard.png]]		[[$./images/ack_responder_state_machine_odtone.png]]	]
-]
+This way, when a MIH User requests for a event subscription the MIHF checks
+whether the event for the desired Link SAP is already subscripted. If it is
+already subscripted the MIHF responds immediately to the MIH User otherwise it
+request the subscription of the event to the Link SAP. When the MIHF receives the
+response of Link SAP and if the subscription was succeeded it stores the result
+and redirects the response to the MIH User.
+
+The reasoning to optimize the process of unsubscription is similar to the
+subscription method. When a MIH User request to unsubscribe an event in a given
+Link SAP the MIHF unsubscribe it, response to the MIH User and checks if there
+are more subscriptions to that event. If there is no more subscriptions to that
+event the MIHF request unsubscription of the event at the Link SAP. This way,
+the Link SAP does not send that event information to the MIHF since there are
+no entities interested in that information.
 
 [endsect]
+
+[section MIH Primitives mapped in MIH Protocol Messages]
+
+Communications between local entities are made using MIH Protocol. All
+MIH_SAP primitives can be mapped in MIH Protocol Messages, however some of the
+MIH_LINK_SAP primitives needed new TLVs types so they can be used in the MIH
+Protocol.
+
+The following table show the correspondence between MIH_LINK_SAP primitive and
+the new TLVs and its data type:
+
+[table ODTONE specific TLVs
+    [
+        [MIH_LINK_SAP Primitive]
+        [TLV Type Name]
+	[TLV Type Value]
+	[Data type]
+    ]
+
+    [
+	[LinkParametersRequest]
+	[tlv_link_parameters_req]
+	[102]
+	[LIST(LINK_PARAM_TYPE)]
+    ]
+
+    [
+	[LinkParametersStatusList]
+	[tlv_link_parameters_status_list]
+	[103]
+	[LIST(LINK_PARAM_TYPE)]
+    ]
+
+    [
+        [LinkStatesRequest]
+	[tlv_link_states_req]
+	[104]
+	[LINK_STATES_REQ]
+    ]
+
+    [
+        [LinkStatesResponse]
+	[tlv_link_states_rsp]
+	[105]
+	[LIST(LINK_STATES_RSP)]
+    ]
+
+    [
+        [LinkDescriptorsRequest]
+	[tlv_link_descriptor_req]
+	[106]
+	[LINK_DESC_REQ]
+    ]
+
+    [
+        [LinkDescriptorsResponse]
+	[tlv_link_descriptor_rsp]
+	[107]
+	[LIST(LINK_DESC_RSP)]
+    ]
+
+    [
+	[LinkAction]
+	[tlv_link_action]
+	[108]
+	[LINK_ACTION]
+    ]
+
+    [
+	[LinkActionResult]
+	[tlv_link_ac_result]
+	[109]
+	[LINK_AC_RESULT]
+    ]
+
+    [
+	[ScanResponseSet]
+	[tlv_link_scan_rsp_list]
+	[110]
+	[LIST(LINK_SCAN_RSP)]
+    ]
+]
+
+
+[endsect]
+
 
 [endsect]
 

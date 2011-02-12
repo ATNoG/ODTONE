@@ -32,23 +32,25 @@ new types.
 
 [link odtone.library.index_mih.odtone_mih_response_class 2.5. odtone::mih::response Class Reference]
 
-[link odtone.library.index_mih.odtone_mih_config_class 2.6. odtone::mih::config Class Reference]
+[link odtone.library.index_mih.odtone_mih_confirm_class 2.6. odtone::mih::confirm Class Reference]
 
-[link odtone.library.index_mih.odtone_mih_archive_class 2.7. odtone::mih::archive Class Reference]
+[link odtone.library.index_mih.odtone_mih_config_class 2.7. odtone::mih::config Class Reference]
 
-[link odtone.library.index_mih.odtone_mih_iarchive_class 2.8. odtone::mih::iarchive Class Reference]
+[link odtone.library.index_mih.odtone_mih_archive_class 2.8. odtone::mih::archive Class Reference]
 
-[link odtone.library.index_mih.odtone_mih_oarchive_class 2.9. odtone::mih::oarchive Class Reference]
+[link odtone.library.index_mih.odtone_mih_iarchive_class 2.9. odtone::mih::iarchive Class Reference]
 
-[link odtone.library.index_mih.odtone_mih_is_iarchive_class 2.10. odtone::mih::is_iarchive Class Reference]
+[link odtone.library.index_mih.odtone_mih_oarchive_class 2.10. odtone::mih::oarchive Class Reference]
 
-[link odtone.library.index_mih.odtone_mih_is_oarchive_class 2.11. odtone::mih::is_oarchive Class Reference]
+[link odtone.library.index_mih.odtone_mih_is_iarchive_class 2.11. odtone::mih::is_iarchive Class Reference]
 
-[link odtone.library.index_mih.odtone_mih_tlv_type_class 2.11. odtone::mih::tlv'''_type_''' Class Reference]
+[link odtone.library.index_mih.odtone_mih_is_oarchive_class 2.12. odtone::mih::is_oarchive Class Reference]
 
-[link odtone.library.index_mih.odtone_mih_tlv_cast_class 2.11. odtone::mih::tlv'''_cast_''' Class Reference]
+[link odtone.library.index_mih.odtone_mih_tlv_type_class 2.13. odtone::mih::tlv'''_type_''' Class Reference]
 
-[link odtone.library.index_mih.odtone_mih_is_tlv_type_class 2.11. odtone::mih::is_tlv_type Class Reference]
+[link odtone.library.index_mih.odtone_mih_tlv_cast_class 2.14. odtone::mih::tlv'''_cast_''' Class Reference]
+
+[link odtone.library.index_mih.odtone_mih_is_tlv_type_class 2.15. odtone::mih::is_tlv_type Class Reference]
 
 [endsect]
 
@@ -127,6 +129,9 @@ and extendability.
 	oarchive& output();
 
 	void get_frame(frame_vla& fm) const;
+
+	bool message::has_service_specific_tlv();
+
 ``
 
 [heading Constructor & Destructor Documentation]
@@ -512,6 +517,18 @@ Get the MIH Message Frame (odtone::mih::frame).
 
 *[*fm] - a dynamic frame buffer to fill.
 
+______________________________________________________________________________
+
+``
+	bool message::has_service_specific_tlv();
+``
+
+Check if the MIH Message has service specific TLVs
+
+[*Return]
+
+*True if has service specific TLVs or false otherwise.
+
 [endsect]
 
 
@@ -529,13 +546,15 @@ Get the MIH Message Frame (odtone::mih::frame).
 Parsing/Generating MIH messages is done with helper classes
 ([link odtone.library.index_mih.odtone_mih_request_class odtone::mih::request],
 [link odtone.library.index_mih.odtone_mih_response_class odtone::mih::response],
-[link odtone.library.index_mih.odtone_mih_indication_class odtone::mih::indication]) and operator
+[link odtone.library.index_mih.odtone_mih_indication_class odtone::mih::indication],
+[link odtone.library.index_mih.odtone_mih_confirm_class odtone::mih::confirm]) and operator
 overloading.
 
 This will be the base class to [link odtone.library.index_mih.odtone_mih_request_class odtone::mih::request],
-[link odtone.library.index_mih.odtone_mih_response_class odtone::mih::response] and
-[link odtone.library.index_mih.odtone_mih_indication_class odtone::mih::indication], as is documented
-later in this document.
+[link odtone.library.index_mih.odtone_mih_response_class odtone::mih::response],
+[link odtone.library.index_mih.odtone_mih_indication_class odtone::mih::indication]
+and [link odtone.library.index_mih.odtone_mih_confirm_class odtone::mih::confirm]
+as is documented later in this document.
 
 This class derive from boost::noncopyable in order to prohibit copy construction
 and copy assignment. Thus, [link odtone.library.index_mih.odtone_mih_message_helper_class odtone::mih::message_helper]
@@ -706,6 +725,9 @@ ______________________________________________________________________________
 		n2n_ho_complete           = msg_id<3, 3, 11>::value,    /// MIH_N2N_HO_Commlete.indication
 		get_information           = msg_id<4, 3, 1>::value,     /// MIH_Get_Information.indication
 		push_information          = msg_id<4, 3, 2>::value,     /// MIH_Push_Information.indication
+
+		// ODTONE specific messages
+		link_register            = msg_id<1, 3, 6>::value       /// Link_Register.indication
 	};
 ``
 
@@ -799,6 +821,9 @@ ______________________________________________________________________________
 		n2n_ho_complete           = msg_id<3, 1, 11>::value,    /// MIH_N2N_HO_Commlete.request
 		get_information           = msg_id<4, 1, 1>::value,     /// MIH_Get_Information.request
 		push_information          = msg_id<4, 1, 2>::value,     /// MIH_Push_Information.request
+
+		// ODTONE specific messages
+		link_register            = msg_id<1, 1, 6>::value       /// Link_Register.request
 	};
 ``
 
@@ -895,8 +920,85 @@ ______________________________________________________________________________
 [endsect]
 
 
+[section:odtone_mih_confirm_class 2.5. odtone::mih::confirm Class Reference]
 
-[section:odtone_mih_config_class 2.6. odtone::mih::config Class Reference]
+[heading Detailed Description]
+
+[$./../../../images/odtone::mih::confirm.png]
+
+[*MIH Confirm Message helper.]
+
+This class permits parsing/generating MIH Confirm messages. It derives from
+[link odtone.library.index_mih.odtone_mih_message_helper_class odtone::mih::message_helper] and
+will inherit all the features from base class.
+
+[heading Namespace]
+
+``
+	namespace odtone::mih
+``
+
+[heading Public Member Functions]
+
+``
+	confirm();
+	explicit confirm(mid m);
+	confirm(mid m, const id& destination);
+
+``
+
+[heading Constructor & Destructor Documentation]
+
+``
+	confirm();
+``
+Construct an MIH confirm Message helper with MIH Message ID equals to 0 (zero)
+and a [~null] pointer for MIH Message Destination MIHF ID.
+
+______________________________________________________________________________
+
+``
+	explicit confirm(mid m);
+``
+Construct an MIH Confirm Message helper.
+
+[*Parameters:]
+
+*[*m] - value of MIH Message ID.
+
+______________________________________________________________________________
+
+``
+	confirm(mid m,
+	         const id& destination);
+``
+Construct an MIH Confirm Message helper.
+
+[*Parameters:]
+
+*[*m] - value of MIH Message ID.
+*[*destination] - MIH Message Destination MIHF ID.
+
+______________________________________________________________________________
+
+
+[heading Data Types]
+
+``
+	enum mid {
+		capability_discover       = msg_id<1, 0, 1>::value,          /// MIH_Capability_Discover.indication
+		event_subscribe           = msg_id<1, 0, 4>::value,          /// MIH_Event_Subscribe.request
+		event_unsubscribe         = msg_id<1, 0, 5>::value,          /// MIH_Event_Unsubscribe.request
+		link_get_parameters       = msg_id<3, 0, 1>::value,          /// MIH_Link_Get_Parameters.request
+		link_configure_thresholds = msg_id<3, 0, 2>::value,          /// MIH_Link_Configure_Thresholds.request
+		link_actions              = msg_id<3, 0, 3>::value           /// MIH_Link_Actions.request
+	};
+``
+
+[endsect]
+
+
+[section:odtone_mih_config_class 2.7. odtone::mih::config Class Reference]
 
 [heading Detailed Description]
 
@@ -1231,7 +1333,7 @@ Get the current position in the archive.
 
 
 
-[section:odtone_mih_iarchive_class 2.8. odtone::mih::iarchive Class Reference]
+[section:odtone_mih_iarchive_class 2.9. odtone::mih::iarchive Class Reference]
 
 [heading Detailed Description]
 
@@ -1598,7 +1700,7 @@ archive.
 
 
 
-[section:odtone_mih_oarchive_class 2.9. odtone::mih::oarchive Class Reference]
+[section:odtone_mih_oarchive_class 2.10. odtone::mih::oarchive Class Reference]
 
 [heading Detailed Description]
 
@@ -1926,7 +2028,7 @@ archive.
 
 
 
-[section:odtone_mih_is_iarchive_class 2.10. odtone::mih::is_iarchive Class Reference]
+[section:odtone_mih_is_iarchive_class 2.11. odtone::mih::is_iarchive Class Reference]
 
 [heading Detailed Description]
 
@@ -1949,7 +2051,7 @@ or false otherwise.
 
 
 
-[section:odtone_mih_is_oarchive_class 2.11. odtone::mih::is_oarchive Class Reference]
+[section:odtone_mih_is_oarchive_class 2.12. odtone::mih::is_oarchive Class Reference]
 
 [heading Detailed Description]
 
@@ -1971,7 +2073,7 @@ or false otherwise.
 
 
 
-[section:odtone_mih_tlv_type_class 2.12. odtone::mih::tlv'''_type_''' Class Reference]
+[section:odtone_mih_tlv_type_class 2.13. odtone::mih::tlv'''_type_''' Class Reference]
 
 [heading Detailed Description]
 
@@ -2054,7 +2156,7 @@ serialize the TLV value.
 
 
 
-[section:odtone_mih_tlv_cast_class 2.13. odtone::mih::tlv'''_cast_'''<T, TLV> Class Reference]
+[section:odtone_mih_tlv_cast_class 2.14. odtone::mih::tlv'''_cast_'''<T, TLV> Class Reference]
 
 [heading Detailed Description]
 
@@ -2120,7 +2222,7 @@ However it supports optional value.
 
 
 
-[section:odtone_mih_is_tlv_type_class 2.14. odtone::mih::is_tlv_type Class Reference]
+[section:odtone_mih_is_tlv_type_class 2.15. odtone::mih::is_tlv_type Class Reference]
 
 [heading Detailed Description]
 
