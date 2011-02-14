@@ -32,7 +32,7 @@
 #include <odtone/mih/tlv_types.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
-extern odtone::uint16 kConf_MIHF_Link_Discover_Time_Value;
+extern odtone::uint16 kConf_MIHF_Link_Response_Time_Value;
 
 namespace odtone { namespace mihf {
 
@@ -47,10 +47,12 @@ namespace odtone { namespace mihf {
 command_service::command_service(local_transaction_pool &lpool,
 	                         transmit &t,
 	                         link_book &link_abook,
+	                         user_book &user_abook,
 	                         link_response_pool &lrpool)
 	: _lpool(lpool),
 	  _transmit(t),
 	  _link_abook(link_abook),
+	  _user_abook(user_abook),
 	  _lrpool(lrpool)
 {
 }
@@ -81,7 +83,7 @@ void link_get_parameters_response_handler(mih::id src_id,
 	mih::dev_states_rsp_list dsrl;
 	meta_message_ptr out(new meta_message());
 
-	boost::this_thread::sleep(boost::posix_time::milliseconds(kConf_MIHF_Link_Discover_Time_Value));
+	boost::this_thread::sleep(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
 
 	std::vector<mih::octet_string> ids = link_abook.get_ids();
 	std::vector<mih::octet_string>::iterator it_link;
@@ -400,7 +402,7 @@ void link_actions_response_handler(mih::id src_id,
 	mih::link_scan_rsp_list   lsrl;
 	meta_message_ptr out(new meta_message());
 
-	boost::this_thread::sleep(boost::posix_time::milliseconds(kConf_MIHF_Link_Discover_Time_Value));
+	boost::this_thread::sleep(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
 
 	std::vector<mih::octet_string> ids = link_abook.get_ids();
 	std::vector<mih::octet_string>::iterator it_link;
@@ -596,8 +598,8 @@ bool command_service::link_actions_confirm(meta_message_ptr &in,
  * the default user. Add a local transaction indicating where to send
  * the response.
  *
- * @param recv_msg recv message bytes.
- * @param send_msg send message bytes.
+ * @param recv_msg recv message.
+ * @param send_msg send message.
  * @param in input message.
  * @param out output message.
  * @return true if the response is sent immediately or false otherwise.
@@ -611,14 +613,17 @@ bool command_service::generic_command_request(const char *recv_msg,
 
 	if(utils::this_mihf_is_destination(in)) {
 		//
-		// Kick this message to default MIH User as an indication
+		// Kick this message to MIH User for handover as an indication
 		//
 		in->opcode(mih::operation::indication);
-		in->destination(mih::id("user"));
+		in->destination(mih::id(_user_abook.handover_user()));
 		//
 		// source identifier is the remote MIHF
 		//
 		log(1, send_msg);
+
+		_lpool.add(in);
+		in->source(mihfid);
 		_transmit(in);
 
 		return false;
@@ -626,7 +631,7 @@ bool command_service::generic_command_request(const char *recv_msg,
 		// try to forward the message, this is to handle the
 		// special case of the user handling MIH commands
 		// sending some MIH command request to a peer mihf
-		_transmit(in);
+		utils::forward_request(in, _lpool, _transmit);
 		return false;
 	}
 
@@ -638,8 +643,8 @@ bool command_service::generic_command_request(const char *recv_msg,
  * user. If this MIHF is the destination of the message, check for a
  * pending transaction and forward the message.
  *
- * @param recv_msg recv message bytes.
- * @param send_msg send message bytes.
+ * @param recv_msg recv message.
+ * @param send_msg send message.
  * @param in input message.
  * @param out output message.
  * @return true if the response is sent immediately or false otherwise.
@@ -651,28 +656,19 @@ bool command_service::generic_command_response(const char *recv_msg,
 {
 	log(1, recv_msg, in->source().to_string());
 
-	if(utils::this_mihf_is_destination(in)) {
-		//
-		// Kick this message to default MIH User as an indication
-		//
-		log(1, send_msg);
-		in->opcode(mih::operation::confirm);
-		in->destination(mih::id("user"));
-		//
-		// source identifier is the remote MIHF
-		//
-		_transmit(in);
-
-		return false;
-	} else {
-		// forward message but don't add a local transaction
-		// because it's the responsability of the user
-		// handling MIH commands to check these details
-		in->source(mihfid);
-		_transmit(in);
+	if(!_lpool.set_user_tid(in)) {
+		log(1, "(mics) warning: no local transaction for this msg ",
+		    "discarding it");
 		return false;
 	}
 
+	in->source(mihfid);
+
+	log(1, recv_msg , in->destination().to_string());
+	in->opcode(mih::operation::confirm);
+	_transmit(in);
+
+	return false;
 }
 
 /**

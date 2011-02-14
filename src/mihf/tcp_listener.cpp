@@ -131,7 +131,7 @@ void tcp_listener::start()
  * @param s session.
  * @param error_code error code.
  */
-void tcp_listener::handle_accept(session *s,
+void tcp_listener::handle_accept(session *new_session,
 			       const boost::system::error_code &e)
 {
 	if (!e) {

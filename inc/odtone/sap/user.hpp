@@ -35,6 +35,8 @@ static const char* const kConf_File               = "conf.file";
 static const char* const kConf_Port               = "conf.port";
 static const char* const kConf_Receive_Buffer_Len = "conf.recv_buff_len";
 
+static const char* const kConf_MIH_Handover = "user.handover";
+
 static const char* const kConf_MIH_SAP_id   = "user.id";
 static const char* const kConf_MIH_SAP_dest = "dest";
 
@@ -81,6 +83,16 @@ public:
 	 */
 	void async_send(mih::message& pm, const handler& h);
 
+	/**
+	 * Send the MIH message to the local MIHF synchronously.
+	 * After the message is sended, the callback is called to report
+	 * the success or failure in delivering the message to the MIHF. This method retuns immediately.
+	 *
+	 * @param msg MIH message to send
+	 * @param h Completion callback handler as a function pointer/object
+	 */
+	void sync_send(mih::message& msg);
+
 private:
 	/**
 	 * Received message handler.
@@ -105,6 +117,9 @@ private:
 	boost::asio::ip::udp::socket   _sock;
 	mih::id                        _id;
 	boost::asio::ip::udp::endpoint _ep;
+	odtone::mih::id                _user_id;
+	odtone::mih::id                _mihf_id;
+	bool                           handover;
 
 	boost::mutex _mutex;
 	rmap         _rmap;

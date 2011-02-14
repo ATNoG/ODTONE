@@ -36,7 +36,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-extern odtone::uint16 kConf_MIHF_Link_Discover_Time_Value;
+extern odtone::uint16 kConf_MIHF_Link_Response_Time_Value;
 
 namespace odtone { namespace mihf {
 
@@ -52,11 +52,13 @@ namespace odtone { namespace mihf {
  */
 service_management::service_management(local_transaction_pool &lpool,
 										link_book &link_abook,
+										user_book &user_abook,
 										transmit &t,
 										link_response_pool &lrpool,
 										bool enable_broadcast)
 	: _lpool(lpool),
 	  _link_abook(link_abook),
+	  _user_abook(user_abook),
 	  _transmit(t),
 	  _lrpool(lrpool)
 {
@@ -87,7 +89,7 @@ void link_capability_discover_response_handler(mih::id src_id,
 	mih::command_list        capabilities_cmd_list;
 	meta_message_ptr out(new meta_message());
 
-	boost::this_thread::sleep(boost::posix_time::milliseconds(kConf_MIHF_Link_Discover_Time_Value));
+	boost::this_thread::sleep(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
 
 	std::vector<mih::octet_string> ids = link_abook.get_ids();
 	odtone::uint num_link = ids.size();
@@ -330,6 +332,33 @@ bool service_management::link_register_indication(meta_message_ptr &in,
 		& odtone::mih::tlv_interface_type_addr(link_id);
 
 	_link_abook.add(in->source().to_string(), ip, in->port(), link_id);
+
+	return false;
+}
+
+/**
+ * User Register Indication message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
+bool service_management::user_register_indication(meta_message_ptr &in,
+	                                          meta_message_ptr &out)
+{
+	log(1, "(mism) received User_Register.indication from ",
+	    in->source().to_string());
+
+	// Add MIH User to the list of known MIH Users
+	mih::status st;
+	bool mbbhandover;
+
+	mih::octet_string ip(in->ip());
+
+	*in >> odtone::mih::indication()
+		& odtone::mih::tlv_mbb_handover_support(mbbhandover);
+
+	_user_abook.add(in->source().to_string(), ip, in->port(), mbbhandover);
 
 	return false;
 }

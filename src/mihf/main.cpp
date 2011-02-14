@@ -69,7 +69,6 @@ static const char* const kConf_Receive_Buffer_Len      = "conf.recv_buff_len";
 static const char* const kConf_MIHF_Id                 = "mihf.id";
 static const char* const kConf_MIHF_Ip                 = "mihf.ip";
 static const char* const kConf_MIHF_Peer_List          = "mihf.peers";
-static const char* const kConf_MIHF_Users_List         = "mihf.users";
 static const char* const kConf_MIHF_Remote_Port        = "mihf.remote_port";
 static const char* const kConf_MIHF_Local_Port         = "mihf.local_port";
 static const char* const kConf_MIHF_Link_Response_Time = "mihf.link_response_time";
@@ -112,45 +111,11 @@ void set_list_peer_mihfs(mih::octet_string &list, address_book &abook)
 	}
 }
 
-void set_users(mih::octet_string &list, user_book &ubook)
-{
-	using namespace boost;
-
-	char_separator<char> sep1(",");
-	char_separator<char> sep2(" ");
-	tokenizer< char_separator<char> > list_tokens(list, sep1);
-
-	BOOST_FOREACH(mih::octet_string str, list_tokens) {
-		tokenizer< char_separator<char> > tokens(str, sep2);
-		tokenizer< char_separator<char> >::iterator it = tokens.begin();
-
-		mih::octet_string id = *it;
-		++it;
-		mih::octet_string port = *it;
-
-		mih::octet_string ip("127.0.0.1");
-		uint16 port_;
-		std::istringstream iss(port);
-		if ((iss >> port_).fail())
-			throw "invalid port";
-
-
-		ubook.add(id, ip, port_);
-	}
-}
-
 void parse_peer_registrations(mih::config &cfg, address_book &abook)
 {
 	mih::octet_string mihfs	= cfg.get<mih::octet_string>(kConf_MIHF_Peer_List);
 
 	set_list_peer_mihfs(mihfs, abook);
-}
-
-void parse_sap_registrations(mih::config &cfg, user_book &ubook)
-{
-	mih::octet_string users	= cfg.get<mih::octet_string>(kConf_MIHF_Users_List);
-
-	set_users(users, ubook);
 }
 
 void sm_register_callbacks(service_management &sm)
@@ -170,6 +135,11 @@ void sm_register_callbacks(service_management &sm)
 	sac_register_callback(mih::indication::link_register,
 			      boost::bind(&service_management::link_register_indication,
 					  boost::ref(sm), _1, _2));
+
+	sac_register_callback(mih::indication::user_register,
+			      boost::bind(&service_management::user_register_indication,
+					  boost::ref(sm), _1, _2));
+
 }
 
 void mies_register_callbacks(event_service &mies)
@@ -315,7 +285,6 @@ int main(int argc, char **argv)
 		(kConf_MIHF_Id, po::value<std::string>()->default_value("mihf"), "MIHF Id")
 		(kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "MIHF Ip")
 		(kConf_MIHF_Peer_List, po::value<std::string>()->default_value(""), "List of peer MIHFs")
-		(kConf_MIHF_Users_List, po::value<std::string>()->default_value("user 1234"), "List of User SAPs")
 		(kConf_MIHF_Remote_Port, po::value<uint16>()->default_value(4551), "MIHF Remote Communications Port")
 		(kConf_MIHF_Local_Port, po::value<uint16>()->default_value(1025), "MIHF Local Communications Port")
 		(kConf_MIHF_Link_Response_Time, po::value<uint16>()->default_value(100), "MIHF Link Response waiting time (milliseconds)")
@@ -354,7 +323,6 @@ int main(int argc, char **argv)
 	address_book mihf_abook;
 	user_book user_abook;
 	link_book link_abook;
-	parse_sap_registrations(cfg, user_abook);
 	parse_peer_registrations(cfg, mihf_abook);
 	//
 
@@ -379,9 +347,9 @@ int main(int argc, char **argv)
 
 	// instantiate mihf services
 	event_service		mies(lpool, trnsmt, link_abook);
-	command_service		mics(lpool, trnsmt, link_abook, lrpool);
+	command_service		mics(lpool, trnsmt, link_abook, user_abook, lrpool);
 	information_service	miis(lpool, trnsmt);
-	service_management	sm(lpool, link_abook, trnsmt, lrpool, enable_broadcast);
+	service_management	sm(lpool, link_abook, user_abook, trnsmt, lrpool, enable_broadcast);
 
 	// register callbacks with service access controller
 	sm_register_callbacks(sm);

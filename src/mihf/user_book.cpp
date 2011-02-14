@@ -29,10 +29,12 @@ namespace odtone { namespace mihf {
  * @param id MIH User MIH Identifier.
  * @param ip MIH User IP address.
  * @param port MIH User listening port.
+ * @param mbbsupport MIH User Handover support.
  */
 void user_book::add(const mih::octet_string &id,
 		            mih::octet_string& ip,
-		            uint16 port)
+		            uint16 port,
+		            bool mbbhandover)
 {
 	boost::mutex::scoped_lock lock(_mutex);
 	// TODO: add thread safety
@@ -40,6 +42,15 @@ void user_book::add(const mih::octet_string &id,
 
 	a.ip.assign(ip);
 	a.port = port;
+
+	if(mbbhandover == true) {
+		std::vector<mih::octet_string> ids;
+		for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
+			it->second.mbbhandover_support = false;
+		}
+	}
+
+	a.mbbhandover_support = mbbhandover;
 
 	_ubook[id] = a;
 	log(4, "(user_book) added: ", id, " ", ip, " ", port);
@@ -93,5 +104,22 @@ const std::vector<mih::octet_string> user_book::get_ids()
 	return ids;
 }
 
+/**
+ * Get the MIH User for handover operations.
+ *
+ * @return The MIH User MIH Identifier for handover operations.
+ */
+const mih::octet_string user_book::handover_user()
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::vector<mih::octet_string> ids;
+	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
+		if(it->second.mbbhandover_support == true)
+			return it->first;
+	}
+
+	return "";
+}
 
 } /* namespace mihf */ } /* namespace odtone */

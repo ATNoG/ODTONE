@@ -49,6 +49,7 @@ public:
 	 */
 	service_management(local_transaction_pool &lpool,
 			   link_book &link_abook,
+			   user_book &user_abook,
 			   transmit &t,
 			   link_response_pool &lrpool,
 			   bool enable_broadcast = false);
@@ -93,6 +94,16 @@ public:
 	bool link_register_indication(meta_message_ptr &in,
 	                              meta_message_ptr &out);
 
+	/**
+	 * User Register Indication message handler.
+	 *
+	 * @param in input message.
+	 * @param out output message.
+	 * @return true if the response is sent immediately or false otherwise.
+	 */
+	bool user_register_indication(meta_message_ptr &in,
+	                              meta_message_ptr &out);
+
 private:
 	/**
 	 * Asks for local Link SAPs capabilities by sending a Capability Request message
@@ -107,6 +118,7 @@ private:
 protected:
 	local_transaction_pool   &_lpool;
 	link_book                &_link_abook;
+	user_book                &_user_abook;
 	transmit                 &_transmit;
 	link_response_pool       &_lrpool;
 

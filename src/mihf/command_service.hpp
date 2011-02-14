@@ -47,6 +47,7 @@ public:
 	command_service(local_transaction_pool &lpool,
 	                transmit &t,
 	                link_book &link_abook,
+	                user_book &user_abook,
 			link_response_pool &lrpool);
 
 	/**
@@ -281,8 +282,8 @@ protected:
 	 * the default user. Add a local transaction indicating where to send
 	 * the response.
 	 *
-	 * @param recv_msg recv message bytes.
-	 * @param send_msg send message bytes.
+	 * @param recv_msg recv message.
+	 * @param send_msg send message.
 	 * @param in input message.
 	 * @param out output message.
 	 * @return true if the response is sent immediately or false otherwise.
@@ -297,8 +298,8 @@ protected:
 	 * user. If this MIHF is the destination of the message, check for a
 	 * pending transaction and forward the message.
 	 *
-	 * @param recv_msg recv message bytes.
-	 * @param send_msg send message bytes.
+	 * @param recv_msg recv message.
+	 * @param send_msg send message.
 	 * @param in input message.
 	 * @param out output message.
 	 * @return true if the response is sent immediately or false otherwise.
@@ -311,6 +312,7 @@ protected:
 	local_transaction_pool	&_lpool;
 	transmit		&_transmit;
 	link_book               &_link_abook;
+	user_book               &_user_abook;
 	link_response_pool      &_lrpool;
 };
 

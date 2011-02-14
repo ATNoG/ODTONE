@@ -95,7 +95,9 @@ public:
 
 		// ODTONE specific messages
 		link_register										/// Link_Register.indication
-								= msg_id<1, 3, 6>::value
+								= msg_id<1, 3, 6>::value,
+		user_register										/// User_Register.indication
+								= msg_id<1, 3, 7>::value
 	};
 
 	/**

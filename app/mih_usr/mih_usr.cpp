@@ -56,6 +56,17 @@ private:
 mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	: _mihf(cfg, io, boost::bind(&mih_user::event_handler, this, _1, _2))
 {
+
+	odtone::mih::message m;
+
+	m << odtone::mih::indication(odtone::mih::indication::user_register)
+	    & odtone::mih::tlv_mbb_handover_support(true);
+
+	_mihf.sync_send(m);
+
+	// Wait a little after register
+	sleep(1);
+
 	odtone::mih::message msg;
 
 	odtone::mih::octet_string destination = cfg.get<odtone::mih::octet_string>(odtone::sap::kConf_MIH_SAP_dest);
@@ -200,6 +211,7 @@ int main(int argc, char** argv)
 			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1234), "Port")
 			(odtone::sap::kConf_File, po::value<std::string>()->default_value("mih_usr.conf"), "Configuration File")
 			(odtone::sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive Buffer Length")
+			(odtone::sap::kConf_MIH_Handover, po::value<bool>()->default_value("true"), "MIH User Handover support")
 			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
 			(odtone::sap::kConf_MIHF_Id, po::value<std::string>()->default_value("local-mihf"), "Local MIHF Id")
 			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("user"), "User Id")

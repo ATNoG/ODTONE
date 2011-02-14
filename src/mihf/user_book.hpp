@@ -30,12 +30,14 @@
 namespace odtone { namespace mihf {
 
 /**
- * Struct to store MIHF information like IP Address, listening port.
+ * Struct to store MIHF information like IP Address, listening port and handover
+ * support.
  */
 struct user_entry
 {
-	mih::octet_string        ip;
-	uint16                   port;
+	mih::octet_string ip;
+	uint16            port;
+	bool              mbbhandover_support;
 };
 
 /**
@@ -53,10 +55,12 @@ public:
 	 * @param id MIH User MIH Identifier.
 	 * @param ip MIH User IP address.
 	 * @param port MIH User listening port.
+	 * @param mbbsupport MIH User Handover support.
 	 */
 	void add(const mih::octet_string &id,
 	         mih::octet_string &ip,
-	         uint16 port);
+	         uint16 port,
+	         bool mbbsupport);
 
 	/**
 	 * Remove a existing MIH User entry from the link book.
@@ -79,6 +83,13 @@ public:
 	 * @return The list of all known MIH Users.
 	 */
 	const std::vector<mih::octet_string> get_ids();
+
+	/**
+	 * Get the MIH User for handover operations.
+	 *
+	 * @return The MIH User MIH Identifier for handover operations.
+	 */
+	const mih::octet_string handover_user();
 private:
 
 	std::map<mih::octet_string, user_entry> _ubook;
