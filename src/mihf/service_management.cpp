@@ -37,6 +37,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 extern odtone::uint16 kConf_MIHF_Link_Response_Time_Value;
+extern odtone::uint16 kConf_MIHF_Link_Delete_Value;
 
 namespace odtone { namespace mihf {
 
@@ -102,9 +103,13 @@ void link_capability_discover_response_handler(mih::id src_id,
 	for(it_link = ids.begin(); it_link != ids.end(); it_link++) {
 		// Delete unanswered Link SAP from known Link SAPs list
 		if(!lrpool.check(tid, *it_link)) {
-			link_abook.del(*it_link);
 			lpool.del(*it_link, tid);
 			num_link--;
+
+			uint16 fails = link_abook.fail(*it_link);
+			if(fails >= kConf_MIHF_Link_Delete_Value && fails != -1) {
+				link_abook.del(*it_link);
+			}
 		}
 		else {
 			// fill LinkAddressList
@@ -286,6 +291,8 @@ bool service_management::capability_discover_confirm(meta_message_ptr &in,
 	    in->source().to_string());
 
 	if (_lpool.set_user_tid(in)) {
+		_link_abook.reset(in->source().to_string());
+
 		mih::status st;
 		boost::optional<mih::event_list> event;
 		boost::optional<mih::command_list> command;

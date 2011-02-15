@@ -67,7 +67,7 @@ user::~user()
 
 /**
  * Send the MIH message to the local MIHF asynchronously.
- * After the message is sended, the callback is called with the
+ * After the message is sent, the callback is called with the
  * response message or to report failure in delivering the message
  * to the MIHF.This method retuns immediately.
  *

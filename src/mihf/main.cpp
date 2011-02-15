@@ -72,10 +72,12 @@ static const char* const kConf_MIHF_Peer_List          = "mihf.peers";
 static const char* const kConf_MIHF_Remote_Port        = "mihf.remote_port";
 static const char* const kConf_MIHF_Local_Port         = "mihf.local_port";
 static const char* const kConf_MIHF_Link_Response_Time = "mihf.link_response_time";
+static const char* const kConf_MIHF_Link_Delete        = "mihf.link_delete";
 static const char* const kConf_MIHF_BRDCAST            = "enable_broadcast";
 static const char* const kConf_MIHF_Verbosity          = "log";
 
 uint16 kConf_MIHF_Link_Response_Time_Value;
+uint16 kConf_MIHF_Link_Delete_Value;
 
 
 //
@@ -288,6 +290,7 @@ int main(int argc, char **argv)
 		(kConf_MIHF_Remote_Port, po::value<uint16>()->default_value(4551), "MIHF Remote Communications Port")
 		(kConf_MIHF_Local_Port, po::value<uint16>()->default_value(1025), "MIHF Local Communications Port")
 		(kConf_MIHF_Link_Response_Time, po::value<uint16>()->default_value(100), "MIHF Link Response waiting time (milliseconds)")
+		(kConf_MIHF_Link_Delete, po::value<uint16>()->default_value(2), "MIHF Link Response fails to delete the Link SAP")
 		(kConf_MIHF_BRDCAST,  "MIHF responds to broadcast messages")
 		(kConf_MIHF_Verbosity, po::value<uint16>()->default_value(1), "MIHF log level [0-4]")
 		;
@@ -311,6 +314,7 @@ int main(int argc, char **argv)
 	mih::octet_string id = cfg.get<mih::octet_string>(kConf_MIHF_Id);
 	uint16 loglevel = cfg.get<uint16>(kConf_MIHF_Verbosity);
 	kConf_MIHF_Link_Response_Time_Value = cfg.get<uint16>(kConf_MIHF_Link_Response_Time);
+	kConf_MIHF_Link_Delete_Value = cfg.get<uint16>(kConf_MIHF_Link_Delete);
 	//
 
 	// set this mihf id

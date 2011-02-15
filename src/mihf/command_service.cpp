@@ -33,6 +33,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 extern odtone::uint16 kConf_MIHF_Link_Response_Time_Value;
+extern odtone::uint16 kConf_MIHF_Link_Delete_Value;
 
 namespace odtone { namespace mihf {
 
@@ -90,8 +91,11 @@ void link_get_parameters_response_handler(mih::id src_id,
 	for(it_link = ids.begin(); it_link != ids.end(); it_link++) {
 		// Delete unanswered Link SAP from known Link SAPs list
 		if(!lrpool.check(tid, *it_link)) {
-			link_abook.del(*it_link);
 			lpool.del(*it_link, tid);
+			uint16 fails = link_abook.fail(*it_link);
+			if(fails >= kConf_MIHF_Link_Delete_Value && fails != -1) {
+				link_abook.del(*it_link);
+			}
 		}
 		else {
 			// fill GetStatusResponseList
@@ -246,6 +250,8 @@ bool command_service::link_get_parameters_confirm(meta_message_ptr &in,
 	    in->source().to_string());
 
 	if(_lpool.set_user_tid(in)) {
+		_link_abook.reset(in->source().to_string());
+
 		mih::status st;
 		boost::optional<mih::link_param_list> lpl;
 		boost::optional<mih::link_states_rsp_list> lsrl;
@@ -310,7 +316,20 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 
 		_lpool.add(in);
 		in->source(mihfid);
-		_transmit(in);
+
+		uint16 fails = _link_abook.fail(in->destination().to_string());
+		if(fails == -1)
+			return false;
+
+		if(fails <= kConf_MIHF_Link_Delete_Value) {
+			log(1, "(mies) forwarding Event_Subscribe.request to ",
+			    in->destination().to_string());
+			_transmit(in);
+		}
+		else {
+			mih::octet_string dst = in->destination().to_string();
+			_link_abook.del(dst);
+		}
 
 		return false;
 	} else {
@@ -368,6 +387,8 @@ bool command_service::link_configure_thresholds_confirm(meta_message_ptr &in,
 		return false;
 	}
 
+	_link_abook.reset(in->source().to_string());
+
 	in->source(mihfid);
 
 	log(1, "(mics) forwarding Link_Configure_Thresholds.confirm to ", in->destination().to_string());
@@ -409,8 +430,12 @@ void link_actions_response_handler(mih::id src_id,
 	for(it_link = ids.begin(); it_link != ids.end(); it_link++) {
 		// Delete unanswered Link SAP from known Link SAPs list
 		if(!lrpool.check(tid, *it_link)) {
-			link_abook.del(*it_link);
 			lpool.del(*it_link, tid);
+
+			uint16 fails = link_abook.fail(*it_link);
+			if(fails >= kConf_MIHF_Link_Delete_Value && fails != -1) {
+				link_abook.del(*it_link);
+			}
 		}
 		else {
 			// fill LinkActionsResultList
@@ -543,6 +568,8 @@ bool command_service::link_actions_response(meta_message_ptr &in,
 			log(1, "(mics) no local pending transaction for this message, discarding");
 			return false;
 		}
+
+	_link_abook.reset(in->source().to_string());
 
 	in->source(mihfid);
 

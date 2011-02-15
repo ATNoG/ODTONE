@@ -33,6 +33,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+extern odtone::uint16 kConf_MIHF_Link_Delete_Value;
+
 namespace odtone { namespace mihf {
 /**
  * Event service constructor.
@@ -130,9 +132,20 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 		out->tid(in->tid());
 		out->source(in->source());
 		_lpool.add(out);
-		log(1, "(mies) forwarding Event_Subscribe.request to ",
-		    out->destination().to_string());
-		_transmit(out);
+
+		uint16 fails = _link_abook.fail(out->destination().to_string());
+		if(fails == -1)
+			return false;
+
+		if(fails <= kConf_MIHF_Link_Delete_Value) {
+			log(1, "(mies) forwarding Event_Subscribe.request to ",
+			    out->destination().to_string());
+			_transmit(out);
+		}
+		else {
+			mih::octet_string dst = out->destination().to_string();
+			_link_abook.del(dst);
+		}
 
 		return false;
 	}
@@ -220,6 +233,8 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 {
 	log(1, "(mies) received Event_Subscribe.confirm from ",
 	    in->source().to_string());
+
+	_link_abook.reset(in->source().to_string());
 
 	mih::status        st;
 	boost::optional<mih::event_list>    events;
@@ -310,7 +325,19 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
 		mih::octet_string link_id = _link_abook.search_interface(link.type, link.addr);
 		in->destination(mih::id(link_id));
 		in->source(mihfid);
-		_transmit(in);
+
+		uint16 fails = _link_abook.fail(in->destination().to_string());
+		if(fails != -1) {
+			if(fails <= kConf_MIHF_Link_Delete_Value) {
+				log(1, "(mies) forwarding Event_Unsubscribe.request to ",
+				    in->destination().to_string());
+				_transmit(in);
+			}
+			else {
+				mih::octet_string dst = in->destination().to_string();
+				_link_abook.del(dst);
+			}
+		}
 	}
 }
 
@@ -468,6 +495,8 @@ bool event_service::event_unsubscribe_confirm(meta_message_ptr &in,
 	log(1, "(mies) received Event_Unsubscribe.confirm from ",
 	    in->source().to_string());
 
+	_link_abook.reset(in->source().to_string());
+
 	mih::status	st;
 	boost::optional<mih::event_list> events;
 
@@ -546,10 +575,10 @@ void event_service::link_event_forward(meta_message_ptr &msg,
  */
 bool event_service::link_up_indication(meta_message_ptr &in, meta_message_ptr&)
 {
-	// if(in->payload().size() == 0)
-	// 	return false;
 	log(1, "(mies) received Link_Up.indication from ",
 	    in->source().to_string());
+
+	_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_up);
 
@@ -566,10 +595,10 @@ bool event_service::link_up_indication(meta_message_ptr &in, meta_message_ptr&)
  */
 bool event_service::link_down_indication(meta_message_ptr &in, meta_message_ptr&)
 {
-	// if(in->payload().size() == 0)
-	// 	return false;
 	log(1, "(mies) received Link_Down.indication from ",
 	    in->source().to_string());
+
+	_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_down);
 
@@ -587,11 +616,11 @@ bool event_service::link_down_indication(meta_message_ptr &in, meta_message_ptr&
 bool event_service::link_detected_indication(meta_message_ptr &in,
 					     meta_message_ptr &out)
 {
-	// if(in->payload().size() == 0)
-	// 	return false;
-
 	log(1, "(mies) received Link_Detected.indication from ",
 	    in->source().to_string());
+
+	_link_abook.reset(in->source().to_string());
+
 	// link detected info from incoming message
 	mih::link_det_info_list		list_ids;
 
@@ -631,10 +660,10 @@ bool event_service::link_detected_indication(meta_message_ptr &in,
 bool event_service::link_going_down_indication(meta_message_ptr &in,
 					       meta_message_ptr&)
 {
-	// if(in->payload().size() == 0)
-	// 	return false;
 	log(1, "(mies) received Link_Going_Down.indication from ",
 	    in->source().to_string());
+
+	_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_going_down);
 
@@ -651,10 +680,10 @@ bool event_service::link_going_down_indication(meta_message_ptr &in,
 bool event_service::link_handover_imminent_indication(meta_message_ptr &in,
 						      meta_message_ptr&)
 {
-	// if(in->payload().size() == 0)
-	// 	return false;
 	log(1, "(mies) received Link_Handover_Imminent.indication from ",
 	    in->source().to_string());
+
+	_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_handover_imminent);
 
@@ -671,10 +700,10 @@ bool event_service::link_handover_imminent_indication(meta_message_ptr &in,
 bool event_service::link_handover_complete_indication(meta_message_ptr &in,
 						      meta_message_ptr&)
 {
-	// if(in->payload().size() == 0)
-	// 	return false;
 	log(1, "(mies) received Link_Handover_Complete.indication from ",
 	    in->source().to_string());
+
+	_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_handover_complete);
 
@@ -691,10 +720,10 @@ bool event_service::link_handover_complete_indication(meta_message_ptr &in,
 bool event_service::link_pdu_transmit_status_indication(meta_message_ptr &in,
 							meta_message_ptr&)
 {
-	// if(in->payload().size() == 0)
-	// 	return false;
 	log(1, "(mies) received Link_PDU_Transmit_Status.indication from ",
 	    in->source().to_string());
+
+	_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_pdu_transmit_status);
 

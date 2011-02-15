@@ -38,6 +38,7 @@ struct link_entry
 	mih::octet_string  ip;
 	uint16             port;
 	mih::link_id       link_id;
+	uint16             fail;
 };
 
 /**
@@ -90,6 +91,21 @@ public:
 	 * @return The Link SAP MIH Identifier.
 	 */
 	const mih::octet_string search_interface(mih::link_type lt, mih::link_addr la);
+
+	/**
+	 * Update and return the number of failing to response of a given Link SAP.
+	 *
+	 * @param id Link SAP MIH Identifier.
+	 * @return The number of fails to response.
+	 */
+	uint16 fail(const mih::octet_string &id);
+
+	/**
+	 * Reset the number of failing to response of a given Link SAP.
+	 *
+	 * @param id Link SAP MIH Identifier.
+	 */
+	void reset(const mih::octet_string &id);
 private:
 
 	std::map<mih::octet_string, link_entry> _lbook;

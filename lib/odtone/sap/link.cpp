@@ -95,7 +95,7 @@ void link::async_send(mih::message& msg, const handler& h)
 
 /**
  * Send the MIH message to the local MIHF synchronously.
- * After the message is sended, the callback is called to report
+ * After the message is sent, the callback is called to report
  * the success or failure in delivering the message to the MIHF. This method retuns immediately.
  *
  * @param msg MIH message to send

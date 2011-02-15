@@ -43,6 +43,7 @@ void link_book::add(const mih::octet_string &id,
 	a.ip.assign(ip);
 	a.port = port;
 	a.link_id = link_id;
+	a.fail = 0;
 
 	_lbook[id] = a;
 	log(4, "(link_book) added: ", id, " ", ip, " ", port);
@@ -116,6 +117,43 @@ const mih::octet_string link_book::search_interface(mih::link_type lt, mih::link
 	}
 
 	return id;
+}
+
+/**
+ * Update and return the number of failing to response of a given Link SAP.
+ *
+ * @param id Link SAP MIH Identifier.
+ * @return The number of fails to response.
+ */
+uint16 link_book::fail(const mih::octet_string &id)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, link_entry>::iterator it;
+	it = _lbook.find(id);
+
+	if (it != _lbook.end()) {
+		(it->second.fail)++;
+		return it->second.fail;
+	}
+
+	return -1;
+}
+
+/**
+ * Reset the number of failing to response of a given Link SAP.
+ *
+ * @param id Link SAP MIH Identifier.
+ */
+void link_book::reset(const mih::octet_string &id)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, link_entry>::iterator it;
+	it = _lbook.find(id);
+
+	if (it != _lbook.end())
+		it->second.fail = 0;
 }
 
 } /* namespace mihf */ } /* namespace odtone */
