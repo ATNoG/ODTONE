@@ -4,8 +4,8 @@
  /------------------------------------------------------------------------------
  / ODTONE - Open Dot Twenty One
  /
- / Copyright (C) 2010 Universidade Aveiro
- / Copyright (C) 2010 Instituto de Telecomunicações - Pólo Aveiro
+ / Copyright (C) 2009-2011 Universidade Aveiro
+ / Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
  /
  / This software is distributed under a license. The full license
  / agreement can be found in the file LICENSE in this distribution.
@@ -223,6 +223,22 @@ to bjam.
 The Android SDK has the necessary tools to run, debug and deploy the ODTONE
 binaries.]
 
+[h3 4. Generate Doxygen Documentation]
+As a supplement to this documentation, it is possible to generate incode documentation.
+This can be done using Doxygen that parses the sources and generates the documentation.
+Doxygen uses a configuration file to determine all of its settings.
+
+To simplify the creation of a configuration file, Doxygen can create a template
+configuration file for you. To do this call Doxygen from the command line with
+the -g option:
+
+	doxygen -g <config-file>
+
+To generate the documentation you can now enter:
+
+	doxygen <config-file>
+
+
 [heading ODTONE User Guide]
 
 [h4 Configuration]
@@ -235,17 +251,19 @@ There are other parameters that can be configured either using an configuration
 file or passing them directly in command line.
 
 	MIHF Configuration Options:
-	   --help                           Display configuration options
-	   --conf.file arg (=odtone.conf)   Configuration File
-	   --conf.recv_buff_len arg (=4096) Receive Buffer Length
-	   --mihf.id arg (=mihf)            MIHF Id
-	   --mihf.ip arg (=127.0.0.1)       MIHF Ip
-	   --mihf.peers arg                 List of peer MIHFs
-	   --mihf.users arg (=user 1234)    List of User SAPs
-	   --mihf.remote_port arg (=4551)   MIHF Remote Communications Port
-	   --mihf.local_port arg (=1025)    MIHF Local Communications Port
-	   --enable_broadcast               MIHF responds to broadcast messages
-	   --log arg (=1)                   MIHF log level [0-4]
+	   --help                               Display configuration options
+	   --conf.file arg (=odtone.conf)       Configuration File
+	   --conf.recv_buff_len arg (=4096)     Receive Buffer Length
+	   --mihf.id arg (=mihf)                MIHF Id
+	   --mihf.ip arg (=127.0.0.1)           MIHF Ip
+	   --mihf.peers arg                     List of peer MIHFs
+	   --mihf.remote_port arg (=4551)       MIHF Remote Communications Port
+	   --mihf.local_port arg (=1025)        MIHF Local Communications Port
+	   --mihf.link_response_time arg (=100) MIHF Link Response waiting time (milliseconds)
+	   --mihf.link_delete arg (=2)          MIHF Link Response fails to delete the Link SAP
+	   --enable_broadcast                   MIHF responds to broadcast messages
+	   --log arg (=1)                       MIHF log level [0-4]
+
 
 [note
 *List of peer MIHF's*
@@ -375,7 +393,6 @@ On the machine with the mihf1 the configuration file can look like:
 	local_port = 1025
 	remote_port = 4551
 	peers = mihf2 <mihf1_IP_address> 4551
-	users = user 1234
 
 On the machine with the mihf2 the configuration file can look like:
 
