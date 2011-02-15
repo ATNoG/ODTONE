@@ -403,17 +403,17 @@ int main(int argc, char **argv)
 
 	if (cfg.count(kConf_MIH_LinkGoingDown_indication)) {
 		std::cout << "sent link going down indication to mihf" << std::endl;
-		send_link_going_down_indication(sap, argv[1]);
+		send_link_going_down_indication(sap, dest.c_str());
 	}
 
 	if (cfg.count(kConf_MIH_LinkHandoverImminent_indication)) {
 		std::cout << "sent link handover imminent to mihf" << std::endl;
-		send_link_handover_imminent_indication(sap, argv[1]);
+		send_link_handover_imminent_indication(sap, dest.c_str());
 	}
 
 	if (cfg.count(kConf_MIH_LinkHandoverComplete_indication)) {
 		std::cout << "sent link handover complete to mihf" << std::endl;
-		send_link_handover_complete_indication(sap, argv[1]);
+		send_link_handover_complete_indication(sap, dest.c_str());
 	}
 
   // std::cout << "sent get information request to mihf" << std::endl;
