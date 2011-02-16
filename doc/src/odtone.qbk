@@ -74,7 +74,14 @@ support. We would be more than happy to known about your work on these matters!
 
 ODTONE 0.3 - Open Dot Twenty ONE.
 
-COMPLETE THIS.
+*Added IPv4/IPv6 support.
+*Added MIH Confirm Messages.
+*Added internal Link SAP/MIH User discovery mechanism.
+*Added support for multiple Link SAPs.
+*MIHF capabilities are configured at Link SAPs.
+*Fixed MIH Protocol state machines.
+*New documentation: general documentation and incode documentation (that could be generated with Doxygen).
+
 
 [endsect]
 
