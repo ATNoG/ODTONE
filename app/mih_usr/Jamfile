@@ -26,3 +26,9 @@ exe mih_usr
 	  ../../lib/odtone/sap//odtone_sap
 	;
 
+install install
+	: mih_usr
+	  mih_usr.conf
+	: <location>../../dist
+	;
+

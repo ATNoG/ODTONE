@@ -48,6 +48,7 @@ build-project app/link_sap ;
 alias install
 	: src/mihf//install
 	  app/link_sap//install
+	  app/mih_usr//install
 	;
 
 explicit-alias base : lib/odtone//odtone_base ;
