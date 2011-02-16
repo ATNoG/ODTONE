@@ -1,9 +1,11 @@
 //=============================================================================
 // Brief   : MIH Message
 // Authors : Bruno Santos <bsantos@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -11,70 +13,58 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #include <odtone/mih/message.hpp>
 #include <odtone/mih/tlv_types.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
-/**
- * \defgroup MIH
- *
- * <b> Introduction </b>
- *
- * The MIH API contains a set of classes to generate/parse MIH messages,
- * including the types present in the standard and template classes to ease the
- * definition of new types.
- *
- * <b> Types </b>
- *
- * The payload of a message is a sequence of types that require (de)serialization
- * support. In this particular case, the serialization is done with the TLV archive
- * odtone::mih::itlv and odtone::mih::otlv. The MIH types support (de)serialization
- * for the odtone::mih::iarchive and odtone::mih::oarchive, this particular archive
- * does not include the TLV field, this is necessary in order to support defining
- * new sequence types from existing MIH types. However, the TLV archive requieres
- * TLV encoding. The odtone::mih::tlv_fwd template class allows to easily typedef
- * TLV type helpers that perform forwarding from a specific MIH type with TLV
- * serialization support.
- *
- * Some template classes are available to easily define new types:
- * - BITMAP maps to odtone::mih::bitmap
- * - CHOICE maps to \a boost::variant
- * - ENUMERATED maps to odtone::mih::enumeration
- *
- * For optional parameters use \a boost::optional<T>, see odtone::mih::message for
- * more details.
- *
- * In the case of SEQUENCE types, this are implemented using class/struct that
- * must have a serialize() method (see the odtone::mih::archive).
- *
- * <b> MIH Messages </b>
- *
- * For generating/parsing messages, a mini DSL is provided for maximum flexibility
- * and extendability. For more details see odtone::mih::message.
- */
-
-///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Construct a default MIH Message.
+ *
+ * The defaults for each field are:
+ *    version = 1;
+ *    ackreq  = false;
+ *    ackrsp  = false;
+ *    uir     = false;
+ *    m       = false;
+ *    fn      = 0;
+ *    mid     = 0;
+ *    tid     = 0;
+ */
 message::message()
 	: _version(1), _ackreq(false), _ackrsp(false), _uir(false), _m(false),
 	_fn(0), _mid(0), _tid(0), _payload(), _in(_payload), _out(_payload)
 {
 }
 
+/**
+ * Construct a MIH Message parsing all fields from a frame.
+ *
+ * @param fm odtone::mih::frame from which to parse information.
+ */
 message::message(const frame& fm)
 	: _payload(), _in(_payload), _out(_payload)
 {
 	*this = fm;
 }
 
+/**
+ * Destruct a MIH Message.
+ */
 message::~message()
 {
 }
 
+/**
+ * Extract the MIH Message fields from a given odtone::mih::frame.
+ *
+ * @param fm odtone::mih::frame from which to extract information.
+ * @return odtone::mih::message with the fields updated.
+ */
 message& message::operator=(const frame& fm)
 {
 	_version = fm.version();
@@ -101,8 +91,9 @@ message& message::operator=(const frame& fm)
 }
 
 /**
- * \brief Get the MIH Message Frame
- * \param fm a dynamic frame buffer to fill
+ * Get the MIH Message Frame
+ *
+ * @param fm a dynamic frame buffer to fill
  */
 void message::get_frame(frame_vla& fm) const
 {
@@ -128,7 +119,9 @@ void message::get_frame(frame_vla& fm) const
 }
 
 /**
- * \brief Check if the message contains MIH service specific TLVs
+ * Check if the MIH Message has service specific TLVs
+ *
+ * @return true if has service specific TLVs or false otherwise.
  */
 bool message::has_service_specific_tlv()
 {

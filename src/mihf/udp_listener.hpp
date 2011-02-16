@@ -1,7 +1,11 @@
+//==============================================================================
+// Brief   : UDP Listener
+// Authors : Simao Reis <sreis@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-// Copyright (c) 2007-2009 2009 Universidade Aveiro - Instituto de
-// Telecomunicacoes Polo Aveiro
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -9,9 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//
-// Author:     Simao Reis <sreis@av.it.pt>
-//
+//==============================================================================
 
 #ifndef GENERIC_SERVER_HPP
 #define GENERIC_SERVER_HPP
@@ -29,19 +31,40 @@ using namespace boost::asio;
 
 namespace odtone { namespace mihf {
 
+/**
+ * The classes udp_listener is a wrapper around the boost::asio::ip::udp and is
+ * responsible for handling UDP communications.
+ */
 class udp_listener
 {
 public:
-	// bind to @ip and @port and create @num_threads for processing messages
+	/**
+	 * UDP Listener constructor.
+	 *
+	 * @param io io_service.
+	 * @param ipv IP protocol.
+	 * @param ip IP Address.
+	 * @param port listening port.
+	 * @param d dispatch function.
+	 */
 	udp_listener(io_service& io,
 		     ip::udp ipv,
 		     const char *ip,
 		     uint16 port,
 		     dispatch_t &d);
 
+	/**
+	 * Start UDP listener socket.
+	 */
 	void start();
 
-	// Handle completion of an asynchronous accept operation
+	/**
+	 * Handle completion of an asynchronous accept operation.
+	 *
+	 * @param buff input message bytes.
+	 * @param rbytes number of bytes of the input message.
+	 * @param error error code.
+	 */
 	void handle_receive(buffer<uint8>& buff,
 			    size_t rbytes,
 			    const boost::system::error_code& ec);

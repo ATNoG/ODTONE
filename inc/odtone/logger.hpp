@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : Logging Facilities
 // Authors : Bruno Santos <bsantos@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -13,7 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #ifndef ODTONE_LOGGER__HPP_
 #define ODTONE_LOGGER__HPP_
@@ -29,15 +29,64 @@
 namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * The BASE API offers support mechanisms for logging, using odtone::logger class.
+ * The logger object is used to log messages for a specific system or application
+ * component. Logger names can be arbitrary strings, but they should normally be
+ * based on the application that invoke it.
+ * Each logger has a level associated with it. This reflects the maximum level
+ * that the logger cares about. So if you set level to 2 it only cares about log
+ * messages belonging to level 0, 1 and 2.
+ * It also has an std::ostream object associated with it. This defines how the
+ * logger write and format output as sequences of characters. The log messages
+ * can have up to 10 arguments.
+ */
 class logger : boost::noncopyable {
 public:
+	/**
+	 * Construct a Logger.
+	 *
+	 * @param name logger's name.
+	 * @param log logger from where extract the configurations for the new logger.
+	 */
 	logger(char const* const name, logger& log);
+
+	/**
+	 * Construct a Logger.
+	 *
+	 * @param name logger's name.
+	 * @param sink std::ostream that defines how the logger will write and format output as sequences of characters.
+	 */
 	logger(char const* const name, std::ostream& sink);
+
+	/**
+	 * Destruct for Logger.
+	 */
 	~logger();
 
+	/**
+	 * Set the level configuration. Each logger has a level associated with it.
+	 * This reflects the maximum level that the logger cares about. So if you
+	 * set level to 2 it only cares about log messages belonging to level 0, 1 and 2.
+	 *
+	 * @param n logger level.
+	 */
 	void level(uint n) { _level = n; }
 
-	uint          level() const { return _level; }
+	/**
+	 * Get the level configuration. Each logger has a level associated with it.
+	 * This reflects the maximum level that the logger cares about. So if you
+	 * set level to 2 it only cares about log messages belonging to level 0, 1 and 2.
+	 *
+	 * @return The logger level.
+	 */
+	uint level() const { return _level; }
+
+	/**
+	 * Get the std::ostream associated with the logger.
+	 *
+	 * @return The std::ostream associated with the logger.
+	 */
 	std::ostream& sink() const  { return _sink; }
 
 	template<class T1>

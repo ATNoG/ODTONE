@@ -2,11 +2,11 @@
 // Brief   : Configuration Module
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //           Simao Reis   <sreis@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -14,7 +14,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #include <odtone/mih/config.hpp>
 #include <boost/program_options/parsers.hpp>
@@ -29,20 +29,27 @@
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Construct a Configuration and Command Line Options Parser.
+ *
+ * @param desc a set of option descriptions.
+ */
 config::config(po::options_description &desc)
 	: _desc(desc)
 {
 }
 
+/**
+ * Destruct a Configuration and Command Line Options Parser.
+ */
 config::~config()
 {
 }
 
 /**
- * \brief Check if the \a help option was specified
+ * Check if the help option was specified.
  *
- * \returns \b true if the \a help option is present
- *          \b false otherwise
+ * @return true if the help option is present or false otherwise.
  */
 bool config::help()
 {
@@ -51,7 +58,11 @@ bool config::help()
 
 
 /**
- * \brief Parse the command line
+ * Parse the command line arguments.
+ *
+ * @param argc number of arguments passed through the command line.
+ * @param argv arguments passed through the command line.
+ * @param conf_file_option name of configuration file.
  */
 bool config::parse(int argc, char* argv[], const char* conf_file_option)
 {

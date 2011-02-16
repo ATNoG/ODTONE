@@ -1,7 +1,11 @@
+//==============================================================================
+// Brief   : TCP Listener
+// Authors : Simao Reis <sreis@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-// Copyright (c) 2007-2009 2009 Universidade Aveiro - Instituto de
-// Telecomunicacoes Polo Aveiro
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -9,9 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//
-// Author:     Simao Reis <sreis@av.it.pt>
-//
+//==============================================================================
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "tcp_listener.hpp"
@@ -22,17 +24,31 @@
 
 namespace odtone { namespace mihf {
 
+/**
+ * TCP session constructor.
+ *
+ * @param io io_service.
+ * @param d dispatch function.
+ */
 session::session(io_service &io, dispatch_t &d)
 	: _sock(io),
 	  _dispatch(d)
 {
 }
 
+/**
+ * Get session's socket.
+ *
+ * @return The session's Socket.
+ */
 ip::tcp::socket& session::socket()
 {
 	return _sock;
 }
 
+/**
+ * Start Session.
+ */
 void session::start()
 {
 	odtone::buffer<uint8> buff = odtone::buffer<uint8>(1500);
@@ -47,6 +63,13 @@ void session::start()
 					  placeholders::error));
 }
 
+/**
+ * Handle completion of an asynchronous accept operation.
+ *
+ * @param buff input message bytes.
+ * @param rbytes number of bytes of the input message.
+ * @param error error code.
+ */
 void session::handle_read(odtone::buffer<uint8> &buff,
 			  size_t rbytes,
 			  const boost::system::error_code &e)
@@ -69,6 +92,15 @@ void session::handle_read(odtone::buffer<uint8> &buff,
 	}
 }
 
+/**
+ * TCP Listener constructor.
+ *
+ * @param io io_service.
+ * @param ipv IP protocol.
+ * @param ip IP Address.
+ * @param port listening port.
+ * @param d dispatch function.
+ */
 tcp_listener::tcp_listener(io_service &io,
 			   ip::tcp ipv,
 			   const char* ip,
@@ -80,6 +112,9 @@ tcp_listener::tcp_listener(io_service &io,
 {
 }
 
+/**
+ * Start TCP listener socket.
+ */
 void tcp_listener::start()
 {
 	session *new_session = new session(_io, _dispatch);
@@ -90,6 +125,12 @@ void tcp_listener::start()
 					   placeholders::error));
 }
 
+/**
+ * TCP accept handler.
+ *
+ * @param s session.
+ * @param error_code error code.
+ */
 void tcp_listener::handle_accept(session *new_session,
 			       const boost::system::error_code &e)
 {

@@ -1,7 +1,11 @@
+//==============================================================================
+// Brief   : Source Transaction
+// Authors : Simao Reis <sreis@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-// Copyright (c) 2007-2009 2009 Universidade Aveiro - Instituto de
-// Telecomunicacoes Polo Aveiro
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -9,9 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//
-// Author:     Simao Reis <sreis@av.it.pt>
-//
+//==============================================================================
 
 #ifndef SRC_TRANSACTION_HPP
 #define SRC_TRANSACTION_HPP
@@ -22,6 +24,9 @@
 
 namespace odtone { namespace mihf {
 
+/**
+ * Source State Machine States.
+ */
 enum src_transaction_state_t
 	{
         SRC_INIT,
@@ -32,12 +37,24 @@ enum src_transaction_state_t
         SRC_SUCCESS
 	};
 
-
+/**
+ * This class represents the behavior of the Source State Machine.
+ */
 class src_transaction_t
 	: public transaction_t
 {
 public:
+	/**
+	 * Constructor for Source State Machine transaction.
+	 *
+	 * @param f transaction handler.
+	 * @param netsap netsap module.
+	 */
 	src_transaction_t(handler_t &f, net_sap &netsap);
+
+	/**
+	 * Run Source State Machine transaction.
+	 */
 	void run();
 
 	src_transaction_state_t state;

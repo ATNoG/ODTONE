@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : MIH Binary Query Types
 // Authors : Bruno Santos <bsantos@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -13,7 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #ifndef ODTONE_MIH_TYPES_BIN_QUERY__HPP_
 #define ODTONE_MIH_TYPES_BIN_QUERY__HPP_
@@ -27,13 +27,35 @@
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define CURR_PREG data type.
+ */
 typedef cost_curr               curr_pref;
+
+/**
+ * Define NETWK_INC data type.
+ */
 typedef std::vector<network_id> netwk_inc;
+
+/**
+ * Define NGHB_RADIUS data type.
+ */
 typedef uint32                  nghb_radius;
+
+/**
+ * Define IE_TYPE data type.
+ */
 typedef uint32                  ie_type;
+
+/**
+ * Define RTP_TEMPL data type.
+ */
 typedef std::vector<ie_type>    rpt_templ;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * The enumeration of NET_TYPE_INC data type.
+ */
 enum net_type_inc_enum {
 	net_type_inc_gsm = 0,
 	net_type_inc_gprs = 1,
@@ -49,9 +71,15 @@ enum net_type_inc_enum {
 	net_type_inc_ieee802_22 = 11,
 };
 
+/**
+ * Define NET_TYPE_INC data type.
+ */
 typedef bitmap<32, net_type_inc_enum> net_type_inc;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define QUERIER_LOC data type.
+ */
 struct querier_loc {
 	querier_loc() : _location(null()), _link_addr(null()), _nghb_radius(null())
 	{ }
@@ -71,6 +99,9 @@ struct querier_loc {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define RPT_LIMIT data type.
+ */
 struct rpt_limit {
 	rpt_limit() : _max_ies(0), _start_entry(0)
 	{ }
@@ -88,6 +119,9 @@ struct rpt_limit {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define IQ_BIN_DATA data type.
+ */
 struct iq_bin_data {
 	iq_bin_data()
 		: _querier_loc(null()), _net_type_inc(null()), _netwk_inc(null()),
@@ -114,6 +148,9 @@ struct iq_bin_data {
 	boost::variant<null, curr_pref>    _currency;
 };
 
+/**
+ * Define LIST(IQ_BIN_DATA) data type.
+ */
 typedef std::vector<iq_bin_data> iq_bin_data_list;
 
 ///////////////////////////////////////////////////////////////////////////////

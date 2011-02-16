@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : Link SAP
 // Authors : Bruno Santos <bsantos@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -13,25 +13,31 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/debug.hpp>
+#include <odtone/mih/types/base.hpp>
 #include <odtone/mih/message.hpp>
 #include <odtone/mih/indication.hpp>
 #include <odtone/mih/request.hpp>
 #include <odtone/mih/response.hpp>
+#include <odtone/mih/confirm.hpp>
 #include <odtone/mih/tlv_types.hpp>
 #include <boost/bind.hpp>
 #include "link_sap.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
+extern odtone::mih::event_list   capabilities_event_list;
+extern odtone::mih::command_list capabilities_command_list;
+extern odtone::mih::link_id      link_id;
 namespace link_sap {
 
 ///////////////////////////////////////////////////////////////////////////////
 link_sap::link_sap(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	: _mihf(cfg, io, boost::bind(&link_sap::default_handler, this, _1))
 {
+	init();
 }
 
 link_sap::~link_sap()
@@ -85,23 +91,40 @@ void link_sap::default_handler(odtone::mih::message& msg)
 	case odtone::mih::request::capability_discover:
 		{
 			odtone::mih::message m;
-			odtone::mih::net_type_addr_list ll;
-			odtone::mih::event_list el;
 
+			// fill the status
 			st = odtone::mih::status_success;
-			el.set(odtone::mih::link_up);
-			el.set(odtone::mih::link_down);
 
-			//TODO: fill the net_type_addr_list
-
-			m << odtone::mih::response(odtone::mih::response::capability_discover)
+			m << odtone::mih::confirm(odtone::mih::confirm::capability_discover)
 				& odtone::mih::tlv_status(st)
-				& odtone::mih::tlv_net_type_addr_list(ll)
-				& odtone::mih::tlv_event_list(el);
+				& odtone::mih::tlv_event_list(capabilities_event_list)
+				& odtone::mih::tlv_command_list(capabilities_command_list);
 
 			_mihf.async_send(m);
 		}
 		break;
+
+	case odtone::mih::request::event_subscribe:
+		{
+			odtone::mih::event_list events;
+			msg >> odtone::mih::request()
+				& odtone::mih::tlv_event_list(events);
+
+			odtone::mih::message m;
+
+			// fill the status
+			st = odtone::mih::status_success;
+
+			m << odtone::mih::confirm(odtone::mih::confirm::event_subscribe)
+				& odtone::mih::tlv_status(st)
+				& odtone::mih::tlv_event_list(events);
+			m.tid(msg.tid());
+
+			_mihf.async_send(m);
+
+			break;
+		}
+
 
 	default:
 		{
@@ -109,12 +132,26 @@ void link_sap::default_handler(odtone::mih::message& msg)
 
 			st = odtone::mih::status_failure;
 
-			m << odtone::mih::response(odtone::mih::response::capability_discover)
+			m << odtone::mih::confirm(odtone::mih::confirm::capability_discover)
 				& odtone::mih::tlv_status(st);
 
 			_mihf.async_send(m);
 		}
 	}
+}
+
+/**
+ * Initialization of Link SAP. Responsible for sending Link SAP register message
+ * to the local MIHF.
+ */
+void link_sap::init()
+{
+	odtone::mih::message m;
+
+	m << odtone::mih::indication(odtone::mih::indication::link_register)
+	    & odtone::mih::tlv_interface_type_addr(link_id);
+
+	_mihf.sync_send(m);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

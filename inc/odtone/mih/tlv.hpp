@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : MIH TLV Serialization DSL
 // Authors : Bruno Santos <bsantos@av.it.pt>
-// ----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2010 Universidade de Aveiro
-// Copyrigth (C) 2009-2010 Instituto de Telecomunicações - Pólo de Aveiro
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -13,7 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #ifndef ODTONE_MIH_TLV__HPP_
 #define ODTONE_MIH_TLV__HPP_
@@ -161,6 +161,15 @@ struct oui_ {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * The MIH types support serialization and deserialization for the
+ * odtone::mih::iarchive and odtone::mih::oarchive, however those particular
+ * archives does not include the TLVs fields.
+ * So odtone::mih::tlv_type_ is responsible to manage TLVs and offers mechanisms
+ * to serialize and deserialize them. There are 2 types of this class:
+ *   -> odtone::mih::tlv_type_< T, TLV >
+ *   -> odtone::mih::tlv_type_< boost::optional< T >, TLV >
+ */
 template<class T, class TLV>
 class tlv_type_ {
 	typedef typename TLV::tlv_serializer impl;
@@ -169,10 +178,20 @@ public:
 	typedef tlv_type_<T, TLV> tlv_type;
 
 public:
+	/**
+	 * Construct a TLV of a particular type.
+	 *
+	 * @param val value of the TLV.
+	 */
 	tlv_type_(T& val)
 		: _val(val)
 	{ }
 
+	/**
+	 * Deserialize the TLV type value from the input archive.
+	 *
+	 * @param ar odtone::mih::iarchive from where parse the TLV value.
+	 */
 	void serialize(iarchive& ar) const
 	{
 		bool res = impl::serialize(ar, _val);
@@ -180,6 +199,11 @@ public:
 			boost::throw_exception(bad_tlv());
 	}
 
+	/**
+	 * Serialize the TLV type value to the output archive.
+	 *
+	 * @param ar odtone::mih::oarchive to where serialize the TLV value.
+	 */
 	void serialize(oarchive& ar) const
 	{
 		impl::serialize(ar, _val);
@@ -189,6 +213,15 @@ private:
 	T& _val;
 };
 
+/**
+ * The MIH types support serialization and deserialization for the
+ * odtone::mih::iarchive and odtone::mih::oarchive, however those particular
+ * archives does not include the TLVs fields.
+ * So odtone::mih::tlv_type_ is responsible to manage TLVs and offers mechanisms
+ * to serialize and deserialize them. There are 2 types of this class:
+ *   -> odtone::mih::tlv_type_< T, TLV >
+ *   -> odtone::mih::tlv_type_< boost::optional< T >, TLV >
+ */
 template<class T, class TLV>
 class tlv_type_<boost::optional<T>, TLV> {
 	typedef typename TLV::tlv_serializer impl;
@@ -197,10 +230,20 @@ public:
 	typedef tlv_type_<boost::optional<T>, TLV> tlv_type;
 
 public:
+	/**
+	 * Construct a TLV of a particular type.
+	 *
+	 * @param val value of the TLV.
+	 */
 	tlv_type_(boost::optional<T>& val)
 		: _val(val)
 	{ }
 
+	/**
+	 * Deserialize the TLV type value from the input archive.
+	 *
+	 * @param ar odtone::mih::iarchive from where parse the TLV value.
+	 */
 	void serialize(iarchive& ar) const
 	{
 		if (ar.position() >= ar.length())
@@ -215,6 +258,11 @@ public:
 			_val = boost::none;
 	}
 
+	/**
+	 * Serialize the TLV type value to the output archive.
+	 *
+	 * @param ar odtone::mih::oarchive to where serialize the TLV value.
+	 */
 	void serialize(oarchive& ar) const
 	{
 		if (_val)
@@ -232,11 +280,25 @@ class tlv_cast_ {
 	typedef typename tlv_type_<boost::optional<T>, TLV>::tlv_type tlv_optional_type;
 
 public:
+	/**
+	 * Cast between the number of TLV and the data type presented in it,
+	 * and the correspondent TLV type.
+	 *
+	 * @param val value of the TLV.
+	 * @return The correspondent TLV type.
+	 */
 	tlv_type operator()(const T& val) const
 	{
 		return tlv_type(const_cast<T&>(val));
 	}
 
+	/**
+	 * Cast between the number of TLV and the data type presented in it,
+	 * and the correspondent TLV type. However it supports optional value.
+	 *
+	 * @param val value of the TLV.
+	 * @return The correspondent TLV type.
+	 */
 	tlv_optional_type operator()(const boost::optional<T>& val) const
 	{
 		return tlv_optional_type(const_cast<boost::optional<T>&>(val));
@@ -244,6 +306,11 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * This class permits to check if a given class is a TLV.
+ * It has only a boolean value that is true when the given class is a TLV, or
+ * false otherwise.
+ */
 template<class T>
 class is_tlv_type {
 	typedef char true_t;

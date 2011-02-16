@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : MIH User Example
 // Authors : Bruno Santos <bsantos@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -13,7 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #include <odtone/base.hpp>
 #include <odtone/debug.hpp>
@@ -21,6 +21,7 @@
 #include <odtone/mih/request.hpp>
 #include <odtone/mih/response.hpp>
 #include <odtone/mih/indication.hpp>
+#include <odtone/mih/confirm.hpp>
 #include <odtone/mih/tlv_types.hpp>
 #include <odtone/sap/user.hpp>
 #include <boost/utility.hpp>
@@ -44,7 +45,7 @@ public:
 
 protected:
 	void event_handler(odtone::mih::message& msg, const boost::system::error_code& ec);
-	void capability_discover_response(odtone::mih::message& msg, const boost::system::error_code& ec);
+	void capability_discover_confirm(odtone::mih::message& msg, const boost::system::error_code& ec);
 	void event_subscribe_response(odtone::mih::message& msg, const boost::system::error_code& ec);
 
 private:
@@ -55,6 +56,17 @@ private:
 mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	: _mihf(cfg, io, boost::bind(&mih_user::event_handler, this, _1, _2))
 {
+
+	odtone::mih::message m;
+
+	m << odtone::mih::indication(odtone::mih::indication::user_register)
+	    & odtone::mih::tlv_mbb_handover_support(true);
+
+	_mihf.sync_send(m);
+
+	// Wait a little after register
+	sleep(1);
+
 	odtone::mih::message msg;
 
 	odtone::mih::octet_string destination = cfg.get<odtone::mih::octet_string>(odtone::sap::kConf_MIH_SAP_dest);
@@ -70,7 +82,7 @@ mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	//
 	msg << odtone::mih::request(odtone::mih::request::capability_discover, _mihfid);
 
-	_mihf.async_send(msg, boost::bind(&mih_user::capability_discover_response, this, _1, _2));
+	_mihf.async_send(msg, boost::bind(&mih_user::capability_discover_confirm, this, _1, _2));
 
 	log_(0, "MIH-User has sent a Capability_Discover.request towards its local MIHF");
 }
@@ -112,7 +124,7 @@ void mih_user::event_handler(odtone::mih::message& msg, const boost::system::err
 	}
 }
 
-void mih_user::capability_discover_response(odtone::mih::message& msg, const boost::system::error_code& ec)
+void mih_user::capability_discover_confirm(odtone::mih::message& msg, const boost::system::error_code& ec)
 {
 	if (ec) {
 		log_(0, __FUNCTION__, " error: ", ec.message());
@@ -123,7 +135,7 @@ void mih_user::capability_discover_response(odtone::mih::message& msg, const boo
 	boost::optional<odtone::mih::net_type_addr_list> ntal;
 	boost::optional<odtone::mih::event_list> evt;
 
-	msg >> odtone::mih::response()
+	msg >> odtone::mih::confirm()
 		& odtone::mih::tlv_status(st)
 		& odtone::mih::tlv_net_type_addr_list(ntal)
 		& odtone::mih::tlv_event_list(evt);
@@ -199,6 +211,7 @@ int main(int argc, char** argv)
 			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1234), "Port")
 			(odtone::sap::kConf_File, po::value<std::string>()->default_value("mih_usr.conf"), "Configuration File")
 			(odtone::sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive Buffer Length")
+			(odtone::sap::kConf_MIH_Handover, po::value<bool>()->default_value("true"), "MIH User Handover support")
 			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
 			(odtone::sap::kConf_MIHF_Id, po::value<std::string>()->default_value("local-mihf"), "Local MIHF Id")
 			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("user"), "User Id")

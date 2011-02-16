@@ -2,11 +2,11 @@
 // Brief   : MIH Base Types
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //           Simao Reis   <sreis@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -14,7 +14,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #ifndef ODTONE_MIH_TYPES_BASE__HPP_
 #define ODTONE_MIH_TYPES_BASE__HPP_
@@ -34,7 +34,9 @@
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
-// Define a postfix increment operator for enumeration types
+/**
+ * Define a postfix increment operator for enumeration types.
+ */
 template<class EnumT>
 inline EnumT operator++(EnumT& rs, int)
 {
@@ -47,9 +49,19 @@ inline EnumT operator++(EnumT& rs, int)
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define a OCTET data type.
+ */
 typedef uint8       octet;
+
+/**
+ * Define a OCTET_STRING data type.
+ */
 typedef std::string octet_string;
 
+/**
+ * Define NULL data type.
+ */
 struct null {
   template<class ArchiveT> void serialize(ArchiveT&) {}
 
@@ -64,6 +76,9 @@ inline std::ostream& operator<<(std::ostream& os, const null&)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define BITMAP data type.
+ */
 template<size_t N, class EnumT>
 class bitmap {
 	ODTONE_STATIC_ASSERT(!(N % 8), "N must be a multiple of 8");
@@ -81,6 +96,36 @@ public:
 	void clear(EnumT pos)     { _bitmap[uint(pos) / 8] &= ~(1 << (uint(pos) % 8)); }
 	void set(EnumT pos)       { _bitmap[uint(pos) / 8] |= (1 << (uint(pos) % 8)); }
 	bool get(EnumT pos) const { return _bitmap[uint(pos) / 8] & (1 << (uint(pos) % 8)); }
+
+	void merge(bitmap b) {
+		for (size_t i = 0; i < sizeof(_bitmap); ++i)
+			_bitmap[i] |= b._bitmap[i];
+	}
+
+	void common(bitmap b) {
+		for (size_t i = 0; i < sizeof(_bitmap); ++i)
+			_bitmap[i] &= b._bitmap[i];
+	}
+
+	void full() {
+		for (size_t i = 0; i < sizeof(_bitmap); ++i)
+			_bitmap[i] = 0xFF;
+	}
+
+	bool operator==(const bitmap& bit) const {
+		if(sizeof(_bitmap) == sizeof(bit._bitmap)) {
+			for (size_t i = 0; i < sizeof(_bitmap); ++i) {
+				if(_bitmap[i] != bit._bitmap[i]) {
+					return false;
+				}
+			}
+		}
+		else {
+			return false;
+		}
+
+		return true;
+	}
 
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -100,6 +145,9 @@ struct percentage_exception : virtual public exception {
 	{ }
 };
 
+/**
+ * Define PERCENTAGE data type.
+ */
 class percentage {
 public:
 	percentage() : _val(0)
@@ -127,6 +175,9 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define ENUMERATED data type.
+ */
 template<class T>
 class enumeration {
 	ODTONE_STATIC_ASSERT(boost::is_enum<T>::value, "T must be an enumeration");
@@ -173,6 +224,9 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * The enumeration of STATUS data type.
+ */
 enum status_enum {
 	status_success = 0,
 	status_failure = 1,
@@ -181,6 +235,9 @@ enum status_enum {
 	status_network_error = 4,
 };
 
+/**
+ * Define a STATUS data type.
+ */
 typedef enumeration<status_enum> status;
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : MIH Address Types
 // Authors : Bruno Santos <bsantos@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -13,7 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #ifndef ODTONE_MIH_TYPES_ADDRESS__HPP_
 #define ODTONE_MIH_TYPES_ADDRESS__HPP_
@@ -25,11 +25,25 @@
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define CELL_ID data type.
+ */
 typedef uint32   cell_id;
+
+/**
+ * Define LAC data type.
+ */
 typedef uint16   lac;
+
+/**
+ * Define CI data type.
+ */
 typedef uint16   ci;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define TRANSPORT_ADDR data type.
+ */
 class transport_addr {
 protected:
 	transport_addr(uint16 type) : _type(type)
@@ -58,14 +72,23 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * The enumeration of TRANSPORT_TYPE data type.
+ */
 enum transport_type_enum {
 	l2           = 0,
 	l3_or_higher = 1,
 };
 
+/**
+ * Define TRANSPORT_TYPE data type.
+ */
 typedef enumeration<transport_type_enum> transport_type;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define MAC_ADDR data type.
+ */
 class mac_addr : public transport_addr {
 public:
 	mac_addr() : transport_addr(6)
@@ -97,6 +120,9 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define L2_3GPP_2G_CELL_ID data type.
+ */
 struct l2_3gpp_2g_cell_id {
 	uint8  plmn_id[3];
 	lac    _lac;
@@ -127,6 +153,9 @@ struct l2_3gpp_2g_cell_id {
 	}
 };
 
+/**
+ * Define L2_3GPP_3G_CELL_ID data type.
+ */
 struct l2_3gpp_3g_cell_id {
 	uint8    plmn_id[3];
 	cell_id  _cell_id;
@@ -155,6 +184,9 @@ struct l2_3gpp_3g_cell_id {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define L2_3GPP_ADDR data type.
+ */
 struct l2_3gpp_addr  {
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -176,6 +208,9 @@ struct l2_3gpp_addr  {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define L2_3GPP2_ADDR data type.
+ */
 struct l2_3gpp2_addr {
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -197,6 +232,9 @@ struct l2_3gpp2_addr {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define OTHER_L2_ADDR data type.
+ */
 struct other_l2_addr {
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -218,6 +256,9 @@ struct other_l2_addr {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define LINK_ADDR data type.
+ */
 typedef boost::variant<mac_addr,
 			l2_3gpp_3g_cell_id,
 			l2_3gpp_2g_cell_id,
@@ -226,9 +267,15 @@ typedef boost::variant<mac_addr,
 			other_l2_addr
 		      > link_addr;
 
+/**
+ * Define LIST(LINK_ADDR) data type.
+ */
 typedef std::vector<link_addr> link_addr_list;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define IP_ADDR data type.
+ */
 class ip_addr : public transport_addr {
 public:
 	enum type_ip_enum {
@@ -261,8 +308,19 @@ public:
 	}
 };
 
+/**
+ * Define DHCP_SERV data type.
+ */
 typedef ip_addr dhcp_serv;
+
+/**
+ * Define FN_AGENT data type.
+ */
 typedef ip_addr fn_agent;
+
+/**
+ * Define ACC_RTR data type.
+ */
 typedef ip_addr acc_rtr;
 
 ///////////////////////////////////////////////////////////////////////////////

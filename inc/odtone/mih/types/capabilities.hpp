@@ -2,11 +2,11 @@
 // Brief   : MIH Capabilities Types
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //           Simao Reis   <sreis@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -14,7 +14,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #ifndef ODTONE_MIH_TYPES_CAPABILITIES__HPP_
 #define ODTONE_MIH_TYPES_CAPABILITIES__HPP_
@@ -28,12 +28,21 @@
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define EVT_CFG_INFO data type.
+ */
 typedef boost::variant<std::vector<link_det_cfg>,
 					   std::vector<link_cfg_param> > evt_cfg_info;
 
+/**
+ * Define LIST(EVT_CFG_INFO) data type.
+ */
 typedef std::vector<evt_cfg_info> evt_cfg_info_list;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * The enumeration of EVENT_LIST data type.
+ */
 enum event_list_enum {
 	link_detected = 0,
 	link_up = 1,
@@ -45,9 +54,15 @@ enum event_list_enum {
 	link_pdu_transmit_status = 7,
 };
 
+/**
+ * Define EVENT_LIST data type.
+ */
 typedef bitmap<32, event_list_enum> event_list;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * The enumeration of COMMAND_LIST data type.
+ */
 enum command_list_enum {
 	link_get_parameters = 0,
 	link_configure_thresholds = 1,
@@ -62,9 +77,15 @@ enum command_list_enum {
 	mn_ho_complete = 4,
 };
 
+/**
+ * Define COMMAND_LIST data type.
+ */
 typedef bitmap<32, command_list_enum> command_list;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * The enumeration of IQ_TYPE_LIST data type.
+ */
 enum iq_type_list_enum {
 	iq_type_binary_data = 0,
 	iq_type_rdf_data = 1,
@@ -97,17 +118,29 @@ enum iq_type_list_enum {
 	iq_type_ie_poa_ip_addr = 28,
 };
 
+/**
+ * Define IQ_TYPE_LIST data type.
+ */
 typedef bitmap<64, iq_type_list_enum> iq_type_list;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * The enumeration of TRANSPORT_LIST data type.
+ */
 enum transport_list_enum {
 	transport_udp = 0,
 	transport_tcp = 1,
 };
 
+/**
+ * Define TRANSPORT_LIST data type.
+ */
 typedef bitmap<16, transport_list_enum> transport_list;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define MBB_HO_SUPP data type.
+ */
 struct mbb_ho_supp {
 	mbb_ho_supp() : supported(false)
 	{ }
@@ -126,6 +159,9 @@ struct mbb_ho_supp {
 	bool         supported;
 };
 
+/**
+ * Define LIST(MBB_HO_SUPP) data type.
+ */
 typedef std::vector<mbb_ho_supp> mbb_ho_supp_list;
 
 ///////////////////////////////////////////////////////////////////////////////

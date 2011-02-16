@@ -1,11 +1,11 @@
 //=============================================================================
 // Brief   : Debug Helpers
 // Authors : Bruno Santos <bsantos@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -13,7 +13,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #ifndef ODTONE_DEBUG__HPP_
 #define ODTONE_DEBUG__HPP_
@@ -50,16 +50,62 @@ struct crash_ctx {
 	void*       context;
 };
 
+/**
+ * The BASE API offers mechanisms for debugging. This is done using a class
+ * named odtone::checkpoint.
+ * It can be viewed as a linked list of checkpoints that maintain the execution
+ * status of the application. So, when a crash happens it is easy to check the
+ * last checkpoint and discover why it happen.
+ */
 class checkpoint {
 public:
+	/**
+	 * Get the checkpoint list.
+	 *
+	 * @return The checkpoint list.
+	 */
 	static checkpoint* top();
 
+	/**
+	 * Construct a Checkpoint.
+	 *
+	 * @param file file name
+	 * @param line line number
+	 * @param exp expression
+	 */
 	checkpoint(const char* file, uint line, const char* exp);
+
+	/**
+	 * Destruct for Checkpoint.
+	 */
 	~checkpoint();
 
+	/**
+	 * Get the previous checkpoint of the checkpoint that calls this method.
+	 *
+	 * @return The previous checkpoint of the checkpoint that calls this method.
+	 */
 	checkpoint* previous() const   { return _prev; }
+
+	/**
+	 * Get the file name of the checkpoint.
+	 *
+	 * @return The file name of the checkpoint.
+	 */
 	const char* file() const       { return _file; }
+
+	/**
+	 * Get the line number of the checkpoint.
+	 *
+	 * @return The line number of the checkpoint.
+	 */
 	uint        line() const       { return _line; }
+
+	/**
+	 * Get the expression of the checkpoint.
+	 *
+	 * @return The expression of the checkpoint.
+	 */
 	const char* expression() const { return _exp; }
 
 	operator bool() const { return false; }

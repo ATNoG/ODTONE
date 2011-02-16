@@ -2,11 +2,11 @@
 // Brief   : MIH Information Types
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //           Simao Reis   <sreis@av.it.pt>
+//------------------------------------------------------------------------------
+// ODTONE - Open Dot Twenty One
 //
-//
-// Copyright (C) 2009 Universidade Aveiro - Instituto de Telecomunicacoes Polo Aveiro
-//
-// This file is part of ODTONE - Open Dot Twenty One.
+// Copyright (C) 2009-2011 Universidade Aveiro
+// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -14,7 +14,7 @@
 // other than expressed in the named license agreement.
 //
 // This software is distributed without any warranty.
-//=============================================================================
+//==============================================================================
 
 #ifndef ODTONE_MIH_TYPES_INFORMATION__HPP_
 #define ODTONE_MIH_TYPES_INFORMATION__HPP_
@@ -29,24 +29,85 @@
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define NET_AUX_ID data type.
+ */
 typedef octet_string	net_aux_id;
+
+/**
+ * Define NETWORK_ID data type.
+ */
 typedef octet_string	network_id;
+
+/**
+ * Define BAND_CLASS data type.
+ */
 typedef uint8			band_class;
+
+/**
+ * Define BANDWIDTH data type.
+ */
 typedef uint16			bandwidth;
+
+/**
+ * Define BASE_ID data type.
+ */
 typedef uint16			base_id;
+
+/**
+ * Define CNTRY_CODE data type.
+ */
 typedef uint16			cntry_code;
+
+/**
+ * Define DU_CTR_FREQ data type.
+ */
 typedef sint64			du_ctr_freq;
+
+/**
+ * Define EIRP data type.
+ */
 typedef sint8			eirp;
+
+/**
+ * Define INIT_CODE data type.
+ */
 typedef sint8			init_code;
+
+/**
+ * Define HO_CODE data type.
+ */
 typedef sint8			ho_code;
+
+/**
+ * Define FQ_CODE_NUM data type.
+ */
 typedef sint16			fq_code_num;
+
+/**
+ * Define PILOT_PN data type.
+ */
 typedef sint16			pilot_pn;
+
+/**
+ * Define FREQ_ID data type.
+ */
 typedef sint16			freq_id;
 
+/**
+ * Define DOWN_BP data type.
+ */
 typedef bitmap<256, uint8>		down_bp;
+
+/**
+ * Define UP_BP data type.
+ */
 typedef bitmap<256, uint8>		up_bp;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define COST_CURR data type.
+ */
 struct cost_curr {
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -61,6 +122,9 @@ struct cost_curr {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * The enumeration of COST_UNIT data type.
+ */
 enum cost_unit_enum {
 	cost_unit_second = 0,
 	cost_unit_minute = 1,
@@ -73,9 +137,15 @@ enum cost_unit_enum {
 	cost_unit_flat_rate = 8
 };
 
+/**
+ * Define COST_UNIT data type.
+ */
 typedef enumeration<cost_unit_enum> cost_unit;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define COST_VALUE data type.
+ */
 struct cost_value {
 	uint32 integer;
 	uint16 fraction;
@@ -89,6 +159,9 @@ struct cost_value {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define COST data type.
+ */
 struct cost {
 	cost_unit	unit;
 	cost_value	value;
@@ -105,9 +178,15 @@ struct cost {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define DATA_RATE data type.
+ */
 typedef uint32 data_rate;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define REGU_DOMAIN data type.
+ */
 struct regu_domain {
 	cntry_code	country_code;
 	uint8		regulatory_class;
@@ -121,9 +200,15 @@ struct regu_domain {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define FREQ_BANDS data type.
+ */
 typedef std::vector<uint32> freq_bands;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define CH_RANGE data type.
+ */
 struct ch_range {
 	uint32 low;
 	uint32 high;
@@ -138,6 +223,9 @@ struct ch_range {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define GAP data type.
+ */
 struct gap {
 	uint8 ttg[2];
 	uint8 rtg;
@@ -153,6 +241,9 @@ struct gap {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define BURST_PROF data type.
+ */
 struct burst_prof {
 	down_bp 	downbp;
 	up_bp		upbp;
@@ -168,6 +259,9 @@ struct burst_prof {
 
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define CDMA_CODES data type.
+ */
 struct cdma_codes {
 	init_code	initcode;
 	ho_code		hocode;
@@ -182,6 +276,9 @@ struct cdma_codes {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define DCD_UDC data type.
+ */
 struct dcd_udc {
 	base_id		baseid;
 	bandwidth	bandwidth_;
@@ -206,6 +303,9 @@ struct dcd_udc {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define SIB data type.
+ */
 struct sib {
 	cell_id		cellid;
 	fq_code_num fqcodenum;
@@ -220,6 +320,9 @@ struct sib {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define SYS_PARAMS data type.
+ */
 struct sys_params {
 	base_id		baseid;
 	pilot_pn	pilotpn;
@@ -238,6 +341,9 @@ struct sys_params {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define PARAMETERS data type.
+ */
 struct parameters {
 	dcd_udc		dcdudc;
 	sib			sib_;
@@ -281,12 +387,21 @@ enum netsubtype_enum {
 	netsubtype_iee80216_3_5GHz = 1,
 };
 
+/**
+ * Define SUBTYPE data type.
+ */
 typedef bitmap<64, netsubtype_enum> netsubtype;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define TYPE_EXT data type.
+ */
 typedef octet_string type_ext;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define NETWORK_TYPE data type.
+ */
 struct network_type {
 	boost::variant<null, link_type>  link;
 	boost::variant<null, netsubtype> subtype;
@@ -317,6 +432,9 @@ struct network_type {
 
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define SYSTEM_INFO data type.
+ */
 struct system_info {
 	network_type						nettype;
 	link_addr							linkaddr;
@@ -333,7 +451,14 @@ struct system_info {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define OP_NAME data type.
+ */
 typedef octet_string op_name;
+
+/**
+ * Define SP_ID data type.
+ */
 typedef octet_string sp_id;
 
 enum op_namespace_enum {
@@ -344,9 +469,15 @@ enum op_namespace_enum {
 	op_namespace_general = 4
 };
 
+/**
+ * Define OP_NAMESPACE data type.
+ */
 typedef enumeration<op_namespace_enum> op_namespace;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define OPERATOR_ID data type.
+ */
 struct operator_id {
 	op_name				opname;
 	op_namespace		opnamespace;
@@ -359,6 +490,9 @@ struct operator_id {
 	}
 };
 
+/**
+ * Define ROAMING_PTNS data type.
+ */
 typedef std::vector<operator_id> roaming_ptns;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -379,12 +513,21 @@ enum supported_lcp_enum {
 	supported_lcp_lbyr_with_held = 52
 };
 
+/**
+ * Define SUPPORTED_LCP data type.
+ */
 typedef enumeration<supported_lcp_enum> supported_lcp;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define PROXY_ADDR data type.
+ */
 typedef boost::variant<ip4_addr, ip6_addr, fqdn> proxy_addr;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Define NET_TYPE_ADDR data type.
+ */
 struct net_type_addr {
 	network_type nettype;
 	link_addr    addr;
@@ -406,6 +549,9 @@ struct net_type_addr {
 	}
 };
 
+/**
+ * Define LIST(NET_TYPE_ADDR) data type.
+ */
 typedef std::vector<net_type_addr> net_type_addr_list;
 
 ///////////////////////////////////////////////////////////////////////////////
