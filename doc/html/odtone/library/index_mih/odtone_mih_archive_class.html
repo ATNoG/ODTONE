@@ -1,0 +1,363 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>2.7. odtone::mih::archive Class Reference</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../../index.html" title="ODTONE 0.3">
+<link rel="up" href="../index_mih.html" title="ODTONE MIH">
+<link rel="prev" href="odtone_mih_config_class.html" title="2.7. odtone::mih::config Class Reference">
+<link rel="next" href="odtone_mih_iarchive_class.html" title="2.9. odtone::mih::iarchive Class Reference">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="odtone_mih_config_class.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index_mih.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="odtone_mih_iarchive_class.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+<div class="section" title="2.7. odtone::mih::archive Class Reference">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.library.index_mih.odtone_mih_archive_class"></a><a class="link" href="odtone_mih_archive_class.html" title="2.7. odtone::mih::archive Class Reference">
+        2.7. odtone::mih::archive Class Reference</a>
+</h4></div></div></div>
+<a name="odtone.library.index_mih.odtone_mih_archive_class.detailed_description"></a><h6>
+<a name="id3115500"></a>
+          <a class="link" href="odtone_mih_archive_class.html#odtone.library.index_mih.odtone_mih_archive_class.detailed_description">Detailed
+          Description</a>
+        </h6>
+<p>
+          <span class="bold"><strong>Archive.</strong></span>
+        </p>
+<p>
+          Provides serialization/deserialization for all payload data types, except
+          destination and source ID's that are serialize/deserialize in <a class="link" href="odtone_mih_message_class.html" title="2.1. odtone::mih::message Class Reference">odtone::mih::message</a>.
+        </p>
+<a name="odtone.library.index_mih.odtone_mih_archive_class.namespace"></a><h6>
+<a name="id3115546"></a>
+          <a class="link" href="odtone_mih_archive_class.html#odtone.library.index_mih.odtone_mih_archive_class.namespace">Namespace</a>
+        </h6>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span>
+</pre>
+<p>
+        </p>
+<a name="odtone.library.index_mih.odtone_mih_archive_class.public_member_functions"></a><h6>
+<a name="id3115598"></a>
+          <a class="link" href="odtone_mih_archive_class.html#odtone.library.index_mih.odtone_mih_archive_class.public_member_functions">Public
+          Member Functions</a>
+        </h6>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">archive</span><span class="special">();</span>
+<span class="special">~</span><span class="identifier">archive</span><span class="special">();</span>
+
+<span class="keyword">void</span> <span class="identifier">clear</span><span class="special">();</span>
+<span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">uint8</span><span class="special">&gt;&amp;</span> <span class="identifier">buffer</span><span class="special">);</span>
+<span class="keyword">void</span> <span class="identifier">buffer</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint8</span><span class="special">*</span> <span class="identifier">buf</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">len</span><span class="special">);</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">InputIteratorT</span><span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">append</span><span class="special">(</span><span class="identifier">InputIteratorT</span> <span class="identifier">begin</span><span class="special">,</span> <span class="identifier">InputIteratorT</span> <span class="identifier">end</span><span class="special">);</span>
+
+<span class="identifier">const_iterator</span> <span class="identifier">begin</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="identifier">const_iterator</span> <span class="identifier">end</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">uint8</span><span class="special">&gt;&amp;</span> <span class="identifier">buffer</span><span class="special">();</span>
+
+<span class="identifier">iarchive</span> <span class="identifier">input</span><span class="special">();</span>
+<span class="identifier">oarchive</span> <span class="identifier">output</span><span class="special">();</span>
+
+<span class="keyword">void</span> <span class="identifier">position</span><span class="special">(</span><span class="identifier">uint</span> <span class="identifier">pos</span><span class="special">);</span>
+<span class="identifier">uint</span> <span class="identifier">position</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+        </p>
+<a name="odtone.library.index_mih.odtone_mih_archive_class.constructor__amp__destructor_documentation"></a><h6>
+<a name="id3116034"></a>
+          <a class="link" href="odtone_mih_archive_class.html#odtone.library.index_mih.odtone_mih_archive_class.constructor__amp__destructor_documentation">Constructor
+          &amp; Destructor Documentation</a>
+        </h6>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">archive</span><span class="special">();</span>
+</pre>
+<p>
+          Construct an archive.
+        </p>
+<p>
+          <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="special">~</span><span class="identifier">archive</span><span class="special">();</span>
+</pre>
+<p>
+        </p>
+<p>
+          Destructor for archive.
+        </p>
+<p>
+          <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+        </p>
+<a name="odtone.library.index_mih.odtone_mih_archive_class.member_function_documentation"></a><h6>
+<a name="id3116345"></a>
+          <a class="link" href="odtone_mih_archive_class.html#odtone.library.index_mih.odtone_mih_archive_class.member_function_documentation">Member
+          Function Documentation</a>
+        </h6>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">clear</span><span class="special">();</span>
+</pre>
+<p>
+        </p>
+<p>
+          Clear the contents of the archive.
+        </p>
+<p>
+          Its size is set to 0 (zero) and the actual position is set to 0 (zero)
+          too.
+        </p>
+<p>
+          <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">uint8</span><span class="special">&gt;&amp;</span> <span class="identifier">buffer</span><span class="special">);</span>
+</pre>
+<p>
+        </p>
+<p>
+          Exchanges the content of the vector by the content of <span class="emphasis"><em>buffer</em></span>,
+          which is another vector of the same type. Sizes may differ.
+        </p>
+<p>
+          After the call to this member function, the elements in this container
+          are those which were in <span class="emphasis"><em>buffer</em></span> before the call, and
+          the elements of <span class="emphasis"><em>buffer</em></span> are those which were in this.
+          All iterators, references and pointers remain valid for the swapped vectors.
+        </p>
+<p>
+          <span class="bold"><strong>Parameters:</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="bold"><strong>buffer</strong></span> - a vector providing the elements
+            to be swapped, or a vector whose elements are to be exchanged with the
+            actual ones.
+          </li></ul></div>
+<p>
+          <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">buffer</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint8</span><span class="special">*</span> <span class="identifier">buf</span><span class="special">,</span>
+            <span class="identifier">size_t</span> <span class="identifier">len</span><span class="special">);</span>
+</pre>
+<p>
+        </p>
+<p>
+          Fills archive's contents.
+        </p>
+<p>
+          <span class="bold"><strong>Parameters:</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<span class="bold"><strong>buf</strong></span> - the elements to be copied to the
+            archive.
+          </li>
+<li class="listitem">
+<span class="bold"><strong>len</strong></span> - new archive's size.
+          </li>
+</ul></div>
+<p>
+          <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">InputIteratorT</span><span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">append</span><span class="special">(</span><span class="identifier">InputIteratorT</span> <span class="identifier">begin</span><span class="special">,</span>
+            <span class="identifier">InputIteratorT</span> <span class="identifier">end</span><span class="special">);</span>
+
+</pre>
+<p>
+        </p>
+<p>
+          Inserts an element or a number of elements or a range of elements into
+          the archive at a specified position.
+        </p>
+<p>
+          <span class="bold"><strong>Parameters:</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<span class="bold"><strong>begin</strong></span> - the position of the first element
+            in the range of elements to be copied.
+          </li>
+<li class="listitem">
+<span class="bold"><strong>end</strong></span> - The position of the first element
+            beyond the range of elements to be copied.
+          </li>
+</ul></div>
+<p>
+          <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">const_iterator</span> <span class="identifier">begin</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+        </p>
+<p>
+          A random-access iterator addressing the first element in the archive or
+          to the location succeeding an empty archive. You should always compare
+          the value returned with vector::end to ensure it is valid.
+        </p>
+<p>
+          <span class="bold"><strong>Return</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            Returns a random-access iterator to the first element in the container.
+          </li></ul></div>
+<p>
+          <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">const_iterator</span> <span class="identifier">end</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+        </p>
+<p>
+          A random-access iterator to the end of the archive object. If the archive
+          is empty, vector::end == vector::begin.
+        </p>
+<p>
+          <span class="bold"><strong>Return</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            Returns a random-access iterator that points just beyond the end of the
+            archive.
+          </li></ul></div>
+<p>
+          <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">uint8</span><span class="special">&gt;&amp;</span> <span class="identifier">buffer</span><span class="special">();</span>
+</pre>
+<p>
+        </p>
+<p>
+          Get archive's contents.
+        </p>
+<p>
+          <span class="bold"><strong>Return</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            The archive's contents.
+          </li></ul></div>
+<p>
+          <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">iarchive</span> <span class="identifier">input</span><span class="special">();</span>
+</pre>
+<p>
+        </p>
+<p>
+          Get the corresponding <a class="link" href="odtone_mih_iarchive_class.html" title="2.9. odtone::mih::iarchive Class Reference">odtone::mih::iarchive</a>.
+        </p>
+<p>
+          <span class="bold"><strong>Return</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            The corresponding <a class="link" href="odtone_mih_iarchive_class.html" title="2.9. odtone::mih::iarchive Class Reference">odtone::mih::iarchive</a>.
+          </li></ul></div>
+<p>
+          <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">oarchive</span> <span class="identifier">output</span><span class="special">();</span>
+</pre>
+<p>
+        </p>
+<p>
+          Get the corresponding <a class="link" href="odtone_mih_oarchive_class.html" title="2.10. odtone::mih::oarchive Class Reference">odtone::mih::oarchive</a>.
+        </p>
+<p>
+          <span class="bold"><strong>Return</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            The corresponding <a class="link" href="odtone_mih_oarchive_class.html" title="2.10. odtone::mih::oarchive Class Reference">odtone::mih::oarchive</a>.
+          </li></ul></div>
+<p>
+          <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">position</span><span class="special">(</span><span class="identifier">uint</span> <span class="identifier">pos</span><span class="special">);</span>
+</pre>
+<p>
+        </p>
+<p>
+          Point to a new position in the archive.
+        </p>
+<p>
+          <span class="bold"><strong>Parameters:</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="bold"><strong>pos</strong></span> - new position in the archive where
+            to point.
+          </li></ul></div>
+<p>
+          <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">uint</span> <span class="identifier">position</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+        </p>
+<p>
+          Get the current position in the archive.
+        </p>
+<p>
+          <span class="bold"><strong>Return</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            The current position in the archive
+          </li></ul></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Universidade Aveiro<br>Copyright &#169; 2009 -2011 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="odtone_mih_config_class.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index_mih.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="odtone_mih_iarchive_class.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,539 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>ODTONE MIHF internals</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../../index.html" title="ODTONE 0.3">
+<link rel="up" href="../mihf_index.html" title="ODTONE-MIHF">
+<link rel="prev" href="mihf_internal_arch.html" title="MIHF Internal Architecture">
+<link rel="next" href="../mih_usr_index.html" title="MIH User">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="mihf_internal_arch.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../mihf_index.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../mih_usr_index.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+<div class="section" title="ODTONE MIHF internals">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.mihf_index.mihf_internals"></a><a class="link" href="mihf_internals.html" title="ODTONE MIHF internals"> ODTONE MIHF
+        internals</a>
+</h4></div></div></div>
+<div class="section" title="Internal Communications use UDP sockets on loopback interface">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mihf_index.mihf_internals.internal_communications_use_udp_sockets_on_loopback_interface"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.internal_communications_use_udp_sockets_on_loopback_interface" title="Internal Communications use UDP sockets on loopback interface">Internal
+          Communications use UDP sockets on loopback interface</a>
+</h5></div></div></div>
+<p>
+            Internal communications are communications between the MIHF and local
+            SAPs (users and link). ODTONE uses UDP sockets binded to the loopback
+            interface (127.0.0.1) for exchanging messages between these entities.
+          </p>
+</div>
+<div class="section" title="MIH confirm messages must set the opcode to 0 (zero)">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mihf_index.mihf_internals.mih_confirm_messages_must_set_the_opcode_to_0__zero_"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.mih_confirm_messages_must_set_the_opcode_to_0__zero_" title="MIH confirm messages must set the opcode to 0 (zero)">MIH
+          confirm messages must set the opcode to 0 (zero)</a>
+</h5></div></div></div>
+<p>
+            Chapter 7 of the MIH standard defines the primitives that should be supported
+            by an implementation. These primitives show how a SAP can interact with
+            a MIHF.
+          </p>
+<p>
+            Chapter 8, of the same standard, defines the message MIH protocol messages
+            for remote communications (communications between MIHFs).
+          </p>
+<p>
+            The ODTONE implementation uses the messages defined on chapter 8 to implement
+            the primitives of chapter 7.
+          </p>
+<p>
+            Please note that the MIHF sends confirm messages to SAPs and response
+            messages to MIHFs, and that the MIH protocol allocates 16 bits for the
+            MIH message ID, 2 of those are for the opcode. The opcode defines if
+            a message is a request, response or indication. So, with 2 bits we can
+            encode 4 values, 3 are already taken, this leaves 1 available combination
+            for the missing confirm primitives. Confirm primitives set the opcode
+            to 0 (zero).
+          </p>
+</div>
+<div class="section" title="TCP Support not enabled but supported">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mihf_index.mihf_internals.tcp_support_not_enabled_but_supported"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.tcp_support_not_enabled_but_supported" title="TCP Support not enabled but supported">TCP
+          Support not enabled but supported</a>
+</h5></div></div></div>
+<p>
+            There is a wrapper (<span class="emphasis"><em>tcp_listener</em></span>) for handling TCP
+            communications, but a method for reading from the configuration file
+            and enabling TCP support, for the MIHF is not implemented.
+          </p>
+<p>
+            The <span class="emphasis"><em>tcp_listener</em></span> class was discussed in detail in
+            a <a class="link" href="mihf_internal_arch.html#odtone.app.mihf_index.mihf_internal_arch.listening_services__classes__emphasis_udp_listner__emphasis__and__emphasis_tcp_listner__emphasis_">previous
+            section.</a>
+          </p>
+</div>
+<div class="section" title="Internal discovery">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mihf_index.mihf_internals.internal_discovery"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.internal_discovery" title="Internal discovery">Internal
+          discovery</a>
+</h5></div></div></div>
+<p>
+            The interval discovery refers to the procedure that allows one MIHF to
+            discovery its Link SAPs and their capabilities and its MIH Users.
+          </p>
+<p>
+            <span class="bold"><strong>Link SAP Discovery</strong></span>
+          </p>
+<p>
+            It is intent that a Link SAP is able to send information about itself
+            to the MIHF, so that MIHF knows which technology and interfaces each
+            Link SAP is responsible for. Thus, the &#8220;intelligence&#8221; about the capabilities
+            of each network interface is the responsibility of their Link SAP and
+            the MIHF asks for them when needed.
+          </p>
+<p>
+            Because there is no primitive/message in the 802.21 standard that allows
+            Link SAP to send that information to the MIHF was created a new message
+            named &#8220;Link_Register.indication&#8221;. This message allows the Link SAP
+            to send informations to the MIHF about which technology supports and
+            which interface it manages. Associated with the creation of this new
+            message type was also created a new TLV type named &#8220;Interface Type
+            Addr TLV&#8221; whose correspondent data type is &#8220;Link ID&#8221;.
+          </p>
+<p>
+            <span class="inlinemediaobject"><img src="../../.././images/link_register_indication_message.png" alt="link_register_indication_message"></span>
+          </p>
+<p>
+            The mechanism of LinkS SAP discovery involves the discovery of Link SAPs
+            and storage of information in the MIHF. It is also intended to detect
+            the presence or absence of known Link SAPs. So the proposed mechanism
+            involves three essential parts: register, presence and unlearning.
+          </p>
+<p>
+            <span class="inlinemediaobject"><img src="../../.././images/Internal_link_discovery.png" alt="Internal_link_discovery"></span>
+          </p>
+<p>
+            The register part begins when the Link SAP initializes and announces
+            its presence to the MIHF by sending a Link_Register.indication message.
+            The MIHF processes the message and learns about the Link SAP by storing
+            its ID, IP Address, listening port, link-layer technology and list of
+            link addresses. This will allow the MIHF to discovery Link SAPs dynamically
+            and also allows the MIHF to know the information necessarily to redirect
+            the messages to the respective Link SAPs in a efficient way.
+          </p>
+<p>
+            When the MIHF retransmits a request to a given Link SAP, it waits a time
+            interval for the response. If the response is received within the time
+            interval the MIHF detects the presence of the Link SAP, ie, the MIHF
+            knows that the Link SAP is still active and can be contacted. This correspond
+            to the second part: the presence.
+          </p>
+<p>
+            If the response is not received within the time interval it could mean
+            that the Link SAP is not available anymore. Thus, the MIHF may unlearning
+            the Link SAP. However, there are several reasons why the response is
+            not received within the time interval, like delay in the network, packet
+            lost, the Link SAP does not support the desired request, among other
+            reasons. So, there must be a confirmation that the Link SAP is really
+            down. When the MIHF does not receive the response message it register
+            it as a fail response. When the number of fail response reachs a defined
+            threshold the Link SAP is forgotten. If the MIHF receives a message from
+            Link SAP it will reset its number of failing responses.
+          </p>
+<div class="note" title="Note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/html/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+              The waiting time interval for response message and how many fail responses
+              before forget Link SAP can be defined at the MIHF configuration file.
+            </p></td></tr>
+</table></div>
+<p>
+            <span class="bold"><strong>MIH User Discovery</strong></span>
+          </p>
+<p>
+            It is intent that a Link SAP is able to send information about itself
+            to the MIHF, so that MIHF knows the function of the MIH User, ie, if
+            the MIH User is responsible for handling the handover operations in the
+            local MIHF.
+          </p>
+<p>
+            Because there is no primitive/message in the 802.21 standard that allows
+            MIH User to send that information to the MIHF was created a new message
+            named &#8220;User_Register.indication&#8221;. This message allows the Link SAP
+            to send informations to the MIHF about its function. Associated with
+            the creation of this new message type was also created a new TLV type
+            named &#8220;MBB Handover Support TLV&#8221; whose correspondent data type is
+            &#8220;BOOLEAN&#8221;.
+          </p>
+<p>
+            <span class="inlinemediaobject"><img src="../../.././images/user_register_indication_message.png" alt="user_register_indication_message"></span>
+          </p>
+<p>
+            The mechanism of MIH User discovery involves the discovery of Link SAPs
+            and storage of information in the MIHF. The detection of the presence
+            or absence of the MIH User is not applied.
+          </p>
+<p>
+            <span class="inlinemediaobject"><img src="../../.././images/Internal_user_discovery.png" alt="Internal_user_discovery"></span>
+          </p>
+<p>
+            The register part begins when the MIH User initializes and announces
+            its presence to the MIHF by sending a User_Register.indication message.
+            The MIHF processes the message and learns about the MIH User by storing
+            its ID, IP Address, listening port and MIH User function in the MIHF.
+            This will allow the MIHF to discovery MIH Users dynamically and also
+            allows the MIHF to know the information necessarily to redirect the messages
+            to the respective MIH User.
+          </p>
+<div class="note" title="Note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/html/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+              Only one MIH User for handling handover operations could exists in
+              each MIHF. This way, the last MIU User to register with that function
+              will be the MIH User that will handle the handover opeations.
+            </p></td></tr>
+</table></div>
+</div>
+<div class="section" title="Multiple Link SAP support">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mihf_index.mihf_internals.multiple_link_sap_support"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.multiple_link_sap_support" title="Multiple Link SAP support">Multiple
+          Link SAP support</a>
+</h5></div></div></div>
+<p>
+            With the implementation of dynamic Link SAP discovery mechanisms, it
+            was necessary that ODTONE supports multiple Link SAP. So, when a new
+            request is received at the MIHF and whose destination is a Link SAP,
+            the MIHF processes it and redirects the request to the proper Link SAP,
+            based on the information collected by the internal discovery mechanism.
+          </p>
+<p>
+            However, there are cases where the destination could be a set of Link
+            SAPs. In those cases, the MIHF sends a message to all destinations Link
+            SAPs and waits a time interval for all the responses of Link SAPs. After
+            that time, the MIHF processes all informations received by the several
+            confirm messages sent by the Link SAPs and sends the response to the
+            requestor.
+          </p>
+<p>
+            In order to optimize the process of subscription/unsubscription of events
+            at the MIHF it was reduce the number of messages changed between the
+            local entities, ie, between the MIHF and Link SAPs.
+          </p>
+<p>
+            This way, when a MIH User requests for a event subscription the MIHF
+            checks whether the event for the desired Link SAP is already subscripted.
+            If it is already subscripted the MIHF responds immediately to the MIH
+            User otherwise it request the subscription of the event to the Link SAP.
+            When the MIHF receives the response of Link SAP and if the subscription
+            was succeeded it stores the result and redirects the response to the
+            MIH User.
+          </p>
+<p>
+            The reasoning to optimize the process of unsubscription is similar to
+            the subscription method. When a MIH User request to unsubscribe an event
+            in a given Link SAP the MIHF unsubscribe it, response to the MIH User
+            and checks if there are more subscriptions to that event. If there is
+            no more subscriptions to that event the MIHF request unsubscription of
+            the event at the Link SAP. This way, the Link SAP does not send that
+            event information to the MIHF since there are no entities interested
+            in that information.
+          </p>
+</div>
+<div class="section" title="MIH Primitives mapped in MIH Protocol Messages">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mihf_index.mihf_internals.mih_primitives_mapped_in_mih_protocol_messages"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.mih_primitives_mapped_in_mih_protocol_messages" title="MIH Primitives mapped in MIH Protocol Messages">MIH
+          Primitives mapped in MIH Protocol Messages</a>
+</h5></div></div></div>
+<p>
+            Communications between local entities are made using MIH Protocol. All
+            MIH_SAP primitives can be mapped in MIH Protocol Messages, however some
+            of the MIH_LINK_SAP primitives needed new TLVs types so they can be used
+            in the MIH Protocol.
+          </p>
+<p>
+            The following table show the correspondence between MIH_LINK_SAP primitive
+            and the new TLVs and its data type:
+          </p>
+<div class="table">
+<a name="odtone.app.mihf_index.mihf_internals.mih_primitives_mapped_in_mih_protocol_messages.odtone_specific_tlvs"></a><p class="title"><b>Table&#160;22.&#160;ODTONE specific TLVs</b></p>
+<div class="table-contents"><table class="table" summary="ODTONE specific TLVs">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  MIH_LINK_SAP Primitive
+                </p>
+                </th>
+<th>
+                <p>
+                  TLV Type Name
+                </p>
+                </th>
+<th>
+                <p>
+                  TLV Type Value
+                </p>
+                </th>
+<th>
+                <p>
+                  Data type
+                </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  LinkParametersRequest
+                </p>
+                </td>
+<td>
+                <p>
+                  tlv_link_parameters_req
+                </p>
+                </td>
+<td>
+                <p>
+                  102
+                </p>
+                </td>
+<td>
+                <p>
+                  LIST(LINK_PARAM_TYPE)
+                </p>
+                </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkParametersStatusList
+                </p>
+                </td>
+<td>
+                <p>
+                  tlv_link_parameters_status_list
+                </p>
+                </td>
+<td>
+                <p>
+                  103
+                </p>
+                </td>
+<td>
+                <p>
+                  LIST(LINK_PARAM_TYPE)
+                </p>
+                </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkStatesRequest
+                </p>
+                </td>
+<td>
+                <p>
+                  tlv_link_states_req
+                </p>
+                </td>
+<td>
+                <p>
+                  104
+                </p>
+                </td>
+<td>
+                <p>
+                  LINK_STATES_REQ
+                </p>
+                </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkStatesResponse
+                </p>
+                </td>
+<td>
+                <p>
+                  tlv_link_states_rsp
+                </p>
+                </td>
+<td>
+                <p>
+                  105
+                </p>
+                </td>
+<td>
+                <p>
+                  LIST(LINK_STATES_RSP)
+                </p>
+                </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkDescriptorsRequest
+                </p>
+                </td>
+<td>
+                <p>
+                  tlv_link_descriptor_req
+                </p>
+                </td>
+<td>
+                <p>
+                  106
+                </p>
+                </td>
+<td>
+                <p>
+                  LINK_DESC_REQ
+                </p>
+                </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkDescriptorsResponse
+                </p>
+                </td>
+<td>
+                <p>
+                  tlv_link_descriptor_rsp
+                </p>
+                </td>
+<td>
+                <p>
+                  107
+                </p>
+                </td>
+<td>
+                <p>
+                  LIST(LINK_DESC_RSP)
+                </p>
+                </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkAction
+                </p>
+                </td>
+<td>
+                <p>
+                  tlv_link_action
+                </p>
+                </td>
+<td>
+                <p>
+                  108
+                </p>
+                </td>
+<td>
+                <p>
+                  LINK_ACTION
+                </p>
+                </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkActionResult
+                </p>
+                </td>
+<td>
+                <p>
+                  tlv_link_ac_result
+                </p>
+                </td>
+<td>
+                <p>
+                  109
+                </p>
+                </td>
+<td>
+                <p>
+                  LINK_AC_RESULT
+                </p>
+                </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  ScanResponseSet
+                </p>
+                </td>
+<td>
+                <p>
+                  tlv_link_scan_rsp_list
+                </p>
+                </td>
+<td>
+                <p>
+                  110
+                </p>
+                </td>
+<td>
+                <p>
+                  LIST(LINK_SCAN_RSP)
+                </p>
+                </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  MBBHandoverSupport
+                </p>
+                </td>
+<td>
+                <p>
+                  tlv_mbb_handover_support
+                </p>
+                </td>
+<td>
+                <p>
+                  111
+                </p>
+                </td>
+<td>
+                <p>
+                  BOOLEAN
+                </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Universidade Aveiro<br>Copyright &#169; 2009 -2011 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="mihf_internal_arch.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../mihf_index.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../mih_usr_index.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

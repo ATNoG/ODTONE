@@ -1,0 +1,207 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Getting Started</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../../index.html" title="ODTONE 0.3">
+<link rel="up" href="../mih_usr_index.html" title="MIH User">
+<link rel="prev" href="../mih_usr_index.html" title="MIH User">
+<link rel="next" href="../miis_index.html" title="MIIS Server">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../mih_usr_index.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../mih_usr_index.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../miis_index.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+<div class="section" title="Getting Started">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.mih_usr_index.mih_usr_getStart"></a><a class="link" href="mih_usr_getStart.html" title="Getting Started"> Getting
+        Started</a>
+</h4></div></div></div>
+<div class="section" title="Detailed Description">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mih_usr_index.mih_usr_getStart.detailed_description"></a><a class="link" href="mih_usr_getStart.html#odtone.app.mih_usr_index.mih_usr_getStart.detailed_description" title="Detailed Description">Detailed
+          Description</a>
+</h5></div></div></div>
+<p>
+            This implementation of MIH User is very simple. It only support capability
+            discover, event subscribe and link events primitives.
+          </p>
+<p>
+            <span class="inlinemediaobject"><img src="../../.././images/mih_usr_state_machine.png" alt="mih_usr_state_machine"></span>
+          </p>
+<p>
+            When MIH User begins to run, it sends a Capability Discover Request to
+            MIHF and waits for a Capability Discover Response from the MIHF.
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">msg</span> <span class="special">&lt;&lt;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">request</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">request</span><span class="special">::</span><span class="identifier">capability_discover</span><span class="special">,</span> <span class="identifier">_mihfid</span><span class="special">);</span>
+<span class="identifier">_mihf</span><span class="special">.</span><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">msg</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">capability_discover_response</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">_1</span><span class="special">,</span> <span class="identifier">_2</span><span class="special">));</span>
+</pre>
+<p>
+          </p>
+<p>
+            The message is processed and for every interface the MIHF sent in the
+            Capability Discover Response, MIH User send an Event Subscribe Request
+            for all available events. This implementation supports all events.
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">msg</span> <span class="special">&gt;&gt;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">response</span><span class="special">()</span>
+	<span class="special">&amp;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_status</span><span class="special">(</span><span class="identifier">st</span><span class="special">)</span>
+	<span class="special">&amp;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_net_type_addr_list</span><span class="special">(</span><span class="identifier">ntal</span><span class="special">)</span>
+	<span class="special">&amp;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_event_list</span><span class="special">(</span><span class="identifier">evt</span><span class="special">);</span>
+
+<span class="comment">//...
+</span>
+<span class="keyword">if</span> <span class="special">(</span><span class="identifier">ntal</span> <span class="special">&amp;&amp;</span> <span class="identifier">evt</span><span class="special">)</span> <span class="special">{</span>
+	<span class="keyword">for</span> <span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">net_type_addr_list</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">i</span> <span class="special">=</span> <span class="identifier">ntal</span><span class="special">-&gt;</span><span class="identifier">begin</span><span class="special">();</span> <span class="identifier">i</span> <span class="special">!=</span> <span class="identifier">ntal</span><span class="special">-&gt;</span><span class="identifier">end</span><span class="special">();</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="special">{</span>
+		<span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="identifier">req</span><span class="special">;</span>
+
+		<span class="comment">// ...
+</span>
+		<span class="identifier">_mihf</span><span class="special">.</span><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">req</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">event_subscribe_response</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">_1</span><span class="special">,</span> <span class="identifier">_2</span><span class="special">));</span>
+	<span class="special">}</span>
+<span class="special">}</span>
+</pre>
+<p>
+          </p>
+<p>
+            For every Event Subscribe Request sent to the MIHF is received a Event
+            Subscribe Response.
+          </p>
+<p>
+            At this moment, MIHF knows what kind events must send to MIH User. So,
+            MIH User is now in listening mode, waiting for events messages from MIHF.
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">event_handler</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span><span class="special">&amp;</span> <span class="identifier">msg</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">);</span>
+</pre>
+<p>
+            However, when a event message is received there is no specific behaviour.
+            Instead of, MIH User only records in the log what type of message was
+            received.
+          </p>
+</div>
+<div class="section" title="Configuration">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mih_usr_index.mih_usr_getStart.configuration"></a><a class="link" href="mih_usr_getStart.html#odtone.app.mih_usr_index.mih_usr_getStart.configuration" title="Configuration">Configuration</a>
+</h5></div></div></div>
+<pre class="programlisting"><span class="identifier">MIH</span> <span class="identifier">Usr</span> <span class="identifier">Configuration</span><span class="special">:</span>
+   <span class="special">--</span><span class="identifier">help</span>                           <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
+   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1234</span><span class="special">)</span>          <span class="identifier">Port</span>
+   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">file</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">mih_usr</span><span class="special">.</span><span class="identifier">conf</span><span class="special">)</span>  <span class="identifier">Configuration</span> <span class="identifier">File</span>
+   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">recv_buff_len</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4096</span><span class="special">)</span> <span class="identifier">Receive</span> <span class="identifier">Buffer</span> <span class="identifier">Length</span>
+   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">ip</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">127.0</span><span class="special">.</span><span class="number">0.1</span><span class="special">)</span>       <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">Ip</span>
+   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">local</span><span class="special">-</span><span class="identifier">mihf</span><span class="special">)</span>      <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">Id</span>
+   <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">user</span><span class="special">)</span>            <span class="identifier">User</span> <span class="identifier">Id</span>
+   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">local_port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1025</span><span class="special">)</span>    <span class="identifier">MIHF</span> <span class="identifier">Local</span> <span class="identifier">Communications</span> <span class="identifier">Port</span>
+   <span class="special">--</span><span class="identifier">dest</span> <span class="identifier">arg</span>                       <span class="identifier">MIH</span> <span class="identifier">message</span> <span class="identifier">destination</span> <span class="identifier">of</span> <span class="identifier">MIH</span> <span class="identifier">User</span>
+</pre>
+<p>
+            MIH User can be configured either through a configuration file or passing
+            directly, in command line, the configuration options.
+          </p>
+<p>
+            For testing remote communication, must be defined MIH message destination
+            of MIH User using <span class="emphasis"><em>--dest</em></span> option in the command line.
+          </p>
+</div>
+<div class="section" title="Extending">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mih_usr_index.mih_usr_getStart.extending"></a><a class="link" href="mih_usr_getStart.html#odtone.app.mih_usr_index.mih_usr_getStart.extending" title="Extending">Extending</a>
+</h5></div></div></div>
+<p>
+            It is possible to do several extensions to MIH User in a simple and fast
+            way.
+          </p>
+<p>
+            For example, in event handler can be added specific behaviour for an
+            incoming event message. So, MIH User can make its own decisions about
+            the actions that must be initiated for a particular event, like handovers.
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">event_handler</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span><span class="special">&amp;</span> <span class="identifier">msg</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">)</span>
+<span class="special">{</span>
+	<span class="comment">// ...
+</span>
+	<span class="keyword">switch</span> <span class="special">(</span><span class="identifier">msg</span><span class="special">.</span><span class="identifier">mid</span><span class="special">())</span> <span class="special">{</span>
+	<span class="keyword">case</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">::</span><span class="identifier">link_up</span><span class="special">:</span>
+		<span class="identifier">log_</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="string">"MIH-User has received a local event \"link_up\""</span><span class="special">);</span>
+
+		<span class="comment">// Add some specific behaviour here
+</span>
+		<span class="keyword">break</span><span class="special">;</span>
+
+	<span class="comment">// ... other link events
+</span>
+	<span class="special">}</span>
+<span class="special">}</span>
+</pre>
+<p>
+          </p>
+<p>
+            You can also add other handlers for incoming messages: 
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">new_handler</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span><span class="special">&amp;</span> <span class="identifier">msg</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<p>
+            Then it must be related with a sent message, so when the response arrives,
+            the handler is called: 
+</p>
+<pre class="programlisting"><span class="identifier">_mihf</span><span class="special">.</span><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">msg</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">new_handler</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">_1</span><span class="special">,</span> <span class="identifier">_2</span><span class="special">));</span>
+</pre>
+<p>
+          </p>
+<p>
+            The handler can also be the default handler for MIH User: 
+</p>
+<pre class="programlisting"><span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">mih_user</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">config</span><span class="special">&amp;</span> <span class="identifier">cfg</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span><span class="special">&amp;</span> <span class="identifier">io</span><span class="special">)</span>
+	<span class="special">:</span> <span class="identifier">_mihf</span><span class="special">(</span><span class="identifier">cfg</span><span class="special">,</span> <span class="identifier">io</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">new_handler</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">_1</span><span class="special">,</span> <span class="identifier">_2</span><span class="special">))</span>
+</pre>
+<p>
+          </p>
+</div>
+<div class="section" title="Running">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mih_usr_index.mih_usr_getStart.running"></a><a class="link" href="mih_usr_getStart.html#odtone.app.mih_usr_index.mih_usr_getStart.running" title="Running">Running</a>
+</h5></div></div></div>
+<p>
+            Before running the MIH User, the local MIHF must have been running first.
+            Otherwise, the MIH_User will send the Capability Discover Request and
+            will block (wait) because it will never receive the correspondent response,
+            due the local messages being sent by UDP and no acknowledge exists.
+          </p>
+<p>
+            The <span class="emphasis"><em>--dest</em></span> option must be used for connections to
+            a remote MIHF.
+          </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Universidade Aveiro<br>Copyright &#169; 2009 -2011 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../mih_usr_index.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../mih_usr_index.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../miis_index.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

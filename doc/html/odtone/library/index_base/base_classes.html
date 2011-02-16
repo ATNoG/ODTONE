@@ -1,0 +1,945 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>2. Mechanisms</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../../index.html" title="ODTONE 0.3">
+<link rel="up" href="../index_base.html" title="ODTONE Base">
+<link rel="prev" href="../index_base.html" title="ODTONE Base">
+<link rel="next" href="base_datatypes.html" title="3. Data Types">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../index_base.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index_base.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="base_datatypes.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+<div class="section" title="2. Mechanisms">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.library.index_base.base_classes"></a><a class="link" href="base_classes.html" title="2. Mechanisms"> 2. Mechanisms</a>
+</h4></div></div></div>
+<div class="section" title="2.1 Debug">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.library.index_base.base_classes.base_debug"></a><a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_debug" title="2.1 Debug">
+          2.1 Debug</a>
+</h5></div></div></div>
+<a name="odtone.library.index_base.base_classes.base_debug.detailed_description"></a><h6>
+<a name="id3090864"></a>
+            <a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_debug.detailed_description">Detailed
+            Description</a>
+          </h6>
+<p>
+            The BASE API offers mechanisms for debugging. This is done using a class
+            named <span class="emphasis"><em>odtone::checkpoint</em></span>.
+          </p>
+<p>
+            <span class="inlinemediaobject"><img src="./../../../images/odtone::checkpoint.png" alt="odtone::checkpoint"></span>
+          </p>
+<p>
+            It can be viewed as a linked list of checkpoints that maintain the execution
+            status of the application. So, when a crash happens it is easy to check
+            the last checkpoint and discover why it happen.
+          </p>
+<a name="odtone.library.index_base.base_classes.base_debug.namespace"></a><h6>
+<a name="id3090917"></a>
+            <a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_debug.namespace">Namespace</a>
+          </h6>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">odtone</span>
+</pre>
+<p>
+          </p>
+<a name="odtone.library.index_base.base_classes.base_debug.public_member_functions"></a><h6>
+<a name="id3090956"></a>
+            <a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_debug.public_member_functions">Public
+            Member Functions</a>
+          </h6>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">checkpoint</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">file</span><span class="special">,</span> <span class="identifier">uint</span> <span class="identifier">line</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">exp</span><span class="special">);</span>
+<span class="special">~</span><span class="identifier">checkpoint</span><span class="special">();</span>
+
+<span class="keyword">static</span> <span class="identifier">checkpoint</span><span class="special">*</span> <span class="identifier">top</span><span class="special">();</span>
+
+<span class="identifier">checkpoint</span><span class="special">*</span> <span class="identifier">previous</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">file</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="identifier">uint</span>        <span class="identifier">line</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">expression</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+          </p>
+<a name="odtone.library.index_base.base_classes.base_debug.constructor__amp__destructor_documentation"></a><h6>
+<a name="id3091213"></a>
+            <a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_debug.constructor__amp__destructor_documentation">Constructor
+            &amp; Destructor Documentation</a>
+          </h6>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">checkpoint</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">file</span><span class="special">,</span> <span class="identifier">uint</span> <span class="identifier">line</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">exp</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<p>
+            Construct a Checkpoint.
+          </p>
+<p>
+            <span class="bold"><strong>Parameters:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<span class="bold"><strong>file</strong></span> - file name.
+            </li>
+<li class="listitem">
+<span class="bold"><strong>line</strong></span> - line number.
+            </li>
+<li class="listitem">
+<span class="bold"><strong>exp</strong></span> - expression.
+            </li>
+</ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="special">~</span><span class="identifier">checkpoint</span> <span class="special">();</span>
+</pre>
+<p>
+            Destructor for checkpoint.
+          </p>
+<a name="odtone.library.index_base.base_classes.base_debug.member_function_documentation"></a><h6>
+<a name="id3091490"></a>
+            <a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_debug.member_function_documentation">Member
+            Function Documentation</a>
+          </h6>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">static</span> <span class="identifier">checkpoint</span><span class="special">*</span> <span class="identifier">top</span><span class="special">();</span>
+</pre>
+<p>
+          </p>
+<p>
+            Get the checkpoint list.
+          </p>
+<p>
+            <span class="bold"><strong>Return:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              The checkpoint list.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">checkpoint</span><span class="special">*</span> <span class="identifier">previous</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+          </p>
+<p>
+            Get the previous checkpoint of the checkpoint that calls this method.
+          </p>
+<p>
+            <span class="bold"><strong>Return:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              The previous checkpoint of the checkpoint that calls this method.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">file</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+          </p>
+<p>
+            Get the file name of the checkpoint.
+          </p>
+<p>
+            <span class="bold"><strong>Return:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              The file name of the checkpoint.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">uint</span> <span class="identifier">line</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+
+</pre>
+<p>
+          </p>
+<p>
+            Get the line number of the checkpoint.
+          </p>
+<p>
+            <span class="bold"><strong>Return:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              The line number of the checkpoint.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">expression</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+          </p>
+<p>
+            Get the expression of the checkpoint.
+          </p>
+<p>
+            <span class="bold"><strong>Return:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              The expression of the checkpoint.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+</div>
+<div class="section" title="2.2 List Management">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.library.index_base.base_classes.base_list"></a><a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_list" title="2.2 List Management">
+          2.2 List Management</a>
+</h5></div></div></div>
+<a name="odtone.library.index_base.base_classes.base_list.detailed_description"></a><h6>
+<a name="id3092370"></a>
+            <a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_list.detailed_description">Detailed
+            Description</a>
+          </h6>
+<p>
+            <span class="inlinemediaobject"><img src="./../../../images/odtone::list_node.png" alt="odtone::list_node"></span>
+          </p>
+<p>
+            The BASE API offers support mechanisms for list management, providing
+            operations to add or remove elements, get or swap elements and to reverse
+            elements.
+          </p>
+<p>
+            These can be considered as a double-linked list that consists of a sequence
+            of data records such that in each record there is a field that contains
+            a reference to the next record and to the previous record in the sequence.
+          </p>
+<p>
+            <span class="inlinemediaobject"><img src="./../../../images/odtone::list_node2.png" alt="odtone::list_node2"></span>
+          </p>
+<p>
+            This is done using a class named <span class="emphasis"><em>odtone::list_node</em></span>
+            that is explain next in this section.
+          </p>
+<a name="odtone.library.index_base.base_classes.base_list.namespace"></a><h6>
+<a name="id3092448"></a>
+            <a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_list.namespace">Namespace</a>
+          </h6>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">odtone</span>
+</pre>
+<p>
+          </p>
+<a name="odtone.library.index_base.base_classes.base_list.public_member_functions"></a><h6>
+<a name="id3092487"></a>
+            <a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_list.public_member_functions">Public
+            Member Functions</a>
+          </h6>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">init</span><span class="special">();</span>
+
+<span class="keyword">void</span> <span class="identifier">push_front</span><span class="special">(</span><span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">node</span><span class="special">);</span>
+<span class="keyword">void</span> <span class="identifier">push_back</span><span class="special">(</span><span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">node</span><span class="special">);</span>
+
+<span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">pop_front</span><span class="special">();</span>
+<span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">pop_back</span><span class="special">();</span>
+
+<span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">front</span><span class="special">();</span>
+<span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">back</span><span class="special">();</span>
+
+<span class="keyword">const</span> <span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">front</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="keyword">const</span> <span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">back</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+
+<span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">list_node</span><span class="special">&amp;</span> <span class="identifier">y</span><span class="special">);</span>
+<span class="keyword">void</span> <span class="identifier">reverse</span><span class="special">();</span>
+
+<span class="keyword">void</span> <span class="identifier">remove</span><span class="special">();</span>
+<span class="keyword">bool</span> <span class="identifier">empty</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+          </p>
+<a name="odtone.library.index_base.base_classes.base_list.member_function_documentation"></a><h6>
+<a name="id3092822"></a>
+            <a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_list.member_function_documentation">Member
+            Function Documentation</a>
+          </h6>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">init</span><span class="special">();</span>
+</pre>
+<p>
+            Initialize the list only with the element that calls this method.
+          </p>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">push_front</span><span class="special">(</span><span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">node</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<p>
+            Insert a new element in the first position of the list.
+          </p>
+<p>
+            <span class="bold"><strong>Parameters:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="bold"><strong>node</strong></span> - the new element to insert in
+              the list.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">push_back</span><span class="special">(</span><span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">node</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<p>
+            Insert a new element in the last position of the list.
+          </p>
+<p>
+            <span class="bold"><strong>Parameters:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="bold"><strong>node</strong></span> - the new element to insert in
+              the list.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">pop_front</span><span class="special">();</span>
+</pre>
+<p>
+          </p>
+<p>
+            Remove and return the first element of the list.
+          </p>
+<p>
+            <span class="bold"><strong>Return:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              The first element of the list.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">pop_back</span><span class="special">();</span>
+</pre>
+<p>
+          </p>
+<p>
+            Remove and return the last element of the list.
+          </p>
+<p>
+            <span class="bold"><strong>Return:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              The last element of the list.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">front</span><span class="special">();</span>
+</pre>
+<p>
+          </p>
+<p>
+            Return the first element of the list without removing it from the list.
+          </p>
+<p>
+            <span class="bold"><strong>Return:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              The first element of the list.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">back</span><span class="special">();</span>
+</pre>
+<p>
+          </p>
+<p>
+            Return the last element of the list without removing it from the list.
+          </p>
+<p>
+            <span class="bold"><strong>Return:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              The last element of the list.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">const</span> <span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">front</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+          </p>
+<p>
+            Return the first element of the list without removing it from the list.
+          </p>
+<p>
+            <span class="bold"><strong>Return:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              The first element of the list.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">const</span> <span class="identifier">list_node</span><span class="special">*</span> <span class="identifier">back</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+          </p>
+<p>
+            Return the last element of the list without removing it from the list.
+          </p>
+<p>
+            <span class="bold"><strong>Return:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              The last element of the list.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">list_node</span><span class="special">&amp;</span> <span class="identifier">y</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<p>
+            Swap the position of two elements of the list.
+          </p>
+<p>
+            <span class="bold"><strong>Parameters:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="bold"><strong>node</strong></span> - the element with which to exchange
+              the position.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">reverse</span><span class="special">();</span>
+</pre>
+<p>
+          </p>
+<p>
+            Reverse the element in the list. In other words, it exchange the previous
+            element with the next element of the checkpoint that calls this method.
+          </p>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">remove</span><span class="special">();</span>
+</pre>
+<p>
+          </p>
+<p>
+            Remove an element from the list.
+          </p>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">bool</span> <span class="identifier">empty</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+          </p>
+<p>
+            Check if the element has a null reference for the next element.
+          </p>
+<p>
+            <span class="bold"><strong>Return:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              True if has a null reference for the next element or false otherwise.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+</div>
+<div class="section" title="2.3 Logger">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.library.index_base.base_classes.base_logger"></a><a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_logger" title="2.3 Logger">
+          2.3 Logger</a>
+</h5></div></div></div>
+<a name="odtone.library.index_base.base_classes.base_logger.detailed_description"></a><h6>
+<a name="id3094955"></a>
+            <a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_logger.detailed_description">Detailed
+            Description</a>
+          </h6>
+<p>
+            The BASE API offers support mechanisms for logging, using <span class="emphasis"><em>odtone::logger</em></span>
+            class. The logger object is used to log messages for a specific system
+            or application component. Logger names can be arbitrary strings, but
+            they should normally be based on the application that invoke it.
+          </p>
+<p>
+            Each logger has a level associated with it. This reflects the maximum
+            level that the logger cares about. So if you set level to 2 it only cares
+            about log messages belonging to level 0, 1 and 2.
+          </p>
+<p>
+            It also has an <span class="emphasis"><em>std::ostream</em></span> object associated with
+            it. This defines how the logger write and format output as sequences
+            of characters. The log messages can have up to 10 arguments.
+          </p>
+<a name="odtone.library.index_base.base_classes.base_logger.namespace"></a><h6>
+<a name="id3095005"></a>
+            <a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_logger.namespace">Namespace</a>
+          </h6>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">odtone</span>
+</pre>
+<p>
+          </p>
+<a name="odtone.library.index_base.base_classes.base_logger.public_member_functions"></a><h6>
+<a name="id3095044"></a>
+            <a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_logger.public_member_functions">Public
+            Member Functions</a>
+          </h6>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">logger</span> <span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span><span class="special">*</span> <span class="keyword">const</span> <span class="identifier">name</span><span class="special">,</span> <span class="identifier">logger</span><span class="special">&amp;</span> <span class="identifier">log</span><span class="special">);</span>
+<span class="identifier">logger</span> <span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span><span class="special">*</span> <span class="keyword">const</span> <span class="identifier">name</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span><span class="special">&amp;</span> <span class="identifier">sink</span><span class="special">);</span>
+<span class="special">~</span><span class="identifier">logger</span> <span class="special">();</span>
+
+<span class="keyword">void</span> <span class="identifier">level</span><span class="special">(</span><span class="identifier">uint</span> <span class="identifier">n</span><span class="special">);</span>
+<span class="identifier">uint</span> <span class="identifier">level</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span><span class="special">&amp;</span> <span class="identifier">sink</span> <span class="special">()</span> <span class="keyword">const</span> <span class="special">;</span>
+</pre>
+<p>
+          </p>
+<a name="odtone.library.index_base.base_classes.base_logger.constructor__amp__destructor_documentation"></a><h6>
+<a name="id3095302"></a>
+            <a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_logger.constructor__amp__destructor_documentation">Constructor
+            &amp; Destructor Documentation</a>
+          </h6>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">logger</span> <span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span><span class="special">*</span> <span class="keyword">const</span> <span class="identifier">name</span><span class="special">,</span> <span class="identifier">logger</span><span class="special">&amp;</span> <span class="identifier">log</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<p>
+            Construct a Logger.
+          </p>
+<p>
+            <span class="bold"><strong>Parameters:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<span class="bold"><strong>name</strong></span> - logger's name.
+            </li>
+<li class="listitem">
+<span class="bold"><strong>log</strong></span> - logger from where extract the
+              configurations for the new logger.
+            </li>
+</ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">logger</span> <span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span><span class="special">*</span> <span class="keyword">const</span> <span class="identifier">name</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span><span class="special">&amp;</span> <span class="identifier">sink</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<p>
+            Construct a Logger.
+          </p>
+<p>
+            <span class="bold"><strong>Parameters:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<span class="bold"><strong>name</strong></span> - logger's name.
+            </li>
+<li class="listitem">
+<span class="bold"><strong>sink</strong></span> - <span class="emphasis"><em>std::ostream</em></span>
+              that defines how the logger will write and format output as sequences
+              of characters.
+            </li>
+</ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="special">~</span><span class="identifier">logger</span> <span class="special">();</span>
+</pre>
+<p>
+            Destructor for logger.
+          </p>
+<a name="odtone.library.index_base.base_classes.base_logger.member_function_documentation"></a><h6>
+<a name="id3095782"></a>
+            <a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_logger.member_function_documentation">Member
+            Function Documentation</a>
+          </h6>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">level</span><span class="special">(</span><span class="identifier">uint</span> <span class="identifier">n</span><span class="special">);</span>
+
+</pre>
+<p>
+          </p>
+<p>
+            Set the level configuration.
+          </p>
+<p>
+            Each logger has a level associated with it. This reflects the maximum
+            level that the logger cares about. So if you set level to 2 it only cares
+            about log messages belonging to level 0, 1 and 2.
+          </p>
+<p>
+            <span class="bold"><strong>Parameters:</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="bold"><strong>n</strong></span> - logger level.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">uint</span> <span class="identifier">level</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+          </p>
+<p>
+            Get the level configuration.
+          </p>
+<p>
+            Each logger has a level associated with it. This reflects the maximum
+            level that the logger cares about. So if you set level to 2 it only cares
+            about log messages belonging to level 0, 1 and 2.
+          </p>
+<p>
+            <span class="bold"><strong>Return</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              The logger level.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>__
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span><span class="special">&amp;</span> <span class="identifier">sink</span> <span class="special">()</span> <span class="keyword">const</span> <span class="special">;</span>
+</pre>
+<p>
+          </p>
+<p>
+            Get the std::ostream associated with the logger.
+          </p>
+<p>
+            <span class="bold"><strong>Return</strong></span>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              The std::ostream associated with the logger.
+            </li></ul></div>
+<p>
+            <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+          </p>
+</div>
+<div class="section" title="2.4 Exceptions">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.library.index_base.base_classes.base_exception"></a><a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_exception" title="2.4 Exceptions">
+          2.4 Exceptions</a>
+</h5></div></div></div>
+<p>
+            The BASE API offers support mechanisms for exceptions support. The <span class="emphasis"><em>odtone::exception</em></span>
+            class serves as a base from which derive all exceptions in ODTONE. The
+            following image represents all existing exceptions in the actual release.
+          </p>
+<p>
+            <span class="inlinemediaobject"><img src="./../../../images/odtone::exception.png" alt="odtone::exception"></span>
+          </p>
+<p>
+            The definition of new exceptions can be easily done. The following piece
+            of code shows how it can be done:
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">new_exception</span> <span class="special">:</span> <span class="keyword">virtual</span> <span class="keyword">public</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">exception</span> <span class="special">{</span>
+	<span class="identifier">new_exception</span><span class="special">()</span> <span class="special">:</span> <span class="identifier">exception</span><span class="special">(</span><span class="string">"New exception example"</span><span class="special">)</span>
+	<span class="special">{</span> <span class="special">}</span>
+<span class="special">};</span>
+</pre>
+<p>
+          </p>
+</div>
+<div class="section" title="2.5 Other">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.library.index_base.base_classes.base_other"></a><a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_other" title="2.5 Other">
+          2.5 Other</a>
+</h5></div></div></div>
+<div class="section" title="Random">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.library.index_base.base_classes.base_other.base_random"></a><a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_other.base_random" title="Random">
+            Random</a>
+</h6></div></div></div>
+<p>
+              The BASE API offers a simple way to generate random values. The following
+              table match between the type of the random value with the function
+              that generates it.
+            </p>
+<div class="table">
+<a name="odtone.library.index_base.base_classes.base_other.base_random.base_data_types"></a><p class="title"><b>Table&#160;4.&#160;Base data types</b></p>
+<div class="table-contents"><table class="table" summary="Base data types">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Data type
+                  </p>
+                  </th>
+<th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    sint8
+                  </p>
+                  </td>
+<td>
+                  <p>
+                    odtone::mih::srand8()
+                  </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    sint16
+                  </p>
+                  </td>
+<td>
+                  <p>
+                    odtone::mih::srand16()
+                  </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    sint32
+                  </p>
+                  </td>
+<td>
+                  <p>
+                    odtone::mih::srand32()
+                  </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    sint64
+                  </p>
+                  </td>
+<td>
+                  <p>
+                    odtone::mih::srand64()
+                  </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    uint8
+                  </p>
+                  </td>
+<td>
+                  <p>
+                    odtone::mih::rand8()
+                  </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    uint16
+                  </p>
+                  </td>
+<td>
+                  <p>
+                    odtone::mih::rand16()
+                  </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    uint32
+                  </p>
+                  </td>
+<td>
+                  <p>
+                    odtone::mih::rand32()
+                  </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    uint64
+                  </p>
+                  </td>
+<td>
+                  <p>
+                    odtone::mih::rand64()
+                  </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div>
+<div class="section" title="Converter hexadecimal">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.library.index_base.base_classes.base_other.base_convert"></a><a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_other.base_convert" title="Converter hexadecimal">
+            Converter hexadecimal</a>
+</h6></div></div></div>
+<p>
+              This library also offers functions to convert to and from hexadecimal
+              values.
+            </p>
+<p>
+              
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">to_string_hex</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">v</span><span class="special">);</span>
+</pre>
+<p>
+            </p>
+<p>
+              
+</p>
+<pre class="programlisting"><span class="identifier">uchar</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">hex_to_int</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">uchar</span> <span class="identifier">c</span><span class="special">);</span>
+</pre>
+<p>
+            </p>
+</div>
+<div class="section" title="Buffer">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.library.index_base.base_classes.base_other.base_buffer"></a><a class="link" href="base_classes.html#odtone.library.index_base.base_classes.base_other.base_buffer" title="Buffer">
+            Buffer</a>
+</h6></div></div></div>
+<p>
+              <span class="inlinemediaobject"><img src="./../../../images/odtone::buffer.png" alt="odtone::buffer"></span>
+            </p>
+<p>
+              The BASE API offers two classes that can be used as buffers:
+            </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<span class="bold"><strong><span class="emphasis"><em>odtone::buffer</em></span></strong></span>:
+                a buffer of a generic type.
+              </li>
+<li class="listitem">
+<span class="bold"><strong><span class="emphasis"><em>odtone::buffer_vla</em></span></strong></span>:
+                a buffer of odtone::uint8.
+              </li>
+</ul></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Universidade Aveiro<br>Copyright &#169; 2009 -2011 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../index_base.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index_base.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="base_datatypes.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

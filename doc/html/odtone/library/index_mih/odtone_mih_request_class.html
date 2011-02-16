@@ -1,0 +1,176 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>2.4. odtone::mih::request Class Reference</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../../index.html" title="ODTONE 0.3">
+<link rel="up" href="../index_mih.html" title="ODTONE MIH">
+<link rel="prev" href="odtone_mih_indication_class.html" title="2.3. odtone::mih::indication Class Reference">
+<link rel="next" href="odtone_mih_response_class.html" title="2.5. odtone::mih::response Class Reference">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="odtone_mih_indication_class.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index_mih.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="odtone_mih_response_class.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+<div class="section" title="2.4. odtone::mih::request Class Reference">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.library.index_mih.odtone_mih_request_class"></a><a class="link" href="odtone_mih_request_class.html" title="2.4. odtone::mih::request Class Reference">
+        2.4. odtone::mih::request Class Reference</a>
+</h4></div></div></div>
+<a name="odtone.library.index_mih.odtone_mih_request_class.detailed_description"></a><h6>
+<a name="id3108523"></a>
+          <a class="link" href="odtone_mih_request_class.html#odtone.library.index_mih.odtone_mih_request_class.detailed_description">Detailed
+          Description</a>
+        </h6>
+<p>
+          <span class="inlinemediaobject"><img src="./../../../images/odtone::mih::request.png" alt="odtone::mih::request"></span>
+        </p>
+<p>
+          <span class="bold"><strong>MIH Request Message helper.</strong></span>
+        </p>
+<p>
+          This class permits parsing/generating MIH Request messages. It derives
+          from <a class="link" href="odtone_mih_message_helper_class.html" title="2.2. odtone::mih::message_helper Class Reference">odtone::mih::message_helper</a>
+          and will inherit all the features from base class.
+        </p>
+<a name="odtone.library.index_mih.odtone_mih_request_class.namespace"></a><h6>
+<a name="id3108587"></a>
+          <a class="link" href="odtone_mih_request_class.html#odtone.library.index_mih.odtone_mih_request_class.namespace">Namespace</a>
+        </h6>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span>
+</pre>
+<p>
+        </p>
+<a name="odtone.library.index_mih.odtone_mih_request_class.public_member_functions"></a><h6>
+<a name="id3108639"></a>
+          <a class="link" href="odtone_mih_request_class.html#odtone.library.index_mih.odtone_mih_request_class.public_member_functions">Public
+          Member Functions</a>
+        </h6>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">request</span><span class="special">();</span>
+<span class="keyword">explicit</span> <span class="identifier">request</span><span class="special">(</span><span class="identifier">mid</span> <span class="identifier">m</span><span class="special">);</span>
+<span class="identifier">request</span><span class="special">(</span><span class="identifier">mid</span> <span class="identifier">m</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">id</span><span class="special">&amp;</span> <span class="identifier">destination</span><span class="special">);</span>
+</pre>
+<p>
+        </p>
+<a name="odtone.library.index_mih.odtone_mih_request_class.constructor__amp__destructor_documentation"></a><h6>
+<a name="id3108763"></a>
+          <a class="link" href="odtone_mih_request_class.html#odtone.library.index_mih.odtone_mih_request_class.constructor__amp__destructor_documentation">Constructor
+          &amp; Destructor Documentation</a>
+        </h6>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">request</span><span class="special">();</span>
+</pre>
+<p>
+          Construct an MIH Request Message helper with MIH Message ID equals to 0
+          (zero) and a
+          <em class="replaceable"><code>
+            null
+          </code></em>
+          pointer for MIH Message Destination MIHF ID.
+        </p>
+<p>
+          <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">explicit</span> <span class="identifier">request</span><span class="special">(</span><span class="identifier">mid</span> <span class="identifier">m</span><span class="special">);</span>
+</pre>
+<p>
+          Construct an MIH Request Message helper.
+        </p>
+<p>
+          <span class="bold"><strong>Parameters:</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="bold"><strong>m</strong></span> - value of MIH Message ID.
+          </li></ul></div>
+<p>
+          <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">request</span><span class="special">(</span><span class="identifier">mid</span> <span class="identifier">m</span><span class="special">,</span>
+        <span class="keyword">const</span> <span class="identifier">id</span><span class="special">&amp;</span> <span class="identifier">destination</span><span class="special">);</span>
+</pre>
+<p>
+          Construct an MIH Request Message helper.
+        </p>
+<p>
+          <span class="bold"><strong>Parameters:</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<span class="bold"><strong>m</strong></span> - value of MIH Message ID.
+          </li>
+<li class="listitem">
+<span class="bold"><strong>destination</strong></span> - MIH Message Destination
+            MIHF ID.
+          </li>
+</ul></div>
+<p>
+          <span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span><span class="underline">_</span>
+        </p>
+<a name="odtone.library.index_mih.odtone_mih_request_class.data_types"></a><h6>
+<a name="id3109325"></a>
+          <a class="link" href="odtone_mih_request_class.html#odtone.library.index_mih.odtone_mih_request_class.data_types">Data
+          Types</a>
+        </h6>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">enum</span> <span class="identifier">mid</span> <span class="special">{</span>
+	<span class="identifier">capability_discover</span>       <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_Capability_Discover.request
+</span>	<span class="identifier">mih_register</span>              <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">2</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_Register.request
+</span>	<span class="identifier">mih_deregister</span>            <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">3</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_DeRegister.request
+</span>	<span class="identifier">event_subscribe</span>           <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">4</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_Event_Subscribe.request
+</span>	<span class="identifier">event_unsubscribe</span>         <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">5</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_Event_Unsubscribe.request
+</span>	<span class="identifier">link_get_parameters</span>       <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">3</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_Link_Get_Parameters.request
+</span>	<span class="identifier">link_configure_thresholds</span> <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">3</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">2</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_Link_Configure_Thresholds.request
+</span>	<span class="identifier">link_actions</span>              <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">3</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">3</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_Link_Actions.request
+</span>	<span class="identifier">net_ho_candidate_query</span>    <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">3</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">4</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_Net_HO_Candidate_Query.request
+</span>	<span class="identifier">mn_ho_candidate_query</span>     <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">3</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">5</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_MN_HO_Candidate_Query.request
+</span>	<span class="identifier">n2n_ho_query_resources</span>    <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">3</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">6</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_N2N_HO_Query_Resources.request
+</span>	<span class="identifier">mn_ho_commit</span>              <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">3</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">7</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_MN_HO_Commit.request
+</span>	<span class="identifier">net_ho_commit</span>             <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">3</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">8</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_Net_HO_Commit.request
+</span>	<span class="identifier">n2n_ho_commit</span>             <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">3</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">9</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_N2N_HO_Commit.request
+</span>	<span class="identifier">mn_ho_complete</span>            <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">3</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">10</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>    <span class="comment">/// MIH_N2N_HO_Complete.request
+</span>	<span class="identifier">n2n_ho_complete</span>           <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">3</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">11</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>    <span class="comment">/// MIH_N2N_HO_Commlete.request
+</span>	<span class="identifier">get_information</span>           <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">4</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_Get_Information.request
+</span>	<span class="identifier">push_information</span>          <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">4</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">2</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>     <span class="comment">/// MIH_Push_Information.request
+</span>
+	<span class="comment">// ODTONE specific messages
+</span>	<span class="identifier">link_register</span>            <span class="special">=</span> <span class="identifier">msg_id</span><span class="special">&lt;</span><span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">6</span><span class="special">&gt;::</span><span class="identifier">value</span>       <span class="comment">/// Link_Register.request
+</span><span class="special">};</span>
+</pre>
+<p>
+        </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Universidade Aveiro<br>Copyright &#169; 2009 -2011 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="odtone_mih_indication_class.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index_mih.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="odtone_mih_response_class.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
