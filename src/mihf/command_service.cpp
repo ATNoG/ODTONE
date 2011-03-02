@@ -121,7 +121,7 @@ void link_get_parameters_response_handler(mih::id src_id,
 	}
 
 	// Send Link_Get_Parameters.confirm to the user
-	log(1, "(mism) setting response to Link_Get_Parameters.request");
+	ODTONE_LOG(1, "(mism) setting response to Link_Get_Parameters.request");
 	*out << mih::confirm(mih::confirm::link_get_parameters)
 	    & mih::tlv_status(mih::status_success)
 //	    & mih::tlv_dev_states_rsp_list(dsrl)
@@ -144,7 +144,7 @@ void link_get_parameters_response_handler(mih::id src_id,
 bool command_service::link_get_parameters_request(meta_message_ptr &in,
 						  meta_message_ptr &out)
 {
-	log(1, "(mics) received a Link_Get_Parameters.request from",
+	ODTONE_LOG(1, "(mics) received a Link_Get_Parameters.request from",
 	    in->source().to_string());
 
 
@@ -217,18 +217,18 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 bool command_service::link_get_parameters_response(meta_message_ptr &in,
 						   meta_message_ptr &out)
 {
-	log(1, "(mics) received Link_Get_Parameters.response from ",
+	ODTONE_LOG(1, "(mics) received Link_Get_Parameters.response from ",
 	    in->source().to_string());
 
 	if(!_lpool.set_user_tid(in)) {
-		log(1, "(mics) warning: no local transaction for this msg ",
+		ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
 			"discarding it");
 		return false;
 	}
 
 	in->source(mihfid);
 
-	log(1, "(mics) forwarding Link_Get_Parameters.response to ",
+	ODTONE_LOG(1, "(mics) forwarding Link_Get_Parameters.response to ",
 	    in->destination().to_string());
 	in->opcode(mih::operation::confirm);
 	_transmit(in);
@@ -246,7 +246,7 @@ bool command_service::link_get_parameters_response(meta_message_ptr &in,
 bool command_service::link_get_parameters_confirm(meta_message_ptr &in,
 						   meta_message_ptr &out)
 {
-	log(1, "(mics) received Link_Get_Parameters.confirm from ",
+	ODTONE_LOG(1, "(mics) received Link_Get_Parameters.confirm from ",
 	    in->source().to_string());
 
 	if(_lpool.set_user_tid(in)) {
@@ -278,7 +278,7 @@ bool command_service::link_get_parameters_confirm(meta_message_ptr &in,
 		return false;
 	}
 
-	log(1, "no pending transaction for this message, discarding");
+	ODTONE_LOG(1, "no pending transaction for this message, discarding");
 	return false;
 }
 
@@ -292,7 +292,7 @@ bool command_service::link_get_parameters_confirm(meta_message_ptr &in,
 bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 							meta_message_ptr &out)
 {
-	log(1, "(mics) received a Link_Configure_Thresholds.request from",
+	ODTONE_LOG(1, "(mics) received a Link_Configure_Thresholds.request from",
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
@@ -322,7 +322,7 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 			return false;
 
 		if(fails <= kConf_MIHF_Link_Delete_Value) {
-			log(1, "(mies) forwarding Event_Subscribe.request to ",
+			ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.request to ",
 			    in->destination().to_string());
 			_transmit(in);
 		}
@@ -350,18 +350,18 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 bool command_service::link_configure_thresholds_response(meta_message_ptr &in,
 							 meta_message_ptr &out)
 {
-	log(1, "(mics) received Link_Configure_Thresholds.response from ",
+	ODTONE_LOG(1, "(mics) received Link_Configure_Thresholds.response from ",
 	    in->source().to_string());
 
 	if(!_lpool.set_user_tid(in)) {
-		log(1, "(mics) warning: no local transaction for this msg ",
+		ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
 		    "discarding it");
 		return false;
 	}
 
 	in->source(mihfid);
 
-	log(1, "(mics) forwarding Link_Configure_Thresholds.response to ", in->destination().to_string());
+	ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.response to ", in->destination().to_string());
 	in->opcode(mih::operation::confirm);
 	_transmit(in);
 
@@ -378,11 +378,11 @@ bool command_service::link_configure_thresholds_response(meta_message_ptr &in,
 bool command_service::link_configure_thresholds_confirm(meta_message_ptr &in,
 							 meta_message_ptr &out)
 {
-	log(1, "(mics) received Link_Configure_Thresholds.confirm from ",
+	ODTONE_LOG(1, "(mics) received Link_Configure_Thresholds.confirm from ",
 	    in->source().to_string());
 
 	if(!_lpool.set_user_tid(in)) {
-		log(1, "(mics) warning: no local transaction for this msg ",
+		ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
 		    "discarding it");
 		return false;
 	}
@@ -391,7 +391,7 @@ bool command_service::link_configure_thresholds_confirm(meta_message_ptr &in,
 
 	in->source(mihfid);
 
-	log(1, "(mics) forwarding Link_Configure_Thresholds.confirm to ", in->destination().to_string());
+	ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.confirm to ", in->destination().to_string());
 
 	_transmit(in);
 
@@ -465,7 +465,7 @@ void link_actions_response_handler(mih::id src_id,
 	}
 
 	// Send Link_Actions.confirm to the user
-	log(1, "(mism) setting response to Link_Actions.request");
+	ODTONE_LOG(1, "(mism) setting response to Link_Actions.request");
 	*out << mih::confirm(mih::confirm::link_get_parameters)
 	    & mih::tlv_status(mih::status_success)
 	    & mih::tlv_link_action_rsp_list(larl);
@@ -488,7 +488,7 @@ void link_actions_response_handler(mih::id src_id,
 bool command_service::link_actions_request(meta_message_ptr &in,
 					   meta_message_ptr &out)
 {
-	log(1, "(mics) received a Link_Actions.request from",
+	ODTONE_LOG(1, "(mics) received a Link_Actions.request from",
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
@@ -560,12 +560,12 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 bool command_service::link_actions_response(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
-	log(1, "(mics) received Link_Actions.response from ",
+	ODTONE_LOG(1, "(mics) received Link_Actions.response from ",
 	    in->source().to_string());
 
 	if(!_lpool.set_user_tid(in))
 		{
-			log(1, "(mics) no local pending transaction for this message, discarding");
+			ODTONE_LOG(1, "(mics) no local pending transaction for this message, discarding");
 			return false;
 		}
 
@@ -573,7 +573,7 @@ bool command_service::link_actions_response(meta_message_ptr &in,
 
 	in->source(mihfid);
 
-	log(1, "(mics) forwarding Link_Actions.response to ", in->destination().to_string());
+	ODTONE_LOG(1, "(mics) forwarding Link_Actions.response to ", in->destination().to_string());
 
 	in->opcode(mih::operation::confirm);
 	_transmit(in);
@@ -591,7 +591,7 @@ bool command_service::link_actions_response(meta_message_ptr &in,
 bool command_service::link_actions_confirm(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
-	log(1, "(mics) received Link_Actions.confirm from ",
+	ODTONE_LOG(1, "(mics) received Link_Actions.confirm from ",
 	    in->source().to_string());
 
 	if(_lpool.set_user_tid(in)) {
@@ -614,7 +614,7 @@ bool command_service::link_actions_confirm(meta_message_ptr &in,
 		return false;
 	}
 
-	log(1, "no pending transaction for this message, discarding");
+	ODTONE_LOG(1, "no pending transaction for this message, discarding");
 	return false;
 
 }
@@ -636,7 +636,7 @@ bool command_service::generic_command_request(const char *recv_msg,
 					      meta_message_ptr &in,
 					      meta_message_ptr &out)
 {
-	log(1, recv_msg, in->source().to_string());
+	ODTONE_LOG(1, recv_msg, in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
 		//
@@ -647,7 +647,7 @@ bool command_service::generic_command_request(const char *recv_msg,
 		//
 		// source identifier is the remote MIHF
 		//
-		log(1, send_msg);
+		ODTONE_LOG(1, send_msg);
 
 		_lpool.add(in);
 		in->source(mihfid);
@@ -681,17 +681,17 @@ bool command_service::generic_command_response(const char *recv_msg,
 					       meta_message_ptr &in,
 					       meta_message_ptr &out)
 {
-	log(1, recv_msg, in->source().to_string());
+	ODTONE_LOG(1, recv_msg, in->source().to_string());
 
 	if(!_lpool.set_user_tid(in)) {
-		log(1, "(mics) warning: no local transaction for this msg ",
+		ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
 		    "discarding it");
 		return false;
 	}
 
 	in->source(mihfid);
 
-	log(1, recv_msg , in->destination().to_string());
+	ODTONE_LOG(1, recv_msg , in->destination().to_string());
 	in->opcode(mih::operation::confirm);
 	_transmit(in);
 

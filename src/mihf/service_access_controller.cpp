@@ -70,7 +70,7 @@ void sac_dispatch::operator()(meta_message_ptr& in)
 
 	uint mid = in->mid();
 
-	log(1, "(sac) dispatching message with mid: ", mid);
+	ODTONE_LOG(1, "(sac) dispatching message with mid: ", mid);
 	//
 	// no thread safety because insertion should __only__ be made
 	// on MIHF initialization
@@ -87,7 +87,7 @@ void sac_dispatch::operator()(meta_message_ptr& in)
 		if (process_message(in, out))
 		 	_transmit(out);
         } else {
-		log(1, "(sac) (warning) message with mid: ", mid,
+		ODTONE_LOG(1, "(sac) (warning) message with mid: ", mid,
 		    " unknown, discarding.");
 	}
 }
@@ -130,7 +130,7 @@ bool sac_process_message(meta_message_ptr& in, meta_message_ptr& out)
 
 		return rsp;
 	} else {
-		log(1, "(sac) (warning) message with mid: ", mid,
+		ODTONE_LOG(1, "(sac) (warning) message with mid: ", mid,
 		    " unknown, discarding.");
 	}
 

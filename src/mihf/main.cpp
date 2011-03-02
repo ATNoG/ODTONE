@@ -320,7 +320,7 @@ int main(int argc, char **argv)
 	// set this mihf id
 	mihfid_t::instance()->assign(id.c_str());
 	// set log level
-	log.level(loglevel);
+	ODTONE_LOG.level(loglevel);
 
 	// create address books that stores info on how to contact mih
 	// saps and peer mihfs

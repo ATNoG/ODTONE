@@ -137,7 +137,7 @@ void link_capability_discover_response_handler(mih::id src_id,
 	}
 
 	// Send Capability_Discover.response to the user
-	log(1, "(mism) setting response to Capability_Discover.request");
+	ODTONE_LOG(1, "(mism) setting response to Capability_Discover.request");
 	*out << mih::response(mih::response::capability_discover)
 	    & mih::tlv_status(mih::status_success)
 	    & mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
@@ -165,7 +165,7 @@ bool service_management::forward_to_link_capability_discover_request(meta_messag
 	uint16  tid = in->tid();
 
 	// Asks for local Link SAPs capabilities
-	log(1, "(mism) gathering information about local Link SAPs capabilities");
+	ODTONE_LOG(1, "(mism) gathering information about local Link SAPs capabilities");
 
 	*in << mih::request(mih::request::capability_discover);
 
@@ -200,14 +200,14 @@ bool service_management::forward_to_link_capability_discover_request(meta_messag
 bool service_management::capability_discover_request(meta_message_ptr& in,
 						     meta_message_ptr& out)
 {
-	log(1, "(mism) received Capability_Discover.request from ",
+	ODTONE_LOG(1, "(mism) received Capability_Discover.request from ",
 	    in->source().to_string(), " with destination ",
 	    in->destination().to_string());
 
 	// user requested broadcasting of a capability discover
 	if (utils::is_multicast(in) && in->is_local()) {
 		// piggyback
-		log(4, "(mism) piggybacking capability discover in broadcast");
+		ODTONE_LOG(4, "(mism) piggybacking capability discover in broadcast");
 
 		mih::event_list     capabilities_event_list;
 		mih::command_list   capabilities_cmd_list;
@@ -229,7 +229,7 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 		if (_enable_broadcast) {
 			return forward_to_link_capability_discover_request(in);
 		} else {
-			log(3, "(mism) response to broadcast Capability_Discover.request disabled ");
+			ODTONE_LOG(3, "(mism) response to broadcast Capability_Discover.request disabled ");
 			return false;
 		}
 	} else {
@@ -250,12 +250,12 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 bool service_management::capability_discover_response(meta_message_ptr &in,
 						      meta_message_ptr &)
 {
-	log(1, "(mism) received Capability_Discover.response from ",
+	ODTONE_LOG(1, "(mism) received Capability_Discover.response from ",
 	    in->source().to_string());
 
 	// do we have a request from a user?
 	if (_lpool.set_user_tid(in)) {
-		log(1, "forwarding Capability_Discover.response to ",
+		ODTONE_LOG(1, "forwarding Capability_Discover.response to ",
 		    in->destination().to_string());
 		in->opcode(mih::operation::confirm);
 		_transmit(in);
@@ -266,14 +266,14 @@ bool service_management::capability_discover_response(meta_message_ptr &in,
 	// broadcast request from a user
 	in->source(mih::id(""));
 	if (_lpool.set_user_tid(in))  {
-		log(1, "forwarding Capability_Discover.response to ",
+		ODTONE_LOG(1, "forwarding Capability_Discover.response to ",
 		    in->destination().to_string());
 		in->opcode(mih::operation::confirm);
 		_transmit(in);
 		return false;
 	}
 
-	log(1, "no pending transaction for this message, discarding");
+	ODTONE_LOG(1, "no pending transaction for this message, discarding");
 	return false;
 }
 
@@ -287,7 +287,7 @@ bool service_management::capability_discover_response(meta_message_ptr &in,
 bool service_management::capability_discover_confirm(meta_message_ptr &in,
 						      meta_message_ptr &out)
 {
-	log(1, "(mism) received Capability_Discover.confirm from ",
+	ODTONE_LOG(1, "(mism) received Capability_Discover.confirm from ",
 	    in->source().to_string());
 
 	if (_lpool.set_user_tid(in)) {
@@ -312,7 +312,7 @@ bool service_management::capability_discover_confirm(meta_message_ptr &in,
 		return false;
 	}
 
-	log(1, "no pending transaction for this message, discarding");
+	ODTONE_LOG(1, "no pending transaction for this message, discarding");
 	return false;
 }
 
@@ -326,7 +326,7 @@ bool service_management::capability_discover_confirm(meta_message_ptr &in,
 bool service_management::link_register_indication(meta_message_ptr &in,
 	                                       meta_message_ptr &out)
 {
-	log(1, "(mism) received Link_Register.indication from ",
+	ODTONE_LOG(1, "(mism) received Link_Register.indication from ",
 	    in->source().to_string());
 
 	// Add Link SAP to the list of known Link SAPs
@@ -353,7 +353,7 @@ bool service_management::link_register_indication(meta_message_ptr &in,
 bool service_management::user_register_indication(meta_message_ptr &in,
 	                                          meta_message_ptr &out)
 {
-	log(1, "(mism) received User_Register.indication from ",
+	ODTONE_LOG(1, "(mism) received User_Register.indication from ",
 	    in->source().to_string());
 
 	// Add MIH User to the list of known MIH Users

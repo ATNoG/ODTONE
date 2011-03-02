@@ -89,8 +89,8 @@ void udp_listener::handle_receive(buffer<uint8>&			 buff,
 	using namespace boost;
 
 	if (!e) {
-		log(1, "(udp) received ", rbytes, " bytes.");
-		log(0, "(udp) from ", _rmt_endp.address().to_string(),
+		ODTONE_LOG(1, "(udp) received ", rbytes, " bytes.");
+		ODTONE_LOG(0, "(udp) from ", _rmt_endp.address().to_string(),
 		    ":", _rmt_endp.port());
 
 		mih::frame *pud = mih::frame::cast(buff.get(), rbytes);
@@ -100,7 +100,7 @@ void udp_listener::handle_receive(buffer<uint8>&			 buff,
 			uint16 port = _rmt_endp.port();
 
 			meta_message_ptr in(new meta_message(ip, port, *pud));
-			log(4, *pud);
+			ODTONE_LOG(4, *pud);
 			_dispatch(in);
                 }
 

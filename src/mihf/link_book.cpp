@@ -46,7 +46,7 @@ void link_book::add(const mih::octet_string &id,
 	a.fail = 0;
 
 	_lbook[id] = a;
-	log(4, "(link_book) added: ", id, " ", ip, " ", port);
+	ODTONE_LOG(4, "(link_book) added: ", id, " ", ip, " ", port);
 }
 
 /**

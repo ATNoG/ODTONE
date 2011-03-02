@@ -56,13 +56,13 @@ void transmit::operator()(meta_message_ptr& msg)
 		if(msg->opcode() != mih::operation::request) {
 			user_entry user = _user_abook.get(msg->destination().to_string());
 			utils::udp_send(_io, msg, user.ip.c_str(), user.port);
-			log(1, "(transmit) sending local message to: ",
+			ODTONE_LOG(1, "(transmit) sending local message to: ",
 			    msg->destination().to_string(), " ", user.ip, " ", user.port);
 		}
 		else {
 			link_entry link = _link_abook.get(msg->destination().to_string());
 			utils::udp_send(_io, msg, link.ip.c_str(), link.port);
-			log(1, "(transmit) sending local message to: ",
+			ODTONE_LOG(1, "(transmit) sending local message to: ",
 			    msg->destination().to_string(), " ", link.ip, " ", link.port);
 		}
 	} catch (...) {
@@ -70,7 +70,7 @@ void transmit::operator()(meta_message_ptr& msg)
 		{
 			msg->opcode(mih::operation::response);
 		}
-		log(1, "(transmit) forwarding to message_out");
+		ODTONE_LOG(1, "(transmit) forwarding to message_out");
 		_msg_out(msg);
 	}
 }

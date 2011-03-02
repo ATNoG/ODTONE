@@ -56,7 +56,7 @@ information_service::information_service(local_transaction_pool &lpool,
 bool information_service::get_information_request(meta_message_ptr &in,
 						  meta_message_ptr &out)
 {
-	log(1, "(miis) received a Get_Information.request from",
+	ODTONE_LOG(1, "(miis) received a Get_Information.request from",
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
@@ -92,11 +92,11 @@ bool information_service::get_information_request(meta_message_ptr &in,
 bool information_service::get_information_response(meta_message_ptr &in,
 						   meta_message_ptr &out)
 {
-	log(1, "(miis) received Get_Information.response from ",
+	ODTONE_LOG(1, "(miis) received Get_Information.response from ",
 	    in->source().to_string());
 
 	if(!_lpool.set_user_tid(in)) {
-		log(1, "(mics) warning: no local transaction for this msg ",
+		ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
 		    "discarding it");
 		return false;
 	}
@@ -104,7 +104,7 @@ bool information_service::get_information_response(meta_message_ptr &in,
 	in->source(mihfid);
 	in->opcode(mih::operation::confirm);
 
-	log(1, "(miis) forwarding Get_Information.response to ",
+	ODTONE_LOG(1, "(miis) forwarding Get_Information.response to ",
 	    in->destination().to_string());
 
 	_transmit(in);
@@ -127,7 +127,7 @@ bool information_service::get_information_response(meta_message_ptr &in,
 bool information_service::push_information_request(meta_message_ptr &in,
 						   meta_message_ptr &out)
 {
-	log(1, "(miis) received a Get_Information.request from",
+	ODTONE_LOG(1, "(miis) received a Get_Information.request from",
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
@@ -162,11 +162,11 @@ bool information_service::push_information_request(meta_message_ptr &in,
 bool information_service::push_information_indication(meta_message_ptr &in,
 						      meta_message_ptr &out)
 {
-	log(1, "(miis) received Push_Information.indication from ",
+	ODTONE_LOG(1, "(miis) received Push_Information.indication from ",
 	    in->source().to_string());
 
 	if(!_lpool.set_user_tid(in)) {
-		log(1, "(mics) warning: no local transaction for this msg ",
+		ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
 		    "discarding it");
 
 		return false;
@@ -174,7 +174,7 @@ bool information_service::push_information_indication(meta_message_ptr &in,
 
 	in->source(mihfid);
 
-	log(1, "(miis) forwarding Push_Information.indication to ",
+	ODTONE_LOG(1, "(miis) forwarding Push_Information.indication to ",
 	    in->destination().to_string());
 
 	_transmit(in);

@@ -65,7 +65,7 @@ bool is_multicast(meta_message_ptr &msg)
 static void send_handler(const boost::system::error_code &ec)
 {
 	if (ec)
-		log(1, "Error sending message. Error code: ", ec.message());
+		ODTONE_LOG(1, "Error sending message. Error code: ", ec.message());
 }
 
 /**
@@ -157,7 +157,7 @@ void forward_request(meta_message_ptr &in,
 		     local_transaction_pool &lpool,
 		     transmit &t)
 {
-	log(1, "(utils) forwarding request to ", in->destination().to_string());
+	ODTONE_LOG(1, "(utils) forwarding request to ", in->destination().to_string());
 	lpool.add(in);
 	in->source(mihfid);
 	t(in);

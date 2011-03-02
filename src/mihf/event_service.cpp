@@ -73,7 +73,7 @@ mih::status event_service::subscribe(const mih::id &user,
 		if (events.get((mih::event_list_enum) i)) {
 			reg.event = (mih::event_list_enum) i;
 			_event_subscriptions.push_back(reg);
-			log(3, "(mies) added subscription ", reg.user,
+			ODTONE_LOG(3, "(mies) added subscription ", reg.user,
 			    ":", reg.link.addr, ":", reg.event);
 		}
 	}
@@ -119,7 +119,7 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 		out->destination(in->source());
 		out->ackreq(in->ackreq());
 
-		log(1, "(mies) forwarding Event_Subscribe.response to ",
+		ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.response to ",
 		    in->destination().to_string());
 
 		return true;
@@ -138,7 +138,7 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 			return false;
 
 		if(fails <= kConf_MIHF_Link_Delete_Value) {
-			log(1, "(mies) forwarding Event_Subscribe.request to ",
+			ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.request to ",
 			    out->destination().to_string());
 			_transmit(out);
 		}
@@ -162,7 +162,7 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 bool event_service::event_subscribe_request(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
-	log(1, "(mies) received Event_Subscribe.request from ",
+	ODTONE_LOG(1, "(mies) received Event_Subscribe.request from ",
 	    in->source().to_string());
 
 	if (utils::this_mihf_is_destination(in))  {
@@ -185,12 +185,12 @@ bool event_service::event_subscribe_request(meta_message_ptr &in,
 bool event_service::event_subscribe_response(meta_message_ptr &in,
 					     meta_message_ptr&)
 {
-	log(1, "(mies) received Event_Subscribe.response from ",
+	ODTONE_LOG(1, "(mies) received Event_Subscribe.response from ",
 	    in->source().to_string());
 
 	// do we have a request from a user?
 	if (!_lpool.set_user_tid(in)) {
-		log(1, "(mies) warning: no local transaction for this msg ",
+		ODTONE_LOG(1, "(mies) warning: no local transaction for this msg ",
 		    "discarding it");
 		return false;
 	}
@@ -211,7 +211,7 @@ bool event_service::event_subscribe_response(meta_message_ptr &in,
 		st = subscribe(mih::id(in->destination().to_string()), link, events.get());
 	}
 
-	log(1, "(mies) forwarding Event_Subscribe.response to ",
+	ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.response to ",
 	    in->destination().to_string());
 
 	// forward to user
@@ -231,7 +231,7 @@ bool event_service::event_subscribe_response(meta_message_ptr &in,
 bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
-	log(1, "(mies) received Event_Subscribe.confirm from ",
+	ODTONE_LOG(1, "(mies) received Event_Subscribe.confirm from ",
 	    in->source().to_string());
 
 	_link_abook.reset(in->source().to_string());
@@ -254,7 +254,7 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 
 	// do we have a request from a user?
 	if (!_lpool.set_user_tid(in)) {
-		log(1, "(mies) warning: no local transaction for this msg ",
+		ODTONE_LOG(1, "(mies) warning: no local transaction for this msg ",
 		    "discarding it");
 		return false;
 	}
@@ -265,7 +265,7 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 		st = subscribe(mih::id(in->destination().to_string()), link, events.get());
 	}
 
-	log(1, "(mies) forwarding Event_Subscribe.confirm to ",
+	ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.confirm to ",
 	    in->destination().to_string());
 
 	// forward to user
@@ -329,7 +329,7 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
 		uint16 fails = _link_abook.fail(in->destination().to_string());
 		if(fails != -1) {
 			if(fails <= kConf_MIHF_Link_Delete_Value) {
-				log(1, "(mies) forwarding Event_Unsubscribe.request to ",
+				ODTONE_LOG(1, "(mies) forwarding Event_Unsubscribe.request to ",
 				    in->destination().to_string());
 				_transmit(in);
 			}
@@ -364,7 +364,7 @@ mih::status event_service::unsubscribe(const mih::id &user,
 		if (it->link == link &&
 		    (it->user.compare(user.to_string()) == 0) &&
 		    events.get((mih::event_list_enum) it->event)) {
-				log(3, "(mies) removed subscription ", it->user,
+				ODTONE_LOG(3, "(mies) removed subscription ", it->user,
 				    ":", it->link.addr ,":", it->event);
 				_event_subscriptions.erase(it++);
 		}
@@ -423,7 +423,7 @@ bool event_service::local_event_unsubscribe_request(meta_message_ptr &in,
 bool event_service::event_unsubscribe_request(meta_message_ptr &in,
 					      meta_message_ptr &out)
 {
-	log(1, "(mies) received Event_Unsubscribe.request from ",
+	ODTONE_LOG(1, "(mies) received Event_Unsubscribe.request from ",
 	    in->source().to_string());
 
 	if (utils::this_mihf_is_destination(in)) {
@@ -446,12 +446,12 @@ bool event_service::event_unsubscribe_request(meta_message_ptr &in,
 bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 					       meta_message_ptr &)
 {
-	log(1, "(mies) received Event_Unsubscribe.response from ",
+	ODTONE_LOG(1, "(mies) received Event_Unsubscribe.response from ",
 	    in->source().to_string());
 
 	// do we have a request from a user?
 	if (!_lpool.set_user_tid(in)) {
-		log(1, "(mics) warning: no local transaction for this msg ",
+		ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
 		    "discarding it");
 
 		return false;
@@ -472,7 +472,7 @@ bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 		st = unsubscribe(mih::id(in->destination().to_string()), link, events.get());
 	}
 
-	log(1, "(mies) forwarding Event_Unsubscribe.response to ",
+	ODTONE_LOG(1, "(mies) forwarding Event_Unsubscribe.response to ",
 	    in->destination().to_string());
 
 	// forward to user
@@ -492,7 +492,7 @@ bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 bool event_service::event_unsubscribe_confirm(meta_message_ptr &in,
 					       meta_message_ptr &)
 {
-	log(1, "(mies) received Event_Unsubscribe.confirm from ",
+	ODTONE_LOG(1, "(mies) received Event_Unsubscribe.confirm from ",
 	    in->source().to_string());
 
 	_link_abook.reset(in->source().to_string());
@@ -513,7 +513,7 @@ bool event_service::event_unsubscribe_confirm(meta_message_ptr &in,
 			}
 		}
 
-		log(1, "(mies) Events successfully unsubscribed in Link SAP ",
+		ODTONE_LOG(1, "(mies) Events successfully unsubscribed in Link SAP ",
 			in->source().to_string());
 	}
 
@@ -539,7 +539,7 @@ void event_service::msg_forward(meta_message_ptr &msg,
 	    it != _event_subscriptions.end();
 	    it++, i++) {
 		if ((it->event == event) && (it->link == li)) {
-			log(3, i, " (mies) found registration of user: ",
+			ODTONE_LOG(3, i, " (mies) found registration of user: ",
 			    it->user, " for event type ", event);
 			msg->destination(mih::id(it->user));
 			_transmit(msg);
@@ -575,7 +575,7 @@ void event_service::link_event_forward(meta_message_ptr &msg,
  */
 bool event_service::link_up_indication(meta_message_ptr &in, meta_message_ptr&)
 {
-	log(1, "(mies) received Link_Up.indication from ",
+	ODTONE_LOG(1, "(mies) received Link_Up.indication from ",
 	    in->source().to_string());
 
 	_link_abook.reset(in->source().to_string());
@@ -595,7 +595,7 @@ bool event_service::link_up_indication(meta_message_ptr &in, meta_message_ptr&)
  */
 bool event_service::link_down_indication(meta_message_ptr &in, meta_message_ptr&)
 {
-	log(1, "(mies) received Link_Down.indication from ",
+	ODTONE_LOG(1, "(mies) received Link_Down.indication from ",
 	    in->source().to_string());
 
 	_link_abook.reset(in->source().to_string());
@@ -616,7 +616,7 @@ bool event_service::link_down_indication(meta_message_ptr &in, meta_message_ptr&
 bool event_service::link_detected_indication(meta_message_ptr &in,
 					     meta_message_ptr &out)
 {
-	log(1, "(mies) received Link_Detected.indication from ",
+	ODTONE_LOG(1, "(mies) received Link_Detected.indication from ",
 	    in->source().to_string());
 
 	_link_abook.reset(in->source().to_string());
@@ -660,7 +660,7 @@ bool event_service::link_detected_indication(meta_message_ptr &in,
 bool event_service::link_going_down_indication(meta_message_ptr &in,
 					       meta_message_ptr&)
 {
-	log(1, "(mies) received Link_Going_Down.indication from ",
+	ODTONE_LOG(1, "(mies) received Link_Going_Down.indication from ",
 	    in->source().to_string());
 
 	_link_abook.reset(in->source().to_string());
@@ -680,7 +680,7 @@ bool event_service::link_going_down_indication(meta_message_ptr &in,
 bool event_service::link_handover_imminent_indication(meta_message_ptr &in,
 						      meta_message_ptr&)
 {
-	log(1, "(mies) received Link_Handover_Imminent.indication from ",
+	ODTONE_LOG(1, "(mies) received Link_Handover_Imminent.indication from ",
 	    in->source().to_string());
 
 	_link_abook.reset(in->source().to_string());
@@ -700,7 +700,7 @@ bool event_service::link_handover_imminent_indication(meta_message_ptr &in,
 bool event_service::link_handover_complete_indication(meta_message_ptr &in,
 						      meta_message_ptr&)
 {
-	log(1, "(mies) received Link_Handover_Complete.indication from ",
+	ODTONE_LOG(1, "(mies) received Link_Handover_Complete.indication from ",
 	    in->source().to_string());
 
 	_link_abook.reset(in->source().to_string());
@@ -720,7 +720,7 @@ bool event_service::link_handover_complete_indication(meta_message_ptr &in,
 bool event_service::link_pdu_transmit_status_indication(meta_message_ptr &in,
 							meta_message_ptr&)
 {
-	log(1, "(mies) received Link_PDU_Transmit_Status.indication from ",
+	ODTONE_LOG(1, "(mies) received Link_PDU_Transmit_Status.indication from ",
 	    in->source().to_string());
 
 	_link_abook.reset(in->source().to_string());

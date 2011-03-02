@@ -53,7 +53,7 @@ void user_book::add(const mih::octet_string &id,
 	a.mbbhandover_support = mbbhandover;
 
 	_ubook[id] = a;
-	log(4, "(user_book) added: ", id, " ", ip, " ", port);
+	ODTONE_LOG(4, "(user_book) added: ", id, " ", ip, " ", port);
 }
 
 /**

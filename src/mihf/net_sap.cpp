@@ -53,7 +53,7 @@ void net_sap::send(meta_message_ptr &msg)
 		else
 			utils::tcp_send(_io, msg, a.ip.c_str(), a.port);
 
-		log(1, "(net sap) sent message to: ", msg->destination().to_string(), a.ip, " ", a.port);
+		ODTONE_LOG(1, "(net sap) sent message to: ", msg->destination().to_string(), a.ip, " ", a.port);
 	} catch(...) { // no registration was found
 
 		// try to broadcast message
@@ -63,7 +63,7 @@ void net_sap::send(meta_message_ptr &msg)
 		} else if (msg->ip().size() != 0) {
 			utils::udp_send(_io, msg, msg->ip().c_str(), 4551);
 		} else {
-			log(1, "(net sap) no registration for peer mihf with id: ", msg->destination().to_string());
+			ODTONE_LOG(1, "(net sap) no registration for peer mihf with id: ", msg->destination().to_string());
 		}
 	}
 }

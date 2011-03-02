@@ -80,7 +80,7 @@ void session::handle_read(odtone::buffer<uint8> &buff,
 
 		mih::frame *pud = mih::frame::cast(buff.get(), rbytes);
 		if(pud) {
-			log(1, "(tcp) received ", rbytes, " bytes from ", ip , ":", port);
+			ODTONE_LOG(1, "(tcp) received ", rbytes, " bytes from ", ip , ":", port);
 
 			meta_message_ptr in(new meta_message(ip, port, *pud));
 			_dispatch(in);

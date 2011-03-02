@@ -44,7 +44,7 @@ void address_book::add(const mih::octet_string &id,
 	a.trans = t;
 
 	_abook[id] = a;
-	log(4, "(address_book) added: ", id, " ", ip, " ", port);
+	ODTONE_LOG(4, "(address_book) added: ", id, " ", ip, " ", port);
 }
 
 /**

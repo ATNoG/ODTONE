@@ -43,7 +43,7 @@ void local_transaction_pool::add(meta_message_ptr& in)
 	p.tid = in->tid();
 	p.ack = in->ackreq();
 
-	log(3, "(local transactions) added transaction ", p.user, ":",
+	ODTONE_LOG(3, "(local transactions) added transaction ", p.user, ":",
 	    p.destination, ":", p.tid, ":", p.ack);
 
 	{
