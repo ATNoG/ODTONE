@@ -35,6 +35,7 @@ lib odtone_base
 	: debug.cpp
 	  strutil.cpp
 	  logger.cpp
+	  net/link/address_mac.cpp
 	  source-list
 	  /boost//system
 	;
