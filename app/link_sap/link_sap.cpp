@@ -35,7 +35,7 @@ namespace link_sap {
 
 ///////////////////////////////////////////////////////////////////////////////
 link_sap::link_sap(const odtone::mih::config& cfg, boost::asio::io_service& io)
-	: _mihf(cfg, io, boost::bind(&link_sap::default_handler, this, _1))
+	: _mihf(cfg, io, boost::bind(&link_sap::default_handler, this, _1, _2))
 {
 	init();
 }
@@ -83,8 +83,11 @@ void link_sap::update(nic::interface* it)
 	}
 }
 
-void link_sap::default_handler(odtone::mih::message& msg)
+void link_sap::default_handler(odtone::mih::message& msg, const boost::system::error_code& ec)
 {
+	if (ec)
+		return;
+
 	odtone::mih::status st;
 
 	switch (msg.mid()) {
@@ -151,7 +154,7 @@ void link_sap::init()
 	m << odtone::mih::indication(odtone::mih::indication::link_register)
 	    & odtone::mih::tlv_interface_type_addr(link_id);
 
-	_mihf.sync_send(m);
+	_mihf.async_send(m);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

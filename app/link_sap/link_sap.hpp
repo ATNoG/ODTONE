@@ -37,7 +37,7 @@ public:
 	void update(nic::interface* it);
 
 private:
-	void default_handler(odtone::mih::message& msg);
+	void default_handler(odtone::mih::message& msg, const boost::system::error_code& ec);
 
 	/**
 	 * Initialization of Link SAP. Responsible for sending Link SAP register message

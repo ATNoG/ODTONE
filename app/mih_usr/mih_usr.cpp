@@ -44,6 +44,7 @@ public:
 	~mih_user();
 
 protected:
+	void user_reg_handler(const odtone::mih::config& cfg, const boost::system::error_code& ec);
 	void event_handler(odtone::mih::message& msg, const boost::system::error_code& ec);
 	void capability_discover_confirm(odtone::mih::message& msg, const boost::system::error_code& ec);
 	void event_subscribe_response(odtone::mih::message& msg, const boost::system::error_code& ec);
@@ -62,10 +63,16 @@ mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	m << odtone::mih::indication(odtone::mih::indication::user_register)
 	    & odtone::mih::tlv_mbb_handover_support(true);
 
-	_mihf.sync_send(m);
+	_mihf.async_send(m, boost::bind(&mih_user::user_reg_handler, this, boost::cref(cfg), _2));
+}
 
-	// Wait a little after register
-	sleep(1);
+mih_user::~mih_user()
+{
+}
+
+void mih_user::user_reg_handler(const odtone::mih::config& cfg, const boost::system::error_code& ec)
+{
+	log_(0, "MIH-User register result: ", ec.message());
 
 	odtone::mih::message msg;
 
@@ -85,10 +92,6 @@ mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	_mihf.async_send(msg, boost::bind(&mih_user::capability_discover_confirm, this, _1, _2));
 
 	log_(0, "MIH-User has sent a Capability_Discover.request towards its local MIHF");
-}
-
-mih_user::~mih_user()
-{
 }
 
 void mih_user::event_handler(odtone::mih::message& msg, const boost::system::error_code& ec)

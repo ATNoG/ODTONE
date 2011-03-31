@@ -187,30 +187,6 @@ void user::send_handler(mih::frame_vla& fm, size_t /*sbytes*/, const boost::syst
 	}
 }
 
-/**
- * Send the MIH message to the local MIHF synchronously.
- * After the message is sended, the callback is called to report
- * the success or failure in delivering the message to the MIHF. This method retuns immediately.
- *
- * @param msg MIH message to send
- * @param h Completion callback handler as a function pointer/object
- */
-void user::sync_send(mih::message& msg)
-{
-	mih::frame_vla fm;
-	void* sbuff;
-	size_t slen;
-
-	msg.source(_user_id);
-	msg.destination(_mihf_id);
-	msg.get_frame(fm);
-
-	sbuff = fm.get();
-	slen = fm.size();
-
-	_sock.send_to(boost::asio::buffer(sbuff, slen), _ep);
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace sap */ } /* namespace odtone */
 
