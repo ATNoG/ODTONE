@@ -39,11 +39,12 @@ using odtone::ulong;
 
 ///////////////////////////////////////////////////////////////////////////
 class process {
-	ODTONE_MOVABLE_BUT_NOT_COPYABLE(process)
+	process(const process&) = delete;
+	process& operator=(const process&) = delete;
 
 public:
-	process(move_<process>& ps);
-	process& operator=(move_<process>& ps);
+	process(process&& ps);
+	process& operator=(process&& ps);
 
 public:
 	struct console {
@@ -69,7 +70,8 @@ private:
 	int _stderr;
 };
 
-process::process(move_<process>& ps)
+process::process(process&& ps)
+	: _pid(-1), _stdin(-1), _stdout(-1), _stderr(-1)
 {
 	std::swap(_pid, ps._pid);
 	std::swap(_stdin, ps._stdin);
@@ -77,7 +79,7 @@ process::process(move_<process>& ps)
 	std::swap(_stderr, ps._stderr);
 }
 
-process& process::operator=(move_<process>& ps)
+process& process::operator=(process&& ps)
 {
 	if (this != &ps) {
 		std::swap(_pid, ps._pid);

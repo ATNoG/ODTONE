@@ -17,6 +17,7 @@
 
 #include <odtone/sap/user.hpp>
 #include <odtone/buffer.hpp>
+#include <odtone/bind_rv.hpp>
 #include <boost/bind.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -53,7 +54,7 @@ user::user(const mih::config& cfg, boost::asio::io_service& io, const handler& h
 	_sock.async_receive(boost::asio::buffer(rbuff, rlen),
 						boost::bind(&user::recv_handler,
 									this,
-									move(buff),
+									bind_rv(buff),
 									boost::asio::placeholders::bytes_transferred,
 									boost::asio::placeholders::error));
 }
@@ -109,7 +110,7 @@ void user::async_send(mih::message& msg, const handler& h)
 			    _ep,
 					 boost::bind(&user::send_handler,
 								 this,
-								 move(fm),
+								 bind_rv(fm),
 								 boost::asio::placeholders::bytes_transferred,
 								 boost::asio::placeholders::error));
 }
@@ -157,7 +158,7 @@ void user::recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system:
 	_sock.async_receive(boost::asio::buffer(rbuff, rlen),
 						boost::bind(&user::recv_handler,
 									this,
-									move(buff),
+									bind_rv(buff),
 									boost::asio::placeholders::bytes_transferred,
 									boost::asio::placeholders::error));
 }

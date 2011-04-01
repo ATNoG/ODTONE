@@ -20,9 +20,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
-#include <odtone/move.hpp>
 #include <odtone/debug.hpp>
 #include <boost/utility.hpp>
+#include <boost/throw_exception.hpp>
 #include <boost/type_traits/is_pod.hpp>
 #include <boost/type_traits/is_class.hpp>
 #include <cstdlib>
@@ -36,40 +36,38 @@ template<class T>
 class buffer {
 	ODTONE_STATIC_ASSERT(boost::is_pod<T>::value, "T must be POD type");
 
-	ODTONE_MOVABLE_BUT_NOT_COPYABLE(buffer)
+	buffer(const buffer&) = delete;
+	buffer& operator=(const buffer&) = delete;
 
 public:
 	buffer()
 		: _ptr(nullptr), _len(0)
 	{ }
 
-	buffer(move_<buffer>& buff)
-		: _ptr(buff._ptr), _len(buff._len)
+	buffer(buffer&& buff)
+		: _ptr(nullptr), _len(0)
 	{
-		buff._ptr = nullptr;
-		buff._len = 0;
+		std::swap(_ptr, buff._ptr);
+		std::swap(_len, buff._len);
 	}
 
 	buffer(size_t len)
-		: _ptr(nullptr)
+		: _ptr(nullptr), _len(0)
 	{
 		size(len);
 	}
 
 	~buffer()
 	{
-		std::free(_ptr);
+		if (_ptr)
+			std::free(_ptr);
 	}
 
-	buffer& operator=(move_<buffer>& buff)
+	buffer& operator=(buffer&& buff)
 	{
 		if (this != boost::addressof(buff)) {
-			std::free(_ptr);
-
-			_ptr = buff._ptr;
-			_len = buff._len;
-			buff._ptr = nullptr;
-			buff._len = 0;
+			std::swap(_ptr, buff._ptr);
+			std::swap(_len, buff._len);
 		}
 
 		return *this;
@@ -83,7 +81,7 @@ public:
 			void* p = std::realloc(_ptr, len * sizeof(T));
 
 			if (!p && len)
-				throw std::bad_alloc();
+				boost::throw_exception(std::bad_alloc());
 
 			_ptr = reinterpret_cast<T*>(p);
 			_len = len;
@@ -113,11 +111,16 @@ class buffer_vla : buffer<uint8> {
 
 	typedef buffer<uint8> base;
 
-	ODTONE_MOVABLE_BUT_NOT_COPYABLE(buffer_vla)
+	buffer_vla(const buffer_vla&) = delete;
+	buffer_vla& operator=(const buffer_vla&) = delete;
 
 public:
 	buffer_vla()
 		: base()
+	{ }
+
+	buffer_vla(buffer_vla&& buff)
+		: base(std::move<base>(buff))
 	{ }
 
 	buffer_vla(size_t len)
@@ -126,13 +129,10 @@ public:
 		ODTONE_ASSERT((sizeof(T) + len) > len);
 	}
 
-	buffer_vla(move_<buffer_vla>& buff)
-		: base(move(static_cast<base&>(buff)))
-	{ }
-
-	buffer_vla& operator=(move_<buffer_vla>& buff)
+	buffer_vla& operator=(buffer_vla&& buff)
 	{
-		static_cast<base&>(*this) = move(static_cast<base&>(buff));
+		if (this != boost::addressof(buff))
+			*this = std::move<base>(buff);
 
 		return *this;
 	}

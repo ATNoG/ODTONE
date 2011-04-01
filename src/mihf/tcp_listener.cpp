@@ -18,6 +18,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "tcp_listener.hpp"
 #include "log.hpp"
+#include <odtone/bind_rv.hpp>
 #include <boost/bind.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -58,7 +59,7 @@ void session::start()
 	_sock.async_read_some(boost::asio::buffer(rbuf, rlen),
 			      boost::bind(&session::handle_read,
 					  this,
-					  odtone::move(buff),
+					  odtone::bind_rv(buff),
 					  placeholders::bytes_transferred,
 					  placeholders::error));
 }

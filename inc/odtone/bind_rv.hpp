@@ -1,5 +1,5 @@
 //=============================================================================
-// Brief   : Move Emulation
+// Brief   : Object Warping for Binding with Move Semantics
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
@@ -15,8 +15,8 @@
 // This software is distributed without any warranty.
 //==============================================================================
 
-#ifndef ODTONE_MOVE__HPP_
-#define ODTONE_MOVE__HPP_
+#ifndef ODTONE_BIND_RV__HPP_
+#define ODTONE_BIND_RV__HPP_
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
@@ -28,32 +28,26 @@ namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
 template<class T>
-struct move_ : public T {
-	typedef move_<T> self_type;
+struct bind_rv_ : T {
+	bind_rv_(const bind_rv_& rv)
+		: T(static_cast<T&&>(const_cast<bind_rv_&>(rv)))
+	{
+	}
 
-	move_(const self_type& r)
-		: T(const_cast<self_type&>(r))
-	{ }
+	operator T&&() { return *this; }
+
+private:
+	bind_rv_& operator=(const bind_rv_&) = delete;
 };
 
 template<class T>
-inline typename boost::enable_if<boost::is_convertible<move_<T>, T>, move_<T>&>::type move(T& from)
+bind_rv_<T>& bind_rv(T& rv)
 {
-	return static_cast<move_<T>&>(from);
+	return static_cast<bind_rv_<T>&>(rv);
 }
-
-///////////////////////////////////////////////////////////////////////////////
-#define ODTONE_MOVABLE_BUT_NOT_COPYABLE(TYPE)             \
-	private:                                              \
-	TYPE(TYPE &);                                         \
-	TYPE& operator=(TYPE &);                              \
-	public:                                               \
-	operator odtone::move_<TYPE>&()                      \
-	{ return static_cast<odtone::move_<TYPE>&>(*this); } \
-	private:
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace odtone */
 
 // EOF ////////////////////////////////////////////////////////////////////////
-#endif /* ODTONE_MOVE__HPP_ */
+#endif /* ODTONE_BIND_RV__HPP_ */
