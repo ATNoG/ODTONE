@@ -173,7 +173,7 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 		       & mih::tlv_link_id_list(lil)
 		       & mih::tlv_get_status_req_set(lsr);
 
-		*in << mih::request(mih::request::link_get_parameters)
+		*out << mih::request(mih::request::link_get_parameters)
 		    & mih::tlv_link_parameters_req(lsr._param_type_list)
 		    & mih::tlv_link_states_req(lsr._states_req)
 		    & mih::tlv_link_descriptor_req(lsr._desc_req);
@@ -181,10 +181,10 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 		// For each Link_ID in request message
 		std::vector<mih::link_id>::iterator lid;
 		for(lid = lil.begin(); lid != lil.end(); lid++) {
-			in->destination(mih::id(_link_abook.search_interface((*lid).type, (*lid).addr)));
+			out->destination(mih::id(_link_abook.search_interface((*lid).type, (*lid).addr)));
 			// If the Link SAP it is known send message
-			if (in->destination().to_string().compare(""))
-				utils::forward_request(in, _lpool, _transmit);
+			if (out->destination().to_string().compare(""))
+				utils::forward_request(out, _lpool, _transmit);
 		}
 
 		// Lauched the thread responsible for respond to the get parameters request
@@ -308,26 +308,30 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 		// entry to handle the MIH_Link_Get_Parameters and
 		// Link_Get_Parameters.
 		//
-		mih::link_tuple_id lti;
+		mih::link_tuple_id       lti;
+		mih::link_cfg_param_list lcpl;
 
-		*in >> odtone::mih::request()
-		       & odtone::mih::tlv_link_identifier(lti);
-		in->destination(mih::id(_link_abook.search_interface(lti.type, lti.addr)));
+		*in >> mih::request()
+		       & mih::tlv_link_identifier(lti)
+		       & mih::tlv_link_cfg_param_list(lcpl);
+		
+		*out << mih::request(mih::request::link_configure_thresholds)
+		       & mih::tlv_link_cfg_param_list(lcpl);
+		out->destination(mih::id(_link_abook.search_interface(lti.type, lti.addr)));
+		_lpool.add(out);
+		out->source(mihfid);
 
-		_lpool.add(in);
-		in->source(mihfid);
-
-		uint16 fails = _link_abook.fail(in->destination().to_string());
+		uint16 fails = _link_abook.fail(out->destination().to_string());
 		if(fails == -1)
 			return false;
 
 		if(fails <= kConf_MIHF_Link_Delete_Value) {
-			ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.request to ",
-			    in->destination().to_string());
-			_transmit(in);
+			ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.request to ",
+			    out->destination().to_string());
+			_transmit(out);
 		}
 		else {
-			mih::octet_string dst = in->destination().to_string();
+			mih::octet_string dst = out->destination().to_string();
 			_link_abook.del(dst);
 		}
 
@@ -510,23 +514,23 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 		// For each Link_ID in request message
 		std::vector<mih::link_action_req>::iterator lar;
 		for(lar = lal.begin(); lar != lal.end(); lar++) {
-			in->destination(mih::id(_link_abook.search_interface((*lar).id.type, (*lar).id.addr)));
+			out->destination(mih::id(_link_abook.search_interface((*lar).id.type, (*lar).id.addr)));
 			// If the Link SAP it is known send message
-			if (in->destination().to_string().compare("")) {
+			if (out->destination().to_string().compare("")) {
 				mih::link_addr* a = boost::get<mih::link_addr>(&(*lar).addr);
 				if (a && ((*lar).action.attr.get(mih::link_ac_attr_data_fwd_req)) ) {
-					*in << mih::request(mih::request::link_actions)
+					*out << mih::request(mih::request::link_actions)
 								& mih::tlv_link_action((*lar).action)
 								& mih::tlv_time_interval((*lar).ex_time)
 								& mih::tlv_poa(*a);
 				}
 				else {
-					*in << mih::request(mih::request::link_actions)
+					*out << mih::request(mih::request::link_actions)
 								& mih::tlv_link_action((*lar).action)
 								& mih::tlv_time_interval((*lar).ex_time);
 				}
 
-				utils::forward_request(in, _lpool, _transmit);
+				utils::forward_request(out, _lpool, _transmit);
 			}
 		}
 

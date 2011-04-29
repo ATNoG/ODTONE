@@ -129,9 +129,9 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 			& mih::tlv_event_list(events);
 
 		out->destination(mih::id(link_id));
-		out->tid(in->tid());
 		out->source(in->source());
 		_lpool.add(out);
+		out->source(mihfid);
 
 		uint16 fails = _link_abook.fail(out->destination().to_string());
 		if(fails == -1)
@@ -247,13 +247,14 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 	link.type = _link_abook.get(in->source().to_string()).link_id.type;
 	link.addr = _link_abook.get(in->source().to_string()).link_id.addr;
 
-	*in << mih::confirm(mih::confirm::event_subscribe)
+	*out << mih::confirm(mih::confirm::event_subscribe)
 		& mih::tlv_status(st)
 		& mih::tlv_link_identifier(link)
 		& mih::tlv_event_list(events);
-
+	
 	// do we have a request from a user?
-	if (!_lpool.set_user_tid(in)) {
+	out->source(in->source());
+	if (!_lpool.set_user_tid(out)) {
 		ODTONE_LOG(1, "(mies) warning: no local transaction for this msg ",
 		    "discarding it");
 		return false;
@@ -261,16 +262,16 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 
 	// add a subscription
 	if (st == mih::status_success) {
-		_link_subscriptions[in->source().to_string()].merge(events.get());
-		st = subscribe(mih::id(in->destination().to_string()), link, events.get());
+		_link_subscriptions[out->source().to_string()].merge(events.get());
+		st = subscribe(mih::id(out->destination().to_string()), link, events.get());
 	}
 
 	ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.confirm to ",
-	    in->destination().to_string());
+	    out->destination().to_string());
 
 	// forward to user
-	in->source(mihfid);
-	_transmit(in);
+	out->source(mihfid);
+	_transmit(out);
 
 	return false;
 }
