@@ -158,9 +158,6 @@ void mies_register_callbacks(event_service &mies)
 	sac_register_callback(mih::indication::link_up,
 			      boost::bind(&event_service::link_up_indication,
 					  boost::ref(mies), _1, _2));
-	sac_register_callback(mih::indication::link_up,
-			      boost::bind(&event_service::link_up_indication,
-					  boost::ref(mies), _1, _2));
 	sac_register_callback(mih::indication::link_down,
 			      boost::bind(&event_service::link_down_indication,
 					  boost::ref(mies), _1, _2));
