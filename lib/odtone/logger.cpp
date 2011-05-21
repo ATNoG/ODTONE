@@ -32,7 +32,7 @@ namespace odtone {
 logger::logger(char const* const name, logger& log)
 	: _name(name), _lock(log._lock), _sink(log._sink), _level(log._level)
 {
-	ODTONE_ASSERT_PTR(name);
+	ODTONE_ASSERT(name);
 }
 
 /**
@@ -44,7 +44,7 @@ logger::logger(char const* const name, logger& log)
 logger::logger(char const* const name, std::ostream& sink)
 	: _name(name), _lock(boost::make_shared<boost::mutex>()), _sink(sink), _level(0)
 {
-	ODTONE_ASSERT_PTR(name);
+	ODTONE_ASSERT(name);
 }
 
 /**

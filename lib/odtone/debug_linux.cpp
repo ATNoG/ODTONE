@@ -17,7 +17,6 @@
 
 #include <odtone/debug.hpp>
 #include <odtone/list_node.hpp>
-#include <odtone/move.hpp>
 #include <boost/utility.hpp>
 #include <boost/assert.hpp>
 #include <boost/array.hpp>
@@ -427,12 +426,12 @@ void build_module_list(module_list& ml)
 		len = std::strlen(path);
 		if (len != 0) {
 			name = (char*) crash_alloc(len + 1);
-			if (name == nullptr)
+			if (!name)
 				return;
 			std::memcpy(name, path, len + 1);
 
 			m = new(crash_alloc(sizeof(module))) module(name, start, end, prot);
-			if (m == nullptr)
+			if (!m)
 				return;
 			ml.insert(m);
 		}
@@ -498,7 +497,7 @@ void dump_checkpoints()
 
 	std::fprintf(stderr, "\n"
 						 "== checkpoints ==\n");
-	for (odtone::checkpoint* i = checkpoint::top(); i != odtone::nullptr; i = i->previous()) {
+	for (odtone::checkpoint* i = checkpoint::top(); i; i = i->previous()) {
 		std::fprintf(stderr,	"%s (%s:%u)\n", i->expression(), i->file(), i->line());
 	}
 }

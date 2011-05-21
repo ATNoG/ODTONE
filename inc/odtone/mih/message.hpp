@@ -721,7 +721,7 @@ inline oarchive& operator<<(message& msg, const message_helper& mh)
 inline iarchive& operator>>(message& msg, const message_helper& mh)
 {
 	ODTONE_ASSERT(mh._mid == msg.mid() || !mh._mid);
-	ODTONE_ASSERT(mh._dst == nullptr);
+	ODTONE_ASSERT(!mh._dst);
 
 	return msg.input();
 }

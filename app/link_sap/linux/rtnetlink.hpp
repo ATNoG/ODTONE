@@ -42,8 +42,8 @@ public:
 		const T* get() const  { return _data; }
 		size_t   size() const { return _len; }
 
-		operator safe_bool() const { return _data != odtone::nullptr ? &safe_bool_t::true_ : 0; }
-		bool operator!() const     { return _data == odtone::nullptr; }
+		operator safe_bool() const { return _data ? &safe_bool_t::true_ : 0; }
+		bool operator!() const     { return !_data; }
 
 	private:
 		const T* _data;

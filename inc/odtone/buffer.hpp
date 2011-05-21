@@ -27,6 +27,7 @@
 #include <boost/type_traits/is_class.hpp>
 #include <cstdlib>
 #include <cstring>
+#include <utility>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone {
@@ -120,7 +121,7 @@ public:
 	{ }
 
 	buffer_vla(buffer_vla&& buff)
-		: base(std::move<base>(buff))
+		: base(std::move(buff))
 	{ }
 
 	buffer_vla(size_t len)

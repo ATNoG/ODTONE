@@ -134,7 +134,6 @@ ODTONE_NORETURN_BEGIN void crash(const crash_ctx& ctx) ODTONE_NORETURN_END;
 // DEBUG BUILDS ///////////////////////////////////////////////////////////////
 #ifndef NDEBUG
 #	define ODTONE_ASSERT(exp)              do { if(ODTONE_UNLIKELY(!(exp))) { odtone::crash(odtone::bug_assert, __FUNCTION__, __FILE__, __LINE__, #exp); } } while(0)
-#	define ODTONE_ASSERT_PTR(exp)          do { if(ODTONE_UNLIKELY((exp) == nullptr)) { odtone::crash(odtone::bug_assert_ptr, __FUNCTION__, __FILE__, __LINE__, #exp); } } while(0)
 #	define ODTONE_DBG_SCOPED_CHECKPOINT(x) ODTONE_SCOPED_CHECKPOINT(x)
 #	define ODTONE_DBG_CHECKPOINT(x)        ODTONE_CHECKPOINT(x)
 #	define ODTONE_NEVER_HERE               do { odtone::crash(odtone::bug_never_here, __FUNCTION__, __FILE__, __LINE__, nullptr); } while(0)
