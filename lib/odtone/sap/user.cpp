@@ -40,17 +40,27 @@ user::user(const mih::config& cfg, boost::asio::io_service& io, const handler& h
 	  _user_id(odtone::mih::id(cfg.get<std::string>(kConf_MIH_SAP_id))),
 	  _mihf_id(odtone::mih::id(cfg.get<std::string>(kConf_MIHF_Id)))
 {
-	handover = cfg.get<bool>(kConf_MIH_Handover);
-
-	// ip::udp::endpoint
 	buffer<uint8> buff(cfg.get<uint>(kConf_Receive_Buffer_Len));
 	void* rbuff = buff.get();
 	size_t rlen = buff.size();
 
-	mih::octet_string id = cfg.get<mih::octet_string>(kConf_MIH_SAP_id);
-	_id.assign(id);
+	_sock.async_receive(boost::asio::buffer(rbuff, rlen),
+						boost::bind(&user::recv_handler,
+									this,
+									bind_rv(buff),
+									boost::asio::placeholders::bytes_transferred,
+									boost::asio::placeholders::error));
+}
 
-	// _sock.connect(ep);
+user::user(boost::asio::io_service& io, const handler& h, const config& cfg)
+	: _handler(h), _sock(io, ip::udp::endpoint(ip::udp::v4(), cfg.port)),
+	  _ep(cfg.mihf_address, cfg.mihf_port), _user_id(odtone::mih::id(cfg.id)),
+	  _mihf_id(odtone::mih::id(cfg.mihf_id))
+{
+	buffer<uint8> buff(cfg.buffer_length);
+	void* rbuff = buff.get();
+	size_t rlen = buff.size();
+
 	_sock.async_receive(boost::asio::buffer(rbuff, rlen),
 						boost::bind(&user::recv_handler,
 									this,
@@ -100,7 +110,8 @@ void user::async_send(mih::message& msg, const handler& h)
 	void* sbuff;
 	size_t slen;
 
-	msg.source(_id);
+	msg.source(_user_id);
+	msg.destination(_mihf_id);
 	msg.get_frame(fm);
 
 	sbuff = fm.get();

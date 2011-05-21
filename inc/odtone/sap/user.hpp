@@ -54,7 +54,23 @@ static const char* const kConf_MIHF_Local_Port = "mihf.local_port";
  */
 class user : public sap {
 	typedef boost::function<void(mih::message& pm, const boost::system::error_code&)> handler;
+	typedef boost::asio::ip::address ip_address;
 	typedef std::map<uint, handler> rmap;
+
+public:
+	struct config {
+		config()
+			: id("user"), port(1234), mihf_id("mihf"), mihf_address(boost::asio::ip::address_v4::loopback()),
+			  mihf_port(1025), buffer_length(4096)
+		{ }
+
+		std::string id;
+		uint        port;
+		std::string mihf_id;
+		ip_address  mihf_address;
+		uint        mihf_port;
+		size_t      buffer_length;
+	};
 
 public:
 	/**
@@ -66,6 +82,7 @@ public:
 	 * @throws boost::system::error_code
 	 */
 	user(const mih::config& cfg, boost::asio::io_service& io, const handler& h);
+	user(boost::asio::io_service& io, const handler& h, const config& cfg = config());
 
 	/**
 	 * Destruct an User SAP IO Service.
@@ -105,11 +122,10 @@ private:
 private:
 	handler                        _handler;
 	boost::asio::ip::udp::socket   _sock;
-	mih::id                        _id;
 	boost::asio::ip::udp::endpoint _ep;
 	odtone::mih::id                _user_id;
 	odtone::mih::id                _mihf_id;
-	bool                           handover;
+//	bool                           _handover;
 
 	boost::mutex _mutex;
 	rmap         _rmap;
