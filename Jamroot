@@ -30,6 +30,8 @@ project odtone
 	  <toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
 	  <toolset>msvc:<define>_SECURE_SCL=0
 	  <toolset>msvc-10.0:<define>BOOST_HAS_NULLPTR
+	: usage-requirements
+	  <include>inc
 	: build-dir bin.v2
 	;
 
@@ -54,3 +56,7 @@ alias install
 explicit-alias base : lib/odtone//odtone_base ;
 explicit-alias mih  : lib/odtone/mih//odtone_mih ;
 explicit-alias sap  : lib/odtone/sap//odtone_sap ;
+
+use-project /odtone/base : lib/odtone ;
+use-project /odtone/mih  : lib/odtone/mih ;
+use-project /odtone/sap  : lib/odtone/sap ;
