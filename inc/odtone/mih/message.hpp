@@ -153,6 +153,13 @@ public:
 	 */
 	message& operator=(const frame& fm);
 
+	void reset()
+	{
+		_payload.clear();
+		_in.reset(_payload);
+		_out.reset(_payload);
+	}
+
 	/**
 	 * Set the MIH Message Version.
 	 *
@@ -705,6 +712,7 @@ private:
  */
 inline oarchive& operator<<(message& msg, const message_helper& mh)
 {
+	msg.reset();
 	msg.mid(mh._mid);
 	if (mh._dst)
 		msg.destination(*mh._dst);
