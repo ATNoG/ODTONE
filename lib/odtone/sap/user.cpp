@@ -145,16 +145,22 @@ void user::recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system:
 		mih::frame* fm = mih::frame::cast(buff.get(), rbytes);
 
 		if (fm) {
-			handler h;
-
-			if (fm->opcode() == mih::operation::response)
-				get_handler(fm->tid(), h);
-
 			mih::message pm(*fm);
-			if (h)
-				h(pm, ec);
-			else
+
+			if (fm->opcode() == mih::operation::response) {
+				handler h;
+
+				get_handler(fm->tid(), h);
+				if (h)
+					h(pm, ec);
+				else
+					_handler(pm, boost::system::errc::make_error_code(boost::system::errc::bad_message));
+
+			} else if (fm->opcode() != mih::operation::indication) {
+				_handler(pm, boost::system::errc::make_error_code(boost::system::errc::bad_message));
+			} else {
 				_handler(pm, ec);
+			}
 		}
 	}
 
