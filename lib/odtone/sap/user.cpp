@@ -85,11 +85,11 @@ user::~user()
  * @param msg MIH message to send.
  * @param h Completion/Response callback handler as a function pointer/object.
  */
-void user::async_send(mih::message& msg, const handler& h)
+void user::async_send_(mih::message& msg, handler&& h)
 {
-	uint16 id = std::rand() & 0x0FFF; //12 bits transaction id
+	if (msg.opcode() == mih::operation::request) {
+		uint16 id = std::rand() & 0x0FFF; //12 bits transaction id
 
-	{
 		boost::mutex::scoped_lock sl(_mutex);
 		rmap::iterator ie = _rmap.end();
 
@@ -103,7 +103,8 @@ void user::async_send(mih::message& msg, const handler& h)
 		}
 
 		msg.tid(id);
-		_rmap[id] = h;
+		_rmap[id] = std::move(h);
+		h.clear();
 	}
 
 	mih::frame_vla fm;
@@ -122,7 +123,7 @@ void user::async_send(mih::message& msg, const handler& h)
 					 boost::bind(&user::send_handler,
 								 this,
 								 bind_rv(fm),
-								 boost::asio::placeholders::bytes_transferred,
+								 std::move(h),
 								 boost::asio::placeholders::error));
 }
 
@@ -144,20 +145,14 @@ void user::recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system:
 		mih::frame* fm = mih::frame::cast(buff.get(), rbytes);
 
 		if (fm) {
-			handler rh;
-			{
-				boost::mutex::scoped_lock sl(_mutex);
-				rmap::iterator i = _rmap.find(fm->tid());
+			handler h;
 
-				if (i != _rmap.end()) {
-					std::swap(rh, i->second);
-					_rmap.erase(i);
-				}
-			}
+			if (fm->opcode() == mih::operation::response)
+				get_handler(fm->tid(), h);
+
 			mih::message pm(*fm);
-
-			if (rh)
-				rh(pm, ec);
+			if (h)
+				h(pm, ec);
 			else
 				_handler(pm, ec);
 		}
@@ -181,21 +176,26 @@ void user::recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system:
  * @param sbytes number of bytes of the message.
  * @param ec error code.
  */
-void user::send_handler(mih::frame_vla& fm, size_t /*sbytes*/, const boost::system::error_code& ec)
+void user::send_handler(mih::frame_vla& fm, handler& h, const boost::system::error_code& ec)
 {
-	if (ec) {
-		mih::message pm;
-		handler rh;
+	if (ec && !h)
+		get_handler(fm->tid(), h);
 
-		{
-			boost::mutex::scoped_lock sl(_mutex);
-			rmap::iterator i = _rmap.find(fm->tid());
+	if (h) {
+		mih::message pm(*fm);
 
-			std::swap(rh, i->second);
-			_rmap.erase(i);
-		}
+		h(pm, ec);
+	}
+}
 
-		rh(pm, ec);
+void user::get_handler(uint tid, handler& h)
+{
+	boost::mutex::scoped_lock sl(_mutex);
+	rmap::iterator i = _rmap.find(tid);
+
+	if (i != _rmap.end()) {
+		std::swap(h, i->second);
+		_rmap.erase(i);
 	}
 }
 

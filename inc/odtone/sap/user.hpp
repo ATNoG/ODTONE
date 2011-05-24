@@ -98,9 +98,15 @@ public:
 	 * @param msg MIH message to send.
 	 * @param h Completion/Response callback handler as a function pointer/object.
 	 */
-	void async_send(mih::message& pm, const handler& h);
+	template<class CompletionHandler>
+	void async_send(mih::message& pm, CompletionHandler h)
+	{
+		async_send_(pm, handler(h));
+	}
 
 private:
+	void async_send_(mih::message& pm, handler&& h);
+
 	/**
 	 * Received message handler.
 	 *
@@ -117,7 +123,9 @@ private:
 	 * @param sbytes number of bytes of the message.
 	 * @param ec error code.
 	 */
-	void send_handler(mih::frame_vla& fm, size_t sbytes, const boost::system::error_code& ec);
+	void send_handler(mih::frame_vla& fm, handler& h, const boost::system::error_code& ec);
+
+	void get_handler(uint tid, handler& h);
 
 private:
 	handler                        _handler;
@@ -125,7 +133,6 @@ private:
 	boost::asio::ip::udp::endpoint _ep;
 	odtone::mih::id                _user_id;
 	odtone::mih::id                _mihf_id;
-//	bool                           _handover;
 
 	boost::mutex _mutex;
 	rmap         _rmap;
