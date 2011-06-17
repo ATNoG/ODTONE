@@ -17,6 +17,7 @@
 #==============================================================================
 
 import boost ;
+import debian ;
 
 project odtone
 	: requirements
@@ -60,3 +61,15 @@ explicit-alias sap  : lib/odtone/sap//odtone_sap ;
 use-project /odtone/base : lib/odtone ;
 use-project /odtone/mih  : lib/odtone/mih ;
 use-project /odtone/sap  : lib/odtone/sap ;
+
+debian odtone
+	: <bin> src/mihf//odtone-mihf
+	  <etc> src/mihf/odtone.conf
+	: <version>0.3
+	  <section>net
+	  <maintainer-name>"Bruno Santos"
+	  <maintainer-email>"bsantos@av.it.pt"
+	  <description>"ODTONE - IEEE 802.21 MIHF"
+	;
+
+explicit odtone ;
