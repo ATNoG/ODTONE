@@ -40,21 +40,25 @@ namespace odtone { namespace mihf {
 /**
  * Command service constructor.
  *
+ * @param io io_service.
  * @param lpool local transction pool.
  * @param t transmit module.
  * @param link_abook link book.
+ * @param user_abook user book.
  * @param link_response_pool link response pool.
  */
-command_service::command_service(local_transaction_pool &lpool,
-	                         transmit &t,
-	                         link_book &link_abook,
-	                         user_book &user_abook,
-	                         link_response_pool &lrpool)
+command_service::command_service(io_service &io,
+                                 local_transaction_pool &lpool,
+                                 transmit &t,
+                                 link_book &link_abook,
+                                 user_book &user_abook,
+                                 link_response_pool &lrpool)
 	: _lpool(lpool),
 	  _transmit(t),
 	  _link_abook(link_abook),
 	  _user_abook(user_abook),
-	  _lrpool(lrpool)
+	  _lrpool(lrpool),
+	  _timer(io, boost::posix_time::milliseconds(1))
 {
 }
 
@@ -63,19 +67,9 @@ command_service::command_service(local_transaction_pool &lpool,
  * process those informations and answer with a Get Information
  * message to the requestor.
  *
- * @param src_id MIHF ID from the requestor
- * @param tid transaction if
- * @param t transmit module
- * @param lpool local transction pool
- * @param link_abook link addres book
- * @param lrpool link response pool
+ * @param in input message.
  */
-void link_get_parameters_response_handler(mih::id src_id,
-	                                      uint16 tid,
-	                                      transmit &t,
-	                                      local_transaction_pool &lpool,
-	                                      link_book &link_abook,
-	                                      link_response_pool &lrpool)
+void command_service::link_get_parameters_response_handler(meta_message_ptr &in)
 {
 	mih::link_id             lid;
 	mih::link_status_rsp	 lsr;
@@ -84,17 +78,15 @@ void link_get_parameters_response_handler(mih::id src_id,
 	mih::dev_states_rsp_list dsrl;
 	meta_message_ptr out(new meta_message());
 
-	boost::this_thread::sleep(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
-
-	std::vector<mih::octet_string> ids = link_abook.get_ids();
+	std::vector<mih::octet_string> ids = _link_abook.get_ids();
 	std::vector<mih::octet_string>::iterator it_link;
 	for(it_link = ids.begin(); it_link != ids.end(); it_link++) {
 		// Delete unanswered Link SAP from known Link SAPs list
-		if(!lrpool.check(tid, *it_link)) {
-			lpool.del(*it_link, tid);
-			uint16 fails = link_abook.fail(*it_link);
+		if(!_lrpool.check(in->tid(), *it_link)) {
+			_lpool.del(*it_link, in->tid());
+			uint16 fails = _link_abook.fail(*it_link);
 			if(fails >= kConf_MIHF_Link_Delete_Value && fails != -1) {
-				link_abook.del(*it_link);
+				_link_abook.del(*it_link);
 			}
 		}
 		else {
@@ -102,14 +94,14 @@ void link_get_parameters_response_handler(mih::id src_id,
 			link_entry a;
 			mih::link_id lid;
 
-			a = link_abook.get(*it_link);
+			a = _link_abook.get(*it_link);
 
 			lid.type = a.link_id.type;
 			lid.addr = a.link_id.addr;
 
 			// fill capabilities
-			pending_link_response tmp = lrpool.find(tid, *it_link);
-			lrpool.del(tid, *it_link);
+			pending_link_response tmp = _lrpool.find(in->tid(), *it_link);
+			_lrpool.del(in->tid(), *it_link);
 
 			lsr = tmp.link_status;
 
@@ -127,11 +119,11 @@ void link_get_parameters_response_handler(mih::id src_id,
 //	    & mih::tlv_dev_states_rsp_list(dsrl)
 	    & mih::tlv_get_status_rsp_list(srl);
 
-	out->tid(tid);
-	out->destination(src_id);
+	out->tid(in->tid());
+	out->destination(in->source());
 	out->source(mihfid);
 
-	t(out);
+	_transmit(out);
 }
 
 /**
@@ -152,18 +144,11 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 		//
 		// Kick this message to MIH_Link SAP.
 		//
-		// The solution found to handle this corner case in the
-		// 802.21 standard was to send the message, as is, to the
-		// link sap.
-		//
 		// local_transactions was made to handle request's
 		// from users to peer mihf's but in this case we add an
 		// entry to handle the MIH_Link_Get_Parameters and
 		// Link_Get_Parameters.
 		//
-		mih::id src_tmp = in->source();
-		uint16  tid = in->tid();
-
 		mih::dev_states_req  dsr;
 		mih::link_id_list    lil;
 		mih::link_status_req lsr;
@@ -188,13 +173,8 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 		}
 
 		// Lauched the thread responsible for respond to the get parameters request
-		boost::thread(link_get_parameters_response_handler,
-			      src_tmp,
-			      tid,
-			      boost::ref(_transmit),
-			      boost::ref(_lpool),
-			      boost::ref(_link_abook),
-			      boost::ref(_lrpool));
+		_timer.expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
+		_timer.async_wait(boost::bind(&command_service::link_get_parameters_response_handler, this, in));
 
 		// Do not respond to the request. The thread lauched will be
 		// responsible for that.
@@ -407,19 +387,9 @@ bool command_service::link_configure_thresholds_confirm(meta_message_ptr &in,
  * process those informations and answer with a Link Actions
  * message to the requestor.
  *
- * @param src_id MIHF ID from the requestor
- * @param tid transaction if
- * @param t transmit module
- * @param lpool local transction pool
- * @param link_abook link addres book
- * @param lrpool link response pool
+ * @param in input message.
  */
-void link_actions_response_handler(mih::id src_id,
-	                               uint16 tid,
-	                               transmit &t,
-	                               local_transaction_pool &lpool,
-	                               link_book &link_abook,
-	                               link_response_pool &lrpool)
+void command_service::link_actions_response_handler(meta_message_ptr &in)
 {
 	mih::link_action_rsp_list larl;
 	mih::link_action_rsp      lar;
@@ -427,18 +397,16 @@ void link_actions_response_handler(mih::id src_id,
 	mih::link_scan_rsp_list   lsrl;
 	meta_message_ptr out(new meta_message());
 
-	boost::this_thread::sleep(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
-
-	std::vector<mih::octet_string> ids = link_abook.get_ids();
+	std::vector<mih::octet_string> ids = _link_abook.get_ids();
 	std::vector<mih::octet_string>::iterator it_link;
 	for(it_link = ids.begin(); it_link != ids.end(); it_link++) {
 		// Delete unanswered Link SAP from known Link SAPs list
-		if(!lrpool.check(tid, *it_link)) {
-			lpool.del(*it_link, tid);
+		if(!_lrpool.check(in->tid(), *it_link)) {
+			_lpool.del(*it_link, in->tid());
 
-			uint16 fails = link_abook.fail(*it_link);
+			uint16 fails = _link_abook.fail(*it_link);
 			if(fails >= kConf_MIHF_Link_Delete_Value && fails != -1) {
-				link_abook.del(*it_link);
+				_link_abook.del(*it_link);
 			}
 		}
 		else {
@@ -446,14 +414,14 @@ void link_actions_response_handler(mih::id src_id,
 			link_entry a;
 			mih::link_id lid;
 
-			a = link_abook.get(*it_link);
+			a = _link_abook.get(*it_link);
 
 			lar.id.type = a.link_id.type;
 			lar.id.addr = a.link_id.addr;
 
 			// fill action result
-			pending_link_response tmp = lrpool.find(tid, *it_link);
-			lrpool.del(tid, *it_link);
+			pending_link_response tmp = _lrpool.find(in->tid(), *it_link);
+			_lrpool.del(in->tid(), *it_link);
 
 			lar.result = tmp.action.link_ac_result;
 			if(tmp.action.link_scan_rsp_list.is_initialized()) {
@@ -474,12 +442,11 @@ void link_actions_response_handler(mih::id src_id,
 	    & mih::tlv_status(mih::status_success)
 	    & mih::tlv_link_action_rsp_list(larl);
 
-	out->tid(tid);
-	out->destination(src_id);
+	out->tid(in->tid());
+	out->destination(in->source());
 	out->source(mihfid);
 
-	t(out);
-
+	_transmit(out);
 }
 
 /**
@@ -490,7 +457,7 @@ void link_actions_response_handler(mih::id src_id,
  * @return true if the response is sent immediately or false otherwise.
  */
 bool command_service::link_actions_request(meta_message_ptr &in,
-					   meta_message_ptr &out)
+										   meta_message_ptr &out)
 {
 	ODTONE_LOG(1, "(mics) received a Link_Actions.request from",
 	    in->source().to_string());
@@ -503,9 +470,6 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 		// 802.21 standard was to send the message, as is, to the
 		// link sap.
 		//
-		mih::id src_tmp = in->source();
-		uint16  tid = in->tid();
-
 		mih::link_action_list lal;
 
 		*in >> mih::request()
@@ -535,13 +499,8 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 		}
 
 		// Lauched the thread responsible for respond to the link actions request
-		boost::thread(link_actions_response_handler,
-			      src_tmp,
-			      tid,
-			      boost::ref(_transmit),
-			      boost::ref(_lpool),
-			      boost::ref(_link_abook),
-			      boost::ref(_lrpool));
+		_timer.expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
+		_timer.async_wait(boost::bind(&command_service::link_actions_response_handler, this, in));
 
 		// Do not respond to the request. The thread lauched will be
 		// responsible for that.

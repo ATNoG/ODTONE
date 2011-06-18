@@ -348,9 +348,9 @@ int main(int argc, char **argv)
 
 	// instantiate mihf services
 	event_service		mies(lpool, trnsmt, link_abook);
-	command_service		mics(lpool, trnsmt, link_abook, user_abook, lrpool);
+	command_service		mics(io, lpool, trnsmt, link_abook, user_abook, lrpool);
 	information_service	miis(lpool, trnsmt);
-	service_management	sm(lpool, link_abook, user_abook, trnsmt, lrpool, enable_broadcast);
+	service_management	sm(io, lpool, link_abook, user_abook, trnsmt, lrpool, enable_broadcast);
 
 	// register callbacks with service access controller
 	sm_register_callbacks(sm);

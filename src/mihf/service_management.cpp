@@ -30,10 +30,6 @@
 #include <odtone/mih/confirm.hpp>
 #include <odtone/mih/indication.hpp>
 #include <odtone/mih/tlv_types.hpp>
-
-#include <boost/thread/thread.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
-
 ///////////////////////////////////////////////////////////////////////////////
 
 extern odtone::uint16 kConf_MIHF_Link_Response_Time_Value;
@@ -44,14 +40,16 @@ namespace odtone { namespace mihf {
 /**
  * Service management constructor.
  *
+ * @param io io_service.
  * @param lpool local transction pool.
  * @param link_abook link book.
  * @param t transmit module.
  * @param lrpool link response pool.
  * @param enable_broadcast true if response to broadcast
- *                         Capability_Discover.request is enable or false otherwise.
+ * Capability_Discover.request is enable or false otherwise.
  */
-service_management::service_management(local_transaction_pool &lpool,
+service_management::service_management(io_service &io,
+										local_transaction_pool &lpool,
 										link_book &link_abook,
 										user_book &user_abook,
 										transmit &t,
@@ -61,7 +59,8 @@ service_management::service_management(local_transaction_pool &lpool,
 	  _link_abook(link_abook),
 	  _user_abook(user_abook),
 	  _transmit(t),
-	  _lrpool(lrpool)
+	  _lrpool(lrpool),
+	  _timer(io, boost::posix_time::milliseconds(1))
 {
 	_enable_broadcast = enable_broadcast;
 }
@@ -71,28 +70,16 @@ service_management::service_management(local_transaction_pool &lpool,
  * process those capabilities and answer with a Capability Discover response
  * message to the requestor.
  *
- * @param src_id MIHF ID from the requestor.
- * @param tid MIH Transaction ID.
- * @param t transmit module.
- * @param lpool local transction pool.
- * @param link_abook link book.
- * @param lrpool link response pool.
+ * @param in input message.
  */
-void link_capability_discover_response_handler(mih::id src_id,
-	                                           uint16 tid,
-	                                           transmit &t,
-	                                           local_transaction_pool &lpool,
-	                                           link_book &link_abook,
-	                                           link_response_pool &lrpool)
+void service_management::link_capability_discover_response_handler(meta_message_ptr &in)
 {
 	mih::net_type_addr_list  capabilities_list_net_type_addr;
 	mih::event_list	         capabilities_event_list;
 	mih::command_list        capabilities_cmd_list;
 	meta_message_ptr out(new meta_message());
 
-	boost::this_thread::sleep(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
-
-	std::vector<mih::octet_string> ids = link_abook.get_ids();
+	std::vector<mih::octet_string> ids = _link_abook.get_ids();
 	odtone::uint num_link = ids.size();
 	if(num_link != 0) {
 		capabilities_event_list.full();
@@ -102,13 +89,13 @@ void link_capability_discover_response_handler(mih::id src_id,
 	std::vector<mih::octet_string>::iterator it_link;
 	for(it_link = ids.begin(); it_link != ids.end(); it_link++) {
 		// Delete unanswered Link SAP from known Link SAPs list
-		if(!lrpool.check(tid, *it_link)) {
-			lpool.del(*it_link, tid);
+		if(!_lrpool.check(in->tid(), *it_link)) {
+			_lpool.del(*it_link, in->tid());
 			num_link--;
 
-			uint16 fails = link_abook.fail(*it_link);
+			uint16 fails = _link_abook.fail(*it_link);
 			if(fails >= kConf_MIHF_Link_Delete_Value && fails != -1) {
-				link_abook.del(*it_link);
+				_link_abook.del(*it_link);
 			}
 		}
 		else {
@@ -116,15 +103,15 @@ void link_capability_discover_response_handler(mih::id src_id,
 			link_entry a;
 			mih::net_type_addr nta;
 
-			a = link_abook.get(*it_link);
+			a = _link_abook.get(*it_link);
 
 			nta.nettype.link = a.link_id.type;
 			nta.addr = a.link_id.addr;
 			capabilities_list_net_type_addr.push_back(nta);
 
 			// fill capabilities
-			pending_link_response tmp = lrpool.find(tid, *it_link);
-			lrpool.del(tid, *it_link);
+			pending_link_response tmp = _lrpool.find(in->tid(), *it_link);
+			_lrpool.del(in->tid(), *it_link);
 
 			capabilities_event_list.common(tmp.cap.event_list);
 			capabilities_cmd_list.common(tmp.cap.command_list);
@@ -144,11 +131,11 @@ void link_capability_discover_response_handler(mih::id src_id,
 	    & mih::tlv_event_list(capabilities_event_list)
 	    & mih::tlv_command_list(capabilities_cmd_list);
 
-	out->tid(tid);
-	out->destination(src_id);
+	out->tid(in->tid());
+	out->destination(in->source());
 	out->source(mihfid);
 
-	t(out);
+	_transmit(out);
 }
 
 /**
@@ -157,33 +144,27 @@ void link_capability_discover_response_handler(mih::id src_id,
  * respond to the requestor.
  *
  * @param in input message.
+ * @param out output message.
  * @return always false, because it does not send any response directly.
  */
-bool service_management::forward_to_link_capability_discover_request(meta_message_ptr &in)
+bool service_management::forward_to_link_capability_discover_request(meta_message_ptr &in,
+																	 meta_message_ptr &out)
 {
-	mih::id src_tmp = in->source();
-	uint16  tid = in->tid();
-
 	// Asks for local Link SAPs capabilities
 	ODTONE_LOG(1, "(mism) gathering information about local Link SAPs capabilities");
 
-	*in << mih::request(mih::request::capability_discover);
+	*out << mih::request(mih::request::capability_discover);
 
 	std::vector<mih::octet_string> ids = _link_abook.get_ids();
 	std::vector<mih::octet_string>::iterator it;
-	for ( it=ids.begin(); it < ids.end(); it++ ) {
-		in->destination(mih::id(*it));
-		utils::forward_request(in, _lpool, _transmit);
+	for(it = ids.begin(); it < ids.end(); it++) {
+		out->destination(mih::id(*it));
+		utils::forward_request(out, _lpool, _transmit);
 	}
 
 	// Lauched the thread responsible for respond to the capability discover
-	boost::thread(link_capability_discover_response_handler,
-	              src_tmp,
-	              tid,
-	              boost::ref(_transmit),
-	              boost::ref(_lpool),
-	              boost::ref(_link_abook),
-	              boost::ref(_lrpool));
+	_timer.expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
+	_timer.async_wait(boost::bind(&service_management::link_capability_discover_response_handler, this, in));
 
 	// Do not respond to the request. The thread lauched will be
 	// responsible for that.
@@ -198,7 +179,7 @@ bool service_management::forward_to_link_capability_discover_request(meta_messag
  * @return true if the response is sent immediately or false otherwise.
  */
 bool service_management::capability_discover_request(meta_message_ptr& in,
-						     meta_message_ptr& out)
+													 meta_message_ptr& out)
 {
 	ODTONE_LOG(1, "(mism) received Capability_Discover.request from ",
 	    in->source().to_string(), " with destination ",
@@ -223,11 +204,11 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 		return false;
 	// destination mihf identifier is this mihf
 	} else if (utils::this_mihf_is_destination(in)) {
-		return forward_to_link_capability_discover_request(in);
+		return forward_to_link_capability_discover_request(in, out);
 	// message was broadcasted?
 	} else if (utils::is_multicast(in)) {
 		if (_enable_broadcast) {
-			return forward_to_link_capability_discover_request(in);
+			return forward_to_link_capability_discover_request(in, out);
 		} else {
 			ODTONE_LOG(3, "(mism) response to broadcast Capability_Discover.request disabled ");
 			return false;

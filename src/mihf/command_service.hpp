@@ -25,6 +25,8 @@
 #include "transmit.hpp"
 #include "meta_message.hpp"
 #include "link_book.hpp"
+
+#include <boost/date_time/posix_time/posix_time.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
@@ -39,12 +41,15 @@ public:
 	/**
 	 * Command service constructor.
 	 *
+	 * @param io io_service.
 	 * @param lpool local transction pool.
 	 * @param t transmit module.
 	 * @param link_abook link book.
+	 * @param user_abook user book.
 	 * @param link_response_pool link response pool.
 	 */
-	command_service(local_transaction_pool &lpool,
+	command_service(io_service &io,
+	                local_transaction_pool &lpool,
 	                transmit &t,
 	                link_book &link_abook,
 	                user_book &user_abook,
@@ -275,6 +280,25 @@ public:
 	 */
 	bool n2n_ho_complete_response(meta_message_ptr &in, meta_message_ptr &out);
 
+private:
+	/**
+	 * Handler responsible for asking informations to known local Link SAPs,
+	 * process those informations and answer with a Get Information
+	 * message to the requestor.
+	 *
+	 * @param in input message.
+	 */
+	void link_get_parameters_response_handler(meta_message_ptr &in);
+
+	/**
+	 * Handler responsible for asking informations to known local Link SAPs,
+	 * process those informations and answer with a Link Actions
+	 * message to the requestor.
+	 *
+	 * @param in input message.
+	 */
+	void link_actions_response_handler(meta_message_ptr &in);
+
 protected:
 	/**
 	 * Currently Command_Service messages are handled by a default local
@@ -314,6 +338,8 @@ protected:
 	link_book               &_link_abook;
 	user_book               &_user_abook;
 	link_response_pool      &_lrpool;
+
+	boost::asio::deadline_timer _timer;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

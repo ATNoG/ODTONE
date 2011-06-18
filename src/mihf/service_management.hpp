@@ -26,8 +26,7 @@
 #include "transmit.hpp"
 #include "meta_message.hpp"
 
-#include <odtone/base.hpp>
-#include <odtone/mih/types.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
@@ -40,6 +39,7 @@ public:
 	/**
 	 * Service management constructor.
 	 *
+	 * @param io io_service.
 	 * @param lpool local transction pool.
 	 * @param link_abook link book.
 	 * @param t transmit module.
@@ -47,7 +47,8 @@ public:
 	 * @param enable_broadcast true if response to broadcast to
 	 *                          Capability_Discover.request is enable or false otherwise.
 	 */
-	service_management(local_transaction_pool &lpool,
+	service_management(io_service &io,
+			   local_transaction_pool &lpool,
 			   link_book &link_abook,
 			   user_book &user_abook,
 			   transmit &t,
@@ -111,9 +112,20 @@ private:
 	 * respond to the requestor.
 	 *
 	 * @param in input message.
+	 * @param out output message.
 	 * @return always false, because it does not send any response directly.
 	 */
-	bool forward_to_link_capability_discover_request(meta_message_ptr &in);
+	bool forward_to_link_capability_discover_request(meta_message_ptr &in,
+													 meta_message_ptr &out);
+
+	/**
+	 * Handler responsible for asking capabilities to known local Link SAPs,
+	 * process those capabilities and answer with a Capability Discover response
+	 * message to the requestor.
+	 *
+	 * @param in input message.
+	 */
+	void link_capability_discover_response_handler(meta_message_ptr &in);
 
 protected:
 	local_transaction_pool   &_lpool;
@@ -121,6 +133,8 @@ protected:
 	user_book                &_user_abook;
 	transmit                 &_transmit;
 	link_response_pool       &_lrpool;
+
+	boost::asio::deadline_timer _timer;
 
 	// set to true if this MIHF responds to broadcast messages
 	bool			 _enable_broadcast;
