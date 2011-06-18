@@ -32,7 +32,7 @@ transaction_pool::transaction_pool(io_service &io)
 	  _src_mutex()
 {
 	// start timer
-	_timer.expires_at(_timer.expires_at() + boost::posix_time::seconds(1));
+	_timer.expires_from_now(boost::posix_time::seconds(1));
 	_timer.async_wait(boost::bind(&transaction_pool::tick, this));
 }
 
@@ -88,7 +88,7 @@ void transaction_pool::dec(Set &set,
  */
 void transaction_pool::tick()
 {
-	_timer.expires_at(_timer.expires_at() + boost::posix_time::seconds(1));
+	_timer.expires_from_now(boost::posix_time::seconds(1));
 	_timer.async_wait(boost::bind(&transaction_pool::tick, this));
 
 	src_transaction_set::iterator src_it;
