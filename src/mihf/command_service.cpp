@@ -136,7 +136,7 @@ void command_service::link_get_parameters_response_handler(meta_message_ptr &in)
 bool command_service::link_get_parameters_request(meta_message_ptr &in,
 						  meta_message_ptr &out)
 {
-	ODTONE_LOG(1, "(mics) received a Link_Get_Parameters.request from",
+	ODTONE_LOG(1, "(mics) received a Link_Get_Parameters.request from ",
 	    in->source().to_string());
 
 
@@ -149,11 +149,11 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 		// entry to handle the MIH_Link_Get_Parameters and
 		// Link_Get_Parameters.
 		//
-		mih::dev_states_req  dsr;
-		mih::link_id_list    lil;
-		mih::link_status_req lsr;
+		boost::optional<mih::dev_states_req> dsr;
+		mih::link_id_list                    lil;
+		mih::link_status_req                 lsr;
 
-		*in >> mih::request()
+		*in >> mih::request(mih::request::link_get_parameters)
 		       & mih::tlv_dev_states_req(dsr)
 		       & mih::tlv_link_id_list(lil)
 		       & mih::tlv_get_status_req_set(lsr);
@@ -205,8 +205,6 @@ bool command_service::link_get_parameters_response(meta_message_ptr &in,
 			"discarding it");
 		return false;
 	}
-
-	in->source(mihfid);
 
 	ODTONE_LOG(1, "(mics) forwarding Link_Get_Parameters.response to ",
 	    in->destination().to_string());
@@ -338,8 +336,6 @@ bool command_service::link_configure_thresholds_response(meta_message_ptr &in,
 		return false;
 	}
 
-	in->source(mihfid);
-
 	ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.response to ", in->destination().to_string());
 	in->opcode(mih::operation::confirm);
 	_transmit(in);
@@ -433,7 +429,7 @@ void command_service::link_actions_response_handler(meta_message_ptr &in)
 
 	// Send Link_Actions.confirm to the user
 	ODTONE_LOG(1, "(mism) setting response to Link_Actions.request");
-	*out << mih::confirm(mih::confirm::link_get_parameters)
+	*out << mih::confirm(mih::confirm::link_actions)
 	    & mih::tlv_status(mih::status_success)
 	    & mih::tlv_link_action_rsp_list(larl);
 
@@ -521,15 +517,10 @@ bool command_service::link_actions_response(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mics) received Link_Actions.response from ",
 	    in->source().to_string());
 
-	if(!_lpool.set_user_tid(in))
-		{
-			ODTONE_LOG(1, "(mics) no local pending transaction for this message, discarding");
-			return false;
-		}
-
-	_link_abook.reset(in->source().to_string());
-
-	in->source(mihfid);
+	if(!_lpool.set_user_tid(in)) {
+		ODTONE_LOG(1, "(mics) no local pending transaction for this message, discarding");
+		return false;
+	}
 
 	ODTONE_LOG(1, "(mics) forwarding Link_Actions.response to ", in->destination().to_string());
 
