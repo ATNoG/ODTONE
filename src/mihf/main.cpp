@@ -69,6 +69,8 @@ static const char* const kConf_Receive_Buffer_Len      = "conf.recv_buff_len";
 static const char* const kConf_MIHF_Id                 = "mihf.id";
 static const char* const kConf_MIHF_Ip                 = "mihf.ip";
 static const char* const kConf_MIHF_Peer_List          = "mihf.peers";
+static const char* const kConf_MIHF_Users_List         = "mihf.users";
+static const char* const kConf_MIHF_Links_List         = "mihf.links";
 static const char* const kConf_MIHF_Remote_Port        = "mihf.remote_port";
 static const char* const kConf_MIHF_Local_Port         = "mihf.local_port";
 static const char* const kConf_MIHF_Link_Response_Time = "mihf.link_response_time";
@@ -113,11 +115,139 @@ void set_list_peer_mihfs(mih::octet_string &list, address_book &abook)
 	}
 }
 
+void set_users(mih::octet_string &list, user_book &ubook)
+{
+	using namespace boost;
+
+	char_separator<char> sep1(",");
+	char_separator<char> sep2(" ");
+	tokenizer< char_separator<char> > list_tokens(list, sep1);
+
+	BOOST_FOREACH(mih::octet_string str, list_tokens) {
+		tokenizer< char_separator<char> > tokens(str, sep2);
+		tokenizer< char_separator<char> >::iterator it = tokens.begin();
+
+		mih::octet_string id = *it;
+		++it;
+		mih::octet_string port = *it;
+		++it;
+		mih::octet_string mbbhandover = *it;
+		mih::octet_string ip("127.0.0.1");
+
+		uint16 port_;
+		std::istringstream iss_port(port);
+		if ((iss_port >> port_).fail())
+			throw "invalid port";
+
+		bool mbbhandover_;
+		std::transform(mbbhandover.begin(), mbbhandover.end(), mbbhandover.begin(), ::tolower);
+		std::istringstream iss_mbb(mbbhandover);
+		if ((iss_mbb >> std::boolalpha >> mbbhandover_).fail())
+			throw "invalid parameter for MBB Handover";
+
+		ubook.add(id, ip, port_, mbbhandover_);
+	}
+}
+
+void set_links(mih::octet_string &list, link_book &lbook)
+{
+	using namespace boost;
+
+	char_separator<char> sep1(",");
+	char_separator<char> sep2(" ");
+	tokenizer< char_separator<char> > list_tokens(list, sep1);
+
+	BOOST_FOREACH(mih::octet_string str, list_tokens) {
+		tokenizer< char_separator<char> > tokens(str, sep2);
+		tokenizer< char_separator<char> >::iterator it = tokens.begin();
+
+		mih::octet_string id = *it;
+		++it;
+		mih::octet_string port  = *it;
+		++it;
+		mih::octet_string tec = *it;
+		++it;
+		mih::octet_string address = *it;
+		mih::octet_string ip("127.0.0.1");
+
+		uint16 port_;
+		std::istringstream iss(port);
+		if ((iss >> port_).fail()) {
+			throw "invalid port";
+		}
+
+		if(tec == "" || address == "") {
+			throw "invalid technology and/or address";
+		}
+
+		// Extract technology
+		std::map<std::string, odtone::mih::link_type_enum> enum_map;
+		enum_map["GSM"]           = odtone::mih::link_type_gsm;
+		enum_map["GPRS"]          = odtone::mih::link_type_gprs;
+		enum_map["EDGE"]          = odtone::mih::link_type_edge;
+		enum_map["802.3"]         = odtone::mih::link_type_ethernet;
+		enum_map["Other"]         = odtone::mih::link_type_wireless_other;
+		enum_map["802_11"]        = odtone::mih::link_type_802_11;
+		enum_map["CDMA2000"]      = odtone::mih::link_type_cdma2000;
+		enum_map["UMTS"]          = odtone::mih::link_type_umts;
+		enum_map["CDMA2000-HRPD"] = odtone::mih::link_type_cdma2000_hrpd;
+		enum_map["802_16"]        = odtone::mih::link_type_802_16;
+		enum_map["802_20"]        = odtone::mih::link_type_802_20;
+		enum_map["802_22"]        = odtone::mih::link_type_802_22;
+
+		mih::link_id lid;
+		if(enum_map.find(tec) != enum_map.end())
+			lid.type = odtone::mih::link_type(enum_map[tec]);
+
+		// TODO: Parse the link address for all link types.
+		switch(lid.type.get()) {
+			case 1:
+			case 2:
+			case 3: {
+				throw "not supported yet";
+			}
+			break;
+
+			case 15:
+			case 19:
+			case 27:
+			case 28:
+			case 29: {
+				mih::mac_addr mac;
+				mac.address(address);
+				lid.addr = mac;
+			} break;
+
+			case 18:
+			case 22:
+			case 23:
+			case 24:
+				throw "not supported yet";
+			break;
+
+			default: {
+				throw "invalid technology";
+			} break;
+		}
+
+		lbook.add(id, ip, port_, lid);
+	}
+}
+
 void parse_peer_registrations(mih::config &cfg, address_book &abook)
 {
 	mih::octet_string mihfs	= cfg.get<mih::octet_string>(kConf_MIHF_Peer_List);
 
 	set_list_peer_mihfs(mihfs, abook);
+}
+
+void parse_sap_registrations(mih::config &cfg, user_book &ubook, link_book &lbook)
+{
+	mih::octet_string users	= cfg.get<mih::octet_string>(kConf_MIHF_Users_List);
+	mih::octet_string lsaps	= cfg.get<mih::octet_string>(kConf_MIHF_Links_List);
+
+	set_users(users, ubook);
+	set_links(lsaps, lbook);
 }
 
 void sm_register_callbacks(service_management &sm)
@@ -284,9 +414,11 @@ int main(int argc, char **argv)
 		(kConf_MIHF_Id, po::value<std::string>()->default_value("mihf"), "MIHF Id")
 		(kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "MIHF Ip")
 		(kConf_MIHF_Peer_List, po::value<std::string>()->default_value(""), "List of peer MIHFs")
+		(kConf_MIHF_Users_List, po::value<std::string>()->default_value(""), "List of User SAPs")
+		(kConf_MIHF_Links_List, po::value<std::string>()->default_value(""), "List of Links SAPs")
 		(kConf_MIHF_Remote_Port, po::value<uint16>()->default_value(4551), "MIHF Remote Communications Port")
 		(kConf_MIHF_Local_Port, po::value<uint16>()->default_value(1025), "MIHF Local Communications Port")
-		(kConf_MIHF_Link_Response_Time, po::value<uint16>()->default_value(100), "MIHF Link Response waiting time (milliseconds)")
+		(kConf_MIHF_Link_Response_Time, po::value<uint16>()->default_value(300), "MIHF Link Response waiting time (milliseconds)")
 		(kConf_MIHF_Link_Delete, po::value<uint16>()->default_value(2), "MIHF Link Response fails to delete the Link SAP")
 		(kConf_MIHF_BRDCAST,  "MIHF responds to broadcast messages")
 		(kConf_MIHF_Verbosity, po::value<uint16>()->default_value(1), "MIHF log level [0-4]")
@@ -324,6 +456,7 @@ int main(int argc, char **argv)
 	address_book mihf_abook;
 	user_book user_abook;
 	link_book link_abook;
+	parse_sap_registrations(cfg, user_abook, link_abook);
 	parse_peer_registrations(cfg, mihf_abook);
 	//
 
