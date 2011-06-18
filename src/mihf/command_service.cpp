@@ -293,6 +293,7 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 		       & mih::tlv_link_cfg_param_list(lcpl);
 		out->destination(mih::id(_link_abook.search_interface(lti.type, lti.addr)));
 		out->source(in->source());
+		out->tid(in->tid());
 
 		uint16 fails = _link_abook.fail(out->destination().to_string());
 		if(fails == -1)
