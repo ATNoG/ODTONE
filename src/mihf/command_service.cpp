@@ -279,10 +279,6 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 		//
 		// Kick this message to MIH_Link SAP.
 		//
-		// The solution found to handle this corner case in the
-		// 802.21 standard was to send the message, as is, to the
-		// link sap.
-		//
 		// local_transactions was made to handle request's
 		// from users to peer mihf's but in this case we add an
 		// entry to handle the MIH_Link_Get_Parameters and
@@ -298,8 +294,7 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 		*out << mih::request(mih::request::link_configure_thresholds)
 		       & mih::tlv_link_cfg_param_list(lcpl);
 		out->destination(mih::id(_link_abook.search_interface(lti.type, lti.addr)));
-		_lpool.add(out);
-		out->source(mihfid);
+		out->source(in->source());
 
 		uint16 fails = _link_abook.fail(out->destination().to_string());
 		if(fails == -1)
@@ -308,7 +303,7 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 		if(fails <= kConf_MIHF_Link_Delete_Value) {
 			ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.request to ",
 			    out->destination().to_string());
-			_transmit(out);
+			utils::forward_request(out, _lpool, _transmit);
 		}
 		else {
 			mih::octet_string dst = out->destination().to_string();
