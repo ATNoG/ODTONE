@@ -1,6 +1,7 @@
 //=============================================================================
 // Brief   : Client Application
 // Authors : Simao Reis <sreis@av.it.pt>
+//           Carlos Guimarães <cguimaraes@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
@@ -42,136 +43,124 @@ namespace po = boost::program_options;
 
 static const char* const kConf_MIH_Dest = "dest";
 static const char* const kConf_MIH_Port = "port";
-static const char* const kConf_File     = "conf.file";
+static const char* const kConf_File     = "client.conf";
 
 static const char* const kConf_MIH_LinkUp_indication = "indication.link_up";
 static const char* const kConf_MIH_LinkDown_indication = "indication.link_down";
 static const char* const kConf_MIH_LinkDetected_indication = "indication.link_detected";
 static const char* const kConf_MIH_LinkGoingDown_indication = "indication.link_going_down";
-static const char* const kConf_MIH_LinkHandoverImminent_indication = "indication.link_handover_iminent";
+static const char* const kConf_MIH_LinkHandoverImminent_indication = "indication.link_handover_imminent";
 static const char* const kConf_MIH_LinkHandoverComplete_indication = "indication.link_handover_complete";
+static const char* const kConf_MIH_LinkConfigureThresholds_request = "request.link_configure_thresholds";
+static const char* const kConf_MIH_LinkGetParameters_request = "request.link_get_parameters";
+static const char* const kConf_MIH_LinkActions_request = "request.link_actions";
 
-// /* dummy synchronous mih sap handler */
+/* dummy synchronous mih sap handler */
 class handler
 {
 public:
-  handler(const mih::octet_string &dst_ip, const mih::octet_string &dst_port)
-    : _io_service(),
-      _soc(_io_service, udp::endpoint(udp::v4(), 0)),
-      _res(_io_service),
-      _qry(udp::v4(), dst_ip, dst_port)
-  {
-    _it = _res.resolve(_qry);
-  }
+	handler(const mih::octet_string &dst_ip, const mih::octet_string &dst_port)
+		: _io_service(),
+		_soc(_io_service, udp::endpoint(udp::v4(), 0)),
+		_res(_io_service),
+		_qry(udp::v4(), dst_ip, dst_port)
+	{
+		_it = _res.resolve(_qry);
+	}
 
-  // mih::message send_recv(mih::frame &pud)
-  // {
-  //   _soc.send_to(boost::asio::buffer(msg.buffer()), *_it);
+	void send(mih::message &msg)
+	{
+		mih::frame_vla fm;
+		void *sbuff;
+		size_t slen;
 
-  //   udp::endpoint sender_endpoint;
-  //   uint8 data[1500];
-  //   size_t len = _soc.receive_from(boost::asio::buffer(data, 1500),
-  //                                  sender_endpoint);
+		msg.get_frame(fm);
 
-  //   mih::message rsp(data, len);
+		sbuff = fm.get();
+		slen = fm.size();
 
-  //   return rsp;
-  // }
-
-  void send(mih::message &msg)
-  {
-      mih::frame_vla fm;
-      void *sbuff;
-      size_t slen;
-
-      msg.get_frame(fm);
-
-      sbuff = fm.get();
-      slen = fm.size();
-
-      _soc.send_to(boost::asio::buffer(sbuff, slen), *_it);
-  }
+		_soc.send_to(boost::asio::buffer(sbuff, slen), *_it);
+	}
 
 private:
-  boost::asio::io_service _io_service;
-  udp::socket             _soc;
-  udp::resolver           _res;
-  udp::resolver::query    _qry;
-  udp::resolver::iterator _it;
-
+	boost::asio::io_service _io_service;
+	udp::socket             _soc;
+	udp::resolver           _res;
+	udp::resolver::query    _qry;
+	udp::resolver::iterator _it;
 };
-
 
 void send_link_up_indication(handler &sap, const char *dst)
 {
-  mih::message		p;
-  mih::link_tuple_id	li;
-  mih::mac_addr			mac;
+	mih::message p;
 
-  mac.address("00:11:22:33:44:55");
-  li.type = mih::link_type_802_11;
-  li.addr = mac;
+	mih::link_tuple_id	li;
+	mih::mac_addr			mac;
 
-  p << mih::indication(mih::indication::link_up)
-	& mih::tlv_link_identifier(li);
+	mac.address("00:11:22:33:44:55");
+	li.type = mih::link_type_802_11;
+	li.addr = mac;
 
-  p.source(mih::id("link"));
-  p.destination(mih::id(dst));
+	p << mih::indication(mih::indication::link_up)
+		& mih::tlv_link_identifier(li);
 
-  sap.send(p);
+	p.source(mih::id("link"));
+	p.destination(mih::id(dst));
+
+	sap.send(p);
 }
 
 
 void send_link_down_indication(handler &sap, const char *dst)
 {
-  mih::message		p;
-  mih::link_tuple_id	li;
-  mih::mac_addr			mac;
+	mih::message p;
 
-  mac.address("00:11:22:33:44:55");
-  li.type = mih::link_type_802_11;
-  li.addr = mac;
+	mih::link_tuple_id	li;
+	mih::mac_addr			mac;
 
-  p << mih::indication(mih::indication::link_down)
-	  & mih::tlv_link_identifier(li);
+	mac.address("00:11:22:33:44:55");
+	li.type = mih::link_type_802_11;
+	li.addr = mac;
 
-  p.source(mih::id("link"));
-  p.destination(mih::id(dst));
+	p << mih::indication(mih::indication::link_down)
+		& mih::tlv_link_identifier(li);
 
-  sap.send(p);
+	p.source(mih::id("link"));
+	p.destination(mih::id(dst));
+
+	sap.send(p);
 }
 
 void send_link_detected_indication(handler &sap, const char *dst)
 {
-  mih::message		p;
-  mih::message			msg;
+	mih::message p;
 
-  mih::link_det_info_list		list;
-  mih::link_det_info			link;
-  mih::mac_addr					mac;
+	mih::link_det_info_list		list;
+	mih::link_det_info			link;
+	mih::mac_addr					mac;
 
-  mac.address("00:11:22:33:44:55");
+	mac.address("00:11:22:33:44:55");
 
-  link.id.addr = mac;
-  link.id.type = mih::link_type_802_11;
+	link.id.addr = mac;
+	link.id.type = mih::link_type_802_11;
 
-  list.push_back(link);
+	list.push_back(link);
 
-  p << mih::indication(mih::indication::link_detected)
-	  & mih::tlv_link_det_info_list(list);
+	p << mih::indication(mih::indication::link_detected)
+		& mih::tlv_link_det_info_list(list);
 
-  p.source(mih::id("link"));
-  p.destination(mih::id(dst));
+	p.source(mih::id("link"));
+	p.destination(mih::id(dst));
 
-  sap.send(p);
+	sap.send(p);
 }
 
 void send_link_going_down_indication(handler &sap, const char *dst)
 {
-	mih::message				p;
-	mih::message				msg;
-	mih::link_tuple_id		li;
-	mih::mac_addr				mac;
+	mih::message p;
+
+	mih::link_tuple_id	li;
+	mih::mac_addr		mac;
 
 	mac.address("00:11:22:33:44:55");
 	li.type = mih::link_type_802_11;
@@ -188,12 +177,11 @@ void send_link_going_down_indication(handler &sap, const char *dst)
 
 void send_link_handover_imminent_indication(handler &sap, const char *dst)
 {
-	mih::message				p;
-	mih::message				msg;
+	mih::message p;
 
-	mih::link_tuple_id oli;
-	mih::link_tuple_id nli;
-	mih::mac_addr      mac;
+	mih::link_tuple_id	oli;
+	mih::link_tuple_id	nli;
+	mih::mac_addr		mac;
 
 	mac.address("00:11:22:33:44:55");
 	oli.type = mih::link_type_802_11;
@@ -215,8 +203,7 @@ void send_link_handover_imminent_indication(handler &sap, const char *dst)
 
 void send_link_handover_complete_indication(handler &sap, const char *dst)
 {
-	mih::message				p;
-	mih::message				msg;
+	mih::message p;
 
 	mih::link_tuple_id oli;
 	mih::link_tuple_id nli;
@@ -235,6 +222,96 @@ void send_link_handover_complete_indication(handler &sap, const char *dst)
 		& mih::tlv_new_link_identifier(nli);
 
 	p.source(mih::id("link"));
+	p.destination(mih::id(dst));
+
+	sap.send(p);
+}
+
+void send_link_configure_thresholds_request(handler &sap, const char *dst)
+{
+	mih::message p;
+
+	mih::link_tuple_id 			li;
+	mih::mac_addr      			mac;
+	mih::link_cfg_param			lcp;
+	mih::link_cfg_param_list 	lcpl;
+
+	mac.address("00:11:22:33:44:55");
+	li.type = mih::link_type_802_11;
+	li.addr = mac;
+
+	std::vector<mih::threshold> th_list;
+
+	lcp.type = mih::link_type_802_11;
+	lcp.timer_interval = 1234;
+	lcp.action = mih::th_action_normal;
+	lcp.threshold_list = th_list;
+	lcpl.push_back(lcp);
+
+	p << mih::request(mih::request::link_configure_thresholds)
+		& mih::tlv_link_identifier(li)
+		& mih::tlv_link_cfg_param_list(lcpl);
+
+	p.source(mih::id("user"));
+	p.destination(mih::id(dst));
+
+	sap.send(p);
+}
+
+void send_link_get_parameters_request(handler &sap, const char *dst)
+{
+	mih::message p;
+
+	mih::link_tuple_id 	li;
+	mih::link_id_list	lil;
+	mih::mac_addr      	mac;
+
+	mac.address("00:11:22:33:44:55");
+	li.type = mih::link_type_802_11;
+	li.addr = mac;
+	lil.push_back(li);
+
+	mih::link_status_req	lsr;
+	mih::link_param_802_11	lp = mih::link_param_802_11_rssi;
+	lsr._states_req.set(mih::link_states_req_op_mode);
+	lsr._param_type_list.push_back(lp);
+	lsr._desc_req.set(mih::link_desc_req_classes_of_service_supported);
+
+	p << mih::request(mih::request::link_get_parameters)
+		& mih::tlv_link_id_list(lil)
+		& mih::tlv_get_status_req_set(lsr);
+
+	p.source(mih::id("user"));
+	p.destination(mih::id(dst));
+
+	sap.send(p);
+}
+
+void send_link_actions_request(handler &sap, const char *dst)
+{
+	mih::message p;
+
+	mih::link_tuple_id 	li;
+	mih::mac_addr      	mac;
+
+	mac.address("00:11:22:33:44:55");
+	li.type = mih::link_type_802_11;
+	li.addr = mac;
+
+	mih::link_action_req 	lar;
+	mih::link_action_list	larl;
+	lar.id = li;
+	lar.addr = mac;
+	lar.action.type = mih::link_ac_type_none;
+	lar.action.attr.set(mih::link_ac_attr_scan);
+	lar.ex_time = 0;
+
+	larl.push_back(lar);
+
+	p << mih::request(mih::request::link_actions)
+		& mih::tlv_link_action_list(larl);
+
+	p.source(mih::id("user"));
 	p.destination(mih::id(dst));
 
 	sap.send(p);
@@ -368,8 +445,11 @@ int main(int argc, char **argv)
 		(kConf_MIH_LinkDown_indication, "Send a MIH_LinkDown.indication to MIHF")
 		(kConf_MIH_LinkDetected_indication, "Send a MIH_LinkDetected.indication to MIHF")
 		(kConf_MIH_LinkGoingDown_indication, "Send a MIH_LinkGoingDown.indication to MIHF")
-		(kConf_MIH_LinkHandoverImminent_indication, "Send a MIH_LinkHandoverImminent.indicatio to MIHF")
+		(kConf_MIH_LinkHandoverImminent_indication, "Send a MIH_LinkHandoverImminent.indication to MIHF")
 		(kConf_MIH_LinkHandoverComplete_indication, "Send a MIH_LinkHandoverComplete.indication to MIHF")
+		(kConf_MIH_LinkConfigureThresholds_request, "Send a MIH_LinkConfigureThresholds.request to MIHF")
+		(kConf_MIH_LinkGetParameters_request, "Send a MIH_LinkGetParameters.request to MIHF")
+		(kConf_MIH_LinkActions_request, "Send a MIH_LinkActions.request to MIHF")
 		 ;
 	mih::config cfg(desc);
 
@@ -387,37 +467,49 @@ int main(int argc, char **argv)
 	handler sap("127.0.0.1", port.c_str());
 
 	if (cfg.count(kConf_MIH_LinkUp_indication)) {
-	    std::cout << "sent link up indication to mihf" << std::endl;
+	    std::cout << "sent link up indication to " << dest.c_str() << std::endl;
 	    send_link_up_indication(sap, dest.c_str());
 	}
 
 	if (cfg.count(kConf_MIH_LinkDown_indication)) {
-		std::cout << "sent link down indication to mihf" << std::endl;
+		std::cout << "sent link down indication to " << dest.c_str() << std::endl;
 		send_link_down_indication(sap, dest.c_str());
 	}
 
 	if (cfg.count(kConf_MIH_LinkDetected_indication)) {
-		std::cout << "sent link detected indication to mihf" << std::endl;
+		std::cout << "sent link detected indication to " << dest.c_str() << std::endl;
 		send_link_detected_indication(sap, dest.c_str());
 	}
 
 	if (cfg.count(kConf_MIH_LinkGoingDown_indication)) {
-		std::cout << "sent link going down indication to mihf" << std::endl;
+		std::cout << "sent link going down indication to " << dest.c_str() << std::endl;
 		send_link_going_down_indication(sap, dest.c_str());
 	}
 
 	if (cfg.count(kConf_MIH_LinkHandoverImminent_indication)) {
-		std::cout << "sent link handover imminent to mihf" << std::endl;
+		std::cout << "sent link handover imminent indication to " << dest.c_str() << std::endl;
 		send_link_handover_imminent_indication(sap, dest.c_str());
 	}
 
 	if (cfg.count(kConf_MIH_LinkHandoverComplete_indication)) {
-		std::cout << "sent link handover complete to mihf" << std::endl;
+		std::cout << "sent link handover complete indication to " << dest.c_str() << std::endl;
 		send_link_handover_complete_indication(sap, dest.c_str());
 	}
 
-  // std::cout << "sent get information request to mihf" << std::endl;
-  // send_get_information_request(sap, argv[1]);
+	if (cfg.count(kConf_MIH_LinkConfigureThresholds_request)) {
+		std::cout << "sent link configure thresholds request to " << dest.c_str() << std::endl;
+		send_link_configure_thresholds_request(sap, dest.c_str());
+	}
+
+	if (cfg.count(kConf_MIH_LinkGetParameters_request)) {
+		std::cout << "sent link get parameters request to " << dest.c_str() << std::endl;
+		send_link_get_parameters_request(sap, dest.c_str());
+	}
+
+	if (cfg.count(kConf_MIH_LinkActions_request)) {
+		std::cout << "sent link actions request to " << dest.c_str() << std::endl;
+		send_link_actions_request(sap, dest.c_str());
+	}
 
 	return 0;
 }
