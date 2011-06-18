@@ -209,6 +209,7 @@ public:
 
 		  _req_init_lbl_:
 			{
+				ack_requestor_status = ONGOING;
 				rtxctr = 0;
 				// unconditional transition to wait_ack
 			}
@@ -246,12 +247,14 @@ public:
 
 		  _req_failure_lbl_:
 			{
+				ack_req_state = ACK_REQ_FAILURE;
 				ack_requestor_status = FAILURE;
 				return;
 			}
 
 		  _req_success_lbl_:
 			{
+				ack_req_state = ACK_REQ_SUCCESS;
 				ack_requestor_status = SUCCESS;
 				return;
 			}

@@ -98,14 +98,13 @@ void src_transaction_t::run()
 	{
 		state = SRC_WAIT_RESPONSE_MSG;
 
-		if (msg_in_avail)
-			goto _process_msg_lbl_;
-		else if (transaction_stop_when == 0) {
+		if (transaction_stop_when == 0) {
 			if (response_received)
 				goto _success_lbl_;
 			else
 				goto _failure_lbl_;
-		}
+		} else if (msg_in_avail)
+			goto _process_msg_lbl_;
 
 		return;
 	}

@@ -55,7 +55,6 @@ void transaction_pool::dec(Set &set,
 		boost::mutex::scoped_lock lock(mutex);
 
 		for(it = set.begin(); it != set.end(); it++) {
-
 			(*it)->transaction_stop_when--;
 			if ((*it)->transaction_stop_when == 0) {
 				(*it)->run();
@@ -64,7 +63,7 @@ void transaction_pool::dec(Set &set,
 					del_these.insert(*it);
 			}
 
-			if ((*it)->start_ack_requestor) {
+			if ((*it)->ack_requestor_status == ONGOING) {
 				(*it)->retransmission_when--;
 				if ((*it)->retransmission_when == 0) {
 					(*it)->ack_requestor();
