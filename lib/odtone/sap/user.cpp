@@ -37,8 +37,7 @@ namespace ip = boost::asio::ip;
 user::user(const mih::config& cfg, boost::asio::io_service& io, const handler& h)
 	: _handler(h), _sock(io, ip::udp::endpoint(ip::udp::v4(), cfg.get<ushort>(kConf_Port))),
 	  _ep(ip::address::from_string(cfg.get<std::string>(kConf_MIHF_Ip)), cfg.get<ushort>(kConf_MIHF_Local_Port)),
-	  _user_id(odtone::mih::id(cfg.get<std::string>(kConf_MIH_SAP_id))),
-	  _mihf_id(odtone::mih::id(cfg.get<std::string>(kConf_MIHF_Id)))
+	  _user_id(odtone::mih::id(cfg.get<std::string>(kConf_MIH_SAP_id)))
 {
 	buffer<uint8> buff(cfg.get<uint>(kConf_Receive_Buffer_Len));
 	void* rbuff = buff.get();
@@ -54,8 +53,7 @@ user::user(const mih::config& cfg, boost::asio::io_service& io, const handler& h
 
 user::user(boost::asio::io_service& io, const handler& h, const config& cfg)
 	: _handler(h), _sock(io, ip::udp::endpoint(ip::udp::v4(), cfg.port)),
-	  _ep(cfg.mihf_address, cfg.mihf_port), _user_id(odtone::mih::id(cfg.id)),
-	  _mihf_id(odtone::mih::id(cfg.mihf_id))
+	  _ep(cfg.mihf_address, cfg.mihf_port), _user_id(odtone::mih::id(cfg.id))
 {
 	buffer<uint8> buff(cfg.buffer_length);
 	void* rbuff = buff.get();
@@ -112,7 +110,6 @@ void user::async_send_(mih::message& msg, handler&& h)
 	size_t slen;
 
 	msg.source(_user_id);
-	msg.destination(_mihf_id);
 	msg.get_frame(fm);
 
 	sbuff = fm.get();

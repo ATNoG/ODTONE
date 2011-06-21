@@ -40,7 +40,6 @@ static const char* const kConf_MIH_Handover = "user.handover";
 static const char* const kConf_MIH_SAP_id   = "user.id";
 static const char* const kConf_MIH_SAP_dest = "dest";
 
-static const char* const kConf_MIHF_Id         = "mihf.id";
 static const char* const kConf_MIHF_Ip         = "mihf.ip";
 static const char* const kConf_MIHF_Local_Port = "mihf.local_port";
 
@@ -60,13 +59,12 @@ class user : public sap {
 public:
 	struct config {
 		config()
-			: id("user"), port(1234), mihf_id("mihf"), mihf_address(boost::asio::ip::address_v4::loopback()),
+			: id("user"), port(1234), mihf_address(boost::asio::ip::address_v4::loopback()),
 			  mihf_port(1025), buffer_length(4096)
 		{ }
 
 		std::string id;
 		uint        port;
-		std::string mihf_id;
 		ip_address  mihf_address;
 		uint        mihf_port;
 		size_t      buffer_length;
@@ -132,7 +130,6 @@ private:
 	boost::asio::ip::udp::socket   _sock;
 	boost::asio::ip::udp::endpoint _ep;
 	odtone::mih::id                _user_id;
-	odtone::mih::id                _mihf_id;
 
 	boost::mutex _mutex;
 	rmap         _rmap;
