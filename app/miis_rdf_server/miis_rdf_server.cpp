@@ -184,7 +184,7 @@ int main(int argc, char** argv)
 {
 	odtone::setup_crash_handler();
 
-	// try {
+	try {
 		boost::asio::io_service ios;
 
 		// declare MIH Usr available options
@@ -196,7 +196,6 @@ int main(int argc, char** argv)
 			(odtone::sap::kConf_File, po::value<std::string>()->default_value("miis_rdf_server.conf"), "Configuration File")
 			(odtone::sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive Buffer Length")
 			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
-			(odtone::sap::kConf_MIHF_Id, po::value<std::string>()->default_value("local-mihf"), "Local MIHF Id")
 			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("miis"), "MIIS Server ID")
 			(odtone::sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "MIHF Local Communications Port")
 			(odtone::sap::kConf_MIH_SAP_dest, po::value<std::string>()->default_value(""), "MIH message destination of MIIS server")
@@ -214,9 +213,9 @@ int main(int argc, char** argv)
 
 		ios.run();
 
-	// } catch(std::exception& e) {
-	// 	log_(0, "exception: ", e.what());
-	// }
+	} catch(std::exception& e) {
+		log_(0, "exception: ", e.what());
+	}
 }
 
 // EOF ////////////////////////////////////////////////////////////////////////
