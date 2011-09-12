@@ -56,6 +56,10 @@ protected:
 public:
 	uint16 type() const { return _type; }
 
+	void type(const uint16 type) {
+		_type = type;
+	}
+
 	const void* get() const    { return _addr.data(); }
 	size_t      length() const { return _addr.length(); }
 
