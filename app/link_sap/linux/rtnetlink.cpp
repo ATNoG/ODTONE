@@ -73,14 +73,14 @@ ODTONE_STATIC_ASSERT((uint) rtnetlink::if_link::dynamic        == IFF_DYNAMIC, "
 
 ///////////////////////////////////////////////////////////////////////////////
 rtnetlink::if_link::if_link()
-	: _type(0), _index(0), _flags(0), _mtu(odtone::nullptr), _link_type(odtone::nullptr),
-	_stats(odtone::nullptr)
+	: _type(0), _index(0), _flags(0), _mtu(nullptr), _link_type(nullptr),
+	_stats(nullptr)
 {
 }
 
 rtnetlink::if_link::if_link(message& msg)
-	: _type(0), _index(0), _flags(0), _mtu(odtone::nullptr), _link_type(odtone::nullptr),
-	_stats(odtone::nullptr)
+	: _type(0), _index(0), _flags(0), _mtu(nullptr), _link_type(nullptr),
+	_stats(nullptr)
 {
 	*this = msg;
 }

@@ -34,7 +34,7 @@ public:
 		typedef void (safe_bool_t::*safe_bool)();
 
 	public:
-		attr() : _data(odtone::nullptr), _len(0)
+		attr() : _data(nullptr), _len(0)
 		{ }
 		attr(const void* data, size_t len) : _data((const T*) data), _len(len)
 		{ }

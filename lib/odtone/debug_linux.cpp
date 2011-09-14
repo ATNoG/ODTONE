@@ -198,8 +198,8 @@ public:
 		char buffer[512];
 		ssize_t len;
 		size_t n;
-		char* pn = odtone::nullptr;
-		char* pf = odtone::nullptr;
+		char* pn = 0;
+		char* pf = 0;
 
 		if (!init_addr2line()) {
 			std::fprintf(stderr, "%02u %016lX%*c%s\n", i, ulong(address), 24, ' ', this->name());
@@ -389,7 +389,7 @@ void build_module_list(module_list& ml)
 {
 	const size_t k_page_size = ::sysconf(_SC_PAGESIZE);
 	ulong start, end, rd, dump, pos = 0;
-	char path[PATH_MAX];
+	char path[4096];
 	char prot[4];
 	char* buffer;
 	char* endl;

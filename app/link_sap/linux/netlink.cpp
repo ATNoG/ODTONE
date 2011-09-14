@@ -34,7 +34,7 @@ inline void throw_error(const boost::system::error_code& ec)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-netlink::data::data() : _msg(odtone::nullptr)
+netlink::data::data() : _msg(nullptr)
 {
 }
 
@@ -50,7 +50,7 @@ netlink::data& netlink::data::operator=(message& msg)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-netlink::message::message() : _pos(odtone::nullptr), _len(0)
+netlink::message::message() : _pos(nullptr), _len(0)
 {
 	_buf.size(4096);
 }

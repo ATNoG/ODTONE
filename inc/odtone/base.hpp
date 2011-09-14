@@ -75,6 +75,10 @@
 #	define ODTONE_DEPRECATE
 #endif
 
+#if (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 6))
+#	define BOOST_HAS_NULLPTR
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone {
 
