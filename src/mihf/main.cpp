@@ -1,6 +1,7 @@
 //==============================================================================
 // Brief   : ODTONE MIHF
 // Authors : Simao Reis <sreis@av.it.pt>
+//           Carlos Guimarães <cguimaraes@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
@@ -296,6 +297,9 @@ void mies_register_callbacks(event_service &mies)
 					  boost::ref(mies), _1, _2));
 	sac_register_callback(mih::indication::link_going_down,
 			      boost::bind(&event_service::link_going_down_indication,
+					  boost::ref(mies), _1, _2));
+	sac_register_callback(mih::indication::link_parameters_report,
+			      boost::bind(&event_service::link_parameters_report_indication,
 					  boost::ref(mies), _1, _2));
 	sac_register_callback(mih::indication::link_handover_imminent,
 			      boost::bind(&event_service::link_handover_imminent_indication,

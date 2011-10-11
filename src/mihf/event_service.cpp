@@ -672,6 +672,26 @@ bool event_service::link_going_down_indication(meta_message_ptr &in,
 }
 
 /**
+ * Link Parameters Report Indication message handler.
+ *
+ * @param in input message.
+ * @param out output message.
+ * @return true if the response is sent immediately or false otherwise.
+ */
+bool event_service::link_parameters_report_indication(meta_message_ptr &in,
+					       meta_message_ptr&)
+{
+	ODTONE_LOG(1, "(mies) received Link_Parameters_Report.indication from ",
+	    in->source().to_string());
+
+	_link_abook.reset(in->source().to_string());
+
+	link_event_forward(in, mih::link_parameters_report);
+
+	return false;
+}
+
+/**
  * Link Handover Imminent Indication message handler.
  *
  * @param in input message.

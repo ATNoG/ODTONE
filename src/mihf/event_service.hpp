@@ -161,6 +161,17 @@ public:
 					meta_message_ptr &out);
 
 	/**
+	 * Link Parameters Report Indication message handler.
+	 *
+	 * @param in input message.
+	 * @param out output message.
+	 * @return true if the response is sent immediately or false otherwise.
+	 */
+	bool link_parameters_report_indication(meta_message_ptr &in,
+				   meta_message_ptr &out);
+
+
+	/**
 	 * Link Handover Imminent Indication message handler.
 	 *
 	 * @param in input message.
