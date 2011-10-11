@@ -101,7 +101,9 @@ static const tlv_cast_<link_desc_rsp_list,    tlv_<107> > tlv_link_descriptor_rs
 static const tlv_cast_<link_action,           tlv_<108> > tlv_link_action = {};
 static const tlv_cast_<link_ac_result,        tlv_<109> > tlv_link_ac_result = {};
 static const tlv_cast_<link_scan_rsp_list,    tlv_<110> > tlv_link_scan_rsp_list = {};
-static const tlv_cast_<bool,                  tlv_<111> > tlv_mbb_handover_support = {};
+static const tlv_cast_<link_det_info,	      tlv_<111> > tlv_link_det_info = {};
+static const tlv_cast_<bool,                  tlv_<112> > tlv_mbb_handover_support = {};
+
 
 
 ///////////////////////////////////////////////////////////////////////////////

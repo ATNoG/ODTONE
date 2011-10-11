@@ -97,22 +97,19 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 	mih::event_list		events;
 	mih::link_tuple_id	link;
 
+	// TODO: optional is not take in cosideration yet
 	*in >> mih::request(mih::request::event_subscribe)
 		& mih::tlv_link_identifier(link)
 		& mih::tlv_event_list(events);
 
-	// If the MIHF already subscribed the requested events with Link SAP
 	mih::octet_string link_id = _link_abook.search_interface(link.type, link.addr);
-	mih::event_list event_tmp = _link_subscriptions.find(link_id)->second;
-	event_tmp.common(events);
-
-	if(events == event_tmp) {
-		mih::status st = subscribe(in->source(), link, events);
-
+	
+	// Check if the Link SAP exists
+	// If not replies with a failure status
+	if(link_id.compare("") == 0) {
 		*out << mih::response(mih::response::event_subscribe)
-			& mih::tlv_status(st)
-			& mih::tlv_link_identifier(link)
-			& mih::tlv_event_list(events);
+				& mih::tlv_status(mih::status_failure)
+				& mih::tlv_link_identifier(link);
 
 		out->tid(in->tid());
 		out->source(mihfid);
@@ -120,11 +117,39 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 		out->ackreq(in->ackreq());
 
 		ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.response to ",
-		    in->destination().to_string());
+		    out->destination().to_string());
 
 		return true;
 	}
-	else { // Subscribe requested events with Link SAP
+
+	// If the MIHF already subscribed the requested events with Link SAP
+	mih::event_list event_tmp = _link_subscriptions.find(link_id)->second;
+	event_tmp.common(events);
+
+	if(events == event_tmp) {
+		mih::status st = subscribe(in->source(), link, events);
+
+		if(st == mih::status_success) {
+			*out << mih::response(mih::response::event_subscribe)
+				& mih::tlv_status(st)
+				& mih::tlv_link_identifier(link)
+				& mih::tlv_event_list(events);
+		} else {
+			*out << mih::response(mih::response::event_subscribe)
+				& mih::tlv_status(st)
+				& mih::tlv_link_identifier(link);
+		}
+
+		out->tid(in->tid());
+		out->source(mihfid);
+		out->destination(in->source());
+		out->ackreq(in->ackreq());
+
+		ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.response to ",
+		    out->destination().to_string());
+
+		return true;
+	} else { // Subscribe requested events with Link SAP
 		*out << mih::request(mih::request::event_subscribe)
 			& mih::tlv_event_list(events);
 
@@ -215,7 +240,6 @@ bool event_service::event_subscribe_response(meta_message_ptr &in,
 	    in->destination().to_string());
 
 	// forward to user
-	in->opcode(mih::operation::confirm);
 	_transmit(in);
 
 	return false;
@@ -236,6 +260,14 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 
 	_link_abook.reset(in->source().to_string());
 
+	// do we have a request from a user?
+	out->source(in->source());
+	if (!_lpool.set_user_tid(out)) {
+		ODTONE_LOG(1, "(mies) warning: no local transaction for this msg ",
+		    "discarding it");
+		return false;
+	}
+
 	mih::status        st;
 	boost::optional<mih::event_list>    events;
 
@@ -247,23 +279,19 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 	link.type = _link_abook.get(in->source().to_string()).link_id.type;
 	link.addr = _link_abook.get(in->source().to_string()).link_id.addr;
 
-	*out << mih::confirm(mih::confirm::event_subscribe)
-		& mih::tlv_status(st)
-		& mih::tlv_link_identifier(link)
-		& mih::tlv_event_list(events);
-	
-	// do we have a request from a user?
-	out->source(in->source());
-	if (!_lpool.set_user_tid(out)) {
-		ODTONE_LOG(1, "(mies) warning: no local transaction for this msg ",
-		    "discarding it");
-		return false;
-	}
+	if(st == mih::status_success) {
+		*out << mih::confirm(mih::confirm::event_subscribe)
+			& mih::tlv_status(st)
+			& mih::tlv_link_identifier(link)
+			& mih::tlv_event_list(events);
 
-	// add a subscription
-	if (st == mih::status_success) {
+		// add a subscription
 		_link_subscriptions[out->source().to_string()].merge(events.get());
 		st = subscribe(mih::id(out->destination().to_string()), link, events.get());
+	} else {
+		*out << mih::confirm(mih::confirm::event_subscribe)
+				& mih::tlv_status(st)
+				& mih::tlv_link_identifier(link);
 	}
 
 	ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.confirm to ",
@@ -410,6 +438,9 @@ bool event_service::local_event_unsubscribe_request(meta_message_ptr &in,
 
 	// Check if there is any request for the events
 	link_unsubscribe(in, link, events);
+
+	ODTONE_LOG(1, "(mies) forwarding Event_Unsubscribe.response to ",
+		    out->destination().to_string());
 
 	return true;
 }
@@ -560,7 +591,7 @@ void event_service::link_event_forward(meta_message_ptr &msg,
 				       mih::event_list_enum event)
 {
 	mih::link_tuple_id li;
-	*msg >> mih::response()
+	*msg >> mih::indication()
 		& mih::tlv_link_identifier(li);
 
 	msg_forward(msg, li, event);
@@ -620,32 +651,35 @@ bool event_service::link_detected_indication(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mies) received Link_Detected.indication from ",
 	    in->source().to_string());
 
-	_link_abook.reset(in->source().to_string());
+	if(in->is_local()) {
+		_link_abook.reset(in->source().to_string());
+		// link detected info from incoming message
+		mih::link_det_info		link_info;
+		// link detected info on outgoing message
+		mih::link_det_info_list		list_rsp;
 
-	// link detected info from incoming message
-	mih::link_det_info_list		list_ids;
+		*in >> mih::indication()
+			& mih::tlv_link_det_info(link_info);
 
-	// link detected info on outgoing message
-	mih::link_det_info_list		list_rsp;
-	mih::link_det_info_list::iterator	it;
+		list_rsp.push_back(link_info);
 
-	*in >>  mih::response()
-		& mih::tlv_link_det_info_list(list_ids);
-
-	for(it = list_ids.begin(); it != list_ids.end(); it++) {
-		// construct new link detected indication message
-		// with just the link detected in the payload
-		list_rsp.push_back(*it);
-
-		*out << mih::indication(mih::indication::link_detected)
+		*in << mih::indication(mih::indication::link_detected)
 			& mih::tlv_link_det_info_list(list_rsp);
+	}
 
-		// forward message to subscribed users
-		msg_forward(out, it->id, mih::link_detected);
+	std::list<event_registration_t>::iterator it;
+	int i = 0; // for logging purposes
 
-		list_rsp.clear();
-
-		// FIXME: clear out before continuing
+	in->source(mihfid);
+	for(it = _event_subscriptions.begin();
+	    it != _event_subscriptions.end();
+	    it++, i++) {
+		if (it->event == mih::link_detected) {
+			ODTONE_LOG(3, i, " (mies) found registration of user: ",
+			    it->user, " for event type ", mih::link_detected);
+			in->destination(mih::id(it->user));
+			_transmit(in);
+		}
 	}
 
 	return false;
@@ -706,7 +740,20 @@ bool event_service::link_handover_imminent_indication(meta_message_ptr &in,
 
 	_link_abook.reset(in->source().to_string());
 
-	link_event_forward(in, mih::link_handover_imminent);
+	std::list<event_registration_t>::iterator it;
+	int i = 0; // for logging purposes
+
+	in->source(mihfid);
+	for(it = _event_subscriptions.begin();
+	    it != _event_subscriptions.end();
+	    it++, i++) {
+		if (it->event == mih::link_handover_imminent) {
+			ODTONE_LOG(3, i, " (mies) found registration of user: ",
+			    it->user, " for event type ", mih::link_handover_imminent);
+			in->destination(mih::id(it->user));
+			_transmit(in);
+		}
+	}
 
 	return false;
 }
@@ -719,14 +766,54 @@ bool event_service::link_handover_imminent_indication(meta_message_ptr &in,
  * @return true if the response is sent immediately or false otherwise.
  */
 bool event_service::link_handover_complete_indication(meta_message_ptr &in,
-						      meta_message_ptr&)
+						      meta_message_ptr &)
 {
 	ODTONE_LOG(1, "(mies) received Link_Handover_Complete.indication from ",
 	    in->source().to_string());
 
 	_link_abook.reset(in->source().to_string());
 
-	link_event_forward(in, mih::link_handover_complete);
+	mih::link_tuple_id oli;
+	mih::link_tuple_id nli;
+	boost::optional<mih::link_addr> oar;
+	boost::optional<mih::link_addr> nar;
+
+	if(in->is_local()) {
+		mih::status st;
+		*in >> mih::indication(mih::indication::link_handover_complete)
+			& mih::tlv_link_identifier(oli)
+			& mih::tlv_new_link_identifier(nli)
+			& mih::tlv_old_access_router(oar)
+			& mih::tlv_new_access_router(nar)
+			& mih::tlv_status(st);
+	} else {
+		*in >> mih::indication(mih::indication::link_handover_complete)
+			& mih::tlv_link_identifier(oli)
+			& mih::tlv_new_link_identifier(nli)
+			& mih::tlv_old_access_router(oar)
+			& mih::tlv_new_access_router(nar);
+	}
+
+	*in << mih::indication(mih::indication::link_handover_complete)
+			& mih::tlv_link_identifier(oli)
+			& mih::tlv_new_link_identifier(nli)
+			& mih::tlv_old_access_router(oar)
+			& mih::tlv_new_access_router(nar);
+
+	std::list<event_registration_t>::iterator it;
+	int i = 0; // for logging purposes
+
+	in->source(mihfid);
+	for(it = _event_subscriptions.begin();
+	    it != _event_subscriptions.end();
+	    it++, i++) {
+		if (it->event == mih::link_handover_complete) {
+			ODTONE_LOG(3, i, " (mies) found registration of user: ",
+			    it->user, " for event type ", mih::link_handover_complete);
+			in->destination(mih::id(it->user));
+			_transmit(in);
+		}
+	}
 
 	return false;
 }
