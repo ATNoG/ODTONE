@@ -53,7 +53,7 @@ void net_sap::send(meta_message_ptr &msg)
 		else
 			utils::tcp_send(_io, msg, a.ip.c_str(), a.port);
 
-		ODTONE_LOG(1, "(net sap) sent message to: ", msg->destination().to_string(), a.ip, " ", a.port);
+		ODTONE_LOG(1, "(net sap) sent message to: ", msg->destination().to_string(), " ", a.ip, " ", a.port);
 	} catch(...) { // no registration was found
 
 		// try to broadcast message
