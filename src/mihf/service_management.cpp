@@ -154,6 +154,7 @@ bool service_management::forward_to_link_capability_discover_request(meta_messag
 	ODTONE_LOG(1, "(mism) gathering information about local Link SAPs capabilities");
 
 	*out << mih::request(mih::request::capability_discover);
+	out->tid(in->tid());
 
 	std::vector<mih::octet_string> ids = _link_abook.get_ids();
 	std::vector<mih::octet_string>::iterator it;
