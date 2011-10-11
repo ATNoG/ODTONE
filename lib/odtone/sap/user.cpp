@@ -144,7 +144,7 @@ void user::recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system:
 		if (fm) {
 			mih::message pm(*fm);
 
-			if (fm->opcode() == mih::operation::response) {
+			if (fm->opcode() == mih::operation::confirm) {
 				handler h;
 
 				get_handler(fm->tid(), h);
