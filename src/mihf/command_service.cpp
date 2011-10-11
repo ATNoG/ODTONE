@@ -29,6 +29,7 @@
 #include <odtone/debug.hpp>
 #include <odtone/mih/request.hpp>
 #include <odtone/mih/confirm.hpp>
+#include <odtone/mih/response.hpp>
 #include <odtone/mih/tlv_types.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -114,7 +115,7 @@ void command_service::link_get_parameters_response_handler(meta_message_ptr &in)
 
 	// Send Link_Get_Parameters.confirm to the user
 	ODTONE_LOG(1, "(mism) setting response to Link_Get_Parameters.request");
-	*out << mih::confirm(mih::confirm::link_get_parameters)
+	*out << mih::response(mih::response::link_get_parameters)
 	    & mih::tlv_status(mih::status_success)
 //	    & mih::tlv_dev_states_rsp_list(dsrl)
 	    & mih::tlv_get_status_rsp_list(srl);
@@ -208,7 +209,7 @@ bool command_service::link_get_parameters_response(meta_message_ptr &in,
 
 	ODTONE_LOG(1, "(mics) forwarding Link_Get_Parameters.response to ",
 	    in->destination().to_string());
-	in->opcode(mih::operation::confirm);
+
 	_transmit(in);
 
 	return false;
@@ -291,6 +292,7 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 		
 		*out << mih::request(mih::request::link_configure_thresholds)
 		       & mih::tlv_link_cfg_param_list(lcpl);
+
 		out->destination(mih::id(_link_abook.search_interface(lti.type, lti.addr)));
 		out->source(in->source());
 		out->tid(in->tid());
@@ -338,7 +340,7 @@ bool command_service::link_configure_thresholds_response(meta_message_ptr &in,
 	}
 
 	ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.response to ", in->destination().to_string());
-	in->opcode(mih::operation::confirm);
+
 	_transmit(in);
 
 	return false;
@@ -365,6 +367,22 @@ bool command_service::link_configure_thresholds_confirm(meta_message_ptr &in,
 
 	_link_abook.reset(in->source().to_string());
 
+	mih::status st;
+	boost::optional<mih::link_cfg_status_list> lcsl;
+
+	mih::link_tuple_id li;
+	li.type = _link_abook.get(in->source().to_string()).link_id.type;
+	li.addr = _link_abook.get(in->source().to_string()).link_id.addr;
+
+	*in >> mih::confirm(mih::confirm::link_configure_thresholds)
+		& mih::tlv_status(st)
+		& mih::tlv_link_cfg_status_list(lcsl);
+
+	*in << mih::response(mih::response::link_configure_thresholds)
+		& mih::tlv_status(st)
+		& mih::tlv_link_identifier(li)
+		& mih::tlv_link_cfg_status_list(lcsl);
+
 	in->source(mihfid);
 
 	ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.confirm to ", in->destination().to_string());
@@ -383,6 +401,7 @@ bool command_service::link_configure_thresholds_confirm(meta_message_ptr &in,
  */
 void command_service::link_actions_response_handler(meta_message_ptr &in)
 {
+	mih::status st = mih::status_failure;
 	mih::link_action_rsp_list larl;
 	mih::link_action_rsp      lar;
 	mih::link_ac_result       laresult;
@@ -400,8 +419,7 @@ void command_service::link_actions_response_handler(meta_message_ptr &in)
 			if(fails >= kConf_MIHF_Link_Delete_Value && fails != -1) {
 				_link_abook.del(*it_link);
 			}
-		}
-		else {
+		} else {
 			// fill LinkActionsResultList
 			link_entry a;
 			mih::link_id lid;
@@ -415,24 +433,34 @@ void command_service::link_actions_response_handler(meta_message_ptr &in)
 			pending_link_response tmp = _lrpool.find(in->tid(), *it_link);
 			_lrpool.del(in->tid(), *it_link);
 
-			lar.result = tmp.action.link_ac_result;
-			if(tmp.action.link_scan_rsp_list.is_initialized()) {
-				lar.scan_list = tmp.action.link_scan_rsp_list.get();
-			}
-			else {
+			if(tmp.action.link_ac_result.is_initialized()) {
+				if(tmp.action.link_scan_rsp_list.is_initialized()) {
+					lar.scan_list = tmp.action.link_scan_rsp_list.get();
+				}
+				lar.result = tmp.action.link_ac_result.get();
+				larl.push_back(lar);
+				
+				// If one or more responses are successful the status
+				// is set to success
+				st = mih::status_success;
+			} else {
 				mih::null null;
 				lar.scan_list = null;
 			}
-
-			larl.push_back(lar);
 		}
 	}
 
 	// Send Link_Actions.confirm to the user
 	ODTONE_LOG(1, "(mism) setting response to Link_Actions.request");
-	*out << mih::confirm(mih::confirm::link_actions)
-	    & mih::tlv_status(mih::status_success)
-	    & mih::tlv_link_action_rsp_list(larl);
+	
+	if(st == mih::status_success) {
+		*out << mih::response(mih::response::link_actions)
+		    & mih::tlv_status(st)
+		    & mih::tlv_link_action_rsp_list(larl);
+	} else {
+		*out << mih::response(mih::response::link_actions)
+		    & mih::tlv_status(st);
+	}
 
 	out->tid(in->tid());
 	out->destination(in->source());
@@ -525,7 +553,6 @@ bool command_service::link_actions_response(meta_message_ptr &in,
 
 	ODTONE_LOG(1, "(mics) forwarding Link_Actions.response to ", in->destination().to_string());
 
-	in->opcode(mih::operation::confirm);
 	_transmit(in);
 
 	return false;
@@ -554,12 +581,10 @@ bool command_service::link_actions_confirm(meta_message_ptr &in,
 		       & mih::tlv_link_scan_rsp_list(lsrl)
 		       & mih::tlv_link_ac_result(lar);
 
-		if(st == mih::status_success) {
-			_lrpool.add(in->source().to_string(),
-				       in->tid(),
-				       lsrl,
-				       lar.get());
-		}
+		_lrpool.add(in->source().to_string(),
+			       in->tid(),
+			       lsrl,
+			       lar);
 
 		return false;
 	}
@@ -641,8 +666,8 @@ bool command_service::generic_command_response(const char *recv_msg,
 
 	in->source(mihfid);
 
-	ODTONE_LOG(1, recv_msg , in->destination().to_string());
-	in->opcode(mih::operation::confirm);
+	ODTONE_LOG(1, send_msg , in->destination().to_string());
+
 	_transmit(in);
 
 	return false;

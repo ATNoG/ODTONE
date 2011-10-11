@@ -378,6 +378,18 @@ void mics_register_callbacks(command_service &mics)
 	sac_register_callback(mih::response::n2n_ho_commit,
 			      boost::bind(&command_service::n2n_ho_commit_response,
 					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::request::n2n_ho_commit,
+			      boost::bind(&command_service::n2n_ho_commit_request,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::response::n2n_ho_commit,
+			      boost::bind(&command_service::n2n_ho_commit_response,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::request::mn_ho_complete,
+			      boost::bind(&command_service::mn_ho_complete_request,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::response::mn_ho_complete,
+			      boost::bind(&command_service::mn_ho_complete_response,
+					  boost::ref(mics), _1, _2));
 	sac_register_callback(mih::request::n2n_ho_complete,
 			      boost::bind(&command_service::n2n_ho_complete_request,
 					  boost::ref(mics), _1, _2));

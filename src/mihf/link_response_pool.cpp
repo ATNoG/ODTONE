@@ -91,7 +91,7 @@ void link_response_pool::add(mih::octet_string user,
 void link_response_pool::add(mih::octet_string user,
                              uint16 tid,
                              boost::optional<mih::link_scan_rsp_list> link_scan_rsp_list,
-                             mih::link_ac_result link_ac_result)
+                             boost::optional<mih::link_ac_result> link_ac_result)
 {
 	pending_link_response p;
 
@@ -100,7 +100,9 @@ void link_response_pool::add(mih::octet_string user,
 	if(link_scan_rsp_list.is_initialized()) {
 		p.action.link_scan_rsp_list = link_scan_rsp_list;
 	}
-	p.action.link_ac_result = link_ac_result;
+	if(link_ac_result.is_initialized()) {
+		p.action.link_ac_result = link_ac_result;
+	}
 
 	boost::mutex::scoped_lock lock(_mutex);
 	_cpool.push_back(p);

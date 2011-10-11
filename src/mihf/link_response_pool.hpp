@@ -43,7 +43,7 @@ struct pending_link_response {
 	} cap;
 	mih::link_status_rsp link_status;
 	struct action_response {
-		mih::link_ac_result                      link_ac_result;
+		boost::optional<mih::link_ac_result>     link_ac_result;
 		boost::optional<mih::link_scan_rsp_list> link_scan_rsp_list;
 	} action;
 };
@@ -94,7 +94,7 @@ public:
 	void add(mih::octet_string user,
                  uint16 tid,
 	         boost::optional<mih::link_scan_rsp_list> link_scan_rsp_list,
-	         mih::link_ac_result link_ac_result);
+	         boost::optional<mih::link_ac_result> link_ac_result);
 
 	/**
 	 * Remove a existing Link Response entry from the Link Response Pool
