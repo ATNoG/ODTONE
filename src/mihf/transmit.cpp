@@ -55,6 +55,9 @@ void transmit::operator()(meta_message_ptr& msg)
 		// FIXME: Response shouldn't be send to MIH Users
 		if(msg->opcode() != mih::operation::request) {
 			user_entry user = _user_abook.get(msg->destination().to_string());
+			if(msg->opcode() == mih::operation::response) {
+				msg->opcode(mih::operation::confirm);
+			}
 			utils::udp_send(_io, msg, user.ip.c_str(), user.port);
 			ODTONE_LOG(1, "(transmit) sending local message to: ",
 			    msg->destination().to_string(), " ", user.ip, " ", user.port);
