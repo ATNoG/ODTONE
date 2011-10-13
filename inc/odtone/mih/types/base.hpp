@@ -90,7 +90,7 @@ public:
 	void clear()
 	{
 		for (size_t i = 0; i < sizeof(_bitmap); ++i)
-			_bitmap[i] = 0;
+			_bitmap[i] = 0x00;
 	}
 
 	void clear(EnumT pos)     { _bitmap[uint(pos) / 8] &= ~(1 << (uint(pos) % 8)); }
@@ -130,8 +130,8 @@ public:
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
-          for (size_t i = 0; i < ODTONE_COUNT_OF(_bitmap); ++i)
-            ar & _bitmap[i];
+          for (size_t i = ODTONE_COUNT_OF(_bitmap); i > 0 ; --i)
+            ar & _bitmap[i-1];
 	}
 
 private:
