@@ -98,11 +98,15 @@ public:
 	bool get(EnumT pos) const { return _bitmap[uint(pos) / 8] & (1 << (uint(pos) % 8)); }
 
 	void merge(bitmap b) {
+		ODTONE_STATIC_ASSERT((sizeof(_bitmap) == sizeof(b._bitmap)),
+		                    "Both bitmaps must have the same size");
 		for (size_t i = 0; i < sizeof(_bitmap); ++i)
 			_bitmap[i] |= b._bitmap[i];
 	}
 
 	void common(bitmap b) {
+		ODTONE_STATIC_ASSERT((sizeof(_bitmap) == sizeof(b._bitmap)),
+		                    "Both bitmaps must have the same size");
 		for (size_t i = 0; i < sizeof(_bitmap); ++i)
 			_bitmap[i] &= b._bitmap[i];
 	}
