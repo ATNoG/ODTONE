@@ -123,9 +123,13 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 	}
 
 	// If the MIHF already subscribed the requested events with Link SAP
-	mih::event_list event_tmp = _link_subscriptions.find(link_id)->second;
-	event_tmp.common(events);
+	std::map<mih::octet_string, mih::event_list>::iterator it = _link_subscriptions.find(link_id);
+	mih::event_list event_tmp;
+	if(it != _link_subscriptions.end()) {
+		event_tmp = it->second;
+	}
 
+	event_tmp.common(events);
 	if(events == event_tmp) {
 		mih::status st = subscribe(in->source(), link, events);
 
