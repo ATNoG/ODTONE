@@ -19,8 +19,11 @@
 project odtone/base
 	;
 
+lib pthread : : <search>pthread ;
+
 alias source-list
 	: debug_linux.cpp
+	  pthread
 	: <target-os>linux
 	;
 
