@@ -16,14 +16,15 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-import boost ;
+import os ;
+import errors ;
+import option ;
 import debian ;
 
 project odtone
 	: requirements
 	  <include>inc
 	  <link>static
-	  <target-os>linux:<linkflags>-lpthread
 	  <toolset>gcc:<cxxflags>-std=c++0x
 	  <toolset>msvc:<runtime-link>static
 	  <toolset>gcc-android:<runtime-link>static
@@ -38,7 +39,22 @@ project odtone
 	: build-dir bin.v2
 	;
 
-boost.use-project ;
+#
+# Import the boost project
+#
+# TODO: check boost library version for minimum requirements
+#
+local boost_root ;
+
+boost_root ?= [ option.get boost-root ] ;
+boost_root ?= [ os.environ BOOST_ROOT ] ;
+
+if ! $(boost_root) {
+	errors.user-error "You must set the location of the boost libraries in the command line "
+                          "(--boost-root=path/to/boost) or in the environment variable BOOST_ROOT" ;
+} else {
+	use-project boost : $(boost_root) ;
+}
 
 local rule explicit-alias ( id : targets + )
 {
