@@ -28,12 +28,12 @@ namespace odtone { namespace mihf {
  * @param id MIHF MIH Identifier.
  * @param ip MIHF IP Address.
  * @param port MIHF listening port.
- * @param t MIHF transport protocol.
+ * @param t MIHF transport protocols available.
  */
 void address_book::add(const mih::octet_string &id,
 		       mih::octet_string& ip,
 		       uint16 port,
-		       mih::transport_list_enum t)
+		       mih::transport_list t)
 {
 	boost::mutex::scoped_lock lock(_mutex);
 	// TODO: add thread safety

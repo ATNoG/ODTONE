@@ -52,12 +52,14 @@ service_management::service_management(io_service &io,
 										local_transaction_pool &lpool,
 										link_book &link_abook,
 										user_book &user_abook,
+										address_book &address_book,
 										transmit &t,
 										link_response_pool &lrpool,
 										bool enable_broadcast)
 	: _lpool(lpool),
 	  _link_abook(link_abook),
 	  _user_abook(user_abook),
+	  _abook(address_book),
 	  _transmit(t),
 	  _lrpool(lrpool),
 	  _timer(io, boost::posix_time::milliseconds(1))
@@ -129,7 +131,8 @@ void service_management::link_capability_discover_response_handler(meta_message_
 	    & mih::tlv_status(mih::status_success)
 	    & mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
 	    & mih::tlv_event_list(capabilities_event_list)
-	    & mih::tlv_command_list(capabilities_cmd_list);
+	    & mih::tlv_command_list(capabilities_cmd_list)
+		& mih::tlv_transport_option_list(_abook.get(mihfid_t::instance()->to_string()).trans);
 
 	out->tid(in->tid());
 	out->destination(in->source());
@@ -150,6 +153,22 @@ void service_management::link_capability_discover_response_handler(meta_message_
 bool service_management::forward_to_link_capability_discover_request(meta_message_ptr &in,
 																	 meta_message_ptr &out)
 {
+	boost::optional<mih::net_type_addr_list>	capabilities_list_net_type_addr;
+	boost::optional<mih::event_list>			capabilities_event_list;
+	boost::optional<mih::command_list>			capabilities_cmd_list;
+	boost::optional<mih::transport_list>		capabilities_trans_list;
+
+	*in >> mih::request(mih::request::capability_discover)
+	    & mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
+	    & mih::tlv_event_list(capabilities_event_list)
+	    & mih::tlv_command_list(capabilities_cmd_list)
+		& mih::tlv_transport_option_list(capabilities_trans_list);
+
+	if(capabilities_trans_list.is_initialized()) {
+		address_entry src = _abook.get(in->source().to_string());
+		_abook.add(in->source().to_string(), src.ip, src.port, capabilities_trans_list.get());
+	}
+
 	// Asks for local Link SAPs capabilities
 	ODTONE_LOG(1, "(mism) gathering information about local Link SAPs capabilities");
 
@@ -198,7 +217,8 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 		*in << mih::request(mih::request::capability_discover)
 			& mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
 			& mih::tlv_event_list(capabilities_event_list)
-			& mih::tlv_command_list(capabilities_cmd_list);
+			& mih::tlv_command_list(capabilities_cmd_list)
+			& mih::tlv_transport_option_list(_abook.get(mihfid_t::instance()->to_string()).trans);;
 
 		utils::forward_request(in, _lpool, _transmit);
 		return false;
@@ -214,6 +234,16 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 			return false;
 		}
 	} else {
+		mih::event_list     capabilities_event_list;
+		mih::command_list   capabilities_cmd_list;
+		mih::net_type_addr_list  capabilities_list_net_type_addr;
+
+		*in << mih::request(mih::request::capability_discover)
+			& mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
+			& mih::tlv_event_list(capabilities_event_list)
+			& mih::tlv_command_list(capabilities_cmd_list)
+			& mih::tlv_transport_option_list(_abook.get(mihfid_t::instance()->to_string()).trans);;
+
 		utils::forward_request(in, _lpool, _transmit);
 		return false;
 	}
@@ -233,6 +263,24 @@ bool service_management::capability_discover_response(meta_message_ptr &in,
 {
 	ODTONE_LOG(1, "(mism) received Capability_Discover.response from ",
 	    in->source().to_string());
+
+	mih::status									st;
+	boost::optional<mih::net_type_addr_list>	capabilities_list_net_type_addr;
+	boost::optional<mih::event_list>			capabilities_event_list;
+	boost::optional<mih::command_list>			capabilities_cmd_list;
+	boost::optional<mih::transport_list>		capabilities_trans_list;
+
+	*in >> mih::response(mih::response::capability_discover)
+	    & mih::tlv_status(st)
+	    & mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
+	    & mih::tlv_event_list(capabilities_event_list)
+	    & mih::tlv_command_list(capabilities_cmd_list)
+		& mih::tlv_transport_option_list(capabilities_trans_list);
+
+	if(st == mih::status_success && capabilities_trans_list.is_initialized()) {
+		address_entry src = _abook.get(in->source().to_string());
+		_abook.add(in->source().to_string(), src.ip, src.port, capabilities_trans_list.get());
+	}
 
 	// do we have a request from a user?
 	if (_lpool.set_user_tid(in)) {

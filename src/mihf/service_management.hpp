@@ -51,6 +51,7 @@ public:
 			   local_transaction_pool &lpool,
 			   link_book &link_abook,
 			   user_book &user_abook,
+			   address_book &address_book,
 			   transmit &t,
 			   link_response_pool &lrpool,
 			   bool enable_broadcast = false);
@@ -128,11 +129,12 @@ private:
 	void link_capability_discover_response_handler(meta_message_ptr &in);
 
 protected:
-	local_transaction_pool   &_lpool;
-	link_book                &_link_abook;
-	user_book                &_user_abook;
-	transmit                 &_transmit;
-	link_response_pool       &_lrpool;
+	local_transaction_pool	&_lpool;
+	link_book				&_link_abook;
+	user_book				&_user_abook;
+	address_book			&_abook;
+	transmit				&_transmit;
+	link_response_pool		&_lrpool;
 
 	boost::asio::deadline_timer _timer;
 

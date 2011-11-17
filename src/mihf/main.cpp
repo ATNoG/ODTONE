@@ -39,6 +39,7 @@
 
 #include "message_in.hpp"
 #include "udp_listener.hpp"
+#include "tcp_listener.hpp"
 
 #include <odtone/base.hpp>
 #include <odtone/debug.hpp>
@@ -52,6 +53,7 @@
 #include <list>
 #include <iostream>
 
+#include <boost/algorithm/string.hpp>
 #include <boost/program_options.hpp>
 #include <boost/tokenizer.hpp>
 #include <boost/foreach.hpp>
@@ -72,6 +74,7 @@ static const char* const kConf_MIHF_Ip                 = "mihf.ip";
 static const char* const kConf_MIHF_Peer_List          = "mihf.peers";
 static const char* const kConf_MIHF_Users_List         = "mihf.users";
 static const char* const kConf_MIHF_Links_List         = "mihf.links";
+static const char* const kConf_MIHF_Transport_List     = "mihf.transport";
 static const char* const kConf_MIHF_Remote_Port        = "mihf.remote_port";
 static const char* const kConf_MIHF_Local_Port         = "mihf.local_port";
 static const char* const kConf_MIHF_Link_Response_Time = "mihf.link_response_time";
@@ -82,6 +85,13 @@ static const char* const kConf_MIHF_Verbosity          = "log";
 uint16 kConf_MIHF_Link_Response_Time_Value;
 uint16 kConf_MIHF_Link_Delete_Value;
 
+/**
+ * Remove a character from the string.
+ */
+void __trim(mih::octet_string &str, const char chr)
+{
+	str.erase(std::remove(str.begin(), str.end(), chr), str.end());
+}
 
 //
 // list is a comma separated list of mihf id ip and port
@@ -112,7 +122,19 @@ void set_list_peer_mihfs(mih::octet_string &list, address_book &abook)
 		if ((iss >> port_).fail())
 			throw "invalid port";
 
-		abook.add(id, ip, port_, mih::transport_udp);
+		mih::transport_list trans;
+
+		std::map<std::string, odtone::mih::transport_list_enum> enum_map;
+		enum_map["udp"] = odtone::mih::transport_udp;
+		enum_map["tcp"]	= odtone::mih::transport_tcp;
+
+		while(it != tokens.end()) {
+			if(enum_map.find(*it) != enum_map.end())
+				trans.set(odtone::mih::transport_list_enum(enum_map[*it]));
+			++it;
+		}
+
+		abook.add(id, ip, port_, trans);
 	}
 }
 
@@ -233,6 +255,36 @@ void set_links(mih::octet_string &list, link_book &lbook)
 
 		lbook.add(id, ip, port_, lid);
 	}
+}
+
+void parse_mihf_information(mih::config &cfg, address_book &abook)
+{
+	using namespace boost;
+
+	// Insert the MIHF itself in the address book
+	mih::octet_string id = cfg.get<mih::octet_string>(kConf_MIHF_Id);
+	mih::octet_string ip = cfg.get<mih::octet_string>(kConf_MIHF_Ip);
+	uint16 port = cfg.get<uint16>(kConf_MIHF_Remote_Port);
+	mih::transport_list trans;
+
+	mih::octet_string tmp = cfg.get<mih::octet_string>(kConf_MIHF_Transport_List);
+	boost::algorithm::to_lower(tmp);
+
+	char_separator<char> sep(",");
+	tokenizer< char_separator<char> > list_tokens(tmp, sep);
+
+	std::map<std::string, odtone::mih::transport_list_enum> enum_map;
+	enum_map["udp"] = odtone::mih::transport_udp;
+	enum_map["tcp"]	= odtone::mih::transport_tcp;
+
+	BOOST_FOREACH(mih::octet_string str, list_tokens) {
+		__trim(str, ' ');
+		if(enum_map.find(str) != enum_map.end())
+			trans.set(odtone::mih::transport_list_enum(enum_map[str]));
+	}
+
+	abook.add(id, ip, port, trans);
+	//
 }
 
 void parse_peer_registrations(mih::config &cfg, address_book &abook)
@@ -432,6 +484,7 @@ int main(int argc, char **argv)
 		(kConf_MIHF_Peer_List, po::value<std::string>()->default_value(""), "List of peer MIHFs")
 		(kConf_MIHF_Users_List, po::value<std::string>()->default_value(""), "List of User SAPs")
 		(kConf_MIHF_Links_List, po::value<std::string>()->default_value(""), "List of Links SAPs")
+		(kConf_MIHF_Transport_List, po::value<std::string>()->default_value("udp, tcp"), "List of Transport Protocols available")
 		(kConf_MIHF_Remote_Port, po::value<uint16>()->default_value(4551), "MIHF Remote Communications Port")
 		(kConf_MIHF_Local_Port, po::value<uint16>()->default_value(1025), "MIHF Local Communications Port")
 		(kConf_MIHF_Link_Response_Time, po::value<uint16>()->default_value(300), "MIHF Link Response waiting time (milliseconds)")
@@ -472,6 +525,7 @@ int main(int argc, char **argv)
 	address_book mihf_abook;
 	user_book user_abook;
 	link_book link_abook;
+	parse_mihf_information(cfg, mihf_abook);
 	parse_sap_registrations(cfg, user_abook, link_abook);
 	parse_peer_registrations(cfg, mihf_abook);
 	//
@@ -499,7 +553,7 @@ int main(int argc, char **argv)
 	event_service		mies(lpool, trnsmt, link_abook);
 	command_service		mics(io, lpool, trnsmt, link_abook, user_abook, lrpool);
 	information_service	miis(lpool, trnsmt);
-	service_management	sm(io, lpool, link_abook, user_abook, trnsmt, lrpool, enable_broadcast);
+	service_management	sm(io, lpool, link_abook, user_abook, mihf_abook, trnsmt, lrpool, enable_broadcast);
 
 	// register callbacks with service access controller
 	sm_register_callbacks(sm);
@@ -526,12 +580,19 @@ int main(int argc, char **argv)
 
 	// create and bind to port rport and call rdispatch when a
 	// message is received
-	udp_listener remotelistener(io, ip::udp::v6(), "::", rport, rdispatch);
+	udp_listener remotelistener_udp(io, ip::udp::v6(), "::", rport, rdispatch);
+
+	// create and bind to port rport and call rdispatch when a
+	// message is received
+	tcp_listener remotelistener_tcp(io, ip::tcp::v6(), "::", rport, rdispatch);
 
 	// start listening on local and remote ports
 	commhandv4.start();
 	commhandv6.start();
-	remotelistener.start();
+	remotelistener_udp.start();
+	
+	if(mihf_abook.get(mihfid_t::instance()->to_string()).trans.get(mih::transport_tcp) == 1)
+		remotelistener_tcp.start();
 
 	io.run();
 
