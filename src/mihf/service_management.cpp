@@ -196,7 +196,6 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 		mih::net_type_addr_list  capabilities_list_net_type_addr;
 
 		*in << mih::request(mih::request::capability_discover)
-			& mih::tlv_status(mih::status_success)
 			& mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
 			& mih::tlv_event_list(capabilities_event_list)
 			& mih::tlv_command_list(capabilities_cmd_list);
