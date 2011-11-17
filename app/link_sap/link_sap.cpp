@@ -102,6 +102,7 @@ void link_sap::default_handler(odtone::mih::message& msg, const boost::system::e
 				& odtone::mih::tlv_status(st)
 				& odtone::mih::tlv_event_list(capabilities_event_list)
 				& odtone::mih::tlv_command_list(capabilities_command_list);
+			m.tid(msg.tid());
 
 			_mihf.async_send(m);
 		}
