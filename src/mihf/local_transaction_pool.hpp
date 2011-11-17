@@ -39,7 +39,6 @@ struct pending_transaction
 	mih::octet_string	user;
 	mih::octet_string	destination;
 	uint16              tid;
-	bool                ack;
 };
 
 /**

@@ -47,8 +47,6 @@ void message_out::new_src_transaction(meta_message_ptr& m)
 {
 	src_transaction_ptr t(new src_transaction_t(process_message, _netsap));
 
-	m->ackreq(true); // FIXME: read from config file
-
 	_tid++;
 	if (_tid == 0)		// don't send a message with a
 		_tid = 1;	// transaction id of 0
@@ -73,6 +71,8 @@ void message_out::new_src_transaction(meta_message_ptr& m)
  */
 void message_out::operator()(meta_message_ptr& out)
 {
+	out->ackreq(true);	// FIXME: read from config file
+
 	if (out->opcode() == mih::operation::response) {
 		dst_transaction_ptr t;
 		dst_transaction_set::iterator it;

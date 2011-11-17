@@ -36,9 +36,9 @@ namespace odtone { namespace mihf {
  */
 struct address_entry
 {
-	mih::octet_string		ip;
+	mih::octet_string	ip;
 	uint16				port;
-	mih::transport_list_enum	trans; // send by UDP or TCP
+	mih::transport_list	trans; // MIH transport protocols available
 };
 
 /**
@@ -55,9 +55,9 @@ public:
 	 * @param id MIHF MIH Identifier.
 	 * @param ip MIHF IP Address.
 	 * @param port MIHF listening port.
-	 * @param t MIHF transport protocol.
+	 * @param t MIHF transport protocols available.
 	 */
-	void add(const mih::octet_string &id, mih::octet_string &ip, uint16 port, mih::transport_list_enum t);
+	void add(const mih::octet_string &id, mih::octet_string &ip, uint16 port, mih::transport_list t);
 
 	/**
 	 * Remove a existing MIHF entry from the address book

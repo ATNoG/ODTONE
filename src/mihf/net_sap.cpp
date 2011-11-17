@@ -17,6 +17,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "net_sap.hpp"
+#include "mihfid.hpp"
 #include "address_book.hpp"
 #include "log.hpp"
 #include "utils.hpp"
@@ -46,14 +47,15 @@ net_sap::net_sap(io_service &io, address_book &abook)
 void net_sap::send(meta_message_ptr &msg)
 {
 	try {
-		address_entry a = _abook.get(msg->destination().to_string());
+		address_entry src = _abook.get(mihfid_t::instance()->to_string());
+		address_entry dst = _abook.get(msg->destination().to_string());
 
-		if (a.trans == mih::transport_udp)
-			utils::udp_send(_io, msg, a.ip.c_str(), a.port);
+		if(dst.trans.get(mih::transport_tcp) == 1 && src.trans.get(mih::transport_tcp) == 1)
+			utils::tcp_send(_io, msg, dst.ip.c_str(), dst.port);
 		else
-			utils::tcp_send(_io, msg, a.ip.c_str(), a.port);
+			utils::udp_send(_io, msg, dst.ip.c_str(), dst.port);
 
-		ODTONE_LOG(1, "(net sap) sent message to: ", msg->destination().to_string(), " ", a.ip, " ", a.port);
+		ODTONE_LOG(1, "(net sap) sent message to: ", msg->destination().to_string(), " ", dst.ip, " ", dst.port);
 	} catch(...) { // no registration was found
 
 		// try to broadcast message
