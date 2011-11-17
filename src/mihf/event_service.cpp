@@ -114,7 +114,6 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 		out->tid(in->tid());
 		out->source(mihfid);
 		out->destination(in->source());
-		out->ackreq(in->ackreq());
 
 		ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.response to ",
 		    out->destination().to_string());
@@ -147,7 +146,6 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 		out->tid(in->tid());
 		out->source(mihfid);
 		out->destination(in->source());
-		out->ackreq(in->ackreq());
 
 		ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.response to ",
 		    out->destination().to_string());
@@ -159,6 +157,7 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 
 		out->destination(mih::id(link_id));
 		out->source(in->source());
+		out->tid(in->tid());
 		_lpool.add(out);
 		out->source(mihfid);
 
@@ -438,7 +437,6 @@ bool event_service::local_event_unsubscribe_request(meta_message_ptr &in,
 	out->tid(in->tid());
 	out->source(mihfid);
 	out->destination(in->source());
-	out->ackreq(in->ackreq());
 
 	// Check if there is any request for the events
 	link_unsubscribe(in, link, events);
