@@ -1,6 +1,7 @@
 [/==============================================================================
  / Brief   : ODTONE Base Documentation
  / Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
+ / Authors : Bruno Santos     <bsantos@av.it.pt>
  /------------------------------------------------------------------------------
  / ODTONE - Open Dot Twenty One
  /
@@ -19,6 +20,7 @@
     [quickbook 1.5]
     [version 0.3]
     [authors [Guimarães, Carlos]]
+    [authors [Santos, Bruno]]
     [copyright 2009-2011 Universidade Aveiro]
     [copyright 2009-2011 Instituto de Telecomunicações - Pólo Aveiro]
     [license
@@ -99,7 +101,7 @@ notes on specific platforms that might prove an obstacle.
 In order to correctly use ODTONE, you must first make sure that you have the
 required dependencies installed:
 
-* *Boost Developer libraries (v1.42):* If you do not already have them in
+* *Boost Developer libraries (v1.47):* If you do not already have them in
 your system, you can go to [@http://www.boost.org/ boost's website] and
 download a more recent version of the Boost libraries.
 
@@ -107,16 +109,17 @@ download a more recent version of the Boost libraries.
 The Boost library is required to compile ODTONE, so in order to correctly use ODTONE
 you must first make sure you have Boost library installed.
 
-#Download the Boost library(v1.42) [@http://www.boost.org/ boost's website]
+#Download the Boost library(v1.47) [@http://www.boost.org/ boost's website]
 and unpack it.
 
-#Install Boost.Jam (if your already have it, skip this step). You can either
-use the bootstrap script from the Boost library sources and then copy the
-resulting binary to a proper place (within your $PATH). Or, you can download a
-pre-built binary from [@http://www.boost.org/ boost's website].
-
-#Setup Boost.Build (if your already have it, skip this step). Here's an example
-how to setup it:
+#Install Boost.Build (if your already have it, skip this step). You will need to
+compile the Boost.Build engine. You can either use the bootstrap script from the
+Boost library sources and then copy the resulting binary (b2) to a proper place
+(within your $PATH). Or, you can download a pre-built binary from
+[@http://www.boost.org/ boost's website]. To finish the Boost.Build installation,
+you must tell Boost.Build engine where to find the remaining of Boost.Build.
+You can either put it at a predefined path (ex.: /usr/share/boost-build) or you
+can setup a boost-build.jam file. Example:
 
 [table Setup boost-build.jam
     [
@@ -133,29 +136,7 @@ boost-build path-to-boost/tools/build/v2 ;
     ]
 ]
 
-
-Before compiling ODTONE you must configure the Boost library in your user-config.jam.
-Here's an example how to configure it:
-
-[table Setup user-config.jam
-    [
-        [user-config.jam]
-        [``#==============================================================================
-# You must add these configurations to your user-config.jam or site-config.jam
-# Replace 'path-to-xxx' with the proper path.
-#
-# See the Boost.Build documentation for more details!
-#==============================================================================
-
-using boost
-	: 1.42
-	: <root>path-to-boost
-	;
-		``]
-	]
-]
-
-Once the Boost library is properly configured, run 'bjam' to compile ODTONE.
+Once Boost is properly configured, run 'b2' to compile ODTONE.
 
 Consult the Boost.Build documentation for more details!
 
