@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>ODTONE MIHF internals</title>
 <link rel="stylesheet" href="../../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../../index.html" title="ODTONE 0.3">
 <link rel="up" href="../mihf_index.html" title="ODTONE-MIHF">
 <link rel="prev" href="mihf_internal_arch.html" title="MIHF Internal Architecture">
@@ -13,14 +13,13 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="mihf_internal_arch.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../mihf_index.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../mih_usr_index.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="mihf_internal_arch.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../mihf_index.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../mih_usr_index.html"><img src="../../../images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="ODTONE MIHF internals">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="odtone.app.mihf_index.mihf_internals"></a><a class="link" href="mihf_internals.html" title="ODTONE MIHF internals"> ODTONE MIHF
-        internals</a>
+<a name="odtone.app.mihf_index.mihf_internals"></a><a class="link" href="mihf_internals.html" title="ODTONE MIHF internals">ODTONE MIHF internals</a>
 </h4></div></div></div>
-<div class="section" title="Internal Communications use UDP sockets on loopback interface">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.app.mihf_index.mihf_internals.internal_communications_use_udp_sockets_on_loopback_interface"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.internal_communications_use_udp_sockets_on_loopback_interface" title="Internal Communications use UDP sockets on loopback interface">Internal
           Communications use UDP sockets on loopback interface</a>
@@ -31,7 +30,7 @@
             interface (127.0.0.1) for exchanging messages between these entities.
           </p>
 </div>
-<div class="section" title="MIH confirm messages must set the opcode to 0 (zero)">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.app.mihf_index.mihf_internals.mih_confirm_messages_must_set_the_opcode_to_0__zero_"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.mih_confirm_messages_must_set_the_opcode_to_0__zero_" title="MIH confirm messages must set the opcode to 0 (zero)">MIH
           confirm messages must set the opcode to 0 (zero)</a>
@@ -59,7 +58,7 @@
             to 0 (zero).
           </p>
 </div>
-<div class="section" title="TCP Support not enabled but supported">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.app.mihf_index.mihf_internals.tcp_support_not_enabled_but_supported"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.tcp_support_not_enabled_but_supported" title="TCP Support not enabled but supported">TCP
           Support not enabled but supported</a>
@@ -75,7 +74,7 @@
             section.</a>
           </p>
 </div>
-<div class="section" title="Internal discovery">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.app.mihf_index.mihf_internals.internal_discovery"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.internal_discovery" title="Internal discovery">Internal
           discovery</a>
@@ -143,9 +142,9 @@
             threshold the Link SAP is forgotten. If the MIHF receives a message from
             Link SAP it will reset its number of failing responses.
           </p>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -191,9 +190,9 @@
             allows the MIHF to know the information necessarily to redirect the messages
             to the respective MIH User.
           </p>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -203,7 +202,7 @@
             </p></td></tr>
 </table></div>
 </div>
-<div class="section" title="Multiple Link SAP support">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.app.mihf_index.mihf_internals.multiple_link_sap_support"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.multiple_link_sap_support" title="Multiple Link SAP support">Multiple
           Link SAP support</a>
@@ -248,7 +247,7 @@
             in that information.
           </p>
 </div>
-<div class="section" title="MIH Primitives mapped in MIH Protocol Messages">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.app.mihf_index.mihf_internals.mih_primitives_mapped_in_mih_protocol_messages"></a><a class="link" href="mihf_internals.html#odtone.app.mihf_index.mihf_internals.mih_primitives_mapped_in_mih_protocol_messages" title="MIH Primitives mapped in MIH Protocol Messages">MIH
           Primitives mapped in MIH Protocol Messages</a>
@@ -264,7 +263,7 @@
             and the new TLVs and its data type:
           </p>
 <div class="table">
-<a name="odtone.app.mihf_index.mihf_internals.mih_primitives_mapped_in_mih_protocol_messages.odtone_specific_tlvs"></a><p class="title"><b>Table&#160;22.&#160;ODTONE specific TLVs</b></p>
+<a name="odtone.app.mihf_index.mihf_internals.mih_primitives_mapped_in_mih_protocol_messages.odtone_specific_tlvs"></a><p class="title"><b>Table&#160;21.&#160;ODTONE specific TLVs</b></p>
 <div class="table-contents"><table class="table" summary="ODTONE specific TLVs">
 <colgroup>
 <col>
@@ -274,246 +273,246 @@
 </colgroup>
 <thead><tr>
 <th>
-                <p>
-                  MIH_LINK_SAP Primitive
-                </p>
-                </th>
+                    <p>
+                      MIH_LINK_SAP Primitive
+                    </p>
+                  </th>
 <th>
-                <p>
-                  TLV Type Name
-                </p>
-                </th>
+                    <p>
+                      TLV Type Name
+                    </p>
+                  </th>
 <th>
-                <p>
-                  TLV Type Value
-                </p>
-                </th>
+                    <p>
+                      TLV Type Value
+                    </p>
+                  </th>
 <th>
-                <p>
-                  Data type
-                </p>
-                </th>
+                    <p>
+                      Data type
+                    </p>
+                  </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-                <p>
-                  LinkParametersRequest
-                </p>
-                </td>
+                    <p>
+                      LinkParametersRequest
+                    </p>
+                  </td>
 <td>
-                <p>
-                  tlv_link_parameters_req
-                </p>
-                </td>
+                    <p>
+                      tlv_link_parameters_req
+                    </p>
+                  </td>
 <td>
-                <p>
-                  102
-                </p>
-                </td>
+                    <p>
+                      102
+                    </p>
+                  </td>
 <td>
-                <p>
-                  LIST(LINK_PARAM_TYPE)
-                </p>
-                </td>
+                    <p>
+                      LIST(LINK_PARAM_TYPE)
+                    </p>
+                  </td>
 </tr>
 <tr>
 <td>
-                <p>
-                  LinkParametersStatusList
-                </p>
-                </td>
+                    <p>
+                      LinkParametersStatusList
+                    </p>
+                  </td>
 <td>
-                <p>
-                  tlv_link_parameters_status_list
-                </p>
-                </td>
+                    <p>
+                      tlv_link_parameters_status_list
+                    </p>
+                  </td>
 <td>
-                <p>
-                  103
-                </p>
-                </td>
+                    <p>
+                      103
+                    </p>
+                  </td>
 <td>
-                <p>
-                  LIST(LINK_PARAM_TYPE)
-                </p>
-                </td>
+                    <p>
+                      LIST(LINK_PARAM_TYPE)
+                    </p>
+                  </td>
 </tr>
 <tr>
 <td>
-                <p>
-                  LinkStatesRequest
-                </p>
-                </td>
+                    <p>
+                      LinkStatesRequest
+                    </p>
+                  </td>
 <td>
-                <p>
-                  tlv_link_states_req
-                </p>
-                </td>
+                    <p>
+                      tlv_link_states_req
+                    </p>
+                  </td>
 <td>
-                <p>
-                  104
-                </p>
-                </td>
+                    <p>
+                      104
+                    </p>
+                  </td>
 <td>
-                <p>
-                  LINK_STATES_REQ
-                </p>
-                </td>
+                    <p>
+                      LINK_STATES_REQ
+                    </p>
+                  </td>
 </tr>
 <tr>
 <td>
-                <p>
-                  LinkStatesResponse
-                </p>
-                </td>
+                    <p>
+                      LinkStatesResponse
+                    </p>
+                  </td>
 <td>
-                <p>
-                  tlv_link_states_rsp
-                </p>
-                </td>
+                    <p>
+                      tlv_link_states_rsp
+                    </p>
+                  </td>
 <td>
-                <p>
-                  105
-                </p>
-                </td>
+                    <p>
+                      105
+                    </p>
+                  </td>
 <td>
-                <p>
-                  LIST(LINK_STATES_RSP)
-                </p>
-                </td>
+                    <p>
+                      LIST(LINK_STATES_RSP)
+                    </p>
+                  </td>
 </tr>
 <tr>
 <td>
-                <p>
-                  LinkDescriptorsRequest
-                </p>
-                </td>
+                    <p>
+                      LinkDescriptorsRequest
+                    </p>
+                  </td>
 <td>
-                <p>
-                  tlv_link_descriptor_req
-                </p>
-                </td>
+                    <p>
+                      tlv_link_descriptor_req
+                    </p>
+                  </td>
 <td>
-                <p>
-                  106
-                </p>
-                </td>
+                    <p>
+                      106
+                    </p>
+                  </td>
 <td>
-                <p>
-                  LINK_DESC_REQ
-                </p>
-                </td>
+                    <p>
+                      LINK_DESC_REQ
+                    </p>
+                  </td>
 </tr>
 <tr>
 <td>
-                <p>
-                  LinkDescriptorsResponse
-                </p>
-                </td>
+                    <p>
+                      LinkDescriptorsResponse
+                    </p>
+                  </td>
 <td>
-                <p>
-                  tlv_link_descriptor_rsp
-                </p>
-                </td>
+                    <p>
+                      tlv_link_descriptor_rsp
+                    </p>
+                  </td>
 <td>
-                <p>
-                  107
-                </p>
-                </td>
+                    <p>
+                      107
+                    </p>
+                  </td>
 <td>
-                <p>
-                  LIST(LINK_DESC_RSP)
-                </p>
-                </td>
+                    <p>
+                      LIST(LINK_DESC_RSP)
+                    </p>
+                  </td>
 </tr>
 <tr>
 <td>
-                <p>
-                  LinkAction
-                </p>
-                </td>
+                    <p>
+                      LinkAction
+                    </p>
+                  </td>
 <td>
-                <p>
-                  tlv_link_action
-                </p>
-                </td>
+                    <p>
+                      tlv_link_action
+                    </p>
+                  </td>
 <td>
-                <p>
-                  108
-                </p>
-                </td>
+                    <p>
+                      108
+                    </p>
+                  </td>
 <td>
-                <p>
-                  LINK_ACTION
-                </p>
-                </td>
+                    <p>
+                      LINK_ACTION
+                    </p>
+                  </td>
 </tr>
 <tr>
 <td>
-                <p>
-                  LinkActionResult
-                </p>
-                </td>
+                    <p>
+                      LinkActionResult
+                    </p>
+                  </td>
 <td>
-                <p>
-                  tlv_link_ac_result
-                </p>
-                </td>
+                    <p>
+                      tlv_link_ac_result
+                    </p>
+                  </td>
 <td>
-                <p>
-                  109
-                </p>
-                </td>
+                    <p>
+                      109
+                    </p>
+                  </td>
 <td>
-                <p>
-                  LINK_AC_RESULT
-                </p>
-                </td>
+                    <p>
+                      LINK_AC_RESULT
+                    </p>
+                  </td>
 </tr>
 <tr>
 <td>
-                <p>
-                  ScanResponseSet
-                </p>
-                </td>
+                    <p>
+                      ScanResponseSet
+                    </p>
+                  </td>
 <td>
-                <p>
-                  tlv_link_scan_rsp_list
-                </p>
-                </td>
+                    <p>
+                      tlv_link_scan_rsp_list
+                    </p>
+                  </td>
 <td>
-                <p>
-                  110
-                </p>
-                </td>
+                    <p>
+                      110
+                    </p>
+                  </td>
 <td>
-                <p>
-                  LIST(LINK_SCAN_RSP)
-                </p>
-                </td>
+                    <p>
+                      LIST(LINK_SCAN_RSP)
+                    </p>
+                  </td>
 </tr>
 <tr>
 <td>
-                <p>
-                  MBBHandoverSupport
-                </p>
-                </td>
+                    <p>
+                      MBBHandoverSupport
+                    </p>
+                  </td>
 <td>
-                <p>
-                  tlv_mbb_handover_support
-                </p>
-                </td>
+                    <p>
+                      tlv_mbb_handover_support
+                    </p>
+                  </td>
 <td>
-                <p>
-                  111
-                </p>
-                </td>
+                    <p>
+                      111
+                    </p>
+                  </td>
 <td>
-                <p>
-                  BOOLEAN
-                </p>
-                </td>
+                    <p>
+                      BOOLEAN
+                    </p>
+                  </td>
 </tr>
 </tbody>
 </table></div>
@@ -523,7 +522,9 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Universidade Aveiro<br>Copyright &#169; 2009 -2011 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2011 Universidade
+      Aveiro<br>Copyright &#169; 2009-2011 Instituto de
+      Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license
@@ -533,7 +534,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="mihf_internal_arch.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../mihf_index.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../mih_usr_index.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="mihf_internal_arch.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../mihf_index.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../mih_usr_index.html"><img src="../../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

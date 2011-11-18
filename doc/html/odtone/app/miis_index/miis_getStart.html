@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Getting Started</title>
 <link rel="stylesheet" href="../../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../../index.html" title="ODTONE 0.3">
 <link rel="up" href="../miis_index.html" title="MIIS Server">
 <link rel="prev" href="../miis_index.html" title="MIIS Server">
@@ -13,13 +13,13 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../miis_index.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../miis_index.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../link_sap_index.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../miis_index.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../miis_index.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../link_sap_index.html"><img src="../../../images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Getting Started">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="odtone.app.miis_index.miis_getStart"></a><a class="link" href="miis_getStart.html" title="Getting Started"> Getting Started</a>
+<a name="odtone.app.miis_index.miis_getStart"></a><a class="link" href="miis_getStart.html" title="Getting Started">Getting Started</a>
 </h4></div></div></div>
-<div class="section" title="Detailed Description">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.app.miis_index.miis_getStart.detailed_description"></a><a class="link" href="miis_getStart.html#odtone.app.miis_index.miis_getStart.detailed_description" title="Detailed Description">Detailed
           Description</a>
@@ -39,19 +39,19 @@
 <dl>
 <dt><span class="term">base-schema.xml</span></dt>
 <dd><p>
-                is the base schema provided in the standard
-              </p></dd>
+                  is the base schema provided in the standard
+                </p></dd>
 <dt><span class="term">example-data.ttl</span></dt>
 <dd><p>
-                is a Turtle file with some random data for testing queries. Check
-                <a href="http://www.w3.org/TeamSubmission/turtle" target="_top">http://www.w3.org/TeamSubmission/turtle</a>
-                for more details. The example is in this format because it is more
-                clearer than the equivalent XML
-              </p></dd>
+                  is a Turtle file with some random data for testing queries. Check
+                  <a href="http://www.w3.org/TeamSubmission/turtle" target="_top">http://www.w3.org/TeamSubmission/turtle</a>
+                  for more details. The example is in this format because it is more
+                  clearer than the equivalent XML
+                </p></dd>
 <dt><span class="term">example-database</span></dt>
 <dd><p>
-                is a sqlite database built from base-schema.xml and example-data.ttl.
-              </p></dd>
+                  is a sqlite database built from base-schema.xml and example-data.ttl.
+                </p></dd>
 </dl>
 </div>
 <p>
@@ -60,7 +60,7 @@
             serialized and sent in a MIH_Get_Information.response to the MIHF.
           </p>
 </div>
-<div class="section" title="Configuration">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.app.miis_index.miis_getStart.configuration"></a><a class="link" href="miis_getStart.html#odtone.app.miis_index.miis_getStart.configuration" title="Configuration">Configuration</a>
 </h5></div></div></div>
@@ -98,7 +98,7 @@
 <pre class="programlisting"><span class="identifier">rdfproc</span> <span class="special">-</span><span class="identifier">s</span> <span class="identifier">sqlite</span> <span class="identifier">database_name</span> <span class="identifier">parse</span> <span class="identifier">file</span><span class="special">:/</span><span class="identifier">path</span><span class="special">/</span><span class="identifier">to</span><span class="special">/</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">xml</span> <span class="identifier">turtle</span>
 </pre>
 </div>
-<div class="section" title="Extending">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.app.miis_index.miis_getStart.extending"></a><a class="link" href="miis_getStart.html#odtone.app.miis_index.miis_getStart.extending" title="Extending">Extending</a>
 </h5></div></div></div>
@@ -116,13 +116,13 @@
 </p>
 <pre class="programlisting"><span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">recv_handler</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="special">&amp;</span><span class="identifier">m</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="identifier">e</span><span class="special">)</span>
 <span class="special">{</span>
-	<span class="comment">// ...
-</span><span class="special">}</span>
+	<span class="comment">// ...</span>
+<span class="special">}</span>
 </pre>
 <p>
           </p>
 </div>
-<div class="section" title="Running">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.app.miis_index.miis_getStart.running"></a><a class="link" href="miis_getStart.html#odtone.app.miis_index.miis_getStart.running" title="Running">Running</a>
 </h5></div></div></div>
@@ -134,7 +134,9 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Universidade Aveiro<br>Copyright &#169; 2009 -2011 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2011 Universidade
+      Aveiro<br>Copyright &#169; 2009-2011 Instituto de
+      Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license
@@ -144,7 +146,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../miis_index.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../miis_index.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../link_sap_index.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../miis_index.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../miis_index.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../link_sap_index.html"><img src="../../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

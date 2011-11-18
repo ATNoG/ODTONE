@@ -99,15 +99,16 @@ notes on specific platforms that might prove an obstacle.
 [h3 1. Required Dependencies]
 
 In order to correctly use ODTONE, you must first make sure that you have the
-required dependencies installed:
+required dependencies:
 
 * *Boost Developer libraries (v1.47):* If you do not already have them in
 your system, you can go to [@http://www.boost.org/ boost's website] and
 download a more recent version of the Boost libraries.
 
 [h4 1.1. Boost Library Quick Guide]
-The Boost library is required to compile ODTONE, so in order to correctly use ODTONE
-you must first make sure you have Boost library installed.
+Boost is required to compile ODTONE, so in order to correctly use ODTONE
+you must first make sure you have the Boost libraries sources and Boost.Build
+installed.
 
 #Download the Boost library(v1.47) [@http://www.boost.org/ boost's website]
 and unpack it.
@@ -117,16 +118,16 @@ compile the Boost.Build engine. You can either use the bootstrap script from the
 Boost library sources and then copy the resulting binary (b2) to a proper place
 (within your $PATH). Or, you can download a pre-built binary from
 [@http://www.boost.org/ boost's website]. To finish the Boost.Build installation,
-you must tell Boost.Build engine where to find the remaining of Boost.Build.
-You can either put it at a predefined path (ex.: /usr/share/boost-build) or you
-can setup a boost-build.jam file. Example:
+you must tell Boost.Build engine where to find the remaining of Boost.Build. You
+can setup a boost-build.jam file to tell where Boost.Build is. Example:
 
 [table Setup boost-build.jam
     [
         [boost-build.jam]
         [``#==============================================================================
-# Put his file at the root directory of your project or in any of its parent
-# directories. Replace 'path-to-boost' with the proper path.
+# Put this file at the root directory of your project or in any of its parent
+# directories. Replace 'path-to-boost' with the path to the boost libraries
+# sources.
 #
 # See the Boost.Build documentation for more details!
 #==============================================================================
@@ -136,7 +137,7 @@ boost-build path-to-boost/tools/build/v2 ;
     ]
 ]
 
-Once Boost is properly configured, run 'b2' to compile ODTONE.
+Finally, run 'b2' to compile ODTONE.
 
 Consult the Boost.Build documentation for more details!
 

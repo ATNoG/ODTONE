@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Getting Started</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="ODTONE 0.3">
 <link rel="up" href="../index.html" title="ODTONE 0.3">
 <link rel="prev" href="intro.html" title="Introduction">
@@ -13,14 +13,14 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src=".././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="intro.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="library.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="intro.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="library.html"><img src="../images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="Getting Started">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="odtone.getStart"></a><a class="link" href="getStart.html" title="Getting Started"> Getting Started</a>
+<a name="odtone.getStart"></a><a class="link" href="getStart.html" title="Getting Started">Getting Started</a>
 </h2></div></div></div>
 <a name="odtone.getStart.installation"></a><h2>
-<a name="id3037375"></a>
+<a name="odtone.getStart.installation-heading"></a>
       <a class="link" href="getStart.html#odtone.getStart.installation">Installation</a>
     </h2>
 <p>
@@ -30,42 +30,42 @@
       on specific platforms that might prove an obstacle.
     </p>
 <a name="odtone.getStart.1__required_dependencies"></a><h4>
-<a name="id3036310"></a>
+<a name="odtone.getStart.1__required_dependencies-heading"></a>
       <a class="link" href="getStart.html#odtone.getStart.1__required_dependencies">1. Required Dependencies</a>
     </h4>
 <p>
       In order to correctly use ODTONE, you must first make sure that you have the
-      required dependencies installed:
+      required dependencies:
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-<span class="bold"><strong>Boost Developer libraries (v1.42):</strong></span> If you
-        do not already have them in your system, you can go to <a href="http://www.boost.org/" target="_top">boost's
-        website</a> and download a more recent version of the Boost libraries.
-      </li></ul></div>
+          <span class="bold"><strong>Boost Developer libraries (v1.47):</strong></span> If
+          you do not already have them in your system, you can go to <a href="http://www.boost.org/" target="_top">boost's
+          website</a> and download a more recent version of the Boost libraries.
+        </li></ul></div>
 <a name="odtone.getStart.1_1__boost_library_quick_guide"></a><h5>
-<a name="id3036355"></a>
+<a name="odtone.getStart.1_1__boost_library_quick_guide-heading"></a>
       <a class="link" href="getStart.html#odtone.getStart.1_1__boost_library_quick_guide">1.1. Boost Library
       Quick Guide</a>
     </h5>
 <p>
-      The Boost library is required to compile ODTONE, so in order to correctly use
-      ODTONE you must first make sure you have Boost library installed.
+      Boost is required to compile ODTONE, so in order to correctly use ODTONE you
+      must first make sure you have the Boost libraries sources and Boost.Build installed.
     </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-        Download the Boost library(v1.42) <a href="http://www.boost.org/" target="_top">boost's
-        website</a> and unpack it.
-      </li>
+          Download the Boost library(v1.47) <a href="http://www.boost.org/" target="_top">boost's
+          website</a> and unpack it.
+        </li>
 <li class="listitem">
-        Install Boost.Jam (if your already have it, skip this step). You can either
-        use the bootstrap script from the Boost library sources and then copy the
-        resulting binary to a proper place (within your $PATH). Or, you can download
-        a pre-built binary from <a href="http://www.boost.org/" target="_top">boost's website</a>.
-      </li>
-<li class="listitem">
-        Setup Boost.Build (if your already have it, skip this step). Here's an example
-        how to setup it:
-      </li>
+          Install Boost.Build (if your already have it, skip this step). You will
+          need to compile the Boost.Build engine. You can either use the bootstrap
+          script from the Boost library sources and then copy the resulting binary
+          (b2) to a proper place (within your $PATH). Or, you can download a pre-built
+          binary from <a href="http://www.boost.org/" target="_top">boost's website</a>.
+          To finish the Boost.Build installation, you must tell Boost.Build engine
+          where to find the remaining of Boost.Build. You can setup a boost-build.jam
+          file to tell where Boost.Build is. Example:
+        </li>
 </ol></div>
 <div class="table">
 <a name="odtone.getStart.setup_boost_build_jam"></a><p class="title"><b>Table&#160;1.&#160;Setup boost-build.jam</b></p>
@@ -76,17 +76,18 @@
 </colgroup>
 <tbody><tr>
 <td>
-          <p>
-            boost-build.jam
-          </p>
-          </td>
+              <p>
+                boost-build.jam
+              </p>
+            </td>
 <td>
-          <p>
-            
+              <p>
+                
 </p>
 <pre class="programlisting"><span class="error">#</span><span class="special">==============================================================================</span>
-<span class="preprocessor"># Put</span> <span class="identifier">his</span> <span class="identifier">file</span> <span class="identifier">at</span> <span class="identifier">the</span> <span class="identifier">root</span> <span class="identifier">directory</span> <span class="identifier">of</span> <span class="identifier">your</span> <span class="identifier">project</span> <span class="keyword">or</span> <span class="identifier">in</span> <span class="identifier">any</span> <span class="identifier">of</span> <span class="identifier">its</span> <span class="identifier">parent</span>
-<span class="preprocessor"># directories</span><span class="special">.</span> <span class="identifier">Replace</span> <span class="char">'path-to-boost'</span> <span class="identifier">with</span> <span class="identifier">the</span> <span class="identifier">proper</span> <span class="identifier">path</span><span class="special">.</span>
+<span class="preprocessor"># Put</span> <span class="keyword">this</span> <span class="identifier">file</span> <span class="identifier">at</span> <span class="identifier">the</span> <span class="identifier">root</span> <span class="identifier">directory</span> <span class="identifier">of</span> <span class="identifier">your</span> <span class="identifier">project</span> <span class="keyword">or</span> <span class="identifier">in</span> <span class="identifier">any</span> <span class="identifier">of</span> <span class="identifier">its</span> <span class="identifier">parent</span>
+<span class="preprocessor"># directories</span><span class="special">.</span> <span class="identifier">Replace</span> <span class="char">'path-to-boost'</span> <span class="identifier">with</span> <span class="identifier">the</span> <span class="identifier">path</span> <span class="identifier">to</span> <span class="identifier">the</span> <span class="identifier">boost</span> <span class="identifier">libraries</span>
+<span class="preprocessor"># sources</span><span class="special">.</span>
 <span class="error">#</span>
 <span class="preprocessor"># See</span> <span class="identifier">the</span> <span class="identifier">Boost</span><span class="special">.</span><span class="identifier">Build</span> <span class="identifier">documentation</span> <span class="keyword">for</span> <span class="identifier">more</span> <span class="identifier">details</span><span class="special">!</span>
 <span class="error">#</span><span class="special">==============================================================================</span>
@@ -94,58 +95,19 @@
 <span class="identifier">boost</span><span class="special">-</span><span class="identifier">build</span> <span class="identifier">path</span><span class="special">-</span><span class="identifier">to</span><span class="special">-</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">tools</span><span class="special">/</span><span class="identifier">build</span><span class="special">/</span><span class="identifier">v2</span> <span class="special">;</span>
         </pre>
 <p>
-          </p>
-          </td>
+              </p>
+            </td>
 </tr></tbody>
 </table></div>
 </div>
 <br class="table-break"><p>
-      Before compiling ODTONE you must configure the Boost library in your user-config.jam.
-      Here's an example how to configure it:
-    </p>
-<div class="table">
-<a name="odtone.getStart.setup_user_config_jam"></a><p class="title"><b>Table&#160;2.&#160;Setup user-config.jam</b></p>
-<div class="table-contents"><table class="table" summary="Setup user-config.jam">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody><tr>
-<td>
-          <p>
-            user-config.jam
-          </p>
-          </td>
-<td>
-          <p>
-            
-</p>
-<pre class="programlisting"><span class="error">#</span><span class="special">==============================================================================</span>
-<span class="preprocessor"># You</span> <span class="identifier">must</span> <span class="identifier">add</span> <span class="identifier">these</span> <span class="identifier">configurations</span> <span class="identifier">to</span> <span class="identifier">your</span> <span class="identifier">user</span><span class="special">-</span><span class="identifier">config</span><span class="special">.</span><span class="identifier">jam</span> <span class="keyword">or</span> <span class="identifier">site</span><span class="special">-</span><span class="identifier">config</span><span class="special">.</span><span class="identifier">jam</span>
-<span class="preprocessor"># Replace</span> <span class="char">'path-to-xxx'</span> <span class="identifier">with</span> <span class="identifier">the</span> <span class="identifier">proper</span> <span class="identifier">path</span><span class="special">.</span>
-<span class="error">#</span>
-<span class="preprocessor"># See</span> <span class="identifier">the</span> <span class="identifier">Boost</span><span class="special">.</span><span class="identifier">Build</span> <span class="identifier">documentation</span> <span class="keyword">for</span> <span class="identifier">more</span> <span class="identifier">details</span><span class="special">!</span>
-<span class="error">#</span><span class="special">==============================================================================</span>
-
-<span class="keyword">using</span> <span class="identifier">boost</span>
-	<span class="special">:</span> <span class="number">1.42</span>
-	<span class="special">:</span> <span class="special">&lt;</span><span class="identifier">root</span><span class="special">&gt;</span><span class="identifier">path</span><span class="special">-</span><span class="identifier">to</span><span class="special">-</span><span class="identifier">boost</span>
-	<span class="special">;</span>
-		</pre>
-<p>
-          </p>
-          </td>
-</tr></tbody>
-</table></div>
-</div>
-<br class="table-break"><p>
-      Once the Boost library is properly configured, run 'bjam' to compile ODTONE.
+      Finally, run 'b2' to compile ODTONE.
     </p>
 <p>
       Consult the Boost.Build documentation for more details!
     </p>
 <a name="odtone.getStart.2__getting_odtone"></a><h4>
-<a name="id3087808"></a>
+<a name="odtone.getStart.2__getting_odtone-heading"></a>
       <a class="link" href="getStart.html#odtone.getStart.2__getting_odtone">2. Getting ODTONE</a>
     </h4>
 <p>
@@ -165,7 +127,7 @@
 <pre class="programlisting"><span class="identifier">git</span> <span class="identifier">clone</span> <span class="identifier">http</span><span class="special">://</span><span class="identifier">helios</span><span class="special">.</span><span class="identifier">av</span><span class="special">.</span><span class="identifier">it</span><span class="special">.</span><span class="identifier">pt</span><span class="special">/</span><span class="identifier">projects</span><span class="special">/</span><span class="identifier">odtone</span><span class="special">/</span><span class="identifier">git</span><span class="special">/</span> <span class="identifier">odtone</span>
 </pre>
 <a name="odtone.getStart.3__compiling_and_installing_odtone"></a><h4>
-<a name="id3087955"></a>
+<a name="odtone.getStart.3__compiling_and_installing_odtone-heading"></a>
       <a class="link" href="getStart.html#odtone.getStart.3__compiling_and_installing_odtone">3. Compiling
       and installing ODTONE</a>
     </h4>
@@ -175,7 +137,7 @@
       then you are ready to compile and install.
     </p>
 <div class="table">
-<a name="odtone.getStart.platform_support"></a><p class="title"><b>Table&#160;3.&#160;Platform Support</b></p>
+<a name="odtone.getStart.platform_support"></a><p class="title"><b>Table&#160;2.&#160;Platform Support</b></p>
 <div class="table-contents"><table class="table" summary="Platform Support">
 <colgroup>
 <col>
@@ -185,76 +147,74 @@
 </colgroup>
 <thead><tr>
 <th>
-          <p>
-          </p>
-          </th>
+            </th>
 <th>
-          <p>
-            x86-32
-          </p>
-          </th>
+              <p>
+                x86-32
+              </p>
+            </th>
 <th>
-          <p>
-            x86-64
-          </p>
-          </th>
+              <p>
+                x86-64
+              </p>
+            </th>
 <th>
-          <p>
-            ARM
-          </p>
-          </th>
+              <p>
+                ARM
+              </p>
+            </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-          <p>
-            Linux
-          </p>
-          </td>
+              <p>
+                Linux
+              </p>
+            </td>
 <td>
-          <p>
-            <span class="inlinemediaobject"><img src=".././images/check.png" alt="check"></span>
-          </p>
-          </td>
+              <p>
+                <span class="inlinemediaobject"><img src=".././images/check.png" alt="check"></span>
+              </p>
+            </td>
 <td>
-          <p>
-            <span class="inlinemediaobject"><img src=".././images/check.png" alt="check"></span>
-          </p>
-          </td>
+              <p>
+                <span class="inlinemediaobject"><img src=".././images/check.png" alt="check"></span>
+              </p>
+            </td>
 <td>
-          <p>
-            <span class="inlinemediaobject"><img src=".././images/check.png" alt="check"></span>
-          </p>
-          </td>
+              <p>
+                <span class="inlinemediaobject"><img src=".././images/check.png" alt="check"></span>
+              </p>
+            </td>
 </tr>
 <tr>
 <td>
-          <p>
-            Windows
-          </p>
-          </td>
+              <p>
+                Windows
+              </p>
+            </td>
 <td>
-          <p>
-            <span class="inlinemediaobject"><img src=".././images/check.png" alt="check"></span>
-          </p>
-          </td>
+              <p>
+                <span class="inlinemediaobject"><img src=".././images/check.png" alt="check"></span>
+              </p>
+            </td>
 <td>
-          <p>
-            <span class="inlinemediaobject"><img src=".././images/check.png" alt="check"></span>
-          </p>
-          </td>
+              <p>
+                <span class="inlinemediaobject"><img src=".././images/check.png" alt="check"></span>
+              </p>
+            </td>
 <td>
-          <p>
-            <span class="inlinemediaobject"><img src=".././images/interrogation.png" alt="interrogation"></span>
-          </p>
-          </td>
+              <p>
+                <span class="inlinemediaobject"><img src=".././images/interrogation.png" alt="interrogation"></span>
+              </p>
+            </td>
 </tr>
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><div class="note" title="Note"><table border="0" summary="Note">
+<br class="table-break"><div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
@@ -268,22 +228,16 @@
 <p>
         If you get link errors relative to undefined pthread symbols, this means
         that your compiler does not link to pthreads by default. You can either pass
-        the "
-        <em class="replaceable"><code>
-          linkflags=-lpthread
-        </code></em>
-        " option to bjam. Or, you can also configure the toolset to link to
-        this library, set "
-        <em class="replaceable"><code>
-          using gcc : : : &lt;linkflags&gt;-lpthread ;
-        </code></em>
-        " without quotes at your user-config.jam.
+        the "<em class="replaceable"><code>linkflags=-lpthread</code></em>" option to
+        bjam. Or, you can also configure the toolset to link to this library, set
+        "<em class="replaceable"><code>using gcc : : : &lt;linkflags&gt;-lpthread ;</code></em>"
+        without quotes at your user-config.jam.
       </p>
 </td></tr>
 </table></div>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
@@ -296,9 +250,9 @@
       </p>
 </td></tr>
 </table></div>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
@@ -324,19 +278,13 @@
         line (without quotes):
       </p>
 <p>
-        "
-        <em class="replaceable"><code>
-          using gcc : android : path-to-toolset/arm-none-linux-gnueabi-g++ : &lt;linkflags&gt;"-Wl,--whole-archive
-          -lpthread -Wl,--no-whole-archive -lc" ;
-        </code></em>
-        "
+        "<em class="replaceable"><code>using gcc : android : path-to-toolset/arm-none-linux-gnueabi-g++
+        : &lt;linkflags&gt;"-Wl,--whole-archive -lpthread -Wl,--no-whole-archive
+        -lc" ;</code></em>"
       </p>
 <p>
-        To use the Android toolset, pass the command line option "
-        <em class="replaceable"><code>
-          toolset=gcc-android
-        </code></em>
-        " to bjam.
+        To use the Android toolset, pass the command line option "<em class="replaceable"><code>toolset=gcc-android</code></em>"
+        to bjam.
       </p>
 <p>
         The Android SDK has the necessary tools to run, debug and deploy the ODTONE
@@ -345,7 +293,7 @@
 </td></tr>
 </table></div>
 <a name="odtone.getStart.4__generate_doxygen_documentation"></a><h4>
-<a name="id3088294"></a>
+<a name="odtone.getStart.4__generate_doxygen_documentation-heading"></a>
       <a class="link" href="getStart.html#odtone.getStart.4__generate_doxygen_documentation">4. Generate
       Doxygen Documentation</a>
     </h4>
@@ -367,11 +315,11 @@
 <pre class="programlisting"><span class="identifier">doxygen</span> <span class="special">&lt;</span><span class="identifier">config</span><span class="special">-</span><span class="identifier">file</span><span class="special">&gt;</span>
 </pre>
 <a name="odtone.getStart.odtone_user_guide"></a><h4>
-<a name="id3088405"></a>
+<a name="odtone.getStart.odtone_user_guide-heading"></a>
       <a class="link" href="getStart.html#odtone.getStart.odtone_user_guide">ODTONE User Guide</a>
     </h4>
 <a name="odtone.getStart.configuration"></a><h5>
-<a name="id3088422"></a>
+<a name="odtone.getStart.configuration-heading"></a>
       <a class="link" href="getStart.html#odtone.getStart.configuration">Configuration</a>
     </h5>
 <p>
@@ -397,9 +345,9 @@
    <span class="special">--</span><span class="identifier">enable_broadcast</span>                   <span class="identifier">MIHF</span> <span class="identifier">responds</span> <span class="identifier">to</span> <span class="identifier">broadcast</span> <span class="identifier">messages</span>
    <span class="special">--</span><span class="identifier">log</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1</span><span class="special">)</span>                       <span class="identifier">MIHF</span> <span class="identifier">log</span> <span class="identifier">level</span> <span class="special">[</span><span class="number">0</span><span class="special">-</span><span class="number">4</span><span class="special">]</span>
 </pre>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
@@ -422,8 +370,6 @@
       </p>
 <p>
         Usage: &lt;user sap id&gt; &lt;port&gt;
-      </p>
-<p>
       </p>
 </td></tr>
 </table></div>
@@ -456,9 +402,9 @@
    <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">local</span><span class="special">-</span><span class="identifier">mihf</span><span class="special">)</span>      <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">Id</span>
    <span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">link</span><span class="special">)</span>            <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">Id</span>
 </pre>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
@@ -500,12 +446,10 @@
         Usage: command_list = &lt;link command 1&gt;, &lt;link command 2&gt;, (...),
         &lt;link command N&gt;
       </p>
-<p>
-      </p>
 </td></tr>
 </table></div>
 <a name="odtone.getStart.local_demo"></a><h5>
-<a name="id3090324"></a>
+<a name="odtone.getStart.local_demo-heading"></a>
       <a class="link" href="getStart.html#odtone.getStart.local_demo">Local Demo</a>
     </h5>
 <p>
@@ -544,7 +488,7 @@
       or your wireless card according to your configuration file.
     </p>
 <a name="odtone.getStart.remote_demo"></a><h5>
-<a name="id3090409"></a>
+<a name="odtone.getStart.remote_demo-heading"></a>
       <a class="link" href="getStart.html#odtone.getStart.remote_demo">Remote Demo</a>
     </h5>
 <p>
@@ -568,9 +512,9 @@
       MIHF, &lt;ip&gt; and &lt;port&gt; are the IP address and port of the remote
       MIHF.
     </p>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -595,9 +539,9 @@
 <span class="identifier">remote_port</span> <span class="special">=</span> <span class="number">4551</span>
 <span class="identifier">peers</span> <span class="special">=</span> <span class="identifier">mihf1</span> <span class="special">&lt;</span><span class="identifier">mihf2_IP_address</span><span class="special">&gt;</span> <span class="number">4551</span>
 </pre>
-<div class="note" title="Note"><table border="0" summary="Note">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -625,7 +569,9 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Universidade Aveiro<br>Copyright &#169; 2009 -2011 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2011 Universidade
+      Aveiro<br>Copyright &#169; 2009-2011 Instituto de
+      Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license
@@ -635,7 +581,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="intro.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="library.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="intro.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="library.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

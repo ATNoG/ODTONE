@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>3. Data Types</title>
 <link rel="stylesheet" href="../../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../../index.html" title="ODTONE 0.3">
 <link rel="up" href="../index_mih.html" title="ODTONE MIH">
 <link rel="prev" href="odtone_mih_is_tlv_type_class.html" title="2.15. odtone::mih::is_tlv_type Class Reference">
@@ -13,14 +13,14 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="odtone_mih_is_tlv_type_class.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index_mih.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="mih_tutorial.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="odtone_mih_is_tlv_type_class.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index_mih.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="mih_tutorial.html"><img src="../../../images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="3. Data Types">
+<div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="odtone.library.index_mih.mih_data_types"></a><a class="link" href="mih_data_types.html" title="3. Data Types"> 3. Data Types</a>
+<a name="odtone.library.index_mih.mih_data_types"></a><a class="link" href="mih_data_types.html" title="3. Data Types">3. Data Types</a>
 </h4></div></div></div>
 <a name="odtone.library.index_mih.mih_data_types.namespace"></a><h6>
-<a name="id3129534"></a>
+<a name="odtone.library.index_mih.mih_data_types.namespace-heading"></a>
           <a class="link" href="mih_data_types.html#odtone.library.index_mih.mih_data_types.namespace">Namespace</a>
         </h6>
 <p>
@@ -31,7 +31,7 @@
 <p>
         </p>
 <div class="table">
-<a name="odtone.library.index_mih.mih_data_types.basic_data_types"></a><p class="title"><b>Table&#160;6.&#160;Basic data types</b></p>
+<a name="odtone.library.index_mih.mih_data_types.basic_data_types"></a><p class="title"><b>Table&#160;5.&#160;Basic data types</b></p>
 <div class="table-contents"><table class="table" summary="Basic data types">
 <colgroup>
 <col>
@@ -39,130 +39,130 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                BITMAP(size)
-              </p>
-              </td>
+                  <p>
+                    BITMAP(size)
+                  </p>
+                </td>
 <td>
-              <p>
-                bitmap
-              </p>
-              </td>
+                  <p>
+                    bitmap
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                CHOICE(DATATYPE1, DATATYPE2[,...])
-              </p>
-              </td>
+                  <p>
+                    CHOICE(DATATYPE1, DATATYPE2[,...])
+                  </p>
+                </td>
 <td>
-              <p>
-                boost::variant(DATATYPE1, DATATYPE2[,...])
-              </p>
-              </td>
+                  <p>
+                    boost::variant(DATATYPE1, DATATYPE2[,...])
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                INFO_ELEMENT
-              </p>
-              </td>
+                  <p>
+                    INFO_ELEMENT
+                  </p>
+                </td>
 <td>
-              <p>
-                see inc/odtone/mih/types/information_elements.hpp
-              </p>
-              </td>
+                  <p>
+                    see inc/odtone/mih/types/information_elements.hpp
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                INTEGER(size)
-              </p>
-              </td>
+                  <p>
+                    INTEGER(size)
+                  </p>
+                </td>
 <td>
-              <p>
-                sint
-              </p>
-              </td>
+                  <p>
+                    sint
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LIST(DATATYPE)
-              </p>
-              </td>
+                  <p>
+                    LIST(DATATYPE)
+                  </p>
+                </td>
 <td>
-              <p>
-                std::vector&lt;DATATYPE&gt;
-              </p>
-              </td>
+                  <p>
+                    std::vector&lt;DATATYPE&gt;
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                NULL
-              </p>
-              </td>
+                  <p>
+                    NULL
+                  </p>
+                </td>
 <td>
-              <p>
-                null
-              </p>
-              </td>
+                  <p>
+                    null
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                OCTET(size)
-              </p>
-              </td>
+                  <p>
+                    OCTET(size)
+                  </p>
+                </td>
 <td>
-              <p>
-                octet
-              </p>
-              </td>
+                  <p>
+                    octet
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                SEQUENCE(DATATYPE1, DATATYPE2[,...])
-              </p>
-              </td>
+                  <p>
+                    SEQUENCE(DATATYPE1, DATATYPE2[,...])
+                  </p>
+                </td>
 <td>
-              <p>
-                struct
-              </p>
-              </td>
+                  <p>
+                    struct
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                UNSIGNED_INT(size)
-              </p>
-              </td>
+                  <p>
+                    UNSIGNED_INT(size)
+                  </p>
+                </td>
 <td>
-              <p>
-                uint
-              </p>
-              </td>
+                  <p>
+                    uint
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="odtone.library.index_mih.mih_data_types.general_data_types"></a><p class="title"><b>Table&#160;7.&#160;General data types</b></p>
+<a name="odtone.library.index_mih.mih_data_types.general_data_types"></a><p class="title"><b>Table&#160;6.&#160;General data types</b></p>
 <div class="table-contents"><table class="table" summary="General data types">
 <colgroup>
 <col>
@@ -170,82 +170,82 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                ENUMERATED
-              </p>
-              </td>
+                  <p>
+                    ENUMERATED
+                  </p>
+                </td>
 <td>
-              <p>
-                enumeration
-              </p>
-              </td>
+                  <p>
+                    enumeration
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                BOOLEAN
-              </p>
-              </td>
+                  <p>
+                    BOOLEAN
+                  </p>
+                </td>
 <td>
-              <p>
-                bool
-              </p>
-              </td>
+                  <p>
+                    bool
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                OCTET_STRING
-              </p>
-              </td>
+                  <p>
+                    OCTET_STRING
+                  </p>
+                </td>
 <td>
-              <p>
-                octet_string
-              </p>
-              </td>
+                  <p>
+                    octet_string
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                PERCENTAGE
-              </p>
-              </td>
+                  <p>
+                    PERCENTAGE
+                  </p>
+                </td>
 <td>
-              <p>
-                percentage
-              </p>
-              </td>
+                  <p>
+                    percentage
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                STATUS
-              </p>
-              </td>
+                  <p>
+                    STATUS
+                  </p>
+                </td>
 <td>
-              <p>
-                status
-              </p>
-              </td>
+                  <p>
+                    status
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="odtone.library.index_mih.mih_data_types.data_types_for_address"></a><p class="title"><b>Table&#160;8.&#160;Data types for address</b></p>
+<a name="odtone.library.index_mih.mih_data_types.data_types_for_address"></a><p class="title"><b>Table&#160;7.&#160;Data types for address</b></p>
 <div class="table-contents"><table class="table" summary="Data types for address">
 <colgroup>
 <col>
@@ -253,178 +253,178 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                3GPP_2G_CELL_ID
-              </p>
-              </td>
+                  <p>
+                    3GPP_2G_CELL_ID
+                  </p>
+                </td>
 <td>
-              <p>
-                l2_3gpp_2g_cell_id
-              </p>
-              </td>
+                  <p>
+                    l2_3gpp_2g_cell_id
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                3GPP_3G_CELL_ID
-              </p>
-              </td>
+                  <p>
+                    3GPP_3G_CELL_ID
+                  </p>
+                </td>
 <td>
-              <p>
-                l2_3gpp_3g_cell_id
-              </p>
-              </td>
+                  <p>
+                    l2_3gpp_3g_cell_id
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                3GPP_ADDR
-              </p>
-              </td>
+                  <p>
+                    3GPP_ADDR
+                  </p>
+                </td>
 <td>
-              <p>
-                l2_3gpp_addr
-              </p>
-              </td>
+                  <p>
+                    l2_3gpp_addr
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                3GPP2_ADDR
-              </p>
-              </td>
+                  <p>
+                    3GPP2_ADDR
+                  </p>
+                </td>
 <td>
-              <p>
-                l2_3gpp2_addr
-              </p>
-              </td>
+                  <p>
+                    l2_3gpp2_addr
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                CELL_ID
-              </p>
-              </td>
+                  <p>
+                    CELL_ID
+                  </p>
+                </td>
 <td>
-              <p>
-                cell_id
-              </p>
-              </td>
+                  <p>
+                    cell_id
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                CI
-              </p>
-              </td>
+                  <p>
+                    CI
+                  </p>
+                </td>
 <td>
-              <p>
-                ci
-              </p>
-              </td>
+                  <p>
+                    ci
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                IP_ADDR
-              </p>
-              </td>
+                  <p>
+                    IP_ADDR
+                  </p>
+                </td>
 <td>
-              <p>
-                ip_addr
-              </p>
-              </td>
+                  <p>
+                    ip_addr
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LAC
-              </p>
-              </td>
+                  <p>
+                    LAC
+                  </p>
+                </td>
 <td>
-              <p>
-                lac
-              </p>
-              </td>
+                  <p>
+                    lac
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_ADDR
-              </p>
-              </td>
+                  <p>
+                    LINK_ADDR
+                  </p>
+                </td>
 <td>
-              <p>
-                link_addr
-              </p>
-              </td>
+                  <p>
+                    link_addr
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                MAC_ADDR
-              </p>
-              </td>
+                  <p>
+                    MAC_ADDR
+                  </p>
+                </td>
 <td>
-              <p>
-                mac_addr
-              </p>
-              </td>
+                  <p>
+                    mac_addr
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                OTHER_L2_ADDR
-              </p>
-              </td>
+                  <p>
+                    OTHER_L2_ADDR
+                  </p>
+                </td>
 <td>
-              <p>
-                other_l2_addr
-              </p>
-              </td>
+                  <p>
+                    other_l2_addr
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                PLMN_ID
-              </p>
-              </td>
+                  <p>
+                    PLMN_ID
+                  </p>
+                </td>
 <td>
-              <p>
-                uint8[3]
-              </p>
-              </td>
+                  <p>
+                    uint8[3]
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                TRANSPORT_ADDR
-              </p>
-              </td>
+                  <p>
+                    TRANSPORT_ADDR
+                  </p>
+                </td>
 <td>
-              <p>
-                transport_addr
-              </p>
-              </td>
+                  <p>
+                    transport_addr
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="odtone.library.index_mih.mih_data_types.data_types_for_links"></a><p class="title"><b>Table&#160;9.&#160;Data types for links</b></p>
+<a name="odtone.library.index_mih.mih_data_types.data_types_for_links"></a><p class="title"><b>Table&#160;8.&#160;Data types for links</b></p>
 <div class="table-contents"><table class="table" summary="Data types for links">
 <colgroup>
 <col>
@@ -432,706 +432,706 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                BATT_LEVEL
-              </p>
-              </td>
+                  <p>
+                    BATT_LEVEL
+                  </p>
+                </td>
 <td>
-              <p>
-                batt_level
-              </p>
-              </td>
+                  <p>
+                    batt_level
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                CHANNEL_ID
-              </p>
-              </td>
+                  <p>
+                    CHANNEL_ID
+                  </p>
+                </td>
 <td>
-              <p>
-                channel_id
-              </p>
-              </td>
+                  <p>
+                    channel_id
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                CONFIG_STATUS
-              </p>
-              </td>
+                  <p>
+                    CONFIG_STATUS
+                  </p>
+                </td>
 <td>
-              <p>
-                config_status
-              </p>
-              </td>
+                  <p>
+                    config_status
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                DEVICE_INFO
-              </p>
-              </td>
+                  <p>
+                    DEVICE_INFO
+                  </p>
+                </td>
 <td>
-              <p>
-                device_info
-              </p>
-              </td>
+                  <p>
+                    device_info
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                DEV_STATES_REQ
-              </p>
-              </td>
+                  <p>
+                    DEV_STATES_REQ
+                  </p>
+                </td>
 <td>
-              <p>
-                dev_states_req
-              </p>
-              </td>
+                  <p>
+                    dev_states_req
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                DEV_STATES_RSP
-              </p>
-              </td>
+                  <p>
+                    DEV_STATES_RSP
+                  </p>
+                </td>
 <td>
-              <p>
-                dev_states_rsp
-              </p>
-              </td>
+                  <p>
+                    dev_states_rsp
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_AC_EX_TIME
-              </p>
-              </td>
+                  <p>
+                    LINK_AC_EX_TIME
+                  </p>
+                </td>
 <td>
-              <p>
-                link_ac_ex_time
-              </p>
-              </td>
+                  <p>
+                    link_ac_ex_time
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_AC_RESULT
-              </p>
-              </td>
+                  <p>
+                    LINK_AC_RESULT
+                  </p>
+                </td>
 <td>
-              <p>
-                link_ac_result
-              </p>
-              </td>
+                  <p>
+                    link_ac_result
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_ACTION
-              </p>
-              </td>
+                  <p>
+                    LINK_ACTION
+                  </p>
+                </td>
 <td>
-              <p>
-                link_action
-              </p>
-              </td>
+                  <p>
+                    link_action
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_AC_ATTR
-              </p>
-              </td>
+                  <p>
+                    LINK_AC_ATTR
+                  </p>
+                </td>
 <td>
-              <p>
-                link_ac_attr
-              </p>
-              </td>
+                  <p>
+                    link_ac_attr
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_ACTION_REQ
-              </p>
-              </td>
+                  <p>
+                    LINK_ACTION_REQ
+                  </p>
+                </td>
 <td>
-              <p>
-                link_action_req
-              </p>
-              </td>
+                  <p>
+                    link_action_req
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_ACTION_RSP
-              </p>
-              </td>
+                  <p>
+                    LINK_ACTION_RSP
+                  </p>
+                </td>
 <td>
-              <p>
-                link_action_rsp
-              </p>
-              </td>
+                  <p>
+                    link_action_rsp
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_AC_TYPE
-              </p>
-              </td>
+                  <p>
+                    LINK_AC_TYPE
+                  </p>
+                </td>
 <td>
-              <p>
-                link_ac_type
-              </p>
-              </td>
+                  <p>
+                    link_ac_type
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_CFG_PARAM
-              </p>
-              </td>
+                  <p>
+                    LINK_CFG_PARAM
+                  </p>
+                </td>
 <td>
-              <p>
-                link_cfg_param
-              </p>
-              </td>
+                  <p>
+                    link_cfg_param
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_CFG_STATUS
-              </p>
-              </td>
+                  <p>
+                    LINK_CFG_STATUS
+                  </p>
+                </td>
 <td>
-              <p>
-                link_cfg_status
-              </p>
-              </td>
+                  <p>
+                    link_cfg_status
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_DESC_REQ
-              </p>
-              </td>
+                  <p>
+                    LINK_DESC_REQ
+                  </p>
+                </td>
 <td>
-              <p>
-                link_desc_req
-              </p>
-              </td>
+                  <p>
+                    link_desc_req
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_DESC_RSP
-              </p>
-              </td>
+                  <p>
+                    LINK_DESC_RSP
+                  </p>
+                </td>
 <td>
-              <p>
-                link_desc_rsp
-              </p>
-              </td>
+                  <p>
+                    link_desc_rsp
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_DATA_RATE
-              </p>
-              </td>
+                  <p>
+                    LINK_DATA_RATE
+                  </p>
+                </td>
 <td>
-              <p>
-                data_rate
-              </p>
-              </td>
+                  <p>
+                    data_rate
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_DN_REASON
-              </p>
-              </td>
+                  <p>
+                    LINK_DN_REASON
+                  </p>
+                </td>
 <td>
-              <p>
-                link_dn_reason
-              </p>
-              </td>
+                  <p>
+                    link_dn_reason
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_EVENT_LIST
-              </p>
-              </td>
+                  <p>
+                    LINK_EVENT_LIST
+                  </p>
+                </td>
 <td>
-              <p>
-                event_list
-              </p>
-              </td>
+                  <p>
+                    event_list
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_GD_REASON
-              </p>
-              </td>
+                  <p>
+                    LINK_GD_REASON
+                  </p>
+                </td>
 <td>
-              <p>
-                link_gd_reason
-              </p>
-              </td>
+                  <p>
+                    link_gd_reason
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_ID
-              </p>
-              </td>
+                  <p>
+                    LINK_ID
+                  </p>
+                </td>
 <td>
-              <p>
-                link_id
-              </p>
-              </td>
+                  <p>
+                    link_id
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_MIHCAP_FLAG
-              </p>
-              </td>
+                  <p>
+                    LINK_MIHCAP_FLAG
+                  </p>
+                </td>
 <td>
-              <p>
-                link_mihcap_flag
-              </p>
-              </td>
+                  <p>
+                    link_mihcap_flag
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param
-              </p>
-              </td>
+                  <p>
+                    link_param
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM_802_11
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM_802_11
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param_802_11
-              </p>
-              </td>
+                  <p>
+                    link_param_802_11
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM_802_16
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM_802_16
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param_802_16
-              </p>
-              </td>
+                  <p>
+                    link_param_802_16
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM_802_20
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM_802_20
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param_802_20
-              </p>
-              </td>
+                  <p>
+                    link_param_802_20
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM_802_22
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM_802_22
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param_802_22
-              </p>
-              </td>
+                  <p>
+                    link_param_802_22
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM_C2K
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM_C2K
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param_c2k
-              </p>
-              </td>
+                  <p>
+                    link_param_c2k
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM_HRPD
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM_HRPD
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param_hrpd
-              </p>
-              </td>
+                  <p>
+                    link_param_hrpd
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM_EDGE
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM_EDGE
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param_edge
-              </p>
-              </td>
+                  <p>
+                    link_param_edge
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM_ETH
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM_ETH
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param_eth
-              </p>
-              </td>
+                  <p>
+                    link_param_eth
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM_GEN
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM_GEN
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param_gen
-              </p>
-              </td>
+                  <p>
+                    link_param_gen
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM_GG
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM_GG
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param_gg
-              </p>
-              </td>
+                  <p>
+                    link_param_gg
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM_QOS
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM_QOS
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param_qos
-              </p>
-              </td>
+                  <p>
+                    link_param_qos
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM_RPT
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM_RPT
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param_report
-              </p>
-              </td>
+                  <p>
+                    link_param_report
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM_TYPE
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM_TYPE
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param_type
-              </p>
-              </td>
+                  <p>
+                    link_param_type
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM_VAL
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM_VAL
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param_val
-              </p>
-              </td>
+                  <p>
+                    link_param_val
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_PARAM_FDD
-              </p>
-              </td>
+                  <p>
+                    LINK_PARAM_FDD
+                  </p>
+                </td>
 <td>
-              <p>
-                link_param_ffd
-              </p>
-              </td>
+                  <p>
+                    link_param_ffd
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_POA_LIST
-              </p>
-              </td>
+                  <p>
+                    LINK_POA_LIST
+                  </p>
+                </td>
 <td>
-              <p>
-                link_poa_list
-              </p>
-              </td>
+                  <p>
+                    link_poa_list
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_RES_STATUS
-              </p>
-              </td>
+                  <p>
+                    LINK_RES_STATUS
+                  </p>
+                </td>
 <td>
-              <p>
-                link_res_status
-              </p>
-              </td>
+                  <p>
+                    link_res_status
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_SCAN_RSP
-              </p>
-              </td>
+                  <p>
+                    LINK_SCAN_RSP
+                  </p>
+                </td>
 <td>
-              <p>
-                link_scan_rsp
-              </p>
-              </td>
+                  <p>
+                    link_scan_rsp
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_STATES_REQ
-              </p>
-              </td>
+                  <p>
+                    LINK_STATES_REQ
+                  </p>
+                </td>
 <td>
-              <p>
-                link_states_req
-              </p>
-              </td>
+                  <p>
+                    link_states_req
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_STATES_RSP
-              </p>
-              </td>
+                  <p>
+                    LINK_STATES_RSP
+                  </p>
+                </td>
 <td>
-              <p>
-                link_states_rsp
-              </p>
-              </td>
+                  <p>
+                    link_states_rsp
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_STATUS_REQ
-              </p>
-              </td>
+                  <p>
+                    LINK_STATUS_REQ
+                  </p>
+                </td>
 <td>
-              <p>
-                link_status_req
-              </p>
-              </td>
+                  <p>
+                    link_status_req
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_STATUS_RSP
-              </p>
-              </td>
+                  <p>
+                    LINK_STATUS_RSP
+                  </p>
+                </td>
 <td>
-              <p>
-                link_status_rsp
-              </p>
-              </td>
+                  <p>
+                    link_status_rsp
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_TUPLE_ID
-              </p>
-              </td>
+                  <p>
+                    LINK_TUPLE_ID
+                  </p>
+                </td>
 <td>
-              <p>
-                link_tuple_id
-              </p>
-              </td>
+                  <p>
+                    link_tuple_id
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_TYPE
-              </p>
-              </td>
+                  <p>
+                    LINK_TYPE
+                  </p>
+                </td>
 <td>
-              <p>
-                link_type
-              </p>
-              </td>
+                  <p>
+                    link_type
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                NUM_COS
-              </p>
-              </td>
+                  <p>
+                    NUM_COS
+                  </p>
+                </td>
 <td>
-              <p>
-                num_cos
-              </p>
-              </td>
+                  <p>
+                    num_cos
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                NUM_QUEUE
-              </p>
-              </td>
+                  <p>
+                    NUM_QUEUE
+                  </p>
+                </td>
 <td>
-              <p>
-                num_queue
-              </p>
-              </td>
+                  <p>
+                    num_queue
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                OP_MODE
-              </p>
-              </td>
+                  <p>
+                    OP_MODE
+                  </p>
+                </td>
 <td>
-              <p>
-                op_mode
-              </p>
-              </td>
+                  <p>
+                    op_mode
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                SIG_STRENGTH
-              </p>
-              </td>
+                  <p>
+                    SIG_STRENGTH
+                  </p>
+                </td>
 <td>
-              <p>
-                sig_strength
-              </p>
-              </td>
+                  <p>
+                    sig_strength
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                TH_ACTION
-              </p>
-              </td>
+                  <p>
+                    TH_ACTION
+                  </p>
+                </td>
 <td>
-              <p>
-                th_action
-              </p>
-              </td>
+                  <p>
+                    th_action
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                THRESHOLD
-              </p>
-              </td>
+                  <p>
+                    THRESHOLD
+                  </p>
+                </td>
 <td>
-              <p>
-                threshold
-              </p>
-              </td>
+                  <p>
+                    threshold
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                THRESHOLD_VAL
-              </p>
-              </td>
+                  <p>
+                    THRESHOLD_VAL
+                  </p>
+                </td>
 <td>
-              <p>
-                uint16
-              </p>
-              </td>
+                  <p>
+                    uint16
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                THRESHOLD_X_DIR
-              </p>
-              </td>
+                  <p>
+                    THRESHOLD_X_DIR
+                  </p>
+                </td>
 <td>
-              <p>
-                enumeration&lt;threshold::type_ip_enum&gt;
-              </p>
-              </td>
+                  <p>
+                    enumeration&lt;threshold::type_ip_enum&gt;
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                TIMER_INTERVAL
-              </p>
-              </td>
+                  <p>
+                    TIMER_INTERVAL
+                  </p>
+                </td>
 <td>
-              <p>
-                uint16
-              </p>
-              </td>
+                  <p>
+                    uint16
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="odtone.library.index_mih.mih_data_types.data_types_for_qos"></a><p class="title"><b>Table&#160;10.&#160;Data types for QoS</b></p>
+<a name="odtone.library.index_mih.mih_data_types.data_types_for_qos"></a><p class="title"><b>Table&#160;9.&#160;Data types for QoS</b></p>
 <div class="table-contents"><table class="table" summary="Data types for QoS">
 <colgroup>
 <col>
@@ -1139,130 +1139,130 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                QOS_LIST
-              </p>
-              </td>
+                  <p>
+                    QOS_LIST
+                  </p>
+                </td>
 <td>
-              <p>
-                qos_list
-              </p>
-              </td>
+                  <p>
+                    qos_list
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                NUM_COS_TYPES
-              </p>
-              </td>
+                  <p>
+                    NUM_COS_TYPES
+                  </p>
+                </td>
 <td>
-              <p>
-                num_cos_types
-              </p>
-              </td>
+                  <p>
+                    num_cos_types
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                MIN_PK_TX_DELAY
-              </p>
-              </td>
+                  <p>
+                    MIN_PK_TX_DELAY
+                  </p>
+                </td>
 <td>
-              <p>
-                min_pk_tx_delay
-              </p>
-              </td>
+                  <p>
+                    min_pk_tx_delay
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                AVG_PK_TX_DELAY
-              </p>
-              </td>
+                  <p>
+                    AVG_PK_TX_DELAY
+                  </p>
+                </td>
 <td>
-              <p>
-                avg_pk_tx_delay
-              </p>
-              </td>
+                  <p>
+                    avg_pk_tx_delay
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                MAX_PK_TX_DELAY
-              </p>
-              </td>
+                  <p>
+                    MAX_PK_TX_DELAY
+                  </p>
+                </td>
 <td>
-              <p>
-                max_pk_tx_delay
-              </p>
-              </td>
+                  <p>
+                    max_pk_tx_delay
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                PK_DELAY_JITTER
-              </p>
-              </td>
+                  <p>
+                    PK_DELAY_JITTER
+                  </p>
+                </td>
 <td>
-              <p>
-                pk_delay_jitter
-              </p>
-              </td>
+                  <p>
+                    pk_delay_jitter
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                PK_LOSS_RATE
-              </p>
-              </td>
+                  <p>
+                    PK_LOSS_RATE
+                  </p>
+                </td>
 <td>
-              <p>
-                pk_loss_rate
-              </p>
-              </td>
+                  <p>
+                    pk_loss_rate
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                COS_ID
-              </p>
-              </td>
+                  <p>
+                    COS_ID
+                  </p>
+                </td>
 <td>
-              <p>
-                cos_id
-              </p>
-              </td>
+                  <p>
+                    cos_id
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                QOS_PARAM_VAL
-              </p>
-              </td>
+                  <p>
+                    QOS_PARAM_VAL
+                  </p>
+                </td>
 <td>
-              <p>
-                qos_param_val
-              </p>
-              </td>
+                  <p>
+                    qos_param_val
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="odtone.library.index_mih.mih_data_types.data_types_for_location"></a><p class="title"><b>Table&#160;11.&#160;Data types for location</b></p>
+<a name="odtone.library.index_mih.mih_data_types.data_types_for_location"></a><p class="title"><b>Table&#160;10.&#160;Data types for location</b></p>
 <div class="table-contents"><table class="table" summary="Data types for location">
 <colgroup>
 <col>
@@ -1270,118 +1270,118 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                LOCATION
-              </p>
-              </td>
+                  <p>
+                    LOCATION
+                  </p>
+                </td>
 <td>
-              <p>
-                location
-              </p>
-              </td>
+                  <p>
+                    location
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                CIVIL_LOC
-              </p>
-              </td>
+                  <p>
+                    CIVIL_LOC
+                  </p>
+                </td>
 <td>
-              <p>
-                civic_location
-              </p>
-              </td>
+                  <p>
+                    civic_location
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                BIN_CIVIC_LOC
-              </p>
-              </td>
+                  <p>
+                    BIN_CIVIC_LOC
+                  </p>
+                </td>
 <td>
-              <p>
-                bin_civic_location
-              </p>
-              </td>
+                  <p>
+                    bin_civic_location
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                XML_CIVIC_LOC
-              </p>
-              </td>
+                  <p>
+                    XML_CIVIC_LOC
+                  </p>
+                </td>
 <td>
-              <p>
-                xml_civic_location
-              </p>
-              </td>
+                  <p>
+                    xml_civic_location
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                CIVIC_ADDR
-              </p>
-              </td>
+                  <p>
+                    CIVIC_ADDR
+                  </p>
+                </td>
 <td>
-              <p>
-                civic_addr
-              </p>
-              </td>
+                  <p>
+                    civic_addr
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                GEO_LOC
-              </p>
-              </td>
+                  <p>
+                    GEO_LOC
+                  </p>
+                </td>
 <td>
-              <p>
-                geo_location
-              </p>
-              </td>
+                  <p>
+                    geo_location
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                BIN_GEO_LOC
-              </p>
-              </td>
+                  <p>
+                    BIN_GEO_LOC
+                  </p>
+                </td>
 <td>
-              <p>
-                bin_geo_location
-              </p>
-              </td>
+                  <p>
+                    bin_geo_location
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                XML_GEO_LOC
-              </p>
-              </td>
+                  <p>
+                    XML_GEO_LOC
+                  </p>
+                </td>
 <td>
-              <p>
-                xml_geo_location
-              </p>
-              </td>
+                  <p>
+                    xml_geo_location
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="odtone.library.index_mih.mih_data_types.data_types_for_ip_configuration"></a><p class="title"><b>Table&#160;12.&#160;Data types for IP configuration</b></p>
+<a name="odtone.library.index_mih.mih_data_types.data_types_for_ip_configuration"></a><p class="title"><b>Table&#160;11.&#160;Data types for IP configuration</b></p>
 <div class="table-contents"><table class="table" summary="Data types for IP configuration">
 <colgroup>
 <col>
@@ -1389,82 +1389,82 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                IP_CFG_MTHDS
-              </p>
-              </td>
+                  <p>
+                    IP_CFG_MTHDS
+                  </p>
+                </td>
 <td>
-              <p>
-                ip_cfg_methods
-              </p>
-              </td>
+                  <p>
+                    ip_cfg_methods
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                IP_MOB_MGMT
-              </p>
-              </td>
+                  <p>
+                    IP_MOB_MGMT
+                  </p>
+                </td>
 <td>
-              <p>
-                ip_mob_mgmt
-              </p>
-              </td>
+                  <p>
+                    ip_mob_mgmt
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                IP_PREFIX_LEN
-              </p>
-              </td>
+                  <p>
+                    IP_PREFIX_LEN
+                  </p>
+                </td>
 <td>
-              <p>
-                ip_prefix_len
-              </p>
-              </td>
+                  <p>
+                    ip_prefix_len
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                IP_RENEWAL_FLAG
-              </p>
-              </td>
+                  <p>
+                    IP_RENEWAL_FLAG
+                  </p>
+                </td>
 <td>
-              <p>
-                ip_renewal_flag
-              </p>
-              </td>
+                  <p>
+                    ip_renewal_flag
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                IP_SUBNET_INFO
-              </p>
-              </td>
+                  <p>
+                    IP_SUBNET_INFO
+                  </p>
+                </td>
 <td>
-              <p>
-                ip_subnet_info
-              </p>
-              </td>
+                  <p>
+                    ip_subnet_info
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="odtone.library.index_mih.mih_data_types.data_types_for_information_elements"></a><p class="title"><b>Table&#160;13.&#160;Data types for information elements</b></p>
+<a name="odtone.library.index_mih.mih_data_types.data_types_for_information_elements"></a><p class="title"><b>Table&#160;12.&#160;Data types for information elements</b></p>
 <div class="table-contents"><table class="table" summary="Data types for information elements">
 <colgroup>
 <col>
@@ -1472,550 +1472,550 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                NET_AUX_ID
-              </p>
-              </td>
+                  <p>
+                    NET_AUX_ID
+                  </p>
+                </td>
 <td>
-              <p>
-                net_aux_id
-              </p>
-              </td>
+                  <p>
+                    net_aux_id
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                NETWORK_ID
-              </p>
-              </td>
+                  <p>
+                    NETWORK_ID
+                  </p>
+                </td>
 <td>
-              <p>
-                network_id
-              </p>
-              </td>
+                  <p>
+                    network_id
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                BAND_CLASS
-              </p>
-              </td>
+                  <p>
+                    BAND_CLASS
+                  </p>
+                </td>
 <td>
-              <p>
-                band_class
-              </p>
-              </td>
+                  <p>
+                    band_class
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                BANDWIDTH
-              </p>
-              </td>
+                  <p>
+                    BANDWIDTH
+                  </p>
+                </td>
 <td>
-              <p>
-                bandwidth
-              </p>
-              </td>
+                  <p>
+                    bandwidth
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                BASE_ID
-              </p>
-              </td>
+                  <p>
+                    BASE_ID
+                  </p>
+                </td>
 <td>
-              <p>
-                base_id
-              </p>
-              </td>
+                  <p>
+                    base_id
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                BURST_PROF
-              </p>
-              </td>
+                  <p>
+                    BURST_PROF
+                  </p>
+                </td>
 <td>
-              <p>
-                burst_prof
-              </p>
-              </td>
+                  <p>
+                    burst_prof
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                CH_RANGE
-              </p>
-              </td>
+                  <p>
+                    CH_RANGE
+                  </p>
+                </td>
 <td>
-              <p>
-                ch_range
-              </p>
-              </td>
+                  <p>
+                    ch_range
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                COST
-              </p>
-              </td>
+                  <p>
+                    COST
+                  </p>
+                </td>
 <td>
-              <p>
-                cost
-              </p>
-              </td>
+                  <p>
+                    cost
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                COST_CURR
-              </p>
-              </td>
+                  <p>
+                    COST_CURR
+                  </p>
+                </td>
 <td>
-              <p>
-                cost_curr
-              </p>
-              </td>
+                  <p>
+                    cost_curr
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                COST_UNIT
-              </p>
-              </td>
+                  <p>
+                    COST_UNIT
+                  </p>
+                </td>
 <td>
-              <p>
-                cost_unit
-              </p>
-              </td>
+                  <p>
+                    cost_unit
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                COST_VALUE
-              </p>
-              </td>
+                  <p>
+                    COST_VALUE
+                  </p>
+                </td>
 <td>
-              <p>
-                cost_value
-              </p>
-              </td>
+                  <p>
+                    cost_value
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                CNTRY_CODE
-              </p>
-              </td>
+                  <p>
+                    CNTRY_CODE
+                  </p>
+                </td>
 <td>
-              <p>
-                cntry_code
-              </p>
-              </td>
+                  <p>
+                    cntry_code
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                DATA_RATE
-              </p>
-              </td>
+                  <p>
+                    DATA_RATE
+                  </p>
+                </td>
 <td>
-              <p>
-                data_rate
-              </p>
-              </td>
+                  <p>
+                    data_rate
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                DCD_UCD
-              </p>
-              </td>
+                  <p>
+                    DCD_UCD
+                  </p>
+                </td>
 <td>
-              <p>
-                dcd_udc
-              </p>
-              </td>
+                  <p>
+                    dcd_udc
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                DOWN_BP
-              </p>
-              </td>
+                  <p>
+                    DOWN_BP
+                  </p>
+                </td>
 <td>
-              <p>
-                down_bp
-              </p>
-              </td>
+                  <p>
+                    down_bp
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                EIRP
-              </p>
-              </td>
+                  <p>
+                    EIRP
+                  </p>
+                </td>
 <td>
-              <p>
-                eirp
-              </p>
-              </td>
+                  <p>
+                    eirp
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                FQDN
-              </p>
-              </td>
+                  <p>
+                    FQDN
+                  </p>
+                </td>
 <td>
-              <p>
-                fqdn
-              </p>
-              </td>
+                  <p>
+                    fqdn
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                DU_CTR_FREQ
-              </p>
-              </td>
+                  <p>
+                    DU_CTR_FREQ
+                  </p>
+                </td>
 <td>
-              <p>
-                du_ctr_freq
-              </p>
-              </td>
+                  <p>
+                    du_ctr_freq
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                FREQ_BANDS
-              </p>
-              </td>
+                  <p>
+                    FREQ_BANDS
+                  </p>
+                </td>
 <td>
-              <p>
-                freq_bands
-              </p>
-              </td>
+                  <p>
+                    freq_bands
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                FREQ_ID
-              </p>
-              </td>
+                  <p>
+                    FREQ_ID
+                  </p>
+                </td>
 <td>
-              <p>
-                freq_id
-              </p>
-              </td>
+                  <p>
+                    freq_id
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                FQ_CODE_NUM
-              </p>
-              </td>
+                  <p>
+                    FQ_CODE_NUM
+                  </p>
+                </td>
 <td>
-              <p>
-                fq_code_num
-              </p>
-              </td>
+                  <p>
+                    fq_code_num
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                GAP
-              </p>
-              </td>
+                  <p>
+                    GAP
+                  </p>
+                </td>
 <td>
-              <p>
-                gap
-              </p>
-              </td>
+                  <p>
+                    gap
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                HO_CODE
-              </p>
-              </td>
+                  <p>
+                    HO_CODE
+                  </p>
+                </td>
 <td>
-              <p>
-                ho_code
-              </p>
-              </td>
+                  <p>
+                    ho_code
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                INIT_CODE
-              </p>
-              </td>
+                  <p>
+                    INIT_CODE
+                  </p>
+                </td>
 <td>
-              <p>
-                init_code
-              </p>
-              </td>
+                  <p>
+                    init_code
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                IP4_ADDR
-              </p>
-              </td>
+                  <p>
+                    IP4_ADDR
+                  </p>
+                </td>
 <td>
-              <p>
-                ip4_addr
-              </p>
-              </td>
+                  <p>
+                    ip4_addr
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                IP6_ADDR
-              </p>
-              </td>
+                  <p>
+                    IP6_ADDR
+                  </p>
+                </td>
 <td>
-              <p>
-                ip6_addr
-              </p>
-              </td>
+                  <p>
+                    ip6_addr
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                IP_CONFIG
-              </p>
-              </td>
+                  <p>
+                    IP_CONFIG
+                  </p>
+                </td>
 <td>
-              <p>
-                ip_config
-              </p>
-              </td>
+                  <p>
+                    ip_config
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                NET_CAPS
-              </p>
-              </td>
+                  <p>
+                    NET_CAPS
+                  </p>
+                </td>
 <td>
-              <p>
-                net_caps
-              </p>
-              </td>
+                  <p>
+                    net_caps
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                NETWORK_TYPE
-              </p>
-              </td>
+                  <p>
+                    NETWORK_TYPE
+                  </p>
+                </td>
 <td>
-              <p>
-                network_type
-              </p>
-              </td>
+                  <p>
+                    network_type
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                OPERATOR_ID
-              </p>
-              </td>
+                  <p>
+                    OPERATOR_ID
+                  </p>
+                </td>
 <td>
-              <p>
-                operator_id
-              </p>
-              </td>
+                  <p>
+                    operator_id
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                OP_NAME
-              </p>
-              </td>
+                  <p>
+                    OP_NAME
+                  </p>
+                </td>
 <td>
-              <p>
-                op_name
-              </p>
-              </td>
+                  <p>
+                    op_name
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                OP_NAMESPACE
-              </p>
-              </td>
+                  <p>
+                    OP_NAMESPACE
+                  </p>
+                </td>
 <td>
-              <p>
-                op_namespace
-              </p>
-              </td>
+                  <p>
+                    op_namespace
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                PARAMETERS
-              </p>
-              </td>
+                  <p>
+                    PARAMETERS
+                  </p>
+                </td>
 <td>
-              <p>
-                parameters
-              </p>
-              </td>
+                  <p>
+                    parameters
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                PILOT_PN
-              </p>
-              </td>
+                  <p>
+                    PILOT_PN
+                  </p>
+                </td>
 <td>
-              <p>
-                pilot_pn
-              </p>
-              </td>
+                  <p>
+                    pilot_pn
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                PROXY_ADDR
-              </p>
-              </td>
+                  <p>
+                    PROXY_ADDR
+                  </p>
+                </td>
 <td>
-              <p>
-                proxy_addr
-              </p>
-              </td>
+                  <p>
+                    proxy_addr
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                CDMA_CODES
-              </p>
-              </td>
+                  <p>
+                    CDMA_CODES
+                  </p>
+                </td>
 <td>
-              <p>
-                cdma_codes
-              </p>
-              </td>
+                  <p>
+                    cdma_codes
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                REGU_DOMAIN
-              </p>
-              </td>
+                  <p>
+                    REGU_DOMAIN
+                  </p>
+                </td>
 <td>
-              <p>
-                regu_domain
-              </p>
-              </td>
+                  <p>
+                    regu_domain
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                SUBTYPE
-              </p>
-              </td>
+                  <p>
+                    SUBTYPE
+                  </p>
+                </td>
 <td>
-              <p>
-                netsubtype
-              </p>
-              </td>
+                  <p>
+                    netsubtype
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                SIB
-              </p>
-              </td>
+                  <p>
+                    SIB
+                  </p>
+                </td>
 <td>
-              <p>
-                sib
-              </p>
-              </td>
+                  <p>
+                    sib
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                SUPPORTED_LCP
-              </p>
-              </td>
+                  <p>
+                    SUPPORTED_LCP
+                  </p>
+                </td>
 <td>
-              <p>
-                supported_lcp
-              </p>
-              </td>
+                  <p>
+                    supported_lcp
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                SYSTEM_INFO
-              </p>
-              </td>
+                  <p>
+                    SYSTEM_INFO
+                  </p>
+                </td>
 <td>
-              <p>
-                system_info
-              </p>
-              </td>
+                  <p>
+                    system_info
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                SYS_PARAMS
-              </p>
-              </td>
+                  <p>
+                    SYS_PARAMS
+                  </p>
+                </td>
 <td>
-              <p>
-                sys_params
-              </p>
-              </td>
+                  <p>
+                    sys_params
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                TYPE_EXT
-              </p>
-              </td>
+                  <p>
+                    TYPE_EXT
+                  </p>
+                </td>
 <td>
-              <p>
-                type_ext
-              </p>
-              </td>
+                  <p>
+                    type_ext
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                UP_BP
-              </p>
-              </td>
+                  <p>
+                    UP_BP
+                  </p>
+                </td>
 <td>
-              <p>
-                up_bp
-              </p>
-              </td>
+                  <p>
+                    up_bp
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="odtone.library.index_mih.mih_data_types.data_types_for_binary_query"></a><p class="title"><b>Table&#160;14.&#160;Data types for binary query</b></p>
+<a name="odtone.library.index_mih.mih_data_types.data_types_for_binary_query"></a><p class="title"><b>Table&#160;13.&#160;Data types for binary query</b></p>
 <div class="table-contents"><table class="table" summary="Data types for binary query">
 <colgroup>
 <col>
@@ -2023,130 +2023,130 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                CURR_PREF
-              </p>
-              </td>
+                  <p>
+                    CURR_PREF
+                  </p>
+                </td>
 <td>
-              <p>
-                curr_pref
-              </p>
-              </td>
+                  <p>
+                    curr_pref
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                IE_TYPE
-              </p>
-              </td>
+                  <p>
+                    IE_TYPE
+                  </p>
+                </td>
 <td>
-              <p>
-                ie_type
-              </p>
-              </td>
+                  <p>
+                    ie_type
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                IQ_BIN_DATA
-              </p>
-              </td>
+                  <p>
+                    IQ_BIN_DATA
+                  </p>
+                </td>
 <td>
-              <p>
-                iq_bin_data
-              </p>
-              </td>
+                  <p>
+                    iq_bin_data
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                NGHB_RADIUS
-              </p>
-              </td>
+                  <p>
+                    NGHB_RADIUS
+                  </p>
+                </td>
 <td>
-              <p>
-                nghb_radius
-              </p>
-              </td>
+                  <p>
+                    nghb_radius
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                NETWK_INC
-              </p>
-              </td>
+                  <p>
+                    NETWK_INC
+                  </p>
+                </td>
 <td>
-              <p>
-                netwk_inc
-              </p>
-              </td>
+                  <p>
+                    netwk_inc
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                NET_TYPE_INC
-              </p>
-              </td>
+                  <p>
+                    NET_TYPE_INC
+                  </p>
+                </td>
 <td>
-              <p>
-                net_type_inc
-              </p>
-              </td>
+                  <p>
+                    net_type_inc
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                QUERIER_LOC
-              </p>
-              </td>
+                  <p>
+                    QUERIER_LOC
+                  </p>
+                </td>
 <td>
-              <p>
-                querier_loc
-              </p>
-              </td>
+                  <p>
+                    querier_loc
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                RPT_LIMIT
-              </p>
-              </td>
+                  <p>
+                    RPT_LIMIT
+                  </p>
+                </td>
 <td>
-              <p>
-                rpt_limit
-              </p>
-              </td>
+                  <p>
+                    rpt_limit
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                RPT_TEMPL
-              </p>
-              </td>
+                  <p>
+                    RPT_TEMPL
+                  </p>
+                </td>
 <td>
-              <p>
-                rpt_templ
-              </p>
-              </td>
+                  <p>
+                    rpt_templ
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="odtone.library.index_mih.mih_data_types.data_type_for_rdf_query"></a><p class="title"><b>Table&#160;15.&#160;Data type for RDF query</b></p>
+<a name="odtone.library.index_mih.mih_data_types.data_type_for_rdf_query"></a><p class="title"><b>Table&#160;14.&#160;Data type for RDF query</b></p>
 <div class="table-contents"><table class="table" summary="Data type for RDF query">
 <colgroup>
 <col>
@@ -2154,58 +2154,58 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                IQ_RDF_SCHM
-              </p>
-              </td>
+                  <p>
+                    IQ_RDF_SCHM
+                  </p>
+                </td>
 <td>
-              <p>
-                iq_rdf_schema
-              </p>
-              </td>
+                  <p>
+                    iq_rdf_schema
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                IQ_RDF_DATA
-              </p>
-              </td>
+                  <p>
+                    IQ_RDF_DATA
+                  </p>
+                </td>
 <td>
-              <p>
-                iq_rdf_data
-              </p>
-              </td>
+                  <p>
+                    iq_rdf_data
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                MIME_TYPE
-              </p>
-              </td>
+                  <p>
+                    MIME_TYPE
+                  </p>
+                </td>
 <td>
-              <p>
-                boost::variant&lt;null, octet_string&gt;
-              </p>
-              </td>
+                  <p>
+                    boost::variant&lt;null, octet_string&gt;
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="odtone.library.index_mih.mih_data_types.data_type_for_binary_information_query_response"></a><p class="title"><b>Table&#160;16.&#160;Data type for binary information query response</b></p>
+<a name="odtone.library.index_mih.mih_data_types.data_type_for_binary_information_query_response"></a><p class="title"><b>Table&#160;15.&#160;Data type for binary information query response</b></p>
 <div class="table-contents"><table class="table" summary="Data type for binary information query response">
 <colgroup>
 <col>
@@ -2213,32 +2213,32 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody><tr>
 <td>
-              <p>
-                IR_BIN_DATA
-              </p>
-              </td>
+                  <p>
+                    IR_BIN_DATA
+                  </p>
+                </td>
 <td>
-              <p>
-                ir_bin_data
-              </p>
-              </td>
+                  <p>
+                    ir_bin_data
+                  </p>
+                </td>
 </tr></tbody>
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="odtone.library.index_mih.mih_data_types.data_type_for_rdf_information_query_response"></a><p class="title"><b>Table&#160;17.&#160;Data type for RDF information query response</b></p>
+<a name="odtone.library.index_mih.mih_data_types.data_type_for_rdf_information_query_response"></a><p class="title"><b>Table&#160;16.&#160;Data type for RDF information query response</b></p>
 <div class="table-contents"><table class="table" summary="Data type for RDF information query response">
 <colgroup>
 <col>
@@ -2246,58 +2246,58 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                IR_RDF_DATA
-              </p>
-              </td>
+                  <p>
+                    IR_RDF_DATA
+                  </p>
+                </td>
 <td>
-              <p>
-                ir_rdf_data
-              </p>
-              </td>
+                  <p>
+                    ir_rdf_data
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                IR_SCHM_URL
-              </p>
-              </td>
+                  <p>
+                    IR_SCHM_URL
+                  </p>
+                </td>
 <td>
-              <p>
-                ir_rdf_schem_url
-              </p>
-              </td>
+                  <p>
+                    ir_rdf_schem_url
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                IR_RDF_SCHM
-              </p>
-              </td>
+                  <p>
+                    IR_RDF_SCHM
+                  </p>
+                </td>
 <td>
-              <p>
-                ir_rdf_schem
-              </p>
-              </td>
+                  <p>
+                    ir_rdf_schem
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="odtone.library.index_mih.mih_data_types.data_type_for_mihf_identification"></a><p class="title"><b>Table&#160;18.&#160;Data type for MIHF identification</b></p>
+<a name="odtone.library.index_mih.mih_data_types.data_type_for_mihf_identification"></a><p class="title"><b>Table&#160;17.&#160;Data type for MIHF identification</b></p>
 <div class="table-contents"><table class="table" summary="Data type for MIHF identification">
 <colgroup>
 <col>
@@ -2305,142 +2305,142 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                MIHF_ID
-              </p>
-              </td>
+                  <p>
+                    MIHF_ID
+                  </p>
+                </td>
 <td>
-              <p>
-                id
-              </p>
-              </td>
+                  <p>
+                    id
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                EVT_CFG_INFO
-              </p>
-              </td>
+                  <p>
+                    EVT_CFG_INFO
+                  </p>
+                </td>
 <td>
-              <p>
-                evt_cfg_info
-              </p>
-              </td>
+                  <p>
+                    evt_cfg_info
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_DET_CFG
-              </p>
-              </td>
+                  <p>
+                    LINK_DET_CFG
+                  </p>
+                </td>
 <td>
-              <p>
-                link_det_cfg
-              </p>
-              </td>
+                  <p>
+                    link_det_cfg
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                LINK_DET_INFO
-              </p>
-              </td>
+                  <p>
+                    LINK_DET_INFO
+                  </p>
+                </td>
 <td>
-              <p>
-                link_det_info
-              </p>
-              </td>
+                  <p>
+                    link_det_info
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                MBB_HO_SUPP
-              </p>
-              </td>
+                  <p>
+                    MBB_HO_SUPP
+                  </p>
+                </td>
 <td>
-              <p>
-                mbb_ho_supp
-              </p>
-              </td>
+                  <p>
+                    mbb_ho_supp
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                MIH_CMD_LIST
-              </p>
-              </td>
+                  <p>
+                    MIH_CMD_LIST
+                  </p>
+                </td>
 <td>
-              <p>
-                command_list
-              </p>
-              </td>
+                  <p>
+                    command_list
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                MIH_EVT_LIST
-              </p>
-              </td>
+                  <p>
+                    MIH_EVT_LIST
+                  </p>
+                </td>
 <td>
-              <p>
-                event_list
-              </p>
-              </td>
+                  <p>
+                    event_list
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                MIH_IQ_TYPE_LST
-              </p>
-              </td>
+                  <p>
+                    MIH_IQ_TYPE_LST
+                  </p>
+                </td>
 <td>
-              <p>
-                iq_type_list
-              </p>
-              </td>
+                  <p>
+                    iq_type_list
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                MIH_TRANS_LST
-              </p>
-              </td>
+                  <p>
+                    MIH_TRANS_LST
+                  </p>
+                </td>
 <td>
-              <p>
-                transport_list
-              </p>
-              </td>
+                  <p>
+                    transport_list
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                NET_TYPE_ADDR
-              </p>
-              </td>
+                  <p>
+                    NET_TYPE_ADDR
+                  </p>
+                </td>
 <td>
-              <p>
-                net_type_addr
-              </p>
-              </td>
+                  <p>
+                    net_type_addr
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="odtone.library.index_mih.mih_data_types.data_type_for_mih_registration"></a><p class="title"><b>Table&#160;19.&#160;Data type for MIH registration</b></p>
+<a name="odtone.library.index_mih.mih_data_types.data_type_for_mih_registration"></a><p class="title"><b>Table&#160;18.&#160;Data type for MIH registration</b></p>
 <div class="table-contents"><table class="table" summary="Data type for MIH registration">
 <colgroup>
 <col>
@@ -2448,32 +2448,32 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody><tr>
 <td>
-              <p>
-                REG_REQUEST_CODE
-              </p>
-              </td>
+                  <p>
+                    REG_REQUEST_CODE
+                  </p>
+                </td>
 <td>
-              <p>
-                reg_request_code
-              </p>
-              </td>
+                  <p>
+                    reg_request_code
+                  </p>
+                </td>
 </tr></tbody>
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="odtone.library.index_mih.mih_data_types.data_type_for_handover_operation"></a><p class="title"><b>Table&#160;20.&#160;Data type for handover operation</b></p>
+<a name="odtone.library.index_mih.mih_data_types.data_type_for_handover_operation"></a><p class="title"><b>Table&#160;19.&#160;Data type for handover operation</b></p>
 <div class="table-contents"><table class="table" summary="Data type for handover operation">
 <colgroup>
 <col>
@@ -2481,178 +2481,178 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-              <p>
-                ASGN_RES_SET
-              </p>
-              </td>
+                  <p>
+                    ASGN_RES_SET
+                  </p>
+                </td>
 <td>
-              <p>
-                asgn_res_set
-              </p>
-              </td>
+                  <p>
+                    asgn_res_set
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                HO_CAUSE
-              </p>
-              </td>
+                  <p>
+                    HO_CAUSE
+                  </p>
+                </td>
 <td>
-              <p>
-                ho_cause
-              </p>
-              </td>
+                  <p>
+                    ho_cause
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                HO_RESULT
-              </p>
-              </td>
+                  <p>
+                    HO_RESULT
+                  </p>
+                </td>
 <td>
-              <p>
-                ho_result
-              </p>
-              </td>
+                  <p>
+                    ho_result
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                HO_STATUS
-              </p>
-              </td>
+                  <p>
+                    HO_STATUS
+                  </p>
+                </td>
 <td>
-              <p>
-                ho_status
-              </p>
-              </td>
+                  <p>
+                    ho_status
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                PREDEF_CFG_ID
-              </p>
-              </td>
+                  <p>
+                    PREDEF_CFG_ID
+                  </p>
+                </td>
 <td>
-              <p>
-                predef_cfg_id
-              </p>
-              </td>
+                  <p>
+                    predef_cfg_id
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                RQ_RESULT
-              </p>
-              </td>
+                  <p>
+                    RQ_RESULT
+                  </p>
+                </td>
 <td>
-              <p>
-                rq_result
-              </p>
-              </td>
+                  <p>
+                    rq_result
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                DHCP_SERV
-              </p>
-              </td>
+                  <p>
+                    DHCP_SERV
+                  </p>
+                </td>
 <td>
-              <p>
-                dhcp_serv
-              </p>
-              </td>
+                  <p>
+                    dhcp_serv
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                FN_AGNT
-              </p>
-              </td>
+                  <p>
+                    FN_AGNT
+                  </p>
+                </td>
 <td>
-              <p>
-                fn_agent
-              </p>
-              </td>
+                  <p>
+                    fn_agent
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                ACC_RTR
-              </p>
-              </td>
+                  <p>
+                    ACC_RTR
+                  </p>
+                </td>
 <td>
-              <p>
-                acc_rtr
-              </p>
-              </td>
+                  <p>
+                    acc_rtr
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                REQ_RES_SET
-              </p>
-              </td>
+                  <p>
+                    REQ_RES_SET
+                  </p>
+                </td>
 <td>
-              <p>
-                rq_res_set
-              </p>
-              </td>
+                  <p>
+                    rq_res_set
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                TGT_NET_INFO
-              </p>
-              </td>
+                  <p>
+                    TGT_NET_INFO
+                  </p>
+                </td>
 <td>
-              <p>
-                tgt_net_info
-              </p>
-              </td>
+                  <p>
+                    tgt_net_info
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                TSP_CARRIER
-              </p>
-              </td>
+                  <p>
+                    TSP_CARRIER
+                  </p>
+                </td>
 <td>
-              <p>
-                tsp_carrier
-              </p>
-              </td>
+                  <p>
+                    tsp_carrier
+                  </p>
+                </td>
 </tr>
 <tr>
 <td>
-              <p>
-                TSP_CONTAINER
-              </p>
-              </td>
+                  <p>
+                    TSP_CONTAINER
+                  </p>
+                </td>
 <td>
-              <p>
-                tsp_container
-              </p>
-              </td>
+                  <p>
+                    tsp_container
+                  </p>
+                </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="odtone.library.index_mih.mih_data_types.data_type_for_mih_net_sap_primitives"></a><p class="title"><b>Table&#160;21.&#160;Data type for MIH_NET_SAP primitives</b></p>
+<a name="odtone.library.index_mih.mih_data_types.data_type_for_mih_net_sap_primitives"></a><p class="title"><b>Table&#160;20.&#160;Data type for MIH_NET_SAP primitives</b></p>
 <div class="table-contents"><table class="table" summary="Data type for MIH_NET_SAP primitives">
 <colgroup>
 <col>
@@ -2660,31 +2660,31 @@
 </colgroup>
 <thead><tr>
 <th>
-              <p>
-                Data type (Standard)
-              </p>
-              </th>
+                  <p>
+                    Data type (Standard)
+                  </p>
+                </th>
 <th>
-              <p>
-                Data type (ODTONE)
-              </p>
-              </th>
+                  <p>
+                    Data type (ODTONE)
+                  </p>
+                </th>
 </tr></thead>
 <tbody><tr>
 <td>
-              <p>
-                TRANSPORT_TYPE
-              </p>
-              </td>
+                  <p>
+                    TRANSPORT_TYPE
+                  </p>
+                </td>
 <td>
-              <p>
-                transport_type
-              </p>
-              </td>
+                  <p>
+                    transport_type
+                  </p>
+                </td>
 </tr></tbody>
 </table></div>
 </div>
-<br class="table-break"><div class="section" title="Enumeration">
+<br class="table-break"><div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.library.index_mih.mih_data_types.enumeration"></a><a class="link" href="mih_data_types.html#odtone.library.index_mih.mih_data_types.enumeration" title="Enumeration">Enumeration</a>
 </h5></div></div></div>
@@ -3223,7 +3223,7 @@
 <p>
           </p>
 </div>
-<div class="section" title="Exception">
+<div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.library.index_mih.mih_data_types.exception"></a><a class="link" href="mih_data_types.html#odtone.library.index_mih.mih_data_types.exception" title="Exception">Exception</a>
 </h5></div></div></div>
@@ -3281,7 +3281,9 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Universidade Aveiro<br>Copyright &#169; 2009 -2011 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2011 Universidade
+      Aveiro<br>Copyright &#169; 2009-2011 Instituto de
+      Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license
@@ -3291,7 +3293,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="odtone_mih_is_tlv_type_class.html"><img src="../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index_mih.html"><img src="../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="mih_tutorial.html"><img src="../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="odtone_mih_is_tlv_type_class.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index_mih.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="mih_tutorial.html"><img src="../../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>
