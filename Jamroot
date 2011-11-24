@@ -24,19 +24,19 @@ import path ;
 
 project odtone
 	: requirements
-	  <include>inc
-	  <link>static
-	  <toolset>gcc:<cxxflags>-std=c++0x
-	  <toolset>msvc:<runtime-link>static
-	  <toolset>gcc-android:<runtime-link>static
-	  <define>BOOST_ENABLE_ASSERT_HANDLER
-	  <toolset>msvc:<define>BOOST_ALL_NO_LIB
-	  <toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
-	  <toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
-	  <toolset>msvc:<define>_SECURE_SCL=0
-	  <toolset>msvc-10.0:<define>BOOST_HAS_NULLPTR
+		<include>inc
+		<link>static
+		<toolset>gcc:<cxxflags>-std=c++0x
+		<toolset>msvc:<runtime-link>static
+		<toolset>gcc-android:<runtime-link>static
+		<define>BOOST_ENABLE_ASSERT_HANDLER
+		<toolset>msvc:<define>BOOST_ALL_NO_LIB
+		<toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
+		<toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
+		<toolset>msvc:<define>_SECURE_SCL=0
+		<toolset>msvc-10.0:<define>BOOST_HAS_NULLPTR
 	: usage-requirements
-	  <include>inc
+		<include>inc
 	: build-dir bin.v2
 	;
 
@@ -62,22 +62,42 @@ if ! $(boost-root) {
 }
 use-project boost : $(boost-root) ;
 
-local rule explicit-alias ( id : targets + )
+#
+# General utilities
+#
+rule explicit-alias ( main-target-name :
+                      sources + :
+                      requirements * :
+                      default-build * :
+                      usage-requirements * )
 {
-    alias $(id) : $(targets) ;
-    explicit $(id) ;
+    alias $(main-target-name)
+	    : $(sources)
+	    : $(requirements)
+	    : $(default-build)
+	    : $(usage-requirements)
+	    ;
+
+    explicit $(main-target-name) ;
 }
+IMPORT $(__name__) : explicit-alias : : odtone.explicit-alias ;
 
-build-project src/mihf ;
-build-project app/mih_usr ;
-build-project app/link_sap ;
+rule runtime-lib ( name : basename ? )
+{
+	basename ?= $(name) ;
 
-alias install
-	: src/mihf//install
-	  app/link_sap//install
-	  app/mih_usr//install
-	;
+	lib $(name)
+		:
+		: <name>$(basename)
+		  <runtime-link>shared:<link>shared
+		  <runtime-link>static:<link>static
+		;
+}
+IMPORT $(__name__) : runtime-lib : : odtone.runtime-lib ;
 
+#
+# Add alias for external usage and project id's for internal usage
+#
 explicit-alias base : lib/odtone//odtone_base ;
 explicit-alias mih  : lib/odtone/mih//odtone_mih ;
 explicit-alias sap  : lib/odtone/sap//odtone_sap ;
@@ -86,7 +106,20 @@ use-project /odtone/base : lib/odtone ;
 use-project /odtone/mih  : lib/odtone/mih ;
 use-project /odtone/sap  : lib/odtone/sap ;
 
-debian odtone
+#
+# Build
+#
+install odtone-dist
+	: src/mihf//odtone-mihf
+	  src/mihf/odtone.conf
+	  app/link_sap//link_sap
+	  app/link_sap/link_sap.conf
+	  app/mih_usr//mih_usr
+	  app/mih_usr/mih_usr.conf
+	: <location>dist
+	;
+
+debian odtone-mihf
 	: <bin> src/mihf//odtone-mihf
 	  <etc> src/mihf/odtone.conf
 	: <version>0.3
@@ -96,4 +129,4 @@ debian odtone
 	  <description>"ODTONE - IEEE 802.21 MIHF"
 	;
 
-explicit odtone ;
+explicit odtone-mihf ;

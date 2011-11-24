@@ -20,20 +20,18 @@ project link_sap
 	: requirements <target-os>windows:<define>_WIN32_WINNT=0x0600
 	;
 
-alias source-list
+odtone.explicit-alias source-list
 	: linux/main.cpp
 	  linux/netlink.cpp
 	  linux/rtnetlink.cpp
 	: <target-os>linux
 	;
 
-alias source-list
+odtone.explicit-alias source-list
 	: win32/main.cpp
 	  win32/win32.cpp
 	: <target-os>windows
 	;
-
-explicit source-list ;
 
 exe link_sap
 	: link_sap.cpp

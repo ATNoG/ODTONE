@@ -31,4 +31,3 @@ install install
 	  mih_usr.conf
 	: <location>../../dist
 	;
-
