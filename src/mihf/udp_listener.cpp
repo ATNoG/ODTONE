@@ -28,12 +28,14 @@ namespace odtone { namespace mihf {
  * UDP Listener constructor.
  *
  * @param io io_service.
+ * @param buff_size Receive Buffer Length.
  * @param ipv IP protocol.
  * @param ip IP Address.
  * @param port listening port.
  * @param d dispatch function.
  */
 udp_listener::udp_listener(io_service& io,
+			   uint16 buff_size,
 			   ip::udp ipv,
 			   const char *ip,
 			   uint16 port,
@@ -45,6 +47,7 @@ udp_listener::udp_listener(io_service& io,
 	ip::udp::endpoint endpoint(ip::address::from_string(ip), port);
 	_sock.open(ipv);
 	_sock.bind(endpoint);
+	_sock.set_option(boost::asio::socket_base::receive_buffer_size(buff_size));
 }
 
 /**

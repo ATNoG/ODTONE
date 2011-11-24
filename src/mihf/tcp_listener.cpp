@@ -97,12 +97,14 @@ void session::handle_read(odtone::buffer<uint8> &buff,
  * TCP Listener constructor.
  *
  * @param io io_service.
+ * @param buff_size Receive Buffer Length.
  * @param ipv IP protocol.
  * @param ip IP Address.
  * @param port listening port.
  * @param d dispatch function.
  */
 tcp_listener::tcp_listener(io_service &io,
+			   uint16 buff_size,
 			   ip::tcp ipv,
 			   const char* ip,
 			   uint16 port,
@@ -111,6 +113,7 @@ tcp_listener::tcp_listener(io_service &io,
 	  _acceptor(io, ip::tcp::endpoint(ip::address::from_string(ip), port)),
 	  _dispatch(d)
 {
+	_acceptor.set_option(boost::asio::socket_base::receive_buffer_size(buff_size));
 }
 
 /**

@@ -42,12 +42,14 @@ public:
 	 * UDP Listener constructor.
 	 *
 	 * @param io io_service.
+	 * @param buff_size Receive Buffer Length.
 	 * @param ipv IP protocol.
 	 * @param ip IP Address.
 	 * @param port listening port.
 	 * @param d dispatch function.
 	 */
 	udp_listener(io_service& io,
+		     uint16 buff_size,
 		     ip::udp ipv,
 		     const char *ip,
 		     uint16 port,

@@ -507,6 +507,7 @@ int main(int argc, char **argv)
 	// get command line parameters
 	bool enable_broadcast = (cfg.count(kConf_MIHF_BRDCAST) == 1);
 
+	uint16 buff_size = cfg.get<uint16>(kConf_Receive_Buffer_Len);
 	uint16 lport = cfg.get<uint16>(kConf_MIHF_Local_Port);
 	uint16 rport = cfg.get<uint16>(kConf_MIHF_Remote_Port);
 	mih::octet_string id = cfg.get<mih::octet_string>(kConf_MIHF_Id);
@@ -575,16 +576,16 @@ int main(int argc, char **argv)
 
 	// create and bind to port 'lport' on loopback interface and
 	// call ldispatch when a message is received
-	udp_listener commhandv4(io, ip::udp::v4(), "127.0.0.1", lport, ldispatch);
-	udp_listener commhandv6(io, ip::udp::v6(), "::1", lport, ldispatch);
+	udp_listener commhandv4(io, buff_size, ip::udp::v4(), "127.0.0.1", lport, ldispatch);
+	udp_listener commhandv6(io, buff_size, ip::udp::v6(), "::1", lport, ldispatch);
 
 	// create and bind to port rport and call rdispatch when a
 	// message is received
-	udp_listener remotelistener_udp(io, ip::udp::v6(), "::", rport, rdispatch);
+	udp_listener remotelistener_udp(io, buff_size, ip::udp::v6(), "::", rport, rdispatch);
 
 	// create and bind to port rport and call rdispatch when a
 	// message is received
-	tcp_listener remotelistener_tcp(io, ip::tcp::v6(), "::", rport, rdispatch);
+	tcp_listener remotelistener_tcp(io, buff_size, ip::tcp::v6(), "::", rport, rdispatch);
 
 	// start listening on local and remote ports
 	commhandv4.start();
