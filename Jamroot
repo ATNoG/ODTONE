@@ -20,6 +20,7 @@ import os ;
 import errors ;
 import option ;
 import debian ;
+import path ;
 
 project odtone
 	: requirements
@@ -42,19 +43,24 @@ project odtone
 #
 # Import the boost project
 #
-# TODO: check boost library version for minimum requirements
-#
-local boost_root ;
+local boost-major = 1 ;
+local boost-minor = 47 ;
+local boost-patch = 0 ;
+local boost-root ;
 
-boost_root ?= [ option.get boost-root ] ;
-boost_root ?= [ os.environ BOOST_ROOT ] ;
+boost-root ?= [ option.get boost-root ] ;
+boost-root ?= [ os.environ BOOST_ROOT ] ;
 
-if ! $(boost_root) {
-	errors.user-error "You must set the location of the boost libraries in the command line "
-                          "(--boost-root=path/to/boost) or in the environment variable BOOST_ROOT" ;
-} else {
-	use-project boost : $(boost_root) ;
+if ! $(boost-root) {
+	boost-root = [ path.join [ path.pwd ] ../boost_$(boost-major)_$(boost-minor)_$(boost-patch) ] ;
+
+	local version = $(boost-major).$(boost-minor).$(boost-patch) ;
+
+	ECHO "Warning: Assuming that Boost $(version) root is located at $(boost-root)" ;
+	ECHO "Warning: You can set the location of the Boost $(version) libraries root in the command line"
+	     "(--boost-root=/path/to/boost) or in the environment variable BOOST_ROOT" ;
 }
+use-project boost : $(boost-root) ;
 
 local rule explicit-alias ( id : targets + )
 {
