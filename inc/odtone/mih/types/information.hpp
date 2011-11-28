@@ -29,86 +29,33 @@
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
-/**
- * Define NET_AUX_ID data type.
- */
-typedef octet_string	net_aux_id;
 
-/**
- * Define NETWORK_ID data type.
- */
-typedef octet_string	network_id;
-
-/**
- * Define BAND_CLASS data type.
- */
-typedef uint8			band_class;
-
-/**
- * Define BANDWIDTH data type.
- */
-typedef uint16			bandwidth;
-
-/**
- * Define BASE_ID data type.
- */
-typedef uint16			base_id;
-
-/**
- * Define CNTRY_CODE data type.
- */
-typedef uint16			cntry_code;
-
-/**
- * Define DU_CTR_FREQ data type.
- */
-typedef sint64			du_ctr_freq;
-
-/**
- * Define EIRP data type.
- */
-typedef sint8			eirp;
-
-/**
- * Define INIT_CODE data type.
- */
-typedef sint8			init_code;
-
-/**
- * Define HO_CODE data type.
- */
-typedef sint8			ho_code;
-
-/**
- * Define FQ_CODE_NUM data type.
- */
-typedef sint16			fq_code_num;
-
-/**
- * Define PILOT_PN data type.
- */
-typedef sint16			pilot_pn;
-
-/**
- * Define FREQ_ID data type.
- */
-typedef sint16			freq_id;
-
-/**
- * Define DOWN_BP data type.
- */
-typedef bitmap<256, uint8>		down_bp;
-
-/**
- * Define UP_BP data type.
- */
-typedef bitmap<256, uint8>		up_bp;
+typedef octet_string	net_aux_id;		/**< NET_AUX_ID data type.	*/
+typedef octet_string	network_id;		/**< NETWORK_ID data type.	*/
+typedef uint8			band_class;		/**< BAND_CLASS data type.	*/
+typedef uint16			bandwidth;		/**< BANDWIDTH data type.	*/
+typedef uint16			base_id;		/**< BASE_ID data type.		*/
+typedef uint16			cntry_code;		/**< CNTRY_CODE data type.	*/
+typedef sint64			du_ctr_freq;	/**< DU_CTR_FREQ data type.	*/
+typedef sint8			eirp;			/**< EIRP data type.		*/
+typedef sint8			init_code;		/**< INIT_CODE data type.	*/
+typedef sint8			ho_code;		/**< HO_CODE data type.		*/
+typedef sint16			fq_code_num;	/**< FQ_CODE_NUM data type.	*/
+typedef sint16			pilot_pn;		/**< PILOT_PN data type.	*/
+typedef sint16			freq_id;		/**< FREQ_ID data type.		*/
+typedef bitmap<256, uint8>	down_bp;	/**< DOWN_BP data type.		*/
+typedef bitmap<256, uint8>	up_bp;		/**< UP_BP data type.		*/
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define COST_CURR data type.
+ * COST_CURR data type.
  */
 struct cost_curr {
+	/**
+	 * Serialize/deserialize the COST_CURR data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -123,33 +70,38 @@ struct cost_curr {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * The enumeration of COST_UNIT data type.
+ * COST_UNIT data type enumeration.
  */
 enum cost_unit_enum {
-	cost_unit_second = 0,
-	cost_unit_minute = 1,
-	cost_unit_hours = 2,
-	cost_unit_day = 3,
-	cost_unit_week = 4,
-	cost_unit_month = 5,
-	cost_unit_year = 6,
-	cost_unit_free = 7,
-	cost_unit_flat_rate = 8
+	cost_unit_second = 0,	/**< Cost unit second		*/
+	cost_unit_minute = 1,	/**< Cost unit minute		*/
+	cost_unit_hours = 2,	/**< Cost unit hour			*/
+	cost_unit_day = 3,		/**< Cost unit day			*/
+	cost_unit_week = 4,		/**< Cost unit week			*/
+	cost_unit_month = 5,	/**< Cost unit month		*/
+	cost_unit_year = 6,		/**< Cost unit year			*/
+	cost_unit_free = 7,		/**< Cost unit free			*/
+	cost_unit_flat_rate = 8	/**< Cost unit flat rate	*/
 };
 
 /**
- * Define COST_UNIT data type.
+ * COST_UNIT data type.
  */
 typedef enumeration<cost_unit_enum> cost_unit;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define COST_VALUE data type.
+ * COST_VALUE data type.
  */
 struct cost_value {
-	uint32 integer;
-	uint16 fraction;
+	uint32 integer;		/**< Cost value integer part	*/
+	uint16 fraction;	/**< Cost value fraction part	*/
 
+	/**
+	 * Serialize/deserialize the COST_VALUE data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -160,14 +112,18 @@ struct cost_value {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define COST data type.
+ * COST data type.
  */
 struct cost {
-	cost_unit	unit;
-	cost_value	value;
-	cost_curr	curr;
+	cost_unit	unit;	/**< Cost unit		*/
+	cost_value	value;	/**< Cost value		*/
+	cost_curr	curr;	/**< Cost currency	*/
 
-
+	/**
+	 * Serialize/deserialize the COST data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -178,19 +134,21 @@ struct cost {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/**
- * Define DATA_RATE data type.
- */
-typedef uint32 data_rate;
+typedef uint32 data_rate;	/**< DATA_RATE data type.	*/
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define REGU_DOMAIN data type.
+ * REGU_DOMAIN data type.
  */
 struct regu_domain {
-	cntry_code	country_code;
-	uint8		regulatory_class;
+	cntry_code	country_code;		/**< Country code		*/
+	uint8		regulatory_class;	/**< Regulatory class	*/
 
+	/**
+	 * Serialize/deserialize the REGU_DOMAIN data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -200,20 +158,21 @@ struct regu_domain {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/**
- * Define FREQ_BANDS data type.
- */
-typedef std::vector<uint32> freq_bands;
+typedef std::vector<uint32> freq_bands;	/**< FREQ_BANDS data type.*/
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define CH_RANGE data type.
+ * CH_RANGE data type.
  */
 struct ch_range {
-	uint32 low;
-	uint32 high;
+	uint32 low;		/**< Channel low range	*/
+	uint32 high;	/**< Channel high range */
 
-
+	/**
+	 * Serialize/deserialize the CH_RANGE data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -224,13 +183,17 @@ struct ch_range {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define GAP data type.
+ * GAP data type.
  */
 struct gap {
-	uint8 ttg[2];
-	uint8 rtg;
+	uint8 ttg[2];	/**< TTG - transmit/receive transition gap.	*/
+	uint8 rtg;		/**< RTG - receive/transmit transition gap.	*/
 
-
+	/**
+	 * Serialize/deserialize the GAP data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -242,13 +205,17 @@ struct gap {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define BURST_PROF data type.
+ * BURST_PROF data type.
  */
 struct burst_prof {
-	down_bp 	downbp;
-	up_bp		upbp;
+	down_bp 	downbp;	/**< Downlink burst	*/
+	up_bp		upbp;	/**< Uplink burst	*/
 
-
+	/**
+	 * Serialize/deserialize the BURST_PROF data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -260,13 +227,17 @@ struct burst_prof {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define CDMA_CODES data type.
+ * CDMA_CODES data type.
  */
 struct cdma_codes {
-	init_code	initcode;
-	ho_code		hocode;
+	init_code	initcode;	/**< Initial ranging code	*/
+	ho_code		hocode;		/**< Handover ranging code	*/
 
-
+	/**
+	 * Serialize/deserialize the CDMA_CODES data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -277,18 +248,22 @@ struct cdma_codes {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define DCD_UDC data type.
+ * DCD_UDC data type.
  */
 struct dcd_udc {
-	base_id		baseid;
-	bandwidth	bandwidth_;
-	du_ctr_freq ductrfreq;
-	eirp		eirp_;
-	gap			gap_;
-	burst_prof	burstprof;
-	cdma_codes	cdmacodes;
+	base_id		baseid;		/**< Base station identifier.					*/
+	bandwidth	bandwidth_;	/**< Channel bandwidth in kb/s.					*/
+	du_ctr_freq ductrfreq;	/**< Downlink/Uplink center frequency in kHz.	*/
+	eirp		eirp_;		/**< BS effective isotropic radiated power level*/
+	gap			gap_;		/**< GAP.										*/
+	burst_prof	burstprof;	/**< Burst profile.								*/
+	cdma_codes	cdmacodes;	/**< CDMA ranging codes.						*/
 
-
+	/**
+	 * Serialize/deserialize the DCD_UDC data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -304,13 +279,17 @@ struct dcd_udc {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define SIB data type.
+ * SIB data type.
  */
 struct sib {
-	cell_id		cellid;
-	fq_code_num fqcodenum;
+	cell_id		cellid;		/**< Cell identifier.							*/
+	fq_code_num fqcodenum;	/**< UMTS scrambling code, CDMA-2000 Walsh code.*/
 
-
+	/**
+	 * Serialize/deserialize the SIB data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -321,15 +300,19 @@ struct sib {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define SYS_PARAMS data type.
+ * SYS_PARAMS data type.
  */
 struct sys_params {
-	base_id		baseid;
-	pilot_pn	pilotpn;
-	freq_id		freqid;
-	band_class	bandclass;
+	base_id		baseid;		/**< Base station identifier.				*/
+	pilot_pn	pilotpn;	/**< Pilot PN sequence offset index.		*/
+	freq_id		freqid;		/**< Identifier of the carrier frequency.	*/
+	band_class	bandclass;	/**< CDMA band class.						*/
 
-
+	/**
+	 * Serialize/deserialize the SYS_PARAMS data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -342,14 +325,19 @@ struct sys_params {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define PARAMETERS data type.
+ * PARAMETERS data type.
  */
 struct parameters {
-	dcd_udc		dcdudc;
-	sib			sib_;
-	sys_params	params;
+	dcd_udc		dcdudc;	/**< Downlink channel descriptor and the
+							 uplink channel descriptor.				*/
+	sib			sib_;	/**< UMTS system information block.			*/
+	sys_params	params;	/**< CDMA-2000 system parameters.			*/
 
-
+	/**
+	 * Serialize/deserialize the PARAMETERS data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -360,57 +348,67 @@ struct parameters {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * SUBTYPE data type enumeration.
+ */
 enum netsubtype_enum {
-	netsubtype_eth10   = 0,
-	netsubtype_eth100  = 1,
-	netsubtype_eth1000 = 2,
+	netsubtype_eth10   = 0,	/**< Ethernet - IEEE 802.3 - 10 Mb.		*/
+	netsubtype_eth100  = 1,	/**< Ethernet - IEEE 802.3 - 100 Mb.	*/
+	netsubtype_eth1000 = 2,	/**< Ethernet - IEEE 802.3 - 1000 Mb.	*/
 
-	netsubtype_iee80211_2_4GHz  = 0,
-	netsubtype_iee80211_5GHz    = 1,
-	netsubtype_iee80211_4_9GHz  = 2,
-	netsubtype_iee80211_3_65GHz = 3,
-	netsubtype_iee80211_316THz  = 4,
+	netsubtype_iee80211_2_4GHz  = 0,	/**< Wireless - IEEE 802.11 - 2.4GHz */
+	netsubtype_iee80211_5GHz    = 1,	/**< Wireless - IEEE 802.11 - 5GHz	 */
+	netsubtype_iee80211_4_9GHz  = 2,	/**< Wireless - IEEE 802.11 - 4.9GHz */
+	netsubtype_iee80211_3_65GHz = 3,	/**< Wireless - IEEE 802.11 - 3.65GHz*/
+	netsubtype_iee80211_316THz  = 4,	/**< Wireless - IEEE 802.11 - 316Thz */
 
-	netsubtype_umts_rel99      = 0,
-	netsubtype_umts_rel4       = 1,
-	netsubtype_umts_rel5_hsdpa = 2,
-	netsubtype_umts_rel6_hsupa = 3,
-	netsubtype_umts_rel7_mimo  = 4,
-	netsubtype_umts_rel8       = 5,
+	netsubtype_umts_rel99      = 0,		/**< Wireless - UMTS - Rel-99			*/
+	netsubtype_umts_rel4       = 1,		/**< Wireless - UMTS - Rel-4			*/
+	netsubtype_umts_rel5_hsdpa = 2,		/**< Wireless - UMTS - Rel-5 (w/ HSDPA)	*/
+	netsubtype_umts_rel6_hsupa = 3,		/**< Wireless - UMTS - Rel-6 (w/ HSUPA)	*/
+	netsubtype_umts_rel7_mimo  = 4,		/**< Wireless - UMTS - Rel-7 (MIMO/OFDM)*/
+	netsubtype_umts_rel8       = 5,		/**< Wireless - UMTS - rel-8			*/
 
-	netsubtype_cdma2000_hrpd_rev0 = 0,
-	netsubtype_cdma2000_hrpd_revA = 1,
-	netsubtype_cdma2000_hrpd_revB = 2,
-	netsubtype_cdma2000_hrpd_revC = 3,
+	netsubtype_cdma2000_hrpd_rev0 = 0,	/**< Wireless - CDMA-2000-HRPD - Rev-0	*/
+	netsubtype_cdma2000_hrpd_revA = 1,	/**< Wireless - CDMA-2000-HRPD - Rev-A	*/
+	netsubtype_cdma2000_hrpd_revB = 2,	/**< Wireless - CDMA-2000-HRPD - Rev-B	*/
+	netsubtype_cdma2000_hrpd_revC = 3,	/**< Wireless - CDMA-2000-HRPD - Rev-C	*/
 
-	netsubtype_iee80216_2_5GHz = 0,
-	netsubtype_iee80216_3_5GHz = 1,
+	netsubtype_iee80216_2_5GHz = 0,		/**< Wireless - IEEE 802.16	- 2.5GHz	*/
+	netsubtype_iee80216_3_5GHz = 1,		/**< Wireless - IEEE 802.16	- 3.5GHz	*/
 };
 
 /**
- * Define SUBTYPE data type.
+ * SUBTYPE data type.
  */
 typedef bitmap<64, netsubtype_enum> netsubtype;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define TYPE_EXT data type.
+ * TYPE_EXT data type.
  */
 typedef octet_string type_ext;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define NETWORK_TYPE data type.
+ * NETWORK_TYPE data type.
  */
 struct network_type {
-	boost::variant<null, link_type>  link;
-	boost::variant<null, netsubtype> subtype;
-	boost::variant<null, type_ext>   typeext;
+	boost::variant<null, link_type>  link;		/**< Link type				*/
+	boost::variant<null, netsubtype> subtype;	/**< Link subtype			*/
+	boost::variant<null, type_ext>   typeext;	/**< Link type extension	*/
 
-
+	/**
+	 * Construct an empty NETWORK_TYPE data type.
+	 */
 	network_type() : link(null()), subtype(null()), typeext(null())
 	{ }
 
+	/**
+	 * Serialize/deserialize the NETWORK_TYPE data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -419,6 +417,12 @@ struct network_type {
           ar & typeext;
 	}
 
+	/**
+	 * NETWORK_TYPE data type output.
+	 *
+	 * @param os ostream.
+	 * @param nt NETWORK_TYPE data type.
+	 */
 	friend std::ostream& operator<<(std::ostream& os, const network_type& nt)
 	{
 		os << "\nlink: " << nt.link;
@@ -433,14 +437,18 @@ struct network_type {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define SYSTEM_INFO data type.
+ * SYSTEM_INFO data type.
  */
 struct system_info {
-	network_type						nettype;
-	link_addr							linkaddr;
-	boost::variant<null, parameters>	params;
+	network_type	nettype;					/**< Network type.			*/
+	link_addr		linkaddr;					/**< Link address.			*/
+	boost::variant<null, parameters> params;	/**< System information.	*/
 
-
+	/**
+	 * Serialize/deserialize the SYSTEM_INFO data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -452,36 +460,44 @@ struct system_info {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define OP_NAME data type.
+ * OP_NAME data type.
  */
 typedef octet_string op_name;
 
 /**
- * Define SP_ID data type.
+ * SP_ID data type.
  */
 typedef octet_string sp_id;
 
+/**
+ * OP_NAMESPACE data type enumeration.
+ */
 enum op_namespace_enum {
-	op_namespace_gsm_umts = 0,
-	op_namespace_cdma = 1,
-	op_namespace_realm = 2,
-	op_namespace_itu_t_tsb = 3,
-	op_namespace_general = 4
+	op_namespace_gsm_umts = 0,	/**< GSM/UMTS.	*/
+	op_namespace_cdma = 1,		/**< CDMA.		*/
+	op_namespace_realm = 2,		/**< REALM.		*/
+	op_namespace_itu_t_tsb = 3,	/**< ITU-T/TSB.	*/
+	op_namespace_general = 4	/**< General.	*/
 };
 
 /**
- * Define OP_NAMESPACE data type.
+ * OP_NAMESPACE data type.
  */
 typedef enumeration<op_namespace_enum> op_namespace;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define OPERATOR_ID data type.
+ * OPERATOR_ID data type.
  */
 struct operator_id {
-	op_name				opname;
-	op_namespace		opnamespace;
+	op_name				opname;			/**< Operator name.			*/
+	op_namespace		opnamespace;	/**< Operator namespace.	*/
 
+	/**
+	 * Serialize/deserialize the OPERATOR_ID data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -491,48 +507,55 @@ struct operator_id {
 };
 
 /**
- * Define ROAMING_PTNS data type.
+ * ROAMING_PTNS data type.
  */
 typedef std::vector<operator_id> roaming_ptns;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * SUPPORTED_LCP data type enumeration.
+ */
 enum supported_lcp_enum {
-	supported_lcp_null = 0,
-	supported_lcp_lldp = 1,
-	supported_lcp_lbyr_with_lldp = 2,
-	supported_lcp_lldp_med = 11,
-	supported_lcp_lbyr_with_lld_med = 12,
-	supported_lcp_u_tdoa = 21,
-	supported_lcp_d_tdoa = 22,
-	supported_lcp_dhcp = 31,
-	supported_lcp_lbyr_with_dhcp = 32,
-	supported_lcp_oma_supl = 41,
-	supported_lcp_ieee_802_11 = 42,
-	supported_lcp_lbyr_with_ieee_802_11 = 43,
-	supported_lcp_held = 51,
-	supported_lcp_lbyr_with_held = 52
+	supported_lcp_null = 0,						/**< NULL.					*/
+	supported_lcp_lldp = 1,						/**< LLDP.					*/
+	supported_lcp_lbyr_with_lldp = 2,			/**< LbyR with LLDP.		*/
+	supported_lcp_lldp_med = 11,				/**< LLDP-MED.				*/
+	supported_lcp_lbyr_with_lld_med = 12,		/**< LbyR with LLDP-MED.	*/
+	supported_lcp_u_tdoa = 21,					/**< U-TDoA.				*/
+	supported_lcp_d_tdoa = 22,					/**< D-TDoA.				*/
+	supported_lcp_dhcp = 31,					/**< DHCP.					*/
+	supported_lcp_lbyr_with_dhcp = 32,			/**< LbyR with DHCP.		*/
+	supported_lcp_oma_supl = 41,				/**< OMA SUPL.				*/
+	supported_lcp_ieee_802_11 = 42,				/**< IEEE 802.11.			*/
+	supported_lcp_lbyr_with_ieee_802_11 = 43,	/**< LbyR with IEEE 802.11.	*/
+	supported_lcp_held = 51,					/**< HELD.					*/
+	supported_lcp_lbyr_with_held = 52			/**< LbyR with HELD.		*/
 };
 
 /**
- * Define SUPPORTED_LCP data type.
+ * SUPPORTED_LCP data type.
  */
 typedef enumeration<supported_lcp_enum> supported_lcp;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define PROXY_ADDR data type.
+ * PROXY_ADDR data type.
  */
 typedef boost::variant<ip4_addr, ip6_addr, fqdn> proxy_addr;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define NET_TYPE_ADDR data type.
+ * NET_TYPE_ADDR data type.
  */
 struct net_type_addr {
-	network_type nettype;
-	link_addr    addr;
+	network_type nettype;	/**< Network type.	*/
+	link_addr    addr;		/**< Link address.	*/
 
-
+	/**
+	 * Serialize/deserialize the NET_TYPE_ADDR data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -540,6 +563,12 @@ struct net_type_addr {
 		ar & addr;
 	}
 
+	/**
+	 * NET_TYPE_ADDR data type output.
+	 *
+	 * @param os ostream.
+	 * @param nta NET_TYPE_ADDR data type.
+	 */
 	friend std::ostream& operator<<(std::ostream& os, const net_type_addr& nta)
 	{
 		os << "\nnettype: " << nta.nettype;
@@ -550,7 +579,7 @@ struct net_type_addr {
 };
 
 /**
- * Define LIST(NET_TYPE_ADDR) data type.
+ * LIST(NET_TYPE_ADDR) data type.
  */
 typedef std::vector<net_type_addr> net_type_addr_list;
 

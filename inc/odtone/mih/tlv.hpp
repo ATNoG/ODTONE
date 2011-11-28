@@ -29,14 +29,28 @@
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Bad TLV exception.
+ */
 struct bad_tlv : virtual public exception {
+	/**
+	 * Construct a bad TLV exception.
+	 */
 	bad_tlv() : exception("odtone::mih::tlv_fwd::serialize(iarchive&): TLV missmatch")
 	{ }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Base TLV.
+ */
 template<class ValueT, ValueT Value>
 struct base_tlv_ {
+	/**
+	 * Deserialize the TLV type value.
+	 *
+	 * @param ar The input archive from where extract the TLV value.
+	 */
 	template<class T>
 	static bool serialize(iarchive& ar, T& val)
 	{
@@ -61,6 +75,11 @@ struct base_tlv_ {
 		return true;
 	}
 
+	/**
+	 * Serialize the TLV type value.
+	 *
+	 * @param ar The output archive to where insert the TLV value.
+	 */
 	template<class T>
 	static void serialize(oarchive& ar, T& val)
 	{
@@ -80,20 +99,34 @@ struct base_tlv_ {
 	}
 };
 
+/**
+ * MIH TLV
+ */
 template<uint8 Value>
 struct tlv_ : base_tlv_<uint8, Value> {
 	typedef tlv_<Value> tlv_serializer;
 };
 
+/**
+ * MIH TLV
+ */
 template<uint32 Value>
 struct tlv4_ : base_tlv_<uint32, Value> {
 	typedef tlv4_<Value> tlv_serializer;
 };
 
+/**
+ * Vendor's IEEE organizationally unique identifier (OUI).
+ */
 template<uint8 A, uint8 B, uint8 C>
 struct oui_ {
 	typedef oui_<A, B, C> tlv_serializer;
 
+	/**
+	 * Deserialize the TLV type value.
+	 *
+	 * @param ar The input archive from where extract the TLV value.
+	 */
 	template<class T>
 	static bool serialize(iarchive& ar, T& val)
 	{
@@ -136,6 +169,11 @@ struct oui_ {
 		return true;
 	}
 
+	/**
+	 * Serialize the TLV type value.
+	 *
+	 * @param ar The output archive to where insert the TLV value.
+	 */
 	template<class T>
 	static void serialize(oarchive& ar, T& val)
 	{
@@ -163,12 +201,10 @@ struct oui_ {
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * The MIH types support serialization and deserialization for the
- * odtone::mih::iarchive and odtone::mih::oarchive, however those particular
- * archives does not include the TLVs fields.
- * So odtone::mih::tlv_type_ is responsible to manage TLVs and offers mechanisms
- * to serialize and deserialize them. There are 2 types of this class:
- *   -> odtone::mih::tlv_type_< T, TLV >
- *   -> odtone::mih::tlv_type_< boost::optional< T >, TLV >
+ * input archive and output archive. However, these particular
+ * archives do not include the TLVs fields.
+ * So this class is responsible for managing the mandatory TLVs and
+ * for offering mechanisms to serialize and deserialize them.
  */
 template<class T, class TLV>
 class tlv_type_ {
@@ -181,16 +217,16 @@ public:
 	/**
 	 * Construct a TLV of a particular type.
 	 *
-	 * @param val value of the TLV.
+	 * @param val The value of the TLV.
 	 */
 	tlv_type_(T& val)
 		: _val(val)
 	{ }
 
 	/**
-	 * Deserialize the TLV type value from the input archive.
+	 * Deserialize the TLV type value.
 	 *
-	 * @param ar odtone::mih::iarchive from where parse the TLV value.
+	 * @param ar The input archive from where extract the TLV value.
 	 */
 	void serialize(iarchive& ar) const
 	{
@@ -200,9 +236,9 @@ public:
 	}
 
 	/**
-	 * Serialize the TLV type value to the output archive.
+	 * Serialize the TLV type value.
 	 *
-	 * @param ar odtone::mih::oarchive to where serialize the TLV value.
+	 * @param ar The output archive to where serialize the TLV value.
 	 */
 	void serialize(oarchive& ar) const
 	{
@@ -210,17 +246,15 @@ public:
 	}
 
 private:
-	T& _val;
+	T& _val;	/**< TLV value.	*/
 };
 
 /**
  * The MIH types support serialization and deserialization for the
- * odtone::mih::iarchive and odtone::mih::oarchive, however those particular
- * archives does not include the TLVs fields.
- * So odtone::mih::tlv_type_ is responsible to manage TLVs and offers mechanisms
- * to serialize and deserialize them. There are 2 types of this class:
- *   -> odtone::mih::tlv_type_< T, TLV >
- *   -> odtone::mih::tlv_type_< boost::optional< T >, TLV >
+ * input archive and output archive. However, these particular
+ * archives do not include the TLVs fields.
+ * So this class is responsible for managing the optional TLVs and
+ * for offering mechanisms to serialize and deserialize them.
  */
 template<class T, class TLV>
 class tlv_type_<boost::optional<T>, TLV> {
@@ -240,9 +274,9 @@ public:
 	{ }
 
 	/**
-	 * Deserialize the TLV type value from the input archive.
+	 * Deserialize the TLV type value.
 	 *
-	 * @param ar odtone::mih::iarchive from where parse the TLV value.
+	 * @param ar The input archive from where parse the TLV value.
 	 */
 	void serialize(iarchive& ar) const
 	{
@@ -259,9 +293,9 @@ public:
 	}
 
 	/**
-	 * Serialize the TLV type value to the output archive.
+	 * Serialize the TLV type value.
 	 *
-	 * @param ar odtone::mih::oarchive to where serialize the TLV value.
+	 * @param ar The output archive to where serialize the TLV value.
 	 */
 	void serialize(oarchive& ar) const
 	{
@@ -270,10 +304,14 @@ public:
 	}
 
 private:
-	boost::optional<T>& _val;
+	boost::optional<T>& _val;	/**< TLV value.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Cast between the number of TLV and the data type presented in it,
+ * and the correspondent TLV type.
+ */
 template<class T, class TLV>
 class tlv_cast_ {
 	typedef typename tlv_type_<T, TLV>::tlv_type                  tlv_type;
@@ -284,7 +322,7 @@ public:
 	 * Cast between the number of TLV and the data type presented in it,
 	 * and the correspondent TLV type.
 	 *
-	 * @param val value of the TLV.
+	 * @param val The value of the TLV.
 	 * @return The correspondent TLV type.
 	 */
 	tlv_type operator()(const T& val) const
@@ -296,7 +334,7 @@ public:
 	 * Cast between the number of TLV and the data type presented in it,
 	 * and the correspondent TLV type. However it supports optional value.
 	 *
-	 * @param val value of the TLV.
+	 * @param val The value of the TLV.
 	 * @return The correspondent TLV type.
 	 */
 	tlv_optional_type operator()(const boost::optional<T>& val) const
@@ -307,7 +345,7 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * This class permits to check if a given class is a TLV.
+ * This class allows to check if a given class is a TLV.
  * It has only a boolean value that is true when the given class is a TLV, or
  * false otherwise.
  */

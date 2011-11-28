@@ -22,11 +22,23 @@
 namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Setup the crash handler.
+ *
+ * @note Not implemented yet.
+ */
 void setup_crash_handler()
 {
 	//TODO: add unhandled exception suppport
 }
 
+/**
+ * Handle the crash context.
+ * Output the crash infromation and abort the application execution.
+ *
+ * @param ctx Crash context.
+ */
 void crash(const crash_ctx& ctx)
 {
 	std::fprintf(stderr,	 "\n"

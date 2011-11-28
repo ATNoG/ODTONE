@@ -30,9 +30,9 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Construct a Configuration and Command Line Options Parser.
+ * Construct a configuration and command line options parser.
  *
- * @param desc a set of option descriptions.
+ * @param desc A set of option descriptions.
  */
 config::config(po::options_description &desc)
 	: _desc(desc)
@@ -40,7 +40,7 @@ config::config(po::options_description &desc)
 }
 
 /**
- * Destruct a Configuration and Command Line Options Parser.
+ * Destruct a configuration and command line options parser.
  */
 config::~config()
 {
@@ -49,7 +49,7 @@ config::~config()
 /**
  * Check if the help option was specified.
  *
- * @return true if the help option is present or false otherwise.
+ * @return True if the help option is present or false otherwise.
  */
 bool config::help()
 {
@@ -60,9 +60,9 @@ bool config::help()
 /**
  * Parse the command line arguments.
  *
- * @param argc number of arguments passed through the command line.
- * @param argv arguments passed through the command line.
- * @param conf_file_option name of configuration file.
+ * @param argc Number of arguments passed through the command line.
+ * @param argv Arguments passed through the command line.
+ * @param conf_file_option Name of configuration file.
  */
 bool config::parse(int argc, char* argv[], const char* conf_file_option)
 {

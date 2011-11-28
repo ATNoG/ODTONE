@@ -25,25 +25,23 @@
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
-/**
- * Define NUM_COS_TYPES data type.
- */
-typedef uint8 num_cos_types;
 
-/**
- * Define COS_ID data type.
- */
-typedef uint8 cos_id;
+typedef uint8 num_cos_types;	/**< NUM_COS_TYPE data type.	*/
+typedef uint8 cos_id;			/**< COS_ID data type.			*/
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define PK_DELAY data type.
+ * PK_DELAY data type.
  */
 struct pk_delay {
-	cos_id cos;
-	uint16 value;
+	cos_id cos;		/**< Class of service identifier.	*/
+	uint16 value;	/**< Value of the parameter.		*/
 
-
+	/**
+	 * Serialize/deserialize the PK_DELAY data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -54,62 +52,62 @@ struct pk_delay {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define MIN_PK_TX_DELAY data type.
+ * MIN_PK_TX_DELAY data type.
  */
 struct min_pk_tx_delay : pk_delay { };
 
 /**
- * Define LIST(MIN_PK_TX_DELAY) data type.
+ * LIST(MIN_PK_TX_DELAY) data type.
  */
 typedef std::vector<min_pk_tx_delay> min_pk_tx_delay_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define AVG_PK_TX_DELAY data type.
+ * AVG_PK_TX_DELAY data type.
  */
 struct avg_pk_tx_delay : pk_delay { };
 
 /**
- * Define LIST(AVG_PK_TX_DELAY) data type.
+ * LIST(AVG_PK_TX_DELAY) data type.
  */
 typedef std::vector<avg_pk_tx_delay> avg_pk_tx_delay_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define MAX_PK_TX_DELAY data type.
+ * MAX_PK_TX_DELAY data type.
  */
 struct max_pk_tx_delay : pk_delay { };
 
 /**
- * Define LIST(MAX_PK_TX_DELAY) data type.
+ * LIST(MAX_PK_TX_DELAY) data type.
  */
 typedef std::vector<max_pk_tx_delay> max_pk_tx_delay_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define PK_DELAY_JITTER data type.
+ * PK_DELAY_JITTER data type.
  */
 struct pk_delay_jitter : pk_delay { };
 
 /**
- * Define LIST(PK_DELAY_JITTER) data type.
+ * LIST(PK_DELAY_JITTER) data type.
  */
 typedef std::vector<pk_delay_jitter> pk_delay_jitter_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define PK_LOSS_RATE data type.
+ * PK_LOSS_RATE data type.
  */
 struct pk_loss_rate : pk_delay { };
 
 /**
- * Define LIST(PK_LOSS_RATE) data type.
+ * LIST(PK_LOSS_RATE) data type.
  */
 typedef std::vector<pk_loss_rate> pk_loss_rate_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define QOS_PARAM_VAL data type.
+ * QOS_PARAM_VAL data type.
  */
 typedef boost::variant<num_cos_types,
 					   min_pk_tx_delay_list,
@@ -120,9 +118,14 @@ typedef boost::variant<num_cos_types,
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define QOS_LIST data type.
+ * QOS_LIST data type.
  */
 struct qos_list {
+	/**
+	 * Serialize/deserialize the QOS_LIST data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -134,12 +137,12 @@ struct qos_list {
 		ar & pk_loss_rate_lst;
 	}
 
-	num_cos_types        cos;
-	min_pk_tx_delay_list min_pk_delay_lst;
-	avg_pk_tx_delay_list avg_pk_tx_delay_lst;
-	max_pk_tx_delay_list max_pk_tx_delay_lst;
-	pk_delay_jitter_list pk_delay_jitter_lst;
-	pk_loss_rate_list    pk_loss_rate_lst;
+	num_cos_types cos; /**< Maximum number of differentiable classes ofservice supported.*/
+	min_pk_tx_delay_list min_pk_delay_lst;		/**< Minimum packet transfer delay list. */
+	avg_pk_tx_delay_list avg_pk_tx_delay_lst;	/**< Average packet transfer delay list. */
+	max_pk_tx_delay_list max_pk_tx_delay_lst;	/**< Maximum packet transfer delay list. */
+	pk_delay_jitter_list pk_delay_jitter_lst;	/**< Packet transfer delay jitter list.	 */
+	pk_loss_rate_list    pk_loss_rate_lst;		/**< Packet loss rate list.				 */
 };
 
 ///////////////////////////////////////////////////////////////////////////////

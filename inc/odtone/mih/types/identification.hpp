@@ -29,23 +29,58 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define MIHF_ID data type.
+ * MIHF_ID data type.
  */
 class id {
 public:
+	/**
+	 * Construct an empty MIHF_ID.
+	 */
 	id() { }
 
+	/**
+	 * Construct a MIHF_ID.
+	 *
+	 * @param id MIHF ID string.
+	 */
 	explicit id(const octet_string& id) : _id(id) { }
 
-	void assign(const octet_string& id) { _id = id; }
+	/**
+	 * Assign the MIHF ID.
+	 *
+	 * @param id MIHF ID string.
+	 */
+	void assign(const octet_string& id)
+	{
+		_id = id;
+	}
 
-	const mih::octet_string& to_string() const { return _id; }
+	/**
+	 * Get the MIHF_ID.
+	 *
+	 * @return The MIHF ID string.
+	 */
+	const mih::octet_string& to_string() const
+	{
+		return _id;
+	}
 
+	/**
+	 * Check if the MIHF_ID is equal to another MIHF_ID.
+	 *
+	 * @param other MIHF ID to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
 	bool operator==(const id& other) const
 	{
 		return (_id.compare(other.to_string()) == 0);
 	}
 
+	/**
+	 * Serialize/deserialize the MIHF_ID data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -53,7 +88,7 @@ public:
 	}
 
 private:
-	octet_string _id;
+	octet_string _id;	/**< MIHF ID string.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////

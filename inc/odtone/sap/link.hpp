@@ -30,28 +30,28 @@
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace sap {
 
-static const char* const kConf_MIH_SAP_id	 = "link.id";
-static const char* const kConf_Port              = "link.port";
-static const char* const kConf_Tec               = "link.tec";
-static const char* const kConf_Interface_Addr    = "link.link_addr_list";
-static const char* const kConf_Evt_List          = "link.event_list";
-static const char* const kConf_Cmd_List          = "link.command_list";
+static const char* const kConf_MIH_SAP_id		= "link.id";
+static const char* const kConf_Port				= "link.port";
+static const char* const kConf_Tec				= "link.tec";
+static const char* const kConf_Interface_Addr	= "link.link_addr_list";
+static const char* const kConf_Evt_List			= "link.event_list";
+static const char* const kConf_Cmd_List			= "link.command_list";
 
-static const char* const kConf_MIHF_Id		 = "mihf.id";
-static const char* const kConf_MIHF_Ip		 = "mihf.ip";
-static const char* const kConf_MIHF_Local_Port	 = "mihf.local_port";
+static const char* const kConf_MIHF_Id			= "mihf.id";
+static const char* const kConf_MIHF_Ip			= "mihf.ip";
+static const char* const kConf_MIHF_Local_Port	= "mihf.local_port";
 
-static const char* const kConf_File               = "conf.file";
-static const char* const kConf_Receive_Buffer_Len = "conf.recv_buff_len";
+static const char* const kConf_File					= "conf.file";
+static const char* const kConf_Receive_Buffer_Len	= "conf.recv_buff_len";
 
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Link SAP IO Service.
+ * Link SAP I/O Service.
  *
- * This module handles the comunication between User SAP implementations and
- * the MIHF. After being initialized it must be running by invoking the run()
- * method of the provided boost::asio::io_service.
+ * This module handles the comunication between Link SAP and its local the
+ * MIHF. After being initialized, and in order to run this service, it must
+ * be invoked the run() method of the boost::asio::io_service associated.
  */
 class link : public sap {
 	typedef boost::function<void(mih::message& pm, const boost::system::error_code& ec)> default_handler;
@@ -59,56 +59,65 @@ class link : public sap {
 
 public:
 	/**
-	 * Construct a Link SAP IO Service.
-	 * The handler callback is invoked when a mensage is received such as a request
-	 * mensage. The signature of the callback is: void(odtone::mih::message&, const boost::system::error_code&).
+	 * Construct a Link SAP I/O Service.
+	 * The defined callback is invoked when a request message is received
+	 * The signature of the callback is:
+	 * void(odtone::mih::message&, const boost::system::error_code&).
 	 *
-	 * @param cfg configuration with the parameters for MIH Link SAP port, MIHF ip:port and receive buffer size.
-	 * @param io  generic IO service.
-	 * @param h   handler callback as a function pointer/object.
-	 * @throws boost::system::error_code
+	 * @param cfg Configuration parameters.
+	 * @param io The io_service object that Link SAP I/O Service will use to
+		         dispatch handlers for any asynchronous operations performed on
+		         the socket.
+	 * @param h Message processing handler.
 	 */
 	link(const mih::config& cfg, boost::asio::io_service& io, const default_handler& h);
 
 	/**
-	 * Destruct a Link SAP IO Service.
+	 * Destruct a Link SAP I/O Service.
 	 */
 	~link();
 
 	/**
-	 * Send the MIH message to the local MIHF asynchronously.
-	 * After the message is sended, the callback is called to report the success or failure in delivering the message to the MIHF. This method retuns immediately.
+	 * Asynchronously send a MIH message to the local MIHF.
+	 * After sending the message, the callback is called to report the
+	 * success or failure in delivering the message to the local MIHF.
+	 * This method retuns immediately.
 	 *
 	 * @param msg MIH message to send.
-	 * @param h completion callback handler as a function pointer/object.
+	 * @param h Response handler function.
 	 */
 	void async_send(mih::message& p, const handler& h = handler());
 
 private:
 	/**
-	 * Received message handler.
+	 * Received message callback. This function is executed to process the
+	 * received messages. If this is a valid message, the message is
+	 * dispatched to the handler defined by the user.
 	 *
-	 * @param buff message byte buffer.
-	 * @param rbytes number of bytes of the message.
-	 * @param ec error code.
+	 * @param buff Message byte buffer.
+	 * @param rbytes Size of the message.
+	 * @param ec Error code.
 	 */
-	void recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system::error_code& ec);
+	void recv_handler(buffer<uint8>& buff, size_t rbytes,
+					  const boost::system::error_code& ec);
 
 	/**
-	 * Sent message handler.
+	 * Sent message handler. After sending the message, this function is called to
+	 * report the success or failure in delivering the message to the local MIHF.
 	 *
-	 * @param fm message sent.
-	 * @param sbytes number of bytes of the message.
-	 * @param ec error code.
+	 * @param fm MIH message sent.
+	 * @param sbytes Size of the message.
+	 * @param ec Error code.
 	 */
-	void send_handler(mih::frame_vla& fm, const handler& h, size_t sbytes, const boost::system::error_code& ec);
+	void send_handler(mih::frame_vla& fm, const handler& h, size_t sbytes,
+					  const boost::system::error_code& ec);
 
 private:
-	default_handler                 _handler;
-	boost::asio::ip::udp::socket    _sock;
-	boost::asio::ip::udp::endpoint  _ep;
-	odtone::mih::id                 _link_id;
-	odtone::mih::id                 _mihf_id;
+	default_handler                 _handler;	/**< User defined handler.	*/
+	boost::asio::ip::udp::socket    _sock;		/**< Link SAP socket.		*/
+	boost::asio::ip::udp::endpoint  _ep;		/**< Local MIHF endpoint.	*/
+	odtone::mih::id                 _link_id;	/**< Link SAP MIH ID.		*/
+	odtone::mih::id                 _mihf_id;	/**< Local MIHF ID. 		*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////

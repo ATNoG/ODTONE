@@ -25,6 +25,10 @@
 namespace odtone { namespace sap {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * SAP I/O Service. This is the base
+ * This is the base class for all SAPs defined in the ODTONE.
+ */
 class sap : boost::noncopyable {
 };
 

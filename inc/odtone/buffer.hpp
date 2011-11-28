@@ -33,6 +33,10 @@
 namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * A container for data of a specific data type with linear and finite
+ * sequence of elements.
+ */
 template<class T>
 class buffer {
 	ODTONE_STATIC_ASSERT(boost::is_pod<T>::value, "T must be POD type");
@@ -41,10 +45,20 @@ class buffer {
 	buffer& operator=(const buffer&) = delete;
 
 public:
+	/**
+	 * Construct an empty buffer. The created buffer will be empty and
+	 * with zero length.
+	 */
 	buffer()
 		: _ptr(nullptr), _len(0)
 	{ }
 
+	/**
+	 * Construct a buffer. The new created buffer will be a copy of another
+	 * buffer.
+	 *
+	 * @param buff Buffer to copy.
+	 */
 	buffer(buffer&& buff)
 		: _ptr(nullptr), _len(0)
 	{
@@ -52,18 +66,34 @@ public:
 		std::swap(_len, buff._len);
 	}
 
+	/**
+	 * Construct an empty buffer. Although the created buffer is empty, it has
+	 * the length defined at its creation.
+	 *
+	 * @param len Number of elements the buffer can store.
+	 */
 	buffer(size_t len)
 		: _ptr(nullptr), _len(0)
 	{
 		size(len);
 	}
 
+	/**
+	 * Destruct a buffer.
+	 */
 	~buffer()
 	{
 		if (_ptr)
 			std::free(_ptr);
 	}
 
+	/**
+	 * Copy the elements from another buffer. The elements contained in the
+	 * buffer will be overwrited.
+	 *
+	 * @param The buffer from which to copy the elements.
+	 * @return The reference to the buffer.
+	 */
 	buffer& operator=(buffer&& buff)
 	{
 		if (this != boost::addressof(buff)) {
@@ -74,6 +104,11 @@ public:
 		return *this;
 	}
 
+	/**
+	 * Set the number of elements the buffer can store.
+	 *
+	 * @param len The number of elements the buffer can store.
+	 */
 	void size(size_t len)
 	{
 		ODTONE_ASSERT((len * sizeof(T)) >= len);
@@ -89,21 +124,54 @@ public:
 		}
 	}
 
+	/**
+	 * Remove all stored elements from the buffer.
+	 */
 	void zero()
 	{
 		std::memset(_ptr, 0, _len * sizeof(T));
 	}
 
-	T*       get()        { return _ptr; }
-	const T* get() const  { return _ptr; }
-	size_t   size() const { return _len; }
+	/**
+	 * Get the pointer to the first element of the buffer.
+	 *
+	 * @return The pointer to the first element of the buffer.
+	 */
+	T* get()
+	{
+		return _ptr;
+	}
+
+	/**
+	 * Get the pointer to the first element of the buffer.
+	 *
+	 * @return The pointer to the first element of the buffer.
+	 */
+	const T* get() const
+	{
+		return _ptr;
+	}
+
+	/**
+	 * Get the number of elements the buffer can store.
+	 *
+	 * @return The number of elements the buffer can store.
+	 */
+	size_t size() const
+	{
+		return _len;
+	}
 
 private:
-	T*     _ptr;
-	size_t _len;
+	T*     _ptr;	/**< Pointer to the first element.				*/
+	size_t _len;	/**< Number of elements the buffer can store	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * A container (buffer) for 8-bit unsigned int data type with linear and
+ * finite sequence of elements.
+ */
 template<class T>
 class buffer_vla : buffer<uint8> {
 	ODTONE_STATIC_ASSERT(!boost::is_enum<T>::value    //needed for buggy compilers
@@ -116,20 +184,43 @@ class buffer_vla : buffer<uint8> {
 	buffer_vla& operator=(const buffer_vla&) = delete;
 
 public:
+	/**
+	 * Construct an empty buffer. The created buffer will be empty and
+	 * with zero length.
+	 */
 	buffer_vla()
 		: base()
 	{ }
 
+	/**
+	 * Construct a buffer. The new created buffer will be a copy of another
+	 * buffer.
+	 *
+	 * @param buff Buffer to copy.
+	 */
 	buffer_vla(buffer_vla&& buff)
 		: base(std::move(buff))
 	{ }
 
+	/**
+	 * Construct an empty buffer. Although the created buffer is empty, it has
+	 * the length defined at its creation.
+	 *
+	 * @param len Number of elements the buffer can store.
+	 */
 	buffer_vla(size_t len)
 		: base(sizeof(T) + len)
 	{
 		ODTONE_ASSERT((sizeof(T) + len) > len);
 	}
 
+	/**
+	 * Copy the elements from another buffer. The elements contained in the
+	 * buffer will be overwrited.
+	 *
+	 * @param The buffer from which to copy the elements.
+	 * @return The reference to the buffer.
+	 */
 	buffer_vla& operator=(buffer_vla&& buff)
 	{
 		if (this != boost::addressof(buff))
@@ -138,6 +229,11 @@ public:
 		return *this;
 	}
 
+	/**
+	 * Set the number of elements the buffer can store.
+	 *
+	 * @param len The number of elements the buffer can store.
+	 */
 	void size(size_t len)
 	{
 		ODTONE_ASSERT((sizeof(T) + len) > len);
@@ -148,12 +244,46 @@ public:
 	using base::zero;
 	using base::size;
 
+	/**
+	 * Get the reference to the first element of the buffer.
+	 *
+	 * @return The reference to the first element of the buffer.
+	 */
 	T& operator*()  { return *get(); }
+
+	/**
+	 * Get the pointer to the first element of the buffer.
+	 *
+	 * @return The pointer to the first element of the buffer.
+	 */
 	T* operator->() { return get(); }
+
+	/**
+	 * Get the pointer to the first element of the buffer.
+	 *
+	 * @return The pointer to the first element of the buffer.
+	 */
 	T* get()        { return reinterpret_cast<T*>(base::get()); }
 
+	/**
+	 * Get the reference to the first element of the buffer.
+	 *
+	 * @return The reference to the first element of the buffer.
+	 */
 	const T& operator*() const  { return *get(); }
+
+	/**
+	 * Get the pointer to the first element of the buffer.
+	 *
+	 * @return The pointer to the first element of the buffer.
+	 */
 	const T* operator->() const { return get(); }
+
+	/**
+	 * Get the pointer to the first element of the buffer.
+	 *
+	 * @return The pointer to the first element of the buffer.
+	 */
 	const T* get() const        { return reinterpret_cast<const T*>(base::get()); }
 };
 

@@ -83,30 +83,30 @@
 namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
-typedef signed char        schar;
-typedef signed short       sshort;
-typedef signed int         sint;
-typedef signed long        slong;
-typedef signed long long   sllong;
+typedef signed char        schar;	/**< Signed char.		*/
+typedef signed short       sshort;	/**< Signed short.		*/
+typedef signed int         sint;	/**< Signed integer.	*/
+typedef signed long        slong;	/**< Signed long.		*/
+typedef signed long long   sllong;	/**< Signed long long.	*/
 
-typedef unsigned char      uchar;
-typedef unsigned short     ushort;
-typedef unsigned int       uint;
-typedef unsigned long      ulong;
-typedef unsigned long long ullong;
+typedef unsigned char      uchar;	/**< Unsigned char.			*/
+typedef unsigned short     ushort;	/**< Unsigned short.		*/
+typedef unsigned int       uint;	/**< Unsigned integer.		*/
+typedef unsigned long      ulong;	/**< Unsigned long.			*/
+typedef unsigned long long ullong;	/**< Unsigned long long.	*/
 
-typedef boost::uint8_t     uint8;
-typedef boost::uint16_t    uint16;
-typedef boost::uint32_t    uint32;
-typedef boost::uint64_t    uint64;
+typedef boost::uint8_t     uint8;	/**< 8-bit unsigned interger.	*/
+typedef boost::uint16_t    uint16;	/**< 16-bit unsigned interger	*/
+typedef boost::uint32_t    uint32;	/**< 32-bit unsigned interger	*/
+typedef boost::uint64_t    uint64;	/**< 64-bit unsigned interger	*/
 
-typedef boost::int8_t      sint8;
-typedef boost::int16_t     sint16;
-typedef boost::int32_t     sint32;
-typedef boost::int64_t     sint64;
+typedef boost::int8_t      sint8;	/**< 8-bit signed interger.		*/
+typedef boost::int16_t     sint16;	/**< 16-bit signed interger.	*/
+typedef boost::int32_t     sint32;	/**< 32-bit signed interger.	*/
+typedef boost::int64_t     sint64;	/**< 64-bit signed interger.	*/
 
-typedef boost::intmax_t    sintmax;
-typedef boost::uintmax_t   uintmax;
+typedef boost::intmax_t    sintmax; /**< Max bit size signed interger.		*/
+typedef boost::uintmax_t   uintmax; /**< Max bit size unsigned interger.	*/
 
 ///////////////////////////////////////////////////////////////////////////////
 #ifndef BOOST_HAS_NULLPTR

@@ -29,78 +29,54 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * This class permits parsing/generating MIH Request messages. It derives from
- * odtone::mih::message_helper and will inherit all the features from base class.
+ * This class allows parsing/generating MIH Request messages.
  */
 class request : public message_helper {
 public:
 
+	/**
+	 * MIH Request Message ID
+	 */
 	enum mid {
-		capability_discover								/// MIH_Capability_Discover.request
-							= msg_id<1, 1, 1>::value,
-		mih_register									/// MIH_Register.request
-							= msg_id<1, 1, 2>::value,
-		mih_deregister									/// MIH_DeRegister.request
-							= msg_id<1, 1, 3>::value,
-		event_subscribe									/// MIH_Event_Subscribe.request
-							= msg_id<1, 1, 4>::value,
-		event_unsubscribe								/// MIH_Event_Unsubscribe.request
-							= msg_id<1, 1, 5>::value,
-
-		link_get_parameters										/// MIH_Link_Get_Parameters.request
-									= msg_id<3, 1, 1>::value,
-		link_configure_thresholds								/// MIH_Link_Configure_Thresholds.request
-									= msg_id<3, 1, 2>::value,
-		link_actions											/// MIH_Link_Actions.request
-									= msg_id<3, 1, 3>::value,
-		net_ho_candidate_query									/// MIH_Net_HO_Candidate_Query.request
-									= msg_id<3, 1, 4>::value,
-		mn_ho_candidate_query									/// MIH_MN_HO_Candidate_Query.request
-									= msg_id<3, 1, 5>::value,
-		n2n_ho_query_resources									/// MIH_N2N_HO_Query_Resources.request
-									= msg_id<3, 1, 6>::value,
-		mn_ho_commit											/// MIH_MN_HO_Commit.request
-									= msg_id<3, 1, 7>::value,
-		net_ho_commit											/// MIH_Net_HO_Commit.request
-									= msg_id<3, 1, 8>::value,
-		n2n_ho_commit											/// MIH_N2N_HO_Commit.request
-									= msg_id<3, 1, 9>::value,
-		mn_ho_complete											/// MIH_N2N_HO_Complete.request
-									= msg_id<3, 1, 10>::value,
-		n2n_ho_complete											/// MIH_N2N_HO_Commlete.request
-									= msg_id<3, 1, 11>::value,
-
-		get_information								/// MIH_Get_Information.request
-						= msg_id<4, 1, 1>::value,
-
-		push_information							/// MIH_Push_Information.request
-						= msg_id<4, 1, 2>::value,
-
-		// ODTONE specific messages
-		link_register										/// Link_Register.indication
-									= msg_id<1, 1, 6>::value
+		capability_discover	= msg_id<1, 1, 1>::value,		/**< MIH_Capability_Discover.request*/
+		mih_register = msg_id<1, 1, 2>::value,				/**< MIH_Register.request			*/
+		mih_deregister = msg_id<1, 1, 3>::value,			/**< MIH_DeRegister.request			*/
+		event_subscribe = msg_id<1, 1, 4>::value,			/**< MIH_Event_Subscribe.request	*/
+		event_unsubscribe = msg_id<1, 1, 5>::value,			/**< MIH_Event_Unsubscribe.request	*/
+		link_get_parameters = msg_id<3, 1, 1>::value,		/**< MIH_Link_Get_Parameters.request*/
+		link_configure_thresholds = msg_id<3, 1, 2>::value,	/**< MIH_Link_Configure_Thresholds.request*/
+		link_actions = msg_id<3, 1, 3>::value,				/**< MIH_Link_Actions.request		*/
+		net_ho_candidate_query = msg_id<3, 1, 4>::value,	/**< MIH_Net_HO_Candidate_Query.request*/
+		mn_ho_candidate_query = msg_id<3, 1, 5>::value,		/**< MIH_MN_HO_Candidate_Query.request*/
+		n2n_ho_query_resources = msg_id<3, 1, 6>::value,	/**< MIH_N2N_HO_Query_Resources.request*/
+		mn_ho_commit = msg_id<3, 1, 7>::value,				/**< MIH_MN_HO_Commit.request		*/
+		net_ho_commit = msg_id<3, 1, 8>::value,				/**< MIH_Net_HO_Commit.request		*/
+		n2n_ho_commit = msg_id<3, 1, 9>::value,				/**< MIH_N2N_HO_Commit.request		*/
+		mn_ho_complete = msg_id<3, 1, 10>::value,			/**< MIH_N2N_HO_Complete.request	*/
+		n2n_ho_complete = msg_id<3, 1, 11>::value,			/**< MIH_N2N_HO_Commlete.request	*/
+		get_information = msg_id<4, 1, 1>::value,			/**< MIH_Get_Information.request	*/
+		push_information = msg_id<4, 1, 2>::value,			/**< MIH_Push_Information.request	*/
 	};
 
 	/**
-	 * Construct an MIH Request Message helper with MIH Message ID equals to
-	 * 0 (zero) and a null pointer for MIH Message Destination MIHF ID.
+	 * Construct an empty MIH Request Message helper.
 	 */
 	request() : message_helper(0, nullptr)
 	{ }
 
 	/**
-	 * Construct an MIH Request Message helper
+	 * Construct an MIH Request Message helper.
 	 *
-	 * @param m MIH Message ID
+	 * @param m The value of the MIH Message ID.
 	 */
 	explicit request(mid m) : message_helper(m, nullptr)
 	{ }
 
 	/**
-	 * Construct an MIH Request Message helper
+	 * Construct an MIH Request Message helper.
 	 *
-	 * @param m MIH Message ID
-	 * @param destination MIH Message Destination MIHF ID
+	 * @param m The value of the MIH Message ID.
+	 * @param destination The value of the MIH Message Destination MIHF ID.
 	 */
 	request(mid m, const id& destination) :message_helper(m, &destination)
 	{ }

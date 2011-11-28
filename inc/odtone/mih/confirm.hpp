@@ -29,54 +29,42 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * This class permits parsing/generating MIH Confirm messages. It derives
- * from odtone::mih::message_helper and will inherit all the features from base
- * class.
+ * This class allows parsing and generating MIH Confirm messages.
  */
 class confirm : public message_helper {
 public:
 
+	/**
+	 * MIH Confirm Message ID
+	 */
 	enum mid {
-		capability_discover									/// MIH_Capability_Discover.indication
-									= msg_id<1, 0, 1>::value,
-
-		event_subscribe									/// MIH_Event_Subscribe.request
-									= msg_id<1, 0, 4>::value,
-
-		event_unsubscribe								/// MIH_Event_Unsubscribe.request
-									= msg_id<1, 0, 5>::value,
-
-		link_get_parameters								/// MIH_Link_Get_Parameters.request
-									= msg_id<3, 0, 1>::value,
-
-		link_configure_thresholds						/// MIH_Link_Configure_Thresholds.request
-									= msg_id<3, 0, 2>::value,
-
-		link_actions									/// MIH_Link_Actions.request
-									= msg_id<3, 0, 3>::value,
-
+		capability_discover	= msg_id<1, 0, 1>::value,		/**< MIH_Capability_Discover.indication	*/
+		event_subscribe	= msg_id<1, 0, 4>::value,			/**< MIH_Event_Subscribe.request		*/
+		event_unsubscribe = msg_id<1, 0, 5>::value,			/**< MIH_Event_Unsubscribe.request		*/
+		link_get_parameters = msg_id<3, 0, 1>::value,		/**< MIH_Link_Get_Parameters.request	*/
+		link_configure_thresholds = msg_id<3, 0, 2>::value,	/**< MIH_Link_Configure_Thresholds.request*/
+		link_actions = msg_id<3, 0, 3>::value,				/**< MIH_Link_Actions.request			*/
 	};
 
 	/**
-	 * Construct an MIH Confirm Message helper with MIH Message ID equals to
-	 * 0 (zero) and a null pointer for MIH Message Destination MIHF ID.
+	 * Construct an empty MIH Confirm Message helper.
 	 */
 	confirm() : message_helper(0, nullptr)
 	{ }
 
 	/**
-	 * Construct an MIH Confirm Message helper
+	 * Construct a MIH Confirm Message helper.
 	 *
-	 * @param m MIH Message ID
+	 * @param m The value of the MIH Message ID.
 	 */
 	explicit confirm(mid m) : message_helper(m, nullptr)
 	{ }
 
 	/**
-	 * Construct an MIH Confirm Message helper
+	 * Construct a MIH Confirm Message helper.
 	 *
-	 * @param m MIH Message ID
-	 * @param destination MIH Message Destination MIHF ID
+	 * @param m The value of the MIH Message ID.
+	 * @param destination The value of the MIH Message Destination MIHF ID.
 	 */
 	confirm(mid m, const id& destination) : message_helper(m, &destination)
 	{ }

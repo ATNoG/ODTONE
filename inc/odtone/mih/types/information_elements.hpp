@@ -37,42 +37,42 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 // general information elements
-typedef network_type   ie_network_type;
-typedef operator_id    ie_operator_id;
-typedef sp_id          ie_service_provider_id;
-typedef cntry_code     ie_country_code;
+typedef network_type   ie_network_type;			/**< Network type IE type.	*/
+typedef operator_id    ie_operator_id;			/**< Operator ID IE type.	*/
+typedef sp_id          ie_service_provider_id;	/**< Service provider ID IE type.*/
+typedef cntry_code     ie_country_code;			/**< Countrry code IE type.	*/
 
 // access network specific information elements
-typedef network_id     ie_network_id;
-typedef net_aux_id     ie_network_aux_id;
-typedef roaming_ptns   ie_roaming_partners;
-typedef cost           ie_cost;
-typedef qos_list       ie_network_qos;
-typedef data_rate      ie_network_data_rate;
-typedef regu_domain    ie_net_regulat_domain;
-typedef freq_bands     ie_net_frequency_bands;
-typedef ip_config      ie_net_ip_cfg_methods;
-typedef net_caps       ie_net_capabilities;
-typedef supported_lcp  ie_net_supported_lcp;
-typedef ip_mob_mgmt    ie_net_mob_mgmt_prot;
-typedef proxy_addr     ie_net_emserv_proxy;
-typedef proxy_addr     ie_net_ims_proxy_cscf;
-typedef bool           ie_net_mobile_network;
+typedef network_id     ie_network_id;			/**< Network ID IE type.		*/
+typedef net_aux_id     ie_network_aux_id;		/**< Auxiliar network ID  IE type.*/
+typedef roaming_ptns   ie_roaming_partners;		/**< Roaming partners IE type.	*/
+typedef cost           ie_cost;					/**< Cost IE type.				*/
+typedef qos_list       ie_network_qos;			/**< Network QoS IE type.		*/
+typedef data_rate      ie_network_data_rate;	/**< Network data rate IE type.	*/
+typedef regu_domain    ie_net_regulat_domain;	/**< Network regulatory class IE type.*/
+typedef freq_bands     ie_net_frequency_bands;	/**< Network frequency bands IE type.*/
+typedef ip_config      ie_net_ip_cfg_methods;	/**< Network IP configuration methods IE type.*/
+typedef net_caps       ie_net_capabilities;		/**< Network capabilities IE type.*/
+typedef supported_lcp  ie_net_supported_lcp;	/**< Network supported LCP IE type.*/
+typedef ip_mob_mgmt    ie_net_mob_mgmt_prot;	/**< Network mobility management protocol IE type.*/
+typedef proxy_addr     ie_net_emserv_proxy;		/**< Network proxy PSAP IE type.*/
+typedef proxy_addr     ie_net_ims_proxy_cscf;	/**< Network IMS proxy P-CSCF IE type.*/
+typedef bool           ie_net_mobile_network;	/**< Network mobile IE type.	*/
 
 // POA specific information elements
-typedef link_addr      ie_poa_link_addr;
-typedef location       ie_poa_location;
-typedef ch_range       ie_poa_channel_range;
-typedef system_info    ie_poa_system_info;
+typedef link_addr      ie_poa_link_addr;	/**< PoA link address IE type.		*/
+typedef location       ie_poa_location;		/**< PoA location IE type.			*/
+typedef ch_range       ie_poa_channel_range;/**< PoA channel range IE type.		*/
+typedef system_info    ie_poa_system_info;	/**< PoA system information IE type.*/
 
 // POA specific higher layer service information elements
-typedef ip_subnet_info ie_poa_subnet_info;
-typedef ip_addr        ie_poa_ip_addr;
+typedef ip_subnet_info ie_poa_subnet_info;	/**< PoA subnet information IE type.*/
+typedef ip_addr        ie_poa_ip_addr;		/**< PoA IP address IE type.		*/
 
 // IE Containers
-struct ie_container_poa;
-struct ie_container_network;
-class  ie_container_list_of_networks;
+struct ie_container_poa;					/**< PoA IE container.				*/
+struct ie_container_network;				/**< PoA network container.			*/
+class  ie_container_list_of_networks;		/**< List of networks container.	*/
 
 ///////////////////////////////////////////////////////////////////////////////
 static const tlv_cast_<ie_network_type,               tlv4_<0x10000000> > tlv_ie_network_type = {};
@@ -123,6 +123,11 @@ public:
 	using base::resize;
 	using base::operator[];
 
+	/**
+	 * Serialize the LIST(POA_SUBNET_INFO) IE type.
+	 *
+	 * @param The archive to where serialize the data type.
+	 */
 	void serialize(oarchive& ar)
 	{
 		for (base::iterator i = base::begin(); i != base::end(); ++i)
@@ -131,6 +136,11 @@ public:
 		vendor_ies.serialize(ar);
 	}
 
+	/**
+	 * Deserialize the LIST(POA_SUBNET_INFO) IE type.
+	 *
+	 * @param The archive from where deserialize the data type.
+	 */
 	void serialize(iarchive& ar)
 	{
 		while (ar.position() < ar.length()) {
@@ -150,7 +160,7 @@ public:
 	}
 
 public:
-	vendor_ie_list vendor_ies;
+	vendor_ie_list vendor_ies;		
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -172,6 +182,11 @@ public:
 	using base::resize;
 	using base::operator[];
 
+	/**
+	 * Deserialize the LIST(POA_IP_ADDR) IE type.
+	 *
+	 * @param The archive from where deserialize the data type.
+	 */
 	void serialize(oarchive& ar)
 	{
 		for (base::iterator i = base::begin(); i != base::end(); ++i)
@@ -180,6 +195,11 @@ public:
 		vendor_ies.serialize(ar);
 	}
 
+	/**
+	 * Serialize the LIST(POA_IP_ADDR) IE type.
+	 *
+	 * @param The archive to where serialize the data type.
+	 */
 	void serialize(iarchive& ar)
 	{
 		while (ar.position() < ar.length()) {
@@ -213,6 +233,11 @@ struct ie_container_poa
 	ie_poa_ip_addr_list       poa_ip_addr;
 	vendor_ie_list            vendor_ies;
 
+	/**
+	 * Serialize/deserialize the POA_CONTAINER type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{

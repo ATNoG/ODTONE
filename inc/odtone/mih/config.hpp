@@ -36,36 +36,35 @@ namespace po = boost::program_options;
  * Configuration and command line options parser
  *
  * This class provides parsing for command line options and configuration
- * files for a set of predefined options description. It's used for configuring
- * the odtone::sap IO services and the odtone MIHF implementation.
+ * files for a set of predefined options description.
  */
 class config {
 public:
 	/**
-	 * Construct a Configuration and Command Line Options Parser.
+	 * Construct a configuration and command line options parser.
 	 *
-	 * @param desc a set of option descriptions.
+	 * @param desc A set of option descriptions.
 	 */
 	config(po::options_description &desc);
 
 	/**
-	 * Destruct a Configuration and Command Line Options Parser.
+	 * Destruct a configuration and command line options parser.
 	 */
 	~config();
 
 	/**
 	 * Check if the help option was specified.
 	 *
-	 * @return true if the help option is present or false otherwise.
+	 * @return True if the help option is present or false otherwise.
 	 */
 	bool help();
 
 	/**
 	 * Parse the command line arguments.
 	 *
-	 * @param argc number of arguments passed through the command line.
-	 * @param argv arguments passed through the command line.
-	 * @param conf_file_option name of configuration file.
+	 * @param argc Number of arguments passed through the command line.
+	 * @param argv Arguments passed through the command line.
+	 * @param conf_file_option Name of configuration file.
 	 */
 	bool parse(int argc, char* argv[], const char* conf_file_option);
 
@@ -73,20 +72,27 @@ public:
 	/**
 	 * Get option variable value.
 	 *
-	 * @param var variable name.
+	 * @param var The variable name.
 	 */
 	template<class T>
-	T get(const char* var) const { return _vars[var].as<T>(); }
+	T get(const char* var) const
+	{
+		return _vars[var].as<T>();
+	}
 
 	/**
-	 * Count option variables.
+	 * Count the number of option variables.
 	 *
-	 * @param number of variables.
+	 * @param The number of variables.
 	 */
-	uint count(const char *var) { return _vars.count(var); }
+	uint count(const char *var)
+	{
+		return _vars.count(var);
+	}
+
 private:
-	po::options_description _desc;
-	po::variables_map       _vars;
+	po::options_description _desc;	/**< Option description.			*/
+	po::variables_map       _vars;	/**< Configuration parameters map.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////

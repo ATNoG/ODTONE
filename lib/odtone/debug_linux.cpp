@@ -568,6 +568,10 @@ void dump_stack(module_list& ml, void* address)
 namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Setup the crash handler.
+ */
 void setup_crash_handler()
 {
 	struct sigaction handler;
@@ -583,6 +587,12 @@ void setup_crash_handler()
 	//SIGSTKFLT
 }
 
+/**
+ * Handle the crash context.
+ * Output the crash infromation and abort the application execution.
+ *
+ * @param ctx Crash context.
+ */
 void crash(const crash_ctx& ctx)
 {
 	module_list ml;

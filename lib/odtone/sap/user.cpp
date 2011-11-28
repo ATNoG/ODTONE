@@ -27,12 +27,16 @@ namespace ip = boost::asio::ip;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Construct an User SAP IO Service.
+ * Construct a MIH-User SAP I/O Service.
+ * The defined callback is invoked when a request message is received
+ * The signature of the callback is:
+ * void(odtone::mih::message&, const boost::system::error_code&).
  *
- * @param  cfg configuration with the parameters for MIH User port, MIHF ip:port and receive buffer size.
- * @param  io generic IO service.
- * @param  h handler callback as a function pointer/object. The handler callback is invoked when an message is received, offering a simple way to process incoming messages. The signature of the callback is: void(odtone::mih::message&, const boost::system::error_code&).
- * @throws boost::system::error_code
+ * @param cfg Configuration parameters.
+ * @param io The io_service object that Link SAP I/O Service will use to
+	         dispatch handlers for any asynchronous operations performed on
+	         the socket.
+ * @param h Message processing handler.
  */
 user::user(const mih::config& cfg, boost::asio::io_service& io, const handler& h)
 	: _handler(h), _sock(io, ip::udp::endpoint(ip::udp::v4(), cfg.get<ushort>(kConf_Port))),
@@ -51,37 +55,21 @@ user::user(const mih::config& cfg, boost::asio::io_service& io, const handler& h
 									boost::asio::placeholders::error));
 }
 
-user::user(boost::asio::io_service& io, const handler& h, const config& cfg)
-	: _handler(h), _sock(io, ip::udp::endpoint(ip::udp::v4(), cfg.port)),
-	  _ep(cfg.mihf_address, cfg.mihf_port), _user_id(odtone::mih::id(cfg.id))
-{
-	buffer<uint8> buff(cfg.buffer_length);
-	void* rbuff = buff.get();
-	size_t rlen = buff.size();
-
-	_sock.async_receive(boost::asio::buffer(rbuff, rlen),
-						boost::bind(&user::recv_handler,
-									this,
-									bind_rv(buff),
-									boost::asio::placeholders::bytes_transferred,
-									boost::asio::placeholders::error));
-}
-
 /**
- * Destruct an User SAP IO Service.
+ * Destruct a MIH-User SAP I/O Service.
  */
 user::~user()
 {
 }
 
 /**
- * Send the MIH message to the local MIHF asynchronously.
- * After the message is sent, the callback is called with the
- * response message or to report failure in delivering the message
- * to the MIHF.This method retuns immediately.
+ * Asynchronously send a MIH message to the local MIHF.
+ * After sending the message, the callback is called to report the
+ * success or failure in delivering the message to the local MIHF.
+ * This method retuns immediately.
  *
  * @param msg MIH message to send.
- * @param h Completion/Response callback handler as a function pointer/object.
+ * @param h Response handler function.
  */
 void user::async_send_(mih::message& msg, handler&& h)
 {
@@ -125,11 +113,13 @@ void user::async_send_(mih::message& msg, handler&& h)
 }
 
 /**
- * Received message handler.
+ * Received message callback. This function is executed to process the
+ * received messages. If this is a valid message, the message is
+ * dispatched to the handler defined by the user.
  *
- * @param buff message byte buffer.
- * @param rbytes number of bytes of the message.
- * @param ec error code.
+ * @param buff Message byte buffer.
+ * @param rbytes Size of the message.
+ * @param ec Error code.
  */
 void user::recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system::error_code& ec)
 {
@@ -173,11 +163,12 @@ void user::recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system:
 }
 
 /**
- * Sent message handler.
+ * Sent message handler. After sending the message, this function is called to
+ * report the success or failure in delivering the message to the local MIHF.
  *
- * @param fm message sent.
- * @param sbytes number of bytes of the message.
- * @param ec error code.
+ * @param fm MIH message sent.
+ * @param sbytes Size of the message.
+ * @param ec Error code.
  */
 void user::send_handler(mih::frame_vla& fm, handler& h, const boost::system::error_code& ec)
 {
@@ -191,6 +182,12 @@ void user::send_handler(mih::frame_vla& fm, handler& h, const boost::system::err
 	}
 }
 
+/**
+ * Get the message handler function of the message.
+ *
+ * @param tid Transaction ID of the message.
+ * @param h Reference to the message handler.
+ */
 void user::get_handler(uint tid, handler& h)
 {
 	boost::mutex::scoped_lock sl(_mutex);

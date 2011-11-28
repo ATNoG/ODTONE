@@ -29,14 +29,14 @@ namespace odtone {
 #ifdef BOOST_WINDOWS
 
 #define ODTONE_L     L
-typedef wchar_t      char_t;
-typedef std::wstring string;
+typedef wchar_t      char_t; /**< Wide char.	*/
+typedef std::wstring string; /**< Wide string.	*/
 
 #else
 
 #define ODTONE_L
-typedef char        char_t;
-typedef std::string string;
+typedef char        char_t; /**< Char.		*/
+typedef std::string string; /**< String.	*/
 
 #endif
 

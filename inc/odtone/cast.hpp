@@ -29,10 +29,19 @@
 namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Bad cast exception.
+ */
 struct bad_cast : virtual public exception {
 };
 
+/**
+ * Bad truncate cast exception.
+ */
 struct bad_truncate_cast : virtual public bad_cast {
+	/**
+	 * Construct a bad truncate cast exception.
+	 */
 	bad_truncate_cast() : exception("odtone::truncate_cast: bad cast")
 	{ }
 };
@@ -41,11 +50,24 @@ struct bad_truncate_cast : virtual public bad_cast {
 namespace detail {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Cast operation, which can convert a class object into another class type.
+ */
 template<class T, class U, bool Check>
 struct cast;
 
+/**
+ * Cast operation, which can convert a class object into another class type.
+ * @note Check the convertion.
+ */
 template<class T, class U>
 struct cast<T, U, true> {
+	/**
+	 * Truncate the cast operation.
+	 *
+	 * @param The class object to convert to.
+	 * @return The converted object.
+	 */
 	static T truncate(U from)
 	{
 		if (U(T(from)) != from)
@@ -55,8 +77,18 @@ struct cast<T, U, true> {
 	}
 };
 
+/**
+ * Cast operation, which can convert a class object into another class type.
+ * @note Does not check the convertion.
+ */
 template<class T, class U>
 struct cast<T, U, false> {
+	/**
+	 * Truncate the cast operation.
+	 *
+	 * @param The class object to convert to.
+	 * @return The converted object.
+	 */
 	static T truncate(U from)
 	{
 		return T(from);
@@ -67,6 +99,13 @@ struct cast<T, U, false> {
 } /* namespace detail */
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Cast operation, which can convert a class object into another class type.
+ * @note T and U must be an integral type.
+ *
+ * @param The class object to convert to.
+ * @return The converted object.
+ */
 template<class T, class U>
 inline T truncate_cast(U from)
 {

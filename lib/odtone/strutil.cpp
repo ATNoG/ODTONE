@@ -23,11 +23,11 @@ namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Convert a value to hexadecimal values.
+ * Convert a value to hexadecimal.
  *
- * @param src value to convert.
- * @param len length of the value to convert.
- * @return The hexadecimal value string.
+ * @param src Value to convert.
+ * @param len Length of the value to convert.
+ * @return The converted hexadecimal value string.
  */
 std::string to_string_hex(const void* src, size_t len)
 {

@@ -25,101 +25,140 @@
 namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Bug code enumeration.
+ */
 enum bug {
-	bug_on,
-	bug_assert,
-	bug_assert_ptr,
-	bug_not_implemented,
-	bug_never_here,
-	bug_floting_point_exception,
-	bug_invalid_opcode,
-	bug_terminal_interrupt,
-	bug_page_fault,
-	bug_breakpoint,
-};
-
-extern char const* k_bug_code_string[];
-
-struct crash_ctx {
-	bug         code;
-	void*       address;
-	const char* function;
-	const char* file;
-	uint        line;
-	const char* expression;
-	void*       context;
+	bug_on,							/**< On.						*/
+	bug_assert,						/**< Assert.					*/
+	bug_assert_ptr,					/**< Assert pointer.			*/
+	bug_not_implemented,			/**< Not implemented.			*/
+	bug_never_here,					/**< Never here.				*/
+	bug_floting_point_exception,	/**< Floating point exception.	*/
+	bug_invalid_opcode,				/**< Invalid opcode.			*/
+	bug_terminal_interrupt,			/**< Terminal intterrupt.		*/
+	bug_page_fault,					/**< Page fault.				*/
+	bug_breakpoint,					/**< Breakpoint.				*/
 };
 
 /**
- * The BASE API offers mechanisms for debugging. This is done using a class
- * named odtone::checkpoint.
- * It can be viewed as a linked list of checkpoints that maintain the execution
- * status of the application. So, when a crash happens it is easy to check the
- * last checkpoint and discover why it happen.
+ * Bug code strings.
+ */
+extern char const* k_bug_code_string[];
+
+/**
+ * Crash context structure.
+ */
+struct crash_ctx {
+	bug         code;		/**< Crash bug code.	*/
+	void*       address;	/**< Crash address.		*/
+	const char* function;	/**< Crash function.	*/
+	const char* file;		/**< Crash file.		*/
+	uint        line;		/**< Crash line.		*/
+	const char* expression;	/**< Crash expression.	*/
+	void*       context;	/**< Crash context.		*/
+};
+
+/**
+ * Mechanism for debugging, which allows to follow the execution states of the
+ * application. It can be viewed as a linked list of checkpoints that maintains
+ * the execution states of the application. If a crash happens, the last
+ * checkpoint will point to its occurence.
  */
 class checkpoint {
 public:
 	/**
-	 * Get the checkpoint list.
+	 * Get the top checkpoint in the list.
 	 *
-	 * @return The checkpoint list.
+	 * @return The top checkpoint in the list.
 	 */
 	static checkpoint* top();
 
 	/**
-	 * Construct a Checkpoint.
+	 * Construct a checkpoint and add it to the checkpoint list.
 	 *
-	 * @param file file name
-	 * @param line line number
-	 * @param exp expression
+	 * @param file file name of the checkpoint.
+	 * @param line line number of the checkpoint.
+	 * @param exp expression of the checkpoint.
 	 */
 	checkpoint(const char* file, uint line, const char* exp);
 
 	/**
-	 * Destruct for Checkpoint.
+	 * Destruct a checkpoint and remove it from the checkpoint list.
 	 */
 	~checkpoint();
 
 	/**
-	 * Get the previous checkpoint of the checkpoint that calls this method.
+	 * Get the previous checkpoint.
 	 *
-	 * @return The previous checkpoint of the checkpoint that calls this method.
+	 * @return The previous checkpoint.
 	 */
-	checkpoint* previous() const   { return _prev; }
+	checkpoint* previous() const
+	{
+		return _prev;
+	}
 
 	/**
-	 * Get the file name of the checkpoint.
+	 * Get the checkpoint's file name.
 	 *
-	 * @return The file name of the checkpoint.
+	 * @return The checkpoint's file name.
 	 */
-	const char* file() const       { return _file; }
+	const char* file() const
+	{
+		return _file;
+	}
 
 	/**
-	 * Get the line number of the checkpoint.
+	 * Get the checkpoint's line number.
 	 *
-	 * @return The line number of the checkpoint.
+	 * @return The checkpoint's line number.
 	 */
-	uint        line() const       { return _line; }
+	uint line() const 
+	{
+		return _line; 
+	}
 
 	/**
-	 * Get the expression of the checkpoint.
+	 * Get the checkpoint's expression.
 	 *
-	 * @return The expression of the checkpoint.
+	 * @return The checkpoint's expression.
 	 */
-	const char* expression() const { return _exp; }
+	const char* expression() const
+	{
+		return _exp;
+	}
 
 	operator bool() const { return false; }
 
 private:
-	checkpoint* _prev;
-	const char* _file;
-	uint        _line;
-	const char* _exp;
+	checkpoint* _prev;	/**< Checkpoint's previous checkpoint.	*/
+	const char* _file;	/**< Checkpoint's file name.			*/
+	uint        _line;	/**< Checkpoint's line number.			*/
+	const char* _exp;	/**< Checkpoint's expression.			*/
 };
 
+/**
+ * Setup the crash handler.
+ */
 void setup_crash_handler();
 
+/**
+ * Creates the crash context and dispatch it to its handler.
+ *
+ * @param code Crash bug code.
+ * @param function Crash function.
+ * @param file Crash file name.
+ * @param line Crash line number.
+ * @param expression Crash expression.
+ */
 void crash(bug code, const char* function, const char* file, uint line, const char* expression);
+
+/**
+ * Handles the crash context.
+ *
+ * @param ctx Crash context.
+ */
 ODTONE_NORETURN_BEGIN void crash(const crash_ctx& ctx) ODTONE_NORETURN_END;
 
 ///////////////////////////////////////////////////////////////////////////////

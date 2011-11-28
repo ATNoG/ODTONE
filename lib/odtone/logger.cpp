@@ -24,10 +24,10 @@ namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Construct a Logger.
+ * Construct a logger by copying it from another logger.
  *
- * @param name logger's name.
- * @param log logger from where extract the configurations for the new logger.
+ * @param name Logger's name.
+ * @param log Logger to copy.
  */
 logger::logger(char const* const name, logger& log)
 	: _name(name), _lock(log._lock), _sink(log._sink), _level(log._level)
@@ -36,10 +36,11 @@ logger::logger(char const* const name, logger& log)
 }
 
 /**
- * Construct a Logger.
+ * Construct a logger.
  *
- * @param name logger's name.
- * @param sink std::ostream that defines how the logger will write and format output as sequences of characters.
+ * @param name Logger's name.
+ * @param sink std::ostream which defines how the logger will write and
+ *             format output.
  */
 logger::logger(char const* const name, std::ostream& sink)
 	: _name(name), _lock(boost::make_shared<boost::mutex>()), _sink(sink), _level(0)
@@ -48,10 +49,46 @@ logger::logger(char const* const name, std::ostream& sink)
 }
 
 /**
- * Destruct for Logger.
+ * Destruct a logger.
  */
 logger::~logger()
 {
+}
+
+/**
+ * Set the output level. Each logger has a level associated with it.
+ * This reflects the maximum level that the logger cares about. So, if the
+ * logger level is set to 2 it only cares about log messages belonging
+ * to level 0, 1 and 2.
+ *
+ * @param n Logger level.
+ */
+void logger::level(uint n)
+{
+	_level = n;
+}
+
+/**
+ * Get the level configuration. Each logger has a level associated with it.
+ * This reflects the maximum level that the logger cares about. So, if the
+ * logger level is set to 2 it only cares about log messages belonging
+ * to level 0, 1 and 2.
+ *
+ * @return The logger level.
+ */
+uint logger::level() const
+{
+	return _level;
+}
+
+/**
+ * Get the std::ostream associated with the logger.
+ *
+ * @return The std::ostream associated with the logger.
+ */
+std::ostream& logger::sink() const
+{
+	return _sink;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

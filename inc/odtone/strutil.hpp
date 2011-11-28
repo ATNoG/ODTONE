@@ -28,18 +28,19 @@ namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Convert a value to hexadecimal values.
+ * Convert a value to hexadecimal.
  *
- * @param src value to convert.
- * @param len length of the value to convert.
- * @return The hexadecimal value string.
+ * @param src Value to convert.
+ * @param len Length of the value to convert.
+ * @return The converted hexadecimal value string.
  */
 std::string to_string_hex(const void* src, size_t len);
 
 /**
  * Convert a value to hexadecimal values.
  *
- * @return The hexadecimal value string.
+ * @param v Value to convert.
+ * @return The converted hexadecimal value string.
  */
 template<class T>
 inline std::string to_string_hex(const T& v)
@@ -48,10 +49,10 @@ inline std::string to_string_hex(const T& v)
 }
 
 /**
- * Convert hexadecimal values to int value.
+ * Convert a hexadecimal value to an int.
  *
- * @param c hexadecimal value.
- * @return The int value.
+ * @param c Hexadecimal value.
+ * @return The converted int value.
  */
 inline uchar hex_to_int(uchar c)
 {

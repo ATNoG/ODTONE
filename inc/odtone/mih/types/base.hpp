@@ -49,26 +49,34 @@ inline EnumT operator++(EnumT& rs, int)
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
-/**
- * Define a OCTET data type.
- */
-typedef uint8       octet;
 
-/**
- * Define a OCTET_STRING data type.
- */
-typedef std::string octet_string;
+typedef uint8		octet;			/**< OCTET data type.			*/
+typedef std::string octet_string;	/**< OCTET_STRING data type.	*/
 
 /**
  * Define NULL data type.
  */
 struct null {
-  template<class ArchiveT> void serialize(ArchiveT&) {}
+	/**
+	 * Serialize/deserialize the NULL data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
+	template<class ArchiveT> void serialize(ArchiveT&) {}
 
-  bool operator==(const null &) const { return true; }
+	bool operator==(const null &) const
+	{
+		return true;
+	}
 };
 
-inline std::ostream& operator<<(std::ostream& os, const null&)
+/**
+ * NULL data type output.
+ *
+ * @param os ostream.
+ * @param n NULL data type.
+ */
+inline std::ostream& operator<<(std::ostream& os, const null& n)
 {
 	os << "(null)";
 
@@ -77,7 +85,8 @@ inline std::ostream& operator<<(std::ostream& os, const null&)
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define BITMAP data type.
+ * BITMAP data type.
+ * @note N must be a multiple of 8.
  */
 template<size_t N, class EnumT>
 class bitmap {
@@ -85,38 +94,100 @@ class bitmap {
 	//	ODTONE_STATIC_ASSERT(boost::is_enum<EnumT>::value, "EnumT must be an enumeration");
 
 public:
-	bitmap() { clear(); }
+	/**
+	 * Contruct an empty BITMAP data type.
+	 */
+	bitmap()
+	{
+		clear();
+	}
 
+	/**
+	 * Clear the BITMAP data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	void clear()
 	{
 		for (size_t i = 0; i < sizeof(_bitmap); ++i)
 			_bitmap[i] = 0x00;
 	}
 
-	void clear(EnumT pos)     { _bitmap[uint(pos) / 8] &= ~(1 << (uint(pos) % 8)); }
-	void set(EnumT pos)       { _bitmap[uint(pos) / 8] |= (1 << (uint(pos) % 8)); }
-	bool get(EnumT pos) const { return _bitmap[uint(pos) / 8] & (1 << (uint(pos) % 8)); }
+	/**
+	 * Clear the position.
+	 *
+	 * @param pos The position on the bitmap to clear.
+	 */
+	void clear(EnumT pos)
+	{
+		_bitmap[uint(pos) / 8] &= ~(1 << (uint(pos) % 8));
+	}
 
-	void merge(bitmap b) {
+	/**
+	 * Set the position.
+	 *
+	 * @param pos The position on the bitmap to set.
+	 */
+	void set(EnumT pos)
+	{
+		_bitmap[uint(pos) / 8] |= (1 << (uint(pos) % 8));
+	}
+
+	/**
+	 * Get the position value.
+	 *
+	 * @param pos The position on the bitmap to get.
+	 */
+	bool get(EnumT pos) const
+	{
+		return _bitmap[uint(pos) / 8] & (1 << (uint(pos) % 8));
+	}
+
+	/**
+	 * Merge the value of the bitmap with another BITMAP data type.
+	 * @note Both bitmaps must have the same size
+	 *
+	 * @param b The BITMAP data type to merge with.
+	 */
+	void merge(bitmap b)
+	{
 		ODTONE_STATIC_ASSERT((sizeof(_bitmap) == sizeof(b._bitmap)),
 		                    "Both bitmaps must have the same size");
 		for (size_t i = 0; i < sizeof(_bitmap); ++i)
 			_bitmap[i] |= b._bitmap[i];
 	}
 
-	void common(bitmap b) {
+	/**
+	 * Set the common values between the BITMAP and another BITMAP data type.
+	 * @note Both bitmaps must have the same size
+	 *
+	 * @param b The BITMAP data type to compare with.
+	 */
+	void common(bitmap b)
+	{
 		ODTONE_STATIC_ASSERT((sizeof(_bitmap) == sizeof(b._bitmap)),
 		                    "Both bitmaps must have the same size");
 		for (size_t i = 0; i < sizeof(_bitmap); ++i)
 			_bitmap[i] &= b._bitmap[i];
 	}
 
-	void full() {
+	/**
+	 * Set all poisition of the BITMAP data type.
+	 */
+	void full()
+	{
 		for (size_t i = 0; i < sizeof(_bitmap); ++i)
 			_bitmap[i] = 0xFF;
 	}
 
-	bool operator==(const bitmap& bit) const {
+	/**
+	 * Check if the two bitmaps are equal.
+	 * @note Both bitmaps must have the same size
+	 *
+	 * @param bit The BITMAP data type to compare with.
+	 */
+	bool operator==(const bitmap& bit) const
+	{
 		if(sizeof(_bitmap) == sizeof(bit._bitmap)) {
 			for (size_t i = 0; i < sizeof(_bitmap); ++i) {
 				if(_bitmap[i] != bit._bitmap[i]) {
@@ -131,6 +202,11 @@ public:
 		return true;
 	}
 
+	/**
+	 * Serialize/deserialize the BITMAP data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -139,24 +215,39 @@ public:
 	}
 
 private:
-	octet _bitmap[N / 8];
+	octet _bitmap[N / 8];	/**< BITMAP data type value.	*/
 };
 
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Percentage exception.
+ */
 struct percentage_exception : virtual public exception {
+	/**
+	 * Construct a percentage exception.
+	 */
 	percentage_exception() : exception("odtone::mih::percentage: out of range")
 	{ }
 };
 
 /**
- * Define PERCENTAGE data type.
+ * PERCENTAGE data type.
  */
 class percentage {
 public:
+	/**
+	 * Construct a PERCENTAGE data type. It is initialize to 0%.
+	 */
 	percentage() : _val(0)
 	{ }
 
+	/**
+	 * Set the PERCENTAGE data type value.
+	 *
+	 * @param val The percentage value.
+	 * @return The reference to the PERCENTAGE data type.
+	 */
 	percentage& operator=(uint val)
 	{
 		if (val > 100)
@@ -166,8 +257,21 @@ public:
 		return *this;
 	}
 
-	operator uint() { return _val; }
+	/**
+	 * Get the PERCENTAGE data type value.
+	 *
+	 * @return The PERCENTAGE data type value.
+	 */
+	operator uint()
+	{
+		return _val;
+	}
 
+	/**
+	 * Serialize/deserialize the PERCENTAGE data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -175,43 +279,114 @@ public:
 	}
 
 private:
-	octet _val;
+	octet _val;	/**< PERCENTAGE data type value.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define ENUMERATED data type.
+ * ENUMERATED data type.
  */
 template<class T>
 class enumeration {
 	ODTONE_STATIC_ASSERT(boost::is_enum<T>::value, "T must be an enumeration");
 
 public:
+	/**
+	 * Construct an empty ENUMERATION data type.
+	 */
 	enumeration()
 	{ }
+
+	/**
+	 * Construct an ENUMERATION data type.
+	 *
+	 * @param val The value of the ENUMERATION data type.
+	 */
 	enumeration(T val) : _val(val)
 	{ }
 
+	/**
+	 * Set the ENUMERATION data type.
+	 *
+	 * @param val The value to assign to the ENUMERATION data type.
+	 */
 	enumeration& operator=(T val)
 	{
 		_val = val;
 		return *this;
 	}
 
-	T get() const { return T(_val); }
+	/**
+	 * Get the ENUMERATION data type value.
+	 *
+	 * @return The value of the ENUMERATION data type.
+	 */
+	T get() const
+	{
+		return T(_val);
+	}
 
+	/**
+	 * Serialize/deserialize the ENUMERATION data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
 		ar & _val;
 	}
 
-	bool operator==(T val) const { return (_val == val); }
-	bool operator!=(T val) const { return (_val != val); }
+	/**
+	 * Check if the ENUMERATION value is equal to the argument value.
+	 *
+	 * @param val The value to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
+	bool operator==(T val) const
+	{
+		return (_val == val);
+	}
 
-	bool operator==(const enumeration& e) const { return (_val == e._val); }
-	bool operator!=(const enumeration& e) const { return (_val != e._val); }
+	/**
+	 * Check if the ENUMERATION value is equal to the argument value.
+	 *
+	 * @param val The value to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
+	bool operator!=(T val) const
+	{
+		return (_val != val);
+	}
 
+	/**
+	 * Check if the ENUMERATION is equal to another ENUMERATION.
+	 *
+	 * @param e The ENUMERATION to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
+	bool operator==(const enumeration& e) const
+	{
+		return (_val == e._val);
+	}
+
+	/**
+	 * Check if the ENUMERATION is equal to another ENUMERATION.
+	 *
+	 * @param e The ENUMERATION to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
+	bool operator!=(const enumeration& e) const
+	{
+		return (_val != e._val);
+	}
+
+	/**
+	 * ENUMERATION data type output.
+	 *
+	 * @param os ostream.
+	 * @param e ENUMERATION data type.
+	 */
 	friend std::ostream& operator<<(std::ostream& os, const enumeration& e)
 	{
 		std::ios::fmtflags prev;
@@ -224,23 +399,23 @@ public:
 	}
 
 private:
-	uint8 _val;
+	uint8 _val;	/**< ENUMERATION data type value.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * The enumeration of STATUS data type.
+ * STATUS data type enumeration.
  */
 enum status_enum {
-	status_success = 0,
-	status_failure = 1,
-	status_rejected = 2,
-	status_authorization_failure = 3,
-	status_network_error = 4,
+	status_success = 0,					/**< Status success.				*/
+	status_failure = 1,					/**< Status failure.				*/
+	status_rejected = 2,				/**< Status rejected.				*/
+	status_authorization_failure = 3,	/**< Status authorization failure.	*/
+	status_network_error = 4,			/**< Status network error.			*/
 };
 
 /**
- * Define a STATUS data type.
+ * STATUS data type.
  */
 typedef enumeration<status_enum> status;
 

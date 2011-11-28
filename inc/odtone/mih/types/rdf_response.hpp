@@ -26,23 +26,31 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define IR_RDF_SCHEM_URL data type.
+ * IR_RDF_SCHEM_URL data type.
  */
 typedef octet_string                  ir_rdf_schem_url;
 
 /**
- * Define LIST(IR_RDF_SCHEM_URL) data type.
+ * LIST(IR_RDF_SCHEM_URL) data type.
  */
 typedef std::vector<ir_rdf_schem_url> ir_rdf_schem_url_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define IR_RDF_DATA data type.
+ * IR_RDF_DATA data type.
  */
 struct ir_rdf_data {
+	/**
+	 * Construct a IR_RDF_DATA data type.
+	 */
 	ir_rdf_data() : _mime(null())
 	{ }
 
+	/**
+	 * Serialize/deserialize the IQ_RDF_DATA data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -50,23 +58,31 @@ struct ir_rdf_data {
 		ar & _data;
 	}
 
-	boost::variant<null, octet_string> _mime;
-	octet_string                       _data;
+	boost::variant<null, octet_string> _mime;	/**< MIME type.			*/
+	octet_string                       _data;	/**< Value of the MIME.	*/
 };
 
 /**
- * Define LIST(IR_RDF_DATA) data type.
+ * LIST(IR_RDF_DATA) data type.
  */
 typedef std::vector<ir_rdf_data> ir_rdf_data_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define IR_RDF_SCHEM data type.
+ * IR_RDF_SCHEM data type.
  */
 struct ir_rdf_schem {
+	/**
+	 * Construct a IQ_RDF_SCHEM data type.
+	 */
 	ir_rdf_schem() : _mime(null())
 	{ }
 
+	/**
+	 * Serialize/deserialize the IQ_RDF_DATA data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -74,12 +90,12 @@ struct ir_rdf_schem {
 		ar & _data;
 	}
 
-	boost::variant<null, octet_string> _mime;
-	octet_string                       _data;
+	boost::variant<null, octet_string> _mime;	/**< MIME type.			*/
+	octet_string                       _data;	/**< Value of the MIME.	*/
 };
 
 /**
- * Define LIST(IR_RDF_SCHEM) data type.
+ * LIST(IR_RDF_SCHEM) data type.
  */
 typedef std::vector<ir_rdf_schem> ir_rdf_schem_list;
 

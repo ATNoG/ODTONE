@@ -30,65 +30,70 @@ namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * The BASE API offers support mechanisms for logging, using odtone::logger class.
- * The logger object is used to log messages for a specific system or application
- * component. Logger names can be arbitrary strings, but they should normally be
- * based on the application that invoke it.
- * Each logger has a level associated with it. This reflects the maximum level
- * that the logger cares about. So if you set level to 2 it only cares about log
- * messages belonging to level 0, 1 and 2.
- * It also has an std::ostream object associated with it. This defines how the
- * logger write and format output as sequences of characters. The log messages
- * can have up to 10 arguments.
+ * Mechanism for debugging, which provides logging procedures to log messages
+ * for a specific system or application component. Logger names can be
+ * arbitrary strings, but they should be based on the application
+ * that invoke it. Each logger has a level associated with it. This reflects
+ * the maximum level that the logger cares about. So, if the logger level is
+ * set to 2 it only cares about log messages belonging to level 0, 1 and 2.
+ * It also has an std::ostream object associated with it, which defines how
+ * the logger writes and formats the output. The log messages can have up to
+ * 10 arguments.
  */
 class logger : boost::noncopyable {
 public:
 	/**
-	 * Construct a Logger.
+	 * Construct a logger by copying it from another logger.
 	 *
-	 * @param name logger's name.
-	 * @param log logger from where extract the configurations for the new logger.
+	 * @param name Logger's name.
+	 * @param log Logger to copy.
 	 */
 	logger(char const* const name, logger& log);
 
 	/**
-	 * Construct a Logger.
+	 * Construct a logger.
 	 *
-	 * @param name logger's name.
-	 * @param sink std::ostream that defines how the logger will write and format output as sequences of characters.
+	 * @param name Logger's name.
+	 * @param sink std::ostream which defines how the logger will write and
+	 *             format output.
 	 */
 	logger(char const* const name, std::ostream& sink);
 
 	/**
-	 * Destruct for Logger.
+	 * Destruct a logger.
 	 */
 	~logger();
 
 	/**
-	 * Set the level configuration. Each logger has a level associated with it.
-	 * This reflects the maximum level that the logger cares about. So if you
-	 * set level to 2 it only cares about log messages belonging to level 0, 1 and 2.
+	 * Set the output level. Each logger has a level associated with it.
+	 * This reflects the maximum level that the logger cares about. So, if the
+	 * logger level is set to 2 it only cares about log messages belonging
+	 * to level 0, 1 and 2.
 	 *
-	 * @param n logger level.
+	 * @param n Logger level.
 	 */
-	void level(uint n) { _level = n; }
+	void level(uint n);
 
 	/**
 	 * Get the level configuration. Each logger has a level associated with it.
-	 * This reflects the maximum level that the logger cares about. So if you
-	 * set level to 2 it only cares about log messages belonging to level 0, 1 and 2.
+	 * This reflects the maximum level that the logger cares about. So, if the
+	 * logger level is set to 2 it only cares about log messages belonging
+	 * to level 0, 1 and 2.
 	 *
 	 * @return The logger level.
 	 */
-	uint level() const { return _level; }
+	uint level() const;
 
 	/**
 	 * Get the std::ostream associated with the logger.
 	 *
 	 * @return The std::ostream associated with the logger.
 	 */
-	std::ostream& sink() const  { return _sink; }
+	std::ostream& sink() const;
 
+	/**
+	 * XXX
+	 */
 	template<class T1>
 	void operator()(uint level, const T1& arg1)
 	{
@@ -210,10 +215,12 @@ public:
 	}
 
 private:
-	char const* const               _name;
-	boost::shared_ptr<boost::mutex> _lock;
-	std::ostream&                   _sink;
-	uint                            _level;
+	boost::shared_ptr<boost::mutex> _lock;	/**< Mutex to avoid the simultaneous
+												 use of a common resource. */
+
+	char const* const               _name;	/**< Logger's name.			*/
+	std::ostream&                   _sink;	/**< Logger's std::ostream.	*/
+	uint                            _level;	/**< Logger's level.		*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////

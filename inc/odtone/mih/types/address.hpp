@@ -25,44 +25,83 @@
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
-/**
- * Define CELL_ID data type.
- */
-typedef uint32   cell_id;
-
-/**
- * Define LAC data type.
- */
-typedef uint16   lac;
-
-/**
- * Define CI data type.
- */
-typedef uint16   ci;
+typedef uint32   cell_id;	/**< CELL_ID data type.		*/
+typedef uint16   lac;		/**< LAC data type.			*/
+typedef uint16   ci;		/**< CI data type.			*/
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define TRANSPORT_ADDR data type.
+ * TRANSPORT_ADDR data type.
  */
 class transport_addr {
 protected:
+	/**
+	 * Construct a TRANSPORT_ADDR data type.
+	 *
+	 * @param type Transport address type.
+	 */
 	transport_addr(uint16 type) : _type(type)
 	{ }
 
+	/**
+	 * Construct a TRANSPORT_ADDR data type.
+	 *
+	 * @param type Transport address type.
+	 * @param raw Raw bytes of the transport address.
+	 * @param len Size of the transport address raw bytes.
+	 */
 	transport_addr(uint16 type, const void* raw, size_t len)
 		: _type(type), _addr(reinterpret_cast<const char*>(raw), len)
 	{ }
 
 public:
-	uint16 type() const { return _type; }
 
-	void type(const uint16 type) {
+	/**
+	 * Get the TRANSPORT_ADDR type.
+	 *
+	 * @return The transport address type.
+	 */
+	uint16 type() const
+	{
+		return _type;
+	}
+
+	/**
+	 * Set the TRANSPORT_ADDR type.
+	 *
+	 * @param The transport address type.
+	 */
+	void type(const uint16 type)
+	{
 		_type = type;
 	}
 
-	const void* get() const    { return _addr.data(); }
-	size_t      length() const { return _addr.length(); }
+	/**
+	 * Get the pointer to an array of characters which contains the
+	 * transport address.
+	 *
+	 * @return Pointer to an internal array containing the transport address.
+	 */
+	const void* get() const
+	{
+		return _addr.data();
+	}
 
+	/**
+	 * Get the lenght of the transport address string.
+	 *
+	 * @return The lenght of the transport address string.
+	 */
+	size_t length() const
+	{
+		return _addr.length();
+	}
+
+	/**
+	 * Serialize/deserialize the TRANSPORT_ADDR data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -71,44 +110,78 @@ public:
 	}
 
 protected:
-	uint16       _type;
-	octet_string _addr;
+	uint16       _type;	/**< Transport address type.	*/
+	octet_string _addr;	/**< Transport address string.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * The enumeration of TRANSPORT_TYPE data type.
+ * TRANSPORT_TYPE data type enumeration.
  */
 enum transport_type_enum {
-	l2           = 0,
-	l3_or_higher = 1,
+	l2           = 0,		/**< Layer 2 transport address.				*/
+	l3_or_higher = 1,		/**< Layer 3 or higher transport address.	*/
 };
 
 /**
- * Define TRANSPORT_TYPE data type.
+ * TRANSPORT_TYPE data type.
  */
-typedef enumeration<transport_type_enum> transport_type;
+typedef enumeration<transport_type_enum> transport_type; 
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define MAC_ADDR data type.
+ * MAC_ADDR data type.
  */
 class mac_addr : public transport_addr {
 public:
+	/**
+	 * Construct an empty MAC_ADDR data type.
+	 * @note Transport address type = 6
+	 */
 	mac_addr() : transport_addr(6)
 	{ }
 
+	/**
+	 * Construct an empty MAC_ADDR data type.
+	 * @note Transport address type = 6
+	 *
+	 * @param type address MAC address string (format: XX:XX:XX:XX:XX:XX).
+	 */
 	explicit mac_addr(const octet_string& addr) : transport_addr(6)
 	{
 		this->address(addr);
 	}
 
+	/**
+	 * Construct an empty MAC_ADDR data type.
+	 * @note Transport address type = 6
+	 *
+	 * @param raw Raw bytes of the MAC address.
+	 * @param len Lenght of the MAC address raw bytes.
+	 */
 	mac_addr(const void* raw, size_t len) : transport_addr(6, raw, len)
 	{ }
 
+	/**
+	 * Get the MAC address string (format: XX:XX:XX:XX:XX:XX).
+	 *
+	 * @return The MAC address string.
+	 */
 	octet_string address() const;
-	void         address(const octet_string& addr);
 
+	/**
+	 * Set the MAC address.
+	 *
+	 * @param addr The MAC address string (format: XX:XX:XX:XX:XX:XX).
+	 */
+	void address(const octet_string& addr);
+
+	/**
+	 * MAC_ADDR data type output.
+	 *
+	 * @param out ostream.
+	 * @param tp MAC_ADDR data type.
+	 */
 	friend std::ostream& operator<<(std::ostream& out, const mac_addr& tp)
 	{
 		out << "\ntype: " << tp.type();
@@ -117,6 +190,12 @@ public:
 		return out;
 	}
 
+	/**
+	 * Check if the MAC_ADDR is equal to another MAC_ADDR.
+	 *
+	 * @param other The MAC_ADDR to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
 	bool operator==(const mac_addr& other) const
 	{
 		return ((type() == other.type()) && (address().compare(other.address()) == 0));
@@ -125,13 +204,18 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define L2_3GPP_2G_CELL_ID data type.
+ * L2_3GPP_2G_CELL_ID data type.
  */
 struct l2_3gpp_2g_cell_id {
-	uint8  plmn_id[3];
-	lac    _lac;
-	ci     _ci;
+	uint8  plmn_id[3];	/**< PLMN_ID data type.	*/
+	lac    _lac;		/**< LAC data type.		*/
+	ci     _ci;			/**< CI data type.		*/
 
+	/**
+	 * Serialize/deserialize the L2_3GPP_2G_CELL_ID data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -142,11 +226,23 @@ struct l2_3gpp_2g_cell_id {
 		ar & _ci;
 	}
 
+	/**
+	 * L2_3GPP_2G_CELL_ID data type output.
+	 *
+	 * @param out ostream.
+	 * @param tp L2_3GPP_2G_CELL_ID data type.
+	 */
 	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_2g_cell_id&)
 	{
 		return out;
 	}
 
+	/**
+	 * Check if the L2_3GPP_2G_CELL_ID is equal to another L2_3GPP_2G_CELL_ID.
+	 *
+	 * @param other The L2_3GPP_2G_CELL_ID to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
 	bool operator==(const l2_3gpp_2g_cell_id& other) const
 	{
 		return ((_lac == other._lac)
@@ -158,12 +254,17 @@ struct l2_3gpp_2g_cell_id {
 };
 
 /**
- * Define L2_3GPP_3G_CELL_ID data type.
+ * L2_3GPP_3G_CELL_ID data type.
  */
 struct l2_3gpp_3g_cell_id {
-	uint8    plmn_id[3];
-	cell_id  _cell_id;
+	uint8    plmn_id[3];	/**< PLMN_ID data type.	*/
+	cell_id  _cell_id;		/**< CELL_ID data type.	*/
 
+	/**
+	 * Serialize/deserialize the L2_3GPP_3G_CELL_ID data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -173,11 +274,23 @@ struct l2_3gpp_3g_cell_id {
 		ar & _cell_id;
 	}
 
+	/**
+	 * L2_3GPP_3G_CELL_ID data type output.
+	 *
+	 * @param out ostream.
+	 * @param tp L2_3GPP_3G_CELL_ID data type.
+	 */
 	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_3g_cell_id&)
 	{
 		return out;
 	}
 
+	/**
+	 * Check if the L2_3GPP_3G_CELL_ID is equal to another L2_3GPP_3G_CELL_ID.
+	 *
+	 * @param other The L2_3GPP_3G_CELL_ID to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
 	bool operator==(const l2_3gpp_3g_cell_id& other) const
 	{
 		return ((_cell_id == other._cell_id)
@@ -189,26 +302,43 @@ struct l2_3gpp_3g_cell_id {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define L2_3GPP_ADDR data type.
+ * L2_3GPP_ADDR data type.
  */
 struct l2_3gpp_addr  {
+	/**
+	 * Serialize/deserialize the L2_3GPP_ADDR data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
 		ar & value;
 	}
 
+	/**
+	 * L2_3GPP_ADDR data type output.
+	 *
+	 * @param out ostream.
+	 * @param tp L2_3GPP_ADDR data type.
+	 */
 	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_addr&)
 	{
 		return out;
 	}
 
+	/**
+	 * Check if the L2_3GPP_ADDR is equal to another L2_3GPP_ADDR.
+	 *
+	 * @param other The L2_3GPP_ADDR to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
 	bool operator==(const l2_3gpp_addr& other) const
 	{
 		return ((value == other.value));
 	}
 
-	octet_string value;
+	octet_string value;	/**< L2_3GPP_ADDR data type.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -216,23 +346,40 @@ struct l2_3gpp_addr  {
  * Define L2_3GPP2_ADDR data type.
  */
 struct l2_3gpp2_addr {
+	/**
+	 * Serialize/deserialize the L2_3GPP2_ADDR data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
 		ar & value;
 	}
 
+	/**
+	 * L2_3GPP2_ADDR data type output.
+	 *
+	 * @param out ostream.
+	 * @param tp L2_3GPP2_ADDR data type.
+	 */
 	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp2_addr&)
 	{
 		return out;
 	}
 
+	/**
+	 * Check if the L2_3GPP2_ADDR is equal to another L2_3GPP2_ADDR.
+	 *
+	 * @param other The L2_3GPP2_ADDR to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
 	bool operator==(const l2_3gpp2_addr& other) const
 	{
 		return ((value == other.value));
 	}
 
-	octet_string value;
+	octet_string value;	/**< L2_3GPP2_ADDR data type.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -240,28 +387,45 @@ struct l2_3gpp2_addr {
  * Define OTHER_L2_ADDR data type.
  */
 struct other_l2_addr {
+	/**
+	 * Serialize/deserialize the OTHER_L2_ADDR data type.
+	 *
+	 * @param The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
 		ar & value;
 	}
 
+	/**
+	 * OTHER_L2_ADDR data type output.
+	 *
+	 * @param out ostream.
+	 * @param tp OTHER_L2_ADDR data type.
+	 */
 	friend std::ostream& operator<<(std::ostream& out, const other_l2_addr&)
 	{
 		return out;
 	}
 
+	/**
+	 * Check if the OTHER_L2_ADDR is equal to another OTHER_L2_ADDR.
+	 *
+	 * @param other The OTHER_L2_ADDR to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
 	bool operator==(const other_l2_addr& other) const
 	{
 		return ((value == other.value));
 	}
 
-	octet_string value;
+	octet_string value;	/**< OTHER_L2_ADDR data type.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define LINK_ADDR data type.
+ * LINK_ADDR data type.
  */
 typedef boost::variant<mac_addr,
 			l2_3gpp_3g_cell_id,
@@ -272,32 +436,64 @@ typedef boost::variant<mac_addr,
 		      > link_addr;
 
 /**
- * Define LIST(LINK_ADDR) data type.
+ * LIST(LINK_ADDR) data type.
  */
 typedef std::vector<link_addr> link_addr_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define IP_ADDR data type.
+ * IP_ADDR data type.
  */
 class ip_addr : public transport_addr {
 public:
+	/**
+	 * IP_ADDR type enumeration.
+	 */
 	enum type_ip_enum {
-		none = 0,
-		ipv4 = 1,
-		ipv6 = 2,
+		none = 0,		/**< None.					*/
+		ipv4 = 1,		/**< IP address version 4.	*/
+		ipv6 = 2,		/**< IP address version 6.	*/
 	};
 
+	/**
+	 * Construct a IP_ADDR data type.
+	 *
+	 * @param tp IP address type.
+	 */
 	ip_addr(type_ip_enum tp = none) : transport_addr(tp)
 	{ }
 
+	/**
+	 * Construct a IP_ADDR data type.
+	 *
+	 * @param tp IP address type.
+	 * @param raw Raw bytes of the IP address.
+	 * @param len Size of the IP address raw bytes.
+	 */
 	ip_addr(type_ip_enum tp, const void* raw, size_t len)
 		: transport_addr(tp, raw, len)
 	{ }
 
+	/**
+	 * Get the IP address string.
+	 *
+	 * @return The IP address string.
+	 */
 	octet_string address() const;
-	void         address(const octet_string& addr);
 
+	/**
+	 * Set the IP address.
+	 *
+	 * @param addr The IP address string.
+	 */
+	void address(const octet_string& addr);
+
+	/**
+	 * IP_ADDR data type output.
+	 *
+	 * @param out ostream.
+	 * @param tp IP_ADDR data type.
+	 */
 	friend std::ostream& operator<<(std::ostream& out, const ip_addr& tp)
 	{
 		out << "\ntype: " << tp.type();
@@ -306,26 +502,21 @@ public:
 		return out;
 	}
 
+	/**
+	 * Check if the IP_ADDR is equal to another IP_ADDR.
+	 *
+	 * @param other The IP_ADDR to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
 	bool operator==(const ip_addr& other) const
 	{
 		return ((type() == other.type()) && (address().compare(other.address()) == 0));
 	}
 };
 
-/**
- * Define DHCP_SERV data type.
- */
-typedef ip_addr dhcp_serv;
-
-/**
- * Define FN_AGENT data type.
- */
-typedef ip_addr fn_agent;
-
-/**
- * Define ACC_RTR data type.
- */
-typedef ip_addr acc_rtr;
+typedef ip_addr dhcp_serv;	 /**< DHCP_SERV data type.	*/
+typedef ip_addr fn_agent;	 /**< FN_AGENT data type.	*/
+typedef ip_addr acc_rtr;	 /**< ACC_RTR data type.	*/
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /*namespace odtone */

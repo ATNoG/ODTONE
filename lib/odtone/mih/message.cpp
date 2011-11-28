@@ -23,7 +23,7 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Construct a default MIH Message.
+ * Construct an empty MIH Message.
  *
  * The defaults for each field are:
  *    version = 1;
@@ -42,9 +42,9 @@ message::message()
 }
 
 /**
- * Construct a MIH Message parsing all fields from a frame.
+ * Construct a MIH Message by extracting the data from a frame.
  *
- * @param fm odtone::mih::frame from which to parse information.
+ * @param fm The frame from which extract the information.
  */
 message::message(const frame& fm)
 	: _payload(), _in(_payload), _out(_payload)
@@ -60,10 +60,10 @@ message::~message()
 }
 
 /**
- * Extract the MIH Message fields from a given odtone::mih::frame.
+ * Extract the message data from a frame.
  *
- * @param fm odtone::mih::frame from which to extract information.
- * @return odtone::mih::message with the fields updated.
+ * @param fm The frame from which extract the information.
+ * @return The message with updated data.
  */
 message& message::operator=(const frame& fm)
 {
@@ -91,9 +91,9 @@ message& message::operator=(const frame& fm)
 }
 
 /**
- * Get the MIH Message Frame
+ * Get the MIH Message Frame.
  *
- * @param fm a dynamic frame buffer to fill
+ * @param fm A dynamic frame buffer to store the information.
  */
 void message::get_frame(frame_vla& fm) const
 {

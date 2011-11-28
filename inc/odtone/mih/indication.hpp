@@ -29,9 +29,7 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * This class permits parsing/generating MIH Indication messages. It derives
- * from odtone::mih::message_helper and will inherit all the features from base
- * class.
+ * This class allows parsing/generating MIH Indication messages.
  */
 class indication : public message_helper {
 public:
@@ -39,87 +37,55 @@ public:
 	 * MIH Indication Message ID
 	 */
 	enum mid {
-		capability_discover									/// MIH_Capability_Discover.indication
-								= msg_id<1, 3, 1>::value,
-		mih_register										/// MIH_Register.indication
-								= msg_id<1, 3, 2>::value,
-		mih_deregister										/// MIH_DeRegister.indication
-								= msg_id<1, 3, 3>::value,
-		event_subscribe										/// MIH_Event_Subscribe.indication
-								= msg_id<1, 3, 4>::value,
-		event_unsubscribe									/// MIH_Event_Unsubscribe.indication
-								= msg_id<1, 3, 5>::value,
-
-		link_detected										/// MIH_Link_Detected.indication
-								= msg_id<2, 3, 1>::value,
-		link_up												/// MIH_Link_Up.indication
-								= msg_id<2, 3, 2>::value,
-		link_down											/// MIH_Link_Down.indication
-								= msg_id<2, 3, 3>::value,
-		link_parameters_report								/// MIH_Link_Parameters_Report.indication
-								= msg_id<2, 3, 5>::value,
-		link_going_down										/// MIH_Link_Going_Down.indication
-								= msg_id<2, 3, 6>::value,
-		link_handover_imminent								/// MIH_Link_Handover_Imminent.indication
-								= msg_id<2, 3, 7>::value,
-		link_handover_complete								/// MIH_Link_Handover_Complete.indication
-								= msg_id<2, 3, 8>::value,
-
-		link_get_parameters									/// MIH_Link_Get_Parameters.indication
-								= msg_id<3, 3, 1>::value,
-		link_configure_threshold							/// MIH_Link_Configure_Thresholds.indication
-								= msg_id<3, 3, 2>::value,
-		link_actions										/// MIH_Link_Actions.indication
-								= msg_id<3, 3, 3>::value,
-		net_ho_candidate_query								/// MIH_Net_HO_Candidate_Query.indication
-								= msg_id<3, 3, 4>::value,
-		mn_ho_candidate_query								/// MIH_MN_HO_Candidate_Query.indication
-								= msg_id<3, 3, 5>::value,
-		n2n_ho_query_resources								/// MIH_N2N_HO_Query_Resources.indication
-								= msg_id<3, 3, 6>::value,
-		mn_ho_commit										/// MIH_MN_HO_Commit.indication
-								= msg_id<3, 3, 7>::value,
-		net_ho_commit										/// MIH_Net_HO_Commit.indication
-								= msg_id<3, 3, 8>::value,
-		n2n_ho_commit										/// MIH_N2N_HO_Commit.indication
-								= msg_id<3, 3, 9>::value,
-		mn_ho_complete										/// MIH_N2N_HO_Complete.indication
-								= msg_id<3, 3, 10>::value,
-		n2n_ho_complete										/// MIH_N2N_HO_Commlete.indication
-								= msg_id<3, 3, 11>::value,
-
-		get_information 									/// MIH_Get_Information.indication
-								= msg_id<4, 3, 1>::value,
-		push_information									/// MIH_Push_Information.indication
-								= msg_id<4, 3, 2>::value,
-
+		capability_discover = msg_id<1, 3, 1>::value,		/**< MIH_Capability_Discover.indication*/
+		mih_register = msg_id<1, 3, 2>::value,				/**< MIH_Register.indication*/
+		mih_deregister = msg_id<1, 3, 3>::value,			/**< MIH_DeRegister.indication*/
+		event_subscribe = msg_id<1, 3, 4>::value,			/**< MIH_Event_Subscribe.indication*/
+		event_unsubscribe = msg_id<1, 3, 5>::value,			/**< MIH_Event_Unsubscribe.indication*/
+		link_detected = msg_id<2, 3, 1>::value,				/**< MIH_Link_Detected.indication*/
+		link_up = msg_id<2, 3, 2>::value,					/**< MIH_Link_Up.indication*/
+		link_down = msg_id<2, 3, 3>::value,					/**< MIH_Link_Down.indication*/
+		link_parameters_report = msg_id<2, 3, 5>::value,	/**< MIH_Link_Parameters_Report.indication*/
+		link_going_down = msg_id<2, 3, 6>::value,			/**< MIH_Link_Going_Down.indication*/
+		link_handover_imminent = msg_id<2, 3, 7>::value,	/**< MIH_Link_Handover_Imminent.indication*/
+		link_handover_complete = msg_id<2, 3, 8>::value,	/**< MIH_Link_Handover_Complete.indication*/
+		link_get_parameters = msg_id<3, 3, 1>::value,		/**< MIH_Link_Get_Parameters.indication*/
+		link_configure_threshold = msg_id<3, 3, 2>::value,	/**< MIH_Link_Configure_Thresholds.indication*/
+		link_actions = msg_id<3, 3, 3>::value,				/**< MIH_Link_Actions.indication	*/
+		net_ho_candidate_query = msg_id<3, 3, 4>::value,	/**< MIH_Net_HO_Candidate_Query.indication*/
+		mn_ho_candidate_query = msg_id<3, 3, 5>::value,		/**< MIH_MN_HO_Candidate_Query.indication*/
+		n2n_ho_query_resources = msg_id<3, 3, 6>::value,	/**< MIH_N2N_HO_Query_Resources.indication*/
+		mn_ho_commit = msg_id<3, 3, 7>::value,				/**< MIH_MN_HO_Commit.indication	*/
+		net_ho_commit = msg_id<3, 3, 8>::value,				/**< MIH_Net_HO_Commit.indication	*/
+		n2n_ho_commit = msg_id<3, 3, 9>::value,				/**< MIH_N2N_HO_Commit.indication	*/
+		mn_ho_complete = msg_id<3, 3, 10>::value,			/**< MIH_N2N_HO_Complete.indication	*/
+		n2n_ho_complete = msg_id<3, 3, 11>::value,			/**< MIH_N2N_HO_Commlete.indication	*/
+		get_information = msg_id<4, 3, 1>::value,			/**< MIH_Get_Information.indication	*/
+		push_information = msg_id<4, 3, 2>::value,			/**< MIH_Push_Information.indication*/
 		// ODTONE specific messages
-		link_register										/// Link_Register.indication
-								= msg_id<1, 3, 6>::value,
-		user_register										/// User_Register.indication
-								= msg_id<1, 3, 7>::value
+		link_register = msg_id<1, 3, 6>::value,				/**< Link_Register.indication	*/
+		user_register = msg_id<1, 3, 7>::value				/**< User_Register.indication	*/
 	};
 
 	/**
-	 * Construct an MIH Indication Message helper with MIH Message ID equals to
-	 * 0 (zero) and a null pointer for MIH Message Destination MIHF ID.
+	 * Construct an empty MIH Indication Message helper.
 	 */
 	indication() : message_helper(0, nullptr)
 	{ }
 
 	/**
-	 * Construct an MIH Indication Message helper
+	 * Construct an MIH Indication Message helper.
 	 *
-	 * @param m MIH Message ID
+	 * @param m The value of the MIH Message ID.
 	 */
 	explicit indication(mid m) : message_helper(m, nullptr)
 	{ }
 
 	/**
-	 * Construct an MIH Indication Message helper
+	 * Construct an MIH Indication Message helper.
 	 *
-	 * @param m MIH Message ID
-	 * @param destination MIH Message Destination MIHF ID
+	 * @param m The value of the MIH Message ID.
+	 * @param destination The value of the MIH Message Destination MIHF ID.
 	 */
 	indication(mid m, const id& destination) : message_helper(m, &destination)
 	{ }
