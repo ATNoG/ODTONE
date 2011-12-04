@@ -185,6 +185,14 @@ public:
 	void destination(const id& id);
 
 	/**
+	 * Set the message payload by copying it from another message.
+	 * @note The source and destination TLVs are not copied.
+	 *
+	 * @param msg The message from which extract the payload.
+	 */
+	void payload(const message& msg);
+
+	/**
 	 * Get the MIH Message Version.
 	 *
 	 * @return The value of the MIH Message Version field.
@@ -306,7 +314,7 @@ public:
 	 */
 	bool has_service_specific_tlv();
 
-private:
+protected:
 	uint8           _version;		/**< MIH Message Version.				*/
 	bool            _ackreq : 1;	/**< MIH Message Acknowledge Request Flag.*/
 	bool            _ackrsp : 1;	/**< MIH Message Acknowledge Response Flag.*/

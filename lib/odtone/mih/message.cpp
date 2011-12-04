@@ -91,6 +91,30 @@ message& message::operator=(const frame& fm)
 }
 
 /**
+ * Set the message payload by copying it from another message.
+ * @note The source and destination TLVs are not copied.
+ *
+ * @param msg The message from which extract the payload.
+ */
+void message::payload(const message& msg)
+{
+	frame_vla fm;
+	msg.get_frame(fm);
+
+	archive ar;
+	iarchive in(ar);
+
+	id tmp;
+	ar.append(fm->payload(), fm->payload() + fm->plength());
+	in & tlv_source_id(tmp);
+	in & tlv_destination_id(tmp);
+
+	_payload.clear();
+	_payload.append(fm->payload() + ar.position(), fm->payload() + fm->plength());
+	_payload.position(0);
+}
+
+/**
  * Get the MIH Message Frame.
  *
  * @param fm A dynamic frame buffer to store the information.
