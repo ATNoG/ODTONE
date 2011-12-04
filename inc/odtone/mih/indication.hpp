@@ -49,6 +49,7 @@ public:
 		link_going_down = msg_id<2, 3, 6>::value,			/**< MIH_Link_Going_Down.indication*/
 		link_handover_imminent = msg_id<2, 3, 7>::value,	/**< MIH_Link_Handover_Imminent.indication*/
 		link_handover_complete = msg_id<2, 3, 8>::value,	/**< MIH_Link_Handover_Complete.indication*/
+		link_pdu_transmit_status = msg_id<2, 3, 9>::value,	/**< MIH_Link_PDU_transmit_status.indication*/
 		link_get_parameters = msg_id<3, 3, 1>::value,		/**< MIH_Link_Get_Parameters.indication*/
 		link_configure_threshold = msg_id<3, 3, 2>::value,	/**< MIH_Link_Configure_Thresholds.indication*/
 		link_actions = msg_id<3, 3, 3>::value,				/**< MIH_Link_Actions.indication	*/
