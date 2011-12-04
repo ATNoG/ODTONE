@@ -568,7 +568,9 @@ void event_service::msg_forward(meta_message_ptr &msg,
 	std::list<event_registration_t>::iterator it;
 	int i = 0; // for logging purposes
 
-	msg->source(mihfid);
+	if(msg->is_local())
+		msg->source(mihfid);
+
 	for(it = _event_subscriptions.begin();
 	    it != _event_subscriptions.end();
 	    it++, i++) {
@@ -672,7 +674,9 @@ bool event_service::link_detected_indication(meta_message_ptr &in,
 	std::list<event_registration_t>::iterator it;
 	int i = 0; // for logging purposes
 
-	in->source(mihfid);
+	if(in->is_local())
+		in->source(mihfid);
+
 	for(it = _event_subscriptions.begin();
 	    it != _event_subscriptions.end();
 	    it++, i++) {
@@ -745,7 +749,9 @@ bool event_service::link_handover_imminent_indication(meta_message_ptr &in,
 	std::list<event_registration_t>::iterator it;
 	int i = 0; // for logging purposes
 
-	in->source(mihfid);
+	if(in->is_local())
+		in->source(mihfid);
+
 	for(it = _event_subscriptions.begin();
 	    it != _event_subscriptions.end();
 	    it++, i++) {
@@ -805,7 +811,9 @@ bool event_service::link_handover_complete_indication(meta_message_ptr &in,
 	std::list<event_registration_t>::iterator it;
 	int i = 0; // for logging purposes
 
-	in->source(mihfid);
+	if(in->is_local())
+		in->source(mihfid);
+
 	for(it = _event_subscriptions.begin();
 	    it != _event_subscriptions.end();
 	    it++, i++) {
