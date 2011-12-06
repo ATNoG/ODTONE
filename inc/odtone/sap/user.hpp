@@ -58,6 +58,22 @@ class user : public sap {
 
 public:
 	/**
+	 * MIH-User SAP configurations structure.
+	 */
+	struct config {
+		config()
+			: id("user"), port(1234), mihf_address(boost::asio::ip::address_v4::loopback()),
+			  mihf_port(1025), buffer_length(4096)
+		{ }
+
+		std::string id;				/**< Identifier.			*/
+		uint        port;			/**< Listening port.		*/
+		ip_address  mihf_address;	/**< MIHF IP address.		*/
+		uint        mihf_port;		/**< MIHF listening port.	*/
+		size_t      buffer_length;	/**< Receive Buffer Length.	*/
+	};
+
+	/**
 	 * Construct a MIH-User SAP I/O Service.
 	 * The defined callback is invoked when a request message is received
 	 * The signature of the callback is:
@@ -65,11 +81,25 @@ public:
 	 *
 	 * @param cfg Configuration parameters.
 	 * @param io The io_service object that Link SAP I/O Service will use to
-		         dispatch handlers for any asynchronous operations performed on
-		         the socket.
+	 * dispatch handlers for any asynchronous operations performed on
+	 * the socket.
 	 * @param h Message processing handler.
 	 */
 	user(const mih::config& cfg, boost::asio::io_service& io, const handler& h);
+
+	/**
+	 * Construct a MIH-User SAP I/O Service.
+	 * The defined callback is invoked when a request message is received
+	 * The signature of the callback is:
+	 * void(odtone::mih::message&, const boost::system::error_code&).
+	 *
+	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * dispatch handlers for any asynchronous operations performed on
+	 * the socket.
+	 * @param h Message processing handler.
+	 * @param cfg Configuration parameters.
+	 */
+	user(boost::asio::io_service& io, const handler& h, const config& cfg = config());
 
 	/**
 	 * Destruct a MIH-User SAP I/O Service.
