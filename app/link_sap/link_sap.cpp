@@ -129,6 +129,27 @@ void link_sap::default_handler(odtone::mih::message& msg, const boost::system::e
 			break;
 		}
 
+	case odtone::mih::request::event_unsubscribe:
+		{
+			odtone::mih::event_list events;
+			msg >> odtone::mih::request()
+				& odtone::mih::tlv_event_list(events);
+
+			odtone::mih::message m;
+
+			// fill the status
+			st = odtone::mih::status_success;
+
+			m << odtone::mih::confirm(odtone::mih::confirm::event_unsubscribe)
+				& odtone::mih::tlv_status(st)
+				& odtone::mih::tlv_event_list(events);
+			m.tid(msg.tid());
+
+			_mihf.async_send(m);
+
+			break;
+		}
+
 
 	default:
 		{

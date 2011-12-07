@@ -101,9 +101,10 @@ IMPORT $(__name__) : runtime-lib : : odtone.runtime-lib ;
 explicit-alias base : lib/odtone//odtone_base ;
 explicit-alias mih  : lib/odtone/mih//odtone_mih ;
 explicit-alias sap  : lib/odtone/sap//odtone_sap ;
+explicit-alias net  : lib/odtone/net//odtone_net ;
 
 use-project /odtone/base : lib/odtone ;
-use-project /odtone/mih  : lib/odtone/mih ;
+use-project /odtone/net  : lib/odtone/net ;
 use-project /odtone/sap  : lib/odtone/sap ;
 
 #

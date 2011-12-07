@@ -56,6 +56,34 @@ user::user(const mih::config& cfg, boost::asio::io_service& io, const handler& h
 }
 
 /**
+ * Construct a MIH-User SAP I/O Service.
+ * The defined callback is invoked when a request message is received
+ * The signature of the callback is:
+ * void(odtone::mih::message&, const boost::system::error_code&).
+ *
+ * @param io The io_service object that Link SAP I/O Service will use to
+ * dispatch handlers for any asynchronous operations performed on
+ * the socket.
+ * @param h Message processing handler.
+ * @param cfg Configuration parameters.
+ */
+user::user(boost::asio::io_service& io, const handler& h, const config& cfg)
+	: _handler(h), _sock(io, ip::udp::endpoint(ip::udp::v4(), cfg.port)),
+	  _ep(cfg.mihf_address, cfg.mihf_port), _user_id(odtone::mih::id(cfg.id))
+{
+	buffer<uint8> buff(cfg.buffer_length);
+	void* rbuff = buff.get();
+	size_t rlen = buff.size();
+
+	_sock.async_receive(boost::asio::buffer(rbuff, rlen),
+						boost::bind(&user::recv_handler,
+									this,
+									bind_rv(buff),
+									boost::asio::placeholders::bytes_transferred,
+									boost::asio::placeholders::error));
+}
+
+/**
  * Destruct a MIH-User SAP I/O Service.
  */
 user::~user()

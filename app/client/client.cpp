@@ -54,6 +54,7 @@ static const char* const kConf_MIH_LinkHandoverComplete_indication = "indication
 static const char* const kConf_MIH_LinkConfigureThresholds_request = "request.link_configure_thresholds";
 static const char* const kConf_MIH_LinkGetParameters_request = "request.link_get_parameters";
 static const char* const kConf_MIH_LinkActions_request = "request.link_actions";
+static const char* const kConf_MIH_EventUnsubscribe_request = "request.event_unsubscribe";
 
 /* dummy synchronous mih sap handler */
 class handler
@@ -317,6 +318,29 @@ void send_link_actions_request(handler &sap, const char *dst)
 	sap.send(p);
 }
 
+void send_event_unsubscribe_request(handler &sap, const char *dst)
+{
+	mih::message p;
+
+	mih::link_tuple_id 	li;
+	mih::mac_addr      	mac;
+
+	mac.address("00:11:22:33:44:55");
+	li.type = mih::link_type_802_11;
+	li.addr = mac;
+	odtone::mih::event_list evt;
+	evt.set(odtone::mih::link_up);
+
+	p << mih::request(mih::request::event_unsubscribe)
+		& odtone::mih::tlv_link_identifier(li)
+		& odtone::mih::tlv_event_list(evt);
+
+	p.source(mih::id("user"));
+	p.destination(mih::id(dst));
+
+	sap.send(p);
+}
+
 void send_rdf_get_information_request(handler &sap, const char *dst)
 {
 	mih::message		p;
@@ -450,6 +474,7 @@ int main(int argc, char **argv)
 		(kConf_MIH_LinkConfigureThresholds_request, "Send a MIH_LinkConfigureThresholds.request to MIHF")
 		(kConf_MIH_LinkGetParameters_request, "Send a MIH_LinkGetParameters.request to MIHF")
 		(kConf_MIH_LinkActions_request, "Send a MIH_LinkActions.request to MIHF")
+		(kConf_MIH_EventUnsubscribe_request, "Send a MIH_EventUnsubscribe.request to MIHF")
 		 ;
 	mih::config cfg(desc);
 
@@ -509,6 +534,11 @@ int main(int argc, char **argv)
 	if (cfg.count(kConf_MIH_LinkActions_request)) {
 		std::cout << "sent link actions request to " << dest.c_str() << std::endl;
 		send_link_actions_request(sap, dest.c_str());
+	}
+
+	if (cfg.count(kConf_MIH_EventUnsubscribe_request)) {
+		std::cout << "sent event unsubscribe request to " << dest.c_str() << std::endl;
+		send_event_unsubscribe_request(sap, dest.c_str());
 	}
 
 	return 0;
