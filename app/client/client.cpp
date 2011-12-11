@@ -55,10 +55,18 @@ static const char* const kConf_MIH_LinkConfigureThresholds_request = "request.li
 static const char* const kConf_MIH_LinkGetParameters_request = "request.link_get_parameters";
 static const char* const kConf_MIH_LinkActions_request = "request.link_actions";
 
-/* dummy synchronous mih sap handler */
+/**
+ * Dummy synchronous MIH SAP handler.
+ */
 class handler
 {
 public:
+	/**
+	 * Construct a dummy synchronous MIH SAP handler.
+	 *
+	 * @param dst_ip Destination IP address.
+	 * @param dsp_port Destination listening port.
+	 */
 	handler(const mih::octet_string &dst_ip, const mih::octet_string &dst_port)
 		: _io_service(),
 		_soc(_io_service, udp::endpoint(udp::v4(), 0)),
@@ -68,6 +76,11 @@ public:
 		_it = _res.resolve(_qry);
 	}
 
+	/**
+	 * Send a message.
+	 *
+	 * @param msg The message to send.
+	 */
 	void send(mih::message &msg)
 	{
 		mih::frame_vla fm;
@@ -90,6 +103,12 @@ private:
 	udp::resolver::iterator _it;
 };
 
+/**
+ * Create and send a MIH_Link_Up.indication message.
+ *
+ * @param sap The SAP helper.
+ * @param dst The destination MIH ID.
+ */
 void send_link_up_indication(handler &sap, const char *dst)
 {
 	mih::message p;
@@ -110,7 +129,12 @@ void send_link_up_indication(handler &sap, const char *dst)
 	sap.send(p);
 }
 
-
+/**
+ * Create and send a MIH_Link_Down.indication message.
+ *
+ * @param sap The SAP helper.
+ * @param dst The destination MIH ID.
+ */
 void send_link_down_indication(handler &sap, const char *dst)
 {
 	mih::message p;
@@ -131,6 +155,12 @@ void send_link_down_indication(handler &sap, const char *dst)
 	sap.send(p);
 }
 
+/**
+ * Create and send a MIH_Link_Detected.indication message.
+ *
+ * @param sap The SAP helper.
+ * @param dst The destination MIH ID.
+ */
 void send_link_detected_indication(handler &sap, const char *dst)
 {
 	mih::message p;
@@ -155,6 +185,12 @@ void send_link_detected_indication(handler &sap, const char *dst)
 	sap.send(p);
 }
 
+/**
+ * Create and send a MIH_Link_Going_Down.indication message.
+ *
+ * @param sap The SAP helper.
+ * @param dst The destination MIH ID.
+ */
 void send_link_going_down_indication(handler &sap, const char *dst)
 {
 	mih::message p;
@@ -175,6 +211,12 @@ void send_link_going_down_indication(handler &sap, const char *dst)
 	sap.send(p);
 }
 
+/**
+ * Create and send a MIH_Link_Handover_Imminent.indication message.
+ *
+ * @param sap The SAP helper.
+ * @param dst The destination MIH ID.
+ */
 void send_link_handover_imminent_indication(handler &sap, const char *dst)
 {
 	mih::message p;
@@ -201,6 +243,12 @@ void send_link_handover_imminent_indication(handler &sap, const char *dst)
 	sap.send(p);
 }
 
+/**
+ * Create and send a MIH_Link_Handover_Complete.indication message.
+ *
+ * @param sap The SAP helper.
+ * @param dst The destination MIH ID.
+ */
 void send_link_handover_complete_indication(handler &sap, const char *dst)
 {
 	mih::message p;
@@ -227,6 +275,12 @@ void send_link_handover_complete_indication(handler &sap, const char *dst)
 	sap.send(p);
 }
 
+/**
+ * Create and send a MIH_Link_Configure_Thresholds.request message.
+ *
+ * @param sap The SAP helper.
+ * @param dst The destination MIH ID.
+ */
 void send_link_configure_thresholds_request(handler &sap, const char *dst)
 {
 	mih::message p;
@@ -258,6 +312,12 @@ void send_link_configure_thresholds_request(handler &sap, const char *dst)
 	sap.send(p);
 }
 
+/**
+ * Create and send a MIH_Link_Get_Parameters.request message.
+ *
+ * @param sap The SAP helper.
+ * @param dst The destination MIH ID.
+ */
 void send_link_get_parameters_request(handler &sap, const char *dst)
 {
 	mih::message p;
@@ -287,6 +347,12 @@ void send_link_get_parameters_request(handler &sap, const char *dst)
 	sap.send(p);
 }
 
+/**
+ * Create and send a MIH_Link_Actions.request message.
+ *
+ * @param sap The SAP helper.
+ * @param dst The destination MIH ID.
+ */
 void send_link_actions_request(handler &sap, const char *dst)
 {
 	mih::message p;
@@ -317,6 +383,12 @@ void send_link_actions_request(handler &sap, const char *dst)
 	sap.send(p);
 }
 
+/**
+ * Create and send a MIH_Get_Information.request message.
+ *
+ * @param sap The SAP helper.
+ * @param dst The destination MIH ID.
+ */
 void send_rdf_get_information_request(handler &sap, const char *dst)
 {
 	mih::message		p;
@@ -358,6 +430,12 @@ void send_rdf_get_information_request(handler &sap, const char *dst)
 // example on how to create a TLV binary encoded
 // Get_Information.response
 //
+/**
+ * Create and send a MIH_Get_Information.response message.
+ *
+ * @param sap The SAP helper.
+ * @param dst The destination MIH ID.
+ */
 void send_bin_get_information_response(handler &sap, const char *dst)
 {
 	mih::message		p;
