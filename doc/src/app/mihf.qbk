@@ -32,55 +32,72 @@ in the network.
 The MIH Protocol provides capability for transferring MIH Messages between peer
 MIHF entities at L2 or at L3. These messages transfer information about different
 available networks and also provide network switching and handover capability
-across different networks.
-
-The following image illustrate the position of the MIHF in a protocol stack and
-the interaction of the MIHF with other elements of the system. All exchanges
+across different networks. All exchanges
 between the MIHF and other functional entities occur through service primitives,
 grouped in service access points (SAPs).
 
-[$./images/mihf.png]
-
 [section:mihf_getStart Getting Started]
-
 
 [section Configuration]
 
-For now the MIHFs capabilities are read from configuration files. Future
-versions will inquire the available Link SAPs for the required information.
-There are other parameters that can be configured either using an configuration
-file or passing them directly in command line.
+The MIHF can be configured based on a set of parameters, which can be
+configured either using an configuration file or passing them directly
+in the command line. The available configurable parameters are presented
+next:
 
+``
 	MIHF Configuration Options:
 	   --help                               Display configuration options
-	   --conf.file arg (=odtone.conf)       Configuration File
-	   --conf.recv_buff_len arg (=4096)     Receive Buffer Length
-	   --mihf.id arg (=mihf)                MIHF Id
-	   --mihf.ip arg (=127.0.0.1)           MIHF Ip
+	   --conf.file arg (=odtone.conf)       Configuration file
+	   --conf.recv_buff_len arg (=4096)     Receive buffer length
+	   --mihf.id arg (=mihf)                MIHF ID
+	   --mihf.ip arg (=127.0.0.1)           MIHF IP
+	   --mihf.remote_port arg (=4551)       Remote MIHF communication port
+	   --mihf.local_port arg (=1025)        Local SAPs communication port
 	   --mihf.peers arg                     List of peer MIHFs
-	   --mihf.remote_port arg (=4551)       MIHF Remote Communications Port
-	   --mihf.local_port arg (=1025)        MIHF Local Communications Port
-	   --mihf.link_response_time arg (=100) MIHF Link Response waiting time (milliseconds)
-	   --mihf.link_delete arg (=2)          MIHF Link Response fails to delete the Link SAP
-	   --enable_broadcast                   MIHF responds to broadcast messages
-	   --log arg (=1)                       MIHF log level [0-4]
+	   --mihf.users arg                     List of local MIH-Users
+	   --mihf.links arg                     List of local Links SAPs
+	   --mihf.transport arg (=udp, tcp)     List of supported transport protocols
+	   --mihf.link_response_time arg (=300) Link SAP response time (milliseconds)
+	   --mihf.link_delete arg (=2)          Link SAP response fails to forget
+	   --enable_broadcast                   Allows broadcast messages
+	   --log arg (=1)                       Log level [0-4]
+``
 
 [note
-*List of peer MIHF's*
+All configurable parameters are self-explained and, therefore,
+we will only mention those that are more complex to configure.
 
-Comma separated list of remote MIHF's. If you want to test remote MIHF communication
-add an entry here with the IP address of the remote MIHF.
+[*List of peer MIHFs:] Comma separated list of remote MIHF's.
 
-Usage: <mihf id> <ip> <port>
+Usage: mihf.peers = <mihf id> <ip> <port>, ...
+
+[*List of local MIH-Users:] Comma separated list of local MIH User SAP.
+
+Usage: mihf.users = <user sap id> <port> <mbbhandover>, ...
+
+[*List of local Link SAPs:] Comma separated list of local MIH Link SAPs.
+
+Usage: mihf.links = <link sap id> <port> <techonoly type> <interface>, ...
+
+[*List of suppoted transport protocols:] Comma separed list of the
+transport protocols available. For now UDP and TCP protocols are supported.
+
+Usage: mihf.transport = <udp/tcp>, ...
+
 ]
 
 [heading Example]
 
-Automatic remote peer MIHF discovery is not yet implemented,
-so you need to add the remote MIHF's IP address and port number to the
-configuration file. Edit the file and add an entry to peers in the form:
-<mihf_id> <ip> <port> where <mihf_id> is the identifier of the remote MIHF,
-<ip> and <port> are the IP address and port of the remote MIHF.
+Autonomous remote MIHF discovery is not yet implemented,
+so you need to configure the remote MIHF's IP addresses and port
+on each one of the MIHFs. Edit the ODTONE-MIHF configuration file and add an entry
+to peers MIHFs in the form:
+
+	<mihf_id> <ip> <port>
+
+where <mihf_id> is the identifier of the remote MIHF, <ip> and <port>
+are the IP address and port of the remote MIHF respectively.
 
 [note You need to edit the configuration file on both machines]
 
@@ -124,158 +141,61 @@ E.g.: ./odtone-mihf --conf.file=./src/mihf/odtone.conf
 
 [heading Components]
 
-[h5 Listening Services: classes ['udp_listner] and ['tcp_listner]]
+The ODTONE's MIHF implements the three core MIH services, each containing
+a set of logical components. The MIES module allows the MIHF to
+verify if the received event messages are formatted according to the standard,
+which MIH-Users have subscribed the events and, if applicable, to forward
+the message to the subscribed MIH-Users. These represent, respectively,
+the roles of the ['Event validator], ['Event subscriber] and
+['Event publisher] modules. The MICS module also provides
+a way to validate the received message and to forward them to its destination,
+operations that are in charge of the ['Command validator] and
+['Command publisher] modules. The definition of the IS is out of
+the scope of the standard. In ODTONE, the IS acts as a
+MIH-User and therefore, the MIIS module is responsible to
+forward the messages to the IS registered with the MIHF or, if is that
+the case, forward the response message to the requestor.
 
-[$./images/listening_services.jpg]
+The previously mentioned modules allow the MIHF to provide the basic
+features of the MIH protocol. Additionally, the ODTONE's MIHF architecture
+has other components which allow not only to implement the remaining
+features of the MIH protocol but also to add robustness to the MIHF:
 
-The classes ['udp_listener] and ['tcp_listener] are wrappers around the
-boost::asio::ip::udp and boost::asio::ip::tcp and are responsible for handling
-UDP and TCP communications, respectively.
+* [*Service Manager:] this module is responsible for the management of the
+MIH Capability Discover messages, which provide information about the
+services supported by an MIH peer.
 
-The MIHF receives messages from two different sources, other MIHFs and local
-SAPs. If a message is from another MIHF, the message must be processed by the
-transaction state machines, as defined in the standard. If it is from a local
-SAP the transaction state machines are bypassed to reduce the number of messages
-exchanged locally.
+* [*Communication handler:] collects the messages received from different
+SAPs or peer MIHFs entities and forwards them to the ['Service Access Controller]
+module.
 
-A dispatch method is supplied when a listening service is instantiated and is
-called when a valid message is received.
+* [*Service access controller:] responsible for analyzing the header of
+the MIH messages and to forward them to the respective MIH service. The
+decision is based on the MIH message identifier and the registered callbacks.
 
-If the listening service is responsible for remote communications, a reference
-to a ['message_in] instance should be passed on the constructor. If it is
-responsible for local communications, a reference to the ['sac_dispatch] method
-should be supplied.
+* [*Link manager:] stores the information about the available Link SAPs.
 
-[h5 message_in]
+* [*MIH-User manager:] provides the MIHF with information about the registered
+MIH-Users.
 
-[$./images/message_in.jpg]
+* [*Peer MIHF manager:] provides the MIHF with the transport information and
+the capabilities of the peer MIHFs.
 
-The ['message_in] checks the transaction_pool for a pending transaction for
-the incoming message, or if a new source transaction must be created and
-then added to the transaction pool.
-
-Then proceeds to run the newly created, or found, transaction.
-
-[h5 Service Access Controller]
-
-[$./images/service_access_controller.jpg]
-
-The service access controller is split in ['sac_dispatch] and ['sac_process_message],
-because the transaction state machines, defined in the standard, expect a
-global function that processes the incoming message and returns a boolean
-indicating that a response message was generated. This complicates matters
-because we don't want to run the local messages through the transaction
-state machines.
-
-The ['sac_dispatch] is called by the local communications listening service
-and checks if the message id is supported. If so, the message is processed by
-a previously declared handler.
-
-The ['sac_process_message] is a global function called by the transaction
-state machines that checks if the message id is supported by the MIHF, but
-doesn't try to send the message directly, it just returns to the transaction
-state machine that called it.
-Registering a callback handler for a MIH message is done with the
-['sac_register_callback] function.
-
-[h5 MIHF Services]
-
-[$./images/mihf_services.jpg]
-
-These refer to the Event Service, Command Service, Service Management and
-Information Service that are responsible for handling the different kind of
-messages.
-
-A local transaction pool is supplied to handle pending transactions from local
-SAPs. A user might request to send a message to a peer MIHF, and in order to
-forward it the response some state must be stored.
-
-[h5 transmit]
-
-[$./images/transmit.jpg]
-
-This class is used by the MIHFs services and checks if the MIH destination
-identifier of the message is in the local address book. If it is, the message is
-for a local SAP and the udp_send method is called to send the message. If it's
-not in the local address book the message is forwarded to the ['message_out].
-
-[h5 message_out]
-
-[$./images/message_out.jpg]
-
-Checks, in the transaction pool, if the outgoing message belongs to a pending
-transaction, if so the transaction is run and eventually the message is sent.
-
-[h5 net_sap]
-
-[$./images/net_sap.jpg]
-
-This class, when called, checks if the MIH destination identifier is in the
-remote address book, if so the message is sent using on of ['udp_send] or
-['tcp_send].
-
-[h5 udp_send and tcp_send]
-
-[$./images/udp_send_and_tcp_send.jpg]
-
-These are functions that send a message using the specified protocol.
-
-The classes ['udp_send] and ['tcp_send] are responsible for handling UDP and TCP
-communications, respectively.
-
-[section Helper classes]
-
-[h5 meta_message]
-
-A ['meta_message] is a derived class from
-[link odtone.library.index_mih.odtone_mih_message_class odtone::mih::message]
-with added metadata.
-
-The metadata indicates if the message was received on the loopback interface
-and also the IP address and port of the sender of the message. It's useful mostly
-due to broadcast messages.
-
-[h5 Entities books]
-
-[$./images/entities_book.jpg]
-
-[*address_book]
-
-Address book is used to store information about all known peer MIHFs. It makes
-the correspondence between the MIHF MIH Identifier and the informations stored
-in the address_entry struct.
-
-[*link_book]
-
-Link book is used to store information about all known Link SAPs. It makes
-the correspondence between the Link SAP MIH Identifier and the informations
-stored in the link_entry struct.
-
-[*user_book]
-
-User book is used to store information about all known MIH Users. It makes
-the correspondence between the MIH User MIH Identifier and the informations
-stored in the user_entry struct.
-
-[h5 Transactions]
-
-[$./images/transaction_pool.jpg]      [$./images/local_transaction_pool.jpg]
-
-The classes ['transaction_pool] and ['local_transaction_pool] are responsible
-for handling active remote and local transactions, respectively.
+* [*Transaction state machine controller:] keeps the state of each remote
+transaction with peer MIHF entities. It is responsible, if applicable,
+for sending the acknowledge messages and to detect the reception of
+duplicates messages.
 
 [endsect]
-
-[endsect]
-
 
 [section:mihf_internals ODTONE MIHF internals]
 
 [section Internal Communications use UDP sockets on loopback interface]
 
-Internal communications are communications between the MIHF and local SAPs
-(users and link). ODTONE uses UDP sockets binded to the loopback interface
-(127.0.0.1) for exchanging messages between these entities.
+Internal communications refers to the communications between the MIHF
+and local SAPs (MIH-users and Link SAPs). ODTONE uses UDP sockets binded
+to the loopback interface (127.0.0.1) for exchanging messages between
+these entities.
 
 [endsect]
 
@@ -290,107 +210,96 @@ remote communications (communications between MIHFs).
 The ODTONE implementation uses the messages defined on chapter 8 to implement
 the primitives of chapter 7.
 
-Please note that the MIHF sends confirm messages to SAPs and response messages
-to MIHFs, and that the MIH protocol allocates 16 bits for the MIH message ID,
-2 of those are for the opcode. The opcode defines if a message is a request,
-response or indication. So, with 2 bits we can encode 4 values, 3 are already
-taken, this leaves 1 available combination for the missing confirm primitives.
-Confirm primitives set the opcode to 0 (zero).
+Please note that the MIHF sends confirm messages to the MIH-Users and response
+messages to the remote MIHFs. The MIH protocol allocates 16 bits for the
+MIH message ID, where two of those bits are for the opcode.
+The opcode defines if a message is a request, response or indication.
+So, with 2 bits we can encode four values, where three are already taken.
+This leaves 1 available combination for the missing confirm
+primitives. Confirm primitives set the opcode to 0 (zero).
 
 [endsect]
 
-[section TCP Support not enabled but supported]
+[section Local discovery]
 
-There is a wrapper (['tcp_listener]) for handling TCP communications, but a
-method for reading from the configuration file and enabling TCP support, for
-the MIHF is not implemented.
+Due to the decoupled architecture of the MIHF and the local entities (i.e. Link SAPs and
+MIH-Users), it is necessary to configure these entities in the MIHF in order to know about its
+existence. They can be configured statically, by the user, or automatically, using a discovery
+mechanism. The static configuration can be very limited, and may fail when, for example, the
+MN activates/deactivates an interface or even hot-plugs new ones. However, the IEEE 802.21
+standard does not define any mechanism to discover the local entities so, the development of
+a novel local discovery procedure is required, allowing the MIHF to discover its Link SAPs
+and MIH-Users and their capabilities in a dynamic way. Thus, local discovery refers to the
+procedure that allows the MIHF to discover its Link SAPs and their capabilities, as well as
+its MIH-Users.
 
-The ['tcp_listener] class was discussed in detail in a
-[link odtone.app.mihf_index.mihf_internal_arch.listening_services__classes__emphasis_udp_listner__emphasis__and__emphasis_tcp_listner__emphasis_ previous section.]
-
-[endsect]
-
-[section Internal discovery]
-
-The interval discovery refers to the procedure that allows one MIHF to discovery
-its Link SAPs and their capabilities and its MIH Users.
 
 [*Link SAP Discovery]
 
-It is intent that a Link SAP is able to send
-information about itself to the MIHF, so that MIHF knows which technology and
-interfaces each Link SAP is responsible for. Thus, the “intelligence” about the
-capabilities of each network interface is the responsibility of their Link SAP
-and the MIHF asks for them when needed.
+[$./images/Internal_link_discovery.png]
 
-Because there is no primitive/message in the 802.21 standard that allows Link SAP
-to send that information to the MIHF was created a new message named
-“Link_Register.indication”. This message allows the Link SAP to send informations
+The local discovery mechanisms implemented on ODTONE enables the discovery and
+management of the available Link SAPs. Thus, Link SAPs discovery is divided
+in three main phases: the registration, SAP availability and SAP unavailability.
+
+In the registration phase, the MIHF is permanently
+listening for incoming messages from the Link SAPs at a fixed port. When a Link SAP
+becomes active, it locally sends a "Link_Register.indication" message
+to the MIHF indicating its intention to register
+with the MIHF. This message carries information about the Link SAP, including its
+ID, listening port, link layer technology and link address. Next, the MIHF requests the Link
+SAP for its capabilities by sending a "Link_Capability_Discover.request" message. This
+process is repeated for all Link SAPs in order to provide the MIHF with the full capabilities
+belonging to that node.
+
+[note
+Because there is no primitive/message in the 802.21 standard that allows the Link
+SAP to send that register information to the MIHF, the "Link_Register.indication"
+was created. This message allows the Link SAP to send informations
 to the MIHF about which technology supports and which interface it manages.
 Associated with the creation of this new message type was also created a new
 TLV type named “Interface Type Addr TLV” whose correspondent data type is “Link ID”.
 
 [$./images/link_register_indication_message.png]
+]
 
-The mechanism of LinkS SAP discovery involves the discovery of Link SAPs and storage
-of information in the MIHF. It is also intended to detect the presence or absence
-of known Link SAPs. So the proposed mechanism involves three essential parts:
-register, presence and unlearning.
+The second phase is availability and, as the name implies,
+deals with the Link SAP availability, i.e., the MIHF must be able to detect the active presence
+of the Link SAP. So, when the MIHF receives a response or an event notification from the
+Link SAP, it detects the Link SAP as active.
 
-[$./images/Internal_link_discovery.png]
-
-The register part begins when the Link SAP initializes and announces its presence
-to the MIHF by sending a Link_Register.indication message. The MIHF processes the
-message and learns about the Link SAP by storing its ID, IP Address, listening port, link-layer
-technology and list of link addresses. This will allow the MIHF to discovery Link SAPs
-dynamically and also allows the MIHF to know the information necessarily to redirect
-the messages to the respective Link SAPs in a efficient way.
-
-When the MIHF retransmits a request to a given Link SAP, it waits a time interval
-for the response. If the response is received within the time interval the MIHF
-detects the presence of the Link SAP, ie, the MIHF knows that the Link SAP is
-still active and can be contacted. This correspond to the second part: the presence.
-
-If the response is not received within the time interval it could mean that the
-Link SAP is not available anymore. Thus, the MIHF may unlearning the Link SAP.
-However, there are several reasons why the response is not received within the
-time interval, like delay in the network, packet lost, the Link SAP does not
-support the desired request, among other  reasons. So, there must be a confirmation
-that the Link SAP is really down. When the MIHF does not receive the response
-message it register it as a fail response. When the number of fail response reachs
-a defined threshold the Link SAP is forgotten. If the MIHF receives a message from
-Link SAP it will reset its number of failing responses.
+Finally, the third phase deals with SAP unavailability.
+When the MIHF does not receive a response from a Link SAP, the Link SAP must be
+considered as inactive or unresponsive. The MIHF must, therefore, initiate the procedures to
+update its local capabilities.
 
 [note The waiting time interval for response message and how many fail responses
 before forget Link SAP can be defined at the MIHF configuration file.]
 
 [*MIH User Discovery]
 
-It is intent that a Link SAP is able to send information about itself to the MIHF,
-so that MIHF knows the function of the MIH User, ie, if the MIH User is responsible
-for handling the handover operations in the local MIHF.
+[$./images/Internal_user_discovery.png]
 
-Because there is no primitive/message in the 802.21 standard that allows MIH User
-to send that information to the MIHF was created a new message named
-“User_Register.indication”. This message allows the Link SAP to send informations
+The process of discovering MIH-Users implemented on ODTONE is based on a
+registration process of the MIH-User with the MIHF. When the MIH-User becomes active,
+it locally sends a "User_Register.indication" message to the MIHF, including
+information about its listening port and function within the mobility process, i.e.,
+if it is a mobility decision entity or not. In this
+work, the assumption that can only exist one mobility entity at each time is taken in account,
+so the last MIH-User to register with the mobility decision function will be responsible for
+it. Upon the receiving of the "User_Register.indication" message, the MIHF learns about the
+MIH-User and the communications between them can start normally.
+
+[note
+Because there is no primitive/message in the 802.21 standard that allows MIH-User
+to send register information to the MIHF the “User_Register.indication”. was
+created. This message allows the Link SAP to send informations
 to the MIHF about its function.
 Associated with the creation of this new message type was also created a new
 TLV type named “MBB Handover Support TLV” whose correspondent data type is “BOOLEAN”.
 
 [$./images/user_register_indication_message.png]
-
-The mechanism of MIH User discovery involves the discovery of Link SAPs and storage
-of information in the MIHF. The detection of the presence or absence of the MIH User
-is not applied.
-
-[$./images/Internal_user_discovery.png]
-
-The register part begins when the MIH User initializes and announces its presence
-to the MIHF by sending a User_Register.indication message. The MIHF processes the
-message and learns about the MIH User by storing its ID, IP Address, listening port
-and MIH User function in the MIHF. This will allow the MIHF to discovery MIH Users
-dynamically and also allows the MIHF to know the information necessarily to redirect
-the messages to the respective MIH User.
+]
 
 [note Only one MIH User for handling handover operations could exists in each MIHF.
 This way, the last MIU User to register with that function will be the MIH User
@@ -404,41 +313,52 @@ With the implementation of dynamic Link SAP discovery mechanisms, it was necessa
 that ODTONE supports multiple Link SAP. So, when a new request is received at
 the MIHF and whose destination is a Link SAP, the MIHF processes it and redirects
 the request to the proper Link SAP, based on the information collected by the
-internal discovery mechanism.
+internal discovery mechanism and the information presented on the request
+message.
 
 However, there are cases where the destination could be a set of Link SAPs.
 In those cases, the MIHF sends a message to all destinations Link SAPs and waits
-a time interval for all the responses of Link SAPs. After that time, the MIHF
-processes all informations received by the several confirm messages sent by the
-Link SAPs and sends the response to the requestor.
+a time interval for all the responses of the Link SAPs. After that time, the MIHF
+processes all received responses from Link SAPs and sends the response to the requestor.
+
+[endsect]
+
+[section Remote Link SAP support]
+
+Since the MIHF allows the storage of the IP address of the Link SAPs, the
+Link SAPs attached to the MIHF can be on the same machine or not, i.e., the Link SAPs
+can be local or remote.
+
+Although the communications are made between two different machines, to the MIHF
+the remote Link SAP is always seen as a local entity and therefore, the messages received
+from local and remote Link SAPs are processed equally. This behaviour is possible because
+ODTONE uses sockets to provide local communications.
+
+[endsect]
+
+[section Event subscribe/unsubscribe optimization]
 
 In order to optimize the process of subscription/unsubscription of events at
-the MIHF it was reduce the number of messages changed between the local entities,
-ie, between the MIHF and Link SAPs.
+the MIHF, the number of messages between the local entities
+(i.e., between the MIHF and Link SAPs.) was reduced. When a MIH-User requests
+for an event subscription, if a subscription has been made previously by other
+entity, the MIHF subscribes the MIH-User and immediately replies to it, otherwise the MIHF
+firstly tries to subscribe the event with the Link SAP or the peer MIHF.
 
-This way, when a MIH User requests for a event subscription the MIHF checks
-whether the event for the desired Link SAP is already subscripted. If it is
-already subscripted the MIHF responds immediately to the MIH User otherwise it
-request the subscription of the event to the Link SAP. When the MIHF receives the
-response of Link SAP and if the subscription was succeeded it stores the result
-and redirects the response to the MIH User.
-
-The reasoning to optimize the process of unsubscription is similar to the
-subscription method. When a MIH User request to unsubscribe an event in a given
-Link SAP the MIHF unsubscribe it, response to the MIH User and checks if there
-are more subscriptions to that event. If there is no more subscriptions to that
-event the MIHF request unsubscription of the event at the Link SAP. This way,
-the Link SAP does not send that event information to the MIHF since there are
-no entities interested in that information.
+The method to optimize the unsubscription mechanism is similar to
+the subscription one and it aims for the same objectives. When a MIH-User
+requests to unsubscribe an event in a Link SAP the MIHF unsubscribes it
+locally. The MIHF unsubscribes the event with the Link SAP or the peer
+MIHF only if the event has no more subscriptions.
 
 [endsect]
 
 [section MIH Primitives mapped in MIH Protocol Messages]
 
-Communications between local entities are made using MIH Protocol. All
-MIH_SAP primitives can be mapped in MIH Protocol Messages, however some of the
-MIH_LINK_SAP primitives needed new TLVs types so they can be used in the MIH
-Protocol.
+ODTONE uses the MIH protocol to provide communications between the MIHF and local
+entities. However, it was verified that some MIH LINK SAP primitives cannot be mapped
+in the existing MIH protocol messages so, it was necessary to define new TLVs that carry the
+information presented in these primitives.
 
 The following table show the correspondence between MIH_LINK_SAP primitive and
 the new TLVs and its data type:

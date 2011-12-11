@@ -17,23 +17,18 @@
 
 [section:client_index Client]
 
-The ['client] is a simple application that permits to send any kind of message
-to a particular destination. This way, it is possible to send a specific message
+The ['client] is a simple application that lets you send any kind of message
+to a particular destination. In this way, it is possible to send a specific message
 to a choose destination in order to test is behaviour easily and quickly.
 
-The destination could be either a MIHF or a MIH SAP.
+The destination could be either a MIHF or a MIH SAP (MIH-User/Link SAP).
 
 [section:client_getStart Getting Started]
 
 [section Configuration]
 
-The configuration of the client consist in defining the IP address and the
+The configuration of the client consist in define the
 listening port of message's destination.
-
-The IP address must be configured in a configuration file:
-``
-	ip = <IP address>
-``
 
 The listening port can be configured in two ways:
 
@@ -61,15 +56,7 @@ desc.add_options()
 ;
 ``
 
-[*2nd step:] Add a condition in the main function to decide what message send.
-``
-	if (cfg.count(kConf_MIH_NewMessage)) {
-		std::cout << "sent a new message" << std::endl;
-		send_newMessage(sap, argv[1]);
-	}
-``
-
-[*3rd step:] Define function responsible to create and send the message.
+[*2nd step:] Define the function responsible for creating and sending the message.
 
 ``
 	void send_newMessage(handler &sap, const char *dst)
@@ -84,18 +71,28 @@ desc.add_options()
 	}
 ``
 
+[*3rd step:] Add a condition in the main function to decide which message
+will be sent.
+``
+	if (cfg.count(kConf_MIH_NewMessage)) {
+		std::cout << "sent a new message" << std::endl;
+		send_newMessage(sap, argv[1]);
+	}
+``
+
 [endsect]
 
 [section Running]
 
-The client must be executed passing directly, in command line, the option for the
-message that will be sent.
+Before running the client, the message option corresponding to the message
+that will be sent must be defined in the command line. In the next example,
+the client will send a MIH_Link_Up.indication message.
 
 E.g.: ./client --indication.link_up
 
 By default, message's destination is ['local-mihf]. However, it is possible to
-send the message to another destination using the ['--dest] option, directly in
-the command line.
+send the message to another destination using the ['--dest] option (in
+the command line).
 
 After the ['client] send the message the application will terminate.
 

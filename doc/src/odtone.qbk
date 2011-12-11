@@ -38,7 +38,7 @@
 
 [h3 What is this?]
 
-ODTONE stands for Open Dot Twenty ONE and is an Open Source implementation of
+ODTONE stands for Open Dot Twenty ONE and it is an open-source implementation of
 the Media Independent Handover framework from the IEEE 802.21 Media Independent
 Handover Services standard, using C++ APIs.
 
@@ -49,7 +49,7 @@ ODTONE supplies the implementation of a MIHF, supporting its inherent services
 and Media Independent Command Service (MICS), as well as supporting mechanisms
 (Capability Discovery, MIHF Registration, Event Registration, etc.).
 It also provides a set of APIs to enable ODTONE users to implement their own
-MIH-Users and LINK_SAP and interface with ODTONE's MIHF.
+MIH-Users and Link SAPs and to interface with ODTONE's MIHF.
 
 [h3 What differences can be found regarding other IEEE 802.21 implementations?]
 
@@ -61,15 +61,15 @@ will be decoupled of highly dependent operating system mechanisms.
 [h3 What does this mean?]
 
 ODTONE's implementation aims to provide a MIHF that will work as a base for user's
-scenarios, and which will enable the users to implement their own MIH_SAP and
-MIH_LINK_SAP. ODTONE will provide a simple and flexible interface for the
+scenarios and which will enable the users to implement their own MIH_SAP and
+MIH_LINK_SAP. ODTONE provides a simple and flexible interface for the
 development of these SAPs, handling MIH Protocol messages and state transitions.
 
 [h3 How can I contribute?]
 
-As was previously mentioned, ODTONE will focus on the MIHF and API's that will
+As was previously mentioned, ODTONE focuses on the MIHF and API's that will
 enable users to implement their own MIH_SAP and MIH_LINK_SAP. This means that
-it will be entirely up to the user to implement their MIH_USER and LINK technology
+it will be entirely up to the user to implement their MIH-Users and LINK technology
 support. We would be more than happy to known about your work on these matters!
 
 [h3 Changes in this release]
@@ -91,8 +91,8 @@ ODTONE 0.3 - Open Dot Twenty ONE.
 
 [h1 Installation]
 
-As ODTONE is developed in order to work in several platforms, we therefore
-won't provide detailed tutorials for each mainstream operating system. We
+As ODTONE is developed to work in several platforms, we won't provide
+detailed tutorials for each mainstream operating system. We
 will rather present the main guidelines for installing ODTONE and any relevant
 notes on specific platforms that might prove an obstacle.
 
@@ -101,30 +101,32 @@ notes on specific platforms that might prove an obstacle.
 In order to correctly use ODTONE, you must first make sure that you have the
 required dependencies:
 
-* *Boost Developer libraries (v1.47):* If you do not already have them in
-your system, you can go to [@http://www.boost.org/ boost's website] and
-download a more recent version of the Boost libraries.
+* [*Boost Developer libraries (v1.47 or higher):] If you don't have them installed
+in your system, you can go to [@http://www.boost.org/ boost's website] and
+download the most recent version of the Boost libraries.
 
 [h4 1.1. Boost Library Quick Guide]
-Boost is required to compile ODTONE, so in order to correctly use ODTONE
+Boost is required to compile ODTONE so, to correctly use ODTONE,
 you must first make sure you have the Boost libraries sources and Boost.Build
-installed.
+installed in your system.
 
-#Download the Boost library(v1.47) [@http://www.boost.org/ boost's website]
+#Download the Boost library [@http://www.boost.org/ boost's website]
 and unpack it.
 
 #Install Boost.Build (if your already have it, skip this step). You will need to
-compile the Boost.Build engine. You can either use the bootstrap script from the
+compile the Boost.Build engine. You can use the bootstrap script from the
 Boost library sources and then copy the resulting binary (b2) to a proper place
-(within your $PATH). Or, you can download a pre-built binary from
+(within your $PATH) or you can download a pre-built binary from
 [@http://www.boost.org/ boost's website]. To finish the Boost.Build installation,
 you must tell Boost.Build engine where to find the remaining of Boost.Build. You
-can setup a boost-build.jam file to tell where Boost.Build is. Example:
+can setup a boost-build.jam file in your home directory to tell where
+Boost.Build is. Example:
 
 [table Setup boost-build.jam
     [
         [boost-build.jam]
-        [``#==============================================================================
+        [``
+#==============================================================================
 # Put this file at the root directory of your project or in any of its parent
 # directories. Replace 'path-to-boost' with the path to the boost libraries
 # sources.
@@ -141,29 +143,38 @@ Finally, run 'b2' to compile ODTONE.
 
 Consult the Boost.Build documentation for more details!
 
-
 [h3 2. Getting ODTONE]
 
 [*In a tarball]
 
-You can get the ODTONE source code tarball from our project page, at
-[@http://helios.av.it.pt/projects/odtone/files http://helios.av.it.pt/projects/odtone/files].
+You can get the ODTONE source code tarball from our
+[@http://helios.av.it.pt/projects/odtone/files project page].
 Then just unpack it and you are ready to compile and install ODTONE.
 
 [*From the git repository]
 
-You can clone the git repository, from
-[@http://helios.av.it.pt/projects/odtone/git/ ODTONE repository] therefore
-creating your own local copy.
+You can create your own local copy of the ODTONE by cloning the git repository from
+[@http://helios.av.it.pt/projects/odtone/repository ODTONE repository].
+``
+[*Username:] user
+[*-- No password]
+``
 
-   git clone http://helios.av.it.pt/projects/odtone/git/ odtone
+To clone the git repository you must run the next command:
+``
+	git clone https://user@helios.av.it.pt/git/odtone/ odtone
+``
 
+Then, in order to get the last changes in the code,
+you can checkout the "dev/master" branch:
+``
+	git checkout -b <your branch name> origin/dev/master
+``
 
 [h3 3. Compiling and installing ODTONE]
 
-Once you have obtained the ODTONE source code and have assured that you have
-the right dependencies installed in all machines you intend to use ODTONE,
-then you are ready to compile and install.
+Once you have obtained the ODTONE source code and assured that you have
+the right dependencies installed, you are ready to compile and install ODTONE.
 
 [table Platform Support
     [[]        [x86-32]                 [x86-64]                 [ARM]]
@@ -214,7 +225,7 @@ binaries.]
 
 [h3 4. Generate Doxygen Documentation]
 As a supplement to this documentation, it is possible to generate incode documentation.
-This can be done using Doxygen that parses the sources and generates the documentation.
+This can be done using Doxygen, which parses the sources and generates the documentation.
 Doxygen uses a configuration file to determine all of its settings.
 
 To simplify the creation of a configuration file, Doxygen can create a template
@@ -234,93 +245,102 @@ To generate the documentation you can now enter:
 
 [*ODTONE-MIHF]
 
-For now the MIHFs capabilities are read from configuration files. Future
-versions will inquire the available Link SAPs for the required information.
-There are other parameters that can be configured either using an configuration
-file or passing them directly in command line.
+The MIHF can be configured based on a set of parameters, which can be
+configured either using an configuration file or passing them directly
+in the command line. The available configurable parameters are presented
+next:
 
+``
 	MIHF Configuration Options:
 	   --help                               Display configuration options
-	   --conf.file arg (=odtone.conf)       Configuration File
-	   --conf.recv_buff_len arg (=4096)     Receive Buffer Length
-	   --mihf.id arg (=mihf)                MIHF Id
-	   --mihf.ip arg (=127.0.0.1)           MIHF Ip
+	   --conf.file arg (=odtone.conf)       Configuration file
+	   --conf.recv_buff_len arg (=4096)     Receive buffer length
+	   --mihf.id arg (=mihf)                MIHF ID
+	   --mihf.ip arg (=127.0.0.1)           MIHF IP
+	   --mihf.remote_port arg (=4551)       Remote MIHF communication port
+	   --mihf.local_port arg (=1025)        Local SAPs communication port
 	   --mihf.peers arg                     List of peer MIHFs
-	   --mihf.remote_port arg (=4551)       MIHF Remote Communications Port
-	   --mihf.local_port arg (=1025)        MIHF Local Communications Port
-	   --mihf.link_response_time arg (=100) MIHF Link Response waiting time (milliseconds)
-	   --mihf.link_delete arg (=2)          MIHF Link Response fails to delete the Link SAP
-	   --enable_broadcast                   MIHF responds to broadcast messages
-	   --log arg (=1)                       MIHF log level [0-4]
-
+	   --mihf.users arg                     List of local MIH-Users
+	   --mihf.links arg                     List of local Links SAPs
+	   --mihf.transport arg (=udp, tcp)     List of supported transport protocols
+	   --mihf.link_response_time arg (=300) Link SAP response time (milliseconds)
+	   --mihf.link_delete arg (=2)          Link SAP response fails to forget
+	   --enable_broadcast                   Allows broadcast messages
+	   --log arg (=1)                       Log level [0-4]
+``
 
 [note
-*List of peer MIHF's*
+All configurable parameters are self-explained and, therefore,
+we will only mention those that are more complex to configure.
 
-Comma separated list of remote MIHF's. If you want to test remote MIHF communication
-add an entry here with the IP address of the remote MIHF.
+[*List of peer MIHFs:] Comma separated list of remote MIHF's.
 
-Usage: <mihf id> <ip> <port>
+Usage: mihf.peers = <mihf id> <ip> <port>, ...
 
-*List of Users SAPs*
+[*List of local MIH-Users:] Comma separated list of local MIH User SAP.
 
-Comma separated list of local MIH User SAPs id's and ports. For the default demo
-just use as is.
+Usage: mihf.users = <user sap id> <port> <mbbhandover>, ...
 
-Usage: <user sap id> <port>
+[*List of local Link SAPs:] Comma separated list of local MIH Link SAPs.
+
+Usage: mihf.links = <link sap id> <port> <techonoly type> <interface>, ...
+
+[*List of suppoted transport protocols:] Comma separed list of the
+transport protocols available. For now UDP and TCP protocols are supported.
+
+Usage: mihf.transport = <udp/tcp>, ...
 
 ]
 
 [*SAP's]
-
+``
 	MIH Usr Configuration:
 	   --help                           Display configuration options
-	   --conf.port arg (=1234)          Port
-	   --conf.file arg (=mih_usr.conf)  Configuration File
-	   --conf.recv_buff_len arg (=4096) Receive Buffer Length
-	   --mihf.ip arg (=127.0.0.1)       Local MIHF Ip
-	   --mihf.id arg (=local-mihf)      Local MIHF Id
-	   --user.id arg (=user)            User Id
-	   --mihf.local_port arg (=1025)    MIHF Local Communications Port
-	   --dest arg                       MIH message destination of MIH User
+	   --conf.file arg (=mih_usr.conf)  Configuration file
+	   --conf.recv_buff_len arg (=4096) Receive buffer length
+	   --conf.port arg (=1234)          Listening port
+	   --user.id arg (=user)            MIH-User ID
+	   --user.handover arg (=1)         MIH-User handover support
+	   --mihf.ip arg (=127.0.0.1)       Local MIHF IP address
+	   --mihf.local_port arg (=1025)    Local MIHF communication port
+	   --dest arg                       MIHF destination
+``
 
-
+``
 	MIH Link SAP Configuration:
-	   --help                           Display configuration options
-	   --link.port arg (=1234)          Port
-	   --link.tec arg                   Link SAP Technology
-	   --link.link_addr_list arg        Link SAP Interface Address
-	   --link.event_list arg            List of supported events
-	   --link.command_list arg          List of supported commands
-	   --conf.file arg (=link_sap.conf) Configuration File
-	   --conf.recv_buff_len arg (=4096) Receive Buffer Length
-	   --mihf.ip arg (=127.0.0.1)       Local MIHF Ip
-	   --mihf.local_port arg (=1025)    MIHF Local Communications Port
-	   --mihf.id arg (=local-mihf)      Local MIHF Id
-	   --link.id arg (=link)            Link SAP Id
+	     --help                           Display configuration options
+	     --conf.file arg (=link_sap.conf) Configuration file
+	     --conf.recv_buff_len arg (=4096) Receive buffer length
+	     --link.id arg (=link)            Link SAP ID
+	     --link.port arg (=1235)          Listening Port
+	     --link.tec arg                   Technology type
+	     --link.link_addr_list arg        Interface address
+	     --link.event_list arg            List of supported events
+	     --link.command_list arg          List of supported commands
+	     --mihf.ip arg (=127.0.0.1)       Local MIHF IP
+	     --mihf.id arg (=local-mihf)      Local MIHF ID
+	     --mihf.local_port arg (=1025)    Local MIHF communication port
+``
 
 [note
-*Link SAP Technology*
+All configurable parameters are self-explained and, therefore,
+we will only mention those that are more complex to configure.
 
-Network interface card technology.
+[*Technology type:] Network interface card technology.
+Supported values: GSM, GPRS, EDGE, 802.3, Other, 802_11, CDMA2000, UMTS,
+CDMA2000-HRPD, 802_16, 802_20, 802_22.
 
 Usage: tec = <NIC technology>
 
-*Link SAP Interface Address*
+[*Interface Address:] Network interface card address.
 
-Network interface card address.
+Usage: link_addr = <interface address>
 
-Usage: link_addr_list = <interface address>
-
-*Link SAP List of supported events*
-
-Comma separated list of the Link SAP's supported events.
+[*List of supported events:] Comma separated list of the Link SAP's supported events.
 
 Usage: event_list = <link event 1>, <link event 2>, (...), <link event N>
 
-*Link SAP List of supported events*
-
-Comma separated list of the Link SAP's supported commands.
+[*List of supported events:] Comma separated list of the Link SAP's supported commands.
 
 Usage: command_list = <link command 1>, <link command 2>, (...), <link command N>
 
@@ -329,83 +349,95 @@ Usage: command_list = <link command 1>, <link command 2>, (...), <link command N
 [h4 Local Demo]
 
 The local demo consists in a simple experiment to demonstrate simple message
-exchange between a MIHF, a MIH_User and a Link_SAP. It allows you to see
-how events are generated by the Link_SAP and reported to a MIH_User that has
-subscribed to these events.
+exchange between the MIHF, the MIH-User and the Link SAP. It allows you to see
+how events are generated by the Link SAP and then reported to a MIH-User
+that has subscribed to these events.
 
 [$./images/local_demo.png]
 
 [*Configuration]
 
-To run the local demo you will need to edit the default configuration file
-odtone.conf that is stored in the src/mihf directory. At Link SAP configuration
-file you will need to edit the interface address entrance and add the MAC address
-of your computer's network cards.
+In order to properly run the local demo you will need to edit the default
+Link SAP configuration in order to identify the interface
+that it will manage (['tec] and ['link_addr] properties).
 
 [*Running Demo]
 
-After editing the configuration file, to run this ODTONE demo the best way is to
-open 3 terminals. On one terminal start ODTONE-MIHF and on the next terminal
-start the Link SAP. When Link SAP starts running, it will register with the local
-MIHF. Now it's time to start the MIH User, on your third terminal, and if all went
-well the MIH_User has requested an Capability_Discover to the local MIHF and
-printed out some information of the interfaces you previously configured.
+The best way to run this demo is to open 3 terminals.
+On the first terminal start ODTONE-MIHF and on another terminal
+start the Link SAP. You can see that, at Link SAP bootstrap, the Link SAP
+will register itself with its the local MIHF. Now it's time to start the
+MIH-User, on your remaining terminal. If all went well the MIH-User
+has requested for the capabilities of the local MIHF and
+printed out some information about the discovered interfaces (those that you
+previously configured. For each discovered interface, the MIH-User will
+subscribe to all supported events.
 
-Now it is time to send some Link indications to the MIHF and check that the MIH_User
-received notifications. So that the Link_SAP detects some events, you should now
-proceed to disconnect, disable or shutdown your network cable/interface or your
-wireless card according to your configuration file.
+Now you can trigger some events by just disconnecting, disabling or shutting down
+your network cable/interface or wireless card (according to what you configured).
+You can see that the event notifications are propagated from the Link SAP to
+the MIH-User.
 
 [h4 Remote Demo]
-The remote demo consists in a local MIH_User obtaining notifications of events
-that are happening on a Link_SAP remotely located on another machine. You are
-required to have two machines for this experiment. The first machine hosting an
-ODTONE-MIHF instance (mihf1) and the MIH_User, while the second will host a
-second ODTONE-MIHF instance (mihf2) and the Link_SAP.
+
+The remote demo shows the ability of a MIH-User to obtain
+event notifications that happens on a Link SAP located on another machine.
+You are required to have two machines for this experiment. The first machine
+will host an ODTONE-MIHF (mihf1) and the MIH-User, while the second will host
+an ODTONE-MIHF (mihf2) and the Link_SAP.
 
 [$./images/remote_demo.png]
 
 [*Configuration]
 
-As was said earlier, automatic remote peer MIHF discovery is not yet implemented,
-so you need to add the remote MIHF's IP address and port number to the
-configuration file. Edit the file and add an entry to peers in the form:
-<mihf_id> <ip> <port> where <mihf_id> is the identifier of the remote MIHF,
-<ip> and <port> are the IP address and port of the remote MIHF.
+Autonomous remote MIHF discovery is not yet implemented,
+so you need to configure the remote MIHF's IP addresses and port
+on each one of the MIHFs. Edit the ODTONE-MIHF configuration file and add an entry
+to peers MIHFs in the form:
+
+	<mihf_id> <ip> <port>
+
+where <mihf_id> is the identifier of the remote MIHF, <ip> and <port>
+are the IP address and port of the remote MIHF respectively.
 
 [note You need to edit the configuration file on both machines]
 
-On the machine with the mihf1 the configuration file can look like:
-
+The mihf1 configuration file must look like:
+``
 	[mihf]
 	id = mihf1
 	local_port = 1025
 	remote_port = 4551
 	peers = mihf2 <mihf1_IP_address> 4551
+``
 
-On the machine with the mihf2 the configuration file can look like:
-
+The mihf2 configuration file must look like:
+``
 	[mihf]
 	id = mihf2
 	local_port = 1025
 	remote_port = 4551
 	peers = mihf1 <mihf2_IP_address> 4551
+``
 
-[note Note that using Android emulator, web traffic is routed through your
+[note If you are using an Android emulator, the web traffic is routed through your
 development machine. So, the IP address assigned to Android emulator is the IP
 address of your machine. The development machine can be reached from Android
 emulator through 10.0.2.2.]
 
 [*Running Demo]
 
-On the machine hosting mihf1, start a terminal and run ODTONE-MIHF. Then, on another
-terminal start the MIH_User adding the parameter ['--dest mihf2]. The ['--dest] option
-tells the MIH_User to set the 802.21 destination field of the frame to mihf2.
+On the machine that host the mihf2 start a terminal and run ODTONE-MIHF. Then, on another
+terminal start the Link SAP.
 
-On the machine hosting mihf2, start a terminal and run ODTONE-MIHF. Then, on another
-terminal start the Link_SAP. So that the Link_SAP detects some events you should
-now proceed to disconnect, disable or shutdown your network cable/interface or
-you wireless card according to your configuration file.
+On the machine that host the mihf1 start a terminal and run ODTONE-MIHF. Then, on another
+terminal start the MIH-User with the configurable parameter ['--dest mihf2]. The ['--dest] option
+tells the MIH-User to set the MIHF destination field of the frame to mihf2.
+
+Now, like in the local demo, you can trigger some events by just disconnecting, disabling or shutting down
+your network cable/interface or wireless card (according to what you configured).
+You can see that the event notifications are propagated from the Link SAP to
+the MIH-User.
 
 [endsect]
 
@@ -413,25 +445,28 @@ you wireless card according to your configuration file.
 [section:library Libraries]
 
 [variablelist
-    [[[link odtone.library.index_base ODTONE Base]] [The BASE API contains a set of classes that offers support mechanisms, such as
-    debug, list management, logger, exceptions and generation random values.]]
+    [[ODTONE Base] [
+    The ODTONE BASE library contains a set of classes which offers several helper
+	mechanisms (such as debug, list management, log, exceptions and random values
+    generation) to facilitate the information management.]]
 
-    [[[link odtone.library.index_mih ODTONE MIH]] [The MIH API contains a set of classes to generate/parse MIH
-    messages, including the types present in the standard and template classes
-    to ease the definition of new types.]]
+    [[ODTONE MIH] [
+    The ODTONE MIH library defines all MIH data types presented in the 802.21
+    standard. In addition, it provides a set of classes which facilitates
+    the creation and parsing of MIH messages.]]
 
-    [[[link odtone.library.index_sap ODTONE SAP]] [The SAP API contains a set of IO service classes to
-    send/receive MIH messages. The implementation is modeled after boost::asio
-    and only supports asynchronous operation. IO services
-    ([link odtone.library.index_sap.odtone_sap_user_class odtone::sap::user] and
-    [link odtone.library.index_sap.odtone_sap_link_class odtone::sap::link])
-    are provided to implement User SAP's and Link SAP's.
-    ]]
+    [[ODTONE SAP] [
+    The ODTONE SAP library contains a set of I/O service classes, providing the ability
+    to send and receive MIH messages. The implementation is based on the
+    boost::asio and it only supports asynchronous operation.
+    [*Note:] It is important to be familiar with the boost::asio library.
+    It is also recommend to be familiar with boost::function and
+    boost::bind.]]
 ]
 
-[include libs/odtone_base.qbk]
-[include libs/odtone_mih.qbk]
-[include libs/odtone_sap.qbk]
+[xinclude ../odtone_base_lib.xml]
+[xinclude ../odtone_mih_lib.xml]
+[xinclude ../odtone_sap_lib.xml]
 
 [endsect]
 
@@ -441,39 +476,42 @@ you wireless card according to your configuration file.
 [variablelist
 
     [[[link odtone.app.mihf_index ODTONE-MIHF]]
-    [The MIHF is a management entity that obtains link-layer
-     information from lower layers of different protocol stacks and also from other
-     remote nodes. The MIHF coordinates handover decision making with other peer MIHF
-     in the network.]]
+    [The MIHF is the central entity of the IEEE 802.21 standard, defined
+    as a logical entity whose purpose is to facilitate handover decisions
+    to the network selector entity. Its purpose is achieved by providing
+    the inputs to higher layers through abstract services and communicating
+    with the lower layers of the mobility-management protocol stack through
+    technology-specific interfaces. By other words, the MIHF provides
+    mechanisms that enable the upper layers to manage and control the
+    handover procedure in a media independent way.]]
 
-    [[[link odtone.app.mih_usr_index MIH_User]]
-    [The MIH_User specifies a media independent interface between the MIHF and
+    [[[link odtone.app.mih_usr_index MIH-User]]
+    [The MIH-User specifies a media independent interface between the MIHF and
      upper layers of the mobility management protocol stack. The upper layers need to
-     subscribe with the MIHF as users to receive MIHF-Generated events and also for
-     link-layer events that originate at layers below the MIHF but are passed on to
-     MIHF users through the MIHF. MIHF users directly send commands to the local MIHF
-     using the service primitives of the MIH_User.]]
+     register with the MIHF as users to receive MIHF-generated events and
+     link-layer events which are originated at lower layers. MIH-Users
+     directly send commands to the local MIHF using the service primitives
+     available in the 802.21 standard.]]
 
     [[[link odtone.app.miis_index MIIS Server]]
-    [The MIIS Server provides details on the characteristics and
-	services provided by the serving and neighboring networks. The information
+    [The MIIS Server provides details about the characteristics and
+	services provided by the serving and neighbor networks. The information
 	enables effective system access and effective handover decisions.]]
 
     [[[link odtone.app.link_sap_index Link_SAP]]
     [The Link SAP specifies an abstract media dependent interface between the MIHF
-     and lower layers media-specific protocol stacks of technologies such as IEEE 802.3,
-     IEEE 802.11, IEEE 802.16, 3GPP and 3GPP2. For different link-layer technologies,
-     media-specific SAPs provide the functionality of Link SAP. ]]
+     and the lower layers media-specific protocol stacks of technologies such as IEEE 802.3,
+     IEEE 802.11, IEEE 802.16, 3GPP and 3GPP2.]]
 
     [[[link odtone.app.client_index Client]]
-    [The ['client] is a simple application that permits to send any kind of message
-     to a particular destination. This way, it is possible to send a specific message
-     to a choose destination in order to test is behaviour easily and quickly.]]
+    [The ['client] is a simple application that lets you send any message
+     to a particular destination. In this way, it is possible to send a specific message
+     to a choosen destination in order to test is behaviour easily and quickly.]]
 
     [[[link odtone.app.dummyserver_index Dummyserver]]
     [The ['dummyserver] is a simple application that, as the name implies, works like
      a dummy server. It is always listening (at port 4000) for incoming messages and
-     print them in the console.]]
+     it outputs them in the console.]]
 ]
 
 [include app/mihf.qbk]
