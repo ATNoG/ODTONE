@@ -29,14 +29,40 @@
 namespace link_sap {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * This class provides an implementation of an IEEE 802.21 Link SAP.
+ */
 class link_sap : boost::noncopyable {
 public:
+	/**
+	 * Construct the Link SAP.
+	 *
+	 * @param cfg Configuration options.
+	 * @param io The io_service object that the IEEE 802.21 driver will use to
+	 * dispatch handlers for any asynchronous operations performed on the socket. 
+	 */
 	link_sap(const odtone::mih::config& cfg, boost::asio::io_service& io);
+
+	/**
+	 * Destruct the Link SAP.
+	 */
 	~link_sap();
 
+	/**
+	 * Update the state of the interface. If the state has been changed
+	 * notify its local MIHF
+	 *
+	 * @param it Interface information.
+	 */
 	void update(nic::interface* it);
 
 private:
+	/**
+	 * Default MIH event handler.
+	 *
+	 * @param msg Received message.
+	 * @param ec Error code.
+	 */
 	void default_handler(odtone::mih::message& msg, const boost::system::error_code& ec);
 
 	/**
@@ -46,8 +72,8 @@ private:
 	void init();
 
 private:
-	odtone::sap::link  _mihf;
-	nic::interface_map _ifmap;
+	odtone::sap::link  _mihf;	/**< Link SAP helper */
+	nic::interface_map _ifmap;	/**< Interface map */
 };
 
 ///////////////////////////////////////////////////////////////////////////////
