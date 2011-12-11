@@ -38,22 +38,70 @@ using odtone::ushort;
 odtone::logger log_("mih_usr", std::cout);
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * This class provides an implementation of an IEEE 802.21 MIH-User.
+ */
 class mih_user : boost::noncopyable {
 public:
+	/**
+	 * Construct the MIH-User.
+	 *
+	 * @param cfg Configuration options.
+	 * @param io The io_service object that the IEEE 802.21 driver will use to
+	 * dispatch handlers for any asynchronous operations performed on the socket. 
+	 */
 	mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io);
+
+	/**
+	 * Destruct the MIH-User.
+	 */
 	~mih_user();
 
 protected:
+	/**
+	 * User registration handler.
+	 *
+	 * @param msg Received message.
+	 * @param ec Error Code.
+	 */
 	void user_reg_handler(const odtone::mih::config& cfg, const boost::system::error_code& ec);
+
+	/**
+	 * Default MIH event handler.
+	 *
+	 * @param msg Received message.
+	 * @param ec Error code.
+	 */
 	void event_handler(odtone::mih::message& msg, const boost::system::error_code& ec);
+
+	/**
+	 * Capability Discover handler.
+	 *
+	 * @param msg Received message.
+	 * @param ec Error Code.
+	 */
 	void capability_discover_confirm(odtone::mih::message& msg, const boost::system::error_code& ec);
+
+	/**
+	 * Event subscribe handler.
+	 *
+	 * @param msg Received message.
+	 * @param ec Error Code.
+	 */
 	void event_subscribe_response(odtone::mih::message& msg, const boost::system::error_code& ec);
 
 private:
-	odtone::sap::user _mihf;
-	odtone::mih::id   _mihfid;
+	odtone::sap::user _mihf;	/**< User SAP helper.		*/
+	odtone::mih::id   _mihfid;	/**< MIHF destination ID.	*/
 };
 
+/**
+ * Construct the MIH-User.
+ *
+ * @param cfg Configuration options.
+ * @param io The io_service object that the IEEE 802.21 driver will use to
+ * dispatch handlers for any asynchronous operations performed on the socket. 
+ */
 mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	: _mihf(cfg, io, boost::bind(&mih_user::event_handler, this, _1, _2))
 {
@@ -66,10 +114,19 @@ mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	_mihf.async_send(m, boost::bind(&mih_user::user_reg_handler, this, boost::cref(cfg), _2));
 }
 
+/**
+ * Destruct the MIH-User.
+ */
 mih_user::~mih_user()
 {
 }
 
+/**
+ * User registration handler.
+ *
+ * @param msg Received message.
+ * @param ec Error Code.
+ */
 void mih_user::user_reg_handler(const odtone::mih::config& cfg, const boost::system::error_code& ec)
 {
 	log_(0, "MIH-User register result: ", ec.message());
@@ -89,6 +146,12 @@ void mih_user::user_reg_handler(const odtone::mih::config& cfg, const boost::sys
 	log_(0, "MIH-User has sent a Capability_Discover.request towards its local MIHF");
 }
 
+/**
+ * Default MIH event handler.
+ *
+ * @param msg Received message.
+ * @param ec Error code.
+ */
 void mih_user::event_handler(odtone::mih::message& msg, const boost::system::error_code& ec)
 {
 	if (ec) {
@@ -122,6 +185,12 @@ void mih_user::event_handler(odtone::mih::message& msg, const boost::system::err
 	}
 }
 
+/**
+ * Capability Discover handler.
+ *
+ * @param msg Received message.
+ * @param ec Error Code.
+ */
 void mih_user::capability_discover_confirm(odtone::mih::message& msg, const boost::system::error_code& ec)
 {
 	if (ec) {
@@ -178,6 +247,12 @@ void mih_user::capability_discover_confirm(odtone::mih::message& msg, const boos
 	}
 }
 
+/**
+ * Event subscribe handler.
+ *
+ * @param msg Received message.
+ * @param ec Error Code.
+ */
 void mih_user::event_subscribe_response(odtone::mih::message& msg, const boost::system::error_code& ec)
 {
 	log_(0, __FUNCTION__, "(", msg.tid(), ")");
@@ -206,14 +281,14 @@ int main(int argc, char** argv)
 		po::options_description desc(odtone::mih::octet_string("MIH Usr Configuration"));
 		desc.add_options()
 			("help", "Display configuration options")
-			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1234), "Port")
-			(odtone::sap::kConf_File, po::value<std::string>()->default_value("mih_usr.conf"), "Configuration File")
-			(odtone::sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive Buffer Length")
-			(odtone::sap::kConf_MIH_Handover, po::value<bool>()->default_value("true"), "MIH User Handover support")
-			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
-			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("user"), "User Id")
-			(odtone::sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "MIHF Local Communications Port")
-			(odtone::sap::kConf_MIH_SAP_dest, po::value<std::string>()->default_value(""), "MIH message destination of MIH User");
+			(odtone::sap::kConf_File, po::value<std::string>()->default_value("mih_usr.conf"), "Configuration file")
+			(odtone::sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive buffer length")
+			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1234), "Listening port")
+			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("user"), "MIH-User ID")
+			(odtone::sap::kConf_MIH_Handover, po::value<bool>()->default_value("true"), "MIH-User handover support")
+			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF IP address")			
+			(odtone::sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "Local MIHF communication port")
+			(odtone::sap::kConf_MIH_SAP_dest, po::value<std::string>()->default_value(""), "MIHF destination");
 
 		odtone::mih::config cfg(desc);
 		cfg.parse(argc, argv, odtone::sap::kConf_File);
