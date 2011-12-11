@@ -76,7 +76,7 @@ struct ip4_addr
 	/**
 	 * Serialize/deserialize the IP4_ADDR data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -99,7 +99,7 @@ struct ip6_addr
 	/**
 	 * Serialize/deserialize the IP6_ADDR data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -130,7 +130,7 @@ struct ip_config
 	/**
 	 * Serialize/deserialize the IP_CONFIG data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -166,7 +166,7 @@ struct ip_subnet_info
 	/**
 	 * Serialize/deserialize the IP_SUBNET_INFO data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)

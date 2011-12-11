@@ -40,7 +40,7 @@ struct pk_delay {
 	/**
 	 * Serialize/deserialize the PK_DELAY data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -124,7 +124,7 @@ struct qos_list {
 	/**
 	 * Serialize/deserialize the QOS_LIST data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)

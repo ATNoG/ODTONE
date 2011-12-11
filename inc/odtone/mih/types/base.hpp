@@ -60,9 +60,9 @@ struct null {
 	/**
 	 * Serialize/deserialize the NULL data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
-	template<class ArchiveT> void serialize(ArchiveT&) {}
+	template<class ArchiveT> void serialize(ArchiveT& ar) {}
 
 	bool operator==(const null &) const
 	{
@@ -104,8 +104,6 @@ public:
 
 	/**
 	 * Clear the BITMAP data type.
-	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
 	 */
 	void clear()
 	{
@@ -205,7 +203,7 @@ public:
 	/**
 	 * Serialize/deserialize the BITMAP data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -270,7 +268,7 @@ public:
 	/**
 	 * Serialize/deserialize the PERCENTAGE data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -329,7 +327,7 @@ public:
 	/**
 	 * Serialize/deserialize the ENUMERATION data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)

@@ -69,7 +69,7 @@ public:
 	/**
 	 * Set the TRANSPORT_ADDR type.
 	 *
-	 * @param The transport address type.
+	 * @param type The transport address type.
 	 */
 	void type(const uint16 type)
 	{
@@ -100,7 +100,7 @@ public:
 	/**
 	 * Serialize/deserialize the TRANSPORT_ADDR data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -145,7 +145,7 @@ public:
 	 * Construct an empty MAC_ADDR data type.
 	 * @note Transport address type = 6
 	 *
-	 * @param type address MAC address string (format: XX:XX:XX:XX:XX:XX).
+	 * @param addr address MAC address string (format: XX:XX:XX:XX:XX:XX).
 	 */
 	explicit mac_addr(const octet_string& addr) : transport_addr(6)
 	{
@@ -214,7 +214,7 @@ struct l2_3gpp_2g_cell_id {
 	/**
 	 * Serialize/deserialize the L2_3GPP_2G_CELL_ID data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -230,9 +230,9 @@ struct l2_3gpp_2g_cell_id {
 	 * L2_3GPP_2G_CELL_ID data type output.
 	 *
 	 * @param out ostream.
-	 * @param tp L2_3GPP_2G_CELL_ID data type.
+	 * @param addr L2_3GPP_2G_CELL_ID data type.
 	 */
-	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_2g_cell_id&)
+	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_2g_cell_id& addr)
 	{
 		return out;
 	}
@@ -263,7 +263,7 @@ struct l2_3gpp_3g_cell_id {
 	/**
 	 * Serialize/deserialize the L2_3GPP_3G_CELL_ID data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -278,9 +278,9 @@ struct l2_3gpp_3g_cell_id {
 	 * L2_3GPP_3G_CELL_ID data type output.
 	 *
 	 * @param out ostream.
-	 * @param tp L2_3GPP_3G_CELL_ID data type.
+	 * @param addr L2_3GPP_3G_CELL_ID data type.
 	 */
-	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_3g_cell_id&)
+	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_3g_cell_id& addr)
 	{
 		return out;
 	}
@@ -308,7 +308,7 @@ struct l2_3gpp_addr  {
 	/**
 	 * Serialize/deserialize the L2_3GPP_ADDR data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -320,9 +320,9 @@ struct l2_3gpp_addr  {
 	 * L2_3GPP_ADDR data type output.
 	 *
 	 * @param out ostream.
-	 * @param tp L2_3GPP_ADDR data type.
+	 * @param addr L2_3GPP_ADDR data type.
 	 */
-	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_addr&)
+	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_addr& addr)
 	{
 		return out;
 	}
@@ -349,7 +349,7 @@ struct l2_3gpp2_addr {
 	/**
 	 * Serialize/deserialize the L2_3GPP2_ADDR data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -361,9 +361,9 @@ struct l2_3gpp2_addr {
 	 * L2_3GPP2_ADDR data type output.
 	 *
 	 * @param out ostream.
-	 * @param tp L2_3GPP2_ADDR data type.
+	 * @param addr L2_3GPP2_ADDR data type.
 	 */
-	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp2_addr&)
+	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp2_addr& addr)
 	{
 		return out;
 	}
@@ -390,7 +390,7 @@ struct other_l2_addr {
 	/**
 	 * Serialize/deserialize the OTHER_L2_ADDR data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -402,9 +402,9 @@ struct other_l2_addr {
 	 * OTHER_L2_ADDR data type output.
 	 *
 	 * @param out ostream.
-	 * @param tp OTHER_L2_ADDR data type.
+	 * @param addr OTHER_L2_ADDR data type.
 	 */
-	friend std::ostream& operator<<(std::ostream& out, const other_l2_addr&)
+	friend std::ostream& operator<<(std::ostream& out, const other_l2_addr& addr)
 	{
 		return out;
 	}

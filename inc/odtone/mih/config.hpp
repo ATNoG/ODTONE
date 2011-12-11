@@ -83,7 +83,7 @@ public:
 	/**
 	 * Count the number of option variables.
 	 *
-	 * @param The number of variables.
+	 * @param var Number of variables.
 	 */
 	uint count(const char *var)
 	{

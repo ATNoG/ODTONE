@@ -105,6 +105,9 @@ static const tlv_cast_<ie_container_network,          tlv4_<0x10000301> > tlv_ie
 static const tlv_cast_<ie_container_list_of_networks, tlv4_<0x10000300> > tlv_ie_container_list_of_networks = {};
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * PoA subnet info list IE type.
+ */
 struct ie_poa_subnet_info_list : private std::vector<ie_poa_subnet_info> {
 	typedef std::vector<ie_poa_subnet_info> base;
 
@@ -124,9 +127,9 @@ public:
 	using base::operator[];
 
 	/**
-	 * Serialize the LIST(POA_SUBNET_INFO) IE type.
+	 * Serialize the PoA subnet info list IE type.
 	 *
-	 * @param The archive to where serialize the data type.
+	 * @param ar The archive to where serialize the data type.
 	 */
 	void serialize(oarchive& ar)
 	{
@@ -137,9 +140,9 @@ public:
 	}
 
 	/**
-	 * Deserialize the LIST(POA_SUBNET_INFO) IE type.
+	 * Deserialize the PoA subnet info list IE type.
 	 *
-	 * @param The archive from where deserialize the data type.
+	 * @param ar The archive from where deserialize the data type.
 	 */
 	void serialize(iarchive& ar)
 	{
@@ -164,6 +167,9 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * PoA IP address list IE type.
+ */
 struct ie_poa_ip_addr_list : private std::vector<ie_poa_ip_addr> {
 	typedef std::vector<ie_poa_ip_addr> base;
 
@@ -183,9 +189,9 @@ public:
 	using base::operator[];
 
 	/**
-	 * Deserialize the LIST(POA_IP_ADDR) IE type.
+	 * Deserialize the PoA IP address list IE type.
 	 *
-	 * @param The archive from where deserialize the data type.
+	 * @param ar The archive from where deserialize the data type.
 	 */
 	void serialize(oarchive& ar)
 	{
@@ -196,9 +202,9 @@ public:
 	}
 
 	/**
-	 * Serialize the LIST(POA_IP_ADDR) IE type.
+	 * Serialize the PoA IP address list IE type.
 	 *
-	 * @param The archive to where serialize the data type.
+	 * @param ar The archive to where serialize the data type.
 	 */
 	void serialize(iarchive& ar)
 	{
@@ -223,6 +229,9 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * PoA IE type.
+ */
 struct ie_container_poa
 {
 	ie_poa_link_addr          poa_link_addr;
@@ -234,9 +243,9 @@ struct ie_container_poa
 	vendor_ie_list            vendor_ies;
 
 	/**
-	 * Serialize/deserialize the POA_CONTAINER type.
+	 * Serialize/deserialize the PoA IE type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive from/to where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -251,6 +260,11 @@ struct ie_container_poa
 		vendor_ies.serialize(ar);
 	}
 
+	/**
+	 * Deserialize optional IEs.
+	 *
+	 * @param ar The archive to where deserialize the data type.
+	 */
 	void serialize_opt_lists(iarchive& ar)
 	{
 		poa_subnet_info.clear();
@@ -278,6 +292,11 @@ struct ie_container_poa
 		}
 	}
 
+	/**
+	 * Serialize optional IEs.
+	 *
+	 * @param ar The archive from where serialize the data type.
+	 */
 	void serialize_opt_lists(oarchive& ar)
 	{
 		for (ie_poa_subnet_info_list::iterator i = poa_subnet_info.begin(), e = poa_subnet_info.end(); i != e; ++i)
@@ -289,6 +308,9 @@ struct ie_container_poa
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * PoA list IE type.
+ */
 class ie_container_poa_list : private std::vector<ie_container_poa> {
 	typedef std::vector<ie_container_poa> base;
 
@@ -307,6 +329,11 @@ public:
 	using base::resize;
 	using base::operator[];
 
+	/**
+	 * Serialize the PoA list IE type.
+	 *
+	 * @param ar The archive to where serialize the data type.
+	 */
 	void serialize(oarchive& ar)
 	{
 		for (base::iterator i = base::begin(); i != base::end(); ++i)
@@ -315,6 +342,11 @@ public:
 		vendor_ies.serialize(ar);
 	}
 
+	/**
+	 * Deserialize the PoA list IE type.
+	 *
+	 * @param ar The archive from where deserialize the data type.
+	 */
 	void serialize(iarchive& ar)
 	{
 		base::clear();
@@ -340,6 +372,9 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Network IE type.
+ */
 struct ie_container_network {
 	ie_network_type network_type;
 	ie_operator_id operator_id;
@@ -365,6 +400,11 @@ struct ie_container_network {
 	ie_container_poa_list poas;
 	vendor_ie_list        vendor_ies;
 
+	/**
+	 * Serialize/deserialize the network IE type.
+	 *
+	 * @param ar The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -394,6 +434,11 @@ struct ie_container_network {
 		vendor_ies.serialize(ar);
 	}
 
+	/**
+	 * Deserialize optional IEs.
+	 *
+	 * @param ar The archive to where deserialize the data type.
+	 */
 	void serialize_opt_lists(iarchive& ar)
 	{
 		poas.clear();
@@ -409,6 +454,11 @@ struct ie_container_network {
 		}
 	}
 
+	/**
+	 * Serialize optional IEs.
+	 *
+	 * @param ar The archive from where serialize the data type.
+	 */
 	void serialize_opt_lists(oarchive& ar)
 	{
 		for (ie_container_poa_list::iterator i = poas.begin(), e = poas.end(); i != e; ++i)
@@ -417,6 +467,9 @@ struct ie_container_network {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Network list IE type.
+ */
 class ie_container_list_of_networks : private std::vector<ie_container_network> {
 	typedef std::vector<ie_container_network> base;
 
@@ -435,6 +488,11 @@ public:
 	using base::resize;
 	using base::operator[];
 
+	/**
+	 * Serialize the network list IE type.
+	 *
+	 * @param ar The archive to where serialize the data type.
+	 */
 	void serialize(oarchive& ar)
 	{
 		for (base::iterator i = base::begin(), e = base::end(); i != e; ++i)
@@ -443,6 +501,11 @@ public:
 		vendor_ies.serialize(ar);
 	}
 
+	/**
+	 * Deserialize the network list IE type.
+	 *
+	 * @param ar The archive from where deserialize the data type.
+	 */
 	void serialize(iarchive& ar)
 	{
 		base::clear();

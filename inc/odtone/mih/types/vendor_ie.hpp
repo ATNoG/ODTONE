@@ -98,7 +98,7 @@ public:
 	/**
 	 * Deserialize the Vendor_IE data type.
 	 *
-	 * @param The archive from where deserialize the data type.
+	 * @param ar The archive from where deserialize the data type.
 	 */
 	bool serialize(iarchive& ar)
 	{
@@ -123,7 +123,7 @@ public:
 	/**
 	 * Serialize the Vendor_IE data type.
 	 *
-	 * @param The archive to where serialize the data type.
+	 * @param ar The archive to where serialize the data type.
 	 */
 	void serialize(oarchive& ar)
 	{
@@ -162,7 +162,7 @@ public:
 	/**
 	 * Serialize the LIST(Vendor_IE) data type.
 	 *
-	 * @param The archive to where serialize the data type.
+	 * @param ar The archive to where serialize the data type.
 	 */
 	void serialize(oarchive& ar)
 	{
@@ -173,7 +173,7 @@ public:
 	/**
 	 * Deserialize the LIST(Vendor_IE) data type.
 	 *
-	 * @param The archive from where deserialize the data type.
+	 * @param ar The archive from where deserialize the data type.
 	 */
 	void serialize(iarchive& ar)
 	{

@@ -49,7 +49,7 @@ struct iq_rdf_data {
 	/**
 	 * Serialize/deserialize the IQ_RDF_DATA data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)

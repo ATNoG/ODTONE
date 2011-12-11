@@ -82,7 +82,7 @@ struct rq_result {
 	/**
 	 * Serialize/deserialize the RQ_RESULT data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -118,7 +118,7 @@ struct tgt_net_info_1 {
 	/**
 	 * Serialize/deserialize the auxiliar TGT_NET_INFO data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -165,7 +165,7 @@ struct rq_res_set {
 	/**
 	 * Serialize/deserialize the REQ_RES_SET data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -188,7 +188,7 @@ struct asgn_res_set {
 	/**
 	 * Serialize/deserialize the ASGN_RES_SET data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)

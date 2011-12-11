@@ -91,7 +91,7 @@ public:
 	 * Copy the elements from another buffer. The elements contained in the
 	 * buffer will be overwrited.
 	 *
-	 * @param The buffer from which to copy the elements.
+	 * @param buff The buffer from which to copy the elements.
 	 * @return The reference to the buffer.
 	 */
 	buffer& operator=(buffer&& buff)
@@ -218,7 +218,7 @@ public:
 	 * Copy the elements from another buffer. The elements contained in the
 	 * buffer will be overwrited.
 	 *
-	 * @param The buffer from which to copy the elements.
+	 * @param buff The buffer from which to copy the elements.
 	 * @return The reference to the buffer.
 	 */
 	buffer_vla& operator=(buffer_vla&& buff)

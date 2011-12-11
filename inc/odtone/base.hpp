@@ -79,6 +79,15 @@
 #	define BOOST_HAS_NULLPTR
 #endif
 
+#define ODTONE_UNDEFINED_BOOL                           \
+	struct undefined_bool_t {                          \
+		void true_() {}                                \
+	};                                                 \
+	typedef void (undefined_bool_t::*undefined_bool)()
+
+#define ODTONE_UNDEFINED_BOOL_TRUE  &undefined_bool_t::true_
+#define ODTONE_UNDEFINED_BOOL_FALSE 0
+
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone {
 

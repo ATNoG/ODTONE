@@ -33,7 +33,7 @@ namespace odtone { namespace sap {
 static const char* const kConf_MIH_SAP_id		= "link.id";
 static const char* const kConf_Port				= "link.port";
 static const char* const kConf_Tec				= "link.tec";
-static const char* const kConf_Interface_Addr	= "link.link_addr_list";
+static const char* const kConf_Interface_Addr	= "link.link_addr";
 static const char* const kConf_Evt_List			= "link.event_list";
 static const char* const kConf_Cmd_List			= "link.command_list";
 
@@ -86,7 +86,7 @@ public:
 	 * @param msg MIH message to send.
 	 * @param h Response handler function.
 	 */
-	void async_send(mih::message& p, const handler& h = handler());
+	void async_send(mih::message& msg, const handler& h = handler());
 
 private:
 	/**

@@ -50,6 +50,8 @@ struct base_tlv_ {
 	 * Deserialize the TLV type value.
 	 *
 	 * @param ar The input archive from where extract the TLV value.
+	 * @param val The value to deserialize.
+	 * @return True if the value was deserialized or false otherwise.
 	 */
 	template<class T>
 	static bool serialize(iarchive& ar, T& val)
@@ -79,6 +81,7 @@ struct base_tlv_ {
 	 * Serialize the TLV type value.
 	 *
 	 * @param ar The output archive to where insert the TLV value.
+	 * @param val The value to serialize.
 	 */
 	template<class T>
 	static void serialize(oarchive& ar, T& val)
@@ -126,6 +129,8 @@ struct oui_ {
 	 * Deserialize the TLV type value.
 	 *
 	 * @param ar The input archive from where extract the TLV value.
+	 * @param val The value to deserialize.
+	 * @return True if the value was deserialized or false otherwise.
 	 */
 	template<class T>
 	static bool serialize(iarchive& ar, T& val)
@@ -173,6 +178,7 @@ struct oui_ {
 	 * Serialize the TLV type value.
 	 *
 	 * @param ar The output archive to where insert the TLV value.
+	 * @param val The value to serialize.
 	 */
 	template<class T>
 	static void serialize(oarchive& ar, T& val)
