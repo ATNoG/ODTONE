@@ -1,0 +1,266 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class archive</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="ODTONE 0.3">
+<link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.archive_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/archive.hpp&gt;">
+<link rel="prev" href="iarchive_eof_error.html" title="Struct iarchive_eof_error">
+<link rel="next" href="iarchive.html" title="Class iarchive">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="iarchive_eof_error.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.archive_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="iarchive.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="odtone.mih.archive"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class archive</span></h2>
+<p>odtone::mih::archive</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.archive_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/archive.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/mih/archive.hpp</a>&gt;
+
+</span>
+<span class="keyword">class</span> <a class="link" href="archive.html" title="Class archive">archive</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">const_iterator</span> <a name="odtone.mih.archive.const_iterator"></a><span class="identifier">const_iterator</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="archive.html#odtone.mih.archiveconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="archive.html#idp1616216-bb"><span class="identifier">archive</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="archive.html#idp1616472-bb"><span class="special">~</span><span class="identifier">archive</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="archive.html#idp1596016-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="archive.html#idp1596200-bb"><span class="identifier">clear</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="archive.html#idp1596936-bb"><span class="identifier">swap</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="archive.html#idp1598504-bb"><span class="identifier">buffer</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint8</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIteratorT<span class="special">&gt;</span> 
+    <span class="keyword">void</span> <a class="link" href="archive.html#idp1600448-bb"><span class="identifier">append</span></a><span class="special">(</span><span class="identifier">InputIteratorT</span><span class="special">,</span> <span class="identifier">InputIteratorT</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="archive.html#idp1607944-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="archive.html#idp1609232-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span> <a class="link" href="archive.html#idp1610448-bb"><span class="identifier">buffer</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <a class="link" href="archive.html#idp1611440-bb"><span class="identifier">input</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <a class="link" href="archive.html#idp1612536-bb"><span class="identifier">output</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="archive.html#idp1613656-bb"><span class="identifier">position</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">uint</span> <a class="link" href="archive.html#idp1615112-bb"><span class="identifier">position</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp10902632"></a><h2>Description</h2>
+<p>Provides serialization/deserialization for the message payload. </p>
+<div class="refsect2">
+<a name="idp10903040"></a><h3>
+<a name="odtone.mih.archiveconstruct-copy-destruct"></a><code class="computeroutput">archive</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a name="idp1616216-bb"></a><span class="identifier">archive</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Construct an archive. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="idp1616472-bb"></a><span class="special">~</span><span class="identifier">archive</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Destruct an archive. </p>
+</li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="idp10908480"></a><h3>
+<a name="idp1596016-bb"></a><code class="computeroutput">archive</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp1596200-bb"></a><span class="identifier">clear</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Clear the contents of the archive. Its size and actual position is set to 0 (zero). </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp1596936-bb"></a><span class="identifier">swap</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span> buffer<span class="special">)</span><span class="special">;</span></pre>
+<p>Exchanges the content of the archive by the content of buffer, which can have different sizes. All iterators, references and pointers remain valid for the swapped vectors.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">buffer</code></span></p></td>
+<td><p>A vector providing the elements to be swapped. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp1598504-bb"></a><span class="identifier">buffer</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint8</span> <span class="special">*</span> buf<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
+<p>Fills archive's contents.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">buf</code></span></p></td>
+<td><p>The elements to be copied to the archive. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">len</code></span></p></td>
+<td><p>The number of elements to be copied. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIteratorT<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="idp1600448-bb"></a><span class="identifier">append</span><span class="special">(</span><span class="identifier">InputIteratorT</span> begin<span class="special">,</span> <span class="identifier">InputIteratorT</span> end<span class="special">)</span><span class="special">;</span></pre>
+<p>Inserts an element, a number of elements or a range of elements into the archive at a specified position.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">begin</code></span></p></td>
+<td><p>The position of the first element to be copied. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">end</code></span></p></td>
+<td><p>The position of the last element to be copied. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="idp1607944-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>A random-access iterator addressing the first element in the archive or to the location succeeding an empty archive. The iterator should always be compared with vector::end to ensure it is valid.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>A random-access iterator to the first element in the container. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="idp1609232-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>A random-access iterator to the end of the archive object. If the archive is empty, vector::end == vector::begin.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>A random-access iterator that points just beyond the end of the archive. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span> <a name="idp1610448-bb"></a><span class="identifier">buffer</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Get archive's contents.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The archive's contents. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <a name="idp1611440-bb"></a><span class="identifier">input</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Get the corresponding input archive.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The input archive. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <a name="idp1612536-bb"></a><span class="identifier">output</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Get the corresponding output archive.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The output archive. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp1613656-bb"></a><span class="identifier">position</span><span class="special">(</span><span class="identifier">uint</span> pos<span class="special">)</span><span class="special">;</span></pre>
+<p>Point to a new position in the archive.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">pos</code></span></p></td>
+<td><p>The new position in the archive where to point. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">uint</span> <a name="idp1615112-bb"></a><span class="identifier">position</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Get the current position in the archive.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The current position in the archive. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2011 Universidade
+      Aveiro<br>Copyright &#169; 2009-2011 Instituto de
+      Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="iarchive_eof_error.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.archive_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="iarchive.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
