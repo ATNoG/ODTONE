@@ -32,21 +32,31 @@
 namespace odtone { namespace mihf {
 
 /**
- * Struct to store pending Link SAP responses.
- * FIXME: use boost::variant
+ * Struct to store the link capabilities supported.
+ */
+struct capabilities {
+	mih::event_list   event_list;	/**< The supported events. 			*/
+	mih::command_list command_list;	/**< The supported commands. 		*/
+};
+
+/**
+ * Struct to store the link action parameters.
+ */
+struct action {
+	mih::link_ac_result	link_ac_result;	/**< The link action results. */
+	boost::optional<mih::link_scan_rsp_list> link_scan_rsp_list; /**< The link scan response list.	*/
+};
+
+/**
+ * Struct to store pending Link SAP responses
  */
 struct pending_link_response {
-	mih::octet_string    user;			/**< The MIH source identifier. 	*/
-	uint16               tid;			/**< The transaction identifier. 	*/
-	struct capabilities {				/**< The supported capabilities. 	*/
-		mih::event_list   event_list;	/**< The supported events. 			*/
-		mih::command_list command_list;	/**< The supported commands. 		*/
-	} cap;
-	mih::link_status_rsp link_status;	/**< The link status. 			*/
-	struct action_response {			/**< The link action response. 	*/
-		boost::optional<mih::link_ac_result>     link_ac_result;	/**< The link action results. 		*/
-		boost::optional<mih::link_scan_rsp_list> link_scan_rsp_list;/**< The link scan response list.	*/
-	} action;
+	mih::octet_string	user;			/**< The MIH source identifier. 	*/
+	uint16				tid;			/**< The transaction identifier. 	*/
+	mih::status			st;				/**< Status. 						*/
+	boost::variant<	capabilities,
+					mih::link_status_rsp,
+					action > response;	/**< The response parameters. 		*/
 };
 
 /**
@@ -93,9 +103,9 @@ public:
 	 * @param link_ac_result The link action result
 	 */
 	void add(mih::octet_string user,
-                 uint16 tid,
+             uint16 tid,
 	         boost::optional<mih::link_scan_rsp_list> link_scan_rsp_list,
-	         boost::optional<mih::link_ac_result> link_ac_result);
+	         mih::link_ac_result link_ac_result);
 
 	/**
 	 * Remove an existing record from the Link Response Pool

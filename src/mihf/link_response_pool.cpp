@@ -50,8 +50,10 @@ void link_response_pool::add(mih::octet_string user,
 
 	p.user.assign(user);
 	p.tid = tid;
-	p.cap.event_list = event;
-	p.cap.command_list = command;
+	capabilities cap;
+	cap.event_list = event;
+	cap.command_list = command;
+	p.response = cap;
 
 	boost::mutex::scoped_lock lock(_mutex);
 	_cpool.push_back(p);
@@ -73,7 +75,7 @@ void link_response_pool::add(mih::octet_string user,
 
 	p.user.assign(user);
 	p.tid = tid;
-	p.link_status = link_status;
+	p.response = link_status;
 
 	boost::mutex::scoped_lock lock(_mutex);
 	_cpool.push_back(p);
@@ -91,18 +93,18 @@ void link_response_pool::add(mih::octet_string user,
 void link_response_pool::add(mih::octet_string user,
                              uint16 tid,
                              boost::optional<mih::link_scan_rsp_list> link_scan_rsp_list,
-                             boost::optional<mih::link_ac_result> link_ac_result)
+                             mih::link_ac_result link_ac_result)
 {
 	pending_link_response p;
 
 	p.user.assign(user);
 	p.tid = tid;
+	action ac;
 	if(link_scan_rsp_list.is_initialized()) {
-		p.action.link_scan_rsp_list = link_scan_rsp_list;
+		ac.link_scan_rsp_list = link_scan_rsp_list;
 	}
-	if(link_ac_result.is_initialized()) {
-		p.action.link_ac_result = link_ac_result;
-	}
+	ac.link_ac_result = link_ac_result;
+	p.response = ac;
 
 	boost::mutex::scoped_lock lock(_mutex);
 	_cpool.push_back(p);

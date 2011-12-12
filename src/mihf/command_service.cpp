@@ -105,7 +105,8 @@ void command_service::link_get_parameters_response_handler(meta_message_ptr &in)
 			pending_link_response tmp = _lrpool.find(in->tid(), *it_link);
 			_lrpool.del(in->tid(), *it_link);
 
-			lsr = tmp.link_status;
+			mih::link_status_rsp& link_status = boost::get<mih::link_status_rsp>(tmp.response);
+			lsr = link_status;
 
 			sr.id = lid;
 			sr.rsp = lsr;
@@ -433,20 +434,17 @@ void command_service::link_actions_response_handler(meta_message_ptr &in)
 			pending_link_response tmp = _lrpool.find(in->tid(), *it_link);
 			_lrpool.del(in->tid(), *it_link);
 
-			if(tmp.action.link_ac_result.is_initialized()) {
-				if(tmp.action.link_scan_rsp_list.is_initialized()) {
-					lar.scan_list = tmp.action.link_scan_rsp_list.get();
-				}
-				lar.result = tmp.action.link_ac_result.get();
-				larl.push_back(lar);
-				
-				// If one or more responses are successful the status
-				// is set to success
-				st = mih::status_success;
-			} else {
-				mih::null null;
-				lar.scan_list = null;
+			action& ac = boost::get<action>(tmp.response);
+
+			if(ac.link_scan_rsp_list.is_initialized()) {
+				lar.scan_list = ac.link_scan_rsp_list.get();
 			}
+			lar.result = ac.link_ac_result.get();
+			larl.push_back(lar);
+
+			// If one or more responses are successful the status
+			// is set to success
+			st = mih::status_success;
 		}
 	}
 
@@ -581,10 +579,12 @@ bool command_service::link_actions_confirm(meta_message_ptr &in,
 		       & mih::tlv_link_scan_rsp_list(lsrl)
 		       & mih::tlv_link_ac_result(lar);
 
-		_lrpool.add(in->source().to_string(),
-			       in->tid(),
-			       lsrl,
-			       lar);
+		if(st == mih::status_success) {
+			_lrpool.add(in->source().to_string(),
+					   in->tid(),
+					   lsrl,
+					   lar.get());
+		}
 
 		return false;
 	}

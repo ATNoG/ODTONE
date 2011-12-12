@@ -118,8 +118,9 @@ void service_management::link_capability_discover_response_handler(meta_message_
 			pending_link_response tmp = _lrpool.find(in->tid(), *it_link);
 			_lrpool.del(in->tid(), *it_link);
 
-			capabilities_event_list.common(tmp.cap.event_list);
-			capabilities_cmd_list.common(tmp.cap.command_list);
+			capabilities& cap = boost::get<capabilities>(tmp.response);
+			capabilities_event_list.common(cap.event_list);
+			capabilities_cmd_list.common(cap.command_list);
 		}
 	}
 
