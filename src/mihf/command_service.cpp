@@ -230,9 +230,9 @@ bool command_service::link_get_parameters_confirm(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mics) received Link_Get_Parameters.confirm from ",
 	    in->source().to_string());
 
-	if(_lpool.set_user_tid(in)) {
-		_link_abook.reset(in->source().to_string());
+	_link_abook.reset(in->source().to_string());
 
+	if(_lpool.set_user_tid(in)) {
 		mih::status st;
 		boost::optional<mih::link_param_list> lpl;
 		boost::optional<mih::link_states_rsp_list> lsrl;
@@ -361,13 +361,13 @@ bool command_service::link_configure_thresholds_confirm(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mics) received Link_Configure_Thresholds.confirm from ",
 	    in->source().to_string());
 
+	_link_abook.reset(in->source().to_string());
+
 	if(!_lpool.set_user_tid(in)) {
 		ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
 		    "discarding it");
 		return false;
 	}
-
-	_link_abook.reset(in->source().to_string());
 
 	mih::status st;
 	boost::optional<mih::link_cfg_status_list> lcsl;

@@ -321,9 +321,9 @@ bool service_management::capability_discover_confirm(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mism) received Capability_Discover.confirm from ",
 	    in->source().to_string());
 
-	if (_lpool.set_user_tid(in)) {
-		_link_abook.reset(in->source().to_string());
+	_link_abook.reset(in->source().to_string());
 
+	if (_lpool.set_user_tid(in)) {
 		mih::status st;
 		boost::optional<mih::event_list> event;
 		boost::optional<mih::command_list> command;
