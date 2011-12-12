@@ -23,16 +23,16 @@
 namespace odtone { namespace mihf {
 
 /**
- * Local Transaction Pool constructor.
+ * Construct a Local Transaction Pool.
  */
 local_transaction_pool::local_transaction_pool()
 {
 }
 
 /**
- * Add a new local transaction entry in the Local Transaction Pool.
+ * Add a new entry in the Local Transaction Pool.
  *
- * @param in input message.
+ * @param in The input message.
  */
 void local_transaction_pool::add(meta_message_ptr& in)
 {
@@ -52,10 +52,10 @@ void local_transaction_pool::add(meta_message_ptr& in)
 }
 
 /**
- * Remove a existing local transaction entry from the Link Transaction Pool
+ * Remove an existing entry from the Local Transaction Pool.
  *
- * @param id MIH User MIH Identifier.
- * @param tid MIH Message Transaction ID.
+ * @param id The MIH source identifier.
+ * @param tid The transaction identifier.
  */
 void local_transaction_pool::del(const mih::octet_string user,
                                  uint16 tid)
@@ -72,9 +72,10 @@ void local_transaction_pool::del(const mih::octet_string user,
 }
 
 /**
- * Find a local transaction entry in the Local Transaction Pool
+ * Searchs for a record in the Local Transaction Pool.
  *
- * @param from MIH Identifier.
+ * @param from The MIH source identifier.
+ * @return The list of active transaction from the given source.
  */
 std::list<pending_transaction>::iterator
 local_transaction_pool::find(const mih::octet_string &from)
@@ -89,11 +90,11 @@ local_transaction_pool::find(const mih::octet_string &from)
 }
 
 /**
- * Check if there is a pending transaction with the msg's mih source
- * identifier and set the transaction id and destination appropriately.
+ * Check the existence of an active transaction. It also set the
+ * MIH destination and the transaction identifier in the given message.
  *
- * @param msg MIH Message.
- * @return true if there is a pending transaction or false otherwise.
+ * @param msg The MIH Message.
+ * @return True if there is an active transaction or false otherwise.
  */
 bool local_transaction_pool::set_user_tid(meta_message_ptr &msg)
 {

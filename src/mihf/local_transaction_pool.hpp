@@ -32,61 +32,62 @@
 namespace odtone { namespace mihf {
 
 /**
- * Struct to store pending transaction informations.
+ * Struct to store active local transaction.
  */
 struct pending_transaction
 {
-	mih::octet_string	user;
-	mih::octet_string	destination;
-	uint16              tid;
+	mih::octet_string	user;			/**< The MIH source identifier.			*/
+	mih::octet_string	destination;	/**< The MIH destination identifier.	*/
+	uint16              tid;			/**< The transaction identifier.		*/
 };
 
 /**
- * This class allows to store a pool of active local transactions.
+ * This class allows to store the active local transactions.
  */
 class local_transaction_pool
 {
 public:
 	/**
-	 * Local Transaction Pool constructor.
+	 * Construct a Local Transaction Pool.
 	 */
 	local_transaction_pool();
 
 	/**
-	 * Add a new local transaction entry in the Local Transaction Pool.
+	 * Add a new entry in the Local Transaction Pool.
 	 *
-	 * @param in input message.
+	 * @param in The input message.
 	 */
 	void add(meta_message_ptr& in);
 
 	/**
-	 * Remove a existing local transaction entry from the Local Transaction Pool
+	 * Remove an existing entry from the Local Transaction Pool.
 	 *
-	 * @param id MIH User MIH Identifier.
-	 * @param tid MIH Message Transaction ID.
+	 * @param id The MIH source identifier.
+	 * @param tid The transaction identifier.
 	 */
 	void del(const mih::octet_string user, uint16 tid);
 
 	/**
-	 * Find a local transaction entry in the Local Transaction Pool
+	 * Searchs for a record in the Local Transaction Pool.
 	 *
-	 * @param from MIH Identifier.
+	 * @param from The MIH source identifier.
+	 * @return The list of active transaction from the given source.
 	 */
 	std::list<pending_transaction>::iterator
 	find(const mih::octet_string &from);
 
 	/**
-	 * Check if there is a pending transaction with the msg's mih source
-	 * identifier and set the transaction id and destination appropriately.
+	 * Check the existence of an active transaction. It also set the
+	 * MIH destination and the transaction identifier in the given message.
 	 *
-	 * @param msg MIH Message.
-	 * @return true if there is a pending transaction or false otherwise.
+	 * @param msg The MIH Message.
+	 * @return True if there is an active transaction or false otherwise.
 	 */
 	bool set_user_tid(meta_message_ptr &msg);
 
 protected:
-	std::list<pending_transaction> _transactions;
-	boost::mutex _mutex;
+	std::list<pending_transaction> _transactions;	/**< The list of active local transactions.	*/
+	boost::mutex _mutex;							/**< The mutex.								*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -28,10 +28,12 @@
 namespace odtone { namespace mihf {
 
 /**
- * Netsap constructor.
+ * Construct a netsap module.
  *
- * @param io io_service.
- * @param abook address_book module.
+ * @param io The io_service object that Link SAP I/O Service will use to
+ * dispatch handlers for any asynchronous operations performed on
+ * the socket.
+ * @param abook The address book module.
  */
 net_sap::net_sap(io_service &io, address_book &abook)
 	: _io(io),
@@ -40,9 +42,9 @@ net_sap::net_sap(io_service &io, address_book &abook)
 }
 
 /**
- * Send the message to the peer MIHF.
+ * Send the message to a peer MIHF.
  *
- * @param msg output message.
+ * @param msg The output message.
  */
 void net_sap::send(meta_message_ptr &msg)
 {

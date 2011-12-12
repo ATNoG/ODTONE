@@ -31,20 +31,20 @@
 namespace odtone { namespace mihf {
 
 /**
- * Struct to store MIHF information like IP Address, listening port and transport
- * protocol.
+ * Struct to store MIHF information such as IP Address, listening port
+ * and transport protocol.
  */
 struct address_entry
 {
-	mih::octet_string	ip;
-	uint16				port;
-	mih::transport_list	trans; // MIH transport protocols available
+	mih::octet_string	ip;		/**< IP address.					*/
+	uint16				port;	/**< Listening port.				*/
+	mih::transport_list	trans;	/**< Supported transport protocols.	*/
 };
 
 /**
- * This class is used to store information about all known peer MIHFs. It makes
- * the correspondence between the MIHF MIH Identifier and the informations stored
- * in the address_entry struct.
+ * This class is used to store the information about all known peer MIHFs.
+ * It makes the correspondence between the MIHF MIH Identifier and the
+ * informations stored in the address_entry struct.
  */
 class address_book
 {
@@ -55,27 +55,27 @@ public:
 	 * @param id MIHF MIH Identifier.
 	 * @param ip MIHF IP Address.
 	 * @param port MIHF listening port.
-	 * @param t MIHF transport protocols available.
+	 * @param t MIHF supported transport protocols.
 	 */
 	void add(const mih::octet_string &id, mih::octet_string &ip, uint16 port, mih::transport_list t);
 
 	/**
-	 * Remove a existing MIHF entry from the address book
+	 * Remove an existing MIHF entry.
 	 *
 	 * @param id MIHF MIH Identifier.
 	 */
 	void del(mih::octet_string &id);
 
 	/**
-	 * Get the address_entry of a given MIHF presented in the address book.
+	 * Get the record of a given MIHF.
 	 *
 	 * @param id MIHF MIH Identifier.
+	 * @return The record of a given MIHF stored in the address book.
 	 */
 	const address_entry& get(const mih::octet_string &id);
 private:
-	std::map<mih::octet_string, address_entry> _abook;
-
-	boost::mutex _mutex;
+	std::map<mih::octet_string, address_entry> _abook;	/**< Address book map.	*/
+	boost::mutex _mutex;								/**< Mutex.				*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

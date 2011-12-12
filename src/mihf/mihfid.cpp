@@ -23,12 +23,15 @@ namespace odtone { namespace mihf {
 
 mih::id *mihfid_t::ptr_instance = NULL;
 
+/**
+ * Constructor of the MIHF MIH Identifier.
+ */
 mihfid_t::mihfid_t()
 {
 }
 
 /**
- * Destructor of MIHF MIH Identifier.
+ * Destructor of the MIHF MIH Identifier.
  */
 mihfid_t::~mihfid_t()
 {

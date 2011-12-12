@@ -38,15 +38,19 @@ extern odtone::uint16 kConf_MIHF_Link_Delete_Value;
 namespace odtone { namespace mihf {
 
 /**
- * Service management constructor.
+ * Construct the service management.
  *
- * @param io io_service.
- * @param lpool local transction pool.
- * @param link_abook link book.
- * @param t transmit module.
- * @param lrpool link response pool.
- * @param enable_broadcast true if response to broadcast
- * Capability_Discover.request is enable or false otherwise.
+ * @param io The io_service object that Link SAP I/O Service will use to
+ * dispatch handlers for any asynchronous operations performed on
+ * the socket.
+ * @param lpool The local transaction pool module.
+ * @param link_abook The link book module.
+ * @param user_abook The user book module.
+ * @param address_abook The address book module.
+ * @param t The transmit module.
+ * @param lrpool The link response pool module.
+ * @param enable_broadcast True if response to broadcast to
+ *                          Capability_Discover.request is enable or false otherwise.
  */
 service_management::service_management(io_service &io,
 										local_transaction_pool &lpool,
@@ -68,9 +72,8 @@ service_management::service_management(io_service &io,
 }
 
 /**
- * Handler responsible for asking capabilities to known local Link SAPs,
- * process those capabilities and answer with a Capability Discover response
- * message to the requestor.
+ * Handler responsible for processing the received Link Capability Discover
+ * responses from Link SAPs.
  *
  * @param in input message.
  */
@@ -142,13 +145,11 @@ void service_management::link_capability_discover_response_handler(meta_message_
 }
 
 /**
- * Asks for local Link SAPs capabilities by sending a Capability Request message
- * to all known Link SAPs. Also responsible for launch the thread that will
- * respond to the requestor.
+ * Asks for the capabilities of all local Link SAPs.
  *
- * @param in input message.
- * @param out output message.
- * @return always false, because it does not send any response directly.
+ * @param in The input message.
+ * @param out The output message.
+ * @return Always false, because it does not send any response directly.
  */
 bool service_management::forward_to_link_capability_discover_request(meta_message_ptr &in,
 																	 meta_message_ptr &out)
@@ -194,9 +195,9 @@ bool service_management::forward_to_link_capability_discover_request(meta_messag
 /**
  * Capability Discover Request message handler.
  *
- * @param in input message.
- * @param out output message.
- * @return true if the response is sent immediately or false otherwise.
+ * @param in The input message.
+ * @param out The output message.
+ * @return True if the response is sent immediately or false otherwise.
  */
 bool service_management::capability_discover_request(meta_message_ptr& in,
 													 meta_message_ptr& out)
@@ -254,9 +255,9 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 /**
  * Capability Discover Response message handler.
  *
- * @param in input message.
- * @param out output message.
- * @return true if the response is sent immediately or false otherwise.
+ * @param in The input message.
+ * @param out The output message.
+ * @return True if the response is sent immediately or false otherwise.
  */
 bool service_management::capability_discover_response(meta_message_ptr &in,
 						      meta_message_ptr &)
@@ -309,9 +310,9 @@ bool service_management::capability_discover_response(meta_message_ptr &in,
 /**
  * Capability Discover Confirm message handler.
  *
- * @param in input message.
- * @param out output message.
- * @return true if the response is sent immediately or false otherwise.
+ * @param in The input message.
+ * @param out The output message.
+ * @return True if the response is sent immediately or false otherwise.
  */
 bool service_management::capability_discover_confirm(meta_message_ptr &in,
 						      meta_message_ptr &out)
@@ -348,9 +349,9 @@ bool service_management::capability_discover_confirm(meta_message_ptr &in,
 /**
  * Link Register Indication message handler.
  *
- * @param in input message.
- * @param out output message.
- * @return true if the response is sent immediately or false otherwise.
+ * @param in The input message.
+ * @param out The output message.
+ * @return True if the response is sent immediately or false otherwise.
  */
 bool service_management::link_register_indication(meta_message_ptr &in,
 	                                       meta_message_ptr &out)
@@ -375,9 +376,9 @@ bool service_management::link_register_indication(meta_message_ptr &in,
 /**
  * User Register Indication message handler.
  *
- * @param in input message.
- * @param out output message.
- * @return true if the response is sent immediately or false otherwise.
+ * @param in The input message.
+ * @param out The output message.
+ * @return True if the response is sent immediately or false otherwise.
  */
 bool service_management::user_register_indication(meta_message_ptr &in,
 	                                          meta_message_ptr &out)

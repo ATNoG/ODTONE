@@ -25,13 +25,13 @@
 namespace odtone { namespace mihf {
 
 /**
- * This class represents the logger.
+ * This class provides logging capabilities. It is implemented as a singleton.
  */
 class log_t
 {
 public:
 	/**
-	 * Create a instance of the logger.
+	 * Creates an instance of the logger.
 	 */
 	static logger* instance();
 
@@ -41,7 +41,7 @@ public:
 	~log_t();
 
 private:
-	static logger		*ptr_instance;
+	static logger		*ptr_instance;	/**< Logger instance pointer.	*/
 };
 
 #define ODTONE_LOG (*log_t::instance())

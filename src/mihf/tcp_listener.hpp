@@ -35,10 +35,12 @@ namespace odtone { namespace mihf {
 class session {
 public:
 	/**
-	 * TCP session constructor.
+	 * Construct a TCP session.
 	 *
-	 * @param io io_service.
-	 * @param d dispatch function.
+	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * dispatch handlers for any asynchronous operations performed on
+	 * the socket.
+	 * @param d The dispatch function.
 	 */
 	session(io_service &io, dispatch_t &d);
 
@@ -50,42 +52,44 @@ public:
 	ip::tcp::socket &socket();
 
 	/**
-	 * Start Session.
+	 * Start a new session.
 	 */
 	void start();
 
 	/**
-	 * Handle completion of an asynchronous accept operation.
+	 * Handle the reception of an asynchronous message.
 	 *
-	 * @param buff input message bytes.
-	 * @param rbytes number of bytes of the input message.
-	 * @param error error code.
+	 * @param buff The input message bytes.
+	 * @param rbytes The number of bytes of the input message.
+	 * @param error The error code.
 	 */
 	void handle_read(odtone::buffer<uint8> &buff,
 			 size_t rbytes,
 			 const boost::system::error_code& error);
 
 private:
-	ip::tcp::socket		 _sock;
-	ip::tcp::endpoint	 _rmt_endp;
-	dispatch_t		&_dispatch;
+	ip::tcp::socket		_sock;		/**< Session TCP socket.		*/
+	ip::tcp::endpoint	_rmt_endp;	/**< Remote endpoint.			*/
+	dispatch_t			&_dispatch;	/**< Session dispatch function.	*/
 };
 
 /**
- * The classes tcp_listener is a wrapper around the boost::asio::ip::tcp and is
+ * This class is a wrapper around the boost::asio::ip::tcp and it is
  * responsible for handling TCP communications.
  */
 class tcp_listener {
 public:
 	/**
-	 * TCP Listener constructor.
+	 * Construct a TCP Listener.
 	 *
-	 * @param io io_service.
-	 * @param buff_size Receive Buffer Length.
-	 * @param ipv IP protocol.
-	 * @param ip IP Address.
-	 * @param port listening port.
-	 * @param d dispatch function.
+	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * dispatch handlers for any asynchronous operations performed on
+	 * the socket.
+	 * @param buff_size The receive buffer length.
+	 * @param ipv The IP protocol type.
+	 * @param ip The IP address to be aware.
+	 * @param port The listening port.
+	 * @param d The dispatch function.
 	 */
 	tcp_listener(io_service &io,
 		     uint16 buff_size,
@@ -95,22 +99,22 @@ public:
 		     dispatch_t &d);
 
 	/**
-	 * Start TCP listener socket.
+	 * Start the TCP listener socket.
 	 */
 	void start();
 
 	/**
 	 * TCP accept handler.
 	 *
-	 * @param new_session session.
-	 * @param error_code error code.
+	 * @param new_session The session to handle the connection.
+	 * @param error_code The error code.
 	 */
 	void handle_accept(session *s, const boost::system::error_code &e);
 
 private:
-	io_service &_io;
-	ip::tcp::acceptor _acceptor;
-	dispatch_t &_dispatch;
+	io_service &_io;				/**< The io_service object.		*/
+	ip::tcp::acceptor _acceptor;	/**< TCP session acceptor.		*/
+	dispatch_t &_dispatch;			/**< Session dispatch function.	*/
 };
 
 } /* namespace mifh */ } /* namespace odtone */

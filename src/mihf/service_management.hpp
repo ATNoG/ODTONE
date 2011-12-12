@@ -32,19 +32,24 @@
 namespace odtone { namespace mihf {
 
 /**
- * This class is responsible for handling the services managements messages types.
+ * This class is responsible for handling the messages associated with
+ * the service management.
  */
 class service_management {
 public:
 	/**
-	 * Service management constructor.
+	 * Construct the service management.
 	 *
-	 * @param io io_service.
-	 * @param lpool local transction pool.
-	 * @param link_abook link book.
-	 * @param t transmit module.
-	 * @param lrpool link response pool.
-	 * @param enable_broadcast true if response to broadcast to
+	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * dispatch handlers for any asynchronous operations performed on
+	 * the socket.
+	 * @param lpool The local transaction pool module.
+	 * @param link_abook The link book module.
+	 * @param user_abook The user book module.
+	 * @param address_abook The address book module.
+	 * @param t The transmit module.
+	 * @param lrpool The link response pool module.
+	 * @param enable_broadcast True if response to broadcast to
 	 *                          Capability_Discover.request is enable or false otherwise.
 	 */
 	service_management(io_service &io,
@@ -59,9 +64,9 @@ public:
 	/**
 	 * Capability Discover Request message handler.
 	 *
-	 * @param in input message.
-	 * @param out output message.
-	 * @return true if the response is sent immediately or false otherwise.
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
 	 */
 	bool capability_discover_request(meta_message_ptr &in,
 	                                 meta_message_ptr &out);
@@ -69,9 +74,9 @@ public:
 	/**
 	 * Capability Discover Response message handler.
 	 *
-	 * @param in input message.
-	 * @param out output message.
-	 * @return true if the response is sent immediately or false otherwise.
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
 	 */
 	bool capability_discover_response(meta_message_ptr&in,
 	                                  meta_message_ptr &out);
@@ -79,9 +84,9 @@ public:
 	/**
 	 * Capability Discover Confirm message handler.
 	 *
-	 * @param in input message.
-	 * @param out output message.
-	 * @return true if the response is sent immediately or false otherwise.
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
 	 */
 	bool capability_discover_confirm(meta_message_ptr&in,
 	                                 meta_message_ptr &out);
@@ -89,9 +94,9 @@ public:
 	/**
 	 * Link Register Indication message handler.
 	 *
-	 * @param in input message.
-	 * @param out output message.
-	 * @return true if the response is sent immediately or false otherwise.
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
 	 */
 	bool link_register_indication(meta_message_ptr &in,
 	                              meta_message_ptr &out);
@@ -99,47 +104,43 @@ public:
 	/**
 	 * User Register Indication message handler.
 	 *
-	 * @param in input message.
-	 * @param out output message.
-	 * @return true if the response is sent immediately or false otherwise.
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
 	 */
 	bool user_register_indication(meta_message_ptr &in,
 	                              meta_message_ptr &out);
 
 private:
 	/**
-	 * Asks for local Link SAPs capabilities by sending a Capability Request message
-	 * to all known Link SAPs. Also responsible for launch the thread that will
-	 * respond to the requestor.
+	 * Asks for the capabilities of all local Link SAPs.
 	 *
-	 * @param in input message.
-	 * @param out output message.
-	 * @return always false, because it does not send any response directly.
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return Always false, because it does not send any response directly.
 	 */
 	bool forward_to_link_capability_discover_request(meta_message_ptr &in,
 													 meta_message_ptr &out);
 
 	/**
-	 * Handler responsible for asking capabilities to known local Link SAPs,
-	 * process those capabilities and answer with a Capability Discover response
-	 * message to the requestor.
+	 * Handler responsible for processing the received Link Capability Discover
+	 * responses from Link SAPs.
 	 *
 	 * @param in input message.
 	 */
 	void link_capability_discover_response_handler(meta_message_ptr &in);
 
 protected:
-	local_transaction_pool	&_lpool;
-	link_book				&_link_abook;
-	user_book				&_user_abook;
-	address_book			&_abook;
-	transmit				&_transmit;
-	link_response_pool		&_lrpool;
+	local_transaction_pool	&_lpool;		/**< Local transaction pool module.	*/
+	link_book				&_link_abook;	/**< Link book module.				*/
+	user_book				&_user_abook;	/**< User book module.				*/
+	address_book			&_abook;		/**< Address book module.			*/
+	transmit				&_transmit;		/**< Transmit book module.			*/
+	link_response_pool		&_lrpool;		/**< Link response pool module.		*/
 
-	boost::asio::deadline_timer _timer;
+	boost::asio::deadline_timer _timer;		/**< Multiple Link SAP requests timer.*/
 
-	// set to true if this MIHF responds to broadcast messages
-	bool			 _enable_broadcast;
+	bool _enable_broadcast;	/**< Set to true if this MIHF responds to broadcast messages.*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

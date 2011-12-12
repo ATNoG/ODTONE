@@ -50,7 +50,7 @@ void link_book::add(const mih::octet_string &id,
 }
 
 /**
- * Remove a existing Link SAP entry from the link book.
+ * Remove an existing Link SAP entry.
  *
  * @param id Link SAP MIH Identifier.
  */
@@ -62,10 +62,10 @@ void link_book::del(mih::octet_string &id)
 }
 
 /**
- * Get all informations stored from a given Link SAP.
+ * Get the record for a given Link SAP.
  *
  * @param id Link SAP MIH Identifier.
- * @return All informations stored from a given Link SAP.
+ * @return The record for a given Link SAP.
  */
 const link_entry& link_book::get(const mih::octet_string &id)
 {
@@ -100,6 +100,8 @@ const std::vector<mih::octet_string> link_book::get_ids()
 /**
  * Search for the Link SAP MIH Identifier of a given interface.
  *
+ * @param lt The link type of the Link SAP to search for.
+ * @param la The link address of the Link SAP to search for.
  * @return The Link SAP MIH Identifier.
  */
 const mih::octet_string link_book::search_interface(mih::link_type lt, mih::link_addr la)
@@ -120,10 +122,10 @@ const mih::octet_string link_book::search_interface(mih::link_type lt, mih::link
 }
 
 /**
- * Update and return the number of failing to response of a given Link SAP.
+ * Update and return the number of fail responses of a given Link SAP.
  *
  * @param id Link SAP MIH Identifier.
- * @return The number of fails to response.
+ * @return The number of fails responses.
  */
 uint16 link_book::fail(const mih::octet_string &id)
 {
@@ -141,7 +143,7 @@ uint16 link_book::fail(const mih::octet_string &id)
 }
 
 /**
- * Reset the number of failing to response of a given Link SAP.
+ * Reset the number of fail responses of a given Link SAP.
  *
  * @param id Link SAP MIH Identifier.
  */

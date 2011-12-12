@@ -26,10 +26,12 @@
 namespace odtone { namespace mihf {
 
 /**
- * TCP session constructor.
+ * Construct a TCP session.
  *
- * @param io io_service.
- * @param d dispatch function.
+ * @param io The io_service object that Link SAP I/O Service will use to
+ * dispatch handlers for any asynchronous operations performed on
+ * the socket.
+ * @param d The dispatch function.
  */
 session::session(io_service &io, dispatch_t &d)
 	: _sock(io),
@@ -48,7 +50,7 @@ ip::tcp::socket& session::socket()
 }
 
 /**
- * Start Session.
+ * Start a new session.
  */
 void session::start()
 {
@@ -65,11 +67,11 @@ void session::start()
 }
 
 /**
- * Handle completion of an asynchronous accept operation.
+ * Handle the reception of an asynchronous message.
  *
- * @param buff input message bytes.
- * @param rbytes number of bytes of the input message.
- * @param error error code.
+ * @param buff The input message bytes.
+ * @param rbytes The number of bytes of the input message.
+ * @param error The error code.
  */
 void session::handle_read(odtone::buffer<uint8> &buff,
 			  size_t rbytes,
@@ -94,14 +96,16 @@ void session::handle_read(odtone::buffer<uint8> &buff,
 }
 
 /**
- * TCP Listener constructor.
+ * Construct a TCP Listener.
  *
- * @param io io_service.
- * @param buff_size Receive Buffer Length.
- * @param ipv IP protocol.
- * @param ip IP Address.
- * @param port listening port.
- * @param d dispatch function.
+ * @param io The io_service object that Link SAP I/O Service will use to
+ * dispatch handlers for any asynchronous operations performed on
+ * the socket.
+ * @param buff_size The receive buffer length.
+ * @param ipv The IP protocol type.
+ * @param ip The IP address to be aware.
+ * @param port The listening port.
+ * @param d The dispatch function.
  */
 tcp_listener::tcp_listener(io_service &io,
 			   uint16 buff_size,
@@ -117,7 +121,7 @@ tcp_listener::tcp_listener(io_service &io,
 }
 
 /**
- * Start TCP listener socket.
+ * Start the TCP listener socket.
  */
 void tcp_listener::start()
 {
@@ -132,8 +136,8 @@ void tcp_listener::start()
 /**
  * TCP accept handler.
  *
- * @param s session.
- * @param error_code error code.
+ * @param new_session The session to handle the connection.
+ * @param error_code The error code.
  */
 void tcp_listener::handle_accept(session *new_session,
 			       const boost::system::error_code &e)

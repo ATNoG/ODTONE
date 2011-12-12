@@ -32,13 +32,13 @@
 namespace odtone { namespace mihf {
 
 /**
- * Transaction Status.
+ * Transaction status.
  */
 enum status_t
 	{
-        ONGOING,
-        SUCCESS,
-        FAILURE
+        ONGOING,	/**< Ongoing status.	*/
+        SUCCESS,	/**< Success status.	*/
+        FAILURE		/**< Failure status.	*/
 	};
 
 /**
@@ -46,10 +46,10 @@ enum status_t
  */
 enum ack_responder_state_t
 	{
-        ACK_RSP_INIT,
-        ACK_RSP_RETURN_ACK,
-        ACK_RSP_PIGGYBACKING,
-        ACK_RSP_RETURN_DUPLICATE
+        ACK_RSP_INIT,				/**< Init state.				*/
+        ACK_RSP_RETURN_ACK,			/**< Return acknowledge state.	*/
+        ACK_RSP_PIGGYBACKING,		/**< Piggybacking state.		*/
+        ACK_RSP_RETURN_DUPLICATE	/**< Return duplicate state.	*/
 	};
 
 /**
@@ -57,62 +57,62 @@ enum ack_responder_state_t
  */
 enum ack_requestor_state_t
 	{
-        ACK_REQ_INIT,
-        ACK_REQ_WAIT_ACK,
-        ACK_REQ_RETRANSMIT,
-        ACK_REQ_SUCCESS,
-        ACK_REQ_FAILURE
+        ACK_REQ_INIT,		/**< Init state.				*/
+        ACK_REQ_WAIT_ACK,	/**< Wait acknowledge state.	*/
+        ACK_REQ_RETRANSMIT,	/**< Retransmit state.			*/
+        ACK_REQ_SUCCESS,	/**< Success state.				*/
+        ACK_REQ_FAILURE		/**< Failure state.				*/
 	};
 
-/**
- * This class represents a communication transaction.
+ /**
+ * This class represents an instance a remote transaction.
  */
 class transaction_t
 {
 public:
 	/**
-	 * Constructor for message transaction.
+	 * Constructor a remote transaction.
 	 *
-	 * @param f transaction handler.
-	 * @param netsap netsap module.
+	 * @param f The transaction handler.
+	 * @param netsap The netsap module.
 	 */
 	transaction_t(handler_t &f, net_sap &netsap);
 
 	// inter-state machine variables
-	uint16   opcode;
-	uint16   mid;
-	status_t ack_requestor_status;
-	unsigned transaction_stop_when;
-	unsigned retransmission_when;
+	uint16   opcode;				/**< Opcode.						*/
+	uint16   mid;					/**< Message identifier.			*/
+	status_t ack_requestor_status;	/**< Acknowledge requestor status.	*/
+	unsigned transaction_stop_when;	/**< Transaction stop threshold.	*/
+	unsigned retransmission_when;	/**< Retransmission threshold.		*/
 	//
 
 	// exported state machine variables
-	uint16             tid;
-	mih::id             my_mihf_id;
-	mih::id             peer_mihf_id;
-	meta_message_ptr in;
-	bool             msg_in_avail;
-	meta_message_ptr out;
-	bool             msg_out_avail;
-	status_t         transaction_status;
-	bool             start_ack_requestor;
-	bool             start_ack_responder;
+	uint16				tid;				/**< Transaction identifier.		*/
+	mih::id				my_mihf_id;			/**< Local MIHF ID.					*/
+	mih::id				peer_mihf_id;		/**< Peer MIHF ID.					*/
+	meta_message_ptr	in;					/**< Input message.					*/
+	bool				msg_in_avail;		/**< Input message available.		*/
+	meta_message_ptr	out;				/**< Output message.				*/
+	bool				msg_out_avail;		/**< Output message available.		*/
+	status_t			transaction_status;	/**< Transaction status.			*/
+	bool				start_ack_requestor;/**< Start acknowledge requestor.	*/
+	bool				start_ack_responder;/**< Start acknowledge responder.	*/
 	//
 
 	// intra-state machine variables
-	bool        is_multicast;
-	bool        response_received;
+	bool is_multicast;		/**< Input message is multicast.	*/
+	bool response_received;	/**< Response received.	*/
 	//
 
 	// ack related variables
-	ack_requestor_state_t ack_req_state;
-	ack_responder_state_t ack_rsp_state;
+	ack_requestor_state_t ack_req_state;	/**< Acknowledge responder state machine state.	*/
+	ack_responder_state_t ack_rsp_state;	/**< Acknowledge responder state machine state.	*/
 	//
 
 	// intra-state
-	meta_message_ptr dup;
-	meta_message_ptr ack;
-	unsigned    rtxctr;
+	meta_message_ptr dup;	/**< Duplicated message.		*/
+	meta_message_ptr ack;	/**< Acknowledge message.		*/
+	unsigned    rtxctr;		/**< Retransmission counter.	*/
 	//
 
 	/**
@@ -261,23 +261,23 @@ public:
 		}
 
 protected:
-	handler_t &process_message;
-	net_sap &_netsap;
+	handler_t &process_message;	/**< The transaction handler.	*/
+	net_sap &_netsap;			/**< The netsap module.	*/
 };
 
 /**
- * Compare method for inserting transactions in a set.
+ * This class provides methods for comparing transactions.
  */
 template <class TransactionPtr>
 class transaction_compare
 {
 public:
 	/**
-	 * Check if the peer MIHF ID and Transaction ID are different.
+	 * Compare two transaction.
 	 *
-	 * @param a peer MIHF ID.
-	 * @param b Transaction ID.
-	 * @return true if the peer MIHF ID and Transaction ID are different, or false otherwise.
+	 * @param a The first transaction.
+	 * @param b The second transaction.
+	 * @return True if the transactions are different or false otherwise.
 	 */
 	bool operator()(const TransactionPtr &a, const TransactionPtr &b)
 	{

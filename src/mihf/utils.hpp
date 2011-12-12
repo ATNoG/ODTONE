@@ -35,10 +35,12 @@ namespace odtone { namespace mihf { namespace utils {
 /**
  * Send a message using a TCP socket.
  *
- * @param io io_service.
- * @param msg output message.
- * @param ip destination IP Address.
- * @param port destination port.
+ * @param io The io_service object that Link SAP I/O Service will use to
+ * dispatch handlers for any asynchronous operations performed on
+ * the socket.
+ * @param msg The output message.
+ * @param ip The IP address of the destination of the message.
+ * @param port The port of the destination of the message.
  */
 void tcp_send(boost::asio::io_service &io,
 	      meta_message_ptr &msg,
@@ -46,12 +48,14 @@ void tcp_send(boost::asio::io_service &io,
 	      uint16 port);
 
 /**
- * Send a message using a UDP socket.
+ * Send a message using an UDP socket.
  *
- * @param io io_service.
- * @param msg output message.
- * @param ip destination IP Address.
- * @param port destination port.
+ * @param io The io_service object that Link SAP I/O Service will use to
+ * dispatch handlers for any asynchronous operations performed on
+ * the socket.
+ * @param msg The output message.
+ * @param ip The IP address of the destination of the message.
+ * @param port The port of the destination of the message.
  */
 void udp_send(boost::asio::io_service &io,
 	      meta_message_ptr &msg,
@@ -59,11 +63,11 @@ void udp_send(boost::asio::io_service &io,
 	      uint16 port);
 
 /**
- * Forward request to its destination.
+ * Forward the request to its destination.
  *
- * @param in MIH Message to forward.
- * @param lpool local transaction pool module.
- * @param t transmit module.
+ * @param in The MIH Message to forward.
+ * @param lpool The local transaction pool module.
+ * @param t The transmit module.
  */
 void forward_request(meta_message_ptr &in,
 		     local_transaction_pool &lpool,
@@ -72,16 +76,16 @@ void forward_request(meta_message_ptr &in,
 /**
  * Check if the message destination is this MIHF.
  *
- * @param msg MIH Message.
- * @return true if this MIHF is the message destination or false otherwise.
+ * @param msg The input message.
+ * @return True if this MIHF is the message destination or false otherwise.
  */
 bool this_mihf_is_destination(meta_message_ptr &msg);
 
 /**
  * Check if the message is a multicast message.
  *
- * @param msg MIH Message.
- * @return true if this is a multicast message or false otherwise.
+ * @param msg The input message.
+ * @return True if this is a multicast message or false otherwise.
  */
 bool is_multicast(meta_message_ptr &msg);
 

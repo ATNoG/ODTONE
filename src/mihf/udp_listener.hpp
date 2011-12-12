@@ -32,21 +32,23 @@ using namespace boost::asio;
 namespace odtone { namespace mihf {
 
 /**
- * The classes udp_listener is a wrapper around the boost::asio::ip::udp and is
+ * This class is a wrapper around the boost::asio::ip::udp and it is
  * responsible for handling UDP communications.
  */
 class udp_listener
 {
 public:
 	/**
-	 * UDP Listener constructor.
+	 * Construct a UDP Listener.
 	 *
-	 * @param io io_service.
-	 * @param buff_size Receive Buffer Length.
-	 * @param ipv IP protocol.
-	 * @param ip IP Address.
-	 * @param port listening port.
-	 * @param d dispatch function.
+	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * dispatch handlers for any asynchronous operations performed on
+	 * the socket.
+	 * @param buff_size The receive buffer length.
+	 * @param ipv The IP protocol type.
+	 * @param ip The IP address to be aware.
+	 * @param port The listening port.
+	 * @param d The dispatch function.
 	 */
 	udp_listener(io_service& io,
 		     uint16 buff_size,
@@ -56,26 +58,26 @@ public:
 		     dispatch_t &d);
 
 	/**
-	 * Start UDP listener socket.
+	 * Start the UDP listener socket.
 	 */
 	void start();
 
 	/**
-	 * Handle completion of an asynchronous accept operation.
+	 * Handle the reception of an asynchronous message.
 	 *
-	 * @param buff input message bytes.
-	 * @param rbytes number of bytes of the input message.
-	 * @param error error code.
+	 * @param buff The input message bytes.
+	 * @param rbytes The number of bytes of the input message.
+	 * @param error The error code.
 	 */
 	void handle_receive(buffer<uint8>& buff,
 			    size_t rbytes,
 			    const boost::system::error_code& ec);
 
 protected:
-	io_service		&_io;
-	ip::udp::socket		 _sock;
-	dispatch_t		&_dispatch;
-	ip::udp::endpoint	 _rmt_endp;
+	io_service			&_io;		/**< The io_service object.	*/
+	ip::udp::socket		_sock;		/**< UDP socket.			*/
+	dispatch_t			&_dispatch;	/**< Dispatch function.		*/
+	ip::udp::endpoint	_rmt_endp;	/**< Remote endpoint.		*/
 
 };
 

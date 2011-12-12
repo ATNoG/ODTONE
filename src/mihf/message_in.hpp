@@ -33,30 +33,26 @@
 namespace odtone { namespace mihf {
 
 /**
- * The message_in checks the transaction_pool for a pending transaction for the
- * incoming message, or if a new source transaction must be created and then
- * added to the transaction pool. Then proceeds to run the newly created, or
- * found, transaction.
+ * This class manages the incoming messages.
  */
 class message_in
 {
 public:
 	/**
-	 * Message IN constructor.
+	 * Construct a message input module.
 	 *
-	 * @param tpool transaction pool module.
-	 * @param f process message handler.
-	 * @param netsap netsap module.
+	 * @param tpool The transaction pool module.
+	 * @param f The message handler.
+	 * @param netsap The netsap module.
 	 */
 	message_in(transaction_pool &tpool, handler_t &f, net_sap &netsap);
 
 	/**
-	 * The message_in checks the transaction_pool for a pending transaction for the
-	 * incoming message, or if a new source transaction must be created and then
-	 * added to the transaction pool. Then proceeds to run the newly created, or
-	 * found, transaction.
+	 * Checks, in the transaction pool, if the incoming message belongs to a pending
+	 * transaction. If true it runs the transaction, otherwise it creates a new
+	 * transaction.
 	 *
-	 * @param m input message.
+	 * @param msg The output message.
 	 */
 	void operator()(meta_message_ptr& msg);
 
@@ -64,13 +60,13 @@ protected:
 	/**
 	 * Create a new destination transaction for the incoming message.
 	 *
-	 * @param m input message.
+	 * @param msg The input message.
 	 */
 	void new_dst_transaction(meta_message_ptr& msg);
 
-	transaction_pool &_tpool;
-	handler_t &process_message;
-	net_sap &_netsap;
+	transaction_pool &_tpool;	/**< The transaction pool module.	*/
+	handler_t &process_message;	/**< The message handler.			*/
+	net_sap &_netsap;			/**< The netsap module.				*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

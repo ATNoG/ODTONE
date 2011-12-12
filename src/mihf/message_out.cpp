@@ -24,11 +24,11 @@
 namespace odtone { namespace mihf {
 
 /**
- * Message OUT constructor.
+ * Construct a message output module.
  *
- * @param tpool transaction pool module.
- * @param f process message handler.
- * @param netsap netsap module.
+ * @param tpool The transaction pool module.
+ * @param f The message handler.
+ * @param netsap The netsap module.
  */
 message_out::message_out(transaction_pool &tpool, handler_t &f, net_sap &netsap)
 	: _tpool(tpool),
@@ -41,7 +41,7 @@ message_out::message_out(transaction_pool &tpool, handler_t &f, net_sap &netsap)
 /**
  * Create a new source transaction for the outgoing message.
  *
- * @param m output message.
+ * @param m The output message.
  */
 void message_out::new_src_transaction(meta_message_ptr& m)
 {
@@ -65,9 +65,10 @@ void message_out::new_src_transaction(meta_message_ptr& m)
 
 /**
  * Checks, in the transaction pool, if the outgoing message belongs to a pending
- * transaction, if so the transaction is run and eventually the message is sent.
+ * transaction. If true it runs the transaction, otherwise it creates a new
+ * transaction.
  *
- * @param m output message.
+ * @param out The output message.
  */
 void message_out::operator()(meta_message_ptr& out)
 {

@@ -23,10 +23,10 @@
 namespace odtone { namespace mihf {
 
 /**
- * Constructor for Source State Machine transaction.
+ * Constructor a Source State Machine transaction.
  *
- * @param f transaction handler.
- * @param netsap netsap module.
+ * @param f The transaction handler.
+ * @param netsap The netsap module.
  */
 src_transaction_t::src_transaction_t(handler_t &f, net_sap &netsap)
 	: transaction_t(f, netsap)

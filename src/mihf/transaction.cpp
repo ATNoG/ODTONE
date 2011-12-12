@@ -22,10 +22,10 @@
 namespace odtone { namespace mihf {
 
 /**
- * Constructor for message transaction.
+ * Constructor a remote transaction.
  *
- * @param f transaction handler.
- * @param netsap netsap module.
+ * @param f The transaction handler.
+ * @param netsap The netsap module.
  */
 transaction_t::transaction_t(handler_t &f, net_sap &netsap)
 	: process_message(f),
