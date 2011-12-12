@@ -79,7 +79,7 @@ public:
 	/**
 	 * Serialize/deserialize the MIHF_ID data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)

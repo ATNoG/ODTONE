@@ -39,6 +39,11 @@
 using namespace odtone;
 using boost::asio::ip::udp;
 
+/**
+ * Default MIH event handler.
+ *
+ * @param msg Received message.
+ */
 static void process_message(meta_message_ptr& msg)
 {
 	std::cout << "MIH message: Service=" << msg->sid()

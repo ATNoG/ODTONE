@@ -158,6 +158,9 @@ typedef std::vector<link_states_req> link_states_req_list;
  * THRESHOLD data type.
  */
 struct threshold {
+	/**
+	 * Threshold direction enumeration.
+	 */
 	enum type_ip_enum {
 		above_threshold = 0,	/**< Above threshold.	*/
 		below_threshold = 1,	/**< Below threshold.	*/
@@ -166,7 +169,7 @@ struct threshold {
 	/**
 	 * Serialize/deserialize the THRESHOLD data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -238,7 +241,7 @@ struct link_action {
 	/**
 	 * Serialize/deserialize the LINK_ACTION data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -514,7 +517,7 @@ struct link_id {
 	/**
 	 * Serialize/deserialize the LINK_ID data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -526,7 +529,7 @@ struct link_id {
 	/**
 	 * Check if the LINK_ID data type is equal to another LINK_ID.
 	 *
-	 * @param The LINK_ID to compare to.
+	 * @param other The LINK_ID to compare to.
 	 * @return True if they are equal or false otherwise.
 	 */
 	bool operator==(const link_id& other) const
@@ -558,7 +561,7 @@ public:
 	/**
 	 * Serialize/deserialize the LINK_TUPLE_ID data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -570,7 +573,7 @@ public:
 	/**
 	 * Check if the LINK_TUPLE_ID data type is equal to another LINK_TUPLE_ID.
 	 *
-	 * @param The LINK_TUPLE_ID to compare to.
+	 * @param other The LINK_TUPLE_ID to compare to.
 	 * @return True if they are equal or false otherwise.
 	 */
 	bool operator==(const link_tuple_id& other) const
@@ -594,7 +597,7 @@ struct link_scan_rsp {
 	/**
 	 * Serialize/deserialize the LINK_SCAN_RSP data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -623,7 +626,7 @@ struct link_action_req {
 	/**
 	 * Serialize/deserialize the LINK_ACTION_REQ data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -652,7 +655,7 @@ struct link_action_rsp {
 	/**
 	 * Serialize/deserialize the LINK_ACTION_RSP data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -693,7 +696,7 @@ struct link_det_cfg {
 	/**
 	 * Serialize/deserialize the LINK_DET_CFG data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -756,7 +759,7 @@ struct link_status_req {
 	/**
 	 * Serialize/deserialize the LINK_STATUS_REQ data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -781,7 +784,7 @@ struct link_param {
 	/**
 	 * Serialize/deserialize the LINK_PARAM data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -807,8 +810,6 @@ typedef std::vector<link_param> link_param_list;
 struct link_param_report {
 	/**
 	 * Construct a LINK_PARAM_RPT data type.
-	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
 	 */
 	link_param_report() : thold(null())
 	{ }
@@ -816,7 +817,7 @@ struct link_param_report {
 	/**
 	 * Serialize/deserialize the LINK_PARAM_RPT data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -843,7 +844,7 @@ struct link_cfg_param {
 	/**
 	 * Serialize/deserialize the LINK_CFG_PARAM data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -877,7 +878,7 @@ struct link_cfg_status {
 	/**
 	 * Serialize/deserialize the LINK_CFG_STATUS data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -923,7 +924,7 @@ struct link_det_info {
 	/**
 	 * Serialize/deserialize the LINK_DET_INFO data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -961,7 +962,7 @@ struct link_poa_list {
 	/**
 	 * Serialize/deserialize the LINK_POA_LIST data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -987,7 +988,7 @@ struct link_status_rsp {
 	/**
 	 * Serialize/deserialize the LINK_STATUS_RSP data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -1016,7 +1017,7 @@ struct status_rsp {
 	/**
 	 * Serialize/deserialize the SEQUENCE(LINK_ID,LINK_STATUS_RSP) data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)

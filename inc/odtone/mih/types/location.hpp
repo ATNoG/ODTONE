@@ -55,7 +55,7 @@ struct bin_civic_location {
 	/**
 	 * Serialize/deserialize the BIN_CIVIC_LOCATION data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)

@@ -25,24 +25,29 @@
 namespace odtone { namespace mihf {
 
 /**
- * This class represents the MIHF MIH Identifier.
+ * This class represents the MIHF MIH Identifier. It is implemented as a
+ * singleton.
  */
 class mihfid_t
 {
 public:
 	/**
-	 * Create a instance of the MIHF MIH Identifier.
+	 * Creates an instance of the MIHF MIH Identifier.
 	 */
 	static mih::id* instance();
 
 	/**
-	 * Destructor of MIHF MIH Identifier.
+	 * Destructor of the MIHF MIH Identifier.
 	 */
 	~mihfid_t();
 
 private:
-  mihfid_t();
-  static mih::id *ptr_instance;
+	/**
+	 * Constructor of the MIHF MIH Identifier.
+	 */
+	mihfid_t();
+
+	static mih::id *ptr_instance;	/**< MIHF MIH Identifier instance pointer.	*/
 };
 
 #define mihfid *mihfid_t::instance()

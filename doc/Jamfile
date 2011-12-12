@@ -15,10 +15,52 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-project odtone/doc ;
+import doxygen ;
+import quickbook ;
+
+project doc ;
+
+alias doxygen_parameters
+	:
+	: <doxygen:param>EXPAND_ONLY_PREDEF=YES
+	  <doxygen:param>EXTRACT_ALL=NO
+	  <doxygen:param>EXTRACT_PRIVATE=NO
+	  <doxygen:param>EXTRACT_STATIC=NO
+	  <doxygen:param>EXTRACT_LOCAL_CLASSES=NO
+	  <doxygen:param>EXTRACT_LOCAL_METHODS=NO
+	  <doxygen:param>EXTRACT_ANON_NSPACES=NO
+	  <doxygen:param>HIDE_UNDOC_MEMBERS=YES
+	  <doxygen:param>HIDE_UNDOC_CLASSES=YES
+	  <doxygen:param>HIDE_FRIEND_COMPOUNDS=YES
+	  <doxygen:param>HIDE_IN_BODY_DOCS=YES
+	  <doxygen:param>ENABLE_PREPROCESSING=YES
+	  <doxygen:param>MACRO_EXPANSION=NO
+	;
+
+doxygen odtone_base_lib
+        : [ glob ../inc/odtone/*.hpp : ../inc/odtone/namespace.hpp ]
+          doxygen_parameters
+        : <reftitle>"ODTONE Base Library"
+        ;
+
+doxygen odtone_mih_lib
+        : [ glob ../inc/odtone/mih/*.hpp
+            glob ../inc/odtone/mih/types*.hpp : ../inc/odtone/mih/namespace.hpp ]
+            doxygen_parameters
+        : <reftitle>"ODTONE MIH Library"
+        ;
+
+doxygen odtone_sap_lib
+        : [ glob ../inc/odtone/sap/*.hpp : ../inc/odtone/sap/namespace.hpp ]
+		  doxygen_parameters
+        : <reftitle>"ODTONE SAP Library"
+        ;
 
 xml odtone-doc
 	: src/odtone.qbk
+	: <dependency>odtone_base_lib
+	  <dependency>odtone_mih_lib
+	  <dependency>odtone_sap_lib
 	;
 
 boostbook doc-html
@@ -32,11 +74,11 @@ boostbook doc-html
 	  <xsl:param>nav.layout=none
 	  <xsl:param>navig.graphics=1
 
-	  <xsl:param>chunk.section.depth=3
+	  <xsl:param>chunk.section.depth=2
 	  <xsl:param>chunk.first.sections=1
 	  <xsl:param>toc.section.depth=2
 	  <xsl:param>toc.max.depth=4
-	  <xsl:param>generate.section.toc.level=1
+	  <xsl:param>generate.section.toc.level=5
 	  <xsl:param>index.on.type=1
 
 	  <xsl:param>generate.manifest=0

@@ -31,31 +31,27 @@
 namespace odtone { namespace mihf {
 
 /**
- * This class is responsible for handling the information messages types.
+ * This class is responsible for handling the messages associated with
+ * the information service.
  */
 class information_service
 	: boost::noncopyable
 {
 public:
 	/**
-	 * Information service constructor.
+	 * Construct the information service.
 	 *
-	 * @param lpool local transction pool.
-	 * @param t transmit module.
+	 * @param lpool The local transaction pool module.
+	 * @param t The transmit module.
 	 */
 	information_service(local_transaction_pool &lpool, transmit &t);
 
 	/**
 	 * Get Information Request message handler.
 	 *
-	 * Currently Information_Service messages are handled by a default local
-	 * Information server. If this MIHF is the destination of the message,
-	 * forward it to the default server. Add a local transaction indicating
-	 * where to send the response.
-	 *
-	 * @param in input message.
-	 * @param out output message.
-	 * @return true if the response is sent immediately or false otherwise.
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
 	 */
 	bool get_information_request(meta_message_ptr &in,
 				     meta_message_ptr &out);
@@ -63,13 +59,9 @@ public:
 	/**
 	 * Get Information Response message handler.
 	 *
-	 * Currently Information_Service messages are handled by a default local
-	 * server. If this MIHF is the destination of the message, check for a
-	 * pending transaction and forward the message.
-	 *
-	 * @param in input message.
-	 * @param out output message.
-	 * @return true if the response is sent immediately or false otherwise.
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
 	 */
 	bool get_information_response(meta_message_ptr &in,
 				      meta_message_ptr &out);
@@ -77,14 +69,9 @@ public:
 	/**
 	 * MIH Push Information Request message handler.
 	 *
-	 * Currently Information_Service messages are handled by a default local
-	 * Information server. If this MIHF is the destination of the message,
-	 * forward it to the default server. Add a local transaction indicating
-	 * where to send the response.
-	 *
-	 * @param in input message.
-	 * @param out output message.
-	 * @return true if the response is sent immediately or false otherwise.
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
 	 */
 	bool push_information_indication(meta_message_ptr &in,
 					 meta_message_ptr &out);
@@ -92,20 +79,16 @@ public:
 	/**
 	 * MIH Push Information Indication message handler.
 	 *
-	 * Currently Information_Service messages are handled by a default local
-	 * server. If this MIHF is the destination of the message, check for a
-	 * pending transaction and forward the message.
-	 *
-	 * @param in input message.
-	 * @param out output message.
-	 * @return true if the response is sent immediately or false otherwise.
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
 	 */
 	bool push_information_request(meta_message_ptr &in,
 				      meta_message_ptr &out);
 
 protected:
-	local_transaction_pool	&_lpool;
-	transmit		&_transmit;
+	local_transaction_pool	&_lpool;	/**< Local transaction pool module.	*/
+	transmit				&_transmit;	/**< Transmit module.				*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

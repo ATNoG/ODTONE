@@ -71,7 +71,7 @@ struct querier_loc {
 	/**
 	 * Serialize/deserialize the QUERIER_LOC data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -101,7 +101,7 @@ struct rpt_limit {
 	/**
 	 * Serialize/deserialize the RPT_LIMIT data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -130,7 +130,7 @@ struct iq_bin_data {
 	/**
 	 * Serialize/deserialize the IQ_BIN_DATA data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)

@@ -22,11 +22,11 @@
 namespace odtone { namespace mihf {
 
 /**
- * Message IN constructor.
+ * Construct a message input module.
  *
- * @param tpool transaction pool module.
- * @param f process message handler.
- * @param netsap netsap module.
+ * @param tpool The transaction pool module.
+ * @param f The message handler.
+ * @param netsap The netsap module.
  */
 message_in::message_in(transaction_pool &tpool, handler_t &f, net_sap &netsap)
 	: _tpool(tpool),
@@ -36,12 +36,11 @@ message_in::message_in(transaction_pool &tpool, handler_t &f, net_sap &netsap)
 }
 
 /**
- * The message_in checks the transaction_pool for a pending transaction for the
- * incoming message, or if a new source transaction must be created and then
- * added to the transaction pool. Then proceeds to run the newly created, or
- * found, transaction.
+ * Checks, in the transaction pool, if the incoming message belongs to a pending
+ * transaction. If true it runs the transaction, otherwise it creates a new
+ * transaction.
  *
- * @param m input message.
+ * @param in The input message.
  */
 void message_in::operator()(meta_message_ptr& in)
 {
@@ -101,7 +100,7 @@ void message_in::operator()(meta_message_ptr& in)
 /**
  * Create a new destination transaction for the incoming message.
  *
- * @param m input message.
+ * @param m The input message.
  */
 void message_in::new_dst_transaction(meta_message_ptr& m)
 {

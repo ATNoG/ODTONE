@@ -20,7 +20,7 @@
 namespace odtone { namespace mihf {
 
 /**
- * Meta-message constructor.
+ * Construct an empty meta message.
  */
 meta_message::meta_message()
 	: message()
@@ -28,9 +28,9 @@ meta_message::meta_message()
 }
 
 /**
- * Meta-message constructor.
+ * Construct a meta message.
  *
- * @param fm message frame.
+ * @param fm The message frame from where extract the message data.
  */
 meta_message::meta_message(const mih::frame &fm)
 	: message(fm)
@@ -38,11 +38,11 @@ meta_message::meta_message(const mih::frame &fm)
 }
 
 /**
- * Meta-message constructor.
+ * Construct a meta message.
  *
- * @param ip source IP Address.
- * @param port source port.
- * @param fm message frame.
+ * @param ip The source IP address.
+ * @param port The source port.
+ * @param fm The message frame from where extract the message data.
  */
 meta_message::meta_message(mih::octet_string ip, uint16 port, const mih::frame &fm)
 	: mih::message(fm),
@@ -53,7 +53,7 @@ meta_message::meta_message(mih::octet_string ip, uint16 port, const mih::frame &
 }
 
 /**
- * Check if the message in from a local entity.
+ * Check if the message is from a local entity.
  *
  * @return true if the message is from a local entity or false otherwise.
  */
@@ -63,9 +63,9 @@ bool meta_message::is_local()
 }
 
 /**
- * Get the source IP Address of the message.
+ * Get the IP address of the source of the message.
  *
- * @return The source IP Address.
+ * @return The IP address if the source of the message.
  */
 const mih::octet_string& meta_message::ip()
 {
@@ -73,9 +73,9 @@ const mih::octet_string& meta_message::ip()
 }
 
 /**
- * Get the source port of the message.
+ * Get the port of the source of the message.
  *
- * @return The source port.
+ * @return The port of the source of the message.
  */
 uint16 meta_message::port()
 {
@@ -83,9 +83,9 @@ uint16 meta_message::port()
 }
 
 /**
- * Set the source IP Address of the message.
+ * Set the IP address of the source of the message.
  *
- * @param ip source IP Address.
+ * @param ip The IP address of the source of the message.
  */
 void meta_message::ip(const mih::octet_string &ip)
 {
@@ -93,9 +93,9 @@ void meta_message::ip(const mih::octet_string &ip)
 }
 
 /**
- * Set the source port of the message.
+ * Set the port of the source of the message.
  *
- * @param p source port.
+ * @param p The port of the source of the message.
  */
 void meta_message::port(uint16 port)
 {

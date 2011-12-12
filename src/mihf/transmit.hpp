@@ -36,22 +36,21 @@ using namespace boost::asio;
 namespace odtone { namespace mihf {
 
 /**
- * This class is used by the MIHFs services and checks if the MIH destination
- * identifier of the message is in the local address book. If it is, the message
- * is for a local SAP and the udp_send method is called to send the message. If
- * it's not in the local address book the message is forwarded to the message_out.
+ * This class is used by the MIHFs services to send a message.
  */
 class transmit
 	: private boost::noncopyable
 {
 public:
 	/**
-	 * Transmit module constructor.
+	 * Construct a transmit module.
 	 *
-	 * @param io io_service.
-	 * @param user_abook user book module.
-	 * @param link_abook link book module.
-	 * @param msg_out output message.
+	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * dispatch handlers for any asynchronous operations performed on
+	 * the socket.
+	 * @param user_abook The user book module.
+	 * @param link_abook The link book module.
+	 * @param msg_out The output message.
 	 */
 	transmit(io_service &io,
 			 user_book &user_abook,
@@ -62,15 +61,15 @@ public:
 	 * Send message to a local entity. If the output message destination is a peer
 	 * MIHF redirect it to the message_out module.
 	 *
-	 * @param msg output message.
+	 * @param msg The output message.
 	 */
 	void operator()(meta_message_ptr& msg);
 
 private:
-	io_service &_io;
-	user_book &_user_abook;
-	link_book &_link_abook;
-	message_out &_msg_out;
+	io_service &_io;		/**< The io_service object.		*/
+	user_book &_user_abook;	/**< The user book module.		*/
+	link_book &_link_abook;	/**< The link book module.		*/
+	message_out &_msg_out;	/**< The message output module.	*/
 
 };
 

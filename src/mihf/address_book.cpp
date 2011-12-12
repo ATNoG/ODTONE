@@ -28,7 +28,7 @@ namespace odtone { namespace mihf {
  * @param id MIHF MIH Identifier.
  * @param ip MIHF IP Address.
  * @param port MIHF listening port.
- * @param t MIHF transport protocols available.
+ * @param t MIHF supported transport protocols.
  */
 void address_book::add(const mih::octet_string &id,
 		       mih::octet_string& ip,
@@ -48,7 +48,7 @@ void address_book::add(const mih::octet_string &id,
 }
 
 /**
- * Remove a existing MIHF entry from the address book
+ * Remove an existing MIHF entry.
  *
  * @param id MIHF MIH Identifier.
  */
@@ -60,10 +60,10 @@ void address_book::del(mih::octet_string &id)
 }
 
 /**
- * Get the address_entry of a given MIHF presented in the address book.
+ * Get the record of a given MIHF.
  *
  * @param id MIHF MIH Identifier.
- * @return All informations stored from a given MIHF.
+ * @return The record of a given MIHF stored in the address book.
  */
 const address_entry& address_book::get(const mih::octet_string &id)
 {

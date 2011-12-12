@@ -25,7 +25,7 @@ namespace odtone { namespace mihf {
 logger *log_t::ptr_instance = NULL;
 
 /**
- * Create a instance of the logger.
+ * Creates an instance of the logger.
  */
 logger* log_t::instance()
 {

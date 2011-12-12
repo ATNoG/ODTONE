@@ -25,8 +25,17 @@
 namespace link_sap { namespace nic {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * This class provides represents and stores information about an
+ * IEEE 802.11 interface.
+ */
 class if_802_11 : public interface {
 public:
+	/**
+	 * Construct an IEEE 802.11 interface representation.
+	 *
+	 * @param id IEEE 802.11 interface identifier.
+	 */
 	if_802_11(if_id const& id);
 };
 

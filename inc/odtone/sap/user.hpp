@@ -112,7 +112,7 @@ public:
 	 * success or failure in delivering the message to the local MIHF.
 	 * This method retuns immediately.
 	 *
-	 * @param msg MIH message to send.
+	 * @param pm MIH message to send.
 	 * @param h Response handler function.
 	 */
 	template<class CompletionHandler>
@@ -131,7 +131,7 @@ private:
 	 * @param msg MIH message to send.
 	 * @param h Response handler function.
 	 */
-	void async_send_(mih::message& pm, handler&& h);
+	void async_send_(mih::message& msg, handler&& h);
 
 	/**
 	 * Received message callback. This function is executed to process the
@@ -149,7 +149,7 @@ private:
 	 * report the success or failure in delivering the message to the local MIHF.
 	 *
 	 * @param fm MIH message sent.
-	 * @param sbytes Size of the message.
+	 * @param h Message handler.
 	 * @param ec Error code.
 	 */
 	void send_handler(mih::frame_vla& fm, handler& h, const boost::system::error_code& ec);

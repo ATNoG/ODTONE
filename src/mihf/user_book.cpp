@@ -24,12 +24,12 @@
 namespace odtone { namespace mihf {
 
 /**
- * Add a new MIH User entry in the user book.
+ * Add a new MIH-User entry in the user book.
  *
- * @param id MIH User MIH Identifier.
- * @param ip MIH User IP address.
- * @param port MIH User listening port.
- * @param mbbsupport MIH User Handover support.
+ * @param id MIH-User MIH Identifier.
+ * @param ip MIH-User IP address.
+ * @param port MIH-User listening port.
+ * @param mbbsupport MIH-User Handover support.
  */
 void user_book::add(const mih::octet_string &id,
 		            mih::octet_string& ip,
@@ -57,9 +57,9 @@ void user_book::add(const mih::octet_string &id,
 }
 
 /**
- * Remove a existing MIH User entry from the link book.
+ * Remove an existing MIH-User entry.
  *
- * @param id MIH User MIH Identifier.
+ * @param id MIH User MIH Identifier to remove.
  */
 void user_book::del(mih::octet_string &id)
 {
@@ -69,10 +69,10 @@ void user_book::del(mih::octet_string &id)
 }
 
 /**
- * Get all informations stored from a given MIH User.
+ * Get the record for a given MIH-User.
  *
- * @param id MIH User MIH Identifier.
- * @return All informations stored from a given MIH User.
+ * @param id MIH-User MIH Identifier.
+ * @return The record for a given MIH-User.
  */
 const user_entry& user_book::get(const mih::octet_string &id)
 {
@@ -88,9 +88,9 @@ const user_entry& user_book::get(const mih::octet_string &id)
 }
 
 /**
- * Get the list of all known MIH Users.
+ * Get the list of all known MIH-Users.
  *
- * @return The list of all known MIH Users.
+ * @return The list of all known MIH-Users.
  */
 const std::vector<mih::octet_string> user_book::get_ids()
 {
@@ -105,9 +105,10 @@ const std::vector<mih::octet_string> user_book::get_ids()
 }
 
 /**
- * Get the MIH User for handover operations.
+ * Get the MIH-User associated to the handover operations.
  *
- * @return The MIH User MIH Identifier for handover operations.
+ * @return The identifier of the MIH-User associated to the handover
+ * operations.
  */
 const mih::octet_string user_book::handover_user()
 {

@@ -28,46 +28,45 @@
 namespace odtone { namespace mihf {
 
 /**
- * Checks if the message id is supported by the MIHF, but doesn't try to send
- * the message directly, it just returns to the transaction state machine that
- * called it.
+ * Check if there's a handler for this message and call it, else
+ * discard message.
  *
- * @param in input message.
- * @param out output message.
+ * @param in The input message.
+ * @param out The output message.
  */
 bool sac_process_message(meta_message_ptr& in, meta_message_ptr& out);
 
 /**
- * This class is called by the local communications listening service and checks
- * if the message id is supported. If so, the message is processed by a previously
- * declared handler.
+ * This class is called for every message received from a local entity.
+ * It checks if there is a handler for this message and call it, else
+ * discard message.
  */
 class sac_dispatch {
 public:
 	/**
-	 * Service Access Controller constructor.
+	 * Construct a Service Access Controller.
 	 *
-	 * @param t transmit module.
+	 * @param t The transmit module.
 	 */
 	sac_dispatch(transmit &t);
 
 	/**
-	 * Check if there's a handler for this message and call it, else
+	 * Check if there is a handler for this message and call it, else
 	 * discard message.
 	 *
-	 * @param in input message.
+	 * @param in The input message.
 	 */
 	void operator()(meta_message_ptr &msg);
 protected:
-	transmit &_transmit;
+	transmit &_transmit;	/**< The transmit module.	*/
 };
 
 /**
- * Registering a callback handler for a MIH message.
+ * Registering a callback handler for a MIH message identifier.
  * This should only be used on MIHF initialization because it's not thread safe.
  *
- * @param mid MIH Message ID.
- * @param func handler function.
+ * @param mid The MIH Message identifier.
+ * @param func The handler function.
  */
 void sac_register_callback(uint mid, handler_t f);
 

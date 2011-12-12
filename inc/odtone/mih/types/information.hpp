@@ -54,7 +54,7 @@ struct cost_curr {
 	/**
 	 * Serialize/deserialize the COST_CURR data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -100,7 +100,7 @@ struct cost_value {
 	/**
 	 * Serialize/deserialize the COST_VALUE data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -122,7 +122,7 @@ struct cost {
 	/**
 	 * Serialize/deserialize the COST data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -147,7 +147,7 @@ struct regu_domain {
 	/**
 	 * Serialize/deserialize the REGU_DOMAIN data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -171,7 +171,7 @@ struct ch_range {
 	/**
 	 * Serialize/deserialize the CH_RANGE data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -192,7 +192,7 @@ struct gap {
 	/**
 	 * Serialize/deserialize the GAP data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -214,7 +214,7 @@ struct burst_prof {
 	/**
 	 * Serialize/deserialize the BURST_PROF data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -236,7 +236,7 @@ struct cdma_codes {
 	/**
 	 * Serialize/deserialize the CDMA_CODES data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -262,7 +262,7 @@ struct dcd_udc {
 	/**
 	 * Serialize/deserialize the DCD_UDC data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -288,7 +288,7 @@ struct sib {
 	/**
 	 * Serialize/deserialize the SIB data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -311,7 +311,7 @@ struct sys_params {
 	/**
 	 * Serialize/deserialize the SYS_PARAMS data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -336,7 +336,7 @@ struct parameters {
 	/**
 	 * Serialize/deserialize the PARAMETERS data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -407,7 +407,7 @@ struct network_type {
 	/**
 	 * Serialize/deserialize the NETWORK_TYPE data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -447,7 +447,7 @@ struct system_info {
 	/**
 	 * Serialize/deserialize the SYSTEM_INFO data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -496,7 +496,7 @@ struct operator_id {
 	/**
 	 * Serialize/deserialize the OPERATOR_ID data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
@@ -554,7 +554,7 @@ struct net_type_addr {
 	/**
 	 * Serialize/deserialize the NET_TYPE_ADDR data type.
 	 *
-	 * @param The archive to/from where serialize/deserialize the data type.
+	 * @param ar The archive to/from where serialize/deserialize the data type.
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)

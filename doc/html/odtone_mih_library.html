@@ -1,0 +1,173 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>ODTONE MIH Library</title>
+<link rel="stylesheet" href="boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="ODTONE 0.3">
+<link rel="up" href="odtone/library.html" title="Libraries">
+<link rel="prev" href="odtone/hex_to_int.html" title="Function hex_to_int">
+<link rel="next" href="odtone/mih/iarchive_error.html" title="Struct iarchive_error">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="./images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="odtone/hex_to_int.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="odtone/library.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="odtone/mih/iarchive_error.html"><img src="images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="odtone_mih_library"></a>ODTONE MIH Library</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.archive_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/archive.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.archive_fwd_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/archive_fwd.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.config_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/config.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.confirm_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/confirm.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.frame_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/frame.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.indication_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/indication.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.message_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/message.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.request_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/request.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.response_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/response.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.tlv_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/tlv.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.tlv_types_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/tlv_types.hpp&gt;</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="header..home.carlos.Projectos.odtone.inc.odtone.mih.archive_hpp"></a>Header &lt;<a href="../..//home/carlos/Projectos/odtone/inc/odtone/mih/archive.hpp" target="_top">/home/carlos/Projectos/odtone/inc/odtone/mih/archive.hpp</a>&gt;</h4></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">odtone</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">mih</span> <span class="special">{</span>
+    <span class="keyword">struct</span> <a class="link" href="odtone/mih/iarchive_error.html" title="Struct iarchive_error">iarchive_error</a><span class="special">;</span>
+    <span class="keyword">struct</span> <a class="link" href="odtone/mih/iarchive_eof_error.html" title="Struct iarchive_eof_error">iarchive_eof_error</a><span class="special">;</span>
+
+    <span class="keyword">class</span> <a class="link" href="odtone/mih/archive.html" title="Class archive">archive</a><span class="special">;</span>
+    <span class="keyword">class</span> <a class="link" href="odtone/mih/iarchive.html" title="Class iarchive">iarchive</a><span class="special">;</span>
+    <span class="keyword">class</span> <a class="link" href="odtone/mih/oarchive.html" title="Class oarchive">oarchive</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="odtone/mih/is_iarchive.html" title="Class template is_iarchive">is_iarchive</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="odtone/mih/is_oarchive.html" title="Class template is_oarchive">is_oarchive</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section"><div class="titlepage"><div><div><h4 class="title">
+<a name="header..home.carlos.Projectos.odtone.inc.odtone.mih.archive_fwd_hpp"></a>Header &lt;<a href="../..//home/carlos/Projectos/odtone/inc/odtone/mih/archive_fwd.hpp" target="_top">/home/carlos/Projectos/odtone/inc/odtone/mih/archive_fwd.hpp</a>&gt;</h4></div></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="header..home.carlos.Projectos.odtone.inc.odtone.mih.config_hpp"></a>Header &lt;<a href="../..//home/carlos/Projectos/odtone/inc/odtone/mih/config.hpp" target="_top">/home/carlos/Projectos/odtone/inc/odtone/mih/config.hpp</a>&gt;</h4></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">odtone</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">mih</span> <span class="special">{</span>
+    <span class="keyword">class</span> <a class="link" href="odtone/mih/config.html" title="Class config">config</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="header..home.carlos.Projectos.odtone.inc.odtone.mih.confirm_hpp"></a>Header &lt;<a href="../..//home/carlos/Projectos/odtone/inc/odtone/mih/confirm.hpp" target="_top">/home/carlos/Projectos/odtone/inc/odtone/mih/confirm.hpp</a>&gt;</h4></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">odtone</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">mih</span> <span class="special">{</span>
+    <span class="keyword">class</span> <a class="link" href="odtone/mih/confirm.html" title="Class confirm">confirm</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="header..home.carlos.Projectos.odtone.inc.odtone.mih.frame_hpp"></a>Header &lt;<a href="../..//home/carlos/Projectos/odtone/inc/odtone/mih/frame.hpp" target="_top">/home/carlos/Projectos/odtone/inc/odtone/mih/frame.hpp</a>&gt;</h4></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">odtone</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">mih</span> <span class="special">{</span>
+    <span class="keyword">struct</span> <a class="link" href="odtone/mih/service.html" title="Struct service">service</a><span class="special">;</span>
+    <span class="keyword">struct</span> <a class="link" href="odtone/mih/operation.html" title="Struct operation">operation</a><span class="special">;</span>
+    <span class="keyword">struct</span> <a class="link" href="odtone/mih/action.html" title="Struct action">action</a><span class="special">;</span>
+    <span class="keyword">struct</span> <a class="link" href="odtone/mih/frame.html" title="Struct frame">frame</a><span class="special">;</span>
+
+    <span class="keyword">typedef</span> <span class="identifier">buffer_vla</span><span class="special">&lt;</span> <a class="link" href="odtone/mih/frame.html" title="Struct frame">frame</a> <span class="special">&gt;</span> <a name="odtone.mih.frame_vla"></a><span class="identifier">frame_vla</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="odtone/mih/operator_idp4965936.html" title="Function operator&lt;&lt;"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="odtone/mih/frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="header..home.carlos.Projectos.odtone.inc.odtone.mih.indication_hpp"></a>Header &lt;<a href="../..//home/carlos/Projectos/odtone/inc/odtone/mih/indication.hpp" target="_top">/home/carlos/Projectos/odtone/inc/odtone/mih/indication.hpp</a>&gt;</h4></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">odtone</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">mih</span> <span class="special">{</span>
+    <span class="keyword">class</span> <a class="link" href="odtone/mih/indication.html" title="Class indication">indication</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="header..home.carlos.Projectos.odtone.inc.odtone.mih.message_hpp"></a>Header &lt;<a href="../..//home/carlos/Projectos/odtone/inc/odtone/mih/message.hpp" target="_top">/home/carlos/Projectos/odtone/inc/odtone/mih/message.hpp</a>&gt;</h4></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">odtone</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">mih</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">uint</span> ServiceId<span class="special">,</span> <span class="identifier">uint</span> Opcode<span class="special">,</span> <span class="identifier">uint</span> ActionId<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="odtone/mih/msg_id.html" title="Struct template msg_id">msg_id</a><span class="special">;</span>
+
+    <span class="keyword">class</span> <a class="link" href="odtone/mih/message.html" title="Class message">message</a><span class="special">;</span>
+    <span class="keyword">class</span> <a class="link" href="odtone/mih/message_helper.html" title="Class message_helper">message_helper</a><span class="special">;</span>
+    <a class="link" href="odtone/mih/oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> <a class="link" href="odtone/mih/operator_idp5168040.html" title="Function operator&lt;&lt;"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><a class="link" href="odtone/mih/message.html" title="Class message">message</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="odtone/mih/message_helper.html" title="Class message_helper">message_helper</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="odtone/mih/iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="odtone/mih/operator_idp5170656.html" title="Function operator&gt;&gt;"><span class="keyword">operator</span><span class="special">&gt;&gt;</span></a><span class="special">(</span><a class="link" href="odtone/mih/message.html" title="Class message">message</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="odtone/mih/message_helper.html" title="Class message_helper">message_helper</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="header..home.carlos.Projectos.odtone.inc.odtone.mih.request_hpp"></a>Header &lt;<a href="../..//home/carlos/Projectos/odtone/inc/odtone/mih/request.hpp" target="_top">/home/carlos/Projectos/odtone/inc/odtone/mih/request.hpp</a>&gt;</h4></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">odtone</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">mih</span> <span class="special">{</span>
+    <span class="keyword">class</span> <a class="link" href="odtone/mih/request.html" title="Class request">request</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="header..home.carlos.Projectos.odtone.inc.odtone.mih.response_hpp"></a>Header &lt;<a href="../..//home/carlos/Projectos/odtone/inc/odtone/mih/response.hpp" target="_top">/home/carlos/Projectos/odtone/inc/odtone/mih/response.hpp</a>&gt;</h4></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">odtone</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">mih</span> <span class="special">{</span>
+    <span class="keyword">class</span> <a class="link" href="odtone/mih/response.html" title="Class response">response</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="header..home.carlos.Projectos.odtone.inc.odtone.mih.tlv_hpp"></a>Header &lt;<a href="../..//home/carlos/Projectos/odtone/inc/odtone/mih/tlv.hpp" target="_top">/home/carlos/Projectos/odtone/inc/odtone/mih/tlv.hpp</a>&gt;</h4></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">odtone</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">mih</span> <span class="special">{</span>
+    <span class="keyword">struct</span> <a class="link" href="odtone/mih/bad_tlv.html" title="Struct bad_tlv">bad_tlv</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ValueT<span class="special">,</span> <span class="identifier">ValueT</span> Value<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="odtone/mih/base_tlv_.html" title="Struct template base_tlv_">base_tlv_</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">uint8</span> Value<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="odtone/mih/tlv_.html" title="Struct template tlv_">tlv_</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">uint32</span> Value<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="odtone/mih/tlv4_.html" title="Struct template tlv4_">tlv4_</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">uint8</span> A<span class="special">,</span> <span class="identifier">uint8</span> B<span class="special">,</span> <span class="identifier">uint8</span> C<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="odtone/mih/oui_.html" title="Struct template oui_">oui_</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> TLV<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="odtone/mih/tlv_type_.html" title="Class template tlv_type_">tlv_type_</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> TLV<span class="special">&gt;</span> 
+      <span class="keyword">class</span> <a class="link" href="odtone/mih/tlv_type_boost_optional_idp5332552.html" title="Class template tlv_type_&lt;boost::optional&lt; T &gt;, TLV&gt;">tlv_type_</a><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">TLV</span><span class="special">&gt;</span><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> TLV<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="odtone/mih/tlv_cast_.html" title="Class template tlv_cast_">tlv_cast_</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="odtone/mih/is_tlv_type.html" title="Class template is_tlv_type">is_tlv_type</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
+      <span class="identifier">boost</span><span class="special">::</span><span class="identifier">enable_if</span><span class="special">&lt;</span> <a class="link" href="odtone/mih/is_tlv_type.html" title="Class template is_tlv_type">is_tlv_type</a><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">,</span> <a class="link" href="odtone/mih/iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> 
+      <a name="odtone.mih.operator&amp;_idp5349184"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><a class="link" href="odtone/mih/iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
+      <span class="identifier">boost</span><span class="special">::</span><span class="identifier">enable_if</span><span class="special">&lt;</span> <a class="link" href="odtone/mih/is_tlv_type.html" title="Class template is_tlv_type">is_tlv_type</a><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">,</span> <a class="link" href="odtone/mih/oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> 
+      <a name="odtone.mih.operator&amp;_idp5351240"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><a class="link" href="odtone/mih/oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section"><div class="titlepage"><div><div><h4 class="title">
+<a name="header..home.carlos.Projectos.odtone.inc.odtone.mih.tlv_types_hpp"></a>Header &lt;<a href="../..//home/carlos/Projectos/odtone/inc/odtone/mih/tlv_types.hpp" target="_top">/home/carlos/Projectos/odtone/inc/odtone/mih/tlv_types.hpp</a>&gt;</h4></div></div></div></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2011 Universidade
+      Aveiro<br>Copyright &#169; 2009-2011 Instituto de
+      Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="odtone/hex_to_int.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="odtone/library.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="odtone/mih/iarchive_error.html"><img src="images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

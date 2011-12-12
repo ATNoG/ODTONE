@@ -34,16 +34,32 @@ extern odtone::mih::link_id      link_id;
 namespace link_sap {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Construct the Link SAP.
+ *
+ * @param cfg Configuration options.
+ * @param io The io_service object that the IEEE 802.21 driver will use to
+ * dispatch handlers for any asynchronous operations performed on the socket. 
+ */
 link_sap::link_sap(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	: _mihf(cfg, io, boost::bind(&link_sap::default_handler, this, _1, _2))
 {
 	init();
 }
 
+/**
+ * Destruct the Link SAP.
+ */
 link_sap::~link_sap()
 {
 }
 
+/**
+ * Update the state of the interface. If the state has been changed
+ * notify its local MIHF
+ *
+ * @param it Interface information.
+ */
 void link_sap::update(nic::interface* it)
 {
 	std::pair<nic::interface_map::iterator, bool> ifi;
@@ -83,6 +99,12 @@ void link_sap::update(nic::interface* it)
 	}
 }
 
+/**
+ * Default MIH event handler.
+ *
+ * @param msg Received message.
+ * @param ec Error code.
+ */
 void link_sap::default_handler(odtone::mih::message& msg, const boost::system::error_code& ec)
 {
 	if (ec)

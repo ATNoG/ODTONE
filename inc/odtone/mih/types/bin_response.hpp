@@ -27,18 +27,18 @@
 namespace odtone { namespace mih {
 
 /**
- * Define IR_BIN_DATA input archive.
+ * IR_BIN_DATA input archive.
  */
 class ir_bin_iarchive;
 
 /**
- * Define IR_BIN_DATA output archive.
+ * IR_BIN_DATA output archive.
  */
 class ir_bin_oarchive;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define IR_BIN_DATA data type.
+ * IR_BIN_DATA data type.
  */
 class ir_bin_data {
 //
@@ -63,7 +63,7 @@ public:
 	/**
 	 * Deserialize the IR_BIN_DATA data type.
 	 *
-	 * @param The archive from where deserialize the data type.
+	 * @param ar The archive from where deserialize the data type.
 	 */
 	void serialize(iarchive& ar)
 	{
@@ -86,7 +86,7 @@ public:
 	/**
 	 * Serialize the IR_BIN_DATA data type.
 	 *
-	 * @param The archive to where serialize the data type.
+	 * @param ar The archive to where serialize the data type.
 	 */
 	void serialize(oarchive& ar)
 	{
@@ -124,7 +124,7 @@ private:
 };
 
 /**
- * Define LIST(IR_BIN_DATA) data type.
+ * LIST(IR_BIN_DATA) data type.
  */
 typedef std::vector<ir_bin_data> ir_bin_data_list;
 
@@ -142,12 +142,14 @@ struct ir_bin_iarchive_error : virtual public exception {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define IR_BIN_DATA input archive.
+ * IR_BIN_DATA input archive.
  */
 class ir_bin_iarchive {
 public:
 	/**
-	 * Construct a ir_bin_iarchive.
+	 * Construct a ir_bin_iarchive from a ir_bin_data data type.
+	 *
+	 * @param data The ir_bin_data from where extract the information.
 	 */
 	ir_bin_iarchive(ir_bin_data& data)
 		: _ar(data._ar), _cnt(data._cnt), _pos(0)
@@ -156,7 +158,7 @@ public:
 	/**
 	 * Serialize an IE to the IR_BIN_DATA data type.
 	 *
-	 * @param The value to serialize.
+	 * @param val The value to serialize.
 	 */
 	template<class T>
 	typename boost::enable_if<is_tlv_type<T>, ir_bin_iarchive&>::type operator&(const T& val)
@@ -173,13 +175,13 @@ public:
 	}
 
 private:
-	iarchive _ar;
-	uint&    _cnt;
-	uint     _pos;
+	iarchive _ar;	/**< Input archive of the IR_BIN_DATA.		*/
+	uint&    _cnt;	/**< Number of elements in the IR_BIN_DATA.	*/
+	uint     _pos;	/**< Position in the input archive.			*/
 };
 
 /**
- * Define IR_BIN_DATA output archive.
+ * IR_BIN_DATA output archive.
  */
 class ir_bin_oarchive {
 public:
@@ -193,7 +195,7 @@ public:
 	/**
 	 * Deserialize an IE from the IR_BIN_DATA data type.
 	 *
-	 * @param The value to deserialize.
+	 * @param val The value to deserialize.
 	 */
 	template<class T>
 	typename boost::enable_if<is_tlv_type<T>, ir_bin_oarchive&>::type operator&(const T& val)
@@ -205,8 +207,8 @@ public:
 	}
 
 private:
-	oarchive _ar;
-	uint&    _cnt;
+	oarchive _ar;	/**< Output archive of the IR_BIN_DATA.		*/
+	uint&    _cnt;	/**< Number of elements in the IR_BIN_DATA.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////

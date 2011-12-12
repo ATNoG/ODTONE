@@ -29,12 +29,11 @@ This pretends to simulate either a MIHF or a MIH SAP.
 [section Extending]
 
 It is possible to modify the behaviour of the dummyserver when it receives a new
-message. To do this, the "`static void process_message(meta_message_ptr& msg)`"
-function must be modified.
+message. To do it, the "`static void process_message(meta_message_ptr& msg)`"
+function must be modified according to the desired behavior.
 
-E.g.:
-
-Let's change the dummyserver to send the incomming message to specific destination
+E.g.: Let's change the dummyserver behavior in order to send the received
+message to a specific destination
 (assuming that the mechanisms for sending messages have already been defined):
 
 ``

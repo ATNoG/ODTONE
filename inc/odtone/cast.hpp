@@ -65,7 +65,7 @@ struct cast<T, U, true> {
 	/**
 	 * Truncate the cast operation.
 	 *
-	 * @param The class object to convert to.
+	 * @param from The class object to convert to.
 	 * @return The converted object.
 	 */
 	static T truncate(U from)
@@ -86,7 +86,7 @@ struct cast<T, U, false> {
 	/**
 	 * Truncate the cast operation.
 	 *
-	 * @param The class object to convert to.
+	 * @param from The class object to convert to.
 	 * @return The converted object.
 	 */
 	static T truncate(U from)

@@ -32,41 +32,41 @@
 namespace odtone { namespace mihf {
 
 /**
- * This class checks, in the transaction pool, if the outgoing message belongs to a pending
- * transaction, if so the transaction is run and eventually the message is sent.
+ * This class manages the outgoing messages.
  */
 class message_out
 {
 public:
 	/**
-	 * Message OUT constructor.
+	 * Construct a message output module.
 	 *
-	 * @param tpool transaction pool module.
-	 * @param f process message handler.
-	 * @param netsap netsap module.
+	 * @param tpool The transaction pool module.
+	 * @param f The message handler.
+	 * @param netsap The netsap module.
 	 */
 	message_out(transaction_pool &tpool, handler_t &f, net_sap &netsap);
 
 	/**
 	 * Checks, in the transaction pool, if the outgoing message belongs to a pending
-	 * transaction, if so the transaction is run and eventually the message is sent.
+	 * transaction. If true it runs the transaction, otherwise it creates a new
+	 * transaction.
 	 *
-	 * @param m output message.
+	 * @param msg The output message.
 	 */
 	void operator()(meta_message_ptr& msg);
 
 protected:
 	/**
-	 * Create a new source transaction for the outgoing message.
+	 * Creates a new source transaction for the outgoing message.
 	 *
-	 * @param m output message.
+	 * @param msg The output message.
 	 */
 	void new_src_transaction(meta_message_ptr& msg);
 
-	transaction_pool &_tpool;
-	uint16 _tid;
-	handler_t &process_message;
-	net_sap &_netsap;
+	transaction_pool &_tpool;	/**< The transaction pool module.			*/
+	uint16 _tid;				/**< The current transaction identifier.	*/
+	handler_t &process_message;	/**< The message handler.					*/
+	net_sap &_netsap;			/**< The netsap module.						*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

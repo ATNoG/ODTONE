@@ -21,6 +21,11 @@
 namespace link_sap { namespace nic {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Construct an IEEE 802.11 interface representation.
+ *
+ * @param id IEEE 802.11 interface identifier.
+ */
 if_802_11::if_802_11(if_id const& id)
 	: interface(id, odtone::mih::link_type_802_11)
 {

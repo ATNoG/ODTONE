@@ -39,7 +39,7 @@ struct msg_id {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * MIH Message
+ * MIH Message.
  *
  * This class is a high level representation of an MIH message. It
  * provides access to all fields of the MIH message header, the destination and
@@ -173,14 +173,14 @@ public:
 	/**
 	 * Set the MIH Message Source ID.
 	 *
-	 * @param v The value of the MIH Message Source MIHF ID.
+	 * @param id The value of the MIH Message Source MIHF ID.
 	 */
 	void source(const id& id);
 
 	/**
 	 * Set the MIH Message Destination ID.
 	 *
-	 * @param v The value of the MIH Message Destination MIHF ID.
+	 * @param id The value of the MIH Message Destination MIHF ID.
 	 */
 	void destination(const id& id);
 
@@ -443,7 +443,7 @@ inline void message::tid(uint16 v)
 /**
  * Set the MIH Message Source ID.
  *
- * @param v The value of the MIH Message Source MIHF ID.
+ * @param id The value of the MIH Message Source MIHF ID.
  */
 inline void message::source(const id& id)
 {
@@ -453,7 +453,7 @@ inline void message::source(const id& id)
 /**
  * Set the MIH Message Destination ID.
  *
- * @param v The value of the MIH Message Destination MIHF ID.
+ * @param id The value of the MIH Message Destination MIHF ID.
  */
 inline void message::destination(const id& id)
 {

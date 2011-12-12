@@ -24,12 +24,14 @@
 namespace odtone { namespace mihf {
 
 /**
- * Transmit module constructor.
+ * Construct a transmit module.
  *
- * @param io io_service.
- * @param user_abook user book module.
- * @param link_abook link book module.
- * @param msg_out output message.
+ * @param io The io_service object that Link SAP I/O Service will use to
+ * dispatch handlers for any asynchronous operations performed on
+ * the socket.
+ * @param user_abook The user book module.
+ * @param link_abook The link book module.
+ * @param msg_out The output message.
  */
 transmit::transmit(io_service &io,
 		           user_book &user_abook,
@@ -46,7 +48,7 @@ transmit::transmit(io_service &io,
  * Send message to a local entity. If the output message destination is a peer
  * MIHF redirect it to the message_out module.
  *
- * @param msg output message.
+ * @param msg The output message.
  */
 void transmit::operator()(meta_message_ptr& msg)
 {

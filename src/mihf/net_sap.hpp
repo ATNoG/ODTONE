@@ -34,29 +34,30 @@ using namespace boost::asio;
 namespace odtone { namespace mihf {
 
 /**
- * This class, when called, checks if the MIH destination identifier is in the
- * remote address book, if so the message is sent using on of udp_send or tcp_send.
+ * This class provides the methods to send the messages to remote MIHFs.
  */
 class net_sap
 {
 public:
 	/**
-	 * Netsap constructor.
+	 * Construct a netsap module.
 	 *
-	 * @param io io_service.
-	 * @param abook address_book module.
+	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * dispatch handlers for any asynchronous operations performed on
+	 * the socket.
+	 * @param abook The address book module.
 	 */
 	net_sap(io_service &io, address_book &abook);
 
 	/**
-	 * Send the message to the peer MIHF.
+	 * Send the message to a peer MIHF.
 	 *
-	 * @param msg output message.
+	 * @param msg The output message.
 	 */
 	void send(meta_message_ptr &msg);
 private:
-	io_service &_io;
-	address_book &_abook;
+	io_service &_io;		/**< The io_service object.		*/
+	address_book &_abook;	/**< The address book module.	*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

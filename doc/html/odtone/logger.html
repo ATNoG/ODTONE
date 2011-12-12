@@ -1,0 +1,249 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class logger</title>
+<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="ODTONE 0.3">
+<link rel="up" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.logger_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/logger.hpp&gt;">
+<link rel="prev" href="list_node.html" title="Class list_node">
+<link rel="next" href="mih/srand8.html" title="Function srand8">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src=".././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="list_node.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.logger_hpp"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="mih/srand8.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="odtone.logger"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class logger</span></h2>
+<p>odtone::logger</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.logger_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/logger.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/logger.hpp</a>&gt;
+
+</span>
+<span class="keyword">class</span> <a class="link" href="logger.html" title="Class logger">logger</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// <a class="link" href="logger.html#odtone.loggerconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="logger.html#idp4317200-bb"><span class="identifier">logger</span></a><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span><span class="keyword">const</span><span class="special">,</span> <a class="link" href="logger.html" title="Class logger">logger</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="logger.html#idp4318784-bb"><span class="identifier">logger</span></a><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span><span class="keyword">const</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="logger.html#idp4320256-bb"><span class="special">~</span><span class="identifier">logger</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="logger.html#idp4273576-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="logger.html#idp4273760-bb"><span class="identifier">level</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">uint</span> <a class="link" href="logger.html#idp4275248-bb"><span class="identifier">level</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="logger.html#idp4276432-bb"><span class="identifier">sink</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="logger.html#idp4277488-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">&gt;</span> 
+    <span class="keyword">void</span> <a class="link" href="logger.html#idp4279112-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">&gt;</span> 
+    <span class="keyword">void</span> <a class="link" href="logger.html#idp4281104-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">,</span> <span class="keyword">typename</span> T4<span class="special">&gt;</span> 
+    <span class="keyword">void</span> <a class="link" href="logger.html#idp4283656-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T4</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">,</span> <span class="keyword">typename</span> T4<span class="special">,</span> <span class="keyword">typename</span> T5<span class="special">&gt;</span> 
+    <span class="keyword">void</span> <a class="link" href="logger.html#idp4286768-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T4</span> <span class="special">&amp;</span><span class="special">,</span> 
+                    <span class="keyword">const</span> <span class="identifier">T5</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">,</span> <span class="keyword">typename</span> T4<span class="special">,</span> <span class="keyword">typename</span> T5<span class="special">,</span> 
+           <span class="keyword">typename</span> T6<span class="special">&gt;</span> 
+    <span class="keyword">void</span> <a class="link" href="logger.html#idp4290440-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T4</span> <span class="special">&amp;</span><span class="special">,</span> 
+                    <span class="keyword">const</span> <span class="identifier">T5</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T6</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">,</span> <span class="keyword">typename</span> T4<span class="special">,</span> <span class="keyword">typename</span> T5<span class="special">,</span> 
+           <span class="keyword">typename</span> T6<span class="special">,</span> <span class="keyword">typename</span> T7<span class="special">&gt;</span> 
+    <span class="keyword">void</span> <a class="link" href="logger.html#idp4294672-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T4</span> <span class="special">&amp;</span><span class="special">,</span> 
+                    <span class="keyword">const</span> <span class="identifier">T5</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T6</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T7</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">,</span> <span class="keyword">typename</span> T4<span class="special">,</span> <span class="keyword">typename</span> T5<span class="special">,</span> 
+           <span class="keyword">typename</span> T6<span class="special">,</span> <span class="keyword">typename</span> T7<span class="special">,</span> <span class="keyword">typename</span> T8<span class="special">&gt;</span> 
+    <span class="keyword">void</span> <a class="link" href="logger.html#idp4299464-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T4</span> <span class="special">&amp;</span><span class="special">,</span> 
+                    <span class="keyword">const</span> <span class="identifier">T5</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T6</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T7</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T8</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">,</span> <span class="keyword">typename</span> T4<span class="special">,</span> <span class="keyword">typename</span> T5<span class="special">,</span> 
+           <span class="keyword">typename</span> T6<span class="special">,</span> <span class="keyword">typename</span> T7<span class="special">,</span> <span class="keyword">typename</span> T8<span class="special">,</span> <span class="keyword">typename</span> T9<span class="special">&gt;</span> 
+    <span class="keyword">void</span> <a class="link" href="logger.html#idp4304816-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T4</span> <span class="special">&amp;</span><span class="special">,</span> 
+                    <span class="keyword">const</span> <span class="identifier">T5</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T6</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T7</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T8</span> <span class="special">&amp;</span><span class="special">,</span> 
+                    <span class="keyword">const</span> <span class="identifier">T9</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">,</span> <span class="keyword">typename</span> T4<span class="special">,</span> <span class="keyword">typename</span> T5<span class="special">,</span> 
+           <span class="keyword">typename</span> T6<span class="special">,</span> <span class="keyword">typename</span> T7<span class="special">,</span> <span class="keyword">typename</span> T8<span class="special">,</span> <span class="keyword">typename</span> T9<span class="special">,</span> <span class="keyword">typename</span> T10<span class="special">&gt;</span> 
+    <span class="keyword">void</span> <a class="link" href="logger.html#idp4310728-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T4</span> <span class="special">&amp;</span><span class="special">,</span> 
+                    <span class="keyword">const</span> <span class="identifier">T5</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T6</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T7</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T8</span> <span class="special">&amp;</span><span class="special">,</span> 
+                    <span class="keyword">const</span> <span class="identifier">T9</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T10</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp10536144"></a><h2>Description</h2>
+<p>Mechanism for debugging, which provides logging procedures to log messages for a specific system or application component. Logger names can be arbitrary strings, but they should be based on the application that invoke it. Each logger has a level associated with it. This reflects the maximum level that the logger cares about. So, if the logger level is set to 2 it only cares about log messages belonging to level 0, 1 and 2. It also has an std::ostream object associated with it, which defines how the logger writes and formats the output. The log messages can have up to 10 arguments. </p>
+<div class="refsect2">
+<a name="idp10537080"></a><h3>
+<a name="odtone.loggerconstruct-copy-destruct"></a><code class="computeroutput">logger</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a name="idp4317200-bb"></a><span class="identifier">logger</span><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span><span class="keyword">const</span> name<span class="special">,</span> <a class="link" href="logger.html" title="Class logger">logger</a> <span class="special">&amp;</span> log<span class="special">)</span><span class="special">;</span></pre>
+<p>Construct a logger by copying it from another logger.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">log</code></span></p></td>
+<td><p>Logger to copy. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">name</code></span></p></td>
+<td><p>Logger's name. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="idp4318784-bb"></a><span class="identifier">logger</span><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span><span class="keyword">const</span> name<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> sink<span class="special">)</span><span class="special">;</span></pre>
+<p>Construct a logger.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">name</code></span></p></td>
+<td><p>Logger's name. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">sink</code></span></p></td>
+<td><p>std::ostream which defines how the logger will write and format output. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="idp4320256-bb"></a><span class="special">~</span><span class="identifier">logger</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Destruct a logger. </p>
+</li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="idp10554464"></a><h3>
+<a name="idp4273576-bb"></a><code class="computeroutput">logger</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp4273760-bb"></a><span class="identifier">level</span><span class="special">(</span><span class="identifier">uint</span> n<span class="special">)</span><span class="special">;</span></pre>
+<p>Set the output level. Each logger has a level associated with it. This reflects the maximum level that the logger cares about. So, if the logger level is set to 2 it only cares about log messages belonging to level 0, 1 and 2.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">n</code></span></p></td>
+<td><p>Logger level. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">uint</span> <a name="idp4275248-bb"></a><span class="identifier">level</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Get the level configuration. Each logger has a level associated with it. This reflects the maximum level that the logger cares about. So, if the logger level is set to 2 it only cares about log messages belonging to level 0, 1 and 2.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The logger level. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="idp4276432-bb"></a><span class="identifier">sink</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Get the std::ostream associated with the logger.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The std::ostream associated with the logger. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp4277488-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">uint</span> level<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span> arg1<span class="special">)</span><span class="special">;</span></pre>
+<p>XXX </p>
+</li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="idp4279112-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">uint</span> level<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span> arg1<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span> arg2<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="idp4281104-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">uint</span> level<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span> arg1<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span> arg2<span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span> arg3<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">,</span> <span class="keyword">typename</span> T4<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="idp4283656-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">uint</span> level<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span> arg1<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span> arg2<span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span> arg3<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T4</span> <span class="special">&amp;</span> arg4<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">,</span> <span class="keyword">typename</span> T4<span class="special">,</span> <span class="keyword">typename</span> T5<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="idp4286768-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">uint</span> level<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span> arg1<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span> arg2<span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span> arg3<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T4</span> <span class="special">&amp;</span> arg4<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T5</span> <span class="special">&amp;</span> arg5<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">,</span> <span class="keyword">typename</span> T4<span class="special">,</span> <span class="keyword">typename</span> T5<span class="special">,</span> 
+         <span class="keyword">typename</span> T6<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="idp4290440-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">uint</span> level<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span> arg1<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span> arg2<span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span> arg3<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T4</span> <span class="special">&amp;</span> arg4<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T5</span> <span class="special">&amp;</span> arg5<span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">T6</span> <span class="special">&amp;</span> arg6<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">,</span> <span class="keyword">typename</span> T4<span class="special">,</span> <span class="keyword">typename</span> T5<span class="special">,</span> 
+         <span class="keyword">typename</span> T6<span class="special">,</span> <span class="keyword">typename</span> T7<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="idp4294672-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">uint</span> level<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span> arg1<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span> arg2<span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span> arg3<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T4</span> <span class="special">&amp;</span> arg4<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T5</span> <span class="special">&amp;</span> arg5<span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">T6</span> <span class="special">&amp;</span> arg6<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T7</span> <span class="special">&amp;</span> arg7<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">,</span> <span class="keyword">typename</span> T4<span class="special">,</span> <span class="keyword">typename</span> T5<span class="special">,</span> 
+         <span class="keyword">typename</span> T6<span class="special">,</span> <span class="keyword">typename</span> T7<span class="special">,</span> <span class="keyword">typename</span> T8<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="idp4299464-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">uint</span> level<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span> arg1<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span> arg2<span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span> arg3<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T4</span> <span class="special">&amp;</span> arg4<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T5</span> <span class="special">&amp;</span> arg5<span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">T6</span> <span class="special">&amp;</span> arg6<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T7</span> <span class="special">&amp;</span> arg7<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T8</span> <span class="special">&amp;</span> arg8<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">,</span> <span class="keyword">typename</span> T4<span class="special">,</span> <span class="keyword">typename</span> T5<span class="special">,</span> 
+         <span class="keyword">typename</span> T6<span class="special">,</span> <span class="keyword">typename</span> T7<span class="special">,</span> <span class="keyword">typename</span> T8<span class="special">,</span> <span class="keyword">typename</span> T9<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="idp4304816-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">uint</span> level<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span> arg1<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span> arg2<span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span> arg3<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T4</span> <span class="special">&amp;</span> arg4<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T5</span> <span class="special">&amp;</span> arg5<span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">T6</span> <span class="special">&amp;</span> arg6<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T7</span> <span class="special">&amp;</span> arg7<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T8</span> <span class="special">&amp;</span> arg8<span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">T9</span> <span class="special">&amp;</span> arg9<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> <span class="keyword">typename</span> T3<span class="special">,</span> <span class="keyword">typename</span> T4<span class="special">,</span> <span class="keyword">typename</span> T5<span class="special">,</span> 
+         <span class="keyword">typename</span> T6<span class="special">,</span> <span class="keyword">typename</span> T7<span class="special">,</span> <span class="keyword">typename</span> T8<span class="special">,</span> <span class="keyword">typename</span> T9<span class="special">,</span> <span class="keyword">typename</span> T10<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="idp4310728-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">uint</span> level<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T1</span> <span class="special">&amp;</span> arg1<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T2</span> <span class="special">&amp;</span> arg2<span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">T3</span> <span class="special">&amp;</span> arg3<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T4</span> <span class="special">&amp;</span> arg4<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T5</span> <span class="special">&amp;</span> arg5<span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">T6</span> <span class="special">&amp;</span> arg6<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T7</span> <span class="special">&amp;</span> arg7<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T8</span> <span class="special">&amp;</span> arg8<span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">T9</span> <span class="special">&amp;</span> arg9<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T10</span> <span class="special">&amp;</span> arg10<span class="special">)</span><span class="special">;</span></pre></li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2011 Universidade
+      Aveiro<br>Copyright &#169; 2009-2011 Instituto de
+      Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="list_node.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.logger_hpp"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="mih/srand8.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

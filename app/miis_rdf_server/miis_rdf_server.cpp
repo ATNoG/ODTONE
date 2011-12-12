@@ -40,29 +40,62 @@ using odtone::ushort;
 
 odtone::logger log_("information server", std::cout);
 
-static const char* const kConf_Databse               = "database";
+static const char* const kConf_Databse = "database";
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * This class provides an implementation of an MIIS RDF Server.
+ */
 class miis_rdf_server : boost::noncopyable {
 public:
+	/**
+	 * Construct the MIIS RDF Server.
+	 *
+	 * @param cfg Configuration options.
+	 * @param io The io_service object that the IEEE 802.21 driver will use to
+	 * dispatch handlers for any asynchronous operations performed on the socket.
+	 */
 	miis_rdf_server(const odtone::mih::config& cfg, boost::asio::io_service& io);
+
+	/**
+	 * Destruct the MIIS RDF Server.
+	 */
 	~miis_rdf_server();
 
 private:
 
+	/**
+	 * Default MIH event handler.
+	 *
+	 * @param msg Received message.
+	 * @param ec Error code.
+	 */
 	void event_handler(odtone::mih::message& msg, const boost::system::error_code& ec);
+
+	/**
+	 * Performs a query.
+	 *
+	 * @param qry The query to be performed.
+	 * @param results Pointer to where to store the query results.
+	 */
 	void run_query(const unsigned char *qry, unsigned char *results);
 
-	odtone::sap::user _mihf;
-	odtone::mih::id   _mihfid;
+	odtone::sap::user _mihf;	/**< User SAP helper.	*/
 
-	librdf_world	*_world;
-	librdf_storage	*_storage;
-	librdf_uri	*_uri;
-	librdf_model	*_model;
-	std::string     _path_to_database;
+	librdf_world	*_world;			/**< Redland world class.	*/
+	librdf_storage	*_storage;			/**< Redland storage class.	*/
+	librdf_uri		*_uri;				/**< Redland URI class.		*/
+	librdf_model	*_model;			/**< Redland model class.	*/
+	std::string     _path_to_database;	/**< Path to the database.	*/
 };
 
+/**
+ * Construct the MIIS RDF Server.
+ *
+ * @param cfg Configuration options.
+ * @param io The io_service object that the IEEE 802.21 driver will use to
+ * dispatch handlers for any asynchronous operations performed on the socket.
+ */
 miis_rdf_server::miis_rdf_server(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	: _mihf(cfg, io, boost::bind(&miis_rdf_server::event_handler, this, _1, _2)),
 	  _path_to_database(cfg.get<std::string>(kConf_Databse))
@@ -90,6 +123,9 @@ miis_rdf_server::miis_rdf_server(const odtone::mih::config& cfg, boost::asio::io
 	}
 }
 
+/**
+ * Destruct the MIIS RDF Server.
+ */
 miis_rdf_server::~miis_rdf_server()
 {
 }
@@ -98,14 +134,18 @@ static void recv_handler(odtone::mih::message &m, boost::system::error_code e)
 {
 }
 
+/**
+ * Default MIH event handler.
+ *
+ * @param msg Received message.
+ * @param ec Error code.
+ */
 void miis_rdf_server::event_handler(odtone::mih::message& msg, const boost::system::error_code& ec)
 {
 	if (ec) {
 		log_(0, __FUNCTION__, " error: ", ec.message());
 		return;
 	}
-
-
 
 	odtone::mih::iq_rdf_data_list query_list;
 
@@ -143,6 +183,8 @@ void miis_rdf_server::event_handler(odtone::mih::message& msg, const boost::syst
 			& odtone::mih::tlv_status(odtone::mih::status_success)
 			& odtone::mih::tlv_info_resp_rdf_data_list(rsp_list);
 
+		response.destination(msg.source());
+
 		_mihf.async_send(response, boost::bind(recv_handler, _1, _2));
 
 		break;
@@ -152,6 +194,12 @@ void miis_rdf_server::event_handler(odtone::mih::message& msg, const boost::syst
 	}
 }
 
+/**
+ * Performs a query.
+ *
+ * @param qry The query to be performed.
+ * @param results Pointer to where to store the query results.
+ */
 void miis_rdf_server::run_query(const unsigned char *qry, unsigned char *results)
 {
 	librdf_query *query;
@@ -192,13 +240,12 @@ int main(int argc, char** argv)
 
 		desc.add_options()
 			("help", "Display configuration options")
-			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1236), "Port")
-			(odtone::sap::kConf_File, po::value<std::string>()->default_value("miis_rdf_server.conf"), "Configuration File")
+			(odtone::sap::kConf_File, po::value<std::string>()->default_value("miis_rdf_server.conf"), "Configuration file")
+			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1236), "Listening port")
 			(odtone::sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive Buffer Length")
-			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
 			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("miis"), "MIIS Server ID")
-			(odtone::sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "MIHF Local Communications Port")
-			(odtone::sap::kConf_MIH_SAP_dest, po::value<std::string>()->default_value(""), "MIH message destination of MIIS server")
+			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF IP address")
+			(odtone::sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "Local MIHF communication port")
 			(kConf_Databse, po::value<std::string>()->default_value("database"), "/path/to MIIS server sqlite database ");
 
 		odtone::mih::config cfg(desc);
