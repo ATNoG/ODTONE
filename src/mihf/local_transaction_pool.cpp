@@ -56,8 +56,9 @@ void local_transaction_pool::add(meta_message_ptr& in)
  *
  * @param id The MIH source identifier.
  * @param tid The transaction identifier.
+ * @return True if removed or false otherwise.
  */
-void local_transaction_pool::del(const mih::octet_string user,
+bool local_transaction_pool::del(const mih::octet_string user,
                                  uint16 tid)
 {
 	std::list<pending_transaction>::iterator it;
@@ -67,8 +68,11 @@ void local_transaction_pool::del(const mih::octet_string user,
 		if(it->tid == tid) {
 			boost::mutex::scoped_lock lock(_mutex);
 			_transactions.erase(it);
+			return true;
 		}
 	}
+
+	return false;
 }
 
 /**

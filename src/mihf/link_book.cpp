@@ -44,6 +44,7 @@ void link_book::add(const mih::octet_string &id,
 	a.port = port;
 	a.link_id = link_id;
 	a.fail = 0;
+	a.status = true;
 
 	_lbook[id] = a;
 	ODTONE_LOG(4, "(link_book) added: ", id, " ", ip, " ", port);
@@ -59,6 +60,22 @@ void link_book::del(mih::octet_string &id)
 	boost::mutex::scoped_lock lock(_mutex);
 
 	_lbook.erase(id);
+}
+
+/**
+ * Inactive an existing Link SAP entry.
+ *
+ * @param id Link SAP MIH Identifier.
+ */
+void link_book::inactive(mih::octet_string &id)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, link_entry>::iterator it;
+	it = _lbook.find(id);
+
+	if (it != _lbook.end())
+		it->second.status = false;
 }
 
 /**
@@ -112,8 +129,10 @@ const mih::octet_string link_book::search_interface(mih::link_type lt, mih::link
 	for(std::map<mih::octet_string, link_entry>::iterator it = _lbook.begin(); it != _lbook.end(); it++) {
 		if(it->second.link_id.type == lt) {
 			if(it->second.link_id.addr == la) {
-				id = it->first;
-				break;
+				if(it->second.status) {
+					id = it->first;
+					break;
+				}
 			}
 		}
 	}
@@ -154,8 +173,10 @@ void link_book::reset(const mih::octet_string &id)
 	std::map<mih::octet_string, link_entry>::iterator it;
 	it = _lbook.find(id);
 
-	if (it != _lbook.end())
+	if (it != _lbook.end()) {
 		it->second.fail = 0;
+		it->second.status = true;
+	}
 }
 
 } /* namespace mihf */ } /* namespace odtone */

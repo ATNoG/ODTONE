@@ -64,8 +64,9 @@ public:
 	 *
 	 * @param id The MIH source identifier.
 	 * @param tid The transaction identifier.
+	 * @return True if removed or false otherwise.
 	 */
-	void del(const mih::octet_string user, uint16 tid);
+	bool del(const mih::octet_string user, uint16 tid);
 
 	/**
 	 * Searchs for a record in the Local Transaction Pool.

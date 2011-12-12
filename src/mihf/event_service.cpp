@@ -163,19 +163,17 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 		if(fails == -1)
 			return false;
 
-		if(fails <= kConf_MIHF_Link_Delete_Value) {
+		if(fails > kConf_MIHF_Link_Delete_Value) {
+			mih::octet_string dst = out->destination().to_string();
+			_link_abook.inactive(dst);
+		} else {
 			ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.request to ",
 			    out->destination().to_string());
 			_transmit(out);
 		}
-		else {
-			mih::octet_string dst = out->destination().to_string();
-			_link_abook.del(dst);
-		}
 
 		return false;
 	}
-
 }
 
 /**
@@ -357,16 +355,16 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
 		in->source(mihfid);
 
 		uint16 fails = _link_abook.fail(in->destination().to_string());
-		if(fails != -1) {
-			if(fails <= kConf_MIHF_Link_Delete_Value) {
-				ODTONE_LOG(1, "(mies) forwarding Event_Unsubscribe.request to ",
-				    in->destination().to_string());
-				_transmit(in);
-			}
-			else {
-				mih::octet_string dst = in->destination().to_string();
-				_link_abook.del(dst);
-			}
+		if(fails == -1)
+			return;
+
+		if(fails > kConf_MIHF_Link_Delete_Value) {
+			mih::octet_string dst = in->destination().to_string();
+			_link_abook.inactive(dst);
+		} else {
+			ODTONE_LOG(1, "(mies) forwarding Event_Unsubscribe.request to ",
+				in->destination().to_string());
+			_transmit(in);
 		}
 	}
 }

@@ -85,10 +85,11 @@ void command_service::link_get_parameters_response_handler(meta_message_ptr &in)
 	for(it_link = ids.begin(); it_link != ids.end(); it_link++) {
 		// Delete unanswered Link SAP from known Link SAPs list
 		if(!_lrpool.check(in->tid(), *it_link)) {
-			_lpool.del(*it_link, in->tid());
-			uint16 fails = _link_abook.fail(*it_link);
-			if(fails >= kConf_MIHF_Link_Delete_Value && fails != -1) {
-				_link_abook.del(*it_link);
+			if(_lpool.del(*it_link, in->tid())) {
+				uint16 fails = _link_abook.fail(*it_link);
+				if(fails >= kConf_MIHF_Link_Delete_Value) {
+					_link_abook.inactive(*it_link);
+				}
 			}
 		}
 		else {
@@ -303,14 +304,14 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 		if(fails == -1)
 			return false;
 
-		if(fails <= kConf_MIHF_Link_Delete_Value) {
+		if(fails > kConf_MIHF_Link_Delete_Value) {
+			mih::octet_string dst = out->destination().to_string();
+			_link_abook.inactive(dst);
+		}
+		else {
 			ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.request to ",
 			    out->destination().to_string());
 			utils::forward_request(out, _lpool, _transmit);
-		}
-		else {
-			mih::octet_string dst = out->destination().to_string();
-			_link_abook.del(dst);
 		}
 
 		return false;
@@ -414,11 +415,11 @@ void command_service::link_actions_response_handler(meta_message_ptr &in)
 	for(it_link = ids.begin(); it_link != ids.end(); it_link++) {
 		// Delete unanswered Link SAP from known Link SAPs list
 		if(!_lrpool.check(in->tid(), *it_link)) {
-			_lpool.del(*it_link, in->tid());
-
-			uint16 fails = _link_abook.fail(*it_link);
-			if(fails >= kConf_MIHF_Link_Delete_Value && fails != -1) {
-				_link_abook.del(*it_link);
+			if(_lpool.del(*it_link, in->tid())) {
+				uint16 fails = _link_abook.fail(*it_link);
+				if(fails >= kConf_MIHF_Link_Delete_Value) {
+					_link_abook.del(*it_link);
+				}
 			}
 		} else {
 			// fill LinkActionsResultList

@@ -35,10 +35,11 @@ namespace odtone { namespace mihf {
  */
 struct link_entry
 {
-	mih::octet_string  ip;		/**< IP address.				*/
-	uint16             port;	/**< Listening port.			*/
-	mih::link_id       link_id;	/**< Link identifier.			*/
-	uint16             fail;	/**< Number of fail responses.	*/
+	mih::octet_string	ip;			/**< IP address.						*/
+	uint16				port;		/**< Listening port.					*/
+	mih::link_id		link_id;	/**< Link identifier.					*/
+	uint16				fail;		/**< Number of fail responses.			*/
+	bool				status;		/**< Status of the Link SAP (on/off).	*/
 };
 
 /**
@@ -69,6 +70,13 @@ public:
 	 * @param id Link SAP MIH Identifier.
 	 */
 	void del(mih::octet_string &id);
+
+	/**
+	 * Inactive an existing Link SAP entry.
+	 *
+	 * @param id Link SAP MIH Identifier.
+	 */
+	void inactive(mih::octet_string &id);
 
 	/**
 	 * Get the record for a given Link SAP.

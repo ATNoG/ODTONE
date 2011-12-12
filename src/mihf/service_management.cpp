@@ -100,7 +100,7 @@ void service_management::link_capability_discover_response_handler(meta_message_
 
 			uint16 fails = _link_abook.fail(*it_link);
 			if(fails >= kConf_MIHF_Link_Delete_Value && fails != -1) {
-				_link_abook.del(*it_link);
+				_link_abook.inactive(*it_link);
 			}
 		}
 		else {
