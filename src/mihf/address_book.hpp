@@ -1,6 +1,7 @@
 //==============================================================================
 // Brief   : Address Book
 // Authors : Simao Reis <sreis@av.it.pt>
+//           Carlos Guimarães <cguimaraes@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
@@ -31,20 +32,27 @@
 namespace odtone { namespace mihf {
 
 /**
- * Struct to store MIHF information such as IP Address, listening port
- * and transport protocol.
+ * Struct to store MIHF information like IP Address, listening port and transport
+ * protocol.
  */
 struct address_entry
 {
-	mih::octet_string	ip;		/**< IP address.					*/
-	uint16				port;	/**< Listening port.				*/
-	mih::transport_list	trans;	/**< Supported transport protocols.	*/
+	std::string ip;	/**< IP address.		*/
+	uint16 port;	/**< Listening port.	*/
+
+	// MIHF capabilities information
+	boost::optional<mih::net_type_addr_list> capabilities_list_net_type_addr;
+	boost::optional<mih::event_list>         capabilities_event_list;
+	boost::optional<mih::command_list>       capabilities_cmd_list;
+	boost::optional<mih::iq_type_list>       capabilities_query_type;
+	boost::optional<mih::transport_list>     capabilities_trans_list;
+	boost::optional<mih::mbb_ho_supp_list>   capabilities_mbb_ho_supp;
 };
 
 /**
- * This class is used to store the information about all known peer MIHFs.
- * It makes the correspondence between the MIHF MIH Identifier and the
- * informations stored in the address_entry struct.
+ * This class is used to store information about all known peer MIHFs. It makes
+ * the correspondence between the MIHF MIH Identifier and the informations stored
+ * in the address_entry struct.
  */
 class address_book
 {
@@ -53,11 +61,10 @@ public:
 	 * Add a new MIHF entry in the address book.
 	 *
 	 * @param id MIHF MIH Identifier.
-	 * @param ip MIHF IP Address.
-	 * @param port MIHF listening port.
-	 * @param t MIHF supported transport protocols.
+	 * @param entry_info MIHF entry information.
 	 */
-	void add(const mih::octet_string &id, mih::octet_string &ip, uint16 port, mih::transport_list t);
+	void add(const mih::octet_string &id,
+			 address_entry entry_info);
 
 	/**
 	 * Remove an existing MIHF entry.

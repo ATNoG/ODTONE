@@ -134,7 +134,12 @@ void set_list_peer_mihfs(mih::octet_string &list, address_book &abook)
 			++it;
 		}
 
-		abook.add(id, ip, port_, trans);
+		address_entry entry;
+		entry.ip = ip;
+		entry.port = port_;
+		entry.capabilities_trans_list = trans;
+
+		abook.add(id, entry);
 	}
 }
 
@@ -283,8 +288,12 @@ void parse_mihf_information(mih::config &cfg, address_book &abook)
 			trans.set(odtone::mih::transport_list_enum(enum_map[str]));
 	}
 
-	abook.add(id, ip, port, trans);
-	//
+	address_entry entry;
+	entry.ip = ip;
+	entry.port = port;
+	entry.capabilities_trans_list = trans;
+
+	abook.add(id, entry);
 }
 
 void parse_peer_registrations(mih::config &cfg, address_book &abook)
@@ -591,8 +600,8 @@ int main(int argc, char **argv)
 	commhandv4.start();
 	commhandv6.start();
 	remotelistener_udp.start();
-	
-	if(mihf_abook.get(mihfid_t::instance()->to_string()).trans.get(mih::transport_tcp) == 1)
+
+	if(mihf_abook.get(mihfid_t::instance()->to_string()).capabilities_trans_list->get(mih::transport_tcp) == 1)
 		remotelistener_tcp.start();
 
 	io.run();

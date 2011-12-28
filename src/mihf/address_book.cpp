@@ -1,6 +1,7 @@
 //==============================================================================
 // Brief   : Address Book
 // Authors : Simao Reis <sreis@av.it.pt>
+//           Carlos Guimarães <cguimaraes@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
@@ -26,25 +27,46 @@ namespace odtone { namespace mihf {
  * Add a new MIHF entry in the address book.
  *
  * @param id MIHF MIH Identifier.
- * @param ip MIHF IP Address.
- * @param port MIHF listening port.
- * @param t MIHF supported transport protocols.
+ * @param entry_info MIHF entry information.
  */
 void address_book::add(const mih::octet_string &id,
-		       mih::octet_string& ip,
-		       uint16 port,
-		       mih::transport_list t)
+					   address_entry entry_info)
 {
 	boost::mutex::scoped_lock lock(_mutex);
-	// TODO: add thread safety
-	address_entry a;
 
-	a.ip.assign(ip);
-	a.port = port;
-	a.trans = t;
+	std::map<mih::octet_string, address_entry>::const_iterator it;
+	it = _abook.find(id);
 
-	_abook[id] = a;
-	ODTONE_LOG(4, "(address_book) added: ", id, " ", ip, " ", port);
+	if (it == _abook.end()) {
+		_abook[id] = entry_info;
+		ODTONE_LOG(4, "(address_book) added: ", id);
+	} else {
+		if(entry_info.capabilities_list_net_type_addr.is_initialized()) {
+			_abook[id].capabilities_list_net_type_addr = entry_info.capabilities_list_net_type_addr;
+		}
+
+		if(entry_info.capabilities_event_list.is_initialized()) {
+			_abook[id].capabilities_event_list = entry_info.capabilities_event_list;
+		}
+
+		if(entry_info.capabilities_cmd_list.is_initialized()) {
+			_abook[id].capabilities_cmd_list = entry_info.capabilities_cmd_list;
+		}
+
+		if(entry_info.capabilities_query_type.is_initialized()) {
+			_abook[id].capabilities_query_type = entry_info.capabilities_query_type;
+		}
+
+		if(entry_info.capabilities_trans_list.is_initialized()) {
+			_abook[id].capabilities_trans_list = entry_info.capabilities_trans_list;
+		}
+
+		if(entry_info.capabilities_mbb_ho_supp.is_initialized()) {
+			_abook[id].capabilities_mbb_ho_supp = entry_info.capabilities_mbb_ho_supp;
+		}
+
+		ODTONE_LOG(4, "(address_book) updated: ", id);
+	}
 }
 
 /**
@@ -55,7 +77,6 @@ void address_book::add(const mih::octet_string &id,
 void address_book::del(mih::octet_string &id)
 {
 	boost::mutex::scoped_lock lock(_mutex);
-
 	_abook.erase(id);
 }
 
@@ -72,8 +93,9 @@ const address_entry& address_book::get(const mih::octet_string &id)
 	std::map<mih::octet_string, address_entry>::const_iterator it;
 	it = _abook.find(id);
 
-	if (it == _abook.end())
+	if (it == _abook.end()) {
 		throw ("no entry in address_book for this id");
+	}
 
 	return it->second;
 }

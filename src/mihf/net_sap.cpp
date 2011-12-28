@@ -52,10 +52,15 @@ void net_sap::send(meta_message_ptr &msg)
 		address_entry src = _abook.get(mihfid_t::instance()->to_string());
 		address_entry dst = _abook.get(msg->destination().to_string());
 
-		if(dst.trans.get(mih::transport_tcp) == 1 && src.trans.get(mih::transport_tcp) == 1)
-			utils::tcp_send(_io, msg, dst.ip.c_str(), dst.port);
-		else
+		if(dst.capabilities_trans_list.is_initialized()) {
+			if(dst.capabilities_trans_list->get(mih::transport_tcp) == 1
+				&& src.capabilities_trans_list->get(mih::transport_tcp) == 1)
+				utils::tcp_send(_io, msg, dst.ip.c_str(), dst.port);
+			else
+				utils::udp_send(_io, msg, dst.ip.c_str(), dst.port);
+		} else {
 			utils::udp_send(_io, msg, dst.ip.c_str(), dst.port);
+		}
 
 		ODTONE_LOG(1, "(net sap) sent message to: ", msg->destination().to_string(), " ", dst.ip, " ", dst.port);
 	} catch(...) { // no registration was found
