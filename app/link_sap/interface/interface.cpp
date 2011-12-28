@@ -46,7 +46,7 @@ static void interface_disposer(interface* p)
  * @param type The interface technology type. 
  */
 interface::interface(if_id const& id, odtone::mih::link_type type)
-	: _id(id), _type(type)
+	: _type(type), _id(id)
 {
 }
 
