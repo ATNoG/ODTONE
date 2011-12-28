@@ -30,4 +30,6 @@
 #include <odtone/mih/types/bin_response.hpp>
 #include <odtone/mih/types/rdf_response.hpp>
 
+#include <odtone/mih/types/odtone.hpp>
+
 // EOF ////////////////////////////////////////////////////////////////////////
