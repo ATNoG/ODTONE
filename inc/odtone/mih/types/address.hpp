@@ -475,6 +475,18 @@ public:
 	{ }
 
 	/**
+	 * Construct a IP_ADDR data type.
+	 *
+	 * @param tp IP address type.
+	 * @param raw IP address string format.
+	 */
+	explicit ip_addr(type_ip_enum tp, const octet_string& addr)
+		: transport_addr(tp)
+	{
+		this->address(addr);
+	}
+
+	/**
 	 * Get the IP address string.
 	 *
 	 * @return The IP address string.
