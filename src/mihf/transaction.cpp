@@ -28,9 +28,9 @@ namespace odtone { namespace mihf {
  * @param netsap The netsap module.
  */
 transaction_t::transaction_t(handler_t &f, net_sap &netsap)
-	: process_message(f),
-	  _netsap(netsap),
-	  ack(new meta_message())
+	: ack(new meta_message()),
+	  process_message(f),
+	  _netsap(netsap)
 {
 	opcode                = 0;
 	mid                   = 0;
