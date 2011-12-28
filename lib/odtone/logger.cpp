@@ -30,7 +30,7 @@ namespace odtone {
  * @param log Logger to copy.
  */
 logger::logger(char const* const name, logger& log)
-	: _name(name), _lock(log._lock), _sink(log._sink), _level(log._level)
+	: _lock(log._lock), _name(name), _sink(log._sink), _level(log._level)
 {
 	ODTONE_ASSERT(name);
 }
@@ -43,7 +43,7 @@ logger::logger(char const* const name, logger& log)
  *             format output.
  */
 logger::logger(char const* const name, std::ostream& sink)
-	: _name(name), _lock(boost::make_shared<boost::mutex>()), _sink(sink), _level(0)
+	: _lock(boost::make_shared<boost::mutex>()), _name(name), _sink(sink), _level(0)
 {
 	ODTONE_ASSERT(name);
 }
