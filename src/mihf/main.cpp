@@ -560,8 +560,8 @@ int main(int argc, char **argv)
 	transmit		trnsmt(io, user_abook, link_abook, msgout);
 
 	// instantiate mihf services
-	event_service		mies(lpool, trnsmt, link_abook);
-	command_service		mics(io, lpool, trnsmt, link_abook, user_abook, lrpool);
+	event_service		mies(lpool, trnsmt, mihf_abook, link_abook);
+	command_service		mics(io, lpool, trnsmt, mihf_abook, link_abook, user_abook, lrpool);
 	information_service	miis(lpool, trnsmt);
 	service_management	sm(io, lpool, link_abook, user_abook, mihf_abook, trnsmt, lrpool, enable_broadcast);
 

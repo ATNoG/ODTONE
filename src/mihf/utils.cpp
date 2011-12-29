@@ -26,6 +26,7 @@
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <boost/foreach.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace boost::asio;
@@ -167,7 +168,53 @@ void forward_request(meta_message_ptr &in,
 	t(in);
 }
 
+/**
+ * Update the capabilities of the local MIHF.
+ *
+ * @param abook The address book module.
+ * @param lbook The link book module.
+ */
+void update_local_capabilities(address_book &abook, link_book &lbook)
+{
+	mih::net_type_addr_list  capabilities_list_net_type_addr;
+	mih::event_list	         capabilities_event_list;
+	mih::command_list        capabilities_cmd_list;
 
+	const std::vector<mih::octet_string> link_sap_list = lbook.get_ids();
+	capabilities_event_list.full();
+	capabilities_cmd_list.full();
+
+	BOOST_FOREACH(mih::octet_string id, link_sap_list) {
+		link_entry link_sap;
+		link_sap = lbook.get(id);
+		if(link_sap.status) {
+			// fill LinkAddressList
+			mih::net_type_addr nta;
+
+			nta.nettype.link = link_sap.link_id.type;
+			nta.addr = link_sap.link_id.addr;
+			capabilities_list_net_type_addr.push_back(nta);
+
+			// fill capabilities
+			capabilities_event_list.common(link_sap.event_list);
+			capabilities_cmd_list.common(link_sap.cmd_list);
+		}
+	}
+
+	// If the MIHF does not have any active Link SAP
+	if(capabilities_list_net_type_addr.size() == 0) {
+		capabilities_event_list.clear();
+		capabilities_cmd_list.clear();
+	}
+
+	// Update MIHF capabilities
+	address_entry mihf;
+	mihf.capabilities_list_net_type_addr = capabilities_list_net_type_addr;
+	mihf.capabilities_event_list = capabilities_event_list;
+	mihf.capabilities_cmd_list = capabilities_cmd_list;
+
+	abook.add(mihfid_t::instance()->to_string(), mihf);
+}
 
 
 

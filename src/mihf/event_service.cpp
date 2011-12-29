@@ -41,11 +41,14 @@ namespace odtone { namespace mihf {
  *
  * @param lpool The local transaction pool module.
  * @param t The transmit module.
- * @param link_abook The link book module.
+ * @param abook The address book module.
+ * @param lbook The link book module.
  */
-event_service::event_service(local_transaction_pool &lpool, transmit &t, link_book &lbook)
+event_service::event_service(local_transaction_pool &lpool, transmit &t,
+							 address_book &abook, link_book &lbook)
 	: _lpool(lpool),
 	  _transmit(t),
+	  _abook(abook),
 	  _link_abook(lbook)
 {
 }
@@ -168,6 +171,9 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 		if(fails > kConf_MIHF_Link_Delete_Value) {
 			mih::octet_string dst = out->destination().to_string();
 			_link_abook.inactive(dst);
+
+			// Update MIHF capabilities
+			utils::update_local_capabilities(_abook, _link_abook);
 		} else {
 			ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.request to ",
 			    out->destination().to_string());
@@ -370,6 +376,9 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
 		if(fails > kConf_MIHF_Link_Delete_Value) {
 			mih::octet_string dst = in->destination().to_string();
 			_link_abook.inactive(dst);
+
+			// Update MIHF capabilities
+			utils::update_local_capabilities(_abook, _link_abook);
 		} else {
 			ODTONE_LOG(1, "(mies) forwarding Event_Unsubscribe.request to ",
 				in->destination().to_string());

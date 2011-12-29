@@ -24,6 +24,7 @@
 #include "local_transaction_pool.hpp"
 #include "transmit.hpp"
 #include "meta_message.hpp"
+#include "address_book.hpp"
 #include "link_book.hpp"
 
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -47,6 +48,7 @@ public:
 	 * the socket.
 	 * @param lpool The local transaction pool module.
 	 * @param t The transmit module.
+	 * @param abook The address book module.
 	 * @param link_abook The link book module.
 	 * @param user_abook The user book module.
 	 * @param lrpool The link response pool module.
@@ -54,6 +56,7 @@ public:
 	command_service(io_service &io,
 	                local_transaction_pool &lpool,
 	                transmit &t,
+	                address_book &abook,
 	                link_book &link_abook,
 	                user_book &user_abook,
 	                link_response_pool &lrpool);
@@ -335,6 +338,7 @@ protected:
 
 	local_transaction_pool	&_lpool;		/**< Local transaction pool module.	*/
 	transmit				&_transmit;		/**< Transmit module.				*/
+	address_book			&_abook;		/**< Address book module.			*/
 	link_book				&_link_abook;	/**< Link book module.				*/
 	user_book				&_user_abook;	/**< User book module.				*/
 	link_response_pool		&_lrpool;		/**< Link response pool module.		*/

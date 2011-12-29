@@ -46,18 +46,21 @@ namespace odtone { namespace mihf {
  * the socket.
  * @param lpool The local transaction pool module.
  * @param t The transmit module.
+ * @param abook The address book module.
  * @param link_abook The link book module.
  * @param user_abook The user book module.
  * @param lrpool The link response pool module.
  */
 command_service::command_service(io_service &io,
-                                 local_transaction_pool &lpool,
-                                 transmit &t,
-                                 link_book &link_abook,
-                                 user_book &user_abook,
-                                 link_response_pool &lrpool)
+								 local_transaction_pool &lpool,
+								 transmit &t,
+								 address_book &abook,
+								 link_book &link_abook,
+								 user_book &user_abook,
+								 link_response_pool &lrpool)
 	: _lpool(lpool),
 	  _transmit(t),
+	  _abook(abook),
 	  _link_abook(link_abook),
 	  _user_abook(user_abook),
 	  _lrpool(lrpool),
@@ -89,6 +92,9 @@ void command_service::link_get_parameters_response_handler(meta_message_ptr &in)
 				uint16 fails = _link_abook.fail(*it_link);
 				if(fails >= kConf_MIHF_Link_Delete_Value) {
 					_link_abook.inactive(*it_link);
+
+					// Update MIHF capabilities
+					utils::update_local_capabilities(_abook, _link_abook);
 				}
 			}
 		}
@@ -307,6 +313,9 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 		if(fails > kConf_MIHF_Link_Delete_Value) {
 			mih::octet_string dst = out->destination().to_string();
 			_link_abook.inactive(dst);
+
+			// Update MIHF capabilities
+			utils::update_local_capabilities(_abook, _link_abook);
 		}
 		else {
 			ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.request to ",

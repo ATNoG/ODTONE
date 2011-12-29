@@ -21,6 +21,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "transmit.hpp"
 #include "local_transaction_pool.hpp"
+#include "address_book.hpp"
+#include "link_book.hpp"
 
 #include <odtone/base.hpp>
 #include "meta_message.hpp"
@@ -88,6 +90,14 @@ bool this_mihf_is_destination(meta_message_ptr &msg);
  * @return True if this is a multicast message or false otherwise.
  */
 bool is_multicast(meta_message_ptr &msg);
+
+/**
+ * Update the capabilities of the local MIHF.
+ *
+ * @param abook The address book module.
+ * @param lbook The link book module.
+ */
+void update_local_capabilities(address_book &abook, link_book &lbook);
 
 
 } /* namespace utils */ } /* namespace mihf */ } /* namespace odtone */

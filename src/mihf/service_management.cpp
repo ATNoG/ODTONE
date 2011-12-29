@@ -321,22 +321,7 @@ bool service_management::capability_discover_confirm(meta_message_ptr &in,
 		_link_abook.update(in->source().to_string(), event.get(), command.get());
 
 		// Update MIHF capabilities
-		address_entry mihf_cap = _abook.get(mihfid_t::instance()->to_string());
-
-		// Update MIHF supported events
-		if(mihf_cap.capabilities_event_list.is_initialized()) {
-			mihf_cap.capabilities_event_list->common(event.get());
-		} else {
-			mihf_cap.capabilities_event_list = event.get();
-		}
-
-		// Update MIHF supported commands
-		if(mihf_cap.capabilities_cmd_list.is_initialized()) {
-			mihf_cap.capabilities_cmd_list->common(command.get());
-		} else {
-			mihf_cap.capabilities_cmd_list = command.get();
-		}
-		_abook.add(mihfid_t::instance()->to_string(), mihf_cap);
+		utils::update_local_capabilities(_abook, _link_abook);
 	}
 
 	return false;
