@@ -119,13 +119,15 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 		return true;
 	}
 
-	// If the MIHF already subscribed the requested events with Link SAP
-	std::map<mih::octet_string, mih::event_list>::iterator it = _link_subscriptions.find(link_id);
 	mih::event_list event_tmp;
-	if(it != _link_subscriptions.end()) {
-		event_tmp = it->second;
-	}
+	{
+		boost::mutex::scoped_lock lock(_link_mutex);
 
+		// If the MIHF already subscribed the requested events with Link SAP
+		std::map<mih::octet_string, mih::event_list>::iterator it = _link_subscriptions.find(link_id);
+		if(it != _link_subscriptions.end())
+			event_tmp = it->second;
+	}
 	event_tmp.common(events);
 	if(events == event_tmp) {
 		mih::status st = subscribe(in->source(), link, events);
@@ -231,7 +233,6 @@ bool event_service::event_subscribe_response(meta_message_ptr &in,
 
 	// add a subscription
 	if (st == mih::status_success) {
-		// TODO: Optimize in order to have a mapping of subscriptions in peer MIHFs.
 		st = subscribe(mih::id(in->destination().to_string()), link, events.get());
 	}
 
@@ -285,7 +286,11 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 			& mih::tlv_event_list(events);
 
 		// add a subscription
-		_link_subscriptions[out->source().to_string()].merge(events.get());
+		{
+			boost::mutex::scoped_lock lock(_link_mutex);
+
+			_link_subscriptions[out->source().to_string()].merge(events.get());
+		}
 		st = subscribe(mih::id(out->destination().to_string()), link, events.get());
 	} else {
 		*out << mih::confirm(mih::confirm::event_subscribe)
@@ -332,7 +337,11 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
 	// Check which events can be unsubscribed with Link SAP
 	bool send_msg = false;
 	mih::octet_string link_id = _link_abook.search_interface(link.type, link.addr);
-	mih::event_list link_event = _link_subscriptions.find(link_id)->second;
+	mih::event_list link_event;
+	{
+		boost::mutex::scoped_lock lock(_link_mutex);
+		link_event = _link_subscriptions.find(link_id)->second;
+	}
 	for(int i = 0; i < 32; i++) {
 		if((events.get((mih::event_list_enum) i) == link_event.get((mih::event_list_enum) i)) &&
 		   (el.get((mih::event_list_enum) i) != events.get((mih::event_list_enum) i))) {
@@ -538,6 +547,7 @@ bool event_service::event_unsubscribe_confirm(meta_message_ptr &in,
 		// Update events subscribed information
 		for(int i = 0; i < 32; i++) {
 			if(events.get().get((mih::event_list_enum)i) == true) {
+				boost::mutex::scoped_lock lock(_link_mutex);
 				_link_subscriptions[in->source().to_string()].clear((mih::event_list_enum)i);
 			}
 		}

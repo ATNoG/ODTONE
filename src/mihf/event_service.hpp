@@ -203,14 +203,6 @@ public:
 						 meta_message_ptr &out);
 
 protected:
-	local_transaction_pool	&_lpool;		/**< Local transaction pool module.	*/
-	transmit				&_transmit;		/**< Transmit module.				*/
-	link_book               &_link_abook;	/**< Link book module.				*/
-	std::map<mih::octet_string, mih::event_list> _link_subscriptions;	/**< Map of subscriptions.	*/
-
-	std::list<event_registration_t>	_event_subscriptions;	/**< List of subscription.	*/
-	boost::mutex					_event_mutex;			/**< Mutex.	*/
-
 	/**
 	 * Forward the message for all users subscribed to event from the
 	 * Link SAP.
@@ -289,6 +281,18 @@ protected:
 	void link_unsubscribe(meta_message_ptr &in,
 	                      mih::link_tuple_id &link,
 	                      mih::event_list &events);
+
+private:
+	local_transaction_pool	&_lpool;		/**< Local transaction pool module.	*/
+	transmit				&_transmit;		/**< Transmit module.				*/
+	link_book               &_link_abook;	/**< Link book module.				*/
+
+	std::map<mih::octet_string, mih::event_list> _link_subscriptions;	/**< Map of subscriptions. */
+	boost::mutex								 _link_mutex;			/**< Mutex.	*/
+
+	std::list<event_registration_t>	_event_subscriptions;	/**< List of subscription.	*/
+	boost::mutex					_event_mutex;			/**< Mutex.	*/
+
 
 };
 
