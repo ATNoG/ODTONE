@@ -67,7 +67,7 @@ bool meta_message::is_local()
  *
  * @return The IP address if the source of the message.
  */
-const mih::octet_string& meta_message::ip()
+mih::octet_string& meta_message::ip()
 {
 	return _ip;
 }

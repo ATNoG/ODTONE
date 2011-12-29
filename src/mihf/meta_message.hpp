@@ -65,7 +65,7 @@ public:
 	 *
 	 * @return The IP address if the source of the message.
 	 */
-	const mih::octet_string& ip();
+	mih::octet_string& ip();
 
 	/**
 	 * Get the port of the source of the message.

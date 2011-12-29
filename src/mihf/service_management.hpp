@@ -111,7 +111,7 @@ public:
 	bool user_register_indication(meta_message_ptr &in,
 	                              meta_message_ptr &out);
 
-private:
+protected:
 	/**
 	 * Asks for the capabilities of all local Link SAPs.
 	 *
@@ -119,18 +119,44 @@ private:
 	 * @param out The output message.
 	 * @return Always false, because it does not send any response directly.
 	 */
-	bool forward_to_link_capability_discover_request(meta_message_ptr &in,
-													 meta_message_ptr &out);
+	bool link_capability_discover_request(meta_message_ptr &in,
+										  meta_message_ptr &out);
 
 	/**
-	 * Handler responsible for processing the received Link Capability Discover
-	 * responses from Link SAPs.
+	 * Piggyback local MIHF Capabilities in request message.
 	 *
 	 * @param in input message.
+	 * @param out output message.
 	 */
-	void link_capability_discover_response_handler(meta_message_ptr &in);
+	void piggyback_capabilities(meta_message_ptr& in, meta_message_ptr& out);
 
-protected:
+	/**
+	 * Parse all capabilities from MIH Capability Discover message and stores
+	 * them.
+	 *
+	 * @param in input message.
+	 * @param out output message.
+	 */
+	void get_capabilities(meta_message_ptr& in, meta_message_ptr& out);
+
+	/**
+	 * Set response to MIH Capability Discover message.
+	 *
+	 * @param in input message.
+	 * @param out output message.
+	 */
+	void set_capability_discover_response(meta_message_ptr& in,
+										  meta_message_ptr& out);
+
+	/**
+	 * Send Capability Discover Indication message to all MIH Users.
+	 *
+	 * @param in input message.
+	 * @param out output message.
+	 */
+	void send_indication(meta_message_ptr& in, meta_message_ptr& out);
+
+private:
 	local_transaction_pool	&_lpool;		/**< Local transaction pool module.	*/
 	link_book				&_link_abook;	/**< Link book module.				*/
 	user_book				&_user_abook;	/**< User book module.				*/

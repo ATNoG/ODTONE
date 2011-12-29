@@ -72,116 +72,134 @@ service_management::service_management(io_service &io,
 }
 
 /**
- * Handler responsible for processing the received Link Capability Discover
- * responses from Link SAPs.
- *
- * @param in input message.
- */
-void service_management::link_capability_discover_response_handler(meta_message_ptr &in)
-{
-	mih::net_type_addr_list  capabilities_list_net_type_addr;
-	mih::event_list	         capabilities_event_list;
-	mih::command_list        capabilities_cmd_list;
-	meta_message_ptr out(new meta_message());
-
-	std::vector<mih::octet_string> ids = _link_abook.get_ids();
-	odtone::uint num_link = ids.size();
-	if(num_link != 0) {
-		capabilities_event_list.full();
-		capabilities_cmd_list.full();
-	}
-
-	std::vector<mih::octet_string>::iterator it_link;
-	for(it_link = ids.begin(); it_link != ids.end(); it_link++) {
-		// Delete unanswered Link SAP from known Link SAPs list
-		if(!_lrpool.check(in->tid(), *it_link)) {
-			_lpool.del(*it_link, in->tid());
-			num_link--;
-
-			uint16 fails = _link_abook.fail(*it_link);
-			if(fails >= kConf_MIHF_Link_Delete_Value && fails != -1) {
-				_link_abook.inactive(*it_link);
-			}
-		}
-		else {
-			// fill LinkAddressList
-			link_entry a;
-			mih::net_type_addr nta;
-
-			a = _link_abook.get(*it_link);
-
-			nta.nettype.link = a.link_id.type;
-			nta.addr = a.link_id.addr;
-			capabilities_list_net_type_addr.push_back(nta);
-
-			// fill capabilities
-			pending_link_response tmp = _lrpool.find(in->tid(), *it_link);
-			_lrpool.del(in->tid(), *it_link);
-
-			capabilities& cap = boost::get<capabilities>(tmp.response);
-			capabilities_event_list.common(cap.event_list);
-			capabilities_cmd_list.common(cap.command_list);
-		}
-	}
-
-	if(num_link == 0) {
-		capabilities_event_list.clear();
-		capabilities_cmd_list.clear();
-	}
-
-	// Send Capability_Discover.response to the user
-	ODTONE_LOG(1, "(mism) setting response to Capability_Discover.request");
-	*out << mih::response(mih::response::capability_discover)
-	    & mih::tlv_status(mih::status_success)
-	    & mih::tlv_net_type_addr_list(capabilities_list_net_type_addr)
-	    & mih::tlv_event_list(capabilities_event_list)
-	    & mih::tlv_command_list(capabilities_cmd_list)
-		& mih::tlv_transport_option_list(_abook.get(mihfid_t::instance()->to_string()).capabilities_trans_list);
-
-	out->tid(in->tid());
-	out->destination(in->source());
-	out->source(mihfid);
-
-	_transmit(out);
-}
-
-/**
  * Asks for the capabilities of all local Link SAPs.
  *
  * @param in The input message.
  * @param out The output message.
  * @return Always false, because it does not send any response directly.
  */
-bool service_management::forward_to_link_capability_discover_request(meta_message_ptr &in,
-																	 meta_message_ptr &out)
+bool service_management::link_capability_discover_request(meta_message_ptr &in,
+														  meta_message_ptr &out)
 {
-	boost::optional<mih::net_type_addr_list>	capabilities_list_net_type_addr;
-	boost::optional<mih::event_list>			capabilities_event_list;
-	boost::optional<mih::command_list>			capabilities_cmd_list;
-	boost::optional<mih::transport_list>		capabilities_trans_list;
-
-	*in >> mih::request(mih::request::capability_discover);
-
 	// Asks for local Link SAPs capabilities
 	ODTONE_LOG(1, "(mism) gathering information about local Link SAPs capabilities");
 
 	*out << mih::request(mih::request::capability_discover);
 	out->tid(in->tid());
 
-	std::vector<mih::octet_string> ids = _link_abook.get_ids();
-	std::vector<mih::octet_string>::iterator it;
-	for(it = ids.begin(); it < ids.end(); it++) {
-		out->destination(mih::id(*it));
-		utils::forward_request(out, _lpool, _transmit);
+	out->destination(in->source());
+	utils::forward_request(out, _lpool, _transmit);
+
+	return false;
+}
+
+/**
+ * Piggyback local MIHF Capabilities in request message.
+ *
+ * @param in input message.
+ * @param out output message.
+ */
+void service_management::piggyback_capabilities(meta_message_ptr& in,
+												meta_message_ptr& out)
+{
+	address_entry mihf_info;
+
+	// Get local capabilities
+	address_entry mihf_cap = _abook.get(mihfid_t::instance()->to_string());
+
+	*out << mih::request(mih::request::capability_discover)
+			& mih::tlv_net_type_addr_list(mihf_cap.capabilities_list_net_type_addr)
+			& mih::tlv_event_list(mihf_cap.capabilities_event_list)
+			& mih::tlv_command_list(mihf_cap.capabilities_cmd_list)
+			& mih::tlv_query_type_list(mihf_cap.capabilities_query_type)
+			& mih::tlv_transport_option_list(mihf_cap.capabilities_trans_list)
+			& mih::tlv_mbb_ho_supp_list(mihf_cap.capabilities_mbb_ho_supp);
+
+	out->tid(in->tid());
+	out->source(in->source());
+	out->destination(in->destination());
+	out->ackreq(in->ackreq());
+}
+
+/**
+ * Parse all capabilities from MIH Capability Discover message and stores
+ * them.
+ *
+ * @param in input message.
+ * @param out output message.
+ */
+void service_management::get_capabilities(meta_message_ptr& in,
+										  meta_message_ptr& out)
+{
+	address_entry mihf_info;
+
+	if(in->opcode() == mih::operation::request) {
+		*in >> mih::request(mih::request::capability_discover)
+				& mih::tlv_net_type_addr_list(mihf_info.capabilities_list_net_type_addr)
+				& mih::tlv_event_list(mihf_info.capabilities_event_list)
+				& mih::tlv_command_list(mihf_info.capabilities_cmd_list)
+				& mih::tlv_query_type_list(mihf_info.capabilities_query_type)
+				& mih::tlv_transport_option_list(mihf_info.capabilities_trans_list)
+				& mih::tlv_mbb_ho_supp_list(mihf_info.capabilities_mbb_ho_supp);
+	} else if(in->opcode() == mih::operation::response) {
+		mih::status st;
+		*in >> mih::response(mih::response::capability_discover)
+			& mih::tlv_status(st)
+			& mih::tlv_net_type_addr_list(mihf_info.capabilities_list_net_type_addr)
+			& mih::tlv_event_list(mihf_info.capabilities_event_list)
+			& mih::tlv_command_list(mihf_info.capabilities_cmd_list)
+			& mih::tlv_query_type_list(mihf_info.capabilities_query_type)
+			& mih::tlv_transport_option_list(mihf_info.capabilities_trans_list)
+			& mih::tlv_mbb_ho_supp_list(mihf_info.capabilities_mbb_ho_supp);
 	}
 
-	// Lauched the thread responsible for respond to the capability discover
-	_timer.expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
-	_timer.async_wait(boost::bind(&service_management::link_capability_discover_response_handler, this, in));
+	_abook.add(in->source().to_string(), mihf_info);
+}
 
-	// Do not respond to the request. The thread lauched will be
-	// responsible for that.
-	return false;
+/**
+ * Set response to MIH Capability Discover message.
+ *
+ * @param in input message.
+ * @param out output message.
+ */
+void service_management::set_capability_discover_response(meta_message_ptr& in,
+														  meta_message_ptr& out)
+{
+	// Create and piggyback local capabilities in response message
+	address_entry mihf_cap = _abook.get(mihfid_t::instance()->to_string());
+
+	*out << mih::confirm(mih::confirm::capability_discover)
+			& mih::tlv_status(mih::status_success)
+			& mih::tlv_net_type_addr_list(mihf_cap.capabilities_list_net_type_addr)
+			& mih::tlv_event_list(mihf_cap.capabilities_event_list)
+			& mih::tlv_command_list(mihf_cap.capabilities_cmd_list)
+			& mih::tlv_query_type_list(mihf_cap.capabilities_query_type)
+			& mih::tlv_transport_option_list(mihf_cap.capabilities_trans_list)
+			& mih::tlv_mbb_ho_supp_list(mihf_cap.capabilities_mbb_ho_supp);
+
+	out->tid(in->tid());
+	out->source(mihfid);
+	out->destination(in->source());
+	out->ackreq(in->ackreq());
+}
+
+/**
+ * Send Capability Discover Indication message to all MIH Users.
+ *
+ * @param in input message.
+ * @param out output message.
+ */
+void service_management::send_indication(meta_message_ptr& in,
+										 meta_message_ptr& out)
+{
+	std::vector<mih::octet_string> ids = _user_abook.get_ids();
+	in->opcode(mih::operation::indication);
+	for (std::vector<mih::octet_string>::iterator it = ids.begin(); it < ids.end(); ++it) {
+		in->destination(mih::id(*it));
+		_transmit(in);
+		ODTONE_LOG(3, "(mism) Capability_Discover.indication sent to ",
+				  in->destination().to_string());
+	}
 }
 
 /**
@@ -198,45 +216,32 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 	    in->source().to_string(), " with destination ",
 	    in->destination().to_string());
 
-	// user requested broadcasting of a capability discover
-	if (utils::is_multicast(in) && in->is_local()) {
-		// piggyback
-		ODTONE_LOG(4, "(mism) piggybacking capability discover in broadcast");
-
-		address_entry local = _abook.get(mihfid_t::instance()->to_string());
-		*in << mih::request(mih::request::capability_discover)
-			& mih::tlv_net_type_addr_list(local.capabilities_list_net_type_addr)
-			& mih::tlv_event_list(local.capabilities_event_list)
-			& mih::tlv_command_list(local.capabilities_cmd_list)
-			& mih::tlv_query_type_list(local.capabilities_query_type)
-			& mih::tlv_transport_option_list(local.capabilities_trans_list)
-			& mih::tlv_mbb_ho_supp_list(local.capabilities_mbb_ho_supp);
-
-		utils::forward_request(in, _lpool, _transmit);
+	// User requests the capabilities of a remote MIHF
+	if (in->is_local() && !utils::this_mihf_is_destination(in)) {
+		piggyback_capabilities(in, out);
+		utils::forward_request(out, _lpool, _transmit);
 		return false;
-	// destination mihf identifier is this mihf
+	// User requets the capabilitties of the local MIHF
+	} else if (in->is_local() && utils::this_mihf_is_destination(in)) {
+		set_capability_discover_response(in, out);
+		return true;
+	// Remote requets
 	} else if (utils::this_mihf_is_destination(in)) {
-		return forward_to_link_capability_discover_request(in, out);
-	// message was broadcasted?
+		send_indication(in, out);
+		get_capabilities(in, out);
+		set_capability_discover_response(in, out);
+		return true;
+	// Multicast request
 	} else if (utils::is_multicast(in)) {
 		if (_enable_broadcast) {
-			return forward_to_link_capability_discover_request(in, out);
+			send_indication(in, out);
+			get_capabilities(in, out);
+			set_capability_discover_response(in, out);
+			return true;
 		} else {
 			ODTONE_LOG(3, "(mism) response to broadcast Capability_Discover.request disabled ");
 			return false;
 		}
-	} else {
-		address_entry local = _abook.get(mihfid_t::instance()->to_string());
-		*in << mih::request(mih::request::capability_discover)
-			& mih::tlv_net_type_addr_list(local.capabilities_list_net_type_addr)
-			& mih::tlv_event_list(local.capabilities_event_list)
-			& mih::tlv_command_list(local.capabilities_cmd_list)
-			& mih::tlv_query_type_list(local.capabilities_query_type)
-			& mih::tlv_transport_option_list(local.capabilities_trans_list)
-			& mih::tlv_mbb_ho_supp_list(local.capabilities_mbb_ho_supp);
-
-		utils::forward_request(in, _lpool, _transmit);
-		return false;
 	}
 
 	return false;
@@ -250,25 +255,13 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
  * @return True if the response is sent immediately or false otherwise.
  */
 bool service_management::capability_discover_response(meta_message_ptr &in,
-						      meta_message_ptr &)
+						      meta_message_ptr &out)
 {
 	ODTONE_LOG(1, "(mism) received Capability_Discover.response from ",
 	    in->source().to_string());
 
-	address_entry mihf_info;
-	mih::status st;
-	*in >> mih::response(mih::response::capability_discover)
-		& mih::tlv_status(st)
-		& mih::tlv_net_type_addr_list(mihf_info.capabilities_list_net_type_addr)
-		& mih::tlv_event_list(mihf_info.capabilities_event_list)
-		& mih::tlv_command_list(mihf_info.capabilities_cmd_list)
-		& mih::tlv_query_type_list(mihf_info.capabilities_query_type)
-		& mih::tlv_transport_option_list(mihf_info.capabilities_trans_list)
-		& mih::tlv_mbb_ho_supp_list(mihf_info.capabilities_mbb_ho_supp);
-
-	if(st == mih::status_success) {
-		_abook.add(in->source().to_string(), mihf_info);
-	}
+	// Store remote MIHF capabilities
+	get_capabilities(in, out);
 
 	// do we have a request from a user?
 	if (_lpool.set_user_tid(in)) {
@@ -309,27 +302,43 @@ bool service_management::capability_discover_confirm(meta_message_ptr &in,
 
 	_link_abook.reset(in->source().to_string());
 
-	if (_lpool.set_user_tid(in)) {
-		mih::status st;
-		boost::optional<mih::event_list> event;
-		boost::optional<mih::command_list> command;
-
-		*in >> mih::confirm()
-		       & mih::tlv_status(st)
-		       & mih::tlv_event_list(event)
-		       & mih::tlv_command_list(command);
-
-		if(st == mih::status_success) {
-			_lrpool.add(in->source().to_string(),
-			           in->tid(),
-			           event.get(),
-			           command.get());
-		}
-
+	if(!_lpool.set_user_tid(in)) {
+		ODTONE_LOG(1, "no pending transaction for this message, discarding");
 		return false;
 	}
 
-	ODTONE_LOG(1, "no pending transaction for this message, discarding");
+	mih::status st;
+	boost::optional<mih::event_list> event;
+	boost::optional<mih::command_list> command;
+
+	*in >> mih::confirm()
+	       & mih::tlv_status(st)
+	       & mih::tlv_event_list(event)
+	       & mih::tlv_command_list(command);
+
+	if(st == mih::status_success) {
+		// Update Link SAP capabilities in the Link Book
+		_link_abook.update(in->source().to_string(), event.get(), command.get());
+
+		// Update MIHF capabilities
+		address_entry mihf_cap = _abook.get(mihfid_t::instance()->to_string());
+
+		// Update MIHF supported events
+		if(mihf_cap.capabilities_event_list.is_initialized()) {
+			mihf_cap.capabilities_event_list->common(event.get());
+		} else {
+			mihf_cap.capabilities_event_list = event.get();
+		}
+
+		// Update MIHF supported commands
+		if(mihf_cap.capabilities_cmd_list.is_initialized()) {
+			mihf_cap.capabilities_cmd_list->common(command.get());
+		} else {
+			mihf_cap.capabilities_cmd_list = command.get();
+		}
+		_abook.add(mihfid_t::instance()->to_string(), mihf_cap);
+	}
+
 	return false;
 }
 
@@ -355,7 +364,28 @@ bool service_management::link_register_indication(meta_message_ptr &in,
 	*in >> odtone::mih::indication()
 		& odtone::mih::tlv_interface_type_addr(link_id);
 
-	_link_abook.add(in->source().to_string(), ip, in->port(), link_id);
+	// Add Link SAP to the list of known Link SAPs
+	_link_abook.add(in->source().to_string(), in->ip(), in->port(), link_id);
+
+	// Update MIHF network type address
+	address_entry mihf_cap = _abook.get(mihfid_t::instance()->to_string());
+
+	// Set Network Type Address
+	mih::net_type_addr nta;
+	nta.nettype.link = link_id.type;
+	nta.addr = link_id.addr;
+
+	if(mihf_cap.capabilities_list_net_type_addr.is_initialized()) {
+		mihf_cap.capabilities_list_net_type_addr.get().push_back(nta);
+	} else {
+		mih::net_type_addr_list ntal;
+		ntal.push_back(nta);
+		mihf_cap.capabilities_list_net_type_addr = ntal;
+	}
+	_abook.add(mihfid_t::instance()->to_string(), mihf_cap);
+
+	// Request the Link SAP capabilities
+	link_capability_discover_request(in, out);
 
 	return false;
 }
