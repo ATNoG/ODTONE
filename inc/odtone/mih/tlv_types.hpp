@@ -102,7 +102,7 @@ static const tlv_cast_<link_ac_result,        tlv_<108> > tlv_link_ac_result = {
 static const tlv_cast_<link_scan_rsp_list,    tlv_<109> > tlv_link_scan_rsp_list = {};
 static const tlv_cast_<link_det_info,         tlv_<110> > tlv_link_det_info = {};
 static const tlv_cast_<link_id,               tlv_<111> > tlv_interface_type_addr = {};
-static const tlv_cast_<bool,                  tlv_<112> > tlv_mbb_handover_support = {};
+static const tlv_cast_<user_role,             tlv_<112> > tlv_user_role = {};
 static const tlv_cast_<mos_dscv,              tlv_<113> > tlv_mos_dscv = {};
 
 

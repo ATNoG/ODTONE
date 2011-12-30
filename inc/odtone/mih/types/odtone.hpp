@@ -20,6 +20,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/mih/types/base.hpp>
+#include <odtone/mih/types/identification.hpp>
 #include <odtone/mih/types/address.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -83,6 +84,21 @@ struct mos_dscv {
 	std::vector<mos_info> cs;	/**< List of PoS providing CS.	*/
 	std::vector<mos_info> es;	/**< List of PoS providing ES.	*/
 };
+
+/**
+ * USER_ROLE data type enumeration.
+ */
+enum user_role_enum {
+	user_role_is = 0,			/**< Information server.	*/
+	user_role_mobility = 1,		/**< Mobility.				*/
+	user_role_monitoring = 2,	/**< Monitoring.			*/
+	user_role_discovery = 3		/**< Discovery.				*/
+};
+
+/**
+ * USER_FUNCTION data type.
+ */
+typedef enumeration<user_role_enum> user_role;
 
 } /* namespace mih */ } /*namespace odtone */
 

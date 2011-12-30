@@ -29,31 +29,49 @@ namespace odtone { namespace mihf {
  * @param id MIH-User MIH Identifier.
  * @param ip MIH-User IP address.
  * @param port MIH-User listening port.
- * @param mbbsupport MIH-User Handover support.
+ * @param role MIH-User role.
  */
 void user_book::add(const mih::octet_string &id,
 		            mih::octet_string& ip,
 		            uint16 port,
-		            bool mbbhandover)
+		            mih::user_role role)
 {
 	boost::mutex::scoped_lock lock(_mutex);
-	// TODO: add thread safety
-	user_entry a;
 
+	user_entry a;
 	a.ip.assign(ip);
 	a.port = port;
+	a.role = role;
 
-	if(mbbhandover == true) {
-		std::vector<mih::octet_string> ids;
-		for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
-			it->second.mbbhandover_support = false;
+	// Set the priority
+	if(role == mih::user_role_is) {
+		a.priority = 0;
+		for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); ++it) {
+			if(it->second.role == mih::user_role_is)
+				(it->second.priority)++;
 		}
+	} else if(role == mih::user_role_mobility) {
+		a.priority = 0;
+		for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); ++it) {
+			if(it->second.role == mih::user_role_mobility)
+				(it->second.priority)++;
+		}
+	} else if(role == mih::user_role_discovery) {
+		uint8 priority = 0;
+		for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); ++it) {
+			if(it->second.role == mih::user_role_discovery)
+				priority++;
+		}
+		a.priority = priority;
+	} else {
+		a.priority = 0;
 	}
-
-	a.mbbhandover_support = mbbhandover;
+	//
 
 	_ubook[id] = a;
-	ODTONE_LOG(4, "(user_book) added: ", id, " ", ip, " ", port);
+	ODTONE_LOG(4, "(user_book) added: ", id, " ", ip, " ", port, " ", role);
+}
+
 /**
  * Set the IP address of an existing MIH-User entry.
  *
@@ -137,22 +155,41 @@ const std::vector<mih::octet_string> user_book::get_ids()
 }
 
 /**
- * Get the MIH-User associated to the handover operations.
+ * Get the MIH-User associated to the mobility operations.
  *
- * @return The identifier of the MIH-User associated to the handover
+ * @return The identifier of the MIH-User associated to the mobility
  * operations.
  */
-const mih::octet_string user_book::handover_user()
+const mih::octet_string user_book::mobility_user()
 {
 	boost::mutex::scoped_lock lock(_mutex);
 
 	std::vector<mih::octet_string> ids;
 	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
-		if(it->second.mbbhandover_support == true)
+		if(it->second.role == mih::user_role_mobility && it->second.priority == 0)
 			return it->first;
 	}
 
-	return "";
+	throw ("no MIH-User responsible for mobility");
+}
+
+/**
+ * Get the MIH-User associated to the information server operations.
+ *
+ * @return The identifier of the MIH-User associated to the information
+ * server operations.
+ */
+const mih::octet_string user_book::information_user()
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::vector<mih::octet_string> ids;
+	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
+		if(it->second.role == mih::user_role_is && it->second.priority == 0)
+			return it->first;
+	}
+
+	throw ("no MIH-User responsible for information server");
 }
 
 } /* namespace mihf */ } /* namespace odtone */

@@ -607,7 +607,7 @@ bool command_service::link_actions_confirm(meta_message_ptr &in,
 /**
  * Currently command service handover related messages are handled by
  * a single MIH-user. If this MIHF is the destination of the message,
- * forward it to the MIH-User with mobility function.
+ * forward it to the MIH-User with mobility role.
  *
  * @param recv_msg The receive message output.
  * @param send_msg The send message output.
@@ -627,7 +627,7 @@ bool command_service::generic_command_request(const char *recv_msg,
 		// Kick this message to MIH User for handover as an indication
 		//
 		in->opcode(mih::operation::indication);
-		in->destination(mih::id(_user_abook.handover_user()));
+		in->destination(mih::id(_user_abook.mobility_user()));
 		//
 		// source identifier is the remote MIHF
 		//

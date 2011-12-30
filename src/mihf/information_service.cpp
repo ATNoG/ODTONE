@@ -33,11 +33,14 @@ namespace odtone { namespace mihf {
  *
  * @param lpool The local transaction pool module.
  * @param t The transmit module.
+ * @param user_abook The user book module.
  */
 information_service::information_service(local_transaction_pool &lpool,
-					 transmit &t)
+										 transmit &t,
+										 user_book &user_abook)
 	: _lpool(lpool),
-	  _transmit(t)
+	  _transmit(t),
+	  _user_abook(user_abook)
 {
 }
 
@@ -58,7 +61,7 @@ bool information_service::get_information_request(meta_message_ptr &in,
 		//
 		// Kick this message to Information Service.
 		//
-		in->destination(mih::id("miis"));
+		in->destination(mih::id(_user_abook.information_user()));
 		in->opcode(mih::operation::indication);
 		_lpool.add(in);
 		in->source(mihfid);

@@ -392,14 +392,14 @@ bool service_management::user_register_indication(meta_message_ptr &in,
 
 	// Add MIH User to the list of known MIH Users
 	mih::status st;
-	bool mbbhandover;
+	mih::user_role role;
 
 	mih::octet_string ip(in->ip());
 
 	*in >> odtone::mih::indication()
-		& odtone::mih::tlv_mbb_handover_support(mbbhandover);
+		& odtone::mih::tlv_user_role(role);
 
-	_user_abook.add(in->source().to_string(), ip, in->port(), mbbhandover);
+	_user_abook.add(in->source().to_string(), ip, in->port(), role);
 
 	return false;
 }

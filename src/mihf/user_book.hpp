@@ -20,7 +20,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
-#include <odtone/mih/types/capabilities.hpp>
+#include <odtone/mih/types/odtone.hpp>
 
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
@@ -35,9 +35,10 @@ namespace odtone { namespace mihf {
  */
 struct user_entry
 {
-	mih::octet_string ip;					/**< IP address.		*/
-	uint16            port;					/**< Listening port.	*/
-	bool              mbbhandover_support;	/**< Handover support.	*/
+	mih::octet_string	ip;			/**< IP address.		*/
+	uint16				port;		/**< Listening port.	*/
+	mih::user_role		role;		/**< MIH-User role.		*/
+	uint8				priority;	/**< Role priority.		*/
 };
 
 /**
@@ -55,12 +56,13 @@ public:
 	 * @param id MIH-User MIH Identifier.
 	 * @param ip MIH-User IP address.
 	 * @param port MIH-User listening port.
-	 * @param mbbsupport MIH-User Handover support.
+	 * @param role MIH-User role.
 	 */
 	void add(const mih::octet_string &id,
 	         mih::octet_string &ip,
 	         uint16 port,
-	         bool mbbsupport);
+	         mih::user_role	role);
+
 	/**
 	 * Set the IP address of an existing MIH-User entry.
 	 *
@@ -105,7 +107,15 @@ public:
 	 * @return The identifier of the MIH-User associated to the handover
 	 * operations.
 	 */
-	const mih::octet_string handover_user();
+	const mih::octet_string mobility_user();
+
+	/**
+	 * Get the MIH-User associated to the information server operations.
+	 *
+	 * @return The identifier of the MIH-User associated to the information
+	 * server operations.
+	 */
+	const mih::octet_string information_user();
 private:
 
 	std::map<mih::octet_string, user_entry> _ubook;	/**< User book map.	*/

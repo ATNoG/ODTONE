@@ -157,23 +157,24 @@ void set_users(mih::octet_string &list, user_book &ubook)
 
 		mih::octet_string id = *it;
 		++it;
+		mih::octet_string ip("127.0.0.1");
 		mih::octet_string port = *it;
 		++it;
-		mih::octet_string mbbhandover = *it;
-		mih::octet_string ip("127.0.0.1");
 
 		uint16 port_;
 		std::istringstream iss_port(port);
 		if ((iss_port >> port_).fail())
 			throw "invalid port";
 
-		bool mbbhandover_;
-		std::transform(mbbhandover.begin(), mbbhandover.end(), mbbhandover.begin(), ::tolower);
-		std::istringstream iss_mbb(mbbhandover);
-		if ((iss_mbb >> std::boolalpha >> mbbhandover_).fail())
-			throw "invalid parameter for MBB Handover";
+		std::map<std::string, mih::user_role_enum> enum_map;
+		enum_map["is"] 			= mih::user_role_is;
+		enum_map["mobility"]	= mih::user_role_mobility;
+		enum_map["monitoring"]	= mih::user_role_monitoring;
+		enum_map["discovery"]	= mih::user_role_discovery;
 
-		ubook.add(id, ip, port_, mbbhandover_);
+		mih::user_role role = mih::user_role_enum(enum_map[*it]);
+
+		ubook.add(id, ip, port_, role);
 	}
 }
 
@@ -562,7 +563,7 @@ int main(int argc, char **argv)
 	// instantiate mihf services
 	event_service		mies(lpool, trnsmt, mihf_abook, link_abook);
 	command_service		mics(io, lpool, trnsmt, mihf_abook, link_abook, user_abook, lrpool);
-	information_service	miis(lpool, trnsmt);
+	information_service	miis(lpool, trnsmt, user_abook);
 	service_management	sm(io, lpool, link_abook, user_abook, mihf_abook, trnsmt, lrpool, enable_broadcast);
 
 	// register callbacks with service access controller
