@@ -203,17 +203,18 @@ void update_local_capabilities(address_book &abook, link_book &lbook)
 
 	// If the MIHF does not have any active Link SAP
 	if(capabilities_list_net_type_addr.size() == 0) {
-		capabilities_event_list.clear();
-		capabilities_cmd_list.clear();
+		boost::optional<mih::net_type_addr_list>	empty_list_net_type_addr;
+		boost::optional<mih::event_list>			empty_event_list;
+		boost::optional<mih::command_list>			empty_cmd_list;
+
+		abook.set_link_address_list(mihfid_t::instance()->to_string(), empty_list_net_type_addr);
+		abook.set_event_list(mihfid_t::instance()->to_string(), empty_event_list);
+		abook.set_command_list(mihfid_t::instance()->to_string(), empty_cmd_list);
+	} else {
+		abook.set_link_address_list(mihfid_t::instance()->to_string(), capabilities_list_net_type_addr);
+		abook.set_event_list(mihfid_t::instance()->to_string(), capabilities_event_list);
+		abook.set_command_list(mihfid_t::instance()->to_string(), capabilities_cmd_list);
 	}
-
-	// Update MIHF capabilities
-	address_entry mihf;
-	mihf.capabilities_list_net_type_addr = capabilities_list_net_type_addr;
-	mihf.capabilities_event_list = capabilities_event_list;
-	mihf.capabilities_cmd_list = capabilities_cmd_list;
-
-	abook.add(mihfid_t::instance()->to_string(), mihf);
 }
 
 
