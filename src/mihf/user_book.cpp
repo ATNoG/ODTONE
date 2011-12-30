@@ -54,6 +54,38 @@ void user_book::add(const mih::octet_string &id,
 
 	_ubook[id] = a;
 	ODTONE_LOG(4, "(user_book) added: ", id, " ", ip, " ", port);
+/**
+ * Set the IP address of an existing MIH-User entry.
+ *
+ * @param id MIH-User MIH Identifier.
+ * @param ip The IP address to set.
+ */
+void user_book::set_ip(const mih::octet_string &id, std::string ip)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, user_entry>::iterator it;
+	it = _ubook.find(id);
+
+	if (it == _ubook.end())
+		it->second.ip = ip;
+}
+
+/**
+ * Set the port of an existing MIH-User entry.
+ *
+ * @param id MIH-User MIH Identifier.
+ * @param port The port to set.
+ */
+void user_book::set_port(const mih::octet_string &id, uint16 port)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, user_entry>::iterator it;
+	it = _ubook.find(id);
+
+	if (it == _ubook.end())
+		it->second.port = port;
 }
 
 /**

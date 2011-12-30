@@ -67,6 +67,76 @@ public:
 			 address_entry entry_info);
 
 	/**
+	 * Set the IP address of an existing MIHF entry.
+	 *
+	 * @param id MIHF MIH Identifier.
+	 * @param ip The IP address to set.
+	 */
+	void set_ip(const mih::octet_string &id, std::string ip);
+
+	/**
+	 * Set the port of an existing MIHF entry.
+	 *
+	 * @param id MIHF MIH Identifier.
+	 * @param port The port to set.
+	 */
+	void set_port(const mih::octet_string &id, uint16 port);
+
+	/**
+	 * Set the link address list of an existing MIHF entry.
+	 *
+	 * @param id MIHF MIH Identifier.
+	 * @param list_net_type_addr The link address list to set.
+	 */
+	void set_link_address_list(const mih::octet_string &id,
+							   boost::optional<mih::net_type_addr_list> list_net_type_addr);
+
+	/**
+	 * Set the list of supported events of an existing MIHF entry.
+	 *
+	 * @param id MIHF MIH Identifier.
+	 * @param event_list The list of supported events to set.
+	 */
+	void set_event_list(const mih::octet_string &id,
+							   boost::optional<mih::event_list> event_list);
+
+	/**
+	 * Set the list of supported commands of an existing MIHF entry.
+	 *
+	 * @param id MIHF MIH Identifier.
+	 * @param cmd_list The list of supported commands to set.
+	 */
+	void set_command_list(const mih::octet_string &id,
+							   boost::optional<mih::command_list> cmd_list);
+
+	/**
+	 * Set the list of supported queries of an existing MIHF entry.
+	 *
+	 * @param id MIHF MIH Identifier.
+	 * @param query_list The list of supported queries to set.
+	 */
+	void set_query_list(const mih::octet_string &id,
+						boost::optional<mih::iq_type_list> query_list);
+
+	/**
+	 * Set the list of supported transport protocols of an existing MIHF entry.
+	 *
+	 * @param id MIHF MIH Identifier.
+	 * @param trans_list The list of supported transport protocols to set.
+	 */
+	void set_transport_list(const mih::octet_string &id,
+							boost::optional<mih::transport_list> trans_list);
+
+	/**
+	 * Set the mobility handover support list of an existing MIHF entry.
+	 *
+	 * @param id MIHF MIH Identifier.
+	 * @param ho_list The mobility handover support list to set.
+	 */
+	void set_handover_list(const mih::octet_string &id,
+						   boost::optional<mih::mbb_ho_supp_list> ho_list);
+
+	/**
 	 * Remove an existing MIHF entry.
 	 *
 	 * @param id MIHF MIH Identifier.
@@ -80,6 +150,7 @@ public:
 	 * @return The record of a given MIHF stored in the address book.
 	 */
 	const address_entry& get(const mih::octet_string &id);
+
 private:
 	std::map<mih::octet_string, address_entry> _abook;	/**< Address book map.	*/
 	boost::mutex _mutex;								/**< Mutex.				*/

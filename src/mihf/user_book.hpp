@@ -61,6 +61,21 @@ public:
 	         mih::octet_string &ip,
 	         uint16 port,
 	         bool mbbsupport);
+	/**
+	 * Set the IP address of an existing MIH-User entry.
+	 *
+	 * @param id MIH-User MIH Identifier.
+	 * @param ip The IP address to set.
+	 */
+	void set_ip(const mih::octet_string &id, std::string ip);
+
+	/**
+	 * Set the port of an existing MIH-User entry.
+	 *
+	 * @param id MIH-User MIH Identifier.
+	 * @param port The port to set.
+	 */
+	void set_port(const mih::octet_string &id, uint16 port);
 
 	/**
 	 * Remove an existing MIH-User entry.

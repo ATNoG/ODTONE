@@ -318,7 +318,7 @@ bool service_management::capability_discover_confirm(meta_message_ptr &in,
 
 	if(st == mih::status_success) {
 		// Update Link SAP capabilities in the Link Book
-		_link_abook.update(in->source().to_string(), event.get(), command.get());
+		_link_abook.update_capabilities(in->source().to_string(), event.get(), command.get());
 
 		// Update MIHF capabilities
 		utils::update_local_capabilities(_abook, _link_abook);

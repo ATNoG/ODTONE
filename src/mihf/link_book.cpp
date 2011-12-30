@@ -51,15 +51,49 @@ void link_book::add(const mih::octet_string &id,
 }
 
 /**
+ * Set the IP address of an existing Link SAP entry.
+ *
+ * @param id Link SAP MIH Identifier.
+ * @param ip The IP address to set.
+ */
+void link_book::set_ip(const mih::octet_string &id, std::string ip)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, link_entry>::iterator it;
+	it = _lbook.find(id);
+
+	if (it != _lbook.end())
+		it->second.ip = ip;
+}
+
+/**
+ * Set the port of an existing Link SAP entry.
+ *
+ * @param id Link SAP MIH Identifier.
+ * @param port The port to set.
+ */
+void link_book::set_port(const mih::octet_string &id, uint16 port)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, link_entry>::iterator it;
+	it = _lbook.find(id);
+
+	if (it != _lbook.end())
+		it->second.port = port;
+}
+
+/**
  * Update the events and commands supported by a Link SAP.
  *
  * @param id Link SAP MIH Identifier.
  * @param event_list Supported event list.
  * @param cmd_list Supported command list.
  */
-void link_book::update(const mih::octet_string &id,
-					   mih::event_list event_list,
-					   mih::command_list cmd_list)
+void link_book::update_capabilities(const mih::octet_string &id,
+									mih::event_list event_list,
+									mih::command_list cmd_list)
 
 {
 	boost::mutex::scoped_lock lock(_mutex);
@@ -68,8 +102,8 @@ void link_book::update(const mih::octet_string &id,
 	it = _lbook.find(id);
 
 	if (it != _lbook.end()) {
-		it->second.event_list= event_list;
-		it->second.cmd_list= cmd_list;
+		it->second.event_list = event_list;
+		it->second.cmd_list = cmd_list;
 	}
 }
 

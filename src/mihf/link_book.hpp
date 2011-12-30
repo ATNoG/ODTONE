@@ -67,15 +67,31 @@ public:
 	         mih::link_id link_id);
 
 	/**
+	 * Set the IP address of an existing Link SAP entry.
+	 *
+	 * @param id Link SAP MIH Identifier.
+	 * @param ip The IP address to set.
+	 */
+	void set_ip(const mih::octet_string &id, std::string ip);
+
+	/**
+	 * Set the port of an existing Link SAP entry.
+	 *
+	 * @param id Link SAP MIH Identifier.
+	 * @param port The port to set.
+	 */
+	void set_port(const mih::octet_string &id, uint16 port);
+
+	/**
 	 * Update the events and commands supported by a Link SAP.
 	 *
 	 * @param id Link SAP MIH Identifier.
 	 * @param event_list Supported event list.
 	 * @param cmd_list Supported command list.
 	 */
-	void update(const mih::octet_string &id,
-				mih::event_list event_list,
-				mih::command_list cmd_list);
+	void update_capabilities(const mih::octet_string &id,
+							 mih::event_list event_list,
+							 mih::command_list cmd_list);
 
 	/**
 	 * Remove an existing Link SAP entry.

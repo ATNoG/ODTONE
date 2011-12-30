@@ -34,39 +34,150 @@ void address_book::add(const mih::octet_string &id,
 {
 	boost::mutex::scoped_lock lock(_mutex);
 
-	std::map<mih::octet_string, address_entry>::const_iterator it;
+	_abook[id] = entry_info;
+	ODTONE_LOG(4, "(address_book) added: ", id);
+}
+
+/**
+ * Set the IP address of an existing MIHF entry.
+ *
+ * @param id MIHF MIH Identifier.
+ * @param ip The IP address to set.
+ */
+void address_book::set_ip(const mih::octet_string &id, std::string ip)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, address_entry>::iterator it;
 	it = _abook.find(id);
 
-	if (it == _abook.end()) {
-		_abook[id] = entry_info;
-		ODTONE_LOG(4, "(address_book) added: ", id);
-	} else {
-		if(entry_info.capabilities_list_net_type_addr.is_initialized()) {
-			_abook[id].capabilities_list_net_type_addr = entry_info.capabilities_list_net_type_addr;
-		}
+	if (it != _abook.end())
+		it->second.ip = ip;
+}
 
-		if(entry_info.capabilities_event_list.is_initialized()) {
-			_abook[id].capabilities_event_list = entry_info.capabilities_event_list;
-		}
+/**
+ * Set the port of an existing MIHF entry.
+ *
+ * @param id MIHF MIH Identifier.
+ * @param port The port to set.
+ */
+void address_book::set_port(const mih::octet_string &id, uint16 port)
+{
+	boost::mutex::scoped_lock lock(_mutex);
 
-		if(entry_info.capabilities_cmd_list.is_initialized()) {
-			_abook[id].capabilities_cmd_list = entry_info.capabilities_cmd_list;
-		}
+	std::map<mih::octet_string, address_entry>::iterator it;
+	it = _abook.find(id);
 
-		if(entry_info.capabilities_query_type.is_initialized()) {
-			_abook[id].capabilities_query_type = entry_info.capabilities_query_type;
-		}
+	if (it != _abook.end())
+		it->second.port = port;
+}
 
-		if(entry_info.capabilities_trans_list.is_initialized()) {
-			_abook[id].capabilities_trans_list = entry_info.capabilities_trans_list;
-		}
+/**
+ * Set the link address list of an existing MIHF entry.
+ *
+ * @param id MIHF MIH Identifier.
+ * @param list_net_type_addr The link address list to set.
+ */
+void address_book::set_link_address_list(const mih::octet_string &id,
+							boost::optional<mih::net_type_addr_list> list_net_type_addr)
+{
+	boost::mutex::scoped_lock lock(_mutex);
 
-		if(entry_info.capabilities_mbb_ho_supp.is_initialized()) {
-			_abook[id].capabilities_mbb_ho_supp = entry_info.capabilities_mbb_ho_supp;
-		}
+	std::map<mih::octet_string, address_entry>::iterator it;
+	it = _abook.find(id);
 
-		ODTONE_LOG(4, "(address_book) updated: ", id);
-	}
+	if (it != _abook.end())
+		it->second.capabilities_list_net_type_addr = list_net_type_addr;
+}
+
+/**
+ * Set the list of supported events of an existing MIHF entry.
+ *
+ * @param id MIHF MIH Identifier.
+ * @param event_list The list of supported events to set.
+ */
+void address_book::set_event_list(const mih::octet_string &id,
+								  boost::optional<mih::event_list> event_list)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, address_entry>::iterator it;
+	it = _abook.find(id);
+
+	if (it != _abook.end())
+		it->second.capabilities_event_list = event_list;
+}
+
+/**
+ * Set the list of supported commands of an existing MIHF entry.
+ *
+ * @param id MIHF MIH Identifier.
+ * @param cmd_list The list of supported commands to set.
+ */
+void address_book::set_command_list(const mih::octet_string &id,
+									boost::optional<mih::command_list> cmd_list)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, address_entry>::iterator it;
+	it = _abook.find(id);
+
+	if (it != _abook.end())
+		it->second.capabilities_cmd_list = cmd_list;
+}
+
+/**
+ * Set the list of supported queries of an existing MIHF entry.
+ *
+ * @param id MIHF MIH Identifier.
+ * @param query_list The list of supported queries to set.
+ */
+void address_book::set_query_list(const mih::octet_string &id,
+								  boost::optional<mih::iq_type_list> query_list)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, address_entry>::iterator it;
+	it = _abook.find(id);
+
+	if (it != _abook.end())
+		it->second.capabilities_query_type = query_list;
+}
+
+/**
+ * Set the list of supported transport protocols of an existing MIHF entry.
+ *
+ * @param id MIHF MIH Identifier.
+ * @param trans_list The list of supported transport protocols to set.
+ */
+void address_book::set_transport_list(const mih::octet_string &id,
+									  boost::optional<mih::transport_list> trans_list)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, address_entry>::iterator it;
+	it = _abook.find(id);
+
+	if (it != _abook.end())
+		it->second.capabilities_trans_list = trans_list;
+}
+
+/**
+ * Set the mobility handover support list of an existing MIHF entry.
+ *
+ * @param id MIHF MIH Identifier.
+ * @param ho_list The mobility handover support list to set.
+ */
+void address_book::set_handover_list(const mih::octet_string &id,
+									  boost::optional<mih::mbb_ho_supp_list> ho_list)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, address_entry>::iterator it;
+	it = _abook.find(id);
+
+	if (it != _abook.end())
+		it->second.capabilities_mbb_ho_supp = ho_list;
 }
 
 /**
@@ -99,6 +210,5 @@ const address_entry& address_book::get(const mih::octet_string &id)
 
 	return it->second;
 }
-
 
 } /* namespace mihf */ } /* namespace odtone */
