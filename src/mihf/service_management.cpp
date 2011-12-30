@@ -132,6 +132,8 @@ void service_management::get_capabilities(meta_message_ptr& in,
 										  meta_message_ptr& out)
 {
 	address_entry mihf_info;
+	mihf_info.ip = in->ip();
+	mihf_info.port = in->port();
 
 	if(in->opcode() == mih::operation::request) {
 		*in >> mih::request(mih::request::capability_discover)
