@@ -25,8 +25,18 @@
 namespace odtone { namespace net { namespace ip {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * This class represents the base IPv6 Options.
+ */
 class option {
 public:
+	/**
+	 * Convert a byte buffer to an IPv6 Options.
+	 *
+	 * @param data The byte buffer.
+	 * @param len The size of the byte buffer.
+	 * @return The pointer of the returning IPv6 Options.
+	 */
 	static option* cast(void* data, size_t len)
 	{
 		option* opt = reinterpret_cast<option*>(data);
@@ -37,6 +47,12 @@ public:
 		return opt;
 	}
 
+	/**
+	 * Convert an IPv6 Options to an template class.
+	 *
+	 * @param Input IPv6 Option.
+	 * @return The pointer of the returning class.
+	 */
 	template<class T>
 	static T* cast(option* opt)
 	{
@@ -46,17 +62,35 @@ public:
 		return static_cast<T*>(opt);
 	}
 
+	/**
+	 * Get the IPv6 Options type.
+	 *
+	 * @param Input IPv6 Option.
+	 * @return The IPv6 Options type.
+	 */
 	static uint8 type(const option* opt)
 	{
 		return opt->_type;
 	}
 
+	/**
+	 * Get the IPv6 Options size.
+	 *
+	 * @param Input IPv6 Option.
+	 * @return The IPv6 Options size.
+	 */
 	static size_t size(const option* opt)
 	{
 		return opt->_length * 8;
 	}
 
 public:
+	/**
+	 * Construct an IPv6 Options.
+	 *
+	 * @param type The IPv6 Options type.
+	 * @param length The IPv6 Options length.
+	 */
 	option(uint8 type, uint8 length)
 		: _type(type), _length(length / 8)
 	{
@@ -64,8 +98,8 @@ public:
 	}
 
 protected:
-	uint8 _type;
-	uint8 _length;
+	uint8 _type;	/**< IPv6 Options type.	*/
+	uint8 _length;	/**< IPv6 Options size. */
 };
 
 ///////////////////////////////////////////////////////////////////////////////

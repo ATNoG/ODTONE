@@ -25,6 +25,13 @@
 namespace odtone { namespace net { namespace ip {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Create an ICMP Router Solicitation packet.
+ *
+ * @param buffer The byte buffer.
+ * @param length The byte buffer length.
+ * @param source_link_layer Source link layer option value.
+ */
 bool icmp_rs_parse(uchar* buffer, size_t length, link::address_mac& source_link_layer)
 {
 	using namespace odtone::net::ip;

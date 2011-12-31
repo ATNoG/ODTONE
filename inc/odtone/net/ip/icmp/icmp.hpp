@@ -39,8 +39,18 @@ struct icmp {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * This class represents the header of an ICMP packet.
+ */
 class icmp::header {
 public:
+	/**
+	 * Convert a byte buffer ICMP packet.
+	 *
+	 * @param data The byte buffer.
+	 * @param len The size of the byte buffer.
+	 * @return The pointer of the returning ICMP packet.
+	 */
 	template<class T>
 	static T* cast(void* buffer, size_t length)
 	{
@@ -54,57 +64,166 @@ public:
 	}
 
 public:
+	/**
+	 * Construct an ICMP packet header.
+	 *
+	 * @param type The ICMP packet header type.
+	 * @param length The ICMP packet header code.
+	 */
 	header(uint8 type, uint8 code)
 		: _type(type), _code(code), _checksum(0)
 	{ }
 
-	uint8 type() const { return _type; }
-	uint8 code() const { return _code; }
+	/**
+	 * Get the ICMP packet header type.
+	 *
+	 * @return The ICMP packet header type.
+	 */
+	uint8 type() const
+	{
+		return _type;
+	}
 
-	void checksum(uint16 csum) { _checksum = csum; }
+	/**
+	 * Get the ICMP packet header code.
+	 *
+	 * @return The ICMP packet header code.
+	 */
+	uint8 code() const
+	{
+		return _code;
+	}
+
+	/**
+	 * Set the ICMP packet checksum field.
+	 *
+	 * @param csum The ICMP packet checksum field.
+	 */
+	void checksum(uint16 csum)
+	{
+		_checksum = csum;
+	}
 
 protected:
-	uint8  _type;
-	uint8  _code;
-	uint16 _checksum;
+	uint8  _type;		/**< ICMP packet header type.		*/
+	uint8  _code;		/**< ICMP packet header code.		*/
+	uint16 _checksum;	/**< ICMP packet checksum field.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * This class represents an ICMP Router Solicitation packet.
+ */
 class icmp::router_solicitation : public icmp::header {
 public:
-	static const uint8 type_value = 133;
-	static const uint8 code_value = 0;
+	static const uint8 type_value = 133;/**< ICMP Router Solicitation type.*/
+	static const uint8 code_value = 0;	/**< ICMP Router Solicitation type.*/
 
 public:
+	/**
+	 * Construct an empty ICMP Router Solicitation packet.
+	 */
 	router_solicitation()
 		: header(type_value, code_value), _reserved(0)
 	{ }
 
 private:
-	uint32 _reserved;
+	uint32 _reserved;	/**< Reserved.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * This class represents an ICMP Router Advertisement packet.
+ */
 class icmp::router_advertisement : public icmp::header {
 public:
-	static const uint8 type_value = 134;
-	static const uint8 code_value = 0;
+	static const uint8 type_value = 134;/**< ICMP Router Advertisement type.*/
+	static const uint8 code_value = 0;	/**< ICMP Router Advertisement code.*/
 
 public:
+	/**
+	 * Construct an empty ICMP Router Advertisement packet.
+	 */
 	router_advertisement()
 		: header(type_value, code_value), _current_hop_limit(0),
 		_flags(0), _lifetime(0), _reachable_time(0), _retrans_timer(0)
 	{ }
 
-	uint8  current_hop_limit() const { return _current_hop_limit; }
-	bool   M() const                 { return _flags & 0x80; }
-	bool   O() const                 { return _flags & 0x40; }
-	uint16 lifetime() const          { return ntohs(_lifetime); }
-	uint32 reachable_time() const    { return ntohl(_reachable_time); }
-	uint32 retrans_timer() const     { return ntohl(_retrans_timer); }
+	/**
+	 * Get the Current Hop Limit field value.
+	 *
+	 * @return The Current Hop Limit field value.
+	 */
+	uint8 current_hop_limit() const
+	{
+		return _current_hop_limit;
+	}
 
-	void current_hop_limit(uint8 val) { _current_hop_limit = val; }
+	/**
+	 * Get the Managed Address Configuration flag value.
+	 *
+	 * @return The Managed Address Configuration flag value.
+	 */
+	bool M() const
+	{
+		return _flags & 0x80;
+	}
 
+	/**
+	 * Get the Other Configuration flag value.
+	 *
+	 * @return The Other Configuration flag value.
+	 */
+	bool O() const
+	{
+		return _flags & 0x40;
+	}
+
+	/**
+	 * Get the Lifetime field value.
+	 *
+	 * @return The Lifetime field value.
+	 */
+	uint16 lifetime() const
+	{
+		return ntohs(_lifetime);
+	}
+
+	/**
+	 * Get the Reachable Time field value.
+	 *
+	 * @return The Reachable Time field value.
+	 */
+	uint32 reachable_time() const
+	{
+		return ntohl(_reachable_time);
+	}
+
+	/**
+	 * Get the Retransmission Timer field value.
+	 *
+	 * @return The Retransmission Timer field value.
+	 */
+	uint32 retrans_timer() const
+	{
+		return ntohl(_retrans_timer);
+	}
+
+	/**
+	 * Set the Current Hop Limit field value.
+	 *
+	 * @param val The Current Hop Limit field value.
+	 */
+	void current_hop_limit(uint8 val)
+	{
+		_current_hop_limit = val;
+	}
+
+	/**
+	 * Set the Managed Address Configuration flag value.
+	 *
+	 * @param val The Managed Address Configuration flag value.
+	 */
 	void M(bool val)
     {
 		if (val)
@@ -113,6 +232,11 @@ public:
 			_flags &= ~(0x80);
 	}
 
+	/**
+	 * Set the Other Configuration flag value.
+	 *
+	 * @param val The Other Configuration flag value.
+	 */
 	void O(bool val)
 	{
 		if (val)
@@ -121,47 +245,101 @@ public:
 			_flags &= ~(0x40);
 	}
 
-	void lifetime(uint16 val)       { _lifetime = htons(val); }
-	void reachable_time(uint32 val) { _reachable_time = htonl(val); }
-	void retrans_timer(uint32 val)  { _retrans_timer = htonl(val); }
+	/**
+	 * Set the Lifetime field value.
+	 *
+	 * @param val The Lifetime field value.
+	 */
+	void lifetime(uint16 val)
+	{
+		_lifetime = htons(val);
+	}
+
+	/**
+	 * Set the Reachable Time field value.
+	 *
+	 * @param val The Reachable Time field value.
+	 */
+	void reachable_time(uint32 val)
+	{
+		_reachable_time = htonl(val);
+	}
+
+	/**
+	 * Set the Retransmission Timer field value.
+	 *
+	 * @param val The Retransmission Timer field value.
+	 */
+	void retrans_timer(uint32 val)
+	{
+		_retrans_timer = htonl(val);
+	}
 
 private:
-	uint8  _current_hop_limit;
-	uint8  _flags;
-	uint16 _lifetime;
-	uint32 _reachable_time;
-	uint32 _retrans_timer;
+	uint8  _current_hop_limit;	/**< Current hop limit.		*/
+	uint8  _flags;				/**< Flags.					*/
+	uint16 _lifetime;			/**< Lifetime.				*/
+	uint32 _reachable_time;		/**< Reachable time.		*/
+	uint32 _retrans_timer;		/**< Retransmission timer.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * This class represents an ICMP Neighbor Solicitation packet.
+ */
 class icmp::neighbor_solicitation : public icmp::header {
 public:
-	static const uint8 type_value = 135;
-	static const uint8 code_value = 0;
+	static const uint8 type_value = 135;/**< ICMP Neighbor Solicitation type.*/
+	static const uint8 code_value = 0;	/**< ICMP Neighbor Solicitation type.*/
 
 public:
+	/**
+	 * Construct an empty ICMP Neighbor Solicitation packet.
+	 */
 	neighbor_solicitation()
 		: header(type_value, code_value), _reserved(0)
 	{
 		_target_addr.fill(0);
 	}
 
-	void target(const address_v6::bytes_type& addr) { _target_addr = addr; }
+	/**
+	 * Set the Target address field value.
+	 *
+	 * @param addr The Target Address field value.
+	 */
+	void target(const address_v6::bytes_type& addr)
+	{
+		_target_addr = addr;
+	}
 
-	const address_v6::bytes_type& target() const { return _target_addr; }
+	/**
+	 * Get the Target address field value.
+	 *
+	 * @return The Target Address field value.
+	 */
+	const address_v6::bytes_type& target() const
+	{
+		return _target_addr;
+	}
 
 private:
-	uint32                 _reserved;
-	address_v6::bytes_type _target_addr;
+	uint32                 _reserved;		/**< Reserved.			*/
+	address_v6::bytes_type _target_addr;	/**< Target address.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * This class represents an ICMP Neighbor Advertisement packet.
+ */
 class icmp::neighbor_advertisement : public icmp::header {
 public:
-	static const uint8 type_value = 136;
-	static const uint8 code_value = 0;
+	static const uint8 type_value = 136;/**< ICMP Neighbor Advertisement type.*/
+	static const uint8 code_value = 0;	/**< ICMP Neighbor Advertisement type.*/
 
 public:
+	/**
+	 * Construct an empty ICMP Neighbor Advertisement packet.
+	 */
 	neighbor_advertisement()
 		: header(type_value, code_value), _flags(0), _reserved1(0),
 		_reserved2(0)
@@ -169,13 +347,61 @@ public:
 		_target_addr.fill(0);
 	}
 
-	void target(const address_v6::bytes_type& addr) { _target_addr = addr; }
-	bool R() const                                  { return _flags & 0x80; }
-	bool S() const                                  { return _flags & 0x40; }
-	bool O() const                                  { return _flags & 0x20; }
+	/**
+	 * Set the Target address field value.
+	 *
+	 * @param addr The Target Address field value.
+	 */
+	void target(const address_v6::bytes_type& addr)
+	{
+		_target_addr = addr;
+	}
 
-	const address_v6::bytes_type& target() const { return _target_addr; }
+	/**
+	 * Get the Router flag value.
+	 *
+	 * @return The Router flag value.
+	 */
+	bool R() const
+	{
+		return _flags & 0x80;
+	}
 
+	/**
+	 * Get the Solicited flag value.
+	 *
+	 * @return The Solicited flag value.
+	 */
+	bool S() const
+	{
+		return _flags & 0x40;
+	}
+
+	/**
+	 * Get the Override flag value.
+	 *
+	 * @return The Override flag value.
+	 */
+	bool O() const
+	{
+		return _flags & 0x20;
+	}
+
+	/**
+	 * Get the Target address field value.
+	 *
+	 * @return The Target Address field value.
+	 */
+	const address_v6::bytes_type& target() const
+	{
+		return _target_addr;
+	}
+
+	/**
+	 * Set the Router flag value.
+	 *
+	 * @param val The Router flag value.
+	 */
 	void R(bool val)
     {
 		if (val)
@@ -184,6 +410,11 @@ public:
 			_flags &= ~(0x80);
 	}
 
+	/**
+	 * Set the Solicited flag value.
+	 *
+	 * @param val The Solicited flag value.
+	 */
 	void S(bool val)
 	{
 		if (val)
@@ -192,6 +423,11 @@ public:
 			_flags &= ~(0x40);
 	}
 
+	/**
+	 * Set the Override flag value.
+	 *
+	 * @param val The Override flag value.
+	 */
 	void O(bool val)
 	{
 		if (val)
@@ -201,13 +437,16 @@ public:
 	}
 
 private:
-	uint8                  _flags;
-	uint8                  _reserved1;
-	uint16                 _reserved2;
-	address_v6::bytes_type _target_addr;
+	uint8                  _flags;			/**< Flags.				*/
+	uint8                  _reserved1;		/**< Reserved.			*/
+	uint16                 _reserved2;		/**< Reserved.			*/
+	address_v6::bytes_type _target_addr;	/**< Target address.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * This class represents an ICMP filter.
+ */
 class icmp::filter {
 public:
 	filter(bool block)
@@ -256,7 +495,7 @@ public:
 	size_t size(const boost::asio::ip::icmp&) const      { return sizeof(_filter); }
 
 private:
-	::icmp6_filter _filter;
+	::icmp6_filter _filter;	/**< Filter.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
