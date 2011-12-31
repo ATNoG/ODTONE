@@ -313,7 +313,7 @@ bool service_management::capability_discover_confirm(meta_message_ptr &in,
 	boost::optional<mih::event_list> event;
 	boost::optional<mih::command_list> command;
 
-	*in >> mih::confirm()
+	*in >> mih::confirm(mih::confirm::capability_discover)
 	       & mih::tlv_status(st)
 	       & mih::tlv_event_list(event)
 	       & mih::tlv_command_list(command);

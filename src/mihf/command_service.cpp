@@ -245,7 +245,7 @@ bool command_service::link_get_parameters_confirm(meta_message_ptr &in,
 		boost::optional<mih::link_states_rsp_list> lsrl;
 		boost::optional<mih::link_desc_rsp_list> ldrl;
 
-		*in >> mih::confirm()
+		*in >> mih::confirm(mih::confirm::link_get_parameters)
 		       & mih::tlv_status(st)
 		       & mih::tlv_link_parameters_status_list(lpl)
 		       & mih::tlv_link_states_rsp(lsrl)
@@ -584,7 +584,7 @@ bool command_service::link_actions_confirm(meta_message_ptr &in,
 		boost::optional<mih::link_scan_rsp_list> lsrl;
 		boost::optional<mih::link_ac_result> lar;
 
-		*in >> mih::confirm()
+		*in >> mih::confirm(mih::confirm::link_actions)
 		       & mih::tlv_status(st)
 		       & mih::tlv_link_scan_rsp_list(lsrl)
 		       & mih::tlv_link_ac_result(lar);

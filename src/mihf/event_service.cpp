@@ -277,7 +277,7 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 	mih::status        st;
 	boost::optional<mih::event_list>    events;
 
-	*in >> mih::confirm()
+	*in >> mih::confirm(mih::confirm::event_subscribe)
 		& mih::tlv_status(st)
 		& mih::tlv_event_list(events);
 
@@ -548,7 +548,7 @@ bool event_service::event_unsubscribe_confirm(meta_message_ptr &in,
 	boost::optional<mih::event_list> events;
 
 	// parse incoming message to (event_registration_t) reg
-	*in >> mih::confirm()
+	*in >> mih::confirm(mih::confirm::event_unsubscribe)
 		& mih::tlv_status(st)
 		& mih::tlv_event_list(events);
 
