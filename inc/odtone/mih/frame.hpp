@@ -126,6 +126,8 @@ struct frame {
 	/**
 	 * Convert a byte buffer to a frame.
 	 *
+	 * @param buff The byte buffer.
+	 * @param len The size of the byte buffer.
 	 * @return The pointer of the returning frame.
 	 */
 	static frame* cast(void* buff, size_t len)
@@ -141,6 +143,8 @@ struct frame {
 	/**
 	 * Convert a byte buffer to a frame.
 	 *
+	 * @param buff The byte buffer.
+	 * @param len The size of the byte buffer.
 	 * @return The pointer of the returning frame.
 	 */
 	static const frame* cast(const void* buff, size_t len)
@@ -366,6 +370,7 @@ typedef buffer_vla<frame> frame_vla;
  *
  * @param os ostream.
  * @param fm Frame.
+ * @return ostream reference.
  */
 inline std::ostream& operator<<(std::ostream& os, const frame& fm)
 {

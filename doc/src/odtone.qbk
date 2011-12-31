@@ -408,7 +408,8 @@ The mihf1 configuration file must look like:
 	id = mihf1
 	local_port = 1025
 	remote_port = 4551
-	peers = mihf2 <mihf1_IP_address> 4551
+	peers = mihf2 <mihf2_IP_address> 4551 udp
+	transport = udp
 ``
 
 The mihf2 configuration file must look like:
@@ -417,7 +418,8 @@ The mihf2 configuration file must look like:
 	id = mihf2
 	local_port = 1025
 	remote_port = 4551
-	peers = mihf1 <mihf2_IP_address> 4551
+	peers = mihf1 <mihf1_IP_address> 4551 udp
+	transport = udp
 ``
 
 [note If you are using an Android emulator, the web traffic is routed through your
@@ -462,6 +464,10 @@ the MIH-User.
     [*Note:] It is important to be familiar with the boost::asio library.
     It is also recommend to be familiar with boost::function and
     boost::bind.]]
+
+    [[ODTONE NET] [
+	The ODTONE NET library defines a set of classes which offer several network
+	protocols and terminology support.]]
 ]
 
 [xinclude ../odtone_base_lib.xml]

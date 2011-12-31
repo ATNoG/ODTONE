@@ -75,6 +75,7 @@ struct null {
  *
  * @param os ostream.
  * @param n NULL data type.
+ * @return ostream reference.
  */
 inline std::ostream& operator<<(std::ostream& os, const null& n)
 {
@@ -384,6 +385,7 @@ public:
 	 *
 	 * @param os ostream.
 	 * @param e ENUMERATION data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const enumeration& e)
 	{

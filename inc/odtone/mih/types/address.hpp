@@ -181,6 +181,7 @@ public:
 	 *
 	 * @param out ostream.
 	 * @param tp MAC_ADDR data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& out, const mac_addr& tp)
 	{
@@ -231,6 +232,7 @@ struct l2_3gpp_2g_cell_id {
 	 *
 	 * @param out ostream.
 	 * @param addr L2_3GPP_2G_CELL_ID data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_2g_cell_id& addr)
 	{
@@ -279,6 +281,7 @@ struct l2_3gpp_3g_cell_id {
 	 *
 	 * @param out ostream.
 	 * @param addr L2_3GPP_3G_CELL_ID data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_3g_cell_id& addr)
 	{
@@ -321,6 +324,7 @@ struct l2_3gpp_addr  {
 	 *
 	 * @param out ostream.
 	 * @param addr L2_3GPP_ADDR data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_addr& addr)
 	{
@@ -362,6 +366,7 @@ struct l2_3gpp2_addr {
 	 *
 	 * @param out ostream.
 	 * @param addr L2_3GPP2_ADDR data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp2_addr& addr)
 	{
@@ -403,6 +408,7 @@ struct other_l2_addr {
 	 *
 	 * @param out ostream.
 	 * @param addr OTHER_L2_ADDR data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& out, const other_l2_addr& addr)
 	{
@@ -505,6 +511,7 @@ public:
 	 *
 	 * @param out ostream.
 	 * @param tp IP_ADDR data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& out, const ip_addr& tp)
 	{

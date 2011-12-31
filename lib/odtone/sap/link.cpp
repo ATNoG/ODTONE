@@ -141,6 +141,7 @@ void link::recv_handler(buffer<uint8>& buff, size_t rbytes,
  * report the success or failure in delivering the message to the local MIHF.
  *
  * @param fm MIH message sent.
+ * @param h Message handler.
  * @param sbytes Size of the message.
  * @param ec Error code.
  */

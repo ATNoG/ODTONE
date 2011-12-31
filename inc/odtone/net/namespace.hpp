@@ -22,7 +22,7 @@ namespace odtone {
 /**
  * ODTONE Network library.
  *
- * The Network library contains a set of classes which offer several network
+ * The Network library defines a set of classes which offer several network
  * protocols and terminology support.
  */
 namespace net {

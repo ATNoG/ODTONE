@@ -422,6 +422,7 @@ struct network_type {
 	 *
 	 * @param os ostream.
 	 * @param nt NETWORK_TYPE data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const network_type& nt)
 	{
@@ -568,6 +569,7 @@ struct net_type_addr {
 	 *
 	 * @param os ostream.
 	 * @param nta NET_TYPE_ADDR data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const net_type_addr& nta)
 	{
