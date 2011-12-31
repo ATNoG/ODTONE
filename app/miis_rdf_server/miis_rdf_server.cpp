@@ -63,6 +63,13 @@ public:
 	~miis_rdf_server();
 
 private:
+	/**
+	 * User registration handler.
+	 *
+	 * @param msg Received message.
+	 * @param ec Error Code.
+	 */
+	void user_reg_handler(const odtone::mih::config& cfg, const boost::system::error_code& ec);
 
 	/**
 	 * Default MIH event handler.
@@ -121,6 +128,16 @@ miis_rdf_server::miis_rdf_server(const odtone::mih::config& cfg, boost::asio::io
 		log_(0, "Failed to create model");
 		throw("Failed to create model");
 	}
+
+	// Register with the MIHF
+	odtone::mih::message m;
+	odtone::mih::user_role role = odtone::mih::user_role_is;
+
+	m << odtone::mih::indication(odtone::mih::indication::user_register)
+	    & odtone::mih::tlv_user_role(role);
+	m.destination(odtone::mih::id("local-mihf"));
+
+	_mihf.async_send(m, boost::bind(&mih_user::user_reg_handler, this, boost::cref(cfg), _2));
 }
 
 /**
@@ -128,6 +145,17 @@ miis_rdf_server::miis_rdf_server(const odtone::mih::config& cfg, boost::asio::io
  */
 miis_rdf_server::~miis_rdf_server()
 {
+}
+
+/**
+ * User registration handler.
+ *
+ * @param msg Received message.
+ * @param ec Error Code.
+ */
+void miis_rdf_server::user_reg_handler(const odtone::mih::config& cfg, const boost::system::error_code& ec)
+{
+	log_(0, "MIH-User register result: ", ec.message());
 }
 
 static void recv_handler(odtone::mih::message &m, boost::system::error_code e)
