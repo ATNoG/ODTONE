@@ -86,19 +86,7 @@ void command_service::link_get_parameters_response_handler(meta_message_ptr &in)
 	std::vector<mih::octet_string> ids = _link_abook.get_ids();
 	std::vector<mih::octet_string>::iterator it_link;
 	for(it_link = ids.begin(); it_link != ids.end(); it_link++) {
-		// Delete unanswered Link SAP from known Link SAPs list
-		if(!_lrpool.check(in->tid(), *it_link)) {
-			if(_lpool.del(*it_link, in->tid())) {
-				uint16 fails = _link_abook.fail(*it_link);
-				if(fails >= kConf_MIHF_Link_Delete_Value) {
-					_link_abook.inactive(*it_link);
-
-					// Update MIHF capabilities
-					utils::update_local_capabilities(_abook, _link_abook);
-				}
-			}
-		}
-		else {
+		if(_lrpool.check(in->tid(), *it_link)) {
 			// fill GetStatusResponseList
 			link_entry a;
 			mih::link_id lid;
@@ -178,8 +166,22 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 		for(lid = lil.begin(); lid != lil.end(); lid++) {
 			out->destination(mih::id(_link_abook.search_interface((*lid).type, (*lid).addr)));
 			// If the Link SAP it is known send message
-			if (out->destination().to_string().compare(""))
-				utils::forward_request(out, _lpool, _transmit);
+			if (out->destination().to_string().compare("")) {
+				// Check if the Link SAP is still active
+				uint16 fails = _link_abook.fail(out->destination().to_string());
+				if(fails > kConf_MIHF_Link_Delete_Value) {
+					mih::octet_string dst = out->destination().to_string();
+					_link_abook.inactive(dst);
+
+					// Update MIHF capabilities
+					utils::update_local_capabilities(_abook, _link_abook);
+				}
+				else {
+					ODTONE_LOG(1, "(mics) forwarding Link_Get_Parameters.request to ",
+						out->destination().to_string());
+					utils::forward_request(out, _lpool, _transmit);
+				}
+			}
 		}
 
 		// Lauched the thread responsible for respond to the get parameters request
@@ -306,10 +308,8 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 		out->source(in->source());
 		out->tid(in->tid());
 
+		// Check if the Link SAP is still active
 		uint16 fails = _link_abook.fail(out->destination().to_string());
-		if(fails == -1)
-			return false;
-
 		if(fails > kConf_MIHF_Link_Delete_Value) {
 			mih::octet_string dst = out->destination().to_string();
 			_link_abook.inactive(dst);
@@ -422,15 +422,7 @@ void command_service::link_actions_response_handler(meta_message_ptr &in)
 	std::vector<mih::octet_string> ids = _link_abook.get_ids();
 	std::vector<mih::octet_string>::iterator it_link;
 	for(it_link = ids.begin(); it_link != ids.end(); it_link++) {
-		// Delete unanswered Link SAP from known Link SAPs list
-		if(!_lrpool.check(in->tid(), *it_link)) {
-			if(_lpool.del(*it_link, in->tid())) {
-				uint16 fails = _link_abook.fail(*it_link);
-				if(fails >= kConf_MIHF_Link_Delete_Value) {
-					_link_abook.del(*it_link);
-				}
-			}
-		} else {
+		if(_lrpool.check(in->tid(), *it_link)) {
 			// fill LinkActionsResultList
 			link_entry a;
 			mih::link_id lid;
@@ -460,7 +452,7 @@ void command_service::link_actions_response_handler(meta_message_ptr &in)
 
 	// Send Link_Actions.confirm to the user
 	ODTONE_LOG(1, "(mism) setting response to Link_Actions.request");
-	
+
 	if(st == mih::status_success) {
 		*out << mih::response(mih::response::link_actions)
 		    & mih::tlv_status(st)
@@ -509,20 +501,33 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 			out->destination(mih::id(_link_abook.search_interface((*lar).id.type, (*lar).id.addr)));
 			// If the Link SAP it is known send message
 			if (out->destination().to_string().compare("")) {
-				mih::link_addr* a = boost::get<mih::link_addr>(&(*lar).addr);
-				if (a && ((*lar).action.attr.get(mih::link_ac_attr_data_fwd_req)) ) {
-					*out << mih::request(mih::request::link_actions)
-								& mih::tlv_link_action((*lar).action)
-								& mih::tlv_time_interval((*lar).ex_time)
-								& mih::tlv_poa(*a);
+				// Check if the Link SAP is still active
+				uint16 fails = _link_abook.fail(out->destination().to_string());
+				if(fails > kConf_MIHF_Link_Delete_Value) {
+					mih::octet_string dst = out->destination().to_string();
+					_link_abook.inactive(dst);
+
+					// Update MIHF capabilities
+					utils::update_local_capabilities(_abook, _link_abook);
 				}
 				else {
-					*out << mih::request(mih::request::link_actions)
-								& mih::tlv_link_action((*lar).action)
-								& mih::tlv_time_interval((*lar).ex_time);
-				}
+					mih::link_addr* a = boost::get<mih::link_addr>(&(*lar).addr);
+					if (a && ((*lar).action.attr.get(mih::link_ac_attr_data_fwd_req)) ) {
+						*out << mih::request(mih::request::link_actions)
+									& mih::tlv_link_action((*lar).action)
+									& mih::tlv_time_interval((*lar).ex_time)
+									& mih::tlv_poa(*a);
+					}
+					else {
+						*out << mih::request(mih::request::link_actions)
+									& mih::tlv_link_action((*lar).action)
+									& mih::tlv_time_interval((*lar).ex_time);
+					}
 
-				utils::forward_request(out, _lpool, _transmit);
+					ODTONE_LOG(1, "(mics) forwarding Link_Actions.request to ",
+						out->destination().to_string());
+					utils::forward_request(out, _lpool, _transmit);
+					}
 			}
 		}
 
@@ -578,6 +583,8 @@ bool command_service::link_actions_confirm(meta_message_ptr &in,
 {
 	ODTONE_LOG(1, "(mics) received Link_Actions.confirm from ",
 	    in->source().to_string());
+
+	_link_abook.reset(in->source().to_string());
 
 	if(_lpool.set_user_tid(in)) {
 		mih::status st;

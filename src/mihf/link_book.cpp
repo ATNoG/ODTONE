@@ -210,12 +210,11 @@ uint16 link_book::fail(const mih::octet_string &id)
 	std::map<mih::octet_string, link_entry>::iterator it;
 	it = _lbook.find(id);
 
-	if (it != _lbook.end()) {
-		(it->second.fail)++;
-		return it->second.fail;
-	}
+	if (it == _lbook.end())
+		throw ("no entry in link_book for this id");
 
-	return -1;
+	(it->second.fail)++;
+	return it->second.fail;
 }
 
 /**
@@ -230,10 +229,11 @@ void link_book::reset(const mih::octet_string &id)
 	std::map<mih::octet_string, link_entry>::iterator it;
 	it = _lbook.find(id);
 
-	if (it != _lbook.end()) {
-		it->second.fail = 0;
-		it->second.status = true;
-	}
+	if (it == _lbook.end())
+		throw ("no entry in link_book for this id");
+
+	it->second.fail = 0;
+	it->second.status = true;
 }
 
 } /* namespace mihf */ } /* namespace odtone */

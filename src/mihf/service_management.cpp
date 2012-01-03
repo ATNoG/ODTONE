@@ -86,9 +86,22 @@ bool service_management::link_capability_discover_request(meta_message_ptr &in,
 
 	*out << mih::request(mih::request::capability_discover);
 	out->tid(in->tid());
-
 	out->destination(in->source());
-	utils::forward_request(out, _lpool, _transmit);
+
+	// Check if the Link SAP is still active
+	uint16 fails = _link_abook.fail(out->destination().to_string());
+	if(fails > kConf_MIHF_Link_Delete_Value) {
+		mih::octet_string dst = out->destination().to_string();
+		_link_abook.inactive(dst);
+
+		// Update MIHF capabilities
+		utils::update_local_capabilities(_abook, _link_abook);
+	}
+	else {
+		ODTONE_LOG(1, "(mics) forwarding Link_Capability_Discover.request to ",
+			out->destination().to_string());
+		utils::forward_request(out, _lpool, _transmit);
+	}
 
 	return false;
 }

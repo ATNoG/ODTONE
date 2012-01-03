@@ -161,23 +161,20 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 		out->destination(mih::id(link_id));
 		out->source(in->source());
 		out->tid(in->tid());
-		_lpool.add(out);
-		out->source(mihfid);
 
+		// Check if the Link SAP is still active
 		uint16 fails = _link_abook.fail(out->destination().to_string());
-		if(fails == -1)
-			return false;
-
 		if(fails > kConf_MIHF_Link_Delete_Value) {
 			mih::octet_string dst = out->destination().to_string();
 			_link_abook.inactive(dst);
 
 			// Update MIHF capabilities
 			utils::update_local_capabilities(_abook, _link_abook);
-		} else {
+		}
+		else {
 			ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.request to ",
 			    out->destination().to_string());
-			_transmit(out);
+			utils::forward_request(out, _lpool, _transmit);
 		}
 
 		return false;
@@ -360,6 +357,7 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
 	}
 
 	// Only send message to Link SAP if there is any event to unsubscribed
+	// with it
 	if(send_msg)
 	{
 		*in << mih::request(mih::request::event_unsubscribe)
@@ -369,20 +367,19 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
 		in->destination(mih::id(link_id));
 		in->source(mihfid);
 
+		// Check if the Link SAP is still active
 		uint16 fails = _link_abook.fail(in->destination().to_string());
-		if(fails == -1)
-			return;
-
 		if(fails > kConf_MIHF_Link_Delete_Value) {
 			mih::octet_string dst = in->destination().to_string();
 			_link_abook.inactive(dst);
 
 			// Update MIHF capabilities
 			utils::update_local_capabilities(_abook, _link_abook);
-		} else {
-			ODTONE_LOG(1, "(mies) forwarding Event_Unsubscribe.request to ",
-				in->destination().to_string());
-			_transmit(in);
+		}
+		else {
+			ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.request to ",
+			    in->destination().to_string());
+			utils::forward_request(in, _lpool, _transmit);
 		}
 	}
 }
