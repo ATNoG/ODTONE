@@ -31,26 +31,64 @@
 #include <odtone/mih/indication.hpp>
 #include <odtone/mih/tlv_types.hpp>
 
+#include <boost/make_shared.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
+extern odtone::uint16 kConf_MIHF_Link_Response_Time_Value;
 extern odtone::uint16 kConf_MIHF_Link_Delete_Value;
 
 namespace odtone { namespace mihf {
 /**
  * Construct the event service.
  *
+ * @param io The io_service object that Link SAP I/O Service will use to
+ * dispatch handlers for any asynchronous operations performed on
+ * the socket.
  * @param lpool The local transaction pool module.
  * @param t The transmit module.
  * @param abook The address book module.
  * @param lbook The link book module.
  */
-event_service::event_service(local_transaction_pool &lpool, transmit &t,
-							 address_book &abook, link_book &lbook)
-	: _lpool(lpool),
+event_service::event_service(io_service &io, local_transaction_pool &lpool,
+							 transmit &t, address_book &abook, link_book &lbook)
+	: _io(io),
+	  _lpool(lpool),
 	  _transmit(t),
 	  _abook(abook),
 	  _link_abook(lbook)
 {
+}
+
+/**
+ * Handler responsible for setting a failure Link Event Subscribe
+ * response.
+ *
+ * @param ec Error code.
+ * @param in The input message.
+ */
+void event_service::link_event_subscribe_response_timeout(const boost::system::error_code &ec, meta_message_ptr &in)
+{
+	if(ec)
+		return;
+
+	{
+		boost::mutex::scoped_lock lock(_mutex);
+		_timer.erase(in->tid());
+	}
+
+	mih::status st = mih::status_failure;
+	meta_message_ptr out(new meta_message());
+
+	// Send failure message to the user
+	ODTONE_LOG(1, "(mism) setting failure response to Link_Event_Subscribe.request");
+	*out << mih::response(mih::response::event_subscribe)
+	    & mih::tlv_status(st);
+
+	out->tid(in->tid());
+	out->destination(in->source());
+	out->source(mihfid);
+
+	_transmit(out);
 }
 
 /**
@@ -175,6 +213,17 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 			ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.request to ",
 			    out->destination().to_string());
 			utils::forward_request(out, _lpool, _transmit);
+
+			// Set the timer that will be responsible for sending a failure
+			// response if necessary
+			boost::shared_ptr<boost::asio::deadline_timer> timer = boost::make_shared<boost::asio::deadline_timer>(_io);
+			timer->expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
+			timer->async_wait(boost::bind(&event_service::link_event_subscribe_response_timeout, this, _1, in));
+
+			{
+				boost::mutex::scoped_lock lock(_mutex);
+				_timer[in->tid()] = timer;
+			}
 		}
 
 		return false;
@@ -271,7 +320,12 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 		return false;
 	}
 
-	mih::status        st;
+	{
+		boost::mutex::scoped_lock lock(_mutex);
+		_timer.erase(in->tid());
+	}
+
+	mih::status st;
 	boost::optional<mih::event_list>    events;
 
 	*in >> mih::confirm(mih::confirm::event_subscribe)

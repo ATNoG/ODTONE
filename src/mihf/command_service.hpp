@@ -298,6 +298,16 @@ private:
 											  meta_message_ptr &in);
 
 	/**
+	 * Handler responsible for setting a failure Link Action
+	 * responses.
+	 *
+	 * @param ec Error code.
+	 * @param in The input message.
+	 */
+	void link_configure_thresholds_response_timeout(const boost::system::error_code &ec,
+													meta_message_ptr &in);
+
+	/**
 	 * Handler responsible for processing the received Link Action
 	 * responses from Link SAPs.
 	 *

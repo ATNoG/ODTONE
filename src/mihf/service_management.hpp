@@ -164,8 +164,6 @@ private:
 	transmit				&_transmit;		/**< Transmit book module.			*/
 	link_response_pool		&_lrpool;		/**< Link response pool module.		*/
 
-	boost::asio::deadline_timer _timer;		/**< Multiple Link SAP requests timer.*/
-
 	bool _enable_broadcast;	/**< Set to true if this MIHF responds to broadcast messages.*/
 };
 

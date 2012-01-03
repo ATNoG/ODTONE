@@ -31,6 +31,8 @@
 #include <odtone/mih/confirm.hpp>
 #include <odtone/mih/response.hpp>
 #include <odtone/mih/tlv_types.hpp>
+
+#include <boost/make_shared.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 extern odtone::uint16 kConf_MIHF_Link_Response_Time_Value;
@@ -204,7 +206,8 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 			}
 		}
 
-		// Lauched the thread responsible for respond to the get parameters request
+		// Set the timer that will be responsible for aggregate and
+		// response to this resquest
 		boost::shared_ptr<boost::asio::deadline_timer> timer = boost::make_shared<boost::asio::deadline_timer>(_io);
 		timer->expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
 		timer->async_wait(boost::bind(&command_service::link_get_parameters_response_handler, this, _1, in));
@@ -214,7 +217,7 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 			_timer[in->tid()] = timer;
 		}
 
-		// Do not respond to the request. The thread lauched will be
+		// Do not respond to the request. The response handler will be
 		// responsible for that.
 		return false;
 	} else {
@@ -299,6 +302,38 @@ bool command_service::link_get_parameters_confirm(meta_message_ptr &in,
 }
 
 /**
+ * Handler responsible for processing the received Link Get Parameters
+ * responses from Link SAPs.
+ *
+ * @param ec Error code.
+ * @param in The input message.
+ */
+void command_service::link_configure_thresholds_response_timeout(const boost::system::error_code &ec, meta_message_ptr &in)
+{
+	if(ec)
+		return;
+
+	{
+		boost::mutex::scoped_lock lock(_mutex);
+		_timer.erase(in->tid());
+	}
+
+	mih::status st = mih::status_failure;
+	meta_message_ptr out(new meta_message());
+
+	// Send failure message to the user
+	ODTONE_LOG(1, "(mism) setting failure response to Link_Configure_Thresholds.request");
+	*out << mih::response(mih::response::link_get_parameters)
+	    & mih::tlv_status(st);
+
+	out->tid(in->tid());
+	out->destination(in->source());
+	out->source(mihfid);
+
+	_transmit(out);
+}
+
+/**
  * Link Configure Thresholds Request message handler.
  *
  * @param in The input message.
@@ -347,6 +382,17 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 			ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.request to ",
 			    out->destination().to_string());
 			utils::forward_request(out, _lpool, _transmit);
+
+			// Set the timer that will be responsible for sending a failure
+			// response if necessary
+			boost::shared_ptr<boost::asio::deadline_timer> timer = boost::make_shared<boost::asio::deadline_timer>(_io);
+			timer->expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
+			timer->async_wait(boost::bind(&command_service::link_configure_thresholds_response_timeout, this, _1, in));
+
+			{
+				boost::mutex::scoped_lock lock(_mutex);
+				_timer[in->tid()] = timer;
+			}
 		}
 
 		return false;
@@ -399,10 +445,16 @@ bool command_service::link_configure_thresholds_confirm(meta_message_ptr &in,
 
 	_link_abook.reset(in->source().to_string());
 
-	if(!_lpool.set_user_tid(in)) {
+	out->source(in->source());
+	if (!_lpool.set_user_tid(out)) {
 		ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
 		    "discarding it");
 		return false;
+	}
+
+	{
+		boost::mutex::scoped_lock lock(_mutex);
+		_timer.erase(in->tid());
 	}
 
 	mih::status st;
@@ -416,23 +468,23 @@ bool command_service::link_configure_thresholds_confirm(meta_message_ptr &in,
 		& mih::tlv_status(st)
 		& mih::tlv_link_cfg_status_list(lcsl);
 
-	*in << mih::response(mih::response::link_configure_thresholds)
+	*out << mih::response(mih::response::link_configure_thresholds)
 		& mih::tlv_status(st)
 		& mih::tlv_link_identifier(li)
 		& mih::tlv_link_cfg_status_list(lcsl);
 
-	in->source(mihfid);
+	out->source(mihfid);
 
-	ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.confirm to ", in->destination().to_string());
+	ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.confirm to ", out->destination().to_string());
 
-	_transmit(in);
+	_transmit(out);
 
 	return false;
 }
 
 /**
- * Handler responsible for processing the received Link Action
- * responses from Link SAPs.
+ * Handler responsible for setting a failure Link Action
+ * responses.
  *
  * @param ec Error code.
  * @param in The input message.
@@ -567,7 +619,8 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 			}
 		}
 
-		// Lauched the thread responsible for respond to the link actions request
+		// Set the timer that will be responsible for aggregate and
+		// response to this resquest
 		boost::shared_ptr<boost::asio::deadline_timer> timer = boost::make_shared<boost::asio::deadline_timer>(_io);
 		timer->expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
 		timer->async_wait(boost::bind(&command_service::link_actions_response_handler, this, _1, in));
@@ -577,7 +630,7 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 			_timer[in->tid()] = timer;
 		}
 
-		// Do not respond to the request. The thread lauched will be
+		// Do not respond to the request. The thread response handler will be
 		// responsible for that.
 		return false;
 	} else {

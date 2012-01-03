@@ -65,8 +65,7 @@ service_management::service_management(io_service &io,
 	  _user_abook(user_abook),
 	  _abook(address_book),
 	  _transmit(t),
-	  _lrpool(lrpool),
-	  _timer(io, boost::posix_time::milliseconds(1))
+	  _lrpool(lrpool)
 {
 	_enable_broadcast = enable_broadcast;
 }

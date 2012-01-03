@@ -56,13 +56,16 @@ public:
 	/**
 	 * Construct the event service.
 	 *
+	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * dispatch handlers for any asynchronous operations performed on
+	 * the socket.
 	 * @param lpool The local transaction pool module.
 	 * @param t The transmit module.
 	 * @param abook The address book module.
 	 * @param lbook The link book module.
 	 */
-	event_service(local_transaction_pool &lpool, transmit &t,
-				  address_book &abook, link_book &lbook);
+	event_service(io_service &io, local_transaction_pool &lpool,
+				  transmit &t, address_book &abook, link_book &lbook);
 
 	/**
 	 * Event Subscribe Request message handler.
@@ -285,7 +288,18 @@ protected:
 	                      mih::link_tuple_id &link,
 	                      mih::event_list &events);
 
+	/**
+	 * Handler responsible for setting a failure Link Event Subscribe
+	 * response.
+	 *
+	 * @param ec Error code.
+	 * @param in The input message.
+	 */
+	void link_event_subscribe_response_timeout(const boost::system::error_code &ec,
+											   meta_message_ptr &in);
+
 private:
+	io_service				&_io;			/**< The io_service object.			*/
 	local_transaction_pool	&_lpool;		/**< Local transaction pool module.	*/
 	transmit				&_transmit;		/**< Transmit module.				*/
 	address_book            &_abook;		/**< Address book module.			*/
@@ -297,7 +311,9 @@ private:
 	std::list<event_registration_t>	_event_subscriptions;	/**< List of subscription.	*/
 	boost::mutex					_event_mutex;			/**< Mutex.	*/
 
-
+	/** Timer map. */
+	std::map<uint16, boost::shared_ptr<boost::asio::deadline_timer> > _timer;
+	boost::mutex _mutex;	/**< Mutex.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
