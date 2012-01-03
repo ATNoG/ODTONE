@@ -38,33 +38,6 @@ link_response_pool::link_response_pool()
  *
  * @param user The MIH source identifier.
  * @param tid The transaction identifier.
- * @param event The supported event list.
- * @param command The supported command list.
- */
-void link_response_pool::add(mih::octet_string user,
-                             uint16 tid,
-                             mih::event_list event,
-                             mih::command_list command)
-{
-	pending_link_response p;
-
-	p.user.assign(user);
-	p.tid = tid;
-	capabilities cap;
-	cap.event_list = event;
-	cap.command_list = command;
-	p.response = cap;
-
-	boost::mutex::scoped_lock lock(_mutex);
-	_cpool.push_back(p);
-
-}
-
-/**
- * Add a new entry in the Link Responde Pool.
- *
- * @param user The MIH source identifier.
- * @param tid The transaction identifier.
  * @param link_status The link status response.
  */
 void link_response_pool::add(mih::octet_string user,

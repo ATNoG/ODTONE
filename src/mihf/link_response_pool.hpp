@@ -32,14 +32,6 @@
 namespace odtone { namespace mihf {
 
 /**
- * Struct to store the link capabilities supported.
- */
-struct capabilities {
-	mih::event_list   event_list;	/**< The supported events. 			*/
-	mih::command_list command_list;	/**< The supported commands. 		*/
-};
-
-/**
  * Struct to store the link action parameters.
  */
 struct action {
@@ -54,8 +46,7 @@ struct pending_link_response {
 	mih::octet_string	user;			/**< The MIH source identifier. 	*/
 	uint16				tid;			/**< The transaction identifier. 	*/
 	mih::status			st;				/**< Status. 						*/
-	boost::variant<	capabilities,
-					mih::link_status_rsp,
+	boost::variant<	mih::link_status_rsp,
 					action > response;	/**< The response parameters. 		*/
 };
 
@@ -69,19 +60,6 @@ public:
 	 * Construct a Link Response Pool.
 	 */
 	link_response_pool();
-
-	/**
-	 * Add a new entry in the Link Responde Pool.
-	 *
-	 * @param user The MIH source identifier.
-	 * @param tid The transaction identifier.
-	 * @param event The supported event list.
-	 * @param command The supported command list.
-	 */
-	void add(mih::octet_string user,
-                 uint16 tid,
-                 mih::event_list event,
-                 mih::command_list command);
 
 	/**
 	 * Add a new entry in the Link Responde Pool.
