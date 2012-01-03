@@ -58,13 +58,13 @@ command_service::command_service(io_service &io,
 								 link_book &link_abook,
 								 user_book &user_abook,
 								 link_response_pool &lrpool)
-	: _lpool(lpool),
+	: _io(io),
+	  _lpool(lpool),
 	  _transmit(t),
 	  _abook(abook),
 	  _link_abook(link_abook),
 	  _user_abook(user_abook),
-	  _lrpool(lrpool),
-	  _timer(io, boost::posix_time::milliseconds(1))
+	  _lrpool(lrpool)
 {
 }
 
@@ -72,10 +72,20 @@ command_service::command_service(io_service &io,
  * Handler responsible for processing the received Link Get Parameters
  * responses from Link SAPs.
  *
+ * @param ec Error code.
  * @param in The input message.
  */
-void command_service::link_get_parameters_response_handler(meta_message_ptr &in)
+void command_service::link_get_parameters_response_handler(const boost::system::error_code &ec, meta_message_ptr &in)
 {
+	if(ec)
+		return;
+
+	{
+		boost::mutex::scoped_lock lock(_mutex);
+		_timer.erase(in->tid());
+	}
+
+	mih::status st = mih::status_failure;
 	mih::link_id             lid;
 	mih::link_status_rsp	 lsr;
 	mih::status_rsp          sr;
@@ -107,15 +117,25 @@ void command_service::link_get_parameters_response_handler(meta_message_ptr &in)
 			sr.rsp = lsr;
 
 			srl.push_back(sr);
+
+			// If one or more responses are successful the status
+			// is set to success
+			st = mih::status_success;
 		}
 	}
 
 	// Send Link_Get_Parameters.confirm to the user
-	ODTONE_LOG(1, "(mism) setting response to Link_Get_Parameters.request");
-	*out << mih::response(mih::response::link_get_parameters)
-	    & mih::tlv_status(mih::status_success)
-//	    & mih::tlv_dev_states_rsp_list(dsrl)
-	    & mih::tlv_get_status_rsp_list(srl);
+	if(st == mih::status_success) {
+		ODTONE_LOG(1, "(mism) setting response to Link_Get_Parameters.request");
+		*out << mih::response(mih::response::link_get_parameters)
+			& mih::tlv_status(mih::status_success)
+	//	    & mih::tlv_dev_states_rsp_list(dsrl)
+			& mih::tlv_get_status_rsp_list(srl);
+	} else {
+		ODTONE_LOG(1, "(mism) setting failure response to Link_Get_Parameters.request");
+		*out << mih::response(mih::response::link_get_parameters)
+		    & mih::tlv_status(st);
+	}
 
 	out->tid(in->tid());
 	out->destination(in->source());
@@ -185,8 +205,14 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 		}
 
 		// Lauched the thread responsible for respond to the get parameters request
-		_timer.expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
-		_timer.async_wait(boost::bind(&command_service::link_get_parameters_response_handler, this, in));
+		boost::shared_ptr<boost::asio::deadline_timer> timer = boost::make_shared<boost::asio::deadline_timer>(_io);
+		timer->expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
+		timer->async_wait(boost::bind(&command_service::link_get_parameters_response_handler, this, _1, in));
+
+		{
+			boost::mutex::scoped_lock lock(_mutex);
+			_timer[in->tid()] = timer;
+		}
 
 		// Do not respond to the request. The thread lauched will be
 		// responsible for that.
@@ -408,10 +434,20 @@ bool command_service::link_configure_thresholds_confirm(meta_message_ptr &in,
  * Handler responsible for processing the received Link Action
  * responses from Link SAPs.
  *
+ * @param ec Error code.
  * @param in The input message.
  */
-void command_service::link_actions_response_handler(meta_message_ptr &in)
+void command_service::link_actions_response_handler(const boost::system::error_code &ec,
+													meta_message_ptr &in)
 {
+	if(ec)
+		return;
+
+	{
+		boost::mutex::scoped_lock lock(_mutex);
+		_timer.erase(in->tid());
+	}
+
 	mih::status st = mih::status_failure;
 	mih::link_action_rsp_list larl;
 	mih::link_action_rsp      lar;
@@ -451,13 +487,13 @@ void command_service::link_actions_response_handler(meta_message_ptr &in)
 	}
 
 	// Send Link_Actions.confirm to the user
-	ODTONE_LOG(1, "(mism) setting response to Link_Actions.request");
-
 	if(st == mih::status_success) {
+		ODTONE_LOG(1, "(mism) setting response to Link_Actions.request");
 		*out << mih::response(mih::response::link_actions)
 		    & mih::tlv_status(st)
 		    & mih::tlv_link_action_rsp_list(larl);
 	} else {
+		ODTONE_LOG(1, "(mism) setting failure response to Link_Actions.request");
 		*out << mih::response(mih::response::link_actions)
 		    & mih::tlv_status(st);
 	}
@@ -532,8 +568,14 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 		}
 
 		// Lauched the thread responsible for respond to the link actions request
-		_timer.expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
-		_timer.async_wait(boost::bind(&command_service::link_actions_response_handler, this, in));
+		boost::shared_ptr<boost::asio::deadline_timer> timer = boost::make_shared<boost::asio::deadline_timer>(_io);
+		timer->expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
+		timer->async_wait(boost::bind(&command_service::link_actions_response_handler, this, _1, in));
+
+		{
+			boost::mutex::scoped_lock lock(_mutex);
+			_timer[in->tid()] = timer;
+		}
 
 		// Do not respond to the request. The thread lauched will be
 		// responsible for that.

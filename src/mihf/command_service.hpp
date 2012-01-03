@@ -291,17 +291,21 @@ private:
 	 * Handler responsible for processing the received Link Get Parameters
 	 * responses from Link SAPs.
 	 *
+	 * @param ec Error code.
 	 * @param in The input message.
 	 */
-	void link_get_parameters_response_handler(meta_message_ptr &in);
+	void link_get_parameters_response_handler(const boost::system::error_code &ec,
+											  meta_message_ptr &in);
 
 	/**
 	 * Handler responsible for processing the received Link Action
 	 * responses from Link SAPs.
 	 *
+	 * @param ec Error code.
 	 * @param in The input message.
 	 */
-	void link_actions_response_handler(meta_message_ptr &in);
+	void link_actions_response_handler(const boost::system::error_code &ec,
+									   meta_message_ptr &in);
 
 protected:
 	/**
@@ -336,6 +340,7 @@ protected:
 				      meta_message_ptr &in,
 				      meta_message_ptr &out);
 
+	io_service				&_io;			/**< The io_service object.			*/
 	local_transaction_pool	&_lpool;		/**< Local transaction pool module.	*/
 	transmit				&_transmit;		/**< Transmit module.				*/
 	address_book			&_abook;		/**< Address book module.			*/
@@ -343,7 +348,9 @@ protected:
 	user_book				&_user_abook;	/**< User book module.				*/
 	link_response_pool		&_lrpool;		/**< Link response pool module.		*/
 
-	boost::asio::deadline_timer _timer;		/**< Multiple Link SAP requests timer.*/
+	/** Timer map. */
+	std::map<uint16, boost::shared_ptr<boost::asio::deadline_timer> > _timer;
+	boost::mutex _mutex;	/**< Mutex.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
