@@ -18,6 +18,8 @@
 #include "udp_listener.hpp"
 #include "meta_message.hpp"
 #include "log.hpp"
+#include "mihfid.hpp"
+
 #include <odtone/mih/frame.hpp>
 #include <odtone/bind_rv.hpp>
 #include <boost/bind.hpp>
@@ -41,11 +43,14 @@ udp_listener::udp_listener(io_service& io,
 			   ip::udp ipv,
 			   const char *ip,
 			   uint16 port,
-			   dispatch_t &d)
+			   dispatch_t &d,
+			   bool enable_multicast)
 	: _io(io),
 	  _sock(io),
 	  _dispatch(d)
 {
+	_enable_multicast = enable_multicast;
+
 	ip::udp::endpoint endpoint(ip::address::from_string(ip), port);
 	_sock.open(ipv);
 	_sock.bind(endpoint);
@@ -107,8 +112,17 @@ void udp_listener::handle_receive(buffer<uint8>&			 buff,
 
 			meta_message_ptr in(new meta_message(ip, port, *pud));
 			ODTONE_LOG(4, *pud);
-			_dispatch(in);
-                }
+
+			// discard messages that this MIHF broadcasted to itself
+			// discard messages that are not destined to this MIHF or if
+			// multicast messages are not supported
+			if (in->source() != mihfid &&
+				(utils::this_mihf_is_destination(in) || (utils::is_multicast(in) && _enable_multicast)))
+				_dispatch(in);
+			else
+				ODTONE_LOG(1, "(udp) Discarding message! Reason: this is not ",
+							  "the destination or multicast is not supported");
+		}
 
 		void *rbuff = buff.get();
 		size_t rlen = buff.size();

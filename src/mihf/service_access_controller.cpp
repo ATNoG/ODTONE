@@ -100,10 +100,6 @@ void sac_dispatch::operator()(meta_message_ptr& in)
  */
 bool sac_process_message(meta_message_ptr& in, meta_message_ptr& out)
 {
-	// discard messages that this MIHF broadcasted to itself
-	if (in->source() == mihfid)
-		return false;
-
 	/** __no__ authentication at this point */
 
 	uint mid = in->mid();

@@ -49,8 +49,6 @@ public:
 	 * @param address_abook The address book module.
 	 * @param t The transmit module.
 	 * @param lrpool The link response pool module.
-	 * @param enable_broadcast True if response to broadcast to
-	 *                          Capability_Discover.request is enable or false otherwise.
 	 */
 	service_management(io_service &io,
 			   local_transaction_pool &lpool,
@@ -58,8 +56,7 @@ public:
 			   user_book &user_abook,
 			   address_book &address_book,
 			   transmit &t,
-			   link_response_pool &lrpool,
-			   bool enable_broadcast = false);
+			   link_response_pool &lrpool);
 
 	/**
 	 * Capability Discover Request message handler.
@@ -164,7 +161,6 @@ private:
 	transmit				&_transmit;		/**< Transmit book module.			*/
 	link_response_pool		&_lrpool;		/**< Link response pool module.		*/
 
-	bool _enable_broadcast;	/**< Set to true if this MIHF responds to broadcast messages.*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

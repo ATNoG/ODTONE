@@ -79,7 +79,7 @@ static const char* const kConf_MIHF_Remote_Port        = "mihf.remote_port";
 static const char* const kConf_MIHF_Local_Port         = "mihf.local_port";
 static const char* const kConf_MIHF_Link_Response_Time = "mihf.link_response_time";
 static const char* const kConf_MIHF_Link_Delete        = "mihf.link_delete";
-static const char* const kConf_MIHF_BRDCAST            = "enable_broadcast";
+static const char* const kConf_MIHF_Multicast          = "enable_multicast";
 static const char* const kConf_MIHF_Verbosity          = "log";
 
 uint16 kConf_MIHF_Link_Response_Time_Value;
@@ -499,7 +499,7 @@ int main(int argc, char **argv)
 		(kConf_MIHF_Transport_List, po::value<std::string>()->default_value("udp, tcp"), "List of supported transport protocols")		
 		(kConf_MIHF_Link_Response_Time, po::value<uint16>()->default_value(300), "Link SAP response time (milliseconds)")
 		(kConf_MIHF_Link_Delete, po::value<uint16>()->default_value(2), "Link SAP response fails to forget")
-		(kConf_MIHF_BRDCAST,  "Allows broadcast messages")
+		(kConf_MIHF_Multicast,  "Allows multicast messages")
 		(kConf_MIHF_Verbosity, po::value<uint16>()->default_value(1), "Log level [0-4]")
 	;
 
@@ -515,7 +515,7 @@ int main(int argc, char **argv)
 	}
 
 	// get command line parameters
-	bool enable_broadcast = (cfg.count(kConf_MIHF_BRDCAST) == 1);
+	bool enable_multicast = (cfg.count(kConf_MIHF_Multicast) == 1);
 
 	uint16 buff_size = cfg.get<uint16>(kConf_Receive_Buffer_Len);
 	uint16 lport = cfg.get<uint16>(kConf_MIHF_Local_Port);
@@ -564,7 +564,7 @@ int main(int argc, char **argv)
 	event_service		mies(io, lpool, trnsmt, mihf_abook, link_abook);
 	command_service		mics(io, lpool, trnsmt, mihf_abook, link_abook, user_abook, lrpool);
 	information_service	miis(lpool, trnsmt, user_abook);
-	service_management	sm(io, lpool, link_abook, user_abook, mihf_abook, trnsmt, lrpool, enable_broadcast);
+	service_management	sm(io, lpool, link_abook, user_abook, mihf_abook, trnsmt, lrpool);
 
 	// register callbacks with service access controller
 	sm_register_callbacks(sm);
@@ -586,16 +586,16 @@ int main(int argc, char **argv)
 
 	// create and bind to port 'lport' on loopback interface and
 	// call ldispatch when a message is received
-	udp_listener commhandv4(io, buff_size, ip::udp::v4(), "127.0.0.1", lport, ldispatch);
-	udp_listener commhandv6(io, buff_size, ip::udp::v6(), "::1", lport, ldispatch);
+	udp_listener commhandv4(io, buff_size, ip::udp::v4(), "127.0.0.1", lport, ldispatch, enable_multicast);
+	udp_listener commhandv6(io, buff_size, ip::udp::v6(), "::1", lport, ldispatch, enable_multicast);
 
 	// create and bind to port rport and call rdispatch when a
 	// message is received
-	udp_listener remotelistener_udp(io, buff_size, ip::udp::v6(), "::", rport, rdispatch);
+	udp_listener remotelistener_udp(io, buff_size, ip::udp::v6(), "::", rport, rdispatch, enable_multicast);
 
 	// create and bind to port rport and call rdispatch when a
 	// message is received
-	tcp_listener remotelistener_tcp(io, buff_size, ip::tcp::v6(), "::", rport, rdispatch);
+	tcp_listener remotelistener_tcp(io, buff_size, ip::tcp::v6(), "::", rport, rdispatch, enable_multicast);
 
 	// start listening on local and remote ports
 	commhandv4.start();

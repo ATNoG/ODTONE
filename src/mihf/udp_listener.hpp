@@ -49,13 +49,16 @@ public:
 	 * @param ip The IP address to be aware.
 	 * @param port The listening port.
 	 * @param d The dispatch function.
+	 * @param enable_multicast True if multicast messages are allowed or false
+	 * 						   otherwise.
 	 */
 	udp_listener(io_service& io,
 		     uint16 buff_size,
 		     ip::udp ipv,
 		     const char *ip,
 		     uint16 port,
-		     dispatch_t &d);
+		     dispatch_t &d,
+		     bool enable_multicast);
 
 	/**
 	 * Start the UDP listener socket.
@@ -74,11 +77,12 @@ public:
 			    const boost::system::error_code& ec);
 
 protected:
-	io_service			&_io;		/**< The io_service object.	*/
-	ip::udp::socket		_sock;		/**< UDP socket.			*/
-	dispatch_t			&_dispatch;	/**< Dispatch function.		*/
-	ip::udp::endpoint	_rmt_endp;	/**< Remote endpoint.		*/
+	io_service			&_io;		/**< The io_service object.			*/
+	ip::udp::socket		_sock;		/**< UDP socket.					*/
+	dispatch_t			&_dispatch;	/**< Dispatch function.				*/
+	ip::udp::endpoint	_rmt_endp;	/**< Remote endpoint.				*/
 
+	bool _enable_multicast;			/**< Multicast messages allowed?	*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

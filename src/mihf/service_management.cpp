@@ -49,8 +49,6 @@ namespace odtone { namespace mihf {
  * @param address_abook The address book module.
  * @param t The transmit module.
  * @param lrpool The link response pool module.
- * @param enable_broadcast True if response to broadcast to
- *                          Capability_Discover.request is enable or false otherwise.
  */
 service_management::service_management(io_service &io,
 										local_transaction_pool &lpool,
@@ -58,8 +56,7 @@ service_management::service_management(io_service &io,
 										user_book &user_abook,
 										address_book &address_book,
 										transmit &t,
-										link_response_pool &lrpool,
-										bool enable_broadcast)
+										link_response_pool &lrpool)
 	: _lpool(lpool),
 	  _link_abook(link_abook),
 	  _user_abook(user_abook),
@@ -67,7 +64,6 @@ service_management::service_management(io_service &io,
 	  _transmit(t),
 	  _lrpool(lrpool)
 {
-	_enable_broadcast = enable_broadcast;
 }
 
 /**
@@ -239,23 +235,21 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 	} else if (in->is_local() && utils::this_mihf_is_destination(in)) {
 		set_capability_discover_response(in, out);
 		return true;
-	// Remote requets
+	// Remote requets received
 	} else if (utils::this_mihf_is_destination(in)) {
 		send_indication(in, out);
 		get_capabilities(in, out);
 		set_capability_discover_response(in, out);
 		return true;
-	// Multicast request
+	// Multicast request received
 	} else if (utils::is_multicast(in)) {
-		if (_enable_broadcast) {
-			send_indication(in, out);
-			get_capabilities(in, out);
-			set_capability_discover_response(in, out);
-			return true;
-		} else {
+		send_indication(in, out);
+		get_capabilities(in, out);
+		set_capability_discover_response(in, out);
+		return true;
+	} else {
 			ODTONE_LOG(3, "(mism) response to broadcast Capability_Discover.request disabled ");
 			return false;
-		}
 	}
 
 	return false;

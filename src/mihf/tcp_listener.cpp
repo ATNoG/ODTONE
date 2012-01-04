@@ -18,6 +18,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "tcp_listener.hpp"
 #include "log.hpp"
+#include "mihfid.hpp"
+
 #include <odtone/bind_rv.hpp>
 #include <boost/bind.hpp>
 
@@ -33,10 +35,11 @@ namespace odtone { namespace mihf {
  * the socket.
  * @param d The dispatch function.
  */
-session::session(io_service &io, dispatch_t &d)
+session::session(io_service &io, dispatch_t &d, bool enable_multicast)
 	: _sock(io),
 	  _dispatch(d)
 {
+	_enable_multicast = enable_multicast;
 }
 
 /**
@@ -86,8 +89,19 @@ void session::handle_read(odtone::buffer<uint8> &buff,
 			ODTONE_LOG(1, "(tcp) received ", rbytes, " bytes from ", ip , ":", port);
 
 			meta_message_ptr in(new meta_message(ip, port, *pud));
-			_dispatch(in);
-                }
+
+			// discard messages that this MIHF broadcasted to itself
+			// discard messages that are not destined to this MIHF or if
+			// multicast messages are not supported
+			if (in->source() != mihfid &&
+				(utils::this_mihf_is_destination(in) || (utils::is_multicast(in) && _enable_multicast)))
+				_dispatch(in);
+			else
+				ODTONE_LOG(1, "(udp) Discarding message! Reason: this is not ",
+							  "the destination or multicast is not supported");
+
+		}
+
 		// close socket because we're not using it anymore
 		 _sock.close();
 	} else {
@@ -112,11 +126,13 @@ tcp_listener::tcp_listener(io_service &io,
 			   ip::tcp ipv,
 			   const char* ip,
 			   uint16 port,
-			   dispatch_t &d)
+			   dispatch_t &d,
+			   bool enable_multicast)
 	: _io(io),
 	  _acceptor(io, ip::tcp::endpoint(ip::address::from_string(ip), port)),
 	  _dispatch(d)
 {
+	_enable_multicast = enable_multicast;
 	_acceptor.set_option(boost::asio::socket_base::receive_buffer_size(buff_size));
 }
 
@@ -125,7 +141,7 @@ tcp_listener::tcp_listener(io_service &io,
  */
 void tcp_listener::start()
 {
-	session *new_session = new session(_io, _dispatch);
+	session *new_session = new session(_io, _dispatch, _enable_multicast);
 	_acceptor.async_accept(new_session->socket(),
 			       boost::bind(&tcp_listener::handle_accept,
 					   this,
@@ -144,7 +160,7 @@ void tcp_listener::handle_accept(session *new_session,
 {
 	if (!e) {
 		new_session->start();
-		new_session = new session(_io, _dispatch);
+		new_session = new session(_io, _dispatch, _enable_multicast);
 
 		_acceptor.async_accept(new_session->socket(),
 				       boost::bind(&tcp_listener::handle_accept,
