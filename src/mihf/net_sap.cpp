@@ -70,7 +70,10 @@ void net_sap::send(meta_message_ptr &msg)
 			utils::udp_send(_io, msg, "ff02::1", 4551);
 		// check msg meta data for ip and use it
 		} else if (msg->ip().size() != 0) {
-			utils::udp_send(_io, msg, msg->ip().c_str(), 4551);
+			if(msg->port() != 0)
+				utils::udp_send(_io, msg, msg->ip().c_str(), msg->port());
+			else
+				utils::udp_send(_io, msg, msg->ip().c_str(), 4551);
 		} else {
 			ODTONE_LOG(1, "(net sap) no registration for peer mihf with id: ", msg->destination().to_string());
 		}
