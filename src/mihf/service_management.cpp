@@ -178,7 +178,7 @@ void service_management::set_capability_discover_response(meta_message_ptr& in,
 	// Create and piggyback local capabilities in response message
 	address_entry mihf_cap = _abook.get(mihfid_t::instance()->to_string());
 
-	*out << mih::confirm(mih::confirm::capability_discover)
+	*out << mih::response(mih::response::capability_discover)
 			& mih::tlv_status(mih::status_success)
 			& mih::tlv_net_type_addr_list(mihf_cap.capabilities_list_net_type_addr)
 			& mih::tlv_event_list(mihf_cap.capabilities_event_list)

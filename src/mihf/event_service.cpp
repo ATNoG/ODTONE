@@ -337,7 +337,7 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 	link.addr = _link_abook.get(in->source().to_string()).link_id.addr;
 
 	if(st == mih::status_success) {
-		*out << mih::confirm(mih::confirm::event_subscribe)
+		*out << mih::response(mih::response::event_subscribe)
 			& mih::tlv_status(st)
 			& mih::tlv_link_identifier(link)
 			& mih::tlv_event_list(events);
@@ -350,7 +350,7 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 		}
 		st = subscribe(mih::id(out->destination().to_string()), link, events.get());
 	} else {
-		*out << mih::confirm(mih::confirm::event_subscribe)
+		*out << mih::response(mih::response::event_subscribe)
 				& mih::tlv_status(st)
 				& mih::tlv_link_identifier(link);
 	}
@@ -560,7 +560,7 @@ bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 	boost::optional<mih::event_list> events;
 
 	// parse incoming message to (event_registration_t) reg
-	*in >>  mih::response()
+	*in >>  mih::response(mih::response::event_unsubscribe)
 		& mih::tlv_status(st)
 		& mih::tlv_link_identifier(link)
 		& mih::tlv_event_list(events);
@@ -574,7 +574,7 @@ bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 	    in->destination().to_string());
 
 	// forward to user
-	in->opcode(mih::operation::confirm);
+	in->opcode(mih::operation::response);
 	_transmit(in);
 
 	return false;
