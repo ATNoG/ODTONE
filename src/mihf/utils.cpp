@@ -91,11 +91,7 @@ void tcp_send(boost::asio::io_service &io, meta_message_ptr &msg,
 	if (is_multicast(msg)) {
 		boost::asio::socket_base::broadcast option(true);
 		sock.set_option(option);
-		ip = "ff02::1";
 	}
-
-	ip::tcp::endpoint ep(ip::address::from_string(ip), port);
-
 
 	sock.connect(ip::tcp::endpoint(ip::address::from_string(dst_ip), dst_port));
 	mih::frame_vla fm;
