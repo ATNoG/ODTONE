@@ -77,6 +77,17 @@ public:
 	}
 
 	/**
+	 * Check if the MIHF_ID is different of another MIHF_ID.
+	 *
+	 * @param other MIHF ID to compare with.
+	 * @return True if they are different or false otherwise.
+	 */
+	bool operator!=(const id& other) const
+	{
+		return (_id.compare(other.to_string()) != 0);
+	}
+
+	/**
 	 * Serialize/deserialize the MIHF_ID data type.
 	 *
 	 * @param ar The archive to/from where serialize/deserialize the data type.

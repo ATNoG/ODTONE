@@ -586,8 +586,8 @@ int main(int argc, char **argv)
 
 	// create and bind to port 'lport' on loopback interface and
 	// call ldispatch when a message is received
-	udp_listener commhandv4(io, buff_size, ip::udp::v4(), "127.0.0.1", lport, ldispatch, enable_multicast);
-	udp_listener commhandv6(io, buff_size, ip::udp::v6(), "::1", lport, ldispatch, enable_multicast);
+	udp_listener commhandv4(io, buff_size, ip::udp::v4(), "127.0.0.1", lport, ldispatch, true);
+	udp_listener commhandv6(io, buff_size, ip::udp::v6(), "::1", lport, ldispatch, true);
 
 	// create and bind to port rport and call rdispatch when a
 	// message is received

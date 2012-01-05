@@ -113,15 +113,13 @@ void udp_listener::handle_receive(buffer<uint8>&			 buff,
 			meta_message_ptr in(new meta_message(ip, port, *pud));
 			ODTONE_LOG(4, *pud);
 
-			// discard messages that this MIHF broadcasted to itself
-			// discard messages that are not destined to this MIHF or if
-			// multicast messages are not supported
-			if (in->source() != mihfid &&
-				(utils::this_mihf_is_destination(in) || (utils::is_multicast(in) && _enable_multicast)))
+			// discard messages if multicast messages are not supported
+			if(utils::is_multicast(in) && !_enable_multicast) {
+				ODTONE_LOG(1, "(udp) Discarding message! Reason: ",
+							  "multicast messages are not supported");
+			} else {
 				_dispatch(in);
-			else
-				ODTONE_LOG(1, "(udp) Discarding message! Reason: this is not ",
-							  "the destination or multicast is not supported");
+			}
 		}
 
 		void *rbuff = buff.get();
