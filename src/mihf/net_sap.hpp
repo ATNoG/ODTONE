@@ -46,8 +46,9 @@ public:
 	 * dispatch handlers for any asynchronous operations performed on
 	 * the socket.
 	 * @param abook The address book module.
+	 * @param port Port used to send the messages.
 	 */
-	net_sap(io_service &io, address_book &abook);
+	net_sap(io_service &io, address_book &abook, uint16 port);
 
 	/**
 	 * Send the message to a peer MIHF.
@@ -56,8 +57,9 @@ public:
 	 */
 	void send(meta_message_ptr &msg);
 private:
-	io_service &_io;		/**< The io_service object.		*/
-	address_book &_abook;	/**< The address book module.	*/
+	io_service &_io;		/**< The io_service object.				*/
+	address_book &_abook;	/**< The address book module.			*/
+	uint16 _port;			/**< Port used to send the messages.	*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

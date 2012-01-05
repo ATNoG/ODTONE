@@ -51,11 +51,13 @@ public:
 	 * @param user_abook The user book module.
 	 * @param link_abook The link book module.
 	 * @param msg_out The output message.
+	 * @param port Port used to send the messages.
 	 */
 	transmit(io_service &io,
 			 user_book &user_abook,
 			 link_book &link_abook,
-			 message_out &msg_out);
+			 message_out &msg_out,
+			 uint16 port);
 
 	/**
 	 * Send message to a local entity. If the output message destination is a peer
@@ -66,11 +68,11 @@ public:
 	void operator()(meta_message_ptr& msg);
 
 private:
-	io_service &_io;		/**< The io_service object.		*/
-	user_book &_user_abook;	/**< The user book module.		*/
-	link_book &_link_abook;	/**< The link book module.		*/
-	message_out &_msg_out;	/**< The message output module.	*/
-
+	io_service &_io;		/**< The io_service object.				*/
+	user_book &_user_abook;	/**< The user book module.				*/
+	link_book &_link_abook;	/**< The link book module.				*/
+	message_out &_msg_out;	/**< The message output module.			*/
+	uint16 _port;			/**< Port used to send the messages.	*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

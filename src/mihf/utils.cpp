@@ -76,10 +76,12 @@ static void send_handler(const boost::system::error_code &ec)
  * dispatch handlers for any asynchronous operations performed on
  * the socket.
  * @param msg The output message.
- * @param ip The IP address of the destination of the message.
- * @param port The port of the destination of the message.
+ * @param dst_ip The IP address of the destination of the message.
+ * @param dst_port The port of the destination of the message.
+ * @param src_port The source port used to send the message.
  */
-void tcp_send(io_service &io, meta_message_ptr &msg, const char *ip, uint16 port)
+void tcp_send(boost::asio::io_service &io, meta_message_ptr &msg,
+			  const char *dst_ip, uint16 dst_port, uint16 src_port)
 {
 	ip::tcp::socket sock(io);
 
@@ -94,8 +96,8 @@ void tcp_send(io_service &io, meta_message_ptr &msg, const char *ip, uint16 port
 
 	ip::tcp::endpoint ep(ip::address::from_string(ip), port);
 
-	sock.connect(ep);
 
+	sock.connect(ip::tcp::endpoint(ip::address::from_string(dst_ip), dst_port));
 	mih::frame_vla fm;
 	void *sbuff;
 	size_t slen;
@@ -118,25 +120,25 @@ void tcp_send(io_service &io, meta_message_ptr &msg, const char *ip, uint16 port
  * dispatch handlers for any asynchronous operations performed on
  * the socket.
  * @param msg The output message.
- * @param ip The IP address of the destination of the message.
- * @param port The port of the destination of the message.
+ * @param dst_ip The IP address of the destination of the message.
+ * @param dst_port The port of the destination of the message.
+ * @param src_port The source port used to send the message.
  */
-void udp_send(io_service &io, meta_message_ptr &msg, const char *ip, uint16 port)
+void udp_send(boost::asio::io_service &io, meta_message_ptr &msg,
+			  const char *dst_ip, uint16 dst_port, uint16 src_port)
 {
-	ip::udp::socket sock(io, ip::udp::endpoint(ip::udp::v4(), 0));
+	ip::udp::socket sock(io);
+	sock.open(ip::udp::v6());
 
-	//
-	// broadcast if no destination mihf is given
-	//
+	// Set socket flags
+    sock.set_option(boost::asio::socket_base::reuse_address(true));
 	if (is_multicast(msg)) {
 		boost::asio::socket_base::broadcast option(true);
 		sock.set_option(option);
-		ip = "ff02::1";
 	}
 
-	ip::udp::endpoint ep(ip::address::from_string(ip), port);
+	sock.bind(ip::udp::endpoint(ip::address_v6::any(), src_port));
 
-	//	msg->source(mihfid);
 	mih::frame_vla fm;
 	void *sbuff;
 	size_t slen;
@@ -145,10 +147,13 @@ void udp_send(io_service &io, meta_message_ptr &msg, const char *ip, uint16 port
 	sbuff = fm.get();
 	slen = fm.size();
 
+	ip::udp::endpoint ep(ip::address::from_string(dst_ip), dst_port);
 	sock.async_send_to(boost::asio::buffer(sbuff, slen),
 			   ep,
 			   boost::bind((&send_handler),
 				       placeholders::error));
+
+	sock.close();
 }
 
 /**

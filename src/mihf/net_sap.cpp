@@ -34,11 +34,13 @@ namespace odtone { namespace mihf {
  * dispatch handlers for any asynchronous operations performed on
  * the socket.
  * @param abook The address book module.
+ * @param port Port used to send the messages.
  */
-net_sap::net_sap(io_service &io, address_book &abook)
+net_sap::net_sap(io_service &io, address_book &abook, uint16 port)
 	: _io(io),
 	  _abook(abook)
 {
+	_port = port;
 }
 
 /**
@@ -55,25 +57,25 @@ void net_sap::send(meta_message_ptr &msg)
 		if(dst.capabilities_trans_list.is_initialized()) {
 			if(dst.capabilities_trans_list->get(mih::transport_tcp) == 1
 				&& src.capabilities_trans_list->get(mih::transport_tcp) == 1)
-				utils::tcp_send(_io, msg, dst.ip.c_str(), dst.port);
+				utils::tcp_send(_io, msg, dst.ip.c_str(), dst.port, _port);
 			else
-				utils::udp_send(_io, msg, dst.ip.c_str(), dst.port);
+				utils::udp_send(_io, msg, dst.ip.c_str(), dst.port, _port);
 		} else {
-			utils::udp_send(_io, msg, dst.ip.c_str(), dst.port);
+			utils::udp_send(_io, msg, dst.ip.c_str(), dst.port, _port);
 		}
 
 		ODTONE_LOG(1, "(net sap) sent message to: ", msg->destination().to_string(), " ", dst.ip, " ", dst.port);
 	} catch(...) { // no registration was found
 
 		// try to broadcast message
-		if (msg->destination().to_string().size() == 0) {
-			utils::udp_send(_io, msg, "ff02::1", 4551);
+		if (utils::is_multicast(msg)) {
+			utils::udp_send(_io, msg, "ff02::1", 4551, _port);
 		// check msg meta data for ip and use it
 		} else if (msg->ip().size() != 0) {
 			if(msg->port() != 0)
-				utils::udp_send(_io, msg, msg->ip().c_str(), msg->port());
+				utils::udp_send(_io, msg, msg->ip().c_str(), msg->port(), _port);
 			else
-				utils::udp_send(_io, msg, msg->ip().c_str(), 4551);
+				utils::udp_send(_io, msg, msg->ip().c_str(), 4551, _port);
 		} else {
 			ODTONE_LOG(1, "(net sap) no registration for peer mihf with id: ", msg->destination().to_string());
 		}

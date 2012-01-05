@@ -554,11 +554,11 @@ int main(int argc, char **argv)
 	handler_t process_message = boost::bind(&sac_process_message, _1, _2);
 
 	// wrapper for sending messages
-	net_sap			netsap(io, mihf_abook);
+	net_sap			netsap(io, mihf_abook, rport);
 
 	// transaction manager for outgoing messages
 	message_out		msgout(tpool, process_message, netsap);
-	transmit		trnsmt(io, user_abook, link_abook, msgout);
+	transmit		trnsmt(io, user_abook, link_abook, msgout, lport);
 
 	// instantiate mihf services
 	event_service		mies(io, lpool, trnsmt, mihf_abook, link_abook);

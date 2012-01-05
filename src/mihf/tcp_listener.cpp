@@ -126,11 +126,15 @@ tcp_listener::tcp_listener(io_service &io,
 			   dispatch_t &d,
 			   bool enable_multicast)
 	: _io(io),
-	  _acceptor(io, ip::tcp::endpoint(ip::address::from_string(ip), port)),
+	  _acceptor(io),
 	  _dispatch(d)
 {
 	_enable_multicast = enable_multicast;
+
+	_acceptor.open(ipv);
 	_acceptor.set_option(boost::asio::socket_base::receive_buffer_size(buff_size));
+	_acceptor.set_option(boost::asio::socket_base::reuse_address(true));
+	_acceptor.bind(boost::asio::ip::tcp::endpoint(ip::address::from_string(ip), port));
 }
 
 /**
@@ -139,6 +143,7 @@ tcp_listener::tcp_listener(io_service &io,
 void tcp_listener::start()
 {
 	session *new_session = new session(_io, _dispatch, _enable_multicast);
+	_acceptor.listen();
 	_acceptor.async_accept(new_session->socket(),
 			       boost::bind(&tcp_listener::handle_accept,
 					   this,

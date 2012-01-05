@@ -51,10 +51,10 @@ udp_listener::udp_listener(io_service& io,
 {
 	_enable_multicast = enable_multicast;
 
-	ip::udp::endpoint endpoint(ip::address::from_string(ip), port);
 	_sock.open(ipv);
-	_sock.bind(endpoint);
 	_sock.set_option(boost::asio::socket_base::receive_buffer_size(buff_size));
+	_sock.set_option(boost::asio::socket_base::reuse_address(true));
+	_sock.bind(boost::asio::ip::udp::endpoint(ip::address::from_string(ip), port));
 }
 
 /**
