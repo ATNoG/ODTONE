@@ -192,4 +192,42 @@ const mih::octet_string user_book::information_user()
 	throw ("no MIH-User responsible for information server");
 }
 
+/**
+ * Get the MIH-User associated with the discovery operations.
+ *
+ * @return The identifier of the MIH-User associated with the discovery
+ * operations.
+ */
+const mih::octet_string user_book::discovery_user()
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::vector<mih::octet_string> ids;
+	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
+		if(it->second.role == mih::user_role_discovery && it->second.priority == 0)
+			return it->first;
+	}
+
+	throw ("no MIH-User responsible for discovery");
+}
+
+/**
+ * Check if exists a MIH-User associated with the discovery operations.
+ *
+ * @return True if exists a MIH-User associated with the discovery
+ * operations or false otherwise.
+ */
+bool user_book::has_discovery_user()
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::vector<mih::octet_string> ids;
+	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
+		if(it->second.role == mih::user_role_discovery)
+			return true;
+	}
+
+	return false;
+}
+
 } /* namespace mihf */ } /* namespace odtone */

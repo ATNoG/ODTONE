@@ -116,6 +116,23 @@ public:
 	 * server operations.
 	 */
 	const mih::octet_string information_user();
+
+	/**
+	 * Get the MIH-User associated with the discovery operations.
+	 *
+	 * @return The identifier of the MIH-User associated with the discovery
+	 * operations.
+	 */
+	const mih::octet_string discovery_user();
+
+	/**
+	 * Check if exists a MIH-User associated with the discovery operations.
+	 *
+	 * @return True if exists a MIH-User associated with the discovery
+	 * operations or false otherwise.
+	 */
+	bool has_discovery_user();
+
 private:
 
 	std::map<mih::octet_string, user_entry> _ubook;	/**< User book map.	*/

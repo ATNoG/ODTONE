@@ -62,7 +62,8 @@ service_management::service_management(io_service &io,
 	  _user_abook(user_abook),
 	  _abook(address_book),
 	  _transmit(t),
-	  _lrpool(lrpool)
+	  _lrpool(lrpool),
+	  _discover(io, lpool, address_book, user_abook, t)
 {
 }
 
@@ -228,6 +229,12 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 
 	// User requests the capabilities of a remote MIHF
 	if (in->is_local() && !utils::this_mihf_is_destination(in)) {
+		// Multicast && Discover Module ON
+		if(utils::is_multicast(in) && _user_abook.has_discovery_user()) {
+			_discover.request(in, out);
+			return false;
+		}
+		// Multicast && Discover Module OFF
 		piggyback_capabilities(in, out);
 		utils::forward_request(out, _lpool, _transmit);
 		return false;
@@ -267,6 +274,15 @@ bool service_management::capability_discover_response(meta_message_ptr &in,
 {
 	ODTONE_LOG(1, "(mism) received Capability_Discover.response from ",
 	    in->source().to_string());
+
+	// Check if it is a discovery message
+	if(in->is_local()) {
+		user_entry user = _user_abook.get(in->source().to_string());
+		if(user.role == mih::user_role_discovery) {
+			_discover.response(in, out);
+			return false;
+		}
+	}
 
 	// Store remote MIHF capabilities
 	get_capabilities(in, out);

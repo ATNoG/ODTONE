@@ -25,6 +25,7 @@
 #include "local_transaction_pool.hpp"
 #include "transmit.hpp"
 #include "meta_message.hpp"
+#include "discover_service.hpp"
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 ///////////////////////////////////////////////////////////////////////////////
@@ -161,6 +162,7 @@ private:
 	transmit				&_transmit;		/**< Transmit book module.			*/
 	link_response_pool		&_lrpool;		/**< Link response pool module.		*/
 
+	discover_service _discover;				/**< Discovery service module.		*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */
