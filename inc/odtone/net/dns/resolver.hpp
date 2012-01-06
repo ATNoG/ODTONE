@@ -18,18 +18,42 @@
 #ifndef ODTONE_DNS_RESOLVER__HPP_
 #define ODTONE_DNS_RESOLVER__HPP_
 
+#include <list>
 #include <netinet/in.h>
-#include <boost/function.hpp>
 
-#include <odtone/net/dns/llist.h>
+#include <boost/function.hpp>
 
 #define	DNS_MAX				1025	/**< Maximum host name.				*/
 #define	DNS_PACKET_LEN		2048	/**< Buffer size for DNS packet.	*/
-#define	MAX_CACHE_ENTRIES	10000	/**< Dont cache more than that.		*/
 #define	DNS_QUERY_TIMEOUT	30		/**< Query timeout, seconds.		*/
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace dns {
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Case-insensitive string comparison. Compares the C string str1 to the C string str2.
+ * This function starts comparing the first character of each string.
+ * If they are equal to each other, it continues with the following pairs
+ * until the characters differ or until a terminating null-character is reached.
+ *
+ * @param str1 The first C string to compare.
+ * @param str2 The second C string to compare.
+ * @return Returns an integral value indicating the relationship between the strings:
+ *         A zero value indicates that both strings are equal.
+ *         A value greater than zero indicates that the first character that does
+ *         not match has a greater value in str1 than in str2; And a value less than
+ *         zero indicates the opposite.
+ */
+static int casecmp(register const char *str1, register const char *str2)
+{
+	for (; *str1 != '\0' && *str2 != '\0'; str1++, str2++)
+		if (tolower(*str1) != tolower(*str2))
+			break;
+
+	return (*str1 - *str2);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -63,7 +87,6 @@ enum dns_error {
  * and user defined callback function.
  */
 struct query {
-	struct llhead	link;					/**< Link.							*/
 	time_t			expire;					/**< Time when this query expire.	*/
 	uint16_t		tid;					/**< UDP DNS transaction ID.		*/
 	uint16_t		qtype;					/**< Query type.					*/
@@ -72,6 +95,11 @@ struct query {
 	dns_callback_t	callback;				/**< User callback routine.			*/
 	int 			pkt_len;				/**< Response packet length.		*/
 	unsigned char	pkt[DNS_PACKET_LEN];	/**< Response packet bytes.			*/
+
+	bool operator==(const struct query &other) const
+	{
+		return ((qtype == other.qtype) && (casecmp(name, other.name) == 0));
+	}
 };
 
 /**
@@ -94,9 +122,8 @@ struct dns {
 	int					sock;		/**< UDP socket used for queries.	*/
 	struct sockaddr_in	sa;			/**< DNS server socket address.		*/
 	uint16_t			tid;		/**< Latest tid used.				*/
-	struct llhead		active;		/**< Active queries, MRU order.		*/
-	struct llhead		cached;		/**< Cached queries.				*/
-	int					num_cached;	/**< Number of cached queries.		*/
+	std::list<struct query>	active;	/**< Active queries.				*/
+	std::list<struct query>	cached;	/**< Cached queries.				*/
 };
 
 /**
@@ -135,13 +162,6 @@ public:
 
 private:
 	/**
-	 * Get the UDP socket used by the resolver.
-	 *
-	 * @return The UDP socket used by the resolver.
-	 */
-	int dns_get_fd();
-
-	/**
 	 * Initializer the resolver descriptor.
 	 */
 	void dns_init();
@@ -174,7 +194,7 @@ private:
 	void dns_cancel(const void *context);
 
 private:
-	struct dns *dns;	/**< DNS resolver descriptor.	*/
+	struct dns dns;	/**< DNS resolver descriptor.	*/
 };
 
 
