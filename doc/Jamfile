@@ -44,7 +44,12 @@ boostbook doc-html
 
 install images
 	: [ glob src/images/*.* ]
-	: <location>./html/images
+	: <location>html/images
+	;
+
+install callouts
+	: [ glob src/images/callouts/*.* ]
+	: <location>html/images/callouts
 	;
 
 install css
