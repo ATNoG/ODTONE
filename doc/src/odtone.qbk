@@ -21,8 +21,8 @@
     [version 0.3]
     [authors [Guimarães, Carlos]]
     [authors [Santos, Bruno]]
-    [copyright 2009-2011 Universidade Aveiro]
-    [copyright 2009-2011 Instituto de Telecomunicações - Pólo Aveiro]
+    [copyright 2009-2012 Universidade Aveiro]
+    [copyright 2009-2012 Instituto de Telecomunicações - Pólo Aveiro]
     [license
         This software is distributed under a license. The full license
 		agreement can be found in the LICENSE in this distribution.
@@ -101,47 +101,32 @@ notes on specific platforms that might prove an obstacle.
 In order to correctly use ODTONE, you must first make sure that you have the
 required dependencies:
 
-* [*Boost Developer libraries (v1.47 or higher):] If you don't have them installed
-in your system, you can go to [@http://www.boost.org/ boost's website] and
-download the most recent version of the Boost libraries.
+* *Boost Developer libraries (v1.47)*
 
-[h4 1.1. Boost Library Quick Guide]
-Boost is required to compile ODTONE so, to correctly use ODTONE,
+[h4 1.1. Boost Quick Guide]
+Boost is required to compile ODTONE, so in order to correctly use ODTONE
 you must first make sure you have the Boost libraries sources and Boost.Build
 installed in your system.
 
-#Download the Boost library [@http://www.boost.org/ boost's website]
-and unpack it.
+*Download the Boost library(v1.47) [@http://www.boost.org/ boost's website]
+and unpack it. We recommend that you unpack it in a project directory next to
+odtone.
 
-#Install Boost.Build (if your already have it, skip this step). You will need to
-compile the Boost.Build engine. You can use the bootstrap script from the
-Boost library sources and then copy the resulting binary (b2) to a proper place
-(within your $PATH) or you can download a pre-built binary from
-[@http://www.boost.org/ boost's website]. To finish the Boost.Build installation,
-you must tell Boost.Build engine where to find the remaining of Boost.Build. You
-can setup a boost-build.jam file in your home directory to tell where
-Boost.Build is. Example:
+[teletype]``
+projects/
+    |
+    +-- boost_1_47_0/
+    |
+    +-- odtone/
+``
 
-[table Setup boost-build.jam
-    [
-        [boost-build.jam]
-        [``
-#==============================================================================
-# Put this file at the root directory of your project or in any of its parent
-# directories. Replace 'path-to-boost' with the path to the boost libraries
-# sources.
-#
-# See the Boost.Build documentation for more details!
-#==============================================================================
+*To install Boost.Build got to 'boost_1_47_0/tools/build/v2/'. On unix like
+systems run './bootstrap.sh' and then 'sudo ./b2 install'.
+On windows like systems run 'bootstrap.bat' and then 'b2 install'.
 
-boost-build path-to-boost/tools/build/v2 ;
-        ``]
-    ]
-]
+To compile ODTONE go to 'odtone' and run 'b2'.
 
-Finally, run 'b2' to compile ODTONE.
-
-Consult the Boost.Build documentation for more details!
+[important Consult the Boost.Build documentation for more details]
 
 [h3 2. Getting ODTONE]
 
@@ -171,10 +156,11 @@ you can checkout the "dev/master" branch:
 	git checkout -b <your branch name> origin/dev/master
 ``
 
-[h3 3. Compiling and installing ODTONE]
+[h3 3. Compiling ODTONE]
 
-Once you have obtained the ODTONE source code and assured that you have
-the right dependencies installed, you are ready to compile and install ODTONE.
+Once you have obtained the ODTONE source code and have assured that you have
+the right dependencies you can compile it. ODTONE does not require any special
+procedures or layout for installation.
 
 [table Platform Support
     [[]        [x86-32]                 [x86-64]                 [ARM]]
@@ -186,12 +172,7 @@ the right dependencies installed, you are ready to compile and install ODTONE.
 
 We recommend GCC. Most distributions already come with the necessary
 pre-requisites, you may additionally need to install g++.
-
-If you get link errors relative to undefined pthread symbols, this means
-that your compiler does not link to pthreads by default. You can either pass
-the "[~linkflags=-lpthread]" option to bjam. Or, you can also configure the
-toolset to link to this library, set "[~using gcc : : : <linkflags>-lpthread ;]"
-without quotes at your user-config.jam.]
+]
 
 [note *For Windows*
 
@@ -200,14 +181,12 @@ SDK. This already comes with all pre-requisite libraries and toolchains.]
 
 [note *For Android*
 
-Current Android Bionic headers are still too buggy to compile ODTONE. For
-example, the boost::asio::ip headers does no compile because of buggy
-<netinet/in.h> and <netinet/in6.h> headers.
-
-However, since Android is based on linux, it is possible to compile ODTONE
-with the CodeSourcery GNU Toolchain for ARM Processors, at the expense of a
-bigger binary, since we have to link all libraries statically. The target must
-be arm-none-linux-gnueabi.
+Android Bionic headers have several missing definitions for sockets and
+networking, this makes ODTONE impossible to compile with the Android SDK.
+However, since Android is based on linux, it is possible to compile ODTONE with
+the CodeSourcery GNU Toolchain for ARM Processors, at the expense of a bigger
+binary, since we have to link all libraries statically. The target must be
+arm-none-linux-gnueabi.
 
 Prebuild binaries are available at
 [@http://www.codesourcery.com/sgpp/lite/arm CodeSourcery]
@@ -218,7 +197,7 @@ In order to setup user-config.jam for Android, you must add the following line
 "[~using gcc : android	: path-to-toolset/arm-none-linux-gnueabi-g++ : <linkflags>"-Wl,--whole-archive -lpthread -Wl,--no-whole-archive -lc" ;]"
 
 To use the Android toolset, pass the command line option "[~toolset=gcc-android]"
-to bjam.
+to Boost.Build.
 
 The Android SDK has the necessary tools to run, debug and deploy the ODTONE
 binaries.]
