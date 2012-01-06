@@ -134,7 +134,6 @@ public:
 
 		  _rsp_init_lbl_:
 			{
-				// ack = (new mih::message);
 				ack->ackreq(false);
 				ack->ackrsp(true);
 				ack->opcode((mih::operation::type)opcode);
@@ -142,6 +141,8 @@ public:
 				ack->mid(in->mid());
 				ack->source(my_mihf_id);
 				ack->destination(peer_mihf_id);
+				ack->ip(in->ip());
+				ack->port(in->port());
 
 				if (msg_out_avail)
 					goto _rsp_piggybacking_lbl_;

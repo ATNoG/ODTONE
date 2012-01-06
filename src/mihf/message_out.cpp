@@ -90,9 +90,10 @@ void message_out::operator()(meta_message_ptr& out)
 			if (t->start_ack_responder)
 				t->ack_responder();
 
-			t->run();
+			if(t->transaction_status == ONGOING)
+				t->run();
 
-			if (t->transaction_status != ONGOING)
+			if (t->transaction_status != ONGOING && t->ack_requestor_status != ONGOING)
 				_tpool.del(t);
 		} else {
 			new_src_transaction(out);
@@ -112,9 +113,10 @@ void message_out::operator()(meta_message_ptr& out)
 			if (t->start_ack_responder)
 				t->ack_responder();
 
-			t->run();
+			if(t->transaction_status == ONGOING)
+				t->run();
 
-			if (t->transaction_status != ONGOING)
+			if (t->transaction_status != ONGOING && t->ack_requestor_status != ONGOING)
 				_tpool.del(t);
 		} else {
 			new_src_transaction(out);
