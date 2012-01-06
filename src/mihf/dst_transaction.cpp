@@ -91,13 +91,11 @@ void dst_transaction_t::run()
 		state = DST_SEND_RESPONSE;
 
 		start_ack_requestor  = out->ackreq();
+		if(start_ack_requestor)
+			ack_requestor();
 		ack_requestor_status = ONGOING;
 
 		_netsap.send(out);
-
-		// ?? probably not
-		// if (start_ack_requestor)
-		// 	tas->ack_requestor(t);
 	}
 
   _send_response_lbl_:
