@@ -298,11 +298,13 @@ bool service_management::capability_discover_response(meta_message_ptr &in,
 
 	// set source id to broadcast id and check if there's a
 	// broadcast request from a user
+	mih::id tmp	= in->source();
 	in->source(mih::id(""));
 	if (_lpool.set_user_tid(in))  {
 		ODTONE_LOG(1, "forwarding Capability_Discover.response to ",
 		    in->destination().to_string());
 		in->opcode(mih::operation::confirm);
+		in->source(tmp);
 		_transmit(in);
 		return false;
 	}
