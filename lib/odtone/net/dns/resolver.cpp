@@ -24,14 +24,6 @@
 #include <time.h>
 #include <errno.h>
 #include <iostream>
-#include <boost/thread.hpp>
-#include <boost/foreach.hpp>
-#include <boost/optional.hpp>
-
-#include <odtone/net/dns/resolver.hpp>
-#include <odtone/net/dns/message.hpp>
-#include <odtone/net/dns/frame.hpp>
-#include <odtone/net/dns/utils.hpp>
 
 #ifdef _WIN32
 	#pragma comment(lib,"ws2_32")
@@ -49,6 +41,16 @@
 	#include <netinet/in.h>
 	#include <unistd.h>
 #endif /* _WIN32 */
+
+#include <odtone/net/dns/resolver.hpp>
+#include <odtone/net/dns/message.hpp>
+#include <odtone/net/dns/frame.hpp>
+#include <odtone/net/dns/utils.hpp>
+
+#include <boost/thread.hpp>
+#include <boost/foreach.hpp>
+#include <boost/optional.hpp>
+#include <boost/algorithm/string.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace dns {
@@ -162,12 +164,12 @@ void resolver::dns_init()
 /*
  * Find host in host cache. Add it if not found.
  */
-static boost::optional<struct query> find_cached_query(struct dns &dns, enum dns_query_type qtype, const char *name)
+static boost::optional<struct query> find_cached_query(struct dns &dns, enum dns_query_type qtype, std::string name)
 {
 	boost::optional<struct query> query;
 
 	BOOST_FOREACH(struct query tmp, dns.cached) {
-		if(tmp.qtype == qtype && casecmp(name, tmp.name) == 0) {
+		if(tmp.qtype == qtype && name.compare(tmp.name) == 0) {
 			dns.cached.push_back(tmp);
 			query = tmp;
 			break;
@@ -340,15 +342,14 @@ void resolver::dns_fini()
  * @param qtype Query type.
  * @param callback Callback function.
  */
-void resolver::dns_queue(void *ctx, const char *name,
+void resolver::dns_queue(void *ctx, std::string name,
 		enum dns_query_type qtype, dns_callback_t callback)
 {
 	struct header		*header;
-	int					i, n, name_len;
+	int					n;
 	char				pkt[DNS_PACKET_LEN], *p;
-	const char 			*s;
 	time_t				now = time(NULL);
-	struct dns_cb_data cbd;
+	struct dns_cb_data	cbd;
 
 	/* Search the cache first */
 	boost::optional<struct query> cached_query;
@@ -362,55 +363,37 @@ void resolver::dns_queue(void *ctx, const char *name,
 		return;
 	}
 
-	/* Init query structure */
-	struct query query;
-	query.ctx	= ctx;
-	query.qtype	= (uint16_t) qtype;
-	query.tid	= ++(dns.tid);
-	query.callback	= callback;
-	query.expire	= now + DNS_QUERY_TIMEOUT;
-	for (p = query.name; *name &&
-	    p < query.name + sizeof(query.name) - 1; name++, p++)
-		*p = tolower(*name);
-	*p = '\0';
-	name = query.name;
-
-	/* Prepare DNS packet header */
-	header		= (struct header *) pkt;
-	header->tid	= query.tid;
-	header->flags	= htons(0x100);		/* Haha. guess what it is */
-	header->nqueries= htons(1);		/* Just one query */
-	header->nanswers= 0;
-	header->nauth	= 0;
-	header->nother	= 0;
+	/* DNS packet header */
+	header				= (struct header *) pkt;
+	header->tid			= ++(dns.tid);
+	header->flags		= htons(0x100);
+	header->nqueries	= htons(1);
+	header->nanswers	= 0;
+	header->nauth		= 0;
+	header->nother		= 0;
 
 	/* Encode DNS name */
-	name_len = strlen(name);
 	p = (char *) &header->data;	/* For encoding host name into packet */
 
-	do {
-		if ((s = strchr(name, '.')) == NULL)
-			s = name + name_len;
+	std::vector<std::string> split_domain;
+	boost::split(split_domain, name, boost::is_any_of("."));
 
-		n = s - name;			/* Chunk length */
-		*p++ = n;			/* Copy length */
-		for (i = 0; i < n; i++)		/* Copy chunk */
-			*p++ = name[i];
+	BOOST_FOREACH(std::string tmp, split_domain) {
+		*p++ = tmp.size();
+		for(int i = 0; i < tmp.size(); ++i) {
+			*p++ = tmp[i];
+			*p += tmp.size();
+		}
+	}
+	*p++ = 0;	// Domain name terminator
 
-		if (*s == '.')
-			n++;
-
-		name += n;
-		name_len -= n;
-
-	} while (*s != '\0');
-
-	*p++ = 0;			/* Mark end of host name */
-	*p++ = 0;			/* Well, lets put this byte as well */
-	*p++ = (unsigned char) qtype;	/* Query Type */
-
+	// Query type
 	*p++ = 0;
-	*p++ = 1;			/* Class: inet, 0x0001 */
+	*p++ = (unsigned char) qtype;
+
+	// Query Class
+	*p++ = 0;
+	*p++ = 1;
 
 	assert(p < pkt + sizeof(pkt));
 	n = p - pkt;			/* Total packet length */
@@ -421,6 +404,16 @@ void resolver::dns_queue(void *ctx, const char *name,
 		cbd.error = DNS_ERROR;
 		callback(&cbd);
 	}
+
+	/* Init query structure */
+	struct query query;
+	query.ctx	= ctx;
+	query.qtype	= (uint16_t) qtype;
+	query.tid	= header->tid;
+	query.callback	= callback;
+	query.expire	= now + DNS_QUERY_TIMEOUT;
+	boost::algorithm::to_lower(name);
+	query.name = name;
 
 	dns.active.push_back(query);
 }
@@ -449,7 +442,7 @@ resolver::~resolver()
  * @param type Query type.
  * @param callback Callback function.
  */
-void resolver::queue(const char *host, enum dns_query_type type, dns_callback_t callback)
+void resolver::queue(std::string host, enum dns_query_type type, dns_callback_t callback)
 {
 	fd_set set;
 	struct timeval tv = {0, 100000};
