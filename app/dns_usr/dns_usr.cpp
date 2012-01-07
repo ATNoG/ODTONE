@@ -160,7 +160,7 @@ void dns_user::event_handler(mih::message& msg,
 
 			BOOST_FOREACH(mih::octet_string domain, domains) {
 				dns::dns_callback_t callback = boost::bind(&dns_user::dns_message_handler, this, _1);
-				_dns.queue(domain.c_str(), dns::DNS_NAPTR_RECORD, callback);
+				_dns.queue(domain, dns::DNS_NAPTR_RECORD, callback);
 			}
 		} break;
 
@@ -238,7 +238,7 @@ void dns_user::dns_message_handler(struct dns::dns_cb_data *cbd)
 
 					if(!(_additional && search_record(dns::DNS_A_RECORD, query.target, msg.add()))) {
 						dns::dns_callback_t callback = boost::bind(&dns_user::dns_message_handler, this, _1);
-						_dns.queue(query.target.c_str(), dns::DNS_A_RECORD, callback);
+						_dns.queue(query.target, dns::DNS_A_RECORD, callback);
 					}
 
 					// Stop searching when found the first record
@@ -264,7 +264,7 @@ void dns_user::dns_message_handler(struct dns::dns_cb_data *cbd)
 					if(!(_additional && search_record(dns::DNS_SRV_RECORD, query.replacement, msg.add()))) {
 						// TODO: check NAPTR flags
 						dns::dns_callback_t callback = boost::bind(&dns_user::dns_message_handler, this, _1);
-						_dns.queue(query.replacement.c_str(), dns::DNS_SRV_RECORD, callback);
+						_dns.queue(query.replacement, dns::DNS_SRV_RECORD, callback);
 					}
 				}
 			}
