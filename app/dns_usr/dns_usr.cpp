@@ -48,7 +48,8 @@ dns_user::dns_user(boost::asio::io_service& io,
 				   const mih::config& cfg,
 				   std::string domain,
 				   bool additional)
-	: _mihf(cfg, io, boost::bind(&dns_user::event_handler, this, _1, _2))
+	: _mihf(cfg, io, boost::bind(&dns_user::event_handler, this, _1, _2)),
+	  _dns(io)
 {
 	_domain = domain;
 	_additional = additional;
@@ -175,7 +176,7 @@ void dns_user::event_handler(mih::message& msg,
  *
  * @param cbd Callback query data.
  */
-void dns_user::dns_message_handler(struct dns::dns_cb_data *cbd)
+void dns_user::dns_message_handler(struct dns::callback_info *cbd)
 {
 	switch (cbd->error) {
 	case dns::DNS_OK:

@@ -82,7 +82,7 @@ protected:
 	 *
 	 * @param cbd Callback query data.
 	 */
-	void dns_message_handler(struct dns::dns_cb_data *cbd);
+	void dns_message_handler(struct dns::callback_info *cbd);
 
 	/**
 	 * Search for a specific resource records type in the given list.
