@@ -22,6 +22,7 @@
 #include <netinet/in.h>
 
 #include <boost/function.hpp>
+#include <boost/optional.hpp>
 
 #include <odtone/net/dns/message.hpp>
 
@@ -36,8 +37,11 @@ namespace odtone { namespace dns {
 /**
  * Callback routine definition.
  */
-typedef boost::function<void (struct dns_cb_data*)> dns_callback_t;
+typedef boost::function<void (struct callback_info*)> dns_callback_t;
 
+/**
+ * DNS query type enumeration.
+ */
 enum dns_query_type {
 	DNS_A_RECORD		= 0x01,	/**< Lookup IPv4 address for host.	*/
 	DNS_MX_RECORD		= 0x0f,	/**< Lookup MX for domain.			*/
@@ -47,10 +51,9 @@ enum dns_query_type {
 };
 
 /**
- * User defined function that will be called when DNS reply arrives for
- * requested hostname.
+ * DNS query status enumeration
  */
-enum dns_error {
+enum dns_status {
 	DNS_OK,				/**< No error.					*/
 	DNS_DOES_NOT_EXIST,	/**< Address does not exist.	*/
 	DNS_TIMEOUT,		/**< Lookup time expired.		*/
@@ -58,17 +61,16 @@ enum dns_error {
 };
 
 /**
- * User query. Holds mapping from application-level ID to DNS transaction id,
- * and user defined callback function.
+ * Struct to store query information.
  */
 struct query {
-	time_t			expire;			/**< Time when this query expire.	*/
-	uint16_t		tid;			/**< UDP DNS transaction ID.		*/
-	uint16_t		qtype;			/**< Query type.					*/
+	void			*ctx;			/**< Context.						*/
 	std::string		name;			/**< Host name.						*/
-	void			*ctx;			/**< Application context.			*/
-	dns_callback_t	callback;		/**< User callback routine.			*/
+	uint16			qtype;			/**< Query type.					*/
+	uint16			tid;			/**< UDP DNS transaction ID.		*/
+	time_t			expire;			/**< Time when this query expire.	*/
 	message			dns_message;	/**< Response DNS message.			*/
+	dns_callback_t	callback;		/**< User callback routine.			*/
 
 	bool operator==(const struct query &other) const
 	{
@@ -77,44 +79,32 @@ struct query {
 };
 
 /**
- * Structure that is passed to the user callback, which has an
- * error indicator, received packet, requested host name, etc.
+ * Structure that is passed to the applciation callback, which as several
+ * information about the query performed.
  */
-struct dns_cb_data {
-	void				*context;				/**< Query context.			*/
-	enum dns_error		error;					/**< Error type.			*/
-	enum dns_query_type	query_type;				/**< Query type.			*/
+struct callback_info {
+	void				*context;				/**< Context.				*/
 	std::string			name;					/**< Requested host name.	*/
+	enum dns_query_type	query_type;				/**< Query type.			*/
+	enum dns_status		error;					/**< Error type.			*/
 	message				dns_message;			/**< Response DNS message.	*/
-};
-
-/**
- * Resolver descriptor.
- */
-struct dns {
-	int					sock;		/**< UDP socket used for queries.	*/
-	struct sockaddr_in	sa;			/**< DNS server socket address.		*/
-	uint16_t			tid;		/**< Latest tid used.				*/
-	std::list<struct query>	active;	/**< Active queries.				*/
-	std::list<struct query>	cached;	/**< Cached queries.				*/
 };
 
 /**
  * DNS network packet.
  */
 struct header {
-	uint16_t		tid;		/**< Transaction ID.		*/
-	uint16_t		flags;		/**< Flags.					*/
-	uint16_t		nqueries;	/**< Questions.				*/
-	uint16_t		nanswers;	/**< Answers.				*/
-	uint16_t		nauth;		/**< Authority PRs.			*/
-	uint16_t		nother;		/**< Other PRs.				*/
+	uint16			tid;		/**< Transaction ID.		*/
+	uint16			flags;		/**< Flags.					*/
+	uint16			nqueries;	/**< Questions.				*/
+	uint16			nanswers;	/**< Answers.				*/
+	uint16			nauth;		/**< Authority PRs.			*/
+	uint16			nother;		/**< Other PRs.				*/
 	unsigned char	data[1];	/**< Data, variable length.	*/
 };
 
 // TODO singleton
 // TODO use boost sockets
-// TODO replace header for DNS messages
 class resolver {
 public:
 	/**
@@ -130,37 +120,43 @@ public:
 	/**
 	 * Queries the DNS server.
 	 *
-	 * @param host Query to be performed.
-	 * @param type Query type.
-	 * @param callback Callback function.
+	 * @param host The query to be performed.
+	 * @param type The query type.
+	 * @param app_callback The application callback function.
 	 */
-	void queue(std::string host, enum dns_query_type type, dns_callback_t callback);
+	void queue(std::string host, enum dns_query_type type, dns_callback_t app_callback);
 
 private:
 	/**
-	 * Initializer the resolver descriptor.
+	 * Handle the reception of an asynchronous message.
+	 *
+	 * @param buff The input message bytes.
+	 * @param rbytes The number of bytes of the input message.
 	 */
-	void dns_init();
+	void receive_handler(const unsigned char *buff, int rbytes);
+
+	/**
+	 * Find out if a given query is active.
+	 *
+	 * @param query The query information.
+	 * @param status The query status.
+	 */
+	void callback(struct query query, enum dns_status status);
+
+	/**
+	 * Queue the resolution.
+	 *
+	 * @param ctx The query context.
+	 * @param name The query to be performed.
+	 * @param qtype The query type.
+	 * @param app_callback The application callback function.
+	 */
+	void dns_queue(void *ctx, std::string name, enum dns_query_type qtype, dns_callback_t app_callback);
 
 	/**
 	 * Check if there are pending messages.
 	 */
 	void dns_poll();
-
-	/**
-	 * Cleanup the resolver descriptor.
-	 */
-	void dns_fini();
-
-	/**
-	 * Queue the resolution.
-	 *
-	 * @param ctx Query context.
-	 * @param name Query to be performed.
-	 * @param qtype Query type.
-	 * @param callback Callback function.
-	 */
-	void dns_queue(void *ctx, std::string name, enum dns_query_type qtype, dns_callback_t callback);
 
 	/**
 	 * Cancel the query.
@@ -169,8 +165,29 @@ private:
 	 */
 	void dns_cancel(const void *context);
 
+	/**
+	 * Find a given query in cache.
+	 *
+	 * @param qtype The query type.
+	 * @param name The domain name.
+	 * @return The query information.
+	 */
+	boost::optional<struct query> find_cached_query(enum dns_query_type qtype, std::string name);
+
+	/**
+	 * Find out if a given query is active.
+	 *
+	 * @param tid The transaction identifier.
+	 * @return The query information if found.
+	 */
+	boost::optional<struct query> find_active_query(uint16_t tid);
+
 private:
-	struct dns dns;	/**< DNS resolver descriptor.	*/
+	int					sock;		/**< UDP socket used for queries.	*/
+	struct sockaddr_in	sa;			/**< DNS server socket address.		*/
+	uint16_t			tid;		/**< Latest tid used.				*/
+	std::list<struct query>	active;	/**< Active queries.				*/
+	std::list<struct query>	cached;	/**< Cached queries.				*/
 };
 
 
