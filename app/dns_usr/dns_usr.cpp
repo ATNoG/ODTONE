@@ -160,7 +160,7 @@ void dns_user::event_handler(mih::message& msg,
 
 			BOOST_FOREACH(mih::octet_string domain, domains) {
 				dns::dns_callback_t callback = boost::bind(&dns_user::dns_message_handler, this, _1);
-				_dns.queue(domain, dns::DNS_NAPTR_RECORD, callback);
+				_dns.queue(domain.c_str(), dns::DNS_NAPTR_RECORD, callback);
 			}
 		} break;
 
@@ -180,15 +180,12 @@ void dns_user::dns_message_handler(struct dns::dns_cb_data *cbd)
 	switch (cbd->error) {
 	case dns::DNS_OK:
 	{
-		const dns::frame *pud = dns::frame::cast(cbd->pkt, cbd->pkt_len);
-		dns::message msg(*pud);
-
 		switch(cbd->query_type) {
 		case dns::DNS_A_RECORD:
 		{
-			dns::question a = msg.query().back();
+			dns::question a = cbd->dns_message.query().back();
 
-			BOOST_FOREACH(dns::resource_record rr, msg.answer()) {
+			BOOST_FOREACH(dns::resource_record rr, cbd->dns_message.answer()) {
 				if(rr._type == dns::DNS_A_RECORD && rr._name == a._domain) {
 					dns::a_record record = dns::parse_a_record(&rr._rr_data[0], 0, rr._rr_len);
 
@@ -205,9 +202,9 @@ void dns_user::dns_message_handler(struct dns::dns_cb_data *cbd)
 
 		case dns::DNS_AAAA_RECORD:
 		{
-			dns::question a = msg.query().back();
+			dns::question a = cbd->dns_message.query().back();
 
-			BOOST_FOREACH(dns::resource_record rr, msg.answer()) {
+			BOOST_FOREACH(dns::resource_record rr, cbd->dns_message.answer()) {
 				if(rr._type == dns::DNS_A_RECORD && rr._name == a._domain) {
 					dns::aaaa_record record = dns::parse_aaaa_record(&rr._rr_data[0], 0, rr._rr_len);
 
@@ -224,9 +221,9 @@ void dns_user::dns_message_handler(struct dns::dns_cb_data *cbd)
 
 		case dns::DNS_SRV_RECORD:
 		{
-			dns::question a = msg.query().back();
+			dns::question a = cbd->dns_message.query().back();
 
-			BOOST_FOREACH(dns::resource_record rr, msg.answer()) {
+			BOOST_FOREACH(dns::resource_record rr, cbd->dns_message.answer()) {
 				if(rr._type == dns::DNS_SRV_RECORD && rr._name == a._domain) {
 					dns::srv_record record = dns::parse_srv_record(&rr._rr_data[0], 0, rr._rr_len);
 
@@ -236,9 +233,9 @@ void dns_user::dns_message_handler(struct dns::dns_cb_data *cbd)
 					query.target = record._target;
 					_qbook.set_srv_results(query);
 
-					if(!(_additional && search_record(dns::DNS_A_RECORD, query.target, msg.add()))) {
+					if(!(_additional && search_record(dns::DNS_A_RECORD, query.target, cbd->dns_message.add()))) {
 						dns::dns_callback_t callback = boost::bind(&dns_user::dns_message_handler, this, _1);
-						_dns.queue(query.target, dns::DNS_A_RECORD, callback);
+						_dns.queue(query.target.c_str(), dns::DNS_A_RECORD, callback);
 					}
 
 					// Stop searching when found the first record
@@ -249,10 +246,10 @@ void dns_user::dns_message_handler(struct dns::dns_cb_data *cbd)
 
 		case dns::DNS_NAPTR_RECORD:
 		{
-			dns::question a = msg.query().back();
+			dns::question a = cbd->dns_message.query().back();
 			std::vector<std::string> request;
 
-			BOOST_FOREACH(dns::resource_record rr, msg.answer()) {
+			BOOST_FOREACH(dns::resource_record rr, cbd->dns_message.answer()) {
 				if(rr._type == dns::DNS_NAPTR_RECORD && rr._name == a._domain) {
 					dns::naptr_record record = dns::parse_naptr_record(&rr._rr_data[0], 0, rr._rr_len);
 
@@ -261,10 +258,10 @@ void dns_user::dns_message_handler(struct dns::dns_cb_data *cbd)
 					_qbook.add(a._domain, query);
 
 					// Check additional
-					if(!(_additional && search_record(dns::DNS_SRV_RECORD, query.replacement, msg.add()))) {
+					if(!(_additional && search_record(dns::DNS_SRV_RECORD, query.replacement, cbd->dns_message.add()))) {
 						// TODO: check NAPTR flags
 						dns::dns_callback_t callback = boost::bind(&dns_user::dns_message_handler, this, _1);
-						_dns.queue(query.replacement, dns::DNS_SRV_RECORD, callback);
+						_dns.queue(query.replacement.c_str(), dns::DNS_SRV_RECORD, callback);
 					}
 				}
 			}
