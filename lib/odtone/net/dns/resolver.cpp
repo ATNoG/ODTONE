@@ -44,7 +44,6 @@
 #include <odtone/net/dns/frame.hpp>
 #include <odtone/net/dns/utils.hpp>
 
-#include <boost/thread.hpp>
 #include <boost/foreach.hpp>
 #include <boost/algorithm/string.hpp>
 
@@ -141,6 +140,8 @@ resolver::resolver(boost::asio::io_service& io)
  */
 resolver::~resolver()
 {
+	boost::mutex::scoped_lock lock(_mutex);
+
 	_active.clear();
 	_cached.clear();
 }
@@ -219,6 +220,8 @@ void resolver::callback(struct query query, enum dns_status status)
 	cb_info.error		= status;
 	cb_info.dns_message = query.dns_message;
 	query.callback(&cb_info);
+
+	boost::mutex::scoped_lock lock(_mutex);
 
 	/* Cache the query */
 	_cached.push_back(query);
@@ -316,6 +319,7 @@ void resolver::dns_queue(void *ctx, std::string name,
 	query_info.callback	= app_callback;
 	query_info.expire	= now + DNS_QUERY_TIMEOUT;
 
+	boost::mutex::scoped_lock lock(_mutex);
 	_active.push_back(query_info);
 }
 
@@ -326,6 +330,8 @@ void resolver::dns_queue(void *ctx, std::string name,
  */
 void resolver::dns_cancel(const void *context)
 {
+	boost::mutex::scoped_lock lock(_mutex);
+
 	BOOST_FOREACH(struct query tmp, _active) {
 		if (tmp.ctx == context) {
 			_active.remove(tmp);
@@ -343,6 +349,7 @@ void resolver::dns_cancel(const void *context)
  */
 boost::optional<struct query> resolver::find_cached_query(std::string name, enum dns_query_type qtype)
 {
+	boost::mutex::scoped_lock lock(_mutex);
 	boost::optional<struct query> query;
 
 	BOOST_FOREACH(struct query tmp, _cached) {
@@ -363,6 +370,7 @@ boost::optional<struct query> resolver::find_cached_query(std::string name, enum
  */
 boost::optional<struct query> resolver::find_active_query(uint16 tid)
 {
+	boost::mutex::scoped_lock lock(_mutex);
 	boost::optional<struct query> query;
 
 	BOOST_FOREACH(struct query tmp, _active) {
@@ -384,6 +392,8 @@ void resolver::cleanup()
 	_timer.async_wait(boost::bind(&resolver::cleanup, this));
 
 	time_t now = time(NULL);
+
+	boost::mutex::scoped_lock lock(_mutex);
 
 	/* Cleanup expired active queries */
 	BOOST_FOREACH(struct query tmp, _active) {

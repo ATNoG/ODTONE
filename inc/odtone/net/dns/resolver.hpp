@@ -24,6 +24,7 @@
 #include <boost/asio.hpp>
 #include <boost/function.hpp>
 #include <boost/optional.hpp>
+#include <boost/thread.hpp>
 
 #include <odtone/net/dns/message.hpp>
 
@@ -188,6 +189,7 @@ private:
 	uint16							_tid;	/**< Latest tid used.			 */
 	std::list<struct query>			_active;/**< Active queries.			 */
 	std::list<struct query>			_cached;/**< Cached queries.			 */
+	boost::mutex _mutex;					/**< Mutex.						 */
 
 	boost::asio::deadline_timer		_timer;	/**< Transaction decrement timer.*/
 };
