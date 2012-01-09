@@ -23,6 +23,8 @@
 
 #include <boost/function.hpp>
 
+#include <odtone/net/dns/message.hpp>
+
 #define	DNS_PACKET_LEN		2048	/**< Buffer size for DNS packet.	*/
 #define	DNS_QUERY_TIMEOUT	30		/**< Query timeout, seconds.		*/
 
@@ -60,14 +62,13 @@ enum dns_error {
  * and user defined callback function.
  */
 struct query {
-	time_t			expire;					/**< Time when this query expire.	*/
-	uint16_t		tid;					/**< UDP DNS transaction ID.		*/
-	uint16_t		qtype;					/**< Query type.					*/
-	std::string		name;					/**< Host name.						*/
-	void			*ctx;					/**< Application context.			*/
-	dns_callback_t	callback;				/**< User callback routine.			*/
-	int 			pkt_len;				/**< Response packet length.		*/
-	unsigned char	pkt[DNS_PACKET_LEN];	/**< Response packet bytes.			*/
+	time_t			expire;			/**< Time when this query expire.	*/
+	uint16_t		tid;			/**< UDP DNS transaction ID.		*/
+	uint16_t		qtype;			/**< Query type.					*/
+	std::string		name;			/**< Host name.						*/
+	void			*ctx;			/**< Application context.			*/
+	dns_callback_t	callback;		/**< User callback routine.			*/
+	message			dns_message;	/**< Response DNS message.			*/
 
 	bool operator==(const struct query &other) const
 	{
@@ -84,8 +85,7 @@ struct dns_cb_data {
 	enum dns_error		error;					/**< Error type.			*/
 	enum dns_query_type	query_type;				/**< Query type.			*/
 	std::string			name;					/**< Requested host name.	*/
-	int 				pkt_len;				/**< Response packet length.*/
-	unsigned char		pkt[DNS_PACKET_LEN];	/**< Response packet bytes.	*/
+	message				dns_message;			/**< Response DNS message.	*/
 };
 
 /**
@@ -112,6 +112,9 @@ struct header {
 	unsigned char	data[1];	/**< Data, variable length.	*/
 };
 
+// TODO singleton
+// TODO use boost sockets
+// TODO replace header for DNS messages
 class resolver {
 public:
 	/**
@@ -142,7 +145,7 @@ private:
 	/**
 	 * Check if there are pending messages.
 	 */
-	int dns_poll();
+	void dns_poll();
 
 	/**
 	 * Cleanup the resolver descriptor.

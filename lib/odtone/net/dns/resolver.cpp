@@ -201,78 +201,44 @@ static void call_user(struct dns &dns, struct query query, enum dns_error error)
 	cbd.query_type	= (enum dns_query_type) query.qtype;
 	cbd.error	= error;
 	cbd.name	= query.name;
-	(void) memcpy(&cbd.pkt, query.pkt, query.pkt_len);
-	cbd.pkt_len	= query.pkt_len;
-
+	cbd.dns_message = query.dns_message;
 	query.callback(&cbd);
 
-	/* Move query to cache */
+	/* Cache the query */
 	dns.cached.push_back(query);
 }
 
 static void parse_udp(struct dns &dns, const unsigned char *pkt, int len)
 {
-	struct header		*header;
-	const unsigned char	*p, *e;
-	boost::optional<struct query> q;
-	uint16_t			type;
-	int					stop, dlen, nlen;
+	const frame *pud = frame::cast(pkt, len);
 
-	/* We sent 1 query. We want to see more that 1 answer. */
-	header = (struct header *) pkt;
-	if (ntohs(header->nqueries) != 1)
+	if(!pud)
 		return;
 
-	/* Return if we did not send that query */
-	q = find_active_query(dns, header->tid);
+	message dns_message(*pud);
+
+	if (dns_message.nquery() < 1)
+		return;
+
+	/* Check if there is an active quuery */
+	boost::optional<struct query> q;
+	q = find_active_query(dns, dns_message.tid());
 	if (!q.is_initialized())
 		return;
 
-	// Associate the packet with the query
-	q->pkt_len = len;
-	(void) memcpy(&q->pkt, pkt, len);
+	// Associate the DNS message with the query
+	q->dns_message = dns_message;
 
 	/* Received 0 answers */
-	if (header->nanswers == 0) {
+	if (dns_message.nanswer() == 0) {
 		call_user(dns, q.get(), DNS_DOES_NOT_EXIST);
 		return;
 	}
 
-	/* Skip host name */
-	for (e = pkt + len, nlen = 0, p = &header->data[0];
-	    p < e && *p != '\0'; p++)
-		nlen++;
-
-#define	NTOHS(p)	(((p)[0] << 8) | (p)[1])
-
-	/* We sent query class 1, query type 1 */
-	if (&p[5] > e || NTOHS(p + 1) != q->qtype)
-		return;
-
-	/* Go to the first answer section */
-	p += 5;
-
-	/* Loop through the answers, we want A type answer */
-	for (stop = 0; !stop && &p[12] < e; ) {
-
-		/* Skip possible name in CNAME answer */
-		if (*p != 0xc0) {
-			while (*p && &p[12] < e)
-				p++;
-			p--;
-		}
-
-		type = htons(((uint16_t *)p)[1]);
-
-		if (type == 5) {
-			/* CNAME answer. shift to the next section */
-			dlen = htons(((uint16_t *) p)[5]);
-			p += 12 + dlen;
-		} else if (type == q->qtype) {
-			stop = 1;
+	BOOST_FOREACH(struct resource_record tmp, dns_message.answer()) {
+		if (tmp._type == q->qtype) {
 			call_user(dns, q.get(), DNS_OK);
-		} else {
-			stop = 1;
+			break;
 		}
 	}
 }
@@ -280,11 +246,11 @@ static void parse_udp(struct dns &dns, const unsigned char *pkt, int len)
 /**
  * Check if there are pending messages.
  */
-int resolver::dns_poll()
+void resolver::dns_poll()
 {
 	struct sockaddr_in	sa;
 	socklen_t			len = sizeof(sa);
-	int					n, num_packets = 0;
+	int					n;
 	unsigned char		pkt[DNS_PACKET_LEN];
 	time_t				now;
 
@@ -295,13 +261,11 @@ int resolver::dns_poll()
 	    (struct sockaddr *) &sa, &len)) > 0 &&
 	    n > (int) sizeof(struct header)) {
 		parse_udp(dns, pkt, n);
-		num_packets++;
 	}
 
 	/* Cleanup expired active queries */
 	BOOST_FOREACH(struct query tmp, dns.active) {
 		if (tmp.expire < now) {
-			tmp.pkt_len = 0;
 			call_user(dns, tmp, DNS_TIMEOUT);
 			dns.active.remove(tmp);
 		}
@@ -313,8 +277,6 @@ int resolver::dns_poll()
 			dns.cached.remove(tmp);
 		}
 	}
-
-	return (num_packets);
 }
 
 /**
@@ -345,9 +307,6 @@ void resolver::dns_fini()
 void resolver::dns_queue(void *ctx, std::string name,
 		enum dns_query_type qtype, dns_callback_t callback)
 {
-	struct header		*header;
-	int					n;
-	char				pkt[DNS_PACKET_LEN], *p;
 	time_t				now = time(NULL);
 	struct dns_cb_data	cbd;
 
@@ -363,59 +322,51 @@ void resolver::dns_queue(void *ctx, std::string name,
 		return;
 	}
 
-	/* DNS packet header */
-	header				= (struct header *) pkt;
-	header->tid			= ++(dns.tid);
-	header->flags		= htons(0x100);
-	header->nqueries	= htons(1);
-	header->nanswers	= 0;
-	header->nauth		= 0;
-	header->nother		= 0;
+	/* DNS message */
+	message dns_message;
+	dns_message.tid(++(dns.tid));
+	dns_message.qr(false);
+	dns_message.opcode(0);
+	dns_message.aa(false);
+	dns_message.tc(false);
+	dns_message.rd(true);
+	dns_message.ra(false);
+	dns_message.z(false);
+	dns_message.rcode(false);
 
-	/* Encode DNS name */
-	p = (char *) &header->data;	/* For encoding host name into packet */
+	// Set DNS query
+	question query(name, qtype, 1);
+	std::vector<question> query_list;
+	query_list.push_back(query);
+	dns_message.query(query_list);
 
-	std::vector<std::string> split_domain;
-	boost::split(split_domain, name, boost::is_any_of("."));
+	frame_vla fm;
+	void *sbuff;
+	size_t slen;
 
-	BOOST_FOREACH(std::string tmp, split_domain) {
-		*p++ = tmp.size();
-		for(int i = 0; i < tmp.size(); ++i) {
-			*p++ = tmp[i];
-			*p += tmp.size();
-		}
-	}
-	*p++ = 0;	// Domain name terminator
+	dns_message.get_frame(fm);
+	sbuff = fm.get();
+	slen = fm.size();
 
-	// Query type
-	*p++ = 0;
-	*p++ = (unsigned char) qtype;
-
-	// Query Class
-	*p++ = 0;
-	*p++ = 1;
-
-	assert(p < pkt + sizeof(pkt));
-	n = p - pkt;			/* Total packet length */
-
-	if (sendto(dns.sock, pkt, n, 0,
+	if (sendto(dns.sock, sbuff, slen, 0,
 	    (struct sockaddr *) &dns.sa, sizeof(dns.sa)) < 0) {
 		(void) memset(&cbd, 0, sizeof(cbd));
 		cbd.error = DNS_ERROR;
 		callback(&cbd);
+		return;
 	}
 
-	/* Init query structure */
-	struct query query;
-	query.ctx	= ctx;
-	query.qtype	= (uint16_t) qtype;
-	query.tid	= header->tid;
-	query.callback	= callback;
-	query.expire	= now + DNS_QUERY_TIMEOUT;
+	// Store query as active
+	struct query query_info;
+	query_info.ctx	= ctx;
+	query_info.qtype	= (uint16_t) qtype;
+	query_info.tid	= dns_message.tid();
+	query_info.callback	= callback;
+	query_info.expire	= now + DNS_QUERY_TIMEOUT;
 	boost::algorithm::to_lower(name);
-	query.name = name;
+	query_info.name = name;
 
-	dns.active.push_back(query);
+	dns.active.push_back(query_info);
 }
 
 /**

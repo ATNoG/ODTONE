@@ -259,7 +259,7 @@ struct frame {
 	 *
 	 * @return The pointer of the message payload.
 	 */
-	uint8*       payload();
+	uint8* payload();
 
 	/**
 	 * Get the pointer of the message payload.
@@ -268,14 +268,12 @@ struct frame {
 	 */
 	const uint8* payload() const;
 
-
-
 	/**
 	 * Get the pointer of the message payload.
 	 *
 	 * @return The pointer of the message payload.
 	 */
-	uint8*       get();
+	uint8* get();
 
 	/**
 	 * Get the pointer of the message payload.

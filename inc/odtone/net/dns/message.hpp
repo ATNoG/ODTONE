@@ -39,7 +39,7 @@ namespace odtone { namespace dns {
  * The odtone::dns::message can be set from an odtone::dns::frame that was
  * received or it can create an odtone::dns::frame ready to be sent.
  */
-class message : boost::noncopyable {
+class message {
 public:
 	/**
 	 * Construct a default DNS Message.
@@ -143,34 +143,6 @@ public:
 	 * @param rcode The value of the DNS Message Response Code field.
 	 */
 	void rcode(uint8 rcode);
-
-	/**
-	 * Set the DNS Message Question Count.
-	 *
-	 * @param nquery The value of the DNS Message Question Count field.
-	 */
-	void nquery(uint16 nquery);
-
-	/**
-	 * Set the DNS Message Answer Record Count.
-	 *
-	 * @param nanswer The value of the DNS Message Answer Record Count field.
-	 */
-	void nanswer(uint16 nanswer);
-
-	/**
-	 * Set the DNS Message Authority Record Count.
-	 *
-	 * @param nauth The value of the DNS Message Authority Record Count field.
-	 */
-	void nauth(uint16 nauth);
-
-	/**
-	 * Set the DNS Message Additional Record Count.
-	 *
-	 * @param nadd The value of the DNS Message Additional Record Count field.
-	 */
-	void nadd(uint16 nadd);
 
 	/**
 	 * Set the DNS Message Question list.
@@ -319,24 +291,31 @@ public:
 	 */
 	std::vector<resource_record> add();
 
+	/**
+	 * Get the DNS Message Frame.
+	 *
+	 * @param fm A dynamic frame buffer to store the information.
+	 */
+	void get_frame(frame_vla& fm) const;
+
 private:
-	uint16 _tid;
-	bool _qr;
-	uint8 _opcode;
-	bool _aa;
-	bool _tc;
-	bool _rd;
-	bool _ra;
-	bool _z;
-	uint8 _rcode;
-	uint16 _nquery;
-	uint16 _nanswer;
-	uint16 _nauth;
-	uint16 _nadd;
-	std::vector<question> _query;
-	std::vector<resource_record> _answer;
-	std::vector<resource_record> _auth;
-	std::vector<resource_record> _add;
+	uint16 _tid;							/**< Transaction identifier.		*/
+	bool _qr;								/**< Query/Response flag.			*/
+	uint8 _opcode;							/**< Operation code.				*/
+	bool _aa;								/**< Authoritative answer flag.		*/
+	bool _tc;								/**< Truncation flag.				*/
+	bool _rd;								/**< Recursion desired.				*/
+	bool _ra;								/**< Recursion available.			*/
+	bool _z;								/**< Reserved.						*/
+	uint8 _rcode;							/**< Response code.					*/
+	uint16 _nquery;							/**< Question records count.		*/
+	uint16 _nanswer;						/**< Answer records count.			*/
+	uint16 _nauth;							/**< Authentication records count.	*/
+	uint16 _nadd;							/**< Additional record count.		*/
+	std::vector<question> _query;			/**< Query Record list.				*/
+	std::vector<resource_record> _answer;	/**< Answer Record list.			*/
+	std::vector<resource_record> _auth;		/**< Authentication Record list.	*/
+	std::vector<resource_record> _add;		/**< Additional Record list.		*/
 };
 
 /**
@@ -430,52 +409,13 @@ inline void message::rcode(uint8 rcode)
 }
 
 /**
- * Set the DNS Message Question Count.
- *
- * @param nquery The value of the DNS Message Question Count field.
- */
-inline void message::nquery(uint16 nquery)
-{
-	_nquery = nquery;
-}
-
-/**
- * Set the DNS Message Answer Record Count.
- *
- * @param nanswer The value of the DNS Message Answer Record Count field.
- */
-inline void message::nanswer(uint16 nanswer)
-{
-	_nanswer = nanswer;
-}
-
-/**
- * Set the DNS Message Authority Record Count.
- *
- * @param nauth The value of the DNS Message Authority Record Count field.
- */
-inline void message::nauth(uint16 nauth)
-{
-	_nauth = nauth;
-}
-
-/**
- * Set the DNS Message Additional Record Count.
- *
- * @param nadd The value of the DNS Message Additional Record Count field.
- */
-inline void message::nadd(uint16 nadd)
-{
-	_nadd = nadd;
-}
-
-/**
  * Set the DNS Message Question list.
  *
  * @param query The value of the DNS Message Question list.
  */
 inline void message::query(std::vector<question> query)
 {
+	_nquery = query.size();
 	_query = query;
 }
 
@@ -486,6 +426,7 @@ inline void message::query(std::vector<question> query)
  */
 inline void message::answer(std::vector<resource_record> answer)
 {
+	_nanswer = answer.size();
 	_answer = answer;
 }
 
@@ -496,6 +437,7 @@ inline void message::answer(std::vector<resource_record> answer)
  */
 inline void message::auth(std::vector<resource_record> auth)
 {
+	_nauth = auth.size();
 	_auth = auth;
 }
 
@@ -506,6 +448,7 @@ inline void message::auth(std::vector<resource_record> auth)
  */
 inline void message::add(std::vector<resource_record> add)
 {
+	_nadd = add.size();
 	_add = add;
 }
 
