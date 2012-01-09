@@ -30,18 +30,15 @@
 	#pragma comment(lib,"advapi32")
 	#include <winsock.h>
 	typedef	int		socklen_t;
-	typedef	unsigned char	uint8_t;
-	typedef	unsigned short	uint16_t;
-	typedef	unsigned int	uint32_t;
 #else
-	#define	closesocket(x)	close(x)
+	#include <netinet/in.h>
+	#include <unistd.h>
 	#include <sys/types.h>
 	#include <sys/socket.h>
 	#include <sys/select.h>
-	#include <netinet/in.h>
-	#include <unistd.h>
 #endif /* _WIN32 */
 
+#include <odtone/bind_rv.hpp>
 #include <odtone/net/dns/resolver.hpp>
 #include <odtone/net/dns/message.hpp>
 #include <odtone/net/dns/frame.hpp>
@@ -56,34 +53,14 @@ namespace odtone { namespace dns {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Put the given file descriptor in non-blocking mode.
+ * Find the IP address of the DNS server.
  *
- * @param fd The file descriptor to put in non-blocking mode.
- * @return 0 if success or -1 otherwise.
+ * @return The IP address of the DNS server.
  */
-static int nonblock(int fd)
+static std::string get_dns_ip()
 {
-#ifdef	_WIN32
-	unsigned long	on = 1;
-	return (ioctlsocket(fd, FIONBIO, &on));
-#else
-	int	flags;
-
-	flags = fcntl(fd, F_GETFL, 0);
-
-	return (fcntl(fd, F_SETFL, flags | O_NONBLOCK));
-#endif /* _WIN32 */
-}
-
-/**
- * Find what DNS server to use.
- *
- * @param dns The resolver descriptor.
- * @return 0 if OK, -1 if error.
- */
-static int getdnsip(struct sockaddr_in &sa)
-{
-	int	ret = 0;
+	struct sockaddr_in sa;
+	int ret = 0;
 
 #ifdef _WIN32
 	int	i;
@@ -134,33 +111,29 @@ static int getdnsip(struct sockaddr_in &sa)
 	}
 #endif /* _WIN32 */
 
-	return (ret);
+	std::string ip(inet_ntoa(sa.sin_addr));
+	return ip;
 }
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
  * Construct the DNS resolver.
+ *
+ * @param io The io_service object that the resolver will use to
+ * dispatch handlers for any asynchronous operations performed on
+ * the socket.
  */
-resolver::resolver()
+resolver::resolver(boost::asio::io_service& io)
+	: _sock(io),
+	  _timer(io, boost::posix_time::seconds(1))
 {
-	// Initialize the resolver descriptor
-	int	rcvbufsiz = 128 * 1024;
+	_sock.open(boost::asio::ip::udp::v6());
+	_sock.set_option(boost::asio::socket_base::receive_buffer_size(DNS_PACKET_LEN));
+	_sock.set_option(boost::asio::socket_base::reuse_address(true));
 
-#ifdef _WIN32
-	{ WSADATA data; WSAStartup(MAKEWORD(2,2), &data); }
-#endif /* _WIN32 */
-
-	if ((sock = socket(PF_INET, SOCK_DGRAM, 17)) == -1)
-		return;
-	else if (nonblock(sock) != 0)
-		return;
-
-	sa.sin_family = AF_INET;
-	sa.sin_port = htons(53);
-
-	/* Increase socket's receive buffer */
-	(void) setsockopt(sock, SOL_SOCKET, SO_RCVBUF,
-	    (char *) &rcvbufsiz, sizeof(rcvbufsiz));
+	// start timer
+	_timer.expires_from_now(boost::posix_time::seconds(1));
+	_timer.async_wait(boost::bind(&resolver::cleanup, this));
 }
 
 /**
@@ -168,11 +141,8 @@ resolver::resolver()
  */
 resolver::~resolver()
 {
-	if (sock != -1)
-	(void) closesocket(sock);
-
-	active.clear();
-	cached.clear();
+	_active.clear();
+	_cached.clear();
 }
 
 /**
@@ -184,20 +154,12 @@ resolver::~resolver()
  */
 void resolver::queue(std::string host, enum dns_query_type type, dns_callback_t app_callback)
 {
-	fd_set set;
-	struct timeval tv = {0, 100000};
-
 	// Get the DNS Server IP address
-	if (getdnsip(sa) != 0)
+	std::string ip = get_dns_ip();
+	if (ip.compare("") == 0)
 		return;
 
-	dns_queue(&host, host, type, app_callback);
-
-	FD_ZERO(&set);
-	FD_SET(sock, &set);
-
-	if (select(sock + 1, &set, NULL, NULL, &tv) == 1)
-		dns_poll();
+	dns_queue(&host, host, type, ip, app_callback);
 }
 
 /**
@@ -206,9 +168,9 @@ void resolver::queue(std::string host, enum dns_query_type type, dns_callback_t 
  * @param buff The input message bytes.
  * @param rbytes The number of bytes of the input message.
  */
-void resolver::receive_handler(const unsigned char *buff, int rbytes)
+void resolver::receive_handler(buffer<uint8>& buff, size_t rbytes, const boost::system::error_code& ec)
 {
-	const frame *pud = frame::cast(buff, rbytes);
+	const frame *pud = frame::cast(buff.get(), rbytes);
 
 	if(!pud)
 		return;
@@ -249,48 +211,48 @@ void resolver::receive_handler(const unsigned char *buff, int rbytes)
  */
 void resolver::callback(struct query query, enum dns_status status)
 {
-	struct callback_info cbd;
+	struct callback_info cb_info;
 
-	cbd.context	= query.ctx;
-	cbd.query_type	= (enum dns_query_type) query.qtype;
-	cbd.error	= status;
-	cbd.name	= query.name;
-	cbd.dns_message = query.dns_message;
-	query.callback(&cbd);
+	cb_info.context		= query.ctx;
+	cb_info.name		= query.name;
+	cb_info.query_type	= (enum dns_query_type) query.qtype;
+	cb_info.error		= status;
+	cb_info.dns_message = query.dns_message;
+	query.callback(&cb_info);
 
 	/* Cache the query */
-	cached.push_back(query);
+	_cached.push_back(query);
+
+	/* Remove from active queries */
+	_active.remove(query);
 }
 
 /**
  * Queue the resolution.
  *
- * @param ctx Query context.
- * @param name Query to be performed.
- * @param qtype Query type.
+ * @param ctx The query context.
+ * @param name The query to be performed.
+ * @param qtype The query type.
+ * @param dns_ip The DNS server IP address.
  * @param app_callback The application callback function.
  */
 void resolver::dns_queue(void *ctx, std::string name,
-		enum dns_query_type qtype, dns_callback_t app_callback)
+		enum dns_query_type qtype, std::string dns_ip, dns_callback_t app_callback)
 {
-	time_t				now = time(NULL);
-	struct callback_info	cbd;
+	time_t now = time(NULL);
 
 	/* Search the cache first */
 	boost::optional<struct query> cached_query;
-	cached_query = find_cached_query(qtype, name);
+	cached_query = find_cached_query(name, qtype);
 	if (cached_query.is_initialized()) {
 		cached_query->ctx = ctx;
 		callback(cached_query.get(), DNS_OK);
-		if (cached_query->expire < now) {
-			cached.remove(cached_query.get());
-		}
 		return;
 	}
 
 	/* DNS message */
 	message dns_message;
-	dns_message.tid(++(tid));
+	dns_message.tid(++(_tid));
 	dns_message.qr(false);
 	dns_message.opcode(0);
 	dns_message.aa(false);
@@ -306,6 +268,27 @@ void resolver::dns_queue(void *ctx, std::string name,
 	query_list.push_back(query);
 	dns_message.query(query_list);
 
+	boost::asio::ip::udp::endpoint server(boost::asio::ip::address::from_string(dns_ip), 53);
+
+	// Listen messages from the DNS server
+	buffer<uint8> buff;
+	void* rbuff;
+	size_t rlen;
+
+	buff = buffer<uint8>(1500);
+
+	rbuff = buff.get();
+	rlen = buff.size();
+
+	_sock.async_receive_from(boost::asio::buffer(rbuff, rlen),
+				 server,
+				 boost::bind(&resolver::receive_handler,
+					this,
+					bind_rv(buff),
+					boost::asio::placeholders::bytes_transferred,
+					boost::asio::placeholders::error));
+
+	// Send DNS message
 	frame_vla fm;
 	void *sbuff;
 	size_t slen;
@@ -314,61 +297,26 @@ void resolver::dns_queue(void *ctx, std::string name,
 	sbuff = fm.get();
 	slen = fm.size();
 
-	if (sendto(sock, sbuff, slen, 0,
-	    (struct sockaddr *) &sa, sizeof(sa)) < 0) {
-		(void) memset(&cbd, 0, sizeof(cbd));
-		cbd.error = DNS_ERROR;
-		app_callback(&cbd);
-		return;
-	}
+	_sock.async_send_to(boost::asio::buffer(sbuff, slen),
+			   server,
+				[this](const boost::system::error_code& ec,
+					   std::size_t bytes_transferred) {
+							if (ec)
+								return;
+					   }
+	);
 
 	// Store query as active
 	struct query query_info;
-	query_info.ctx	= ctx;
-	query_info.qtype	= (uint16_t) qtype;
-	query_info.tid	= dns_message.tid();
-	query_info.callback	= app_callback;
-	query_info.expire	= now + DNS_QUERY_TIMEOUT;
+	query_info.ctx		= ctx;
 	boost::algorithm::to_lower(name);
 	query_info.name = name;
+	query_info.qtype	= qtype;
+	query_info.tid		= dns_message.tid();
+	query_info.callback	= app_callback;
+	query_info.expire	= now + DNS_QUERY_TIMEOUT;
 
-	active.push_back(query_info);
-}
-
-/**
- * Check if there are pending messages.
- */
-void resolver::dns_poll()
-{
-	struct sockaddr_in	sa;
-	socklen_t			len = sizeof(sa);
-	int					n;
-	unsigned char		pkt[DNS_PACKET_LEN];
-	time_t				now;
-
-	now = time(NULL);
-
-	/* Check our socket for new stuff */
-	while ((n = recvfrom(sock, pkt, sizeof(pkt), 0,
-	    (struct sockaddr *) &sa, &len)) > 0 &&
-	    n > (int) sizeof(struct header)) {
-		receive_handler(pkt, n);
-	}
-
-	/* Cleanup expired active queries */
-	BOOST_FOREACH(struct query tmp, active) {
-		if (tmp.expire < now) {
-			callback(tmp, DNS_TIMEOUT);
-			active.remove(tmp);
-		}
-	}
-
-	/* Cleanup cached queries */
-	BOOST_FOREACH(struct query tmp, cached) {
-		if (tmp.expire < now) {
-			cached.remove(tmp);
-		}
-	}
+	_active.push_back(query_info);
 }
 
 /**
@@ -378,9 +326,9 @@ void resolver::dns_poll()
  */
 void resolver::dns_cancel(const void *context)
 {
-	BOOST_FOREACH(struct query tmp, active) {
+	BOOST_FOREACH(struct query tmp, _active) {
 		if (tmp.ctx == context) {
-			active.remove(tmp);
+			_active.remove(tmp);
 			break;
 		}
 	}
@@ -389,17 +337,16 @@ void resolver::dns_cancel(const void *context)
 /**
  * Find a given query in cache.
  *
- * @param qtype The query type.
  * @param name The domain name.
+ * @param qtype The query type.
  * @return The query information if found.
  */
-boost::optional<struct query> resolver::find_cached_query(enum dns_query_type qtype, std::string name)
+boost::optional<struct query> resolver::find_cached_query(std::string name, enum dns_query_type qtype)
 {
 	boost::optional<struct query> query;
 
-	BOOST_FOREACH(struct query tmp, cached) {
+	BOOST_FOREACH(struct query tmp, _cached) {
 		if(tmp.qtype == qtype && name.compare(tmp.name) == 0) {
-			cached.push_back(tmp);
 			query = tmp;
 			break;
 		}
@@ -414,11 +361,11 @@ boost::optional<struct query> resolver::find_cached_query(enum dns_query_type qt
  * @param tid The transaction identifier.
  * @return The query information if found.
  */
-boost::optional<struct query> resolver::find_active_query(uint16_t tid)
+boost::optional<struct query> resolver::find_active_query(uint16 tid)
 {
 	boost::optional<struct query> query;
 
-	BOOST_FOREACH(struct query tmp, active) {
+	BOOST_FOREACH(struct query tmp, _active) {
 		if (tid == tmp.tid) {
 			query = tmp;
 			break;
@@ -428,6 +375,30 @@ boost::optional<struct query> resolver::find_active_query(uint16_t tid)
 	return query;
 }
 
+/**
+ * Cleanup expired queries.
+ */
+void resolver::cleanup()
+{
+	_timer.expires_from_now(boost::posix_time::seconds(1));
+	_timer.async_wait(boost::bind(&resolver::cleanup, this));
+
+	time_t now = time(NULL);
+
+	/* Cleanup expired active queries */
+	BOOST_FOREACH(struct query tmp, _active) {
+		if (tmp.expire < now) {
+			callback(tmp, DNS_TIMEOUT);
+		}
+	}
+
+	/* Cleanup cached queries */
+	BOOST_FOREACH(struct query tmp, _cached) {
+		if (tmp.expire < now) {
+			_cached.remove(tmp);
+		}
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace dns */ } /* namespace odtone */

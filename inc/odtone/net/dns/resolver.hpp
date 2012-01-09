@@ -21,12 +21,13 @@
 #include <list>
 #include <netinet/in.h>
 
+#include <boost/asio.hpp>
 #include <boost/function.hpp>
 #include <boost/optional.hpp>
 
 #include <odtone/net/dns/message.hpp>
 
-#define	DNS_PACKET_LEN		2048	/**< Buffer size for DNS packet.	*/
+#define	DNS_PACKET_LEN		1500	/**< Buffer size for DNS packet.	*/
 #define	DNS_QUERY_TIMEOUT	30		/**< Query timeout, seconds.		*/
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -72,6 +73,12 @@ struct query {
 	message			dns_message;	/**< Response DNS message.			*/
 	dns_callback_t	callback;		/**< User callback routine.			*/
 
+	/**
+	 * Check if the query is equal to another query.
+	 *
+	 * @param other The query to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
 	bool operator==(const struct query &other) const
 	{
 		return ((qtype == other.qtype) && (name.compare(other.name) == 0));
@@ -90,27 +97,16 @@ struct callback_info {
 	message				dns_message;			/**< Response DNS message.	*/
 };
 
-/**
- * DNS network packet.
- */
-struct header {
-	uint16			tid;		/**< Transaction ID.		*/
-	uint16			flags;		/**< Flags.					*/
-	uint16			nqueries;	/**< Questions.				*/
-	uint16			nanswers;	/**< Answers.				*/
-	uint16			nauth;		/**< Authority PRs.			*/
-	uint16			nother;		/**< Other PRs.				*/
-	unsigned char	data[1];	/**< Data, variable length.	*/
-};
-
-// TODO singleton
-// TODO use boost sockets
 class resolver {
 public:
 	/**
 	 * Construct the DNS resolver.
+	 *
+	 * @param io The io_service object that the resolver will use to
+	 * dispatch handlers for any asynchronous operations performed on
+	 * the socket.
 	 */
-	resolver();
+	resolver(boost::asio::io_service& io);
 
 	/**
 	 * Destruct the DNS resolver.
@@ -132,8 +128,11 @@ private:
 	 *
 	 * @param buff The input message bytes.
 	 * @param rbytes The number of bytes of the input message.
+	 * @param error The error code.
 	 */
-	void receive_handler(const unsigned char *buff, int rbytes);
+	void receive_handler(buffer<uint8>& buff,
+						 size_t rbytes,
+						 const boost::system::error_code& error);
 
 	/**
 	 * Find out if a given query is active.
@@ -149,14 +148,11 @@ private:
 	 * @param ctx The query context.
 	 * @param name The query to be performed.
 	 * @param qtype The query type.
+	 * @param dns_ip The DNS server IP address.
 	 * @param app_callback The application callback function.
 	 */
-	void dns_queue(void *ctx, std::string name, enum dns_query_type qtype, dns_callback_t app_callback);
-
-	/**
-	 * Check if there are pending messages.
-	 */
-	void dns_poll();
+	void dns_queue(void *ctx, std::string name, enum dns_query_type qtype,
+				   std::string dns_ip, dns_callback_t app_callback);
 
 	/**
 	 * Cancel the query.
@@ -168,11 +164,11 @@ private:
 	/**
 	 * Find a given query in cache.
 	 *
-	 * @param qtype The query type.
 	 * @param name The domain name.
+	 * @param qtype The query type.
 	 * @return The query information.
 	 */
-	boost::optional<struct query> find_cached_query(enum dns_query_type qtype, std::string name);
+	boost::optional<struct query> find_cached_query(std::string name, enum dns_query_type qtype);
 
 	/**
 	 * Find out if a given query is active.
@@ -180,14 +176,20 @@ private:
 	 * @param tid The transaction identifier.
 	 * @return The query information if found.
 	 */
-	boost::optional<struct query> find_active_query(uint16_t tid);
+	boost::optional<struct query> find_active_query(uint16 tid);
+
+	/**
+	 * Cleanup expired queries.
+	 */
+	void cleanup();
 
 private:
-	int					sock;		/**< UDP socket used for queries.	*/
-	struct sockaddr_in	sa;			/**< DNS server socket address.		*/
-	uint16_t			tid;		/**< Latest tid used.				*/
-	std::list<struct query>	active;	/**< Active queries.				*/
-	std::list<struct query>	cached;	/**< Cached queries.				*/
+	boost::asio::ip::udp::socket	_sock;	/**< UDP socket used for queries.*/
+	uint16							_tid;	/**< Latest tid used.			 */
+	std::list<struct query>			_active;/**< Active queries.			 */
+	std::list<struct query>			_cached;/**< Cached queries.			 */
+
+	boost::asio::deadline_timer		_timer;	/**< Transaction decrement timer.*/
 };
 
 
