@@ -67,15 +67,18 @@ void net_sap::send(meta_message_ptr &msg)
 		ODTONE_LOG(1, "(net sap) sent message to: ", msg->destination().to_string(), " ", dst.ip, " ", dst.port);
 	} catch(...) { // no registration was found
 
-		// try to broadcast message
-		if (utils::is_multicast(msg)) {
-			utils::udp_send(_io, msg, "ff02::1", 4551, _port);
 		// check msg meta data for ip and use it
-		} else if (msg->ip().size() != 0) {
-			if(msg->port() != 0)
+		if (msg->ip().size() != 0) {
+			if(msg->port() != 0) {
 				utils::udp_send(_io, msg, msg->ip().c_str(), msg->port(), _port);
-			else
+			} else {
 				utils::udp_send(_io, msg, msg->ip().c_str(), 4551, _port);
+			}
+			ODTONE_LOG(1, "(net sap) sent message using the meta-information");
+		// try to broadcast message
+		} else if(utils::is_multicast(msg)) {
+			utils::udp_send(_io, msg, "ff02::1", 4551, _port);
+			ODTONE_LOG(1, "(net sap) sent message in a multicast way");
 		} else {
 			ODTONE_LOG(1, "(net sap) no registration for peer mihf with id: ", msg->destination().to_string());
 		}
