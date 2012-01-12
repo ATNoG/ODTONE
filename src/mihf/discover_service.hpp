@@ -46,7 +46,7 @@ public:
 	void response(meta_message_ptr& in, meta_message_ptr& out);
 
 protected:
-	bool request_mos_capabilities(meta_message_ptr& out, mih::mos_info &mos);
+	void request_pos_capabilities(meta_message_ptr& out, mih::mos_info &pos);
 
 private:
 	io_service						&_io;

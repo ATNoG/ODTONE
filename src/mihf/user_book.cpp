@@ -230,4 +230,25 @@ bool user_book::has_discovery_user()
 	return false;
 }
 
+/**
+ * Get the list of all known MIH-Users associated with the discovery
+ * operations.
+ *
+ * @return The list of all known MIH-Users associated with the
+ * discovery operations.
+ */
+const std::map<mih::octet_string, user_entry> user_book::get_discovery_users()
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, user_entry> ids;
+	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
+		if(it->second.role == mih::user_role_discovery) {
+			ids[it->first] = it->second;
+		}
+	}
+
+	return ids;
+}
+
 } /* namespace mihf */ } /* namespace odtone */

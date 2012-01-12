@@ -59,6 +59,8 @@ void discover_service::request(meta_message_ptr& in, meta_message_ptr& out)
 
 void discover_service::response(meta_message_ptr& in, meta_message_ptr& out)
 {
+	ODTONE_LOG(1, "(discovery) Received a response with the PoS discovery");
+
 	mih::status									st;
 	boost::optional<mih::net_type_addr_list>	capabilities_list_net_type_addr;
 	boost::optional<mih::event_list>			capabilities_event_list;
@@ -91,29 +93,105 @@ void discover_service::response(meta_message_ptr& in, meta_message_ptr& out)
 	out->destination(mih::id(""));
 
 	if(st == mih::status_success && mos_dscv) {
-		BOOST_FOREACH(mih::mos_info mos, mos_dscv->is) {
-			request_mos_capabilities(out, mos);
+		bool all = true;
+		mih::mos_dscv missing;
+
+		BOOST_FOREACH(mih::mos_info pos, mos_dscv->is) {
+			if(pos.ip.address().compare("") == 0) {
+				missing.is.push_back(pos);
+				all = false;
+			} else {
+				request_pos_capabilities(out, pos);
+			}
 		}
 
-		BOOST_FOREACH(mih::mos_info mos, mos_dscv->cs) {
-			request_mos_capabilities(out, mos);
+		BOOST_FOREACH(mih::mos_info pos, mos_dscv->cs) {
+			if(pos.ip.address().compare("") == 0) {
+				missing.cs.push_back(pos);
+				all = false;
+			} else {
+				request_pos_capabilities(out, pos);
+			}
 		}
 
-		BOOST_FOREACH(mih::mos_info mos, mos_dscv->es) {
-			request_mos_capabilities(out, mos);
+		BOOST_FOREACH(mih::mos_info pos, mos_dscv->es) {
+			if(pos.ip.address().compare("") == 0) {
+				missing.es.push_back(pos);
+				all = false;
+			} else {
+				request_pos_capabilities(out, pos);
+			}
+		}
+
+		if(!all) {
+			// Check the next discovery mechanism to use
+			mih::octet_string next_disc_user;
+			std::map<mih::octet_string, user_entry> user_map = _user_abook.get_discovery_users();
+			std::map<mih::octet_string, user_entry>::iterator src = user_map.find(in->source().to_string());
+
+			std::map<mih::octet_string, user_entry>::iterator it;
+			for(it = user_map.begin() ; it != user_map.end(); ++it) {
+				if(it->second.priority == (src->second.priority + 1)) {
+					next_disc_user = it->first;
+					break;
+				}
+			}
+
+			if(next_disc_user.size() != 0) {
+				ODTONE_LOG(1, "(discovery) Using a complementar mechanism",
+						   "to discover the remaining PoS");
+				*in << mih::indication(mih::indication::capability_discover)
+					& mih::tlv_mos_dscv(missing);
+				in->source(mihfid);
+				in->destination(mih::id(next_disc_user));
+				_transmit(in);
+			} else {
+				// Broadcast request
+				ODTONE_LOG(1, "(discovery) There are pending discovers of PoS.",
+						   " Sending a broadcast Capability Discover request");
+				out->source(mihfid);
+				out->destination(mih::id(""));
+				_transmit(out);
+			}
+		}
+	} else {
+		// Check the next discovery mechanism to use
+		mih::octet_string next_disc_user;
+		std::map<mih::octet_string, user_entry> user_map = _user_abook.get_discovery_users();
+		std::map<mih::octet_string, user_entry>::iterator src = user_map.find(in->source().to_string());
+
+		std::map<mih::octet_string, user_entry>::iterator it;
+		for(it = user_map.begin() ; it != user_map.end(); ++it) {
+			if(it->second.priority == (src->second.priority + 1)) {
+				next_disc_user = it->first;
+				break;
+			}
+		}
+
+		if(next_disc_user.size() != 0) {
+			ODTONE_LOG(1, "(discovery) The discover mechanism cannot discover any PoS.",
+					   " Trying ", next_disc_user, " discover mechanims.");
+			out->destination(mih::id(next_disc_user));
+			out->opcode(mih::operation::indication);
+			_transmit(out);
+		} else {
+			// Broadcast request
+			ODTONE_LOG(1, "(discovery) None of the configured discovery mechanism had results.",
+					   " Sending a broadcast Capability Discover request");
+			out->source(mihfid);
+			out->destination(mih::id(""));
+			_transmit(out);
 		}
 	}
 }
 
-bool discover_service::request_mos_capabilities(meta_message_ptr& out, mih::mos_info &mos)
+void discover_service::request_pos_capabilities(meta_message_ptr& out, mih::mos_info &pos)
 {
-	ODTONE_LOG(1, "(discovery) Requesting capabilities of a discovered PoS: ", mos.id.to_string());	
-	out->ip(mos.ip.address());
-	out->port(mos.port);
-	out->destination(mos.id);
+	ODTONE_LOG(1, "(discovery) Requesting capabilities of a discovered PoS: ", pos.id.to_string());
+	out->ip(pos.ip.address());
+	out->port(pos.port);
+	out->destination(pos.id);
 	_transmit(out);
-
-	return true;
 }
 
 } /* namespace mihf */ } /* namespace odtone */

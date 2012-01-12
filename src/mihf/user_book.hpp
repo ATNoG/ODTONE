@@ -133,6 +133,15 @@ public:
 	 */
 	bool has_discovery_user();
 
+	/**
+	 * Get the list of all known MIH-Users associated with the discovery
+	 * operations.
+	 *
+	 * @return The list of all known MIH-Users associated with the
+	 * discovery operations.
+	 */
+	const std::map<mih::octet_string, user_entry> get_discovery_users();
+
 private:
 
 	std::map<mih::octet_string, user_entry> _ubook;	/**< User book map.	*/
