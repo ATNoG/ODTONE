@@ -53,9 +53,7 @@ struct mos_info {
 	 */
 	bool operator==(const mos_info& other) const
 	{
-		return ((id == other.id) &&
-			    (ip == other.ip) &&
-			    (port == other.port));
+		return ((id == other.id) || (ip == other.ip && port == other.port));
 	}
 
 	mih::id id;		/**< PoS identifier.	*/
