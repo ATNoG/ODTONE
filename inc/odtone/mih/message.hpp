@@ -597,6 +597,7 @@ inline const id& message::destination() const
  */
 inline iarchive& message::input()
 {
+	_payload.position(0);
 	_in.reset(_payload);
 	return _in;
 }
