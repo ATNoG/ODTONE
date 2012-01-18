@@ -128,13 +128,13 @@ void command_service::link_get_parameters_response_handler(const boost::system::
 
 	// Send Link_Get_Parameters.confirm to the user
 	if(st == mih::status_success) {
-		ODTONE_LOG(1, "(mism) setting response to Link_Get_Parameters.request");
+		ODTONE_LOG(1, "(micm) setting response to Link_Get_Parameters.request");
 		*out << mih::response(mih::response::link_get_parameters)
 			& mih::tlv_status(mih::status_success)
 	//	    & mih::tlv_dev_states_rsp_list(dsrl)
 			& mih::tlv_get_status_rsp_list(srl);
 	} else {
-		ODTONE_LOG(1, "(mism) setting failure response to Link_Get_Parameters.request");
+		ODTONE_LOG(1, "(micm) setting failure response to Link_Get_Parameters.request");
 		*out << mih::response(mih::response::link_get_parameters)
 		    & mih::tlv_status(st);
 	}
@@ -183,12 +183,15 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 		    & mih::tlv_link_states_req(lsr._states_req)
 		    & mih::tlv_link_descriptor_req(lsr._desc_req);
 
+		out->tid(in->tid());
+		out->source(mihfid);
+
 		// For each Link_ID in request message
 		std::vector<mih::link_id>::iterator lid;
 		for(lid = lil.begin(); lid != lil.end(); lid++) {
 			out->destination(mih::id(_link_abook.search_interface((*lid).type, (*lid).addr)));
 			// If the Link SAP it is known send message
-			if (out->destination().to_string().compare("")) {
+			if (out->destination().to_string().compare("") != 0) {
 				// Check if the Link SAP is still active
 				uint16 fails = _link_abook.fail(out->destination().to_string());
 				if(fails > kConf_MIHF_Link_Delete_Value) {
@@ -197,8 +200,7 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 
 					// Update MIHF capabilities
 					utils::update_local_capabilities(_abook, _link_abook);
-				}
-				else {
+				} else {
 					ODTONE_LOG(1, "(mics) forwarding Link_Get_Parameters.request to ",
 						out->destination().to_string());
 					utils::forward_request(out, _lpool, _transmit);
@@ -318,13 +320,17 @@ void command_service::link_configure_thresholds_response_timeout(const boost::sy
 		_timer.erase(in->tid());
 	}
 
-	mih::status st = mih::status_failure;
+	mih::link_tuple_id link;
 	meta_message_ptr out(new meta_message());
 
+	*in >> mih::request(mih::request::link_configure_thresholds)
+		& mih::tlv_link_identifier(link);
+
 	// Send failure message to the user
-	ODTONE_LOG(1, "(mism) setting failure response to Link_Configure_Thresholds.request");
-	*out << mih::response(mih::response::link_get_parameters)
-	    & mih::tlv_status(st);
+	ODTONE_LOG(1, "(mics) setting failure response to Link_Configure_Thresholds.request");
+	*out << mih::response(mih::response::link_configure_thresholds)
+	    & mih::tlv_status(mih::status_failure)
+	    & mih::tlv_link_identifier(link);
 
 	out->tid(in->tid());
 	out->destination(in->source());
@@ -358,7 +364,7 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 		mih::link_tuple_id       lti;
 		mih::link_cfg_param_list lcpl;
 
-		*in >> mih::request()
+		*in >> mih::request(mih::request::link_configure_thresholds)
 		       & mih::tlv_link_identifier(lti)
 		       & mih::tlv_link_cfg_param_list(lcpl);
 		
@@ -369,6 +375,22 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 		out->source(in->source());
 		out->tid(in->tid());
 
+		// If the Link SAP it is known continue
+		if (out->destination().to_string().compare("") == 0) {
+			*out << mih::response(mih::response::link_configure_thresholds)
+				& mih::tlv_status(mih::status_failure)
+				& mih::tlv_link_identifier(lti);
+
+			out->tid(in->tid());
+			out->source(mihfid);
+			out->destination(in->source());
+
+			ODTONE_LOG(1, "(mies) forwarding Link_Configure_Thresholds.response to ",
+				out->destination().to_string());
+
+			return true;
+		}
+
 		// Check if the Link SAP is still active
 		uint16 fails = _link_abook.fail(out->destination().to_string());
 		if(fails > kConf_MIHF_Link_Delete_Value) {
@@ -377,8 +399,7 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 
 			// Update MIHF capabilities
 			utils::update_local_capabilities(_abook, _link_abook);
-		}
-		else {
+		} else {
 			ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.request to ",
 			    out->destination().to_string());
 			utils::forward_request(out, _lpool, _transmit);
@@ -540,12 +561,12 @@ void command_service::link_actions_response_handler(const boost::system::error_c
 
 	// Send Link_Actions.confirm to the user
 	if(st == mih::status_success) {
-		ODTONE_LOG(1, "(mism) setting response to Link_Actions.request");
+		ODTONE_LOG(1, "(mics) setting response to Link_Actions.request");
 		*out << mih::response(mih::response::link_actions)
 		    & mih::tlv_status(st)
 		    & mih::tlv_link_action_rsp_list(larl);
 	} else {
-		ODTONE_LOG(1, "(mism) setting failure response to Link_Actions.request");
+		ODTONE_LOG(1, "(mics) setting failure response to Link_Actions.request");
 		*out << mih::response(mih::response::link_actions)
 		    & mih::tlv_status(st);
 	}
@@ -580,7 +601,7 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 		//
 		mih::link_action_list lal;
 
-		*in >> mih::request()
+		*in >> mih::request(mih::request::link_actions)
 		       & mih::tlv_link_action_list(lal);
 
 		// For each Link_ID in request message
@@ -588,7 +609,7 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 		for(lar = lal.begin(); lar != lal.end(); lar++) {
 			out->destination(mih::id(_link_abook.search_interface((*lar).id.type, (*lar).id.addr)));
 			// If the Link SAP it is known send message
-			if (out->destination().to_string().compare("")) {
+			if (out->destination().to_string().compare("") != 0) {
 				// Check if the Link SAP is still active
 				uint16 fails = _link_abook.fail(out->destination().to_string());
 				if(fails > kConf_MIHF_Link_Delete_Value) {
@@ -597,25 +618,26 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 
 					// Update MIHF capabilities
 					utils::update_local_capabilities(_abook, _link_abook);
-				}
-				else {
+				} else {
 					mih::link_addr* a = boost::get<mih::link_addr>(&(*lar).addr);
 					if (a && ((*lar).action.attr.get(mih::link_ac_attr_data_fwd_req)) ) {
 						*out << mih::request(mih::request::link_actions)
 									& mih::tlv_link_action((*lar).action)
 									& mih::tlv_time_interval((*lar).ex_time)
 									& mih::tlv_poa(*a);
-					}
-					else {
+					} else {
 						*out << mih::request(mih::request::link_actions)
 									& mih::tlv_link_action((*lar).action)
 									& mih::tlv_time_interval((*lar).ex_time);
 					}
 
+					out->tid(in->tid());
+					out->source(mihfid);
+
 					ODTONE_LOG(1, "(mics) forwarding Link_Actions.request to ",
 						out->destination().to_string());
 					utils::forward_request(out, _lpool, _transmit);
-					}
+				}
 			}
 		}
 

@@ -76,13 +76,17 @@ void event_service::link_event_subscribe_response_timeout(const boost::system::e
 		_timer.erase(in->tid());
 	}
 
-	mih::status st = mih::status_failure;
+	mih::link_tuple_id link;
 	meta_message_ptr out(new meta_message());
+
+	*in >> mih::request(mih::request::event_subscribe)
+		& mih::tlv_link_identifier(link);
 
 	// Send failure message to the user
 	ODTONE_LOG(1, "(mism) setting failure response to Link_Event_Subscribe.request");
 	*out << mih::response(mih::response::event_subscribe)
-	    & mih::tlv_status(st);
+	    & mih::tlv_status(mih::status_failure)
+	    & mih::tlv_link_identifier(link);
 
 	out->tid(in->tid());
 	out->destination(in->source());
@@ -208,8 +212,7 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 
 			// Update MIHF capabilities
 			utils::update_local_capabilities(_abook, _link_abook);
-		}
-		else {
+		} else {
 			ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.request to ",
 			    out->destination().to_string());
 			utils::forward_request(out, _lpool, _transmit);
@@ -595,6 +598,13 @@ bool event_service::event_unsubscribe_confirm(meta_message_ptr &in,
 
 	_link_abook.reset(in->source().to_string());
 
+	// do we have a request from a user?
+	if (!_lpool.set_user_tid(in)) {
+		ODTONE_LOG(1, "(mies) warning: no local transaction for this msg ",
+		    "discarding it");
+		return false;
+	}
+
 	mih::status	st;
 	boost::optional<mih::event_list> events;
 
@@ -680,7 +690,8 @@ bool event_service::link_up_indication(meta_message_ptr &in, meta_message_ptr &o
 	ODTONE_LOG(1, "(mies) received Link_Up.indication from ",
 	    in->source().to_string());
 
-	_link_abook.reset(in->source().to_string());
+	if(in->is_local())
+		_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_up);
 
@@ -700,7 +711,8 @@ bool event_service::link_down_indication(meta_message_ptr &in, meta_message_ptr 
 	ODTONE_LOG(1, "(mies) received Link_Down.indication from ",
 	    in->source().to_string());
 
-	_link_abook.reset(in->source().to_string());
+	if(in->is_local())
+		_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_down);
 
@@ -770,7 +782,8 @@ bool event_service::link_going_down_indication(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mies) received Link_Going_Down.indication from ",
 	    in->source().to_string());
 
-	_link_abook.reset(in->source().to_string());
+	if(in->is_local())
+		_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_going_down);
 
@@ -790,7 +803,8 @@ bool event_service::link_parameters_report_indication(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mies) received Link_Parameters_Report.indication from ",
 	    in->source().to_string());
 
-	_link_abook.reset(in->source().to_string());
+	if(in->is_local())
+		_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_parameters_report);
 
@@ -810,7 +824,8 @@ bool event_service::link_handover_imminent_indication(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mies) received Link_Handover_Imminent.indication from ",
 	    in->source().to_string());
 
-	_link_abook.reset(in->source().to_string());
+	if(in->is_local())
+		_link_abook.reset(in->source().to_string());
 
 	std::list<event_registration_t>::iterator it;
 	int i = 0; // for logging purposes
@@ -845,7 +860,8 @@ bool event_service::link_handover_complete_indication(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mies) received Link_Handover_Complete.indication from ",
 	    in->source().to_string());
 
-	_link_abook.reset(in->source().to_string());
+	if(in->is_local())
+		_link_abook.reset(in->source().to_string());
 
 	mih::link_tuple_id oli;
 	mih::link_tuple_id nli;
@@ -907,7 +923,8 @@ bool event_service::link_pdu_transmit_status_indication(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mies) received Link_PDU_Transmit_Status.indication from ",
 	    in->source().to_string());
 
-	_link_abook.reset(in->source().to_string());
+	if(in->is_local())
+		_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_pdu_transmit_status);
 
