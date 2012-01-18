@@ -557,7 +557,7 @@ int main(int argc, char **argv)
 	net_sap			netsap(io, mihf_abook, rport);
 
 	// transaction manager for outgoing messages
-	message_out		msgout(tpool, process_message, netsap);
+	message_out		msgout(tpool, lpool, process_message, netsap);
 	transmit		trnsmt(io, user_abook, link_abook, msgout, lport);
 
 	// instantiate mihf services

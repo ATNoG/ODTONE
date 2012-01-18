@@ -27,11 +27,14 @@ namespace odtone { namespace mihf {
  * Construct a message output module.
  *
  * @param tpool The transaction pool module.
+ * @param lpool The local transaction pool module.
  * @param f The message handler.
  * @param netsap The netsap module.
  */
-message_out::message_out(transaction_pool &tpool, handler_t &f, net_sap &netsap)
+message_out::message_out(transaction_pool &tpool, local_transaction_pool &lpool,
+                         handler_t &f, net_sap &netsap)
 	: _tpool(tpool),
+	  _lpool(lpool),
 	  process_message(f),
 	  _netsap(netsap)
 {
@@ -51,6 +54,7 @@ void message_out::new_src_transaction(meta_message_ptr& m)
 	if (_tid == 0)		// don't send a message with a
 		_tid = 1;	// transaction id of 0
 
+	_lpool.set_remote_tid(m->destination().to_string(), m->tid(), _tid);
 	m->tid(_tid);
 
 	t->out = m;
