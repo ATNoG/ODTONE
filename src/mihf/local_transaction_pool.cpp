@@ -43,8 +43,8 @@ void local_transaction_pool::add(meta_message_ptr& in)
 	p.ltid = in->tid();
 	p.rtid = in->tid();
 
-	ODTONE_LOG(3, "(local transactions) added transaction ", p.user, ":",
-	    p.destination, ":", p.ltid);
+	ODTONE_LOG(3, "(local transactions) added transaction ", p.user, " : ",
+	    p.destination, " : ", p.ltid);
 
 	{
 		boost::mutex::scoped_lock lock(_mutex);

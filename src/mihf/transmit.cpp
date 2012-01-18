@@ -64,13 +64,13 @@ void transmit::operator()(meta_message_ptr& msg)
 			}
 			utils::udp_send(_io, msg, user.ip.c_str(), user.port, _port);
 			ODTONE_LOG(1, "(transmit) sending local message to: ",
-			    msg->destination().to_string(), " ", user.ip, " ", user.port);
+			    msg->destination().to_string(), " : ", user.ip, " : ", user.port);
 		}
 		else {
 			link_entry link = _link_abook.get(msg->destination().to_string());
 			utils::udp_send(_io, msg, link.ip.c_str(), link.port, _port);
 			ODTONE_LOG(1, "(transmit) sending local message to: ",
-			    msg->destination().to_string(), " ", link.ip, " ", link.port);
+			    msg->destination().to_string(), " : ", link.ip, " : ", link.port);
 		}
 	} catch (...) {
 		if(msg->opcode() == mih::operation::confirm) {

@@ -86,13 +86,13 @@ void session::handle_read(odtone::buffer<uint8> &buff,
 
 		mih::frame *pud = mih::frame::cast(buff.get(), rbytes);
 		if(pud) {
-			ODTONE_LOG(1, "(tcp) received ", rbytes, " bytes from ", ip , ":", port);
+			ODTONE_LOG(1, "(tcp) received ", rbytes, " bytes from ", ip , " : ", port);
 
 			meta_message_ptr in(new meta_message(ip, port, *pud));
 
 			// discard messages if multicast messages are not supported
 			if(utils::is_multicast(in) && !_enable_multicast) {
-				ODTONE_LOG(1, "(udp) Discarding message! Reason: ",
+				ODTONE_LOG(1, "(tcp) Discarding message! Reason: ",
 							  "multicast messages are not supported");
 			} else {
 				_dispatch(in);

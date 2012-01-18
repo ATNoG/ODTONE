@@ -138,7 +138,7 @@ void discover_service::response(meta_message_ptr& in, meta_message_ptr& out)
 			}
 
 			if(next_disc_user.size() != 0) {
-				ODTONE_LOG(1, "(discovery) Using a complementar mechanism",
+				ODTONE_LOG(1, "(discovery) Using a complementar mechanism ",
 						   "to discover the remaining PoS");
 				*in << mih::indication(mih::indication::capability_discover)
 					& mih::tlv_mos_dscv(missing);
@@ -147,8 +147,8 @@ void discover_service::response(meta_message_ptr& in, meta_message_ptr& out)
 				_transmit(in);
 			} else {
 				// Broadcast request
-				ODTONE_LOG(1, "(discovery) There are pending discovers of PoS.",
-						   " Sending a broadcast Capability Discover request");
+				ODTONE_LOG(1, "(discovery) There are pending discovers of PoS. ",
+						   "Sending a broadcast Capability Discover request");
 				out->source(mihfid);
 				out->destination(mih::id(""));
 				_transmit(out);

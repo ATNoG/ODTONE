@@ -64,7 +64,7 @@ void net_sap::send(meta_message_ptr &msg)
 			utils::udp_send(_io, msg, dst.ip.c_str(), dst.port, _port);
 		}
 
-		ODTONE_LOG(1, "(net sap) sent message to: ", msg->destination().to_string(), " ", dst.ip, " ", dst.port);
+		ODTONE_LOG(1, "(net sap) sent message to: ", msg->destination().to_string(), " : ", dst.ip, " : ", dst.port);
 	} catch(...) { // no registration was found
 
 		// check msg meta data for ip and use it

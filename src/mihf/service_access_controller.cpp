@@ -104,13 +104,13 @@ bool sac_process_message(meta_message_ptr& in, meta_message_ptr& out)
 	// discard messages that are not destined to this MIHF or if
 	// multicast messages are not supported
 	if(in->source() == mihfid) {
-		ODTONE_LOG(1, "(udp) Discarding message! Reason: ",
+		ODTONE_LOG(1, "(sac) Discarding message! Reason: ",
 					  "message was broadcasted to itself");
 		return false;
 	}
 
 	if(!utils::this_mihf_is_destination(in) && !utils::is_multicast(in)) {
-		ODTONE_LOG(1, "(udp) Discarding message! Reason: ",
+		ODTONE_LOG(1, "(sac) Discarding message! Reason: ",
 					  "this is not the message destination");
 		return false;
 	}

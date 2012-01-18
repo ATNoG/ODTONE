@@ -349,7 +349,7 @@ void command_service::link_configure_thresholds_response_timeout(const boost::sy
 bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 							meta_message_ptr &out)
 {
-	ODTONE_LOG(1, "(mics) received a Link_Configure_Thresholds.request from",
+	ODTONE_LOG(1, "(mics) received a Link_Configure_Thresholds.request from ",
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
@@ -588,7 +588,7 @@ void command_service::link_actions_response_handler(const boost::system::error_c
 bool command_service::link_actions_request(meta_message_ptr &in,
 										   meta_message_ptr &out)
 {
-	ODTONE_LOG(1, "(mics) received a Link_Actions.request from",
+	ODTONE_LOG(1, "(mics) received a Link_Actions.request from ",
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {

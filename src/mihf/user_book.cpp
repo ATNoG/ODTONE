@@ -69,7 +69,7 @@ void user_book::add(const mih::octet_string &id,
 	//
 
 	_ubook[id] = a;
-	ODTONE_LOG(4, "(user_book) added: ", id, " ", ip, " ", port, " ", role);
+	ODTONE_LOG(4, "(user_book) added: ", id, " : ", ip, " : ", port, " : ", role);
 }
 
 /**

@@ -254,7 +254,7 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 		set_capability_discover_response(in, out);
 		return true;
 	} else {
-			ODTONE_LOG(3, "(mism) response to broadcast Capability_Discover.request disabled ");
+			ODTONE_LOG(3, "(mism) response to broadcast Capability_Discover.request disabled");
 			return false;
 	}
 

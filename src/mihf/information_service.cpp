@@ -54,7 +54,7 @@ information_service::information_service(local_transaction_pool &lpool,
 bool information_service::get_information_request(meta_message_ptr &in,
 						  meta_message_ptr &out)
 {
-	ODTONE_LOG(1, "(miis) received a Get_Information.request from",
+	ODTONE_LOG(1, "(miis) received a Get_Information.request from ",
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
@@ -123,7 +123,7 @@ bool information_service::get_information_response(meta_message_ptr &in,
 bool information_service::push_information_request(meta_message_ptr &in,
 						   meta_message_ptr &out)
 {
-	ODTONE_LOG(1, "(miis) received a Get_Information.request from",
+	ODTONE_LOG(1, "(miis) received a Get_Information.request from ",
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
@@ -158,7 +158,7 @@ bool information_service::push_information_indication(meta_message_ptr &in,
 	    in->source().to_string());
 
 	if(!_lpool.set_user_tid(in)) {
-		ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
+		ODTONE_LOG(1, "(miis) warning: no local transaction for this msg ",
 		    "discarding it");
 
 		return false;
