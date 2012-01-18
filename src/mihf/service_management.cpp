@@ -127,7 +127,6 @@ void service_management::piggyback_capabilities(meta_message_ptr& in,
 	out->tid(in->tid());
 	out->source(in->source());
 	out->destination(in->destination());
-	out->ackreq(in->ackreq());
 }
 
 /**
@@ -191,7 +190,6 @@ void service_management::set_capability_discover_response(meta_message_ptr& in,
 	out->tid(in->tid());
 	out->source(mihfid);
 	out->destination(in->source());
-	out->ackreq(in->ackreq());
 }
 
 /**
