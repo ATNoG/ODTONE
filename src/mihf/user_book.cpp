@@ -155,41 +155,49 @@ const std::vector<mih::octet_string> user_book::get_ids()
 }
 
 /**
- * Get the MIH-User associated to the mobility operations.
+ * Get the MIH-User associated with the handover operations.
  *
- * @return The identifier of the MIH-User associated to the mobility
+ * @return The identifier of the MIH-User associated with the handover
  * operations.
  */
-const mih::octet_string user_book::mobility_user()
+const boost::optional<mih::octet_string> user_book::mobility_user()
 {
 	boost::mutex::scoped_lock lock(_mutex);
 
+	boost::optional<mih::octet_string> ret;
+
 	std::vector<mih::octet_string> ids;
 	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
-		if(it->second.role == mih::user_role_mobility && it->second.priority == 0)
-			return it->first;
+		if(it->second.role == mih::user_role_mobility && it->second.priority == 0) {
+			ret = it->first;
+			break;
+		}
 	}
 
-	throw ("no MIH-User responsible for mobility");
+	return ret;
 }
 
 /**
- * Get the MIH-User associated to the information server operations.
+ * Get the MIH-User associated with the information server operations.
  *
- * @return The identifier of the MIH-User associated to the information
+ * @return The identifier of the MIH-User associated with the information
  * server operations.
  */
-const mih::octet_string user_book::information_user()
+const boost::optional<mih::octet_string> user_book::information_user()
 {
 	boost::mutex::scoped_lock lock(_mutex);
 
+	boost::optional<mih::octet_string> ret;
+
 	std::vector<mih::octet_string> ids;
 	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
-		if(it->second.role == mih::user_role_is && it->second.priority == 0)
-			return it->first;
+		if(it->second.role == mih::user_role_is && it->second.priority == 0) {
+			ret = it->first;
+			break;
+		}
 	}
 
-	throw ("no MIH-User responsible for information server");
+	return ret;
 }
 
 /**
@@ -198,36 +206,21 @@ const mih::octet_string user_book::information_user()
  * @return The identifier of the MIH-User associated with the discovery
  * operations.
  */
-const mih::octet_string user_book::discovery_user()
+const boost::optional<mih::octet_string> user_book::discovery_user()
 {
 	boost::mutex::scoped_lock lock(_mutex);
 
-	std::vector<mih::octet_string> ids;
-	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
-		if(it->second.role == mih::user_role_discovery && it->second.priority == 0)
-			return it->first;
-	}
-
-	throw ("no MIH-User responsible for discovery");
-}
-
-/**
- * Check if exists a MIH-User associated with the discovery operations.
- *
- * @return True if exists a MIH-User associated with the discovery
- * operations or false otherwise.
- */
-bool user_book::has_discovery_user()
-{
-	boost::mutex::scoped_lock lock(_mutex);
+	boost::optional<mih::octet_string> ret;
 
 	std::vector<mih::octet_string> ids;
 	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
-		if(it->second.role == mih::user_role_discovery)
-			return true;
+		if(it->second.role == mih::user_role_discovery && it->second.priority == 0) {
+			ret = it->first;
+			break;
+		}
 	}
 
-	return false;
+	return ret;
 }
 
 /**

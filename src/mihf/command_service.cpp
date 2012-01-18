@@ -728,8 +728,14 @@ bool command_service::generic_command_request(const char *recv_msg,
 		//
 		// Kick this message to MIH User for handover as an indication
 		//
+		boost::optional<mih::octet_string> mob_user = _user_abook.mobility_user();
+		if(!mob_user.is_initialized()) {
+			ODTONE_LOG(1, "There are no mobility MIH-users known by the MIHF");
+			return false;
+		}
+
 		in->opcode(mih::operation::indication);
-		in->destination(mih::id(_user_abook.mobility_user()));
+		in->destination(mih::id(mob_user.get()));
 		//
 		// source identifier is the remote MIHF
 		//

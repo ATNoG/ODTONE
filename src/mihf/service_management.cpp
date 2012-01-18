@@ -230,7 +230,8 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 	// User requests the capabilities of a remote MIHF
 	if (in->is_local() && !utils::this_mihf_is_destination(in)) {
 		// Multicast && Discover Module ON
-		if(utils::is_multicast(in) && _user_abook.has_discovery_user()) {
+		boost::optional<mih::octet_string> disc_user = _user_abook.discovery_user();
+		if(utils::is_multicast(in) && disc_user.is_initialized()) {
 			_discover.request(in, out);
 			return false;
 		}

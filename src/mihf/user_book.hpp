@@ -102,20 +102,20 @@ public:
 	const std::vector<mih::octet_string> get_ids();
 
 	/**
-	 * Get the MIH-User associated to the handover operations.
+	 * Get the MIH-User associated with the handover operations.
 	 *
-	 * @return The identifier of the MIH-User associated to the handover
+	 * @return The identifier of the MIH-User associated with the handover
 	 * operations.
 	 */
-	const mih::octet_string mobility_user();
+	const boost::optional<mih::octet_string> mobility_user();
 
 	/**
-	 * Get the MIH-User associated to the information server operations.
+	 * Get the MIH-User associated with the information server operations.
 	 *
-	 * @return The identifier of the MIH-User associated to the information
+	 * @return The identifier of the MIH-User associated with the information
 	 * server operations.
 	 */
-	const mih::octet_string information_user();
+	const boost::optional<mih::octet_string> information_user();
 
 	/**
 	 * Get the MIH-User associated with the discovery operations.
@@ -123,15 +123,7 @@ public:
 	 * @return The identifier of the MIH-User associated with the discovery
 	 * operations.
 	 */
-	const mih::octet_string discovery_user();
-
-	/**
-	 * Check if exists a MIH-User associated with the discovery operations.
-	 *
-	 * @return True if exists a MIH-User associated with the discovery
-	 * operations or false otherwise.
-	 */
-	bool has_discovery_user();
+	const boost::optional<mih::octet_string> discovery_user();
 
 	/**
 	 * Get the list of all known MIH-Users associated with the discovery

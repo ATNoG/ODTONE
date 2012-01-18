@@ -61,7 +61,14 @@ bool information_service::get_information_request(meta_message_ptr &in,
 		//
 		// Kick this message to Information Service.
 		//
-		in->destination(mih::id(_user_abook.information_user()));
+		boost::optional<mih::octet_string> info_user = _user_abook.information_user();
+		if(!info_user.is_initialized()) {
+			ODTONE_LOG(1, "There are no information MIH-users known by the MIHF");
+			return false;
+		}
+
+
+		in->destination(mih::id(info_user.get()));
 		in->opcode(mih::operation::indication);
 		_lpool.add(in);
 		in->source(mihfid);
