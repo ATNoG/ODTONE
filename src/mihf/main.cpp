@@ -167,13 +167,18 @@ void set_users(mih::octet_string &list, user_book &ubook)
 		if ((iss_port >> port_).fail())
 			throw "invalid port";
 
-		std::map<std::string, mih::user_role_enum> enum_map;
-		enum_map["is"] 			= mih::user_role_is;
-		enum_map["mobility"]	= mih::user_role_mobility;
-		enum_map["monitoring"]	= mih::user_role_monitoring;
-		enum_map["discovery"]	= mih::user_role_discovery;
+		mih::user_role role;
+		if(it != tokens.end()) {
+			std::map<std::string, mih::user_role_enum> enum_map;
+			enum_map["is"] 			= mih::user_role_is;
+			enum_map["mobility"]	= mih::user_role_mobility;
+			enum_map["monitoring"]	= mih::user_role_monitoring;
+			enum_map["discovery"]	= mih::user_role_discovery;
 
-		mih::user_role role = mih::user_role_enum(enum_map[*it]);
+			role = mih::user_role_enum(enum_map[*it]);
+		} else {
+			role = mih::user_role_mobility;
+		}
 
 		ubook.add(id, ip, port_, role);
 	}
