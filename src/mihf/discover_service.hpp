@@ -39,21 +39,23 @@ public:
 					 local_transaction_pool &lpool,
 					 address_book &abook,
 					 user_book &user_abook,
-					 transmit &t);
+					 transmit &t,
+					 bool enable_unsolicited);
 
 	void request(meta_message_ptr& in, meta_message_ptr& out);
 
 	void response(meta_message_ptr& in, meta_message_ptr& out);
 
 protected:
-	void request_pos_capabilities(meta_message_ptr& out, mih::mos_info &pos);
+	void request_pos_capabilities(meta_message_ptr& out, mih::mos_info &pos, bool unsolicited);
 
 private:
-	io_service						&_io;
-	local_transaction_pool			&_lpool;
-	address_book					&_abook;
-	user_book						&_user_abook;
-	transmit						&_transmit;
+	io_service				&_io;
+	local_transaction_pool	&_lpool;
+	address_book			&_abook;
+	user_book				&_user_abook;
+	transmit				&_transmit;
+	bool					_enable_unsolicited;
 };
 
 } /* namespace mihf */ } /* namespace odtone */

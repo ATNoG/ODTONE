@@ -18,7 +18,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "service_management.hpp"
-
 #include "log.hpp"
 #include "utils.hpp"
 #include "mihfid.hpp"
@@ -30,6 +29,8 @@
 #include <odtone/mih/confirm.hpp>
 #include <odtone/mih/indication.hpp>
 #include <odtone/mih/tlv_types.hpp>
+
+#include <boost/foreach.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 extern odtone::uint16 kConf_MIHF_Link_Response_Time_Value;
@@ -49,6 +50,7 @@ namespace odtone { namespace mihf {
  * @param address_abook The address book module.
  * @param t The transmit module.
  * @param lrpool The link response pool module.
+ * @param enable_unsolicited Allows unsolicited discovery.
  */
 service_management::service_management(io_service &io,
 										local_transaction_pool &lpool,
@@ -56,15 +58,17 @@ service_management::service_management(io_service &io,
 										user_book &user_abook,
 										address_book &address_book,
 										transmit &t,
-										link_response_pool &lrpool)
+										link_response_pool &lrpool,
+										bool enable_unsolicited)
 	: _lpool(lpool),
 	  _link_abook(link_abook),
 	  _user_abook(user_abook),
 	  _abook(address_book),
 	  _transmit(t),
 	  _lrpool(lrpool),
-	  _discover(io, lpool, address_book, user_abook, t)
+	  _discover(io, lpool, address_book, user_abook, t, enable_unsolicited)
 {
+	_enable_unsolicited = enable_unsolicited;
 }
 
 /**
@@ -111,8 +115,6 @@ bool service_management::link_capability_discover_request(meta_message_ptr &in,
 void service_management::piggyback_capabilities(meta_message_ptr& in,
 												meta_message_ptr& out)
 {
-	address_entry mihf_info;
-
 	// Get local capabilities
 	address_entry mihf_cap = _abook.get(mihfid_t::instance()->to_string());
 
@@ -308,8 +310,26 @@ bool service_management::capability_discover_response(meta_message_ptr &in,
 		return false;
 	}
 
-	ODTONE_LOG(1, "no pending transaction for this message, discarding");
-	return false;
+	if(_enable_unsolicited) {
+		ODTONE_LOG(1, "forwarding Capability_Discover.response to all",
+		    "MIH-Users");
+
+		std::vector<mih::octet_string> user_id_list = _user_abook.get_ids();
+		BOOST_FOREACH(mih::octet_string user, user_id_list) {
+			// TODO mudar para log 3
+			ODTONE_LOG(1, "forwarding Capability_Discover.response to all ",
+				"MIH-Users");
+			in->opcode(mih::operation::confirm);
+			in->source(mihfid);
+			in->destination(mih::id(user));
+			_transmit(in);
+		}
+
+		return false;
+	} else {
+		ODTONE_LOG(1, "no pending transaction for this message, discarding");
+		return false;
+	}
 }
 
 /**

@@ -50,6 +50,7 @@ public:
 	 * @param address_abook The address book module.
 	 * @param t The transmit module.
 	 * @param lrpool The link response pool module.
+	 * @param enable_unsolicited Allows unsolicited discovery.
 	 */
 	service_management(io_service &io,
 			   local_transaction_pool &lpool,
@@ -57,7 +58,8 @@ public:
 			   user_book &user_abook,
 			   address_book &address_book,
 			   transmit &t,
-			   link_response_pool &lrpool);
+			   link_response_pool &lrpool,
+			   bool enable_unsolicited);
 
 	/**
 	 * Capability Discover Request message handler.
@@ -162,7 +164,8 @@ private:
 	transmit				&_transmit;		/**< Transmit book module.			*/
 	link_response_pool		&_lrpool;		/**< Link response pool module.		*/
 
-	discover_service _discover;				/**< Discovery service module.		*/
+	bool				_enable_unsolicited;/**< Allows unsolicited discovery.	*/
+	discover_service	_discover;			/**< Discovery service module.		*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

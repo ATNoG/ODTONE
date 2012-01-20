@@ -80,6 +80,7 @@ static const char* const kConf_MIHF_Local_Port         = "mihf.local_port";
 static const char* const kConf_MIHF_Link_Response_Time = "mihf.link_response_time";
 static const char* const kConf_MIHF_Link_Delete        = "mihf.link_delete";
 static const char* const kConf_MIHF_Multicast          = "enable_multicast";
+static const char* const kConf_MIHF_Unsolicited        = "enable_unsolicited";
 static const char* const kConf_MIHF_Verbosity          = "log";
 
 uint16 kConf_MIHF_Link_Response_Time_Value;
@@ -500,6 +501,7 @@ int main(int argc, char **argv)
 		(kConf_MIHF_Link_Response_Time, po::value<uint16>()->default_value(300), "Link SAP response time (milliseconds)")
 		(kConf_MIHF_Link_Delete, po::value<uint16>()->default_value(2), "Link SAP response fails to forget")
 		(kConf_MIHF_Multicast,  "Allows multicast messages")
+		(kConf_MIHF_Unsolicited,  "Allows unsolicited discovery")
 		(kConf_MIHF_Verbosity, po::value<uint16>()->default_value(1), "Log level [0-4]")
 	;
 
@@ -516,6 +518,7 @@ int main(int argc, char **argv)
 
 	// get command line parameters
 	bool enable_multicast = (cfg.count(kConf_MIHF_Multicast) == 1);
+	bool enable_unsolicited = (cfg.count(kConf_MIHF_Unsolicited) == 1);
 
 	uint16 buff_size = cfg.get<uint16>(kConf_Receive_Buffer_Len);
 	uint16 lport = cfg.get<uint16>(kConf_MIHF_Local_Port);
@@ -564,7 +567,7 @@ int main(int argc, char **argv)
 	event_service		mies(io, lpool, trnsmt, mihf_abook, link_abook);
 	command_service		mics(io, lpool, trnsmt, mihf_abook, link_abook, user_abook, lrpool);
 	information_service	miis(lpool, trnsmt, user_abook);
-	service_management	sm(io, lpool, link_abook, user_abook, mihf_abook, trnsmt, lrpool);
+	service_management	sm(io, lpool, link_abook, user_abook, mihf_abook, trnsmt, lrpool, enable_unsolicited);
 
 	// register callbacks with service access controller
 	sm_register_callbacks(sm);

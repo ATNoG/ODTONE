@@ -38,28 +38,44 @@ discover_service::discover_service(io_service &io,
 								   local_transaction_pool &lpool,
 								   address_book &address_abook,
 								   user_book &user_abook,
-								   transmit &t)
+								   transmit &t,
+								   bool enable_unsolicited)
 	: _io(io),
 	  _lpool(lpool),
 	  _abook(address_abook),
 	  _user_abook(user_abook),
 	  _transmit(t)
 {
+	_enable_unsolicited = enable_unsolicited;
 }
 
 void discover_service::request(meta_message_ptr& in, meta_message_ptr& out)
 {
-	// Choose discovery mechanism
 	ODTONE_LOG(1, "(discovery) Received a request to discover a new PoS");
-	_lpool.add(in);
-	in->destination(mih::id(_user_abook.discovery_user()));
+	in->destination(mih::id(_user_abook.discovery_user().get()));
 	in->opcode(mih::operation::indication);
-	_transmit(in);
+	utils::forward_request(in, _lpool, _transmit);
 }
 
 void discover_service::response(meta_message_ptr& in, meta_message_ptr& out)
 {
+	bool unsolicited;
+
 	ODTONE_LOG(1, "(discovery) Received a response with the PoS discovery");
+
+	if(!_lpool.set_user_tid(in)) {
+		if(!_enable_unsolicited) {
+			ODTONE_LOG(1, "(discovery) Unsolicited discovery not allowed");
+			return;
+		} else {
+			ODTONE_LOG(1, "(discovery) this is an unsolicited discovery");
+			out->source(mihfid);
+			unsolicited = true;
+		}
+	} else {
+		unsolicited = false;
+		out->source(in->destination());
+	}
 
 	mih::status									st;
 	boost::optional<mih::net_type_addr_list>	capabilities_list_net_type_addr;
@@ -89,8 +105,8 @@ void discover_service::response(meta_message_ptr& in, meta_message_ptr& out)
 			& mih::tlv_transport_option_list(mihf_cap.capabilities_trans_list)
 			& mih::tlv_mbb_ho_supp_list(mihf_cap.capabilities_mbb_ho_supp);
 
-	out->source(mihfid);
 	out->destination(mih::id(""));
+	out->tid(in->tid());
 
 	if(st == mih::status_success && mos_dscv) {
 		bool all = true;
@@ -140,18 +156,22 @@ void discover_service::response(meta_message_ptr& in, meta_message_ptr& out)
 			if(next_disc_user.size() != 0) {
 				ODTONE_LOG(1, "(discovery) Using a complementar mechanism ",
 						   "to discover the remaining PoS");
-				*in << mih::indication(mih::indication::capability_discover)
+				*out << mih::indication(mih::indication::capability_discover)
 					& mih::tlv_mos_dscv(missing);
-				in->source(mihfid);
-				in->destination(mih::id(next_disc_user));
-				_transmit(in);
+				out->destination(mih::id(next_disc_user));
+				if(!unsolicited)
+					utils::forward_request(out, _lpool, _transmit);
+				else
+					_transmit(out);
 			} else {
 				// Broadcast request
 				ODTONE_LOG(1, "(discovery) There are pending discovers of PoS. ",
 						   "Sending a broadcast Capability Discover request");
-				out->source(mihfid);
 				out->destination(mih::id(""));
-				_transmit(out);
+				if(!unsolicited)
+					utils::forward_request(out, _lpool, _transmit);
+				else
+					_transmit(out);
 			}
 		}
 	} else {
@@ -171,27 +191,36 @@ void discover_service::response(meta_message_ptr& in, meta_message_ptr& out)
 		if(next_disc_user.size() != 0) {
 			ODTONE_LOG(1, "(discovery) The discover mechanism cannot discover any PoS.",
 					   " Trying ", next_disc_user, " discover mechanims.");
+			*out << mih::indication(mih::indication::capability_discover);
 			out->destination(mih::id(next_disc_user));
-			out->opcode(mih::operation::indication);
-			_transmit(out);
+			if(!unsolicited)
+				utils::forward_request(out, _lpool, _transmit);
+			else
+				_transmit(out);
 		} else {
 			// Broadcast request
 			ODTONE_LOG(1, "(discovery) None of the configured discovery mechanism had results.",
 					   " Sending a broadcast Capability Discover request");
-			out->source(mihfid);
+			out->source(in->destination());
 			out->destination(mih::id(""));
-			_transmit(out);
+			if(!unsolicited)
+				utils::forward_request(out, _lpool, _transmit);
+			else
+				_transmit(out);
 		}
 	}
 }
 
-void discover_service::request_pos_capabilities(meta_message_ptr& out, mih::mos_info &pos)
+void discover_service::request_pos_capabilities(meta_message_ptr& out, mih::mos_info &pos, bool unsolicited)
 {
 	ODTONE_LOG(1, "(discovery) Requesting capabilities of a discovered PoS: ", pos.id.to_string());
 	out->ip(pos.ip.address());
 	out->port(pos.port);
 	out->destination(pos.id);
-	_transmit(out);
+	if(!unsolicited)
+		utils::forward_request(out, _lpool, _transmit);
+	else
+		_transmit(out);
 }
 
 } /* namespace mihf */ } /* namespace odtone */
