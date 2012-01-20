@@ -111,31 +111,50 @@ void discover_service::response(meta_message_ptr& in, meta_message_ptr& out)
 	if(st == mih::status_success && mos_dscv) {
 		bool all = true;
 		mih::mos_dscv missing;
+		std::vector<mih::mos_info> sent;
 
 		BOOST_FOREACH(mih::mos_info pos, mos_dscv->is) {
-			if(pos.ip.address().compare("") == 0) {
-				missing.is.push_back(pos);
-				all = false;
-			} else {
-				request_pos_capabilities(out, pos);
+			std::vector<mih::mos_info>::iterator it;
+			it = std::find(sent.begin(), sent.end(), pos);
+
+			if(it == sent.end()) {
+				if(pos.ip.address().compare("") == 0) {
+					missing.is.push_back(pos);
+					all = false;
+				} else {
+					request_pos_capabilities(out, pos, unsolicited);
+					sent.push_back(pos);
+				}
 			}
 		}
 
 		BOOST_FOREACH(mih::mos_info pos, mos_dscv->cs) {
-			if(pos.ip.address().compare("") == 0) {
-				missing.cs.push_back(pos);
-				all = false;
-			} else {
-				request_pos_capabilities(out, pos);
+			std::vector<mih::mos_info>::iterator it;
+			it = std::find(sent.begin(), sent.end(), pos);
+
+			if(it == sent.end()) {
+				if(pos.ip.address().compare("") == 0) {
+					missing.cs.push_back(pos);
+					all = false;
+				} else {
+					request_pos_capabilities(out, pos, unsolicited);
+					sent.push_back(pos);
+				}
 			}
 		}
 
 		BOOST_FOREACH(mih::mos_info pos, mos_dscv->es) {
-			if(pos.ip.address().compare("") == 0) {
-				missing.es.push_back(pos);
-				all = false;
-			} else {
-				request_pos_capabilities(out, pos);
+			std::vector<mih::mos_info>::iterator it;
+			it = std::find(sent.begin(), sent.end(), pos);
+
+			if(it == sent.end()) {
+				if(pos.ip.address().compare("") == 0) {
+					missing.es.push_back(pos);
+					all = false;
+				} else {
+					request_pos_capabilities(out, pos, unsolicited);
+					sent.push_back(pos);
+				}
 			}
 		}
 
