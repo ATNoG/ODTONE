@@ -128,7 +128,7 @@ void udp_send(boost::asio::io_service &io, meta_message_ptr &msg,
 
 	// Set socket flags
     sock.set_option(boost::asio::socket_base::reuse_address(true));
-	if (is_multicast(msg)) {
+	if (strcmp(dst_ip, "ff02::1") == 0) {
 		boost::asio::socket_base::broadcast option(true);
 		sock.set_option(option);
 	}
@@ -143,11 +143,29 @@ void udp_send(boost::asio::io_service &io, meta_message_ptr &msg,
 	sbuff = fm.get();
 	slen = fm.size();
 
-	ip::udp::endpoint ep(ip::address::from_string(dst_ip), dst_port);
-	sock.async_send_to(boost::asio::buffer(sbuff, slen),
-			   ep,
-			   boost::bind((&send_handler),
-				       placeholders::error));
+	if (strcmp(dst_ip, "ff02::1") == 0) {
+		// FIXME: Proper and portable way to discover the available interfaces
+		for(int i = 1; i <= 5; i++) {
+			try {
+				sock.set_option(ip::multicast::outbound_interface(i));
+				sock.set_option(ip::multicast::enable_loopback(false));
+
+				ip::udp::endpoint ep(ip::address::from_string(dst_ip), dst_port);
+				sock.async_send_to(boost::asio::buffer(sbuff, slen),
+						   ep,
+						   boost::bind((&send_handler),
+						   placeholders::error));
+			} catch(...) {
+				return;
+			}
+		}
+	} else {
+			ip::udp::endpoint ep(ip::address::from_string(dst_ip), dst_port);
+			sock.async_send_to(boost::asio::buffer(sbuff, slen),
+					   ep,
+					   boost::bind((&send_handler),
+							   placeholders::error));
+	}
 
 	sock.close();
 }
