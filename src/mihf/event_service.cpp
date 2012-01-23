@@ -38,6 +38,7 @@ extern odtone::uint16 kConf_MIHF_Link_Response_Time_Value;
 extern odtone::uint16 kConf_MIHF_Link_Delete_Value;
 
 namespace odtone { namespace mihf {
+
 /**
  * Construct the event service.
  *
@@ -116,9 +117,13 @@ mih::status event_service::subscribe(const mih::id &user,
 	for(int i = 0; i < 32; i++) {
 		if (events.get((mih::event_list_enum) i)) {
 			reg.event = (mih::event_list_enum) i;
-			_event_subscriptions.push_back(reg);
-			ODTONE_LOG(3, "(mies) added subscription ", reg.user,
-			    ":", reg.link.addr, ":", reg.event);
+			std::list<event_registration_t>::iterator tmp;
+			tmp = std::find(_event_subscriptions.begin(), _event_subscriptions.end(), reg);
+			if (tmp == _event_subscriptions.end()) {
+				_event_subscriptions.push_back(reg);
+				ODTONE_LOG(3, "(mies) added subscription ", reg.user,
+					":", reg.link.addr, ":", reg.event);
+			}
 		}
 	}
 

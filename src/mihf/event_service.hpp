@@ -44,6 +44,17 @@ struct event_registration_t
 	mih::octet_string		user;	/**< MIH-User/MIHF identifier.	*/
 	mih::link_tuple_id		link;	/**< Link identifier.			*/
 	mih::event_list_enum	event;	/**< Event subscribed.			*/
+
+	/**
+	 * Check if the MAC_ADDR is equal to another MAC_ADDR.
+	 *
+	 * @param other The MAC_ADDR to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
+	bool operator==(const event_registration_t& other) const
+	{
+		return ((user == other.user) && (link == other.link) && (event == other.event));
+	}
 };
 
 /**
