@@ -1,5 +1,5 @@
 [/==============================================================================
- / Brief   : Link SAP App Documentation
+ / Brief   : Link SAP ICMP App Documentation
  / Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
  /------------------------------------------------------------------------------
  / ODTONE - Open Dot Twenty One
@@ -15,43 +15,16 @@
  / This software is distributed without any warranty.
  /=============================================================================]
 
-[section:link_sap_index Link SAP]
+[section:link_sap_icmp_index ICMP Link SAP]
 
 The Link SAP specifies an abstract media dependent interface between the MIHF
 and lower layers media-specific protocol stacks of technologies such as IEEE 802.3,
 IEEE 802.11, IEEE 802.16, 3GPP and 3GPP2.
 
-The provided Link SAP implementation is very simple, supporting only two
-types of events: link down and link up events.
+The provided ICMP Link SAP implementation is very simple and it can only detect the
+attachment of a new node using the ICMP protocol.
 
-[section:link_sap_getStart Getting Started]
-
-[section Detailed Description]
-
-The Link SAP is implemented for Linux and Windows OS. The Linux implementation use
-['rtnetlink] and ['netlink] libraries to manage network interfaces, while the Windows
-implementation use Windows SDK libraries.
-
-[$./images/link_sap_state_machine.png]
-
-At the bootstrap, the Link SAP will send a "Link_Register.indication" message
-to the MIHF in order to register itself with the MIHF. Then, it stays in a
-waiting state for messages from the its local MIHF and/or events
-from the network interfaces.
-
-When a change in the network interface is detected, the following method
-is called in order to process it:
-``
-	void link_sap::link_sap::update(nic::interface* it);
-``
-
-The state of the network interface is verified and if its state was changed,
-the Link SAP will propagate a event notification to its local MIHF. Otherwise,
-it won't do nothing and will discard the message received.
-
-[note Note that this implementation only process link up and link down events.]
-
-[endsect]
+[section:link_sap_icmp_getStart Getting Started]
 
 [section Configuration]
 
@@ -101,28 +74,12 @@ in the command line.
 
 [endsect]
 
-[section Extending]
-
-The provided implementation of the Link SAP can be used as the base of
-your Link SAP implementation, since it allows to do several extensions
-in a simple and fast way.
-
-For example, in default handler can be added specific behaviour for a received
-request message. In this way, the Link SAP can adopt its behaviour
-based on the received requets.
-``
-	void link_sap::default_handler(odtone::mih::message& msg, const boost::system::error_code& ec)
-``
-
-[endsect]
-
 [section Running]
 
 Before running the Link SAP, the local MIHF should already be running. Otherwise,
 the Link SAP will try to register with a non-exitent MIHF.
 
-You can trigger some events by just disconnecting, disabling or shutting down
-your network cable/interface or wireless card (according to what you configured).
+Now you can trigger some events by attaching another node to the device.
 
 [endsect]
 

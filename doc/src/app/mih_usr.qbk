@@ -4,8 +4,8 @@
  /------------------------------------------------------------------------------
  / ODTONE - Open Dot Twenty One
  /
- / Copyright (C) 2009-2011 Universidade Aveiro
- / Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+ / Copyright (C) 2009-2012 Universidade Aveiro
+ / Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
  /
  / This software is distributed under a license. The full license
  / agreement can be found in the file LICENSE in this distribution.
@@ -29,6 +29,14 @@ discover, event subscribe and event notification mechanisms.
 
 [section:mih_usr_getStart Getting Started]
 
+[section Registering with the MIHF]
+
+The MIH-User is registering with the MIHF with a "mobility" role. Therefore,
+all request messages related to the handover procedure are only forwarded to this
+MIH-User. This behaviour is due to the local discovery provided by ODTONE.
+
+[endsect]
+
 [section Detailed Description]
 
 [$./images/mih_usr_state_machine.png]
@@ -42,7 +50,7 @@ the destination MIHF and waits for its response.
 ``
 
 The response message is processed and for every discovered interface the
-MIH User will subscribe to all supported events.
+MIH-User will subscribe to all supported events.
 
 ``
 	msg >> odtone::mih::response()
@@ -94,8 +102,9 @@ The MIH-User can be configured based on a set of parameters, which can be
 configured either using an configuration file or passing them directly
 in the command line.
 
-For testing remote communication, the MIH message destination must be
-defined using ['--dest] option in the command line.
+The destination MIHF must be defined using the ['--dest] option in the command
+line. If this option is not specified, the MIH-User will send a 
+"MIH_Capability_Discover" message to a multicast destination.
 
 
 [endsect]
@@ -152,11 +161,11 @@ It can be defined as the default handler of the MIH-User:
 [section Running]
 
 Before running the MIH-User, the local MIHF should already be running. Otherwise,
-the MIH-User will send the Capability Discover Request and will wait for the
+the MIH-User will send the "MIH_Capability_Discover.request" message and will wait for the
 response message that will never arrive. The local messages are sent via UDP
 and no acknowledge mechanisms exists.
 
-The ['--dest] option must be used for connections with a remote MIHF.
+The ['--dest] option must be used when the destination MIHF is a not a multicast.
 
 [endsect]
 

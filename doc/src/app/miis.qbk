@@ -4,8 +4,8 @@
  /------------------------------------------------------------------------------
  / ODTONE - Open Dot Twenty One
  /
- / Copyright (C) 2009-2011 Universidade Aveiro
- / Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+ / Copyright (C) 2009-2012 Universidade Aveiro
+ / Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
  /
  / This software is distributed under a license. The full license
  / agreement can be found in the file LICENSE in this distribution.
@@ -25,6 +25,14 @@ This MIIS Server serves only as an example which uses the Redland RDF
 libraries for parsing and querying a sqlite database.
 
 [section:miis_getStart Getting Started]
+
+[section Registering with the MIHF]
+
+The MIIS is registering with the MIHF with a "information service" role. Therefore,
+all received requests related with the information service are only forwarded to
+this entity. This behaviour is due to the local discovery provided by ODTONE.
+
+[endsect]
 
 [section Detailed Description]
 

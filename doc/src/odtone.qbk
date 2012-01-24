@@ -5,8 +5,8 @@
  /------------------------------------------------------------------------------
  / ODTONE - Open Dot Twenty One
  /
- / Copyright (C) 2009-2011 Universidade Aveiro
- / Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+ / Copyright (C) 2009-2012 Universidade Aveiro
+ / Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
  /
  / This software is distributed under a license. The full license
  / agreement can be found in the file LICENSE in this distribution.
@@ -18,11 +18,11 @@
 
 [article ODTONE
     [quickbook 1.5]
-    [version 0.3]
+    [version 0.4]
     [authors [Guimarães, Carlos]]
     [authors [Santos, Bruno]]
-    [copyright 2009-2011 Universidade Aveiro]
-    [copyright 2009-2011 Instituto de Telecomunicações - Pólo Aveiro]
+    [copyright 2009-2012 Universidade Aveiro]
+    [copyright 2009-2012 Instituto de Telecomunicações - Pólo Aveiro]
     [license
         This software is distributed under a license. The full license
 		agreement can be found in the LICENSE in this distribution.
@@ -74,15 +74,24 @@ support. We would be more than happy to known about your work on these matters!
 
 [h3 Changes in this release]
 
-ODTONE 0.3 - Open Dot Twenty ONE.
+[*ODTONE 0.4 - Open Dot Twenty ONE.]
 
-*Added IPv4/IPv6 support.
-*Added MIH Confirm Messages.
-*Added internal Link SAP/MIH User discovery mechanism.
-*Added support for multiple Link SAPs.
-*MIHF capabilities are configured at Link SAPs.
-*Fixed MIH Protocol state machines.
-*New documentation: general documentation and incode documentation (that could be generated with Doxygen).
+* Optimization of the local discovery:
+	* Changes in the interface used by MIH-Users to register with the local MIHF.
+* Implementation of mechanisms for discovering remote peer MIHFs:
+	* DNS-User: discovery mechanims which uses DNS services;
+	* DHCP-User: discovery mechanims which uses DHCP services.
+* Several bug-fixes.
+* Fix compilation with more recent gcc version.
+* Provision of a new Link SAP example: this new Link SAP uses the ICMP protocol
+to detect the attachment of another node.
+* Definition of new messages in the client application.
+* Provision of a new library named NET library: it defines a set of classes
+which offer several network protocols and terminology support.
+* Response timers: all messages are associated with a timer.
+which enables to reply with a failure message in case of timeout.
+* Use the same port for receiving and sending messages.
+* ODTONE documentation revision.
 
 
 [endsect]
@@ -106,21 +115,19 @@ in your system, you can go to [@http://www.boost.org/ boost's website] and
 download the most recent version of the Boost libraries.
 
 [h4 1.1. Boost Library Quick Guide]
-Boost is required to compile ODTONE so, to correctly use ODTONE,
-you must first make sure you have the Boost libraries sources and Boost.Build
-installed in your system.
+Boost is required to compile ODTONE so you must make sure that you have the Boost
+libraries sources and Boost.Build installed in your system.
 
-#Download the Boost library [@http://www.boost.org/ boost's website]
-and unpack it.
+#Download the most recent version of Boost library
+[@http://www.boost.org/ boost's website] and unpack it.
 
-#Install Boost.Build (if your already have it, skip this step). You will need to
-compile the Boost.Build engine. You can use the bootstrap script from the
-Boost library sources and then copy the resulting binary (b2) to a proper place
-(within your $PATH) or you can download a pre-built binary from
+#Install Boost.Build (if your already have it, skip this step).
+To compile the Boost.Build engine, you can use the bootstrap script from the
+Boost library sources and then you can copy the resulting binary (b2) to a proper
+place (within your $PATH) or you can download a pre-built binary from
 [@http://www.boost.org/ boost's website]. To finish the Boost.Build installation,
-you must tell Boost.Build engine where to find the remaining of Boost.Build. You
-can setup a boost-build.jam file in your home directory to tell where
-Boost.Build is. Example:
+you must tell Boost.Build engine where to find the remaining of Boost.Build. To do
+it, you can setup a boost-build.jam file in your home directory. Example:
 
 [table Setup boost-build.jam
     [
@@ -155,10 +162,10 @@ Then just unpack it and you are ready to compile and install ODTONE.
 
 You can create your own local copy of the ODTONE by cloning the git repository from
 [@http://helios.av.it.pt/projects/odtone/repository ODTONE repository].
-``
-[*Username:] user
-[*-- No password]
-``
+
+*[*Username:] user
+*[*-- No password]
+
 
 To clone the git repository you must run the next command:
 ``
@@ -166,7 +173,7 @@ To clone the git repository you must run the next command:
 ``
 
 Then, in order to get the last changes in the code,
-you can checkout the "dev/master" branch:
+you must checkout the "dev/master" branch:
 ``
 	git checkout -b <your branch name> origin/dev/master
 ``
@@ -215,10 +222,10 @@ Prebuild binaries are available at
 In order to setup user-config.jam for Android, you must add the following line
 (without quotes):
 
-"[~using gcc : android	: path-to-toolset/arm-none-linux-gnueabi-g++ : <linkflags>"-Wl,--whole-archive -lpthread -Wl,--no-whole-archive -lc" ;]"
+"[~using gcc : android	: path-to-toolset/arm-none-linux-gnueabi-g++ : <linkflags>"-Wl,--no-whole-archive -lc" ;]"
 
 To use the Android toolset, pass the command line option "[~toolset=gcc-android]"
-to bjam.
+while compiling.
 
 The Android SDK has the necessary tools to run, debug and deploy the ODTONE
 binaries.]
@@ -234,7 +241,7 @@ the -g option:
 
 	doxygen -g <config-file>
 
-To generate the documentation you can now enter:
+To generate the documentation you can enter:
 
 	doxygen <config-file>
 
@@ -266,6 +273,7 @@ next:
 	   --mihf.link_response_time arg (=300) Link SAP response time (milliseconds)
 	   --mihf.link_delete arg (=2)          Link SAP response fails to forget
 	   --enable_broadcast                   Allows broadcast messages
+	   --enable_unsolicited                 Allows unsolicited discovery
 	   --log arg (=1)                       Log level [0-4]
 ``
 
@@ -275,11 +283,11 @@ we will only mention those that are more complex to configure.
 
 [*List of peer MIHFs:] Comma separated list of remote MIHF's.
 
-Usage: mihf.peers = <mihf id> <ip> <port>, ...
+Usage: mihf.peers = <mihf id> <ip> <port> <list of supported transport protocols>, ...
 
 [*List of local MIH-Users:] Comma separated list of local MIH User SAP.
 
-Usage: mihf.users = <user sap id> <port> <mbbhandover>, ...
+Usage: mihf.users = <user sap id> <port> <role>, ...
 
 [*List of local Link SAPs:] Comma separated list of local MIH Link SAPs.
 
@@ -300,7 +308,7 @@ Usage: mihf.transport = <udp/tcp>, ...
 	   --conf.recv_buff_len arg (=4096) Receive buffer length
 	   --conf.port arg (=1234)          Listening port
 	   --user.id arg (=user)            MIH-User ID
-	   --user.handover arg (=1)         MIH-User handover support
+	   --user.role arg (=mobility)      MIH-User role
 	   --mihf.ip arg (=127.0.0.1)       Local MIHF IP address
 	   --mihf.local_port arg (=1025)    Local MIHF communication port
 	   --dest arg                       MIHF destination
@@ -348,10 +356,10 @@ Usage: command_list = <link command 1>, <link command 2>, (...), <link command N
 
 [h4 Local Demo]
 
-The local demo consists in a simple experiment to demonstrate simple message
-exchange between the MIHF, the MIH-User and the Link SAP. It allows you to see
+The local demo consists in a simple experiment to demonstrate message
+exchanging between the MIHF, the MIH-User and the Link SAP. It allows you to see
 how events are generated by the Link SAP and then reported to a MIH-User
-that has subscribed to these events.
+that subscribed to those events.
 
 [$./images/local_demo.png]
 
@@ -359,29 +367,31 @@ that has subscribed to these events.
 
 In order to properly run the local demo you will need to edit the default
 Link SAP configuration in order to identify the interface
-that it will manage (['tec] and ['link_addr] properties).
+that it will manage (['tec] and ['link_addr] parameters).
 
 [*Running Demo]
 
 The best way to run this demo is to open 3 terminals.
-On the first terminal start ODTONE-MIHF and on another terminal
-start the Link SAP. You can see that, at Link SAP bootstrap, the Link SAP
+On the first terminal you must start ODTONE-MIHF and on another terminal
+you must start the Link SAP. You can see that, at Link SAP bootstrap, the Link SAP
 will register itself with its the local MIHF. Now it's time to start the
-MIH-User, on your remaining terminal. If all went well the MIH-User
-has requested for the capabilities of the local MIHF and
-printed out some information about the discovered interfaces (those that you
-previously configured. For each discovered interface, the MIH-User will
-subscribe to all supported events.
+MIH-User with the configurable parameter ['--dest mihf1],
+on your remaining terminal. The ['--dest] option tells the MIH-User to set
+the MIHF destination field of the message to mihf1.
 
-Now you can trigger some events by just disconnecting, disabling or shutting down
-your network cable/interface or wireless card (according to what you configured).
-You can see that the event notifications are propagated from the Link SAP to
-the MIH-User.
+If all went well, the MIH-User has requested for the capabilities of the
+local MIHF and printed out some information about the discovered interfaces
+(those that you previously configured on the Link SAP). For each discovered
+interface, the MIH-User will subscribe to all supported events. Now you can
+trigger some events by just disconnecting, disabling or shutting down
+your network cable/interface or wireless card (according to what you
+configured). You can see that the event notifications are propagated from
+the Link SAP to the MIH-User.
 
 [h4 Remote Demo]
 
 The remote demo shows the ability of a MIH-User to obtain
-event notifications that happens on a Link SAP located on another machine.
+event notifications that happen on a Link SAP located on another machine.
 You are required to have two machines for this experiment. The first machine
 will host an ODTONE-MIHF (mihf1) and the MIH-User, while the second will host
 an ODTONE-MIHF (mihf2) and the Link_SAP.
@@ -390,15 +400,12 @@ an ODTONE-MIHF (mihf2) and the Link_SAP.
 
 [*Configuration]
 
-Autonomous remote MIHF discovery is not yet implemented,
-so you need to configure the remote MIHF's IP addresses and port
-on each one of the MIHFs. Edit the ODTONE-MIHF configuration file and add an entry
-to peers MIHFs in the form:
+Autonomous remote MIHF discovery is not taken in consideration,
+so you need to configure the remote MIHF's IP addresses, port and supported
+transport protocols on each one of the MIHFs. Edit the ODTONE-MIHF
+configuration file and add an entry to peers MIHFs in the form:
 
-	<mihf_id> <ip> <port>
-
-where <mihf_id> is the identifier of the remote MIHF, <ip> and <port>
-are the IP address and port of the remote MIHF respectively.
+	<mihf_id> <ip> <port> <list of supported transport protocols>
 
 [note You need to edit the configuration file on both machines]
 
@@ -429,17 +436,389 @@ emulator through 10.0.2.2.]
 
 [*Running Demo]
 
-On the machine that host the mihf2 start a terminal and run ODTONE-MIHF. Then, on another
-terminal start the Link SAP.
+On the machine that host the mihf2 you must start a terminal and run ODTONE-MIHF.
+Then, on another terminal you must start the Link SAP. On the machine that host
+the mihf1 you must start a terminal and run ODTONE-MIHF. Then, on another 
+terminal you must start the MIH-User with the configurable parameter
+['--dest mihf2]. The ['--dest] option tells the MIH-User to set the MIHF
+destination field of the frame to mihf2.
 
-On the machine that host the mihf1 start a terminal and run ODTONE-MIHF. Then, on another
-terminal start the MIH-User with the configurable parameter ['--dest mihf2]. The ['--dest] option
-tells the MIH-User to set the MIHF destination field of the frame to mihf2.
+Now, like in the local demo, you can trigger some events by just disconnecting,
+disabling or shutting down your network cable/interface or wireless card
+(according to what you configured). You can see that the event notifications
+are propagated from the Link SAP to the MIH-User.
 
-Now, like in the local demo, you can trigger some events by just disconnecting, disabling or shutting down
-your network cable/interface or wireless card (according to what you configured).
-You can see that the event notifications are propagated from the Link SAP to
-the MIH-User.
+[endsect]
+
+[section:mihf_internals ODTONE MIHF internals]
+
+[section Internal Communications use UDP sockets on loopback interface]
+
+Internal communications refers to the communications between the MIHF
+and local SAPs (MIH-users and Link SAPs). ODTONE uses UDP sockets binded
+to the loopback interface (127.0.0.1) for exchanging messages between
+these entities.
+
+[endsect]
+
+[section MIH confirm messages must set the opcode to 0 (zero)]
+
+Chapter 7 of the MIH standard defines the primitives that should be supported
+by an implementation. These primitives show how a SAP can interact with a MIHF.
+
+Chapter 8, of the same standard, defines the message MIH protocol messages for
+remote communications (communications between MIHFs).
+
+The ODTONE implementation uses the messages defined on chapter 8 to implement
+the primitives of chapter 7.
+
+Please note that the MIHF sends confirm messages to the MIH-Users and response
+messages to the remote MIHFs. The MIH protocol allocates 16 bits for the
+MIH message ID, where two of those bits are for the opcode.
+The opcode defines if a message is a request, response or indication.
+So, with 2 bits we can encode four values, where three are already taken.
+This leaves 1 available combination for the missing confirm
+primitives. Confirm primitives set the opcode to 0 (zero).
+
+[endsect]
+
+[section Local discovery]
+
+Due to the decoupled architecture of the MIHF and the local entities (i.e. Link SAPs and
+MIH-Users), it is necessary to configure these entities in the MIHF in order to know about its
+existence. They can be configured statically, by the user, or automatically, using a discovery
+mechanism. The static configuration can be very limited, and may fail when, for example, the
+MN activates/deactivates an interface or even hot-plugs new ones. However, the IEEE 802.21
+standard does not define any mechanism to discover the local entities so, the development of
+a novel local discovery procedure is required, allowing the MIHF to discover its Link SAPs
+and MIH-Users and their capabilities in a dynamic way. Thus, local discovery refers to the
+procedure that allows the MIHF to discover its Link SAPs and their capabilities, as well as
+its MIH-Users.
+
+
+[*Link SAP Discovery]
+
+[$./images/Internal_link_discovery.png]
+
+The local discovery mechanisms implemented on ODTONE enables the discovery and
+management of the available Link SAPs. Thus, Link SAPs discovery is divided
+in three main phases: the registration, SAP availability and SAP unavailability.
+
+In the registration phase, the MIHF is permanently
+listening for incoming messages from the Link SAPs at a fixed port. When a Link SAP
+becomes active, it locally sends a "Link_Register.indication" message
+to the MIHF indicating its intention to register
+with the MIHF. This message carries information about the Link SAP, including its
+ID, listening port, link layer technology and link address. Next, the MIHF requests the Link
+SAP for its capabilities by sending a "Link_Capability_Discover.request" message. This
+process is repeated for all Link SAPs in order to provide the MIHF with the full capabilities
+belonging to that node.
+
+[note
+Because there is no primitive/message in the 802.21 standard that allows the Link
+SAP to send the register information to the MIHF, the "Link_Register.indication"
+message was created. This message allows the Link SAP to send informations
+to the MIHF about which technology supports and which interface it manages.
+Associated with the creation of this new message type was also created a new
+TLV type named “Interface Type Addr TLV” whose correspondent data type is a “LINK_ID”.
+
+[$./images/link_register_indication_message.png]
+]
+
+The second phase is availability and, as the name implies,
+deals with the Link SAP availability, i.e., the MIHF must be able to detect the active presence
+of the Link SAP. So, when the MIHF receives a response or an event notification from the
+Link SAP, it detects the Link SAP as active.
+
+Finally, the third phase deals with SAP unavailability.
+When the MIHF does not receive a response from a Link SAP, the Link SAP must be
+considered as inactive or unresponsive. The MIHF must, therefore, initiate the procedures to
+update its local capabilities.
+
+[note The waiting time interval for response message and how many fail responses
+can occur before the MIHF forget Link SAP can be defined at the MIHF configuration file.]
+
+[*MIH User Discovery]
+
+[$./images/Internal_user_discovery.png]
+
+The process of discovering MIH-Users implemented on ODTONE is based on a
+registration process of the MIH-User with the MIHF. When the MIH-User becomes active,
+it locally sends a "User_Register.indication" message to the MIHF, including
+information about its listening port and role (Information server, Mobility, Monitoring
+or Discovery).
+
+Upon the reception of the "User_Register.indication" message, the MIHF learns about the
+MIH-User and the communications between them can start normally.
+
+[note
+Because there is no primitive/message in the 802.21 standard that allows MIH-User
+to send register information to the MIHF the “User_Register.indication” message was
+created. This message allows the Link SAP to send informations
+to the MIHF about its function.
+Associated with the creation of this new message type was also created a new
+TLV type named “User Role TLV” whose correspondent data type is a “USER_ROLE” (which
+was also created).
+
+[$./images/user_register_indication_message.png]
+]
+
+[note Only one MIH-User for handling handover operations could exists in each MIHF.
+This way, the last MIU-User to register with that role will be the MIH-User
+that will handle the handover operations. The same occurs with the Information server.]
+
+[endsect]
+
+[section Remote discovery]
+The remote discovery mechanisms involve the discovery of peer MIHFs and its
+capabilities. This is known as MIHF discovery and it can be achieved by using
+L2 or L3 discovery mechanisms. It allows a MN to discover 802.21-enabled
+network entities and vice-versa, as well as a network entity to discover
+each other. In addition, by combining it with the MIH Capability Discover
+procedure, it is possible to find out the capabilities of the discovered
+entities, i.e., the services provided by them.
+
+The ODTONE implementation provides L3 mechanisms which enable the remote
+discovery. It can be achieved by using the MIH Capability Discover procedure
+defined in the IEEE 802.21 standard and/or mechanisms that involve using DHCP
+and DNS services. Compared with the standard architecture of the IEEE 802.21, the node has two new
+components: DHCP and/or DNS users. These are seen as MIH-enabled entities of the upper
+layers (i.e., MIH-Users) with which the MIHF interacts to request the discovery
+of available PoS. The DNS-User and the DHCP-User are then responsible for directly
+communicate with the respective server, in order to discover PoS entities and
+to obtain associated transport information.
+
+[$./images/l3_arch.png]
+
+[note The DNS-User and DHCP-User are working only for Linux. However, you can
+implement your own discovery entities with guidelines defined as follows.]
+
+The MIH protocol does not support the necessary mechanisms to carry the
+information about the discovered entities. Therefore, a new optional TLV type was created
+and added to the MIH_Capability_Discover messages of the base ODTONE implementation.
+Consequently, a new data type was defined as well.
+
+[$./images/mos_dscv.png]
+
+The MOS_DSCV data type carries the discovered PoS divided by service type. Each PoS is
+identified by an instance of the MOS_INFO data type, which carries information about its ID,
+IP address and listening port.
+
+The L3 discovery mechanisms can be enabled by registering a MIH-User (with the discovery role)
+with the MIHF. The order by which they are registered defines the order by which the
+entities will be requested for discovering PoS. For example, if no entity is configured with
+discovery role, the discovery mechanisms will not be enable and therefore, the discovery
+mechanisms are the default ones, i.e., it is only possible to discover entities by multicasting
+MIH Capability Discover messages as defined in the IEEE 802.21 standard. Otherwise, the
+discovery mechanisms are enabled and, upon the receiving of a discovery request, the MIHF
+invokes the first discovery entity configured. By receiving the discovery results, the MIHF
+checks if all necessary information about the PoS was discovered and, based on that, decides
+to complement it with other discover mechanism or to initiate the MIH Capability exchange
+procedure.
+
+The discovery entities retrieve the discovered information to the MIHF divided by services,
+i.e., for each service the MIHF receives a list of available PoS, which are individually requested
+for its capabilities. However, with this approach, if a given PoS provides more than one
+service it appears in more than one list and therefore, it is requested more than once for its
+capabilities. To avoid this repetition the MIHF tracks the requested PoS and, if it detects a
+repeated one it drops the request.
+
+
+[section Scenarios]
+
+The following figures represents the discovery scenarios using the DNS and DHCP services
+provided by ODTONE.
+
+[section DHCP]
+[$./images/dhcp_disc.png]
+[endsect]
+
+[section DHCP bootstrap]
+[$./images/dhcp_boot_disc.png]
+[endsect]
+
+[section DNS]
+[$./images/dns_disc.png]
+[endsect]
+
+[section DHCP + DNS]
+[$./images/dhcp_dns_disc.png]
+[endsect]
+
+[section DHCP bootstrap + DNS]
+[$./images/dhcp_boot_dns_disc.png]	
+[endsect]
+
+[endsect]
+
+[endsect]
+
+
+[section Multiple Link SAP support]
+
+With the implementation of dynamic Link SAP discovery mechanisms, it was necessary
+that ODTONE supports multiple Link SAP. So, when a new request is received at
+the MIHF and whose destination is a Link SAP, the MIHF processes it and redirects
+the request to the proper Link SAP, based on the information collected by the
+local discovery mechanism and the information presented on the request
+message.
+
+However, there are cases where the destination could be a set of Link SAPs.
+In those cases, the MIHF sends a message to all destinations Link SAPs and waits
+a time interval for all the responses of the Link SAPs. After that time, the MIHF
+processes all received responses from Link SAPs and sends the response to the requestor.
+
+[note The time that the MIHF waits for all responses can be configured in the
+MIHF (configuration file or command line).]
+
+
+[endsect]
+
+[section Remote Link SAP support]
+
+Since the MIHF allows the storage of the IP address of the Link SAPs, the
+Link SAPs attached to the MIHF can be on the same machine or not, i.e., the Link SAPs
+can be local or remote.
+
+Although the communications are made between two different machines, to the MIHF
+the remote Link SAP is always seen as a local entity and therefore, the messages received
+from local and remote Link SAPs are processed equally. This behaviour is possible because
+ODTONE uses sockets to provide local communications.
+
+[$./images/remote_sap.png]
+
+[endsect]
+
+[section Event subscribe/unsubscribe optimization]
+
+In order to optimize the process of subscription/unsubscription of events at
+the MIHF, the number of messages between the local entities
+(i.e., between the MIHF and Link SAPs.) was reduced. When a MIH-User requests
+for an event subscription, if a subscription has been made previously by other
+entity, the MIHF subscribes the MIH-User and immediately replies to it, otherwise the MIHF
+firstly tries to subscribe the event with the Link SAP or the peer MIHF.
+
+The method to optimize the unsubscription mechanism is similar to
+the subscription one and it aims for the same objectives. When a MIH-User
+requests to unsubscribe an event in a Link SAP the MIHF unsubscribes it
+locally. The MIHF unsubscribes the event with the Link SAP or the peer
+MIHF only if the event has no more subscriptions.
+
+[$./images/subscribe.png]
+
+[endsect]
+
+[section MIH Primitives mapped in MIH Protocol Messages]
+
+ODTONE uses the MIH protocol to provide communications between the MIHF and local
+entities. However, it was verified that some MIH LINK SAP primitives cannot be mapped
+in the existing MIH protocol messages so, it was necessary to define new TLVs that carry the
+information presented in these primitives.
+
+The following table show the correspondence between MIH_LINK_SAP primitive and
+the new TLVs and its data type:
+
+[table ODTONE specific TLVs
+    [
+		[MIH_LINK_SAP Primitive]
+		[TLV Type Name]
+		[TLV Type Value]
+		[Data type]
+    ]
+
+    [
+		[LinkParametersRequest]
+		[tlv_link_parameters_req]
+		[101]
+		[LIST(LINK_PARAM_TYPE)]
+    ]
+
+    [
+		[LinkParametersStatusList]
+		[tlv_link_parameters_status_list]
+		[102]
+		[LIST(LINK_PARAM_TYPE)]
+    ]
+
+    [
+        [LinkStatesRequest]
+		[tlv_link_states_req]
+		[103]
+		[LINK_STATES_REQ]
+    ]
+
+    [
+        [LinkStatesResponse]
+		[tlv_link_states_rsp]
+		[104]
+		[LIST(LINK_STATES_RSP)]
+    ]
+
+    [
+        [LinkDescriptorsRequest]
+		[tlv_link_descriptor_req]
+		[105]
+		[LINK_DESC_REQ]
+    ]
+
+    [
+        [LinkDescriptorsResponse]
+		[tlv_link_descriptor_rsp]
+		[106]
+		[LIST(LINK_DESC_RSP)]
+    ]
+
+    [
+		[LinkAction]
+		[tlv_link_action]
+		[107]
+		[LINK_ACTION]
+    ]
+
+    [
+		[LinkActionResult]
+		[tlv_link_ac_result]
+		[108]
+		[LINK_AC_RESULT]
+    ]
+
+    [
+		[ScanResponseSet]
+		[tlv_link_scan_rsp_list]
+		[109]
+		[LIST(LINK_SCAN_RSP)]
+    ]
+    
+    [
+		[LinkDetInfo]
+		[tlv_link_det_info]
+		[110]
+		[LINK_DET_INFO]
+    ]
+
+	[
+		[InterfaceTypeAddress]
+		[tlv_interface_type_addr]
+		[111]
+		[LINK_ID]
+    ]
+
+    [
+		[UserRole]
+		[tlv_user_role]
+		[112]
+		[USER_ROLE]
+    ]
+
+    [
+		[MobilityServicesDiscovery]
+		[tlv_mos_dscv]
+		[113]
+		[MOS_DSCV]
+    ]
+]
+
+[endsect]
 
 [endsect]
 
@@ -473,6 +852,7 @@ the MIH-User.
 [xinclude ../odtone_base_lib.xml]
 [xinclude ../odtone_mih_lib.xml]
 [xinclude ../odtone_sap_lib.xml]
+[xinclude ../odtone_net_lib.xml]
 
 [endsect]
 
@@ -504,10 +884,22 @@ the MIH-User.
 	services provided by the serving and neighbor networks. The information
 	enables effective system access and effective handover decisions.]]
 
-    [[[link odtone.app.link_sap_index Link_SAP]]
-    [The Link SAP specifies an abstract media dependent interface between the MIHF
-     and the lower layers media-specific protocol stacks of technologies such as IEEE 802.3,
-     IEEE 802.11, IEEE 802.16, 3GPP and 3GPP2.]]
+    [[[link odtone.app.dns_usr_index DNS-User]]
+    [The DNS-User enables the discovery of PoS entities
+	in a given domain using the DNS services (according to the guidelines depicted in the RFC5679).]]
+
+    [[[link odtone.app.dhcp_usr_index DHCP-User]]
+    [The DHCP-User enables the discovery of PoS entities by using the DHCP procedures
+	(according to the guidelines depicted in the RFC5678).]]
+
+	[[[link odtone.app.link_sap_index Link_SAP]]
+	[The Link SAP specifies an abstract media dependent interface between the MIHF
+	and the lower layers media-specific protocol stacks of technologies such as IEEE 802.3,
+	IEEE 802.11, IEEE 802.16, 3GPP and 3GPP2.]]
+
+    [[[link odtone.app.link_sap_icmp_index ICMP Link SAP]]
+    [The ICMP Link SAP allows the attachment detection of another node
+	using the ICMP protocol.]]
 
     [[[link odtone.app.client_index Client]]
     [The ['client] is a simple application that lets you send any message
@@ -523,7 +915,10 @@ the MIH-User.
 [include app/mihf.qbk]
 [include app/mih_usr.qbk]
 [include app/miis.qbk]
+[include app/dhcp_user.qbk]
+[include app/dns_user.qbk]
 [include app/link_sap.qbk]
+[include app/link_sap_icmp.qbk]
 [include app/client.qbk]
 [include app/dummyserver.qbk]
 
