@@ -69,6 +69,21 @@ service_management::service_management(io_service &io,
 	  _discover(io, lpool, address_book, user_abook, t, enable_unsolicited)
 {
 	_enable_unsolicited = enable_unsolicited;
+
+	// Get capabilities from statically configured Link SAPs
+	const std::vector<mih::octet_string> link_sap_list = _link_abook.get_ids();
+
+	BOOST_FOREACH(mih::octet_string id, link_sap_list) {
+		meta_message_ptr out(new meta_message());
+
+		*out << mih::request(mih::request::capability_discover);
+		out->tid(0);
+		out->destination(mih::id(id));
+
+		ODTONE_LOG(1, "(mics) forwarding Link_Capability_Discover.request to ",
+			out->destination().to_string());
+		utils::forward_request(out, _lpool, _transmit);
+	}
 }
 
 /**

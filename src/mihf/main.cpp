@@ -568,18 +568,6 @@ int main(int argc, char **argv)
 	message_out		msgout(tpool, lpool, process_message, netsap);
 	transmit		trnsmt(io, user_abook, link_abook, msgout, lport);
 
-	// instantiate mihf services
-	event_service		mies(io, lpool, trnsmt, mihf_abook, link_abook);
-	command_service		mics(io, lpool, trnsmt, mihf_abook, link_abook, user_abook, lrpool);
-	information_service	miis(lpool, trnsmt, user_abook);
-	service_management	sm(io, lpool, link_abook, user_abook, mihf_abook, trnsmt, lrpool, enable_unsolicited);
-
-	// register callbacks with service access controller
-	sm_register_callbacks(sm);
-	mies_register_callbacks(mies);
-	mics_register_callbacks(mics);
-	miis_register_callbacks(miis);
-
 	// transaction manager for incoming messages
 	message_in msgin(tpool, process_message, netsap);
 
@@ -612,6 +600,18 @@ int main(int argc, char **argv)
 
 	if(mihf_abook.get(mihfid_t::instance()->to_string()).capabilities_trans_list->get(mih::transport_tcp) == 1)
 		remotelistener_tcp.start();
+
+	// instantiate mihf services
+	event_service		mies(io, lpool, trnsmt, mihf_abook, link_abook);
+	command_service		mics(io, lpool, trnsmt, mihf_abook, link_abook, user_abook, lrpool);
+	information_service	miis(lpool, trnsmt, user_abook);
+	service_management	sm(io, lpool, link_abook, user_abook, mihf_abook, trnsmt, lrpool, enable_unsolicited);
+
+	// register callbacks with service access controller
+	sm_register_callbacks(sm);
+	mies_register_callbacks(mies);
+	mics_register_callbacks(mics);
+	miis_register_callbacks(miis);
 
 	io.run();
 
