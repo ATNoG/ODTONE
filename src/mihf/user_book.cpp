@@ -43,6 +43,14 @@ void user_book::add(const mih::octet_string &id,
 	a.port = port;
 	a.role = role;
 
+	std::map<mih::octet_string, user_entry>::iterator it;
+	it = _ubook.find(id);
+
+	if (it != _ubook.end()) {
+		a.priority = it->second.priority;
+		return;
+	}
+
 	// Set the priority
 	if(role == mih::user_role_is) {
 		a.priority = 0;
