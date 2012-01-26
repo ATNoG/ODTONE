@@ -166,11 +166,15 @@ void user::recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system:
 				handler h;
 
 				get_handler(fm->tid(), h);
-				if (h)
+				if (h) {
 					h(pm, ec);
-				else
+				// Unsolicited MIH capability discover reception
+				} else if(fm->sid() == mih::service::management &&
+				        fm->aid() == mih::action::capability_discover) {
+					_handler(pm, ec);
+				} else {
 					_handler(pm, boost::system::errc::make_error_code(boost::system::errc::bad_message));
-
+				}
 			} else if (fm->opcode() != mih::operation::indication) {
 				_handler(pm, boost::system::errc::make_error_code(boost::system::errc::bad_message));
 			} else {
