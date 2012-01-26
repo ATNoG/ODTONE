@@ -17,6 +17,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/debug.hpp>
+#include <iostream>
 #include <odtone/mih/types/base.hpp>
 #include <odtone/mih/message.hpp>
 #include <odtone/mih/indication.hpp>
@@ -171,7 +172,51 @@ void link_sap::default_handler(odtone::mih::message& msg, const boost::system::e
 
 			break;
 		}
+	case odtone::mih::request::link_get_parameters:
+		{
+			odtone::mih::link_param_list lpl;
+			odtone::mih::link_states_rsp_list lsrl;
+			odtone::mih::link_desc_rsp_list ldrl;
 
+
+			odtone::mih::message m;
+
+			// fill the status
+			st = odtone::mih::status_success;
+
+			m << odtone::mih::confirm(odtone::mih::confirm::link_get_parameters)
+				& odtone::mih::tlv_status(st)
+				& odtone::mih::tlv_link_parameters_status_list(lpl)
+				& odtone::mih::tlv_link_states_rsp(lsrl)
+				& odtone::mih::tlv_link_descriptor_rsp(ldrl);
+			m.tid(msg.tid());
+
+			_mihf.async_send(m);
+
+			break;
+		}
+
+	case odtone::mih::request::link_configure_thresholds:
+		{
+			odtone::mih::link_cfg_param_list lcpl;
+			msg >> odtone::mih::request()
+			       & odtone::mih::tlv_link_cfg_param_list(lcpl);
+
+			odtone::mih::message m;
+
+			// fill the status
+			st = odtone::mih::status_failure;
+			odtone::mih::link_cfg_status_list lcsl;
+
+			m << odtone::mih::confirm(odtone::mih::confirm::link_configure_thresholds)
+				& odtone::mih::tlv_status(st);
+				& odtone::mih::tlv_link_cfg_status_list(lcsl);
+			m.tid(msg.tid());
+
+			_mihf.async_send(m);
+
+			break;
+		}
 
 	default:
 		{
