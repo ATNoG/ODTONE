@@ -4,8 +4,8 @@
 <title>Type mid</title>
 <link rel="stylesheet" href="../../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../../../index.html" title="ODTONE 0.3">
-<link rel="up" href="../indication.html#idp11894336" title="Description">
+<link rel="home" href="../../../index.html" title="ODTONE 0.4">
+<link rel="up" href="../indication.html#id2959705" title="Description">
 <link rel="prev" href="../indication.html" title="Class indication">
 <link rel="next" href="../msg_id.html" title="Struct template msg_id">
 </head>
@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../indication.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../indication.html#idp11894336"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../msg_id.html"><img src="../../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../indication.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../indication.html#id2959705"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../msg_id.html"><img src="../../../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.mih.indication.mid"></a><div class="titlepage"></div>
@@ -22,7 +22,7 @@
 <p>odtone::mih::indication::mid</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.indication_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/indication.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/mih/indication.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../odtone_mih_library.html#header..home.carlos.Desktop.release.inc.odtone.mih.indication_hpp" title="Header &lt;/home/carlos/Desktop/release/inc/odtone/mih/indication.hpp&gt;">/home/carlos/Desktop/release/inc/odtone/mih/indication.hpp</a>&gt;
 
 </span>
 <span class="keyword">enum</span> <span class="identifier">mid</span> <span class="special">{</span> capability_discover =  msg_id&lt;1, <a class="link" href="mid.html#odtone.mih.indication.mid.value">value</a>, mih_register =  msg_id&lt;1, 
@@ -34,6 +34,7 @@
            link_going_down =  msg_id&lt;2, <a class="link" href="mid.html#odtone.mih.indication.mid.value">value</a>, 
            link_handover_imminent =  msg_id&lt;2, <a class="link" href="mid.html#odtone.mih.indication.mid.value">value</a>, 
            link_handover_complete =  msg_id&lt;2, <a class="link" href="mid.html#odtone.mih.indication.mid.value">value</a>, 
+           link_pdu_transmit_status =  msg_id&lt;2, <a class="link" href="mid.html#odtone.mih.indication.mid.value">value</a>, 
            link_get_parameters =  msg_id&lt;3, <a class="link" href="mid.html#odtone.mih.indication.mid.value">value</a>, 
            link_configure_threshold =  msg_id&lt;3, <a class="link" href="mid.html#odtone.mih.indication.mid.value">value</a>, 
            link_actions =  msg_id&lt;3, <a class="link" href="mid.html#odtone.mih.indication.mid.value">value</a>, 
@@ -47,7 +48,7 @@
            <a class="link" href="mid.html#odtone.mih.indication.mid.value">value</a>, link_register =  msg_id&lt;1, <a class="link" href="mid.html#odtone.mih.indication.mid.value">value</a>, user_register =  msg_id&lt;1, 
            <a class="link" href="mid.html#odtone.mih.indication.mid.value">value</a> <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp11926368"></a><h2>Description</h2>
+<a name="id2960248"></a><h2>Description</h2>
 <p>MIH Indication Message ID </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.indication.mid.value"></a></span></dt>
@@ -64,6 +65,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -94,6 +96,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -124,6 +127,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -154,6 +158,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -184,6 +189,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -214,6 +220,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -244,6 +251,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -274,6 +282,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -304,6 +313,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -334,6 +344,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -364,6 +375,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -394,6 +406,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -424,6 +437,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -454,6 +468,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -484,6 +499,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -514,6 +530,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -544,6 +561,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -574,6 +592,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -604,6 +623,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -634,6 +654,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -664,6 +685,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -694,6 +716,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -724,6 +747,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -754,6 +778,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -784,6 +809,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -814,6 +840,7 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -844,6 +871,38 @@
 <p>MIH_Link_Going_Down.indication</p>
 <p>MIH_Link_Handover_Imminent.indication</p>
 <p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
+<p>MIH_Link_Get_Parameters.indication</p>
+<p>MIH_Link_Configure_Thresholds.indication</p>
+<p>MIH_Link_Actions.indication</p>
+<p>MIH_Net_HO_Candidate_Query.indication</p>
+<p>MIH_MN_HO_Candidate_Query.indication</p>
+<p>MIH_N2N_HO_Query_Resources.indication</p>
+<p>MIH_MN_HO_Commit.indication</p>
+<p>MIH_Net_HO_Commit.indication</p>
+<p>MIH_N2N_HO_Commit.indication</p>
+<p>MIH_N2N_HO_Complete.indication</p>
+<p>MIH_N2N_HO_Commlete.indication</p>
+<p>MIH_Get_Information.indication</p>
+<p>MIH_Push_Information.indication</p>
+<p>Link_Register.indication</p>
+<p>User_Register.indication </p>
+</dd>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.indication.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.indication</p>
+<p>MIH_Register.indication</p>
+<p>MIH_DeRegister.indication</p>
+<p>MIH_Event_Subscribe.indication</p>
+<p>MIH_Event_Unsubscribe.indication</p>
+<p>MIH_Link_Detected.indication</p>
+<p>MIH_Link_Up.indication</p>
+<p>MIH_Link_Down.indication</p>
+<p>MIH_Link_Parameters_Report.indication</p>
+<p>MIH_Link_Going_Down.indication</p>
+<p>MIH_Link_Handover_Imminent.indication</p>
+<p>MIH_Link_Handover_Complete.indication</p>
+<p>MIH_Link_PDU_transmit_status.indication</p>
 <p>MIH_Link_Get_Parameters.indication</p>
 <p>MIH_Link_Configure_Thresholds.indication</p>
 <p>MIH_Link_Actions.indication</p>
@@ -865,9 +924,9 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2011 Universidade
-      Aveiro<br>Copyright &#169; 2009-2011 Instituto de
-      Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license
@@ -877,7 +936,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../indication.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../indication.html#idp11894336"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../msg_id.html"><img src="../../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../indication.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../indication.html#id2959705"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../msg_id.html"><img src="../../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

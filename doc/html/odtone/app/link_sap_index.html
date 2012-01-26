@@ -4,16 +4,16 @@
 <title>Link SAP</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../../index.html" title="ODTONE 0.3">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../app.html" title="Applications">
-<link rel="prev" href="miis_index.html" title="MIIS Server">
-<link rel="next" href="client_index.html" title="Client">
+<link rel="prev" href="dns_usr_index.html" title="DNS-User">
+<link rel="next" href="link_sap_icmp_index.html" title="ICMP Link SAP">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="miis_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="client_index.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="dns_usr_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="link_sap_icmp_index.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -57,13 +57,14 @@
             <span class="inlinemediaobject"><img src="../.././images/link_sap_state_machine.png" alt="link_sap_state_machine"></span>
           </p>
 <p>
-            At the bootstrap, the Link SAP will send a Link_Register.indication message
-            to the MIHF. Then, it stays in a waiting state for messages from the
-            its local MIHF and/or events from the network interfaces.
+            At the bootstrap, the Link SAP will send a "Link_Register.indication"
+            message to the MIHF in order to register itself with the MIHF. Then,
+            it stays in a waiting state for messages from the its local MIHF and/or
+            events from the network interfaces.
           </p>
 <p>
             When a change in the network interface is detected, the following method
-            is called in order to process it:
+            is called in order to process it: 
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">link_sap</span><span class="special">::</span><span class="identifier">link_sap</span><span class="special">::</span><span class="identifier">update</span><span class="special">(</span><span class="identifier">nic</span><span class="special">::</span><span class="identifier">interface</span><span class="special">*</span> <span class="identifier">it</span><span class="special">);</span>
 </pre>
@@ -89,6 +90,7 @@
 <a name="odtone.app.link_sap_index.link_sap_getStart.configuration"></a><a class="link" href="link_sap_index.html#odtone.app.link_sap_index.link_sap_getStart.configuration" title="Configuration">Configuration</a>
 </h5></div></div></div>
 <p>
+            
 </p>
 <pre class="programlisting"><span class="identifier">MIH</span> <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">Configuration</span><span class="special">:</span>
      <span class="special">--</span><span class="identifier">help</span>                           <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
@@ -167,7 +169,7 @@
 <p>
             For example, in default handler can be added specific behaviour for a
             received request message. In this way, the Link SAP can adopt its behaviour
-            based on the received requets.
+            based on the received requets. 
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">link_sap</span><span class="special">::</span><span class="identifier">default_handler</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span><span class="special">&amp;</span> <span class="identifier">msg</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">)</span>
 </pre>
@@ -179,18 +181,22 @@
 <a name="odtone.app.link_sap_index.link_sap_getStart.running"></a><a class="link" href="link_sap_index.html#odtone.app.link_sap_index.link_sap_getStart.running" title="Running">Running</a>
 </h5></div></div></div>
 <p>
-            There is no running recommendation for the Link SAP. Now you can trigger
-            some events by just disconnecting, disabling or shutting down your network
-            cable/interface or wireless card (according to what you configured).
+            Before running the Link SAP, the local MIHF should already be running.
+            Otherwise, the Link SAP will try to register with a non-exitent MIHF.
+          </p>
+<p>
+            You can trigger some events by just disconnecting, disabling or shutting
+            down your network cable/interface or wireless card (according to what
+            you configured).
           </p>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2011 Universidade
-      Aveiro<br>Copyright &#169; 2009-2011 Instituto de
-      Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license
@@ -200,7 +206,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="miis_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="client_index.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="dns_usr_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="link_sap_icmp_index.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

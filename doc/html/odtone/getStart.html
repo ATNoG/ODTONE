@@ -4,24 +4,24 @@
 <title>Getting Started</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../index.html" title="ODTONE 0.3">
-<link rel="up" href="../index.html" title="ODTONE 0.3">
+<link rel="home" href="../index.html" title="ODTONE 0.4">
+<link rel="up" href="../index.html" title="ODTONE 0.4">
 <link rel="prev" href="intro.html" title="Introduction">
-<link rel="next" href="library.html" title="Libraries">
+<link rel="next" href="mihf_internals.html" title="ODTONE MIHF internals">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src=".././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="intro.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="library.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="intro.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="mihf_internals.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="odtone.getStart"></a><a class="link" href="getStart.html" title="Getting Started">Getting Started</a>
 </h2></div></div></div>
-<h2>
-<a name="odtone.getStart.h0"></a>
-      <span><a name="odtone.getStart.installation"></a></span><a class="link" href="getStart.html#odtone.getStart.installation">Installation</a>
+<a name="odtone.getStart.installation"></a><h2>
+<a name="odtone.getStart.installation-heading"></a>
+      <a class="link" href="getStart.html#odtone.getStart.installation">Installation</a>
     </h2>
 <p>
       As ODTONE is developed to work in several platforms, we won't provide detailed
@@ -29,10 +29,9 @@
       main guidelines for installing ODTONE and any relevant notes on specific platforms
       that might prove an obstacle.
     </p>
-<h4>
-<a name="odtone.getStart.h1"></a>
-      <span><a name="odtone.getStart.1__required_dependencies"></a></span><a class="link" href="getStart.html#odtone.getStart.1__required_dependencies">1.
-      Required Dependencies</a>
+<a name="odtone.getStart.1__required_dependencies"></a><h4>
+<a name="odtone.getStart.1__required_dependencies-heading"></a>
+      <a class="link" href="getStart.html#odtone.getStart.1__required_dependencies">1. Required Dependencies</a>
     </h4>
 <p>
       In order to correctly use ODTONE, you must first make sure that you have the
@@ -43,30 +42,29 @@
           If you don't have them installed in your system, you can go to <a href="http://www.boost.org/" target="_top">boost's
           website</a> and download the most recent version of the Boost libraries.
         </li></ul></div>
-<h5>
-<a name="odtone.getStart.h2"></a>
-      <span><a name="odtone.getStart.1_1__boost_library_quick_guide"></a></span><a class="link" href="getStart.html#odtone.getStart.1_1__boost_library_quick_guide">1.1.
-      Boost Library Quick Guide</a>
+<a name="odtone.getStart.1_1__boost_library_quick_guide"></a><h5>
+<a name="odtone.getStart.1_1__boost_library_quick_guide-heading"></a>
+      <a class="link" href="getStart.html#odtone.getStart.1_1__boost_library_quick_guide">1.1. Boost Library
+      Quick Guide</a>
     </h5>
 <p>
-      Boost is required to compile ODTONE so, to correctly use ODTONE, you must first
-      make sure you have the Boost libraries sources and Boost.Build installed in
-      your system.
+      Boost is required to compile ODTONE so you must make sure that you have the
+      Boost libraries sources and Boost.Build installed in your system.
     </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-          Download the Boost library <a href="http://www.boost.org/" target="_top">boost's website</a>
-          and unpack it.
+          Download the most recent version of Boost library <a href="http://www.boost.org/" target="_top">boost's
+          website</a> and unpack it.
         </li>
 <li class="listitem">
-          Install Boost.Build (if your already have it, skip this step). You will
-          need to compile the Boost.Build engine. You can use the bootstrap script
-          from the Boost library sources and then copy the resulting binary (b2)
-          to a proper place (within your $PATH) or you can download a pre-built binary
-          from <a href="http://www.boost.org/" target="_top">boost's website</a>. To finish
-          the Boost.Build installation, you must tell Boost.Build engine where to
-          find the remaining of Boost.Build. You can setup a boost-build.jam file
-          in your home directory to tell where Boost.Build is. Example:
+          Install Boost.Build (if your already have it, skip this step). To compile
+          the Boost.Build engine, you can use the bootstrap script from the Boost
+          library sources and then you can copy the resulting binary (b2) to a proper
+          place (within your $PATH) or you can download a pre-built binary from
+          <a href="http://www.boost.org/" target="_top">boost's website</a>. To finish the
+          Boost.Build installation, you must tell Boost.Build engine where to find
+          the remaining of Boost.Build. To do it, you can setup a boost-build.jam
+          file in your home directory. Example:
         </li>
 </ol></div>
 <div class="table">
@@ -84,6 +82,7 @@
             </td>
 <td>
               <p>
+                
 </p>
 <pre class="programlisting"><span class="error">#</span><span class="special">==============================================================================</span>
 <span class="preprocessor"># Put</span> <span class="keyword">this</span> <span class="identifier">file</span> <span class="identifier">at</span> <span class="identifier">the</span> <span class="identifier">root</span> <span class="identifier">directory</span> <span class="identifier">of</span> <span class="identifier">your</span> <span class="identifier">project</span> <span class="keyword">or</span> <span class="identifier">in</span> <span class="identifier">any</span> <span class="identifier">of</span> <span class="identifier">its</span> <span class="identifier">parent</span>
@@ -107,10 +106,9 @@
 <p>
       Consult the Boost.Build documentation for more details!
     </p>
-<h4>
-<a name="odtone.getStart.h3"></a>
-      <span><a name="odtone.getStart.2__getting_odtone"></a></span><a class="link" href="getStart.html#odtone.getStart.2__getting_odtone">2.
-      Getting ODTONE</a>
+<a name="odtone.getStart.2__getting_odtone"></a><h4>
+<a name="odtone.getStart.2__getting_odtone-heading"></a>
+      <a class="link" href="getStart.html#odtone.getStart.2__getting_odtone">2. Getting ODTONE</a>
     </h4>
 <p>
       <span class="bold"><strong>In a tarball</strong></span>
@@ -127,31 +125,34 @@
       You can create your own local copy of the ODTONE by cloning the git repository
       from <a href="http://helios.av.it.pt/projects/odtone/repository" target="_top">ODTONE
       repository</a>.
-</p>
-<pre class="programlisting"><span class="special">[*</span><span class="identifier">Username</span><span class="special">:]</span> <span class="identifier">user</span>
-<span class="special">[*--</span> <span class="identifier">No</span> <span class="identifier">password</span><span class="special">]</span>
-</pre>
-<p>
     </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <span class="bold"><strong>Username:</strong></span> user
+        </li>
+<li class="listitem">
+          <span class="bold"><strong>-- No password</strong></span>
+        </li>
+</ul></div>
 <p>
-      To clone the git repository you must run the next command:
+      To clone the git repository you must run the next command: 
 </p>
 <pre class="programlisting"><span class="identifier">git</span> <span class="identifier">clone</span> <span class="identifier">https</span><span class="special">://</span><span class="identifier">user</span><span class="error">@</span><span class="identifier">helios</span><span class="special">.</span><span class="identifier">av</span><span class="special">.</span><span class="identifier">it</span><span class="special">.</span><span class="identifier">pt</span><span class="special">/</span><span class="identifier">git</span><span class="special">/</span><span class="identifier">odtone</span><span class="special">/</span> <span class="identifier">odtone</span>
 </pre>
 <p>
     </p>
 <p>
-      Then, in order to get the last changes in the code, you can checkout the "dev/master"
-      branch:
+      Then, in order to get the last changes in the code, you must checkout the "dev/master"
+      branch: 
 </p>
 <pre class="programlisting"><span class="identifier">git</span> <span class="identifier">checkout</span> <span class="special">-</span><span class="identifier">b</span> <span class="special">&lt;</span><span class="identifier">your</span> <span class="identifier">branch</span> <span class="identifier">name</span><span class="special">&gt;</span> <span class="identifier">origin</span><span class="special">/</span><span class="identifier">dev</span><span class="special">/</span><span class="identifier">master</span>
 </pre>
 <p>
     </p>
-<h4>
-<a name="odtone.getStart.h4"></a>
-      <span><a name="odtone.getStart.3__compiling_and_installing_odtone"></a></span><a class="link" href="getStart.html#odtone.getStart.3__compiling_and_installing_odtone">3.
-      Compiling and installing ODTONE</a>
+<a name="odtone.getStart.3__compiling_and_installing_odtone"></a><h4>
+<a name="odtone.getStart.3__compiling_and_installing_odtone-heading"></a>
+      <a class="link" href="getStart.html#odtone.getStart.3__compiling_and_installing_odtone">3. Compiling
+      and installing ODTONE</a>
     </h4>
 <p>
       Once you have obtained the ODTONE source code and assured that you have the
@@ -300,12 +301,11 @@
       </p>
 <p>
         "<em class="replaceable"><code>using gcc : android : path-to-toolset/arm-none-linux-gnueabi-g++
-        : &lt;linkflags&gt;"-Wl,--whole-archive -lpthread -Wl,--no-whole-archive
-        -lc" ;</code></em>"
+        : &lt;linkflags&gt;"-Wl,--no-whole-archive -lc" ;</code></em>"
       </p>
 <p>
         To use the Android toolset, pass the command line option "<em class="replaceable"><code>toolset=gcc-android</code></em>"
-        to bjam.
+        while compiling.
       </p>
 <p>
         The Android SDK has the necessary tools to run, debug and deploy the ODTONE
@@ -313,10 +313,10 @@
       </p>
 </td></tr>
 </table></div>
-<h4>
-<a name="odtone.getStart.h5"></a>
-      <span><a name="odtone.getStart.4__generate_doxygen_documentation"></a></span><a class="link" href="getStart.html#odtone.getStart.4__generate_doxygen_documentation">4.
-      Generate Doxygen Documentation</a>
+<a name="odtone.getStart.4__generate_doxygen_documentation"></a><h4>
+<a name="odtone.getStart.4__generate_doxygen_documentation-heading"></a>
+      <a class="link" href="getStart.html#odtone.getStart.4__generate_doxygen_documentation">4. Generate
+      Doxygen Documentation</a>
     </h4>
 <p>
       As a supplement to this documentation, it is possible to generate incode documentation.
@@ -331,18 +331,17 @@
 <pre class="programlisting"><span class="identifier">doxygen</span> <span class="special">-</span><span class="identifier">g</span> <span class="special">&lt;</span><span class="identifier">config</span><span class="special">-</span><span class="identifier">file</span><span class="special">&gt;</span>
 </pre>
 <p>
-      To generate the documentation you can now enter:
+      To generate the documentation you can enter:
     </p>
 <pre class="programlisting"><span class="identifier">doxygen</span> <span class="special">&lt;</span><span class="identifier">config</span><span class="special">-</span><span class="identifier">file</span><span class="special">&gt;</span>
 </pre>
-<h4>
-<a name="odtone.getStart.h6"></a>
-      <span><a name="odtone.getStart.odtone_user_guide"></a></span><a class="link" href="getStart.html#odtone.getStart.odtone_user_guide">ODTONE
-      User Guide</a>
+<a name="odtone.getStart.odtone_user_guide"></a><h4>
+<a name="odtone.getStart.odtone_user_guide-heading"></a>
+      <a class="link" href="getStart.html#odtone.getStart.odtone_user_guide">ODTONE User Guide</a>
     </h4>
-<h5>
-<a name="odtone.getStart.h7"></a>
-      <span><a name="odtone.getStart.configuration"></a></span><a class="link" href="getStart.html#odtone.getStart.configuration">Configuration</a>
+<a name="odtone.getStart.configuration"></a><h5>
+<a name="odtone.getStart.configuration-heading"></a>
+      <a class="link" href="getStart.html#odtone.getStart.configuration">Configuration</a>
     </h5>
 <p>
       <span class="bold"><strong>ODTONE-MIHF</strong></span>
@@ -353,6 +352,7 @@
       line. The available configurable parameters are presented next:
     </p>
 <p>
+      
 </p>
 <pre class="programlisting"><span class="identifier">MIHF</span> <span class="identifier">Configuration</span> <span class="identifier">Options</span><span class="special">:</span>
    <span class="special">--</span><span class="identifier">help</span>                               <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
@@ -369,6 +369,7 @@
    <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">link_response_time</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">300</span><span class="special">)</span> <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">response</span> <span class="identifier">time</span> <span class="special">(</span><span class="identifier">milliseconds</span><span class="special">)</span>
    <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">link_delete</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">2</span><span class="special">)</span>          <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">response</span> <span class="identifier">fails</span> <span class="identifier">to</span> <span class="identifier">forget</span>
    <span class="special">--</span><span class="identifier">enable_broadcast</span>                   <span class="identifier">Allows</span> <span class="identifier">broadcast</span> <span class="identifier">messages</span>
+   <span class="special">--</span><span class="identifier">enable_unsolicited</span>                 <span class="identifier">Allows</span> <span class="identifier">unsolicited</span> <span class="identifier">discovery</span>
    <span class="special">--</span><span class="identifier">log</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1</span><span class="special">)</span>                       <span class="identifier">Log</span> <span class="identifier">level</span> <span class="special">[</span><span class="number">0</span><span class="special">-</span><span class="number">4</span><span class="special">]</span>
 </pre>
 <p>
@@ -388,15 +389,15 @@
         of remote MIHF's.
       </p>
 <p>
-        Usage: mihf.peers = &lt;mihf id&gt; &lt;ip&gt; &lt;port&gt;, ...
+        Usage: mihf.peers = &lt;mihf id&gt; &lt;ip&gt; &lt;port&gt; &lt;list of supported
+        transport protocols&gt;, ...
       </p>
 <p>
         <span class="bold"><strong>List of local MIH-Users:</strong></span> Comma separated
         list of local MIH User SAP.
       </p>
 <p>
-        Usage: mihf.users = &lt;user sap id&gt; &lt;port&gt; &lt;mbbhandover&gt;,
-        ...
+        Usage: mihf.users = &lt;user sap id&gt; &lt;port&gt; &lt;role&gt;, ...
       </p>
 <p>
         <span class="bold"><strong>List of local Link SAPs:</strong></span> Comma separated
@@ -417,7 +418,7 @@
 </td></tr>
 </table></div>
 <p>
-      <span class="bold"><strong>SAP's</strong></span>
+      <span class="bold"><strong>SAP's</strong></span> 
 </p>
 <pre class="programlisting"><span class="identifier">MIH</span> <span class="identifier">Usr</span> <span class="identifier">Configuration</span><span class="special">:</span>
    <span class="special">--</span><span class="identifier">help</span>                           <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
@@ -425,7 +426,7 @@
    <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">recv_buff_len</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4096</span><span class="special">)</span> <span class="identifier">Receive</span> <span class="identifier">buffer</span> <span class="identifier">length</span>
    <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1234</span><span class="special">)</span>          <span class="identifier">Listening</span> <span class="identifier">port</span>
    <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">user</span><span class="special">)</span>            <span class="identifier">MIH</span><span class="special">-</span><span class="identifier">User</span> <span class="identifier">ID</span>
-   <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">handover</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1</span><span class="special">)</span>         <span class="identifier">MIH</span><span class="special">-</span><span class="identifier">User</span> <span class="identifier">handover</span> <span class="identifier">support</span>
+   <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">role</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">mobility</span><span class="special">)</span>      <span class="identifier">MIH</span><span class="special">-</span><span class="identifier">User</span> <span class="identifier">role</span>
    <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">ip</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">127.0</span><span class="special">.</span><span class="number">0.1</span><span class="special">)</span>       <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">IP</span> <span class="identifier">address</span>
    <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">local_port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1025</span><span class="special">)</span>    <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">communication</span> <span class="identifier">port</span>
    <span class="special">--</span><span class="identifier">dest</span> <span class="identifier">arg</span>                       <span class="identifier">MIHF</span> <span class="identifier">destination</span>
@@ -433,6 +434,7 @@
 <p>
     </p>
 <p>
+      
 </p>
 <pre class="programlisting"><span class="identifier">MIH</span> <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">Configuration</span><span class="special">:</span>
      <span class="special">--</span><span class="identifier">help</span>                           <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
@@ -493,16 +495,15 @@
       </p>
 </td></tr>
 </table></div>
-<h5>
-<a name="odtone.getStart.h8"></a>
-      <span><a name="odtone.getStart.local_demo"></a></span><a class="link" href="getStart.html#odtone.getStart.local_demo">Local
-      Demo</a>
+<a name="odtone.getStart.local_demo"></a><h5>
+<a name="odtone.getStart.local_demo-heading"></a>
+      <a class="link" href="getStart.html#odtone.getStart.local_demo">Local Demo</a>
     </h5>
 <p>
-      The local demo consists in a simple experiment to demonstrate simple message
-      exchange between the MIHF, the MIH-User and the Link SAP. It allows you to
-      see how events are generated by the Link SAP and then reported to a MIH-User
-      that has subscribed to these events.
+      The local demo consists in a simple experiment to demonstrate message exchanging
+      between the MIHF, the MIH-User and the Link SAP. It allows you to see how events
+      are generated by the Link SAP and then reported to a MIH-User that subscribed
+      to those events.
     </p>
 <p>
       <span class="inlinemediaobject"><img src=".././images/local_demo.png" alt="local_demo"></span>
@@ -513,36 +514,37 @@
 <p>
       In order to properly run the local demo you will need to edit the default Link
       SAP configuration in order to identify the interface that it will manage (<span class="emphasis"><em>tec</em></span>
-      and <span class="emphasis"><em>link_addr</em></span> properties).
+      and <span class="emphasis"><em>link_addr</em></span> parameters).
     </p>
 <p>
       <span class="bold"><strong>Running Demo</strong></span>
     </p>
 <p>
       The best way to run this demo is to open 3 terminals. On the first terminal
-      start ODTONE-MIHF and on another terminal start the Link SAP. You can see that,
-      at Link SAP bootstrap, the Link SAP will register itself with its the local
-      MIHF. Now it's time to start the MIH-User, on your remaining terminal. If all
-      went well the MIH-User has requested for the capabilities of the local MIHF
-      and printed out some information about the discovered interfaces (those that
-      you previously configured. For each discovered interface, the MIH-User will
-      subscribe to all supported events.
+      you must start ODTONE-MIHF and on another terminal you must start the Link
+      SAP. You can see that, at Link SAP bootstrap, the Link SAP will register itself
+      with its the local MIHF. Now it's time to start the MIH-User with the configurable
+      parameter <span class="emphasis"><em>--dest mihf1</em></span>, on your remaining terminal. The
+      <span class="emphasis"><em>--dest</em></span> option tells the MIH-User to set the MIHF destination
+      field of the message to mihf1.
     </p>
 <p>
-      Now you can trigger some events by just disconnecting, disabling or shutting
-      down your network cable/interface or wireless card (according to what you configured).
-      You can see that the event notifications are propagated from the Link SAP to
-      the MIH-User.
+      If all went well, the MIH-User has requested for the capabilities of the local
+      MIHF and printed out some information about the discovered interfaces (those
+      that you previously configured on the Link SAP). For each discovered interface,
+      the MIH-User will subscribe to all supported events. Now you can trigger some
+      events by just disconnecting, disabling or shutting down your network cable/interface
+      or wireless card (according to what you configured). You can see that the event
+      notifications are propagated from the Link SAP to the MIH-User.
     </p>
-<h5>
-<a name="odtone.getStart.h9"></a>
-      <span><a name="odtone.getStart.remote_demo"></a></span><a class="link" href="getStart.html#odtone.getStart.remote_demo">Remote
-      Demo</a>
+<a name="odtone.getStart.remote_demo"></a><h5>
+<a name="odtone.getStart.remote_demo-heading"></a>
+      <a class="link" href="getStart.html#odtone.getStart.remote_demo">Remote Demo</a>
     </h5>
 <p>
       The remote demo shows the ability of a MIH-User to obtain event notifications
-      that happens on a Link SAP located on another machine. You are required to
-      have two machines for this experiment. The first machine will host an ODTONE-MIHF
+      that happen on a Link SAP located on another machine. You are required to have
+      two machines for this experiment. The first machine will host an ODTONE-MIHF
       (mihf1) and the MIH-User, while the second will host an ODTONE-MIHF (mihf2)
       and the Link_SAP.
     </p>
@@ -553,16 +555,13 @@
       <span class="bold"><strong>Configuration</strong></span>
     </p>
 <p>
-      Autonomous remote MIHF discovery is not yet implemented, so you need to configure
-      the remote MIHF's IP addresses and port on each one of the MIHFs. Edit the
-      ODTONE-MIHF configuration file and add an entry to peers MIHFs in the form:
+      Autonomous remote MIHF discovery is not taken in consideration, so you need
+      to configure the remote MIHF's IP addresses, port and supported transport protocols
+      on each one of the MIHFs. Edit the ODTONE-MIHF configuration file and add an
+      entry to peers MIHFs in the form:
     </p>
-<pre class="programlisting"><span class="special">&lt;</span><span class="identifier">mihf_id</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">ip</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">port</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="special">&lt;</span><span class="identifier">mihf_id</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">ip</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">port</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">list</span> <span class="identifier">of</span> <span class="identifier">supported</span> <span class="identifier">transport</span> <span class="identifier">protocols</span><span class="special">&gt;</span>
 </pre>
-<p>
-      where &lt;mihf_id&gt; is the identifier of the remote MIHF, &lt;ip&gt; and
-      &lt;port&gt; are the IP address and port of the remote MIHF respectively.
-    </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
@@ -573,24 +572,26 @@
       </p></td></tr>
 </table></div>
 <p>
-      The mihf1 configuration file must look like:
+      The mihf1 configuration file must look like: 
 </p>
 <pre class="programlisting"><span class="special">[</span><span class="identifier">mihf</span><span class="special">]</span>
 <span class="identifier">id</span> <span class="special">=</span> <span class="identifier">mihf1</span>
 <span class="identifier">local_port</span> <span class="special">=</span> <span class="number">1025</span>
 <span class="identifier">remote_port</span> <span class="special">=</span> <span class="number">4551</span>
-<span class="identifier">peers</span> <span class="special">=</span> <span class="identifier">mihf2</span> <span class="special">&lt;</span><span class="identifier">mihf1_IP_address</span><span class="special">&gt;</span> <span class="number">4551</span>
+<span class="identifier">peers</span> <span class="special">=</span> <span class="identifier">mihf2</span> <span class="special">&lt;</span><span class="identifier">mihf2_IP_address</span><span class="special">&gt;</span> <span class="number">4551</span> <span class="identifier">udp</span>
+<span class="identifier">transport</span> <span class="special">=</span> <span class="identifier">udp</span>
 </pre>
 <p>
     </p>
 <p>
-      The mihf2 configuration file must look like:
+      The mihf2 configuration file must look like: 
 </p>
 <pre class="programlisting"><span class="special">[</span><span class="identifier">mihf</span><span class="special">]</span>
 <span class="identifier">id</span> <span class="special">=</span> <span class="identifier">mihf2</span>
 <span class="identifier">local_port</span> <span class="special">=</span> <span class="number">1025</span>
 <span class="identifier">remote_port</span> <span class="special">=</span> <span class="number">4551</span>
-<span class="identifier">peers</span> <span class="special">=</span> <span class="identifier">mihf1</span> <span class="special">&lt;</span><span class="identifier">mihf2_IP_address</span><span class="special">&gt;</span> <span class="number">4551</span>
+<span class="identifier">peers</span> <span class="special">=</span> <span class="identifier">mihf1</span> <span class="special">&lt;</span><span class="identifier">mihf1_IP_address</span><span class="special">&gt;</span> <span class="number">4551</span> <span class="identifier">udp</span>
+<span class="identifier">transport</span> <span class="special">=</span> <span class="identifier">udp</span>
 </pre>
 <p>
     </p>
@@ -610,12 +611,10 @@
       <span class="bold"><strong>Running Demo</strong></span>
     </p>
 <p>
-      On the machine that host the mihf2 start a terminal and run ODTONE-MIHF. Then,
-      on another terminal start the Link SAP.
-    </p>
-<p>
-      On the machine that host the mihf1 start a terminal and run ODTONE-MIHF. Then,
-      on another terminal start the MIH-User with the configurable parameter <span class="emphasis"><em>--dest
+      On the machine that host the mihf2 you must start a terminal and run ODTONE-MIHF.
+      Then, on another terminal you must start the Link SAP. On the machine that
+      host the mihf1 you must start a terminal and run ODTONE-MIHF. Then, on another
+      terminal you must start the MIH-User with the configurable parameter <span class="emphasis"><em>--dest
       mihf2</em></span>. The <span class="emphasis"><em>--dest</em></span> option tells the MIH-User
       to set the MIHF destination field of the frame to mihf2.
     </p>
@@ -628,9 +627,9 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2011 Universidade
-      Aveiro<br>Copyright &#169; 2009-2011 Instituto de
-      Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license
@@ -640,7 +639,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="intro.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="library.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="intro.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="mihf_internals.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

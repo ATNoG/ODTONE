@@ -1,10 +1,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>ODTONE 0.3</title>
+<title>ODTONE 0.4</title>
 <link rel="stylesheet" href="boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="ODTONE 0.3">
+<link rel="home" href="index.html" title="ODTONE 0.4">
 <link rel="next" href="odtone/intro.html" title="Introduction">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -15,7 +15,7 @@
 <div class="titlepage">
 <div>
 <div><h2 class="title">
-<a name="odtone"></a>ODTONE 0.3</h2></div>
+<a name="odtone"></a>ODTONE 0.4</h2></div>
 <div><div class="authorgroup">
 <div class="author"><h3 class="author">
 <span class="firstname">Carlos</span> <span class="surname">Guimar&#227;es</span>
@@ -24,12 +24,12 @@
 <span class="firstname">Bruno</span> <span class="surname">Santos</span>
 </h3></div>
 </div></div>
-<div><p class="copyright">Copyright &#169; 2009-2011 Universidade
+<div><p class="copyright">Copyright &#169; 2009-2012 Universidade
       Aveiro</p></div>
-<div><p class="copyright">Copyright &#169; 2009-2011 Instituto de
-      Telecomunica&#231;&#245;es - P&#243;lo Aveiro</p></div>
+<div><p class="copyright">Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro</p></div>
 <div><div class="legalnotice">
-<a name="odtone.legal"></a><p>
+<a name="id2875586"></a><p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license
@@ -44,18 +44,39 @@
 <dl>
 <dt><span class="section"><a href="odtone/intro.html">Introduction</a></span></dt>
 <dt><span class="section"><a href="odtone/getStart.html">Getting Started</a></span></dt>
+<dt><span class="section"><a href="odtone/mihf_internals.html">ODTONE MIHF internals</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="odtone/mihf_internals/internal_communications_use_udp_sockets_on_loopback_interface.html">Internal
+      Communications use UDP sockets on loopback interface</a></span></dt>
+<dt><span class="section"><a href="odtone/mihf_internals/mih_confirm_messages_must_set_the_opcode_to_0__zero_.html">MIH
+      confirm messages must set the opcode to 0 (zero)</a></span></dt>
+<dt><span class="section"><a href="odtone/mihf_internals/local_discovery.html">Local discovery</a></span></dt>
+<dt><span class="section"><a href="odtone/mihf_internals/remote_discovery.html">Remote discovery</a></span></dt>
+<dt><span class="section"><a href="odtone/mihf_internals/multiple_link_sap_support.html">Multiple
+      Link SAP support</a></span></dt>
+<dt><span class="section"><a href="odtone/mihf_internals/remote_link_sap_support.html">Remote
+      Link SAP support</a></span></dt>
+<dt><span class="section"><a href="odtone/mihf_internals/event_subscribe_unsubscribe_optimization.html">Event
+      subscribe/unsubscribe optimization</a></span></dt>
+<dt><span class="section"><a href="odtone/mihf_internals/mih_primitives_mapped_in_mih_protocol_messages.html">MIH
+      Primitives mapped in MIH Protocol Messages</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="odtone/library.html">Libraries</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="odtone_base_library.html">ODTONE Base Library</a></span></dt>
 <dt><span class="section"><a href="odtone_mih_library.html">ODTONE MIH Library</a></span></dt>
 <dt><span class="section"><a href="odtone_sap_library.html">ODTONE SAP Library</a></span></dt>
+<dt><span class="section"><a href="odtone_net_library.html">ODTONE NET Library</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="odtone/app.html">Applications</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="odtone/app/mihf_index.html">ODTONE-MIHF</a></span></dt>
 <dt><span class="section"><a href="odtone/app/mih_usr_index.html">MIH-User</a></span></dt>
 <dt><span class="section"><a href="odtone/app/miis_index.html">MIIS Server</a></span></dt>
+<dt><span class="section"><a href="odtone/app/dhcp_usr_index.html">DHCP-User</a></span></dt>
+<dt><span class="section"><a href="odtone/app/dns_usr_index.html">DNS-User</a></span></dt>
 <dt><span class="section"><a href="odtone/app/link_sap_index.html">Link SAP</a></span></dt>
+<dt><span class="section"><a href="odtone/app/link_sap_icmp_index.html">ICMP Link SAP</a></span></dt>
 <dt><span class="section"><a href="odtone/app/client_index.html">Client</a></span></dt>
 <dt><span class="section"><a href="odtone/app/dummyserver_index.html">Dummyserver</a></span></dt>
 </dl></dd>
@@ -64,7 +85,7 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: December 12, 2011 at 00:59:57 GMT</small></p></td>
+<td align="left"><p><small>Last revised: January 26, 2012 at 17:01:18 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>
