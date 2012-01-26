@@ -260,14 +260,14 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 		return true;
 	// Remote requets received
 	} else if (utils::this_mihf_is_destination(in)) {
-		send_indication(in, out);
 		get_capabilities(in, out);
+		send_indication(in, out);
 		set_capability_discover_response(in, out);
 		return true;
 	// Multicast request received
 	} else if (utils::is_multicast(in)) {
-		send_indication(in, out);
 		get_capabilities(in, out);
+		send_indication(in, out);
 		set_capability_discover_response(in, out);
 		return true;
 	} else {

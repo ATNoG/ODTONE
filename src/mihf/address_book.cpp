@@ -34,6 +34,14 @@ void address_book::add(const mih::octet_string &id,
 {
 	boost::mutex::scoped_lock lock(_mutex);
 
+	std::map<mih::octet_string, address_entry>::iterator it;
+	it = _abook.find(id);
+
+	if (it != _abook.end()) {
+		entry_info.ip = it->second.ip;
+		entry_info.port = it->second.port;
+	}
+
 	_abook[id] = entry_info;
 	ODTONE_LOG(4, "(address_book) added: ", id);
 }
