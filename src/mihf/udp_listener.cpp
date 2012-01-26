@@ -92,25 +92,36 @@ void udp_listener::start()
  * @param rbytes The number of bytes of the input message.
  * @param error The error code.
  */
-void udp_listener::handle_receive(buffer<uint8>&			 buff,
-				  size_t				 rbytes,
-				  const boost::system::error_code&	 e)
-
+void udp_listener::handle_receive(buffer<uint8> &buff,
+								  size_t rbytes,
+								  const boost::system::error_code &error)
 {
 	using namespace boost;
 
-	if (!e) {
+	if (!error) {
 		ODTONE_LOG(1, "(udp) received ", rbytes, " bytes.");
 		ODTONE_LOG(0, "(udp) from ", _rmt_endp.address().to_string(),
-		    ":", _rmt_endp.port());
+		    " : ", _rmt_endp.port());
 
 		mih::frame *pud = mih::frame::cast(buff.get(), rbytes);
 
 		if(pud) {
-			mih::octet_string ip(_rmt_endp.address().to_string());
+			// Decode IP address
+			mih::octet_string ip;
+			uint16 scope = 0;
+			if(_rmt_endp.address().is_v4()) {
+				boost::asio::ip::address_v4 ip_addr = _rmt_endp.address().to_v4();
+				ip = ip_addr.to_string();
+			} else if(_rmt_endp.address().is_v6()) {
+				boost::asio::ip::address_v6 ip_addr = _rmt_endp.address().to_v6();
+				scope = ip_addr.scope_id();
+				ip_addr.scope_id(0);
+				ip = ip_addr.to_string();
+			}
+			// Decode port
 			uint16 port = _rmt_endp.port();
 
-			meta_message_ptr in(new meta_message(ip, port, *pud));
+			meta_message_ptr in(new meta_message(ip, scope, port, *pud));
 			ODTONE_LOG(4, *pud);
 
 			// discard messages if multicast messages are not supported

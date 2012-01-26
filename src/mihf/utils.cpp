@@ -94,6 +94,7 @@ void tcp_send(boost::asio::io_service &io, meta_message_ptr &msg,
 	}
 
 	sock.connect(ip::tcp::endpoint(ip::address::from_string(dst_ip), dst_port));
+
 	mih::frame_vla fm;
 	void *sbuff;
 	size_t slen;
@@ -124,17 +125,6 @@ void udp_send(boost::asio::io_service &io, meta_message_ptr &msg,
 			  const char *dst_ip, uint16 dst_port, uint16 src_port)
 {
 	ip::udp::socket sock(io);
-	sock.open(ip::udp::v6());
-
-	// Set socket flags
-    sock.set_option(boost::asio::socket_base::reuse_address(true));
-	if (strcmp(dst_ip, "ff02::1") == 0) {
-		boost::asio::socket_base::broadcast option(true);
-		sock.set_option(option);
-	}
-
-	sock.bind(ip::udp::endpoint(ip::address_v6::any(), src_port));
-
 	mih::frame_vla fm;
 	void *sbuff;
 	size_t slen;
@@ -143,14 +133,29 @@ void udp_send(boost::asio::io_service &io, meta_message_ptr &msg,
 	sbuff = fm.get();
 	slen = fm.size();
 
+	ip::udp::endpoint ep(ip::address::from_string(dst_ip), dst_port);
 	if (strcmp(dst_ip, "ff02::1") == 0) {
+		if(ep.address().is_v4())
+			sock.open(ip::udp::v4());
+		else if(ep.address().is_v6())
+			sock.open(ip::udp::v6());
+
+		// Set socket flags
+		sock.set_option(boost::asio::socket_base::reuse_address(true));
+		boost::asio::socket_base::broadcast option(true);
+		sock.set_option(option);
+
+		if(ep.address().is_v4())
+			sock.bind(ip::udp::endpoint(ip::address_v4::any(), src_port));
+		else if(ep.address().is_v6())
+			sock.bind(ip::udp::endpoint(ip::address_v6::any(), src_port));
+
 		// FIXME: Proper and portable way to discover the available interfaces
 		for(int i = 1; i <= 5; i++) {
 			try {
 				sock.set_option(ip::multicast::outbound_interface(i));
 				sock.set_option(ip::multicast::enable_loopback(false));
 
-				ip::udp::endpoint ep(ip::address::from_string(dst_ip), dst_port);
 				sock.async_send_to(boost::asio::buffer(sbuff, slen),
 						   ep,
 						   boost::bind((&send_handler),
@@ -160,11 +165,26 @@ void udp_send(boost::asio::io_service &io, meta_message_ptr &msg,
 			}
 		}
 	} else {
-			ip::udp::endpoint ep(ip::address::from_string(dst_ip), dst_port);
-			sock.async_send_to(boost::asio::buffer(sbuff, slen),
-					   ep,
-					   boost::bind((&send_handler),
-							   placeholders::error));
+		if(ep.address().is_v4())
+			sock.open(ip::udp::v4());
+		else if(ep.address().is_v6())
+			sock.open(ip::udp::v6());
+
+		// Set socket flags
+		sock.set_option(boost::asio::socket_base::reuse_address(true));
+
+		if(ep.address().is_v4())
+			sock.bind(ip::udp::endpoint(ip::address_v4::any(), src_port));
+		else if(ep.address().is_v6())
+			sock.bind(ip::udp::endpoint(ip::address_v6::any(), src_port));
+
+		if(ep.address().is_v6())
+			ep.address().to_v6().scope_id(msg->scope());
+
+		sock.async_send_to(boost::asio::buffer(sbuff, slen),
+				   ep,
+				   boost::bind((&send_handler),
+						   placeholders::error));
 	}
 
 	sock.close();

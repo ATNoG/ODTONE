@@ -81,14 +81,26 @@ void session::handle_read(odtone::buffer<uint8> &buff,
 			  const boost::system::error_code &e)
 {
 	if (!e) {
-		mih::octet_string ip(_sock.remote_endpoint().address().to_string());
+		// Decode IP address
+		mih::octet_string ip;
+		uint16 scope = 0;
+		if(_sock.remote_endpoint().address().is_v4()) {
+			boost::asio::ip::address_v4 ip_addr = _sock.remote_endpoint().address().to_v4();
+			ip = ip_addr.to_string();
+		} else if(_sock.remote_endpoint().address().is_v6()) {
+			boost::asio::ip::address_v6 ip_addr = _sock.remote_endpoint().address().to_v6();
+			scope = ip_addr.scope_id();
+			ip_addr.scope_id(0);
+			ip = ip_addr.to_string();
+		}
+		// Decode port
 		uint16 port = _sock.remote_endpoint().port();
 
 		mih::frame *pud = mih::frame::cast(buff.get(), rbytes);
 		if(pud) {
 			ODTONE_LOG(1, "(tcp) received ", rbytes, " bytes from ", ip , " : ", port);
 
-			meta_message_ptr in(new meta_message(ip, port, *pud));
+			meta_message_ptr in(new meta_message(ip, scope, port, *pud));
 
 			// discard messages if multicast messages are not supported
 			if(utils::is_multicast(in) && !_enable_multicast) {

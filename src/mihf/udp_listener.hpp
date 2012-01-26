@@ -41,7 +41,7 @@ public:
 	/**
 	 * Construct a UDP Listener.
 	 *
-	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * @param io The io_service object that the UDP Listener service will use to
 	 * dispatch handlers for any asynchronous operations performed on
 	 * the socket.
 	 * @param buff_size The receive buffer length.
@@ -73,8 +73,8 @@ public:
 	 * @param error The error code.
 	 */
 	void handle_receive(buffer<uint8>& buff,
-			    size_t rbytes,
-			    const boost::system::error_code& ec);
+						size_t rbytes,
+						const boost::system::error_code& error);
 
 protected:
 	io_service			&_io;		/**< The io_service object.			*/

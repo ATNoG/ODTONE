@@ -143,6 +143,9 @@ void command_service::link_get_parameters_response_handler(const boost::system::
 	out->destination(in->source());
 	out->source(mihfid);
 
+	out->ip(in->ip());
+	out->scope(in->scope());
+	out->port(in->port());
 	_transmit(out);
 }
 
@@ -575,6 +578,9 @@ void command_service::link_actions_response_handler(const boost::system::error_c
 	out->destination(in->source());
 	out->source(mihfid);
 
+	out->ip(in->ip());
+	out->scope(in->scope());
+	out->port(in->port());
 	_transmit(out);
 }
 

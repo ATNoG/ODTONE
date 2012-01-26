@@ -133,6 +133,7 @@ bool sac_process_message(meta_message_ptr& in, meta_message_ptr& out)
 
 		// set ip and port of response message
 		out->ip(in->ip());
+		out->scope(in->scope());
 		out->port(in->port());
 
 		// response message must have the same tid
