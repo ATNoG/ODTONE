@@ -128,14 +128,12 @@ void dhcp_user::cap_disc_handler(mih::message& msg,
 
 	if(evt) {
 		if(!evt->get(mih::link_up) || !evt->get(mih::link_down)) {
-				log(1, "cannot register for link_up and link_down events");
-				throw "cannot register for link_up and link_down events";
-				return;
+			log(1, "cannot register for link_up and link_down events");
+			return;
 		}
 	} else {
 		log(1, "cannot register for link_up and link_down events");
-				throw "cannot register for link_up and link_down events";
-				return;
+		return;
 	}
 
 	//

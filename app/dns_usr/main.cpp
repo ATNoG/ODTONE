@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 		boost::asio::io_service ios;
 
 		// declare MIH User available options
-		po::options_description desc(odtone::mih::octet_string("MIH User Configuration"));
+		po::options_description desc(odtone::mih::octet_string("DNS-User Configuration"));
 		desc.add_options()
 			("help", "Display configuration options")
 			(sap::kConf_File, po::value<std::string>()->default_value("dns.conf"), "Configuration File")

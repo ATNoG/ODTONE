@@ -247,10 +247,11 @@ void mih_user::capability_discover_confirm(odtone::mih::message& msg, const boos
 					req << odtone::mih::request(odtone::mih::request::event_subscribe, _mihfid)
 						& odtone::mih::tlv_link_identifier(li)
 						& odtone::mih::tlv_event_list(evt);
+					req.destination(msg.source());
 
 					_mihf.async_send(req, boost::bind(&mih_user::event_subscribe_response, this, _1, _2));
 
-					log_(0, "MIH-User has sent Event_Subscribe.request");
+					log_(0, "MIH-User has sent Event_Subscribe.request to ", req.destination().to_string());
 				}
 		}
 	}

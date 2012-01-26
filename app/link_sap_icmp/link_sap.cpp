@@ -67,7 +67,7 @@ link_sap::link_sap(const odtone::mih::config& cfg,
 	strncpy(ifr.ifr_name, _ifname.c_str(), sizeof(ifr.ifr_name) - 1);
 	if(setsockopt(_icmp_sock.native(), SOL_SOCKET, SO_BINDTODEVICE, (void *)&ifr, sizeof(ifr)) < 0) {
 		log_(0, "Cannot bind to specific interface.");
-		exit(-1);
+		throw("Cannot bind to specific interface.");
 	}
 	//
 

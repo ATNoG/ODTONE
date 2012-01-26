@@ -224,17 +224,17 @@ int main(int argc, char** argv)
 		po::options_description desc("MIH Link SAP Configuration");
 		desc.add_options()
 			("help", "Display configuration options")
-			(odtone::sap::kConf_Port, po::value<odtone::ushort>()->default_value(1235), "Port")
-			(odtone::sap::kConf_Tec, po::value<std::string>()->default_value(""), "Link SAP Technology")
-			(odtone::sap::kConf_Interface_Addr, po::value<std::string>()->default_value(""), "Link SAP Interface Address")
+			(odtone::sap::kConf_File, po::value<std::string>()->default_value("link_sap.conf"), "Configuration file")
+			(odtone::sap::kConf_Receive_Buffer_Len, po::value<odtone::uint>()->default_value(4096), "Receive buffer length")
+			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("link"), "Link SAP ID")
+			(odtone::sap::kConf_Port, po::value<odtone::ushort>()->default_value(1235), "Listening port")
+			(odtone::sap::kConf_Tec, po::value<std::string>()->default_value(""), "Technology type")
+			(odtone::sap::kConf_Interface_Addr, po::value<std::string>()->default_value(""), "Interface address")
 			(odtone::sap::kConf_Evt_List, po::value<std::string>()->default_value(""), "List of supported events")
 			(odtone::sap::kConf_Cmd_List, po::value<std::string>()->default_value(""), "List of supported commands")
-			(odtone::sap::kConf_File, po::value<std::string>()->default_value("link_sap.conf"), "Configuration File")
-			(odtone::sap::kConf_Receive_Buffer_Len, po::value<odtone::uint>()->default_value(4096), "Receive Buffer Length")
-			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
-			(odtone::sap::kConf_MIHF_Local_Port, po::value<odtone::ushort>()->default_value(1025), "MIHF Local Communications Port")
-			(odtone::sap::kConf_MIHF_Id, po::value<std::string>()->default_value("local-mihf"), "Local MIHF Id")
-			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("link"), "Link SAP Id");
+			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF IP")
+			(odtone::sap::kConf_MIHF_Id, po::value<std::string>()->default_value("local-mihf"), "Local MIHF ID")
+			(odtone::sap::kConf_MIHF_Local_Port, po::value<odtone::ushort>()->default_value(1025), "Local MIHF communications port");
 
 		odtone::mih::config cfg(desc);
 		cfg.parse(argc, argv, odtone::sap::kConf_File);

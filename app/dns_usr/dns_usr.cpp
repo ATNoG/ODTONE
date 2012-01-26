@@ -284,12 +284,14 @@ void dns_user::dns_message_handler(struct dns::callback_info *cbd)
 
 		break;
 	}
-	case dns::DNS_TIMEOUT:
+	case dns::DNS_TIMEOUT: {
 		ODTONE_LOG(0, "Query timeout for ", cbd->name);
-		break;
-	case dns::DNS_DOES_NOT_EXIST:
+		// TODO: send failure response
+	} break;
+	case dns::DNS_DOES_NOT_EXIST: {
 		ODTONE_LOG(0, "No such address: ", cbd->name);
-		break;
+		// TODO: send failure response
+	} break;
 	case dns::DNS_ERROR:
 		ODTONE_LOG(0, "System error occured");
 		break;
@@ -379,10 +381,10 @@ void dns_user::forward_results(std::map<std::string, std::vector<query_entry> > 
 				BOOST_FOREACH(query_entry tmp, it_results->second) {
 					mih::mos_info mos;
 					mos.id = mih::id(tmp.target);
-					if(true) { // FIXME if ipv4
+					if(tmp.a.compare("") != 0) {
 						mih::ip_addr ip_addr(mih::ip_addr::ipv4, tmp.a);
 						mos.ip = ip_addr;
-					} else {
+					} else if(tmp.aaaa.compare("") != 0) {
 						mih::ip_addr ip_addr(mih::ip_addr::ipv6, tmp.aaaa);
 						mos.ip = ip_addr;
 					}

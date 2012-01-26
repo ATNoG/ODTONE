@@ -656,7 +656,7 @@ void event_service::msg_forward(meta_message_ptr &msg,
 	    it != _event_subscriptions.end();
 	    it++, i++) {
 		if ((it->event == event) && (it->link == li)) {
-			ODTONE_LOG(3, i, " (mies) found registration of user: ",
+			ODTONE_LOG(3, "(mies) found registration of user: ",
 			    it->user, " for event type ", event);
 			msg->destination(mih::id(it->user));
 			_transmit(msg);

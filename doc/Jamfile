@@ -45,7 +45,7 @@ doxygen odtone_base_lib
 
 doxygen odtone_mih_lib
         : [ glob ../inc/odtone/mih/*.hpp
-            glob ../inc/odtone/mih/types*.hpp : ../inc/odtone/mih/namespace.hpp ]
+            glob ../inc/odtone/mih/types/*.hpp : ../inc/odtone/mih/namespace.hpp ]
             doxygen_parameters
         : <reftitle>"ODTONE MIH Library"
         ;
@@ -56,11 +56,22 @@ doxygen odtone_sap_lib
         : <reftitle>"ODTONE SAP Library"
         ;
 
+doxygen odtone_net_lib
+        : [ glob ../inc/odtone/net/dns/*.hpp
+            glob ../inc/odtone/net/ip/*.hpp
+            glob ../inc/odtone/net/ip/icmp/*.hpp
+            glob ../inc/odtone/net/link/*.hpp : ../inc/odtone/net/namespace.hpp ]
+		  doxygen_parameters
+        : <reftitle>"ODTONE NET Library"
+        ;
+
+
 xml odtone-doc
 	: src/odtone.qbk
 	: <dependency>odtone_base_lib
 	  <dependency>odtone_mih_lib
 	  <dependency>odtone_sap_lib
+	  <dependency>odtone_net_lib
 	;
 
 boostbook doc-html
