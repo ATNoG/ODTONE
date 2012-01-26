@@ -29,7 +29,7 @@ namespace odtone { namespace mihf {
 /**
  * Construct a UDP Listener.
  *
- * @param io The io_service object that Link SAP I/O Service will use to
+ * @param io The io_service object that UDP listener will use to
  * dispatch handlers for any asynchronous operations performed on
  * the socket.
  * @param buff_size The receive buffer length.

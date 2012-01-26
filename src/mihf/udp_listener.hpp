@@ -41,7 +41,7 @@ public:
 	/**
 	 * Construct a UDP Listener.
 	 *
-	 * @param io The io_service object that the UDP Listener service will use to
+	 * @param io The io_service object that UDP Listener service will use to
 	 * dispatch handlers for any asynchronous operations performed on
 	 * the socket.
 	 * @param buff_size The receive buffer length.

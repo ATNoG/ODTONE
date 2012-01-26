@@ -30,7 +30,7 @@ namespace odtone { namespace mihf {
 /**
  * Construct a netsap module.
  *
- * @param io The io_service object that Link SAP I/O Service will use to
+ * @param io The io_service object that netsap module will use to
  * dispatch handlers for any asynchronous operations performed on
  * the socket.
  * @param abook The address book module.

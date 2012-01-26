@@ -30,7 +30,7 @@ namespace odtone { namespace mihf {
 /**
  * Construct a TCP session.
  *
- * @param io The io_service object that Link SAP I/O Service will use to
+ * @param io The io_service object that TCP session will use to
  * dispatch handlers for any asynchronous operations performed on
  * the socket.
  * @param d The dispatch function.
@@ -121,7 +121,7 @@ void session::handle_read(odtone::buffer<uint8> &buff,
 /**
  * Construct a TCP Listener.
  *
- * @param io The io_service object that Link SAP I/O Service will use to
+ * @param io The io_service object that TCP listener module will use to
  * dispatch handlers for any asynchronous operations performed on
  * the socket.
  * @param buff_size The receive buffer length.

@@ -47,7 +47,7 @@ public:
 	 * Construct the MIH-User.
 	 *
 	 * @param cfg Configuration options.
-	 * @param io The io_service object that the IEEE 802.21 driver will use to
+	 * @param io The io_service object that the MIH-User will use to
 	 * dispatch handlers for any asynchronous operations performed on the socket. 
 	 */
 	mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io);
@@ -61,7 +61,7 @@ protected:
 	/**
 	 * User registration handler.
 	 *
-	 * @param msg Received message.
+	 * @param cfg Configuration options.
 	 * @param ec Error Code.
 	 */
 	void user_reg_handler(const odtone::mih::config& cfg, const boost::system::error_code& ec);
@@ -99,7 +99,7 @@ private:
  * Construct the MIH-User.
  *
  * @param cfg Configuration options.
- * @param io The io_service object that the IEEE 802.21 driver will use to
+ * @param io The io_service object that the MIH-User will use to
  * dispatch handlers for any asynchronous operations performed on the socket. 
  */
 mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
@@ -133,7 +133,7 @@ mih_user::~mih_user()
 /**
  * User registration handler.
  *
- * @param msg Received message.
+ * @param cfg Configuration options.
  * @param ec Error Code.
  */
 void mih_user::user_reg_handler(const odtone::mih::config& cfg, const boost::system::error_code& ec)

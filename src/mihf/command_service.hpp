@@ -43,7 +43,7 @@ public:
 	/**
 	 * Construct the command service.
 	 *
-	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * @param io The io_service object that command service module will use to
 	 * dispatch handlers for any asynchronous operations performed on
 	 * the socket.
 	 * @param lpool The local transaction pool module.

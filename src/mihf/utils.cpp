@@ -72,7 +72,7 @@ static void send_handler(const boost::system::error_code &ec)
 /**
  * Send a message using a TCP socket.
  *
- * @param io The io_service object that Link SAP I/O Service will use to
+ * @param io The io_service object that TCP socket will use to
  * dispatch handlers for any asynchronous operations performed on
  * the socket.
  * @param msg The output message.
@@ -113,7 +113,7 @@ void tcp_send(boost::asio::io_service &io, meta_message_ptr &msg,
 /**
  * Send a message using an UDP socket.
  *
- * @param io The io_service object that Link SAP I/O Service will use to
+ * @param io The io_service object that UDP socket will use to
  * dispatch handlers for any asynchronous operations performed on
  * the socket.
  * @param msg The output message.

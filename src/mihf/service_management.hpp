@@ -41,8 +41,8 @@ public:
 	/**
 	 * Construct the service management.
 	 *
-	 * @param io The io_service object that Link SAP I/O Service will use to
-	 * dispatch handlers for any asynchronous operations performed on
+	 * @param io The io_service object that service management module will
+	 * use to dispatch handlers for any asynchronous operations performed on
 	 * the socket.
 	 * @param lpool The local transaction pool module.
 	 * @param link_abook The link book module.

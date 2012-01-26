@@ -52,7 +52,7 @@ public:
 	 * Construct the MIIS RDF Server.
 	 *
 	 * @param cfg Configuration options.
-	 * @param io The io_service object that the IEEE 802.21 driver will use to
+	 * @param io The io_service object that MIIS RDF server will use to
 	 * dispatch handlers for any asynchronous operations performed on the socket.
 	 */
 	miis_rdf_server(const odtone::mih::config& cfg, boost::asio::io_service& io);
@@ -100,7 +100,7 @@ private:
  * Construct the MIIS RDF Server.
  *
  * @param cfg Configuration options.
- * @param io The io_service object that the IEEE 802.21 driver will use to
+ * @param io The io_service object that MIIS RDF server will use to
  * dispatch handlers for any asynchronous operations performed on the socket.
  */
 miis_rdf_server::miis_rdf_server(const odtone::mih::config& cfg, boost::asio::io_service& io)

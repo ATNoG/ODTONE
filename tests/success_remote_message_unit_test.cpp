@@ -295,19 +295,10 @@ message_unit_test::message_unit_test(const mih::config& cfg, boost::asio::io_ser
 	}
 }
 
-/**
- * Destruct the MIH-User.
- */
 message_unit_test::~message_unit_test()
 {
 }
 
-/**
- * Default MIH event handler.
- *
- * @param msg Received message.
- * @param ec Error code.
- */
 void message_unit_test::event_handler(mih::message& msg, const boost::system::error_code& ec)
 {
 	if (ec) {

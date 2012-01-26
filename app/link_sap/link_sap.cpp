@@ -39,7 +39,7 @@ namespace link_sap {
  * Construct the Link SAP.
  *
  * @param cfg Configuration options.
- * @param io The io_service object that the IEEE 802.21 driver will use to
+ * @param io The io_service object that Link SAP will use to
  * dispatch handlers for any asynchronous operations performed on the socket. 
  */
 link_sap::link_sap(const odtone::mih::config& cfg, boost::asio::io_service& io)

@@ -45,7 +45,7 @@ public:
 	/**
 	 * Construct a transmit module.
 	 *
-	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * @param io The io_service object that transmit module will use to
 	 * dispatch handlers for any asynchronous operations performed on
 	 * the socket.
 	 * @param user_abook The user book module.

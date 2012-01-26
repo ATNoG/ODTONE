@@ -33,7 +33,7 @@ namespace ip = boost::asio::ip;
  * void(odtone::mih::message&, const boost::system::error_code&).
  *
  * @param cfg Configuration parameters.
- * @param io The io_service object that Link SAP I/O Service will use to
+ * @param io The io_service object that MIH-User SAP I/O Service will use to
 	         dispatch handlers for any asynchronous operations performed on
 	         the socket.
  * @param h Message processing handler.
@@ -61,7 +61,7 @@ user::user(const mih::config& cfg, boost::asio::io_service& io, const handler& h
  * The signature of the callback is:
  * void(odtone::mih::message&, const boost::system::error_code&).
  *
- * @param io The io_service object that Link SAP I/O Service will use to
+ * @param io The io_service object that MIH-User SAP I/O Service will use to
  * dispatch handlers for any asynchronous operations performed on
  * the socket.
  * @param h Message processing handler.

@@ -37,7 +37,7 @@ public:
 	/**
 	 * Construct a TCP session.
 	 *
-	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * @param io The io_service object that TCP session will use to
 	 * dispatch handlers for any asynchronous operations performed on
 	 * the socket.
 	 * @param d The dispatch function.
@@ -86,7 +86,7 @@ public:
 	/**
 	 * Construct a TCP Listener.
 	 *
-	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * @param io The io_service object that TCP listener will use to
 	 * dispatch handlers for any asynchronous operations performed on
 	 * the socket.
 	 * @param buff_size The receive buffer length.

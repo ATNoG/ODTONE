@@ -39,6 +39,17 @@ namespace link_sap {
 ///////////////////////////////////////////////////////////////////////////////
 static odtone::logger log_("link_sap", std::cout);
 
+/**
+ * Construct a Link SAP module.
+ *
+ * @param cfg Configuration information.
+ * @param io The io_service object that ICMP Link SAP will use to dispatch
+ * handlers for any asynchronous operations performed on the socket.
+ * @param ifname Interface name.
+ * @param link_id Link identifier.
+ * @param capabilities_event_list Supported events.
+ * @param capabilities_command_list Supported commands.
+ */
 link_sap::link_sap(const odtone::mih::config& cfg,
 					boost::asio::io_service& io,
 					odtone::mih::octet_string ifname,

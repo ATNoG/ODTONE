@@ -38,7 +38,7 @@ namespace odtone {
 /**
  * Construct the DNS-User.
  *
- * @param io The io_service object that the IEEE 802.21 driver will use to
+ * @param io The io_service object that DNS-User will use to
  * dispatch handlers for any asynchronous operations performed on the socket.
  * @param cfg Configuration options.
  * @param domain Default domain name.
@@ -66,7 +66,7 @@ dns_user::dns_user(boost::asio::io_service& io,
 }
 
 /**
- * Destruct the MIH-User.
+ * Destruct the DNS-User.
  */
 dns_user::~dns_user()
 {

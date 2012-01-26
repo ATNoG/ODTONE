@@ -24,8 +24,8 @@ namespace odtone { namespace mihf {
 /**
  * Construct a transaction pool.
  *
- * @param io The io_service object that Link SAP I/O Service will use to
- * dispatch handlers for any asynchronous operations performed on
+ * @param io The io_service object that transaction pool module will
+ * use to dispatch handlers for any asynchronous operations performed on
  * the socket.
  */
 transaction_pool::transaction_pool(io_service &io)

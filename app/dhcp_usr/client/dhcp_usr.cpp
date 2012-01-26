@@ -34,7 +34,7 @@ namespace odtone {
 /**
  * Construct the DHCP-User.
  *
- * @param io The io_service object that the DHCP-User will use to
+ * @param io The io_service object that DHCP-User will use to
  * dispatch handlers for any asynchronous operations performed on the socket.
  * @param cfg Configuration options.
  * @param nic Mapping of the local network interfaces.

@@ -99,13 +99,6 @@ private:
 	std::map<uint16, boost::shared_ptr<boost::asio::deadline_timer> > _timer;
 };
 
-/**
- * Construct the MIH-User.
- *
- * @param cfg Configuration options.
- * @param io The io_service object that the MIH-User will use to
- * dispatch handlers for any asynchronous operations performed on the socket.
- */
 message_unit_test::message_unit_test(const mih::config& cfg, boost::asio::io_service& io)
 	: _mihf(io, cfg, boost::bind(&message_unit_test::event_handler, this, _1, _2))
 {
@@ -305,19 +298,10 @@ message_unit_test::message_unit_test(const mih::config& cfg, boost::asio::io_ser
 	}
 }
 
-/**
- * Destruct the MIH-User.
- */
 message_unit_test::~message_unit_test()
 {
 }
 
-/**
- * Default MIH event handler.
- *
- * @param msg Received message.
- * @param ec Error code.
- */
 void message_unit_test::event_handler(mih::message& msg, const boost::system::error_code& ec)
 {
 	if (ec) {
