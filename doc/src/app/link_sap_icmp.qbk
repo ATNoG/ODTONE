@@ -1,0 +1,88 @@
+[/==============================================================================
+ / Brief   : Link SAP ICMP App Documentation
+ / Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
+ /------------------------------------------------------------------------------
+ / ODTONE - Open Dot Twenty One
+ /
+ / Copyright (C) 2009-2012 Universidade Aveiro
+ / Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
+ /
+ / This software is distributed under a license. The full license
+ / agreement can be found in the file LICENSE in this distribution.
+ / This software may not be copied, modified, sold or distributed
+ / other than expressed in the named license agreement.
+ /
+ / This software is distributed without any warranty.
+ /=============================================================================]
+
+[section:link_sap_icmp_index ICMP Link SAP]
+
+The Link SAP specifies an abstract media dependent interface between the MIHF
+and lower layers media-specific protocol stacks of technologies such as IEEE 802.3,
+IEEE 802.11, IEEE 802.16, 3GPP and 3GPP2.
+
+The provided ICMP Link SAP implementation is very simple and it can only detect the
+attachment of a new node using the ICMP protocol.
+
+[section:link_sap_icmp_getStart Getting Started]
+
+[section Configuration]
+
+``
+	MIH Link SAP Configuration:
+	     --help                           Display configuration options
+	     --conf.file arg (=link_sap.conf) Configuration file
+	     --conf.recv_buff_len arg (=4096) Receive buffer length
+	     --link.id arg (=link)            Link SAP ID
+	     --link.port arg (=1235)          Listening Port
+	     --link.tec arg                   Technology type
+	     --link.link_addr_list arg        Interface address
+	     --link.event_list arg            List of supported events
+	     --link.command_list arg          List of supported commands
+	     --mihf.ip arg (=127.0.0.1)       Local MIHF IP
+	     --mihf.id arg (=local-mihf)      Local MIHF ID
+	     --mihf.local_port arg (=1025)    Local MIHF communication port
+``
+
+[note
+All configurable parameters are self-explained and, therefore,
+we will only mention those that are more complex to configure.
+
+[*Technology type:] Network interface card technology.
+Supported values: GSM, GPRS, EDGE, 802.3, Other, 802_11, CDMA2000, UMTS,
+CDMA2000-HRPD, 802_16, 802_20, 802_22.
+
+Usage: tec = <NIC technology>
+
+[*Interface Address:] Network interface card address.
+
+Usage: link_addr = <interface address>
+
+[*List of supported events:] Comma separated list of the Link SAP's supported events.
+
+Usage: event_list = <link event 1>, <link event 2>, (...), <link event N>
+
+[*List of supported events:] Comma separated list of the Link SAP's supported commands.
+
+Usage: command_list = <link command 1>, <link command 2>, (...), <link command N>
+
+]
+
+The Link SAP can be configured based on a set of parameters, which can be
+configured either using an configuration file or passing them directly
+in the command line.
+
+[endsect]
+
+[section Running]
+
+Before running the Link SAP, the local MIHF should already be running. Otherwise,
+the Link SAP will try to register with a non-exitent MIHF.
+
+Now you can trigger some events by attaching another node to the device.
+
+[endsect]
+
+[endsect]
+
+[endsect]

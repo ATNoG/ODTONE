@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -101,8 +101,19 @@ void sac_dispatch::operator()(meta_message_ptr& in)
 bool sac_process_message(meta_message_ptr& in, meta_message_ptr& out)
 {
 	// discard messages that this MIHF broadcasted to itself
-	if (in->source() == mihfid)
+	// discard messages that are not destined to this MIHF or if
+	// multicast messages are not supported
+	if(in->source() == mihfid) {
+		ODTONE_LOG(1, "(sac) Discarding message! Reason: ",
+					  "message was broadcasted to itself");
 		return false;
+	}
+
+	if(!utils::this_mihf_is_destination(in) && !utils::is_multicast(in)) {
+		ODTONE_LOG(1, "(sac) Discarding message! Reason: ",
+					  "this is not the message destination");
+		return false;
+	}
 
 	/** __no__ authentication at this point */
 
@@ -122,6 +133,7 @@ bool sac_process_message(meta_message_ptr& in, meta_message_ptr& out)
 
 		// set ip and port of response message
 		out->ip(in->ip());
+		out->scope(in->scope());
 		out->port(in->port());
 
 		// response message must have the same tid

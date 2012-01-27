@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -42,12 +42,13 @@ public:
 	/**
 	 * Construct a netsap module.
 	 *
-	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * @param io The io_service object that netsap module will use to
 	 * dispatch handlers for any asynchronous operations performed on
 	 * the socket.
 	 * @param abook The address book module.
+	 * @param port Port used to send the messages.
 	 */
-	net_sap(io_service &io, address_book &abook);
+	net_sap(io_service &io, address_book &abook, uint16 port);
 
 	/**
 	 * Send the message to a peer MIHF.
@@ -56,8 +57,9 @@ public:
 	 */
 	void send(meta_message_ptr &msg);
 private:
-	io_service &_io;		/**< The io_service object.		*/
-	address_book &_abook;	/**< The address book module.	*/
+	io_service &_io;		/**< The io_service object.				*/
+	address_book &_abook;	/**< The address book module.			*/
+	uint16 _port;			/**< Port used to send the messages.	*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -35,7 +35,7 @@ static const char* const kConf_File               = "conf.file";
 static const char* const kConf_Port               = "conf.port";
 static const char* const kConf_Receive_Buffer_Len = "conf.recv_buff_len";
 
-static const char* const kConf_MIH_Handover = "user.handover";
+static const char* const kConf_MIH_Role = "user.role";
 
 static const char* const kConf_MIH_SAP_id   = "user.id";
 static const char* const kConf_MIH_SAP_dest = "dest";

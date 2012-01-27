@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -35,10 +35,13 @@ namespace odtone { namespace mihf {
  */
 struct link_entry
 {
-	mih::octet_string  ip;		/**< IP address.				*/
-	uint16             port;	/**< Listening port.			*/
-	mih::link_id       link_id;	/**< Link identifier.			*/
-	uint16             fail;	/**< Number of fail responses.	*/
+	mih::octet_string	ip;			/**< IP address.						*/
+	uint16				port;		/**< Listening port.					*/
+	mih::link_id		link_id;	/**< Link identifier.					*/
+	mih::event_list		event_list;	/**< Supported event list.				*/
+	mih::command_list	cmd_list;	/**< Supported command list.			*/
+	uint16				fail;		/**< Number of fail responses.			*/
+	bool				status;		/**< Status of the Link SAP (on/off).	*/
 };
 
 /**
@@ -64,11 +67,45 @@ public:
 	         mih::link_id link_id);
 
 	/**
+	 * Set the IP address of an existing Link SAP entry.
+	 *
+	 * @param id Link SAP MIH Identifier.
+	 * @param ip The IP address to set.
+	 */
+	void set_ip(const mih::octet_string &id, std::string ip);
+
+	/**
+	 * Set the port of an existing Link SAP entry.
+	 *
+	 * @param id Link SAP MIH Identifier.
+	 * @param port The port to set.
+	 */
+	void set_port(const mih::octet_string &id, uint16 port);
+
+	/**
+	 * Update the events and commands supported by a Link SAP.
+	 *
+	 * @param id Link SAP MIH Identifier.
+	 * @param event_list Supported event list.
+	 * @param cmd_list Supported command list.
+	 */
+	void update_capabilities(const mih::octet_string &id,
+							 mih::event_list event_list,
+							 mih::command_list cmd_list);
+
+	/**
 	 * Remove an existing Link SAP entry.
 	 *
 	 * @param id Link SAP MIH Identifier.
 	 */
 	void del(mih::octet_string &id);
+
+	/**
+	 * Inactive an existing Link SAP entry.
+	 *
+	 * @param id Link SAP MIH Identifier.
+	 */
+	void inactive(mih::octet_string &id);
 
 	/**
 	 * Get the record for a given Link SAP.

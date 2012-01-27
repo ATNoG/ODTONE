@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -38,31 +38,6 @@ link_response_pool::link_response_pool()
  *
  * @param user The MIH source identifier.
  * @param tid The transaction identifier.
- * @param event The supported event list.
- * @param command The supported command list.
- */
-void link_response_pool::add(mih::octet_string user,
-                             uint16 tid,
-                             mih::event_list event,
-                             mih::command_list command)
-{
-	pending_link_response p;
-
-	p.user.assign(user);
-	p.tid = tid;
-	p.cap.event_list = event;
-	p.cap.command_list = command;
-
-	boost::mutex::scoped_lock lock(_mutex);
-	_cpool.push_back(p);
-
-}
-
-/**
- * Add a new entry in the Link Responde Pool.
- *
- * @param user The MIH source identifier.
- * @param tid The transaction identifier.
  * @param link_status The link status response.
  */
 void link_response_pool::add(mih::octet_string user,
@@ -73,7 +48,7 @@ void link_response_pool::add(mih::octet_string user,
 
 	p.user.assign(user);
 	p.tid = tid;
-	p.link_status = link_status;
+	p.response = link_status;
 
 	boost::mutex::scoped_lock lock(_mutex);
 	_cpool.push_back(p);
@@ -91,18 +66,18 @@ void link_response_pool::add(mih::octet_string user,
 void link_response_pool::add(mih::octet_string user,
                              uint16 tid,
                              boost::optional<mih::link_scan_rsp_list> link_scan_rsp_list,
-                             boost::optional<mih::link_ac_result> link_ac_result)
+                             mih::link_ac_result link_ac_result)
 {
 	pending_link_response p;
 
 	p.user.assign(user);
 	p.tid = tid;
+	action ac;
 	if(link_scan_rsp_list.is_initialized()) {
-		p.action.link_scan_rsp_list = link_scan_rsp_list;
+		ac.link_scan_rsp_list = link_scan_rsp_list;
 	}
-	if(link_ac_result.is_initialized()) {
-		p.action.link_ac_result = link_ac_result;
-	}
+	ac.link_ac_result = link_ac_result;
+	p.response = ac;
 
 	boost::mutex::scoped_lock lock(_mutex);
 	_cpool.push_back(p);

@@ -1,11 +1,11 @@
-//=============================================================================
+//==============================================================================
 // Brief   : Link SAP
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -17,6 +17,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/debug.hpp>
+#include <iostream>
 #include <odtone/mih/types/base.hpp>
 #include <odtone/mih/message.hpp>
 #include <odtone/mih/indication.hpp>
@@ -38,7 +39,7 @@ namespace link_sap {
  * Construct the Link SAP.
  *
  * @param cfg Configuration options.
- * @param io The io_service object that the IEEE 802.21 driver will use to
+ * @param io The io_service object that Link SAP will use to
  * dispatch handlers for any asynchronous operations performed on the socket. 
  */
 link_sap::link_sap(const odtone::mih::config& cfg, boost::asio::io_service& io)
@@ -171,7 +172,51 @@ void link_sap::default_handler(odtone::mih::message& msg, const boost::system::e
 
 			break;
 		}
+	case odtone::mih::request::link_get_parameters:
+		{
+			odtone::mih::link_param_list lpl;
+			odtone::mih::link_states_rsp_list lsrl;
+			odtone::mih::link_desc_rsp_list ldrl;
 
+
+			odtone::mih::message m;
+
+			// fill the status
+			st = odtone::mih::status_success;
+
+			m << odtone::mih::confirm(odtone::mih::confirm::link_get_parameters)
+				& odtone::mih::tlv_status(st)
+				& odtone::mih::tlv_link_parameters_status_list(lpl)
+				& odtone::mih::tlv_link_states_rsp(lsrl)
+				& odtone::mih::tlv_link_descriptor_rsp(ldrl);
+			m.tid(msg.tid());
+
+			_mihf.async_send(m);
+
+			break;
+		}
+
+	case odtone::mih::request::link_configure_thresholds:
+		{
+			odtone::mih::link_cfg_param_list lcpl;
+			msg >> odtone::mih::request()
+			       & odtone::mih::tlv_link_cfg_param_list(lcpl);
+
+			odtone::mih::message m;
+
+			// fill the status
+			st = odtone::mih::status_failure;
+			odtone::mih::link_cfg_status_list lcsl;
+
+			m << odtone::mih::confirm(odtone::mih::confirm::link_configure_thresholds)
+				& odtone::mih::tlv_status(st);
+				& odtone::mih::tlv_link_cfg_status_list(lcsl);
+			m.tid(msg.tid());
+
+			_mihf.async_send(m);
+
+			break;
+		}
 
 	default:
 		{

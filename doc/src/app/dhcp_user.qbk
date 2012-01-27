@@ -1,0 +1,179 @@
+[/==============================================================================
+ / Brief   : DHCP-User App Documentation
+ / Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
+ /------------------------------------------------------------------------------
+ / ODTONE - Open Dot Twenty One
+ /
+ / Copyright (C) 2009-2012 Universidade Aveiro
+ / Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
+ /
+ / This software is distributed under a license. The full license
+ / agreement can be found in the file LICENSE in this distribution.
+ / This software may not be copied, modified, sold or distributed
+ / other than expressed in the named license agreement.
+ /
+ / This software is distributed without any warranty.
+ /=============================================================================]
+
+[section:dhcp_usr_index DHCP-User]
+
+The DHCP-User was implemented in order to enable the discovery of PoS entities
+according to the guidelines depicted in the RFC5678. It is a
+modification of the ”dhclient” software, which was extended to support the
+IEEE 802.21 standard and communicate via MIH protocol.
+
+The DHCP-User has two modes of discovery operations: explicit discovery or
+bootstrap discovery. In the explicit discovery, the discovery process is initiated by a
+MIH-User, while at the boostrap discovery the available PoS entities are discovered
+during the aquisition of IP address.
+
+In the explicit discovery, the discovery process is triggered by the reception of a
+"MIH_Capability_Discover.indication" message. In the bootstrap discovery, the process
+is triggered by a "Link_Up.indication" message (which indicates the occurence of
+a L2 attachement). In both cases the discovered entities are grouped in one single message and are
+forwarded to the MIHF through a "MIH_Capability_Discover.response" message.
+
+[note The DHCP-User is working only for Linux.]
+
+[note ODTONE also provides the DHCP server application, which is an modified version of the
+"dhcpd" supporting the IEEE 802.21 DHCP options.]
+
+[section:dhcp_usr_getStart Getting Started]
+
+[section Registering with the MIHF]
+
+The DHCP-User is registering with the MIHF with a "discovery" role. Therefore,
+and when necessary, the MIHF can trigger the discovery process at this entity.
+This behaviour is due to the local/remote discovery provided by ODTONE.
+
+[endsect]
+
+[section Configuration]
+
+	DHCP-User Configuration:
+	    --help                           Display configuration options
+	    --conf.file arg (=dhcp_usr.conf) Configuration File
+	    --user.id arg (=DHCP)            MIH User ID
+	    --conf.port arg (=1234)          Listening Port
+	    --conf.recv_buff_len arg (=4096) Receive Buffer Length
+	    --user.ip_version arg (=4)       IP Protocol Version (4/6)
+	    --user.nic arg                   Interface Info List
+	    --mihf.ip arg (=127.0.0.1)       MIHF Local Communications IP Address
+	    --mihf.local_port arg (=1025)    MIHF Local Communications Port
+
+
+The DHCP-User can be configured based on a set of parameters, which can be
+configured either using an configuration file or passing them directly
+in the command line.
+
+For defining the network interfaces that the DHCP-User will manage the
+['user.nic] option must be used. It also can only operate DHCPv4 or DHCPv6 at
+a time, not both. To use both protocols simultaneously, two instances of the
+DHCP-User are required, one with the ['user.ip_version] option set to 6 and other
+to 4.
+
+[h3 dhclient configuration]
+The [*dhclient.conf] file contains configuration information for "dhclient", which
+is the core of our DHCP-User. You must place it on the "/etc/dhclient.conf".
+
+The [*dhclient.conf] file is a free-form ASCII text file. It is parsed by the
+recursive-descent parser built into dhclient. The file may contain extra tabs
+and newlines for formatting purposes. Keywords in the file are case-insensitive.
+Comments may be placed anywhere within the file (except within quotes). Comments
+begin with the # character and end at the end of the line.
+
+The [*dhclient.conf] file can be used to configure the behaviour of the client in
+a wide variety of ways: protocol timing, information requested from the
+server, information required of the server, defaults to use if the server does
+not provide certain information, values with which to override information
+provided by the server, or values to prepend or append to information provided
+by the server. The configuration file can also be preinitialized with
+addresses to use on networks that don't have DHCP servers.
+
+[*dhclient.conf] example:
+
+``
+	# IPv4
+
+	request subnet-mask, broadcast-address, time-offset, routers,
+			domain-name, domain-name-servers, domain-search, host-name,
+			netbios-name-servers, netbios-scope, interface-mtu,
+			ntp-servers, option-ipv4-address-mos_ip, option-ipv4-address-mos_fqdn
+			;
+
+	# IPv6
+
+	also request dhcp6.option-ipv6-address-mos_ip;
+	also request dhcp6.option-ipv6-address-mos_fqdn;
+``
+
+[note For more information check the dhclient.conf man pages]
+
+[h3 dhcpd configuration]
+
+The [*dhcpd.conf] file contains configuration information for dhcpd,
+the Internet Systems Consortium DHCP Server.
+
+The [*dhcpd.conf] file is a free-form ASCII text file. It is parsed by the
+recursive-descent parser built into dhcpd. The file may contain extra tabs
+and newlines for formatting purposes. Keywords in the file are case-insensitive.
+Comments may be placed anywhere within the file (except within quotes).
+Comments begin with the # character and end at the end of the line.
+
+[*dhcpd.conf] example:
+
+``
+	# IPv4
+
+	option domain-name "odtone.test";
+	option domain-name-servers ns1.odtone.test, ns2.odtone.test;
+
+	default-lease-time 600;
+	max-lease-time 7200;
+	log-facility local7;
+
+	subnet 192.168.1.0 netmask 255.255.255.0 {
+		    authoritative;
+		    range 192.168.1.10 192.168.1.30;
+		    option option-ipv4-address-mos_ip.is 10.110.1.1;
+		    option option-ipv4-address-mos_fqdn.is "odtone.test";
+	}
+
+	# IPv6
+
+	default-lease-time 600;
+	max-lease-time 7200;
+	log-facility local7;
+	subnet6 2000:aaaa:bbbb:cccc::/64 {
+		    # Range for clients
+		    range6 2000:aaaa:bbbb:cccc::2 2000:aaaa:bbbb:cccc::20;
+		    # Additional options
+		    option dhcp6.name-servers fec0:0:0:1::1;
+		    option dhcp6.domain-search "domain.example";
+		    # Prefix range for delegation to sub-routers
+		    prefix6 2001:db8:0:100:: 2001:db8:0:f00:: /56;
+		    # Example for a fixed host address
+		    host specialclient {
+		            host-identifier option dhcp6.client-id 00:01:00:01:4a:1f:ba:e3:60:b9:1f:01:23:45;
+		            fixed-address6 2001:db8:0:1::127;
+		    }
+
+		    option dhcp6.option-ipv6-address-mos_ip 00:01:00:10:fe:80:00:00:00:00:00:00:02:03:1d:ff:fe:07:15:73 ;
+		    option dhcp6.option-ipv6-address-mos_fqdn 00:01:00:0d:06:6f:64:74:6f:6e:65:04:74:65:73:74:00 ;
+	}
+``
+
+[note For more information check the dhcpd.conf man pages]
+
+[endsect]
+
+[section Running]
+
+Before running the DHCP-User, the local MIHF should already be running. Otherwise,
+the DHCP-User will try to register with a non-exitent MIHF.
+
+[endsect]
+
+[endsect]
+
+[endsect]

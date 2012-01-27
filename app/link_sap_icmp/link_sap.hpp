@@ -1,11 +1,11 @@
-//=============================================================================
-// Brief   : Link SAP ICMP
+//==============================================================================
+// Brief   : ICMP Link SAP
 // Authors : Carlos Guimarães <cguimaraes@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -39,7 +39,7 @@ public:
 	 * Construct a Link SAP module.
 	 *
 	 * @param cfg Configuration information.
-	 * @param io The io_service object that the Link SAP will use to dispatch
+	 * @param io The io_service object that ICMP Link SAP will use to dispatch
 	 * handlers for any asynchronous operations performed on the socket.
 	 * @param ifname Interface name.
 	 * @param link_id Link identifier.

@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -29,31 +29,89 @@ namespace odtone { namespace mihf {
  * @param id MIH-User MIH Identifier.
  * @param ip MIH-User IP address.
  * @param port MIH-User listening port.
- * @param mbbsupport MIH-User Handover support.
+ * @param role MIH-User role.
  */
 void user_book::add(const mih::octet_string &id,
 		            mih::octet_string& ip,
 		            uint16 port,
-		            bool mbbhandover)
+		            mih::user_role role)
 {
 	boost::mutex::scoped_lock lock(_mutex);
-	// TODO: add thread safety
-	user_entry a;
 
+	user_entry a;
 	a.ip.assign(ip);
 	a.port = port;
+	a.role = role;
 
-	if(mbbhandover == true) {
-		std::vector<mih::octet_string> ids;
-		for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
-			it->second.mbbhandover_support = false;
-		}
+	std::map<mih::octet_string, user_entry>::iterator it;
+	it = _ubook.find(id);
+
+	if (it != _ubook.end()) {
+		a.priority = it->second.priority;
+		return;
 	}
 
-	a.mbbhandover_support = mbbhandover;
+	// Set the priority
+	if(role == mih::user_role_is) {
+		a.priority = 0;
+		for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); ++it) {
+			if(it->second.role == mih::user_role_is)
+				(it->second.priority)++;
+		}
+	} else if(role == mih::user_role_mobility) {
+		a.priority = 0;
+		for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); ++it) {
+			if(it->second.role == mih::user_role_mobility)
+				(it->second.priority)++;
+		}
+	} else if(role == mih::user_role_discovery) {
+		uint8 priority = 0;
+		for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); ++it) {
+			if(it->second.role == mih::user_role_discovery)
+				priority++;
+		}
+		a.priority = priority;
+	} else {
+		a.priority = 0;
+	}
+	//
 
 	_ubook[id] = a;
-	ODTONE_LOG(4, "(user_book) added: ", id, " ", ip, " ", port);
+	ODTONE_LOG(4, "(user_book) added: ", id, " : ", ip, " : ", port, " : ", role);
+}
+
+/**
+ * Set the IP address of an existing MIH-User entry.
+ *
+ * @param id MIH-User MIH Identifier.
+ * @param ip The IP address to set.
+ */
+void user_book::set_ip(const mih::octet_string &id, std::string ip)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, user_entry>::iterator it;
+	it = _ubook.find(id);
+
+	if (it == _ubook.end())
+		it->second.ip = ip;
+}
+
+/**
+ * Set the port of an existing MIH-User entry.
+ *
+ * @param id MIH-User MIH Identifier.
+ * @param port The port to set.
+ */
+void user_book::set_port(const mih::octet_string &id, uint16 port)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, user_entry>::iterator it;
+	it = _ubook.find(id);
+
+	if (it == _ubook.end())
+		it->second.port = port;
 }
 
 /**
@@ -105,22 +163,93 @@ const std::vector<mih::octet_string> user_book::get_ids()
 }
 
 /**
- * Get the MIH-User associated to the handover operations.
+ * Get the MIH-User associated with the handover operations.
  *
- * @return The identifier of the MIH-User associated to the handover
+ * @return The identifier of the MIH-User associated with the handover
  * operations.
  */
-const mih::octet_string user_book::handover_user()
+const boost::optional<mih::octet_string> user_book::mobility_user()
 {
 	boost::mutex::scoped_lock lock(_mutex);
 
+	boost::optional<mih::octet_string> ret;
+
 	std::vector<mih::octet_string> ids;
 	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
-		if(it->second.mbbhandover_support == true)
-			return it->first;
+		if(it->second.role == mih::user_role_mobility && it->second.priority == 0) {
+			ret = it->first;
+			break;
+		}
 	}
 
-	return "";
+	return ret;
+}
+
+/**
+ * Get the MIH-User associated with the information server operations.
+ *
+ * @return The identifier of the MIH-User associated with the information
+ * server operations.
+ */
+const boost::optional<mih::octet_string> user_book::information_user()
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	boost::optional<mih::octet_string> ret;
+
+	std::vector<mih::octet_string> ids;
+	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
+		if(it->second.role == mih::user_role_is && it->second.priority == 0) {
+			ret = it->first;
+			break;
+		}
+	}
+
+	return ret;
+}
+
+/**
+ * Get the MIH-User associated with the discovery operations.
+ *
+ * @return The identifier of the MIH-User associated with the discovery
+ * operations.
+ */
+const boost::optional<mih::octet_string> user_book::discovery_user()
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	boost::optional<mih::octet_string> ret;
+
+	std::vector<mih::octet_string> ids;
+	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
+		if(it->second.role == mih::user_role_discovery && it->second.priority == 0) {
+			ret = it->first;
+			break;
+		}
+	}
+
+	return ret;
+}
+
+/**
+ * Get the list of all known MIH-Users associated with the discovery
+ * operations.
+ *
+ * @return The list of all known MIH-Users associated with the
+ * discovery operations.
+ */
+const std::map<mih::octet_string, user_entry> user_book::get_discovery_users()
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, user_entry> ids;
+	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
+		if(it->second.role == mih::user_role_discovery) {
+			ids[it->first] = it->second;
+		}
+	}
+
+	return ids;
 }
 
 } /* namespace mihf */ } /* namespace odtone */

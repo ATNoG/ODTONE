@@ -5,8 +5,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -79,7 +79,8 @@ static const char* const kConf_MIHF_Remote_Port        = "mihf.remote_port";
 static const char* const kConf_MIHF_Local_Port         = "mihf.local_port";
 static const char* const kConf_MIHF_Link_Response_Time = "mihf.link_response_time";
 static const char* const kConf_MIHF_Link_Delete        = "mihf.link_delete";
-static const char* const kConf_MIHF_BRDCAST            = "enable_broadcast";
+static const char* const kConf_MIHF_Multicast          = "enable_multicast";
+static const char* const kConf_MIHF_Unsolicited        = "enable_unsolicited";
 static const char* const kConf_MIHF_Verbosity          = "log";
 
 uint16 kConf_MIHF_Link_Response_Time_Value;
@@ -134,7 +135,12 @@ void set_list_peer_mihfs(mih::octet_string &list, address_book &abook)
 			++it;
 		}
 
-		abook.add(id, ip, port_, trans);
+		address_entry entry;
+		entry.ip = ip;
+		entry.port = port_;
+		entry.capabilities_trans_list = trans;
+
+		abook.add(id, entry);
 	}
 }
 
@@ -152,23 +158,29 @@ void set_users(mih::octet_string &list, user_book &ubook)
 
 		mih::octet_string id = *it;
 		++it;
+		mih::octet_string ip("127.0.0.1");
 		mih::octet_string port = *it;
 		++it;
-		mih::octet_string mbbhandover = *it;
-		mih::octet_string ip("127.0.0.1");
 
 		uint16 port_;
 		std::istringstream iss_port(port);
 		if ((iss_port >> port_).fail())
 			throw "invalid port";
 
-		bool mbbhandover_;
-		std::transform(mbbhandover.begin(), mbbhandover.end(), mbbhandover.begin(), ::tolower);
-		std::istringstream iss_mbb(mbbhandover);
-		if ((iss_mbb >> std::boolalpha >> mbbhandover_).fail())
-			throw "invalid parameter for MBB Handover";
+		mih::user_role role;
+		if(it != tokens.end()) {
+			std::map<std::string, mih::user_role_enum> enum_map;
+			enum_map["is"] 			= mih::user_role_is;
+			enum_map["mobility"]	= mih::user_role_mobility;
+			enum_map["monitoring"]	= mih::user_role_monitoring;
+			enum_map["discovery"]	= mih::user_role_discovery;
 
-		ubook.add(id, ip, port_, mbbhandover_);
+			role = mih::user_role_enum(enum_map[*it]);
+		} else {
+			role = mih::user_role_mobility;
+		}
+
+		ubook.add(id, ip, port_, role);
 	}
 }
 
@@ -283,8 +295,12 @@ void parse_mihf_information(mih::config &cfg, address_book &abook)
 			trans.set(odtone::mih::transport_list_enum(enum_map[str]));
 	}
 
-	abook.add(id, ip, port, trans);
-	//
+	address_entry entry;
+	entry.ip = ip;
+	entry.port = port;
+	entry.capabilities_trans_list = trans;
+
+	abook.add(id, entry);
 }
 
 void parse_peer_registrations(mih::config &cfg, address_book &abook)
@@ -489,7 +505,8 @@ int main(int argc, char **argv)
 		(kConf_MIHF_Transport_List, po::value<std::string>()->default_value("udp, tcp"), "List of supported transport protocols")		
 		(kConf_MIHF_Link_Response_Time, po::value<uint16>()->default_value(300), "Link SAP response time (milliseconds)")
 		(kConf_MIHF_Link_Delete, po::value<uint16>()->default_value(2), "Link SAP response fails to forget")
-		(kConf_MIHF_BRDCAST,  "Allows broadcast messages")
+		(kConf_MIHF_Multicast,  "Allows multicast messages")
+		(kConf_MIHF_Unsolicited,  "Allows unsolicited discovery")
 		(kConf_MIHF_Verbosity, po::value<uint16>()->default_value(1), "Log level [0-4]")
 	;
 
@@ -505,7 +522,8 @@ int main(int argc, char **argv)
 	}
 
 	// get command line parameters
-	bool enable_broadcast = (cfg.count(kConf_MIHF_BRDCAST) == 1);
+	bool enable_multicast = (cfg.count(kConf_MIHF_Multicast) == 1);
+	bool enable_unsolicited = (cfg.count(kConf_MIHF_Unsolicited) == 1);
 
 	uint16 buff_size = cfg.get<uint16>(kConf_Receive_Buffer_Len);
 	uint16 lport = cfg.get<uint16>(kConf_MIHF_Local_Port);
@@ -544,23 +562,11 @@ int main(int argc, char **argv)
 	handler_t process_message = boost::bind(&sac_process_message, _1, _2);
 
 	// wrapper for sending messages
-	net_sap			netsap(io, mihf_abook);
+	net_sap			netsap(io, mihf_abook, rport);
 
 	// transaction manager for outgoing messages
-	message_out		msgout(tpool, process_message, netsap);
-	transmit		trnsmt(io, user_abook, link_abook, msgout);
-
-	// instantiate mihf services
-	event_service		mies(lpool, trnsmt, link_abook);
-	command_service		mics(io, lpool, trnsmt, link_abook, user_abook, lrpool);
-	information_service	miis(lpool, trnsmt);
-	service_management	sm(io, lpool, link_abook, user_abook, mihf_abook, trnsmt, lrpool, enable_broadcast);
-
-	// register callbacks with service access controller
-	sm_register_callbacks(sm);
-	mies_register_callbacks(mies);
-	mics_register_callbacks(mics);
-	miis_register_callbacks(miis);
+	message_out		msgout(tpool, lpool, process_message, netsap);
+	transmit		trnsmt(io, user_abook, link_abook, msgout, lport);
 
 	// transaction manager for incoming messages
 	message_in msgin(tpool, process_message, netsap);
@@ -576,24 +582,36 @@ int main(int argc, char **argv)
 
 	// create and bind to port 'lport' on loopback interface and
 	// call ldispatch when a message is received
-	udp_listener commhandv4(io, buff_size, ip::udp::v4(), "127.0.0.1", lport, ldispatch);
-	udp_listener commhandv6(io, buff_size, ip::udp::v6(), "::1", lport, ldispatch);
+	udp_listener commhandv4(io, buff_size, ip::udp::v4(), "127.0.0.1", lport, ldispatch, true);
+	udp_listener commhandv6(io, buff_size, ip::udp::v6(), "::1", lport, ldispatch, true);
 
 	// create and bind to port rport and call rdispatch when a
 	// message is received
-	udp_listener remotelistener_udp(io, buff_size, ip::udp::v6(), "::", rport, rdispatch);
+	udp_listener remotelistener_udp(io, buff_size, ip::udp::v6(), "::", rport, rdispatch, enable_multicast);
 
 	// create and bind to port rport and call rdispatch when a
 	// message is received
-	tcp_listener remotelistener_tcp(io, buff_size, ip::tcp::v6(), "::", rport, rdispatch);
+	tcp_listener remotelistener_tcp(io, buff_size, ip::tcp::v6(), "::", rport, rdispatch, enable_multicast);
 
 	// start listening on local and remote ports
 	commhandv4.start();
 	commhandv6.start();
 	remotelistener_udp.start();
-	
-	if(mihf_abook.get(mihfid_t::instance()->to_string()).trans.get(mih::transport_tcp) == 1)
+
+	if(mihf_abook.get(mihfid_t::instance()->to_string()).capabilities_trans_list->get(mih::transport_tcp) == 1)
 		remotelistener_tcp.start();
+
+	// instantiate mihf services
+	event_service		mies(io, lpool, trnsmt, mihf_abook, link_abook);
+	command_service		mics(io, lpool, trnsmt, mihf_abook, link_abook, user_abook, lrpool);
+	information_service	miis(lpool, trnsmt, user_abook);
+	service_management	sm(io, lpool, link_abook, user_abook, mihf_abook, trnsmt, lrpool, enable_unsolicited);
+
+	// register callbacks with service access controller
+	sm_register_callbacks(sm);
+	mies_register_callbacks(mies);
+	mics_register_callbacks(mics);
+	miis_register_callbacks(miis);
 
 	io.run();
 

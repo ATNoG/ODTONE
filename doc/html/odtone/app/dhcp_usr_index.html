@@ -1,0 +1,273 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>DHCP-User</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="up" href="../app.html" title="Applications">
+<link rel="prev" href="miis_index.html" title="MIIS Server">
+<link rel="next" href="dns_usr_index.html" title="DNS-User">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="miis_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="dns_usr_index.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="odtone.app.dhcp_usr_index"></a><a class="link" href="dhcp_usr_index.html" title="DHCP-User">DHCP-User</a>
+</h3></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart">Getting
+        Started</a></span></dt></dl></div>
+<p>
+        The DHCP-User was implemented in order to enable the discovery of PoS entities
+        according to the guidelines depicted in the RFC5678. It is a modification
+        of the &#8221;dhclient&#8221; software, which was extended to support the IEEE 802.21
+        standard and communicate via MIH protocol.
+      </p>
+<p>
+        The DHCP-User has two modes of discovery operations: explicit discovery or
+        bootstrap discovery. In the explicit discovery, the discovery process is
+        initiated by a MIH-User, while at the boostrap discovery the available PoS
+        entities are discovered during the aquisition of IP address.
+      </p>
+<p>
+        In the explicit discovery, the discovery process is triggered by the reception
+        of a "MIH_Capability_Discover.indication" message. In the bootstrap
+        discovery, the process is triggered by a "Link_Up.indication" message
+        (which indicates the occurence of a L2 attachement). In both cases the discovered
+        entities are grouped in one single message and are forwarded to the MIHF
+        through a "MIH_Capability_Discover.response" message.
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          The DHCP-User is working only for Linux.
+        </p></td></tr>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          ODTONE also provides the DHCP server application, which is an modified
+          version of the "dhcpd" supporting the IEEE 802.21 DHCP options.
+        </p></td></tr>
+</table></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart"></a><a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart" title="Getting Started">Getting
+        Started</a>
+</h4></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart.registering_with_the_mihf">Registering
+          with the MIHF</a></span></dt>
+<dt><span class="section"><a href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration">Configuration</a></span></dt>
+<dt><span class="section"><a href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart.running">Running</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.registering_with_the_mihf"></a><a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart.registering_with_the_mihf" title="Registering with the MIHF">Registering
+          with the MIHF</a>
+</h5></div></div></div>
+<p>
+            The DHCP-User is registering with the MIHF with a "discovery"
+            role. Therefore, and when necessary, the MIHF can trigger the discovery
+            process at this entity. This behaviour is due to the local/remote discovery
+            provided by ODTONE.
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration"></a><a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration" title="Configuration">Configuration</a>
+</h5></div></div></div>
+<pre class="programlisting"><span class="identifier">DHCP</span><span class="special">-</span><span class="identifier">User</span> <span class="identifier">Configuration</span><span class="special">:</span>
+    <span class="special">--</span><span class="identifier">help</span>                           <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
+    <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">file</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">dhcp_usr</span><span class="special">.</span><span class="identifier">conf</span><span class="special">)</span> <span class="identifier">Configuration</span> <span class="identifier">File</span>
+    <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">DHCP</span><span class="special">)</span>            <span class="identifier">MIH</span> <span class="identifier">User</span> <span class="identifier">ID</span>
+    <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1234</span><span class="special">)</span>          <span class="identifier">Listening</span> <span class="identifier">Port</span>
+    <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">recv_buff_len</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4096</span><span class="special">)</span> <span class="identifier">Receive</span> <span class="identifier">Buffer</span> <span class="identifier">Length</span>
+    <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">ip_version</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4</span><span class="special">)</span>       <span class="identifier">IP</span> <span class="identifier">Protocol</span> <span class="identifier">Version</span> <span class="special">(</span><span class="number">4</span><span class="special">/</span><span class="number">6</span><span class="special">)</span>
+    <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">nic</span> <span class="identifier">arg</span>                   <span class="identifier">Interface</span> <span class="identifier">Info</span> <span class="identifier">List</span>
+    <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">ip</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">127.0</span><span class="special">.</span><span class="number">0.1</span><span class="special">)</span>       <span class="identifier">MIHF</span> <span class="identifier">Local</span> <span class="identifier">Communications</span> <span class="identifier">IP</span> <span class="identifier">Address</span>
+    <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">local_port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1025</span><span class="special">)</span>    <span class="identifier">MIHF</span> <span class="identifier">Local</span> <span class="identifier">Communications</span> <span class="identifier">Port</span>
+</pre>
+<p>
+            The DHCP-User can be configured based on a set of parameters, which can
+            be configured either using an configuration file or passing them directly
+            in the command line.
+          </p>
+<p>
+            For defining the network interfaces that the DHCP-User will manage the
+            <span class="emphasis"><em>user.nic</em></span> option must be used. It also can only operate
+            DHCPv4 or DHCPv6 at a time, not both. To use both protocols simultaneously,
+            two instances of the DHCP-User are required, one with the <span class="emphasis"><em>user.ip_version</em></span>
+            option set to 6 and other to 4.
+          </p>
+<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhclient_configuration"></a><h4>
+<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhclient_configuration-heading"></a>
+            <a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhclient_configuration">dhclient
+            configuration</a>
+          </h4>
+<p>
+            The <span class="bold"><strong>dhclient.conf</strong></span> file contains configuration
+            information for "dhclient", which is the core of our DHCP-User.
+            You must place it on the "/etc/dhclient.conf".
+          </p>
+<p>
+            The <span class="bold"><strong>dhclient.conf</strong></span> file is a free-form
+            ASCII text file. It is parsed by the recursive-descent parser built into
+            dhclient. The file may contain extra tabs and newlines for formatting
+            purposes. Keywords in the file are case-insensitive. Comments may be
+            placed anywhere within the file (except within quotes). Comments begin
+            with the # character and end at the end of the line.
+          </p>
+<p>
+            The <span class="bold"><strong>dhclient.conf</strong></span> file can be used to
+            configure the behaviour of the client in a wide variety of ways: protocol
+            timing, information requested from the server, information required of
+            the server, defaults to use if the server does not provide certain information,
+            values with which to override information provided by the server, or
+            values to prepend or append to information provided by the server. The
+            configuration file can also be preinitialized with addresses to use on
+            networks that don't have DHCP servers.
+          </p>
+<p>
+            <span class="bold"><strong>dhclient.conf</strong></span> example:
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="preprocessor"># IPv4</span>
+
+<span class="identifier">request</span> <span class="identifier">subnet</span><span class="special">-</span><span class="identifier">mask</span><span class="special">,</span> <span class="identifier">broadcast</span><span class="special">-</span><span class="identifier">address</span><span class="special">,</span> <span class="identifier">time</span><span class="special">-</span><span class="identifier">offset</span><span class="special">,</span> <span class="identifier">routers</span><span class="special">,</span>
+		<span class="identifier">domain</span><span class="special">-</span><span class="identifier">name</span><span class="special">,</span> <span class="identifier">domain</span><span class="special">-</span><span class="identifier">name</span><span class="special">-</span><span class="identifier">servers</span><span class="special">,</span> <span class="identifier">domain</span><span class="special">-</span><span class="identifier">search</span><span class="special">,</span> <span class="identifier">host</span><span class="special">-</span><span class="identifier">name</span><span class="special">,</span>
+		<span class="identifier">netbios</span><span class="special">-</span><span class="identifier">name</span><span class="special">-</span><span class="identifier">servers</span><span class="special">,</span> <span class="identifier">netbios</span><span class="special">-</span><span class="identifier">scope</span><span class="special">,</span> <span class="identifier">interface</span><span class="special">-</span><span class="identifier">mtu</span><span class="special">,</span>
+		<span class="identifier">ntp</span><span class="special">-</span><span class="identifier">servers</span><span class="special">,</span> <span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv4</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_ip</span><span class="special">,</span> <span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv4</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_fqdn</span>
+		<span class="special">;</span>
+
+<span class="preprocessor"># IPv6</span>
+
+<span class="identifier">also</span> <span class="identifier">request</span> <span class="identifier">dhcp6</span><span class="special">.</span><span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv6</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_ip</span><span class="special">;</span>
+<span class="identifier">also</span> <span class="identifier">request</span> <span class="identifier">dhcp6</span><span class="special">.</span><span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv6</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_fqdn</span><span class="special">;</span>
+</pre>
+<p>
+          </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+              For more information check the dhclient.conf man pages
+            </p></td></tr>
+</table></div>
+<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhcpd_configuration"></a><h4>
+<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhcpd_configuration-heading"></a>
+            <a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhcpd_configuration">dhcpd
+            configuration</a>
+          </h4>
+<p>
+            The <span class="bold"><strong>dhcpd.conf</strong></span> file contains configuration
+            information for dhcpd, the Internet Systems Consortium DHCP Server.
+          </p>
+<p>
+            The <span class="bold"><strong>dhcpd.conf</strong></span> file is a free-form ASCII
+            text file. It is parsed by the recursive-descent parser built into dhcpd.
+            The file may contain extra tabs and newlines for formatting purposes.
+            Keywords in the file are case-insensitive. Comments may be placed anywhere
+            within the file (except within quotes). Comments begin with the # character
+            and end at the end of the line.
+          </p>
+<p>
+            <span class="bold"><strong>dhcpd.conf</strong></span> example:
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="preprocessor"># IPv4</span>
+
+<span class="identifier">option</span> <span class="identifier">domain</span><span class="special">-</span><span class="identifier">name</span> <span class="string">"odtone.test"</span><span class="special">;</span>
+<span class="identifier">option</span> <span class="identifier">domain</span><span class="special">-</span><span class="identifier">name</span><span class="special">-</span><span class="identifier">servers</span> <span class="identifier">ns1</span><span class="special">.</span><span class="identifier">odtone</span><span class="special">.</span><span class="identifier">test</span><span class="special">,</span> <span class="identifier">ns2</span><span class="special">.</span><span class="identifier">odtone</span><span class="special">.</span><span class="identifier">test</span><span class="special">;</span>
+
+<span class="keyword">default</span><span class="special">-</span><span class="identifier">lease</span><span class="special">-</span><span class="identifier">time</span> <span class="number">600</span><span class="special">;</span>
+<span class="identifier">max</span><span class="special">-</span><span class="identifier">lease</span><span class="special">-</span><span class="identifier">time</span> <span class="number">7200</span><span class="special">;</span>
+<span class="identifier">log</span><span class="special">-</span><span class="identifier">facility</span> <span class="identifier">local7</span><span class="special">;</span>
+
+<span class="identifier">subnet</span> <span class="number">192.168</span><span class="special">.</span><span class="number">1.0</span> <span class="identifier">netmask</span> <span class="number">255.255</span><span class="special">.</span><span class="number">255.0</span> <span class="special">{</span>
+	    <span class="identifier">authoritative</span><span class="special">;</span>
+	    <span class="identifier">range</span> <span class="number">192.168</span><span class="special">.</span><span class="number">1.10</span> <span class="number">192.168</span><span class="special">.</span><span class="number">1.30</span><span class="special">;</span>
+	    <span class="identifier">option</span> <span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv4</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_ip</span><span class="special">.</span><span class="identifier">is</span> <span class="number">10.110</span><span class="special">.</span><span class="number">1.1</span><span class="special">;</span>
+	    <span class="identifier">option</span> <span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv4</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_fqdn</span><span class="special">.</span><span class="identifier">is</span> <span class="string">"odtone.test"</span><span class="special">;</span>
+<span class="special">}</span>
+
+<span class="preprocessor"># IPv6</span>
+
+<span class="keyword">default</span><span class="special">-</span><span class="identifier">lease</span><span class="special">-</span><span class="identifier">time</span> <span class="number">600</span><span class="special">;</span>
+<span class="identifier">max</span><span class="special">-</span><span class="identifier">lease</span><span class="special">-</span><span class="identifier">time</span> <span class="number">7200</span><span class="special">;</span>
+<span class="identifier">log</span><span class="special">-</span><span class="identifier">facility</span> <span class="identifier">local7</span><span class="special">;</span>
+<span class="identifier">subnet6</span> <span class="number">2000</span><span class="special">:</span><span class="identifier">aaaa</span><span class="special">:</span><span class="identifier">bbbb</span><span class="special">:</span><span class="identifier">cccc</span><span class="special">::/</span><span class="number">64</span> <span class="special">{</span>
+	    <span class="preprocessor"># Range</span> <span class="keyword">for</span> <span class="identifier">clients</span>
+	    <span class="identifier">range6</span> <span class="number">2000</span><span class="special">:</span><span class="identifier">aaaa</span><span class="special">:</span><span class="identifier">bbbb</span><span class="special">:</span><span class="identifier">cccc</span><span class="special">::</span><span class="number">2</span> <span class="number">2000</span><span class="special">:</span><span class="identifier">aaaa</span><span class="special">:</span><span class="identifier">bbbb</span><span class="special">:</span><span class="identifier">cccc</span><span class="special">::</span><span class="number">20</span><span class="special">;</span>
+	    <span class="preprocessor"># Additional</span> <span class="identifier">options</span>
+	    <span class="identifier">option</span> <span class="identifier">dhcp6</span><span class="special">.</span><span class="identifier">name</span><span class="special">-</span><span class="identifier">servers</span> <span class="identifier">fec0</span><span class="special">:</span><span class="number">0</span><span class="special">:</span><span class="number">0</span><span class="special">:</span><span class="number">1</span><span class="special">::</span><span class="number">1</span><span class="special">;</span>
+	    <span class="identifier">option</span> <span class="identifier">dhcp6</span><span class="special">.</span><span class="identifier">domain</span><span class="special">-</span><span class="identifier">search</span> <span class="string">"domain.example"</span><span class="special">;</span>
+	    <span class="preprocessor"># Prefix</span> <span class="identifier">range</span> <span class="keyword">for</span> <span class="identifier">delegation</span> <span class="identifier">to</span> <span class="identifier">sub</span><span class="special">-</span><span class="identifier">routers</span>
+	    <span class="identifier">prefix6</span> <span class="number">2001</span><span class="special">:</span><span class="identifier">db8</span><span class="special">:</span><span class="number">0</span><span class="special">:</span><span class="number">100</span><span class="special">::</span> <span class="number">2001</span><span class="special">:</span><span class="identifier">db8</span><span class="special">:</span><span class="number">0</span><span class="special">:</span><span class="identifier">f00</span><span class="special">::</span> <span class="special">/</span><span class="number">56</span><span class="special">;</span>
+	    <span class="preprocessor"># Example</span> <span class="keyword">for</span> <span class="identifier">a</span> <span class="identifier">fixed</span> <span class="identifier">host</span> <span class="identifier">address</span>
+	    <span class="identifier">host</span> <span class="identifier">specialclient</span> <span class="special">{</span>
+	            <span class="identifier">host</span><span class="special">-</span><span class="identifier">identifier</span> <span class="identifier">option</span> <span class="identifier">dhcp6</span><span class="special">.</span><span class="identifier">client</span><span class="special">-</span><span class="identifier">id</span> <span class="number">00</span><span class="special">:</span><span class="number">01</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">01</span><span class="special">:</span><span class="number">4</span><span class="identifier">a</span><span class="special">:</span><span class="number">1f</span><span class="special">:</span><span class="identifier">ba</span><span class="special">:</span><span class="identifier">e3</span><span class="special">:</span><span class="number">60</span><span class="special">:</span><span class="identifier">b9</span><span class="special">:</span><span class="number">1f</span><span class="special">:</span><span class="number">01</span><span class="special">:</span><span class="number">23</span><span class="special">:</span><span class="number">45</span><span class="special">;</span>
+	            <span class="identifier">fixed</span><span class="special">-</span><span class="identifier">address6</span> <span class="number">2001</span><span class="special">:</span><span class="identifier">db8</span><span class="special">:</span><span class="number">0</span><span class="special">:</span><span class="number">1</span><span class="special">::</span><span class="number">127</span><span class="special">;</span>
+	    <span class="special">}</span>
+
+	    <span class="identifier">option</span> <span class="identifier">dhcp6</span><span class="special">.</span><span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv6</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_ip</span> <span class="number">00</span><span class="special">:</span><span class="number">01</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">10</span><span class="special">:</span><span class="identifier">fe</span><span class="special">:</span><span class="number">80</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">02</span><span class="special">:</span><span class="number">03</span><span class="special">:</span><span class="number">1d</span><span class="special">:</span><span class="identifier">ff</span><span class="special">:</span><span class="identifier">fe</span><span class="special">:</span><span class="number">07</span><span class="special">:</span><span class="number">15</span><span class="special">:</span><span class="number">73</span> <span class="special">;</span>
+	    <span class="identifier">option</span> <span class="identifier">dhcp6</span><span class="special">.</span><span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv6</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_fqdn</span> <span class="number">00</span><span class="special">:</span><span class="number">01</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">0d</span><span class="special">:</span><span class="number">06</span><span class="special">:</span><span class="number">6f</span><span class="special">:</span><span class="number">64</span><span class="special">:</span><span class="number">74</span><span class="special">:</span><span class="number">6f</span><span class="special">:</span><span class="error">6</span><span class="identifier">e</span><span class="special">:</span><span class="number">65</span><span class="special">:</span><span class="number">04</span><span class="special">:</span><span class="number">74</span><span class="special">:</span><span class="number">65</span><span class="special">:</span><span class="number">73</span><span class="special">:</span><span class="number">74</span><span class="special">:</span><span class="number">00</span> <span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+          </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+              For more information check the dhcpd.conf man pages
+            </p></td></tr>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.running"></a><a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart.running" title="Running">Running</a>
+</h5></div></div></div>
+<p>
+            Before running the DHCP-User, the local MIHF should already be running.
+            Otherwise, the DHCP-User will try to register with a non-exitent MIHF.
+          </p>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="miis_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="dns_usr_index.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

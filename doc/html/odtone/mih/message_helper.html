@@ -4,16 +4,16 @@
 <title>Class message_helper</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../../index.html" title="ODTONE 0.3">
-<link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.message_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/message.hpp&gt;">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Desktop.release.inc.odtone.mih.message_hpp" title="Header &lt;/home/carlos/Desktop/release/inc/odtone/mih/message.hpp&gt;">
 <link rel="prev" href="message.html" title="Class message">
-<link rel="next" href="operator_idp5168040.html" title="Function operator&lt;&lt;">
+<link rel="next" href="operator_id2550365.html" title="Function operator&lt;&lt;">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="message.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.message_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="operator_idp5168040.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="message.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Desktop.release.inc.odtone.mih.message_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="operator_id2550365.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.mih.message_helper"></a><div class="titlepage"></div>
@@ -22,28 +22,28 @@
 <p>odtone::mih::message_helper</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.message_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/message.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/mih/message.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_mih_library.html#header..home.carlos.Desktop.release.inc.odtone.mih.message_hpp" title="Header &lt;/home/carlos/Desktop/release/inc/odtone/mih/message.hpp&gt;">/home/carlos/Desktop/release/inc/odtone/mih/message.hpp</a>&gt;
 
 </span>
 <span class="keyword">class</span> <a class="link" href="message_helper.html" title="Class message_helper">message_helper</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="message_helper.html#odtone.mih.message_helperconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="message_helper.html#idp5159680-bb"><span class="identifier">message_helper</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">id</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="message_helper.html#id2550222-bb"><span class="identifier">message_helper</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="message_helper.html#idp5161288-bb">friend functions</a></span>
-  <span class="keyword">friend</span> <a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> <a class="link" href="message_helper.html#idp5161496-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><a class="link" href="message.html" title="Class message">message</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="message_helper.html" title="Class message_helper">message_helper</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">friend</span> <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="message_helper.html#idp5164328-bb"><span class="keyword">operator</span><span class="special">&gt;&gt;</span></a><span class="special">(</span><a class="link" href="message.html" title="Class message">message</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="message_helper.html" title="Class message_helper">message_helper</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="message_helper.html#id2550252-bb">friend functions</a></span>
+  <span class="keyword">friend</span> <a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> <a class="link" href="message_helper.html#id2550256-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><a class="link" href="message.html" title="Class message">message</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="message_helper.html" title="Class message_helper">message_helper</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">friend</span> <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="message_helper.html#id2550303-bb"><span class="keyword">operator</span><span class="special">&gt;&gt;</span></a><span class="special">(</span><a class="link" href="message.html" title="Class message">message</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="message_helper.html" title="Class message_helper">message_helper</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp12347912"></a><h2>Description</h2>
+<a name="id2967588"></a><h2>Description</h2>
 <p>Parsing/generating MIH messages is done using helper classes and operator overloading. </p>
 <div class="refsect2">
-<a name="idp12348344"></a><h3>
+<a name="id2967596"></a><h3>
 <a name="odtone.mih.message_helperconstruct-copy-destruct"></a><code class="computeroutput">message_helper</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp5159680-bb"></a><span class="identifier">message_helper</span><span class="special">(</span><span class="identifier">uint16</span> mid<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">id</span> <span class="special">*</span> dst<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="id2550222-bb"></a><span class="identifier">message_helper</span><span class="special">(</span><span class="identifier">uint16</span> mid<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">*</span> dst<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a MIH Message helper.</p>
 <p>
 </p>
@@ -69,11 +69,11 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp12355528"></a><h3>
-<a name="idp5161288-bb"></a><code class="computeroutput">message_helper</code> friend functions</h3>
+<a name="id2967717"></a><h3>
+<a name="id2550252-bb"></a><code class="computeroutput">message_helper</code> friend functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">friend</span> <a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> <a name="idp5161496-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><a class="link" href="message.html" title="Class message">message</a> <span class="special">&amp;</span> msg<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="message_helper.html" title="Class message_helper">message_helper</a> <span class="special">&amp;</span> mh<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">friend</span> <a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> <a name="id2550256-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><a class="link" href="message.html" title="Class message">message</a> <span class="special">&amp;</span> msg<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="message_helper.html" title="Class message_helper">message_helper</a> <span class="special">&amp;</span> mh<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize a MIH message.</p>
 <p>
 
@@ -105,7 +105,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">friend</span> <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp5164328-bb"></a><span class="keyword">operator</span><span class="special">&gt;&gt;</span><span class="special">(</span><a class="link" href="message.html" title="Class message">message</a> <span class="special">&amp;</span> msg<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="message_helper.html" title="Class message_helper">message_helper</a> <span class="special">&amp;</span> mh<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">friend</span> <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="id2550303-bb"></a><span class="keyword">operator</span><span class="special">&gt;&gt;</span><span class="special">(</span><a class="link" href="message.html" title="Class message">message</a> <span class="special">&amp;</span> msg<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="message_helper.html" title="Class message_helper">message_helper</a> <span class="special">&amp;</span> mh<span class="special">)</span><span class="special">;</span></pre>
 <p>Deserialize a MIH message.</p>
 <p>
 
@@ -155,9 +155,9 @@ Deserialize a MIH message.</p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2011 Universidade
-      Aveiro<br>Copyright &#169; 2009-2011 Instituto de
-      Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license
@@ -167,7 +167,7 @@ Deserialize a MIH message.</p>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="message.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.message_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="operator_idp5168040.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="message.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Desktop.release.inc.odtone.mih.message_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="operator_id2550365.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

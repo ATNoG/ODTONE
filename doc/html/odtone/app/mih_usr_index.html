@@ -4,7 +4,7 @@
 <title>MIH-User</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../../index.html" title="ODTONE 0.3">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../app.html" title="Applications">
 <link rel="prev" href="mihf_index.html" title="ODTONE-MIHF">
 <link rel="next" href="miis_index.html" title="MIIS Server">
@@ -39,12 +39,26 @@
         Started</a>
 </h4></div></div></div>
 <div class="toc"><dl>
+<dt><span class="section"><a href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.registering_with_the_mihf">Registering
+          with the MIHF</a></span></dt>
 <dt><span class="section"><a href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.detailed_description">Detailed
           Description</a></span></dt>
 <dt><span class="section"><a href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.configuration">Configuration</a></span></dt>
 <dt><span class="section"><a href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.extending">Extending</a></span></dt>
 <dt><span class="section"><a href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.running">Running</a></span></dt>
 </dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mih_usr_index.mih_usr_getStart.registering_with_the_mihf"></a><a class="link" href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.registering_with_the_mihf" title="Registering with the MIHF">Registering
+          with the MIHF</a>
+</h5></div></div></div>
+<p>
+            The MIH-User is registering with the MIHF with a "mobility"
+            role. Therefore, all request messages related to the handover procedure
+            are only forwarded to this MIH-User. This behaviour is due to the local
+            discovery provided by ODTONE.
+          </p>
+</div>
 <div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.app.mih_usr_index.mih_usr_getStart.detailed_description"></a><a class="link" href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.detailed_description" title="Detailed Description">Detailed
@@ -58,6 +72,7 @@
             the destination MIHF and waits for its response.
           </p>
 <p>
+            
 </p>
 <pre class="programlisting"><span class="identifier">msg</span> <span class="special">&lt;&lt;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">request</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">request</span><span class="special">::</span><span class="identifier">capability_discover</span><span class="special">,</span> <span class="identifier">_mihfid</span><span class="special">);</span>
 <span class="identifier">_mihf</span><span class="special">.</span><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">msg</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">capability_discover_response</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">_1</span><span class="special">,</span> <span class="identifier">_2</span><span class="special">));</span>
@@ -66,9 +81,10 @@
           </p>
 <p>
             The response message is processed and for every discovered interface
-            the MIH User will subscribe to all supported events.
+            the MIH-User will subscribe to all supported events.
           </p>
 <p>
+            
 </p>
 <pre class="programlisting"><span class="identifier">msg</span> <span class="special">&gt;&gt;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">response</span><span class="special">()</span>
 	<span class="special">&amp;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_status</span><span class="special">(</span><span class="identifier">st</span><span class="special">)</span>
@@ -97,6 +113,7 @@
             At this moment, MIHF knows which events must forward to the MIH-User.
           </p>
 <p>
+            
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">event_handler</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span><span class="special">&amp;</span> <span class="identifier">msg</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">);</span>
 </pre>
@@ -129,8 +146,10 @@
             in the command line.
           </p>
 <p>
-            For testing remote communication, the MIH message destination must be
-            defined using <span class="emphasis"><em>--dest</em></span> option in the command line.
+            The destination MIHF must be defined using the <span class="emphasis"><em>--dest</em></span>
+            option in the command line. If this option is not specified, the MIH-User
+            will send a "MIH_Capability_Discover" message to a multicast
+            destination.
           </p>
 </div>
 <div class="section">
@@ -148,6 +167,7 @@
             the actions that will performe for a particular event reception.
           </p>
 <p>
+            
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">event_handler</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span><span class="special">&amp;</span> <span class="identifier">msg</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">)</span>
 <span class="special">{</span>
@@ -170,7 +190,7 @@
           </p>
 <p>
             You can also define other handlers that will be responsible for handling
-            the response message:
+            the response message: 
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">new_handler</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span><span class="special">&amp;</span> <span class="identifier">msg</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">);</span>
 </pre>
@@ -178,14 +198,14 @@
           </p>
 <p>
             It must be associated with the sent message, so when the response arrives
-            the handler is called:
+            the handler is called: 
 </p>
 <pre class="programlisting"><span class="identifier">_mihf</span><span class="special">.</span><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">msg</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">new_handler</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">_1</span><span class="special">,</span> <span class="identifier">_2</span><span class="special">));</span>
 </pre>
 <p>
           </p>
 <p>
-            It can be defined as the default handler of the MIH-User:
+            It can be defined as the default handler of the MIH-User: 
 </p>
 <pre class="programlisting"><span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">mih_user</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">config</span><span class="special">&amp;</span> <span class="identifier">cfg</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span><span class="special">&amp;</span> <span class="identifier">io</span><span class="special">)</span>
 	<span class="special">:</span> <span class="identifier">_mihf</span><span class="special">(</span><span class="identifier">cfg</span><span class="special">,</span> <span class="identifier">io</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">new_handler</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">_1</span><span class="special">,</span> <span class="identifier">_2</span><span class="special">))</span>
@@ -199,22 +219,22 @@
 </h5></div></div></div>
 <p>
             Before running the MIH-User, the local MIHF should already be running.
-            Otherwise, the MIH-User will send the Capability Discover Request and
-            will wait for the response message that will never arrive. The local
-            messages are sent via UDP and no acknowledge mechanisms exists.
+            Otherwise, the MIH-User will send the "MIH_Capability_Discover.request"
+            message and will wait for the response message that will never arrive.
+            The local messages are sent via UDP and no acknowledge mechanisms exists.
           </p>
 <p>
-            The <span class="emphasis"><em>--dest</em></span> option must be used for connections with
-            a remote MIHF.
+            The <span class="emphasis"><em>--dest</em></span> option must be used when the destination
+            MIHF is a not a multicast.
           </p>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2011 Universidade
-      Aveiro<br>Copyright &#169; 2009-2011 Instituto de
-      Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license

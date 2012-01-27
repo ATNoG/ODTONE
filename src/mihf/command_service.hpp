@@ -5,8 +5,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -24,6 +24,7 @@
 #include "local_transaction_pool.hpp"
 #include "transmit.hpp"
 #include "meta_message.hpp"
+#include "address_book.hpp"
 #include "link_book.hpp"
 
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -42,11 +43,12 @@ public:
 	/**
 	 * Construct the command service.
 	 *
-	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * @param io The io_service object that command service module will use to
 	 * dispatch handlers for any asynchronous operations performed on
 	 * the socket.
 	 * @param lpool The local transaction pool module.
 	 * @param t The transmit module.
+	 * @param abook The address book module.
 	 * @param link_abook The link book module.
 	 * @param user_abook The user book module.
 	 * @param lrpool The link response pool module.
@@ -54,6 +56,7 @@ public:
 	command_service(io_service &io,
 	                local_transaction_pool &lpool,
 	                transmit &t,
+	                address_book &abook,
 	                link_book &link_abook,
 	                user_book &user_abook,
 	                link_response_pool &lrpool);
@@ -288,17 +291,31 @@ private:
 	 * Handler responsible for processing the received Link Get Parameters
 	 * responses from Link SAPs.
 	 *
+	 * @param ec Error code.
 	 * @param in The input message.
 	 */
-	void link_get_parameters_response_handler(meta_message_ptr &in);
+	void link_get_parameters_response_handler(const boost::system::error_code &ec,
+											  meta_message_ptr &in);
+
+	/**
+	 * Handler responsible for setting a failure Link Action
+	 * responses.
+	 *
+	 * @param ec Error code.
+	 * @param in The input message.
+	 */
+	void link_configure_thresholds_response_timeout(const boost::system::error_code &ec,
+													meta_message_ptr &in);
 
 	/**
 	 * Handler responsible for processing the received Link Action
 	 * responses from Link SAPs.
 	 *
+	 * @param ec Error code.
 	 * @param in The input message.
 	 */
-	void link_actions_response_handler(meta_message_ptr &in);
+	void link_actions_response_handler(const boost::system::error_code &ec,
+									   meta_message_ptr &in);
 
 protected:
 	/**
@@ -333,13 +350,17 @@ protected:
 				      meta_message_ptr &in,
 				      meta_message_ptr &out);
 
+	io_service				&_io;			/**< The io_service object.			*/
 	local_transaction_pool	&_lpool;		/**< Local transaction pool module.	*/
 	transmit				&_transmit;		/**< Transmit module.				*/
+	address_book			&_abook;		/**< Address book module.			*/
 	link_book				&_link_abook;	/**< Link book module.				*/
 	user_book				&_user_abook;	/**< User book module.				*/
 	link_response_pool		&_lrpool;		/**< Link response pool module.		*/
 
-	boost::asio::deadline_timer _timer;		/**< Multiple Link SAP requests timer.*/
+	/** Timer map. */
+	std::map<uint16, boost::shared_ptr<boost::asio::deadline_timer> > _timer;
+	boost::mutex _mutex;	/**< Mutex.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////

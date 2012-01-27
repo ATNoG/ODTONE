@@ -4,8 +4,8 @@
 // ----------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -26,6 +26,9 @@
 namespace odtone { namespace net { namespace ip {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * This class represents the base IPv6 Prefix.
+ */
 class prefix_v6 {
 	ODTONE_UNDEFINED_BOOL;
 
@@ -33,16 +36,55 @@ public:
 	typedef address_v6::bytes_type bytes_type;
 
 public:
+	/**
+	 * Get the IPv6 Prefix from a string.
+	 *
+	 * @param str The input string.
+	 * @return The extracted IPv6 Prefix.
+	 */
 	static prefix_v6 from_string(const std::string& str);
 
 public:
+	/**
+	 * Construct an empty IPv6 Prefix.
+	 */
 	prefix_v6();
+
+	/**
+	 * Construct an IPv6 Prefix.
+	 *
+	 * @param addr The IPv6 Prefix raw bytes.
+	 * @param length The IPv6 Prefix byte length.
+	 */
 	prefix_v6(const bytes_type& addr, uint length);
+
+	/**
+	 * Construct an IPv6 Prefix.
+	 *
+	 * @param addr The IPv6 Prefix.
+	 * @param length The IPv6 Prefix byte length.
+	 */
 	prefix_v6(const address_v6& addr, uint length);
 
+	/**
+	 * Get the IPv6 Prefix raw bytes.
+	 *
+	 * @return The IPv6 Prefix raw bytes.
+	 */
+	const bytes_type& bytes() const
+	{
+		return _prefix;
+	}
 
-	const bytes_type& bytes() const  { return _prefix; }
-	uint              length() const { return _length; }
+	/**
+	 * Get the IPv6 Prefix length.
+	 *
+	 * @return The IPv6 Prefix length.
+	 */
+	uint length() const
+	{
+		return _length;
+	}
 
 	operator undefined_bool() const
 	{
@@ -61,13 +103,27 @@ public:
 	friend bool operator==(const prefix_v6& rhr, const prefix_v6& lhr);
 	friend bool operator>(const prefix_v6& rhr, const prefix_v6& lhr);
 	friend bool operator>=(const prefix_v6& rhr, const prefix_v6& lhr);
+
+	/**
+	 * IPv6 Prefix output.
+	 *
+	 * @param out ostream.
+	 * @param lhr The IPv6 Prefix.
+	 * @return ostream reference.
+	 */
 	friend std::ostream& operator<<(std::ostream& out, const prefix_v6& lhr);
 
+	/**
+	 * Check if the IPv6 Prefix is equal to another IPv6 Prefix.
+	 *
+	 * @param addr The IPv6 Prefix to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
 	bool match(const address_v6& addr) const;
 
 private:
-	uchar      _length;
-	bytes_type _prefix;
+	uchar      _length;	/**< IPv6 Prefix length.	*/
+	bytes_type _prefix;	/**< IPv6 Prefix raw bytes.	*/
 };
 
 inline bool operator!=(const prefix_v6& rhr, const prefix_v6& lhr)

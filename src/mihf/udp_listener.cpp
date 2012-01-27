@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -18,6 +18,8 @@
 #include "udp_listener.hpp"
 #include "meta_message.hpp"
 #include "log.hpp"
+#include "mihfid.hpp"
+
 #include <odtone/mih/frame.hpp>
 #include <odtone/bind_rv.hpp>
 #include <boost/bind.hpp>
@@ -27,7 +29,7 @@ namespace odtone { namespace mihf {
 /**
  * Construct a UDP Listener.
  *
- * @param io The io_service object that Link SAP I/O Service will use to
+ * @param io The io_service object that UDP listener will use to
  * dispatch handlers for any asynchronous operations performed on
  * the socket.
  * @param buff_size The receive buffer length.
@@ -41,15 +43,18 @@ udp_listener::udp_listener(io_service& io,
 			   ip::udp ipv,
 			   const char *ip,
 			   uint16 port,
-			   dispatch_t &d)
+			   dispatch_t &d,
+			   bool enable_multicast)
 	: _io(io),
 	  _sock(io),
 	  _dispatch(d)
 {
-	ip::udp::endpoint endpoint(ip::address::from_string(ip), port);
+	_enable_multicast = enable_multicast;
+
 	_sock.open(ipv);
-	_sock.bind(endpoint);
 	_sock.set_option(boost::asio::socket_base::receive_buffer_size(buff_size));
+	_sock.set_option(boost::asio::socket_base::reuse_address(true));
+	_sock.bind(boost::asio::ip::udp::endpoint(ip::address::from_string(ip), port));
 }
 
 /**
@@ -87,28 +92,46 @@ void udp_listener::start()
  * @param rbytes The number of bytes of the input message.
  * @param error The error code.
  */
-void udp_listener::handle_receive(buffer<uint8>&			 buff,
-				  size_t				 rbytes,
-				  const boost::system::error_code&	 e)
-
+void udp_listener::handle_receive(buffer<uint8> &buff,
+								  size_t rbytes,
+								  const boost::system::error_code &error)
 {
 	using namespace boost;
 
-	if (!e) {
+	if (!error) {
 		ODTONE_LOG(1, "(udp) received ", rbytes, " bytes.");
 		ODTONE_LOG(0, "(udp) from ", _rmt_endp.address().to_string(),
-		    ":", _rmt_endp.port());
+		    " : ", _rmt_endp.port());
 
 		mih::frame *pud = mih::frame::cast(buff.get(), rbytes);
 
 		if(pud) {
-			mih::octet_string ip(_rmt_endp.address().to_string());
+			// Decode IP address
+			mih::octet_string ip;
+			uint16 scope = 0;
+			if(_rmt_endp.address().is_v4()) {
+				boost::asio::ip::address_v4 ip_addr = _rmt_endp.address().to_v4();
+				ip = ip_addr.to_string();
+			} else if(_rmt_endp.address().is_v6()) {
+				boost::asio::ip::address_v6 ip_addr = _rmt_endp.address().to_v6();
+				scope = ip_addr.scope_id();
+				ip_addr.scope_id(0);
+				ip = ip_addr.to_string();
+			}
+			// Decode port
 			uint16 port = _rmt_endp.port();
 
-			meta_message_ptr in(new meta_message(ip, port, *pud));
+			meta_message_ptr in(new meta_message(ip, scope, port, *pud));
 			ODTONE_LOG(4, *pud);
-			_dispatch(in);
-                }
+
+			// discard messages if multicast messages are not supported
+			if(utils::is_multicast(in) && !_enable_multicast) {
+				ODTONE_LOG(1, "(udp) Discarding message! Reason: ",
+							  "multicast messages are not supported");
+			} else {
+				_dispatch(in);
+			}
+		}
 
 		void *rbuff = buff.get();
 		size_t rlen = buff.size();

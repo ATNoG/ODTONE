@@ -4,8 +4,8 @@
 // ----------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -26,12 +26,24 @@
 namespace odtone { namespace net { namespace ip {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * This class represents the checksum field in IP packets.
+ */
 class checksum {
 public:
+	/**
+	 * Construct an undefined checksum, i.e., it is set to zero value.
+	 */
 	checksum()
 		: _sum(0)
 	{ }
 
+	/**
+	 * Update the checksum value based on the byte buffer.
+	 *
+	 * @param data Byte buffer.
+	 * @param len Byte buffer length.
+	 */
 	void update(const void* data, size_t len)
 	{
 		if (len % 2)
@@ -42,6 +54,12 @@ public:
 		update(reinterpret_cast<const uint16*>(data), len / 2);
 	}
 
+	/**
+	 * Update the checksum value based on the byte buffer.
+	 *
+	 * @param data Byte buffer.
+	 * @param len Byte buffer length.
+	 */
 	void update(const uint16* data, size_t len)
 	{
 		uint32 sum = _sum;
@@ -55,18 +73,26 @@ public:
 		_sum = static_cast<uint16>(sum);
 	}
 
+	/**
+	 * Get the value of the checksum.
+	 *
+	 * @return The value of the checksum.
+	 */
 	uint16 final() const
 	{
 		return ~_sum;
 	}
 
+	/**
+	 * Clear the value of the checksum.
+	 */
 	void clear()
 	{
 		_sum = 0;
 	}
 
 private:
-	uint16 _sum;
+	uint16 _sum;	/**< Checksum value.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////

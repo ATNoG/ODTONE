@@ -5,8 +5,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -22,6 +22,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "local_transaction_pool.hpp"
+#include "address_book.hpp"
 #include "link_book.hpp"
 #include "transmit.hpp"
 #include "meta_message.hpp"
@@ -43,6 +44,17 @@ struct event_registration_t
 	mih::octet_string		user;	/**< MIH-User/MIHF identifier.	*/
 	mih::link_tuple_id		link;	/**< Link identifier.			*/
 	mih::event_list_enum	event;	/**< Event subscribed.			*/
+
+	/**
+	 * Check if the MAC_ADDR is equal to another MAC_ADDR.
+	 *
+	 * @param other The MAC_ADDR to compare with.
+	 * @return True if they are equal or false otherwise.
+	 */
+	bool operator==(const event_registration_t& other) const
+	{
+		return ((user == other.user) && (link == other.link) && (event == other.event));
+	}
 };
 
 /**
@@ -55,11 +67,16 @@ public:
 	/**
 	 * Construct the event service.
 	 *
+	 * @param io The io_service object that event service module will use to
+	 * dispatch handlers for any asynchronous operations performed on
+	 * the socket.
 	 * @param lpool The local transaction pool module.
 	 * @param t The transmit module.
-	 * @param link_abook The link book module.
+	 * @param abook The address book module.
+	 * @param lbook The link book module.
 	 */
-	event_service(local_transaction_pool &lpool, transmit &t, link_book &lbook);
+	event_service(io_service &io, local_transaction_pool &lpool,
+				  transmit &t, address_book &abook, link_book &lbook);
 
 	/**
 	 * Event Subscribe Request message handler.
@@ -203,14 +220,6 @@ public:
 						 meta_message_ptr &out);
 
 protected:
-	local_transaction_pool	&_lpool;		/**< Local transaction pool module.	*/
-	transmit				&_transmit;		/**< Transmit module.				*/
-	link_book               &_link_abook;	/**< Link book module.				*/
-	std::map<mih::octet_string, mih::event_list> _link_subscriptions;	/**< Map of subscriptions.	*/
-
-	std::list<event_registration_t>	_event_subscriptions;	/**< List of subscription.	*/
-	boost::mutex					_event_mutex;			/**< Mutex.	*/
-
 	/**
 	 * Forward the message for all users subscribed to event from the
 	 * Link SAP.
@@ -290,6 +299,32 @@ protected:
 	                      mih::link_tuple_id &link,
 	                      mih::event_list &events);
 
+	/**
+	 * Handler responsible for setting a failure Link Event Subscribe
+	 * response.
+	 *
+	 * @param ec Error code.
+	 * @param in The input message.
+	 */
+	void link_event_subscribe_response_timeout(const boost::system::error_code &ec,
+											   meta_message_ptr &in);
+
+private:
+	io_service				&_io;			/**< The io_service object.			*/
+	local_transaction_pool	&_lpool;		/**< Local transaction pool module.	*/
+	transmit				&_transmit;		/**< Transmit module.				*/
+	address_book            &_abook;		/**< Address book module.			*/
+	link_book               &_link_abook;	/**< Link book module.				*/
+
+	std::map<mih::octet_string, mih::event_list> _link_subscriptions;	/**< Map of subscriptions. */
+	boost::mutex								 _link_mutex;			/**< Mutex.	*/
+
+	std::list<event_registration_t>	_event_subscriptions;	/**< List of subscription.	*/
+	boost::mutex					_event_mutex;			/**< Mutex.	*/
+
+	/** Timer map. */
+	std::map<uint16, boost::shared_ptr<boost::asio::deadline_timer> > _timer;
+	boost::mutex _mutex;	/**< Mutex.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////

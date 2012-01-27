@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -23,6 +23,7 @@
 #include "local_transaction_pool.hpp"
 #include "transmit.hpp"
 #include "meta_message.hpp"
+#include "user_book.hpp"
 
 #include <odtone/base.hpp>
 #include <odtone/mih/types.hpp>
@@ -43,8 +44,11 @@ public:
 	 *
 	 * @param lpool The local transaction pool module.
 	 * @param t The transmit module.
+	 * @param user_abook The user book module.
 	 */
-	information_service(local_transaction_pool &lpool, transmit &t);
+	information_service(local_transaction_pool &lpool,
+						transmit &t,
+						user_book &user_abook);
 
 	/**
 	 * Get Information Request message handler.
@@ -87,8 +91,9 @@ public:
 				      meta_message_ptr &out);
 
 protected:
-	local_transaction_pool	&_lpool;	/**< Local transaction pool module.	*/
-	transmit				&_transmit;	/**< Transmit module.				*/
+	local_transaction_pool	&_lpool;		/**< Local transaction pool module.	*/
+	transmit				&_transmit;		/**< Transmit module.				*/
+	user_book				&_user_abook;	/**< User book module.				*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -65,15 +65,16 @@ void message_in::operator()(meta_message_ptr& in)
 			if (t->start_ack_responder)
 				t->ack_responder();
 
-			if(!(in->ackrsp() == true && in->opcode() == mih::operation::request))
-				t->run();
+			if(t->transaction_status == ONGOING)
+				if(!(in->ackrsp() == true && in->opcode() == mih::operation::request))
+					t->run();
 
-			if (t->transaction_status != ONGOING)
+			if (t->transaction_status != ONGOING && t->ack_requestor_status != ONGOING)
 				_tpool.del(t);
 		} else {
 			new_dst_transaction(in);
 		}
-        } else {
+	} else {
 		dst_transaction_ptr t;
 		_tpool.find(in->source(), in->tid(), t);
 
@@ -84,12 +85,13 @@ void message_in::operator()(meta_message_ptr& in)
 			if (t->start_ack_requestor)
 				t->ack_requestor();
 
-			t->run();
+			if(t->transaction_status == ONGOING)
+				t->run();
 
 			if (t->start_ack_responder && t->transaction_status == ONGOING)
 				t->ack_responder();
 
-			if (t->transaction_status != ONGOING)
+			if (t->transaction_status != ONGOING && t->ack_requestor_status != ONGOING)
 				_tpool.del(t);
 		} else {
 			new_dst_transaction(in);

@@ -1,11 +1,11 @@
-//=============================================================================
-// Brief   : MIH User Example
+//==============================================================================
+// Brief   : MIH-User
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -47,7 +47,7 @@ public:
 	 * Construct the MIH-User.
 	 *
 	 * @param cfg Configuration options.
-	 * @param io The io_service object that the IEEE 802.21 driver will use to
+	 * @param io The io_service object that the MIH-User will use to
 	 * dispatch handlers for any asynchronous operations performed on the socket. 
 	 */
 	mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io);
@@ -61,7 +61,7 @@ protected:
 	/**
 	 * User registration handler.
 	 *
-	 * @param msg Received message.
+	 * @param cfg Configuration options.
 	 * @param ec Error Code.
 	 */
 	void user_reg_handler(const odtone::mih::config& cfg, const boost::system::error_code& ec);
@@ -99,7 +99,7 @@ private:
  * Construct the MIH-User.
  *
  * @param cfg Configuration options.
- * @param io The io_service object that the IEEE 802.21 driver will use to
+ * @param io The io_service object that the MIH-User will use to
  * dispatch handlers for any asynchronous operations performed on the socket. 
  */
 mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
@@ -107,8 +107,17 @@ mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
 {
 	odtone::mih::message m;
 
+	std::map<std::string, odtone::mih::user_role_enum> enum_map;
+	enum_map["is"] 			= odtone::mih::user_role_is;
+	enum_map["mobility"]	= odtone::mih::user_role_mobility;
+	enum_map["monitoring"]	= odtone::mih::user_role_monitoring;
+	enum_map["discovery"]	= odtone::mih::user_role_discovery;
+
+	std::string tmp = cfg.get<std::string>(odtone::sap::kConf_MIH_Role);
+	odtone::mih::user_role role = odtone::mih::user_role_enum(enum_map[tmp]);
+
 	m << odtone::mih::indication(odtone::mih::indication::user_register)
-	    & odtone::mih::tlv_mbb_handover_support(true);
+	    & odtone::mih::tlv_user_role(role);
 	m.destination(odtone::mih::id("local-mihf"));
 
 	_mihf.async_send(m, boost::bind(&mih_user::user_reg_handler, this, boost::cref(cfg), _2));
@@ -124,7 +133,7 @@ mih_user::~mih_user()
 /**
  * User registration handler.
  *
- * @param msg Received message.
+ * @param cfg Configuration options.
  * @param ec Error Code.
  */
 void mih_user::user_reg_handler(const odtone::mih::config& cfg, const boost::system::error_code& ec)
@@ -238,10 +247,11 @@ void mih_user::capability_discover_confirm(odtone::mih::message& msg, const boos
 					req << odtone::mih::request(odtone::mih::request::event_subscribe, _mihfid)
 						& odtone::mih::tlv_link_identifier(li)
 						& odtone::mih::tlv_event_list(evt);
+					req.destination(msg.source());
 
 					_mihf.async_send(req, boost::bind(&mih_user::event_subscribe_response, this, _1, _2));
 
-					log_(0, "MIH-User has sent Event_Subscribe.request");
+					log_(0, "MIH-User has sent Event_Subscribe.request to ", req.destination().to_string());
 				}
 		}
 	}
@@ -285,7 +295,7 @@ int main(int argc, char** argv)
 			(odtone::sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive buffer length")
 			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1234), "Listening port")
 			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("user"), "MIH-User ID")
-			(odtone::sap::kConf_MIH_Handover, po::value<bool>()->default_value("true"), "MIH-User handover support")
+			(odtone::sap::kConf_MIH_Role, po::value<std::string>()->default_value("mobility"), "MIH-User role")
 			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF IP address")			
 			(odtone::sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "Local MIHF communication port")
 			(odtone::sap::kConf_MIH_SAP_dest, po::value<std::string>()->default_value(""), "MIHF destination");

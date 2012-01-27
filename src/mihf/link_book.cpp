@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -44,9 +44,67 @@ void link_book::add(const mih::octet_string &id,
 	a.port = port;
 	a.link_id = link_id;
 	a.fail = 0;
+	a.status = true;
 
 	_lbook[id] = a;
 	ODTONE_LOG(4, "(link_book) added: ", id, " ", ip, " ", port);
+}
+
+/**
+ * Set the IP address of an existing Link SAP entry.
+ *
+ * @param id Link SAP MIH Identifier.
+ * @param ip The IP address to set.
+ */
+void link_book::set_ip(const mih::octet_string &id, std::string ip)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, link_entry>::iterator it;
+	it = _lbook.find(id);
+
+	if (it != _lbook.end())
+		it->second.ip = ip;
+}
+
+/**
+ * Set the port of an existing Link SAP entry.
+ *
+ * @param id Link SAP MIH Identifier.
+ * @param port The port to set.
+ */
+void link_book::set_port(const mih::octet_string &id, uint16 port)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, link_entry>::iterator it;
+	it = _lbook.find(id);
+
+	if (it != _lbook.end())
+		it->second.port = port;
+}
+
+/**
+ * Update the events and commands supported by a Link SAP.
+ *
+ * @param id Link SAP MIH Identifier.
+ * @param event_list Supported event list.
+ * @param cmd_list Supported command list.
+ */
+void link_book::update_capabilities(const mih::octet_string &id,
+									mih::event_list event_list,
+									mih::command_list cmd_list)
+
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, link_entry>::iterator it;
+	it = _lbook.find(id);
+
+	if (it != _lbook.end()) {
+		it->second.event_list = event_list;
+		it->second.cmd_list = cmd_list;
+	}
 }
 
 /**
@@ -59,6 +117,22 @@ void link_book::del(mih::octet_string &id)
 	boost::mutex::scoped_lock lock(_mutex);
 
 	_lbook.erase(id);
+}
+
+/**
+ * Inactive an existing Link SAP entry.
+ *
+ * @param id Link SAP MIH Identifier.
+ */
+void link_book::inactive(mih::octet_string &id)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, link_entry>::iterator it;
+	it = _lbook.find(id);
+
+	if (it != _lbook.end())
+		it->second.status = false;
 }
 
 /**
@@ -112,8 +186,10 @@ const mih::octet_string link_book::search_interface(mih::link_type lt, mih::link
 	for(std::map<mih::octet_string, link_entry>::iterator it = _lbook.begin(); it != _lbook.end(); it++) {
 		if(it->second.link_id.type == lt) {
 			if(it->second.link_id.addr == la) {
-				id = it->first;
-				break;
+				if(it->second.status) {
+					id = it->first;
+					break;
+				}
 			}
 		}
 	}
@@ -134,12 +210,11 @@ uint16 link_book::fail(const mih::octet_string &id)
 	std::map<mih::octet_string, link_entry>::iterator it;
 	it = _lbook.find(id);
 
-	if (it != _lbook.end()) {
-		(it->second.fail)++;
-		return it->second.fail;
-	}
+	if (it == _lbook.end())
+		throw ("no entry in link_book for this id");
 
-	return -1;
+	(it->second.fail)++;
+	return it->second.fail;
 }
 
 /**
@@ -154,8 +229,11 @@ void link_book::reset(const mih::octet_string &id)
 	std::map<mih::octet_string, link_entry>::iterator it;
 	it = _lbook.find(id);
 
-	if (it != _lbook.end())
-		it->second.fail = 0;
+	if (it == _lbook.end())
+		throw ("no entry in link_book for this id");
+
+	it->second.fail = 0;
+	it->second.status = true;
 }
 
 } /* namespace mihf */ } /* namespace odtone */

@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -28,9 +28,9 @@ namespace odtone { namespace mihf {
  * @param netsap The netsap module.
  */
 transaction_t::transaction_t(handler_t &f, net_sap &netsap)
-	: process_message(f),
-	  _netsap(netsap),
-	  ack(new meta_message())
+	: ack(new meta_message()),
+	  process_message(f),
+	  _netsap(netsap)
 {
 	opcode                = 0;
 	mid                   = 0;

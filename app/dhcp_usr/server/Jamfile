@@ -1,0 +1,78 @@
+#===============================================================================
+# Brief   : DHCP-User SAP Application Sample Project Build
+# Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
+#-------------------------------------------------------------------------------
+# ODTONE - Open Dot Twenty One
+#
+# Copyright (C) 2009-2012 Universidade Aveiro
+# Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
+#
+# This software is distributed under a license. The full license
+# agreement can be found in the file LICENSE in this distribution.
+# This software may not be copied, modified, sold or distributed
+# other than expressed in the named license agreement.
+#
+# This software is distributed without any warranty.
+#===============================================================================
+
+project dhcp_usr/server
+	: requirements
+	  <include>../include
+	  <linkflags>"-lisc"
+	;
+
+local rule explicit-alias ( id : targets + )
+{
+    alias $(id) : $(targets) ;
+    explicit $(id) ;
+}
+
+
+exe dhcpd
+	: bootp.c
+	  class.c
+	  confpars.c
+	  db.c
+	  ddns.c
+	  dhcp.c
+	  dhcpd.c
+	  dhcpleasequery.c
+	  dhcpv6.c
+	  failover.c
+	  ldap.c
+	  ldap_casa.c
+	  mdb6.c
+	  mdb.c
+	  omapi.c
+	  salloc.c
+	  stables.c
+	  dst/base64.c
+	  dst/dst_api.c
+	  dst/dst_support.c
+	  dst/hmac_link.c
+	  dst/md5_dgst.c
+	  dst/prandom.c
+	  libdhcpctl
+	  libomapip
+	  libcommon
+	  libdns
+	  libisc
+	;
+
+install install
+	: dhcpd
+	  dhcpd.conf
+	: <location>../../../dist
+	;
+
+#explicit-alias libcommon : ../libs/common//dhcp_common ;
+#explicit-alias libomapip : ../libs/omapip//dhcp_omapip ;
+#explicit-alias libdns    : ../libs/bind/dns//dhcp_dns ;
+#explicit-alias libdhcpctl : ../libs/dhcpctl//dhcp_ctl ;
+explicit-alias libcommon   : ../libs/libdhcp.a ;
+explicit-alias libomapip   : ../libs/libomapi.a ;
+explicit-alias libdns      : ../libs/libdns.a ;
+explicit-alias libisc      : ../libs/libisc.a ;
+explicit-alias libdhcpctl : ../libs/libdhcpctl.a ;
+
+

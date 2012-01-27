@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -91,19 +91,19 @@ static const tlv_cast_<network_type,          tlv_<62> > tlv_network_type = {};
 static const tlv_cast_<rq_res_set,            tlv_<63> > tlv_request_resource_set = {};
 
 // ODTONE specific TLVs
-static const tlv_cast_<link_id,               tlv_<101> > tlv_interface_type_addr = {};
-static const tlv_cast_<link_param_type_list,  tlv_<102> > tlv_link_parameters_req = {};
-static const tlv_cast_<link_param_list,       tlv_<103> > tlv_link_parameters_status_list = {};
-static const tlv_cast_<link_states_req,       tlv_<104> > tlv_link_states_req = {};
-static const tlv_cast_<link_states_rsp_list,  tlv_<105> > tlv_link_states_rsp = {};
-static const tlv_cast_<link_desc_req,         tlv_<106> > tlv_link_descriptor_req = {};
-static const tlv_cast_<link_desc_rsp_list,    tlv_<107> > tlv_link_descriptor_rsp = {};
-static const tlv_cast_<link_action,           tlv_<108> > tlv_link_action = {};
-static const tlv_cast_<link_ac_result,        tlv_<109> > tlv_link_ac_result = {};
-static const tlv_cast_<link_scan_rsp_list,    tlv_<110> > tlv_link_scan_rsp_list = {};
-static const tlv_cast_<link_det_info,	      tlv_<111> > tlv_link_det_info = {};
-static const tlv_cast_<bool,                  tlv_<112> > tlv_mbb_handover_support = {};
-
+static const tlv_cast_<link_param_type_list,  tlv_<101> > tlv_link_parameters_req = {};
+static const tlv_cast_<link_param_list,       tlv_<102> > tlv_link_parameters_status_list = {};
+static const tlv_cast_<link_states_req,       tlv_<103> > tlv_link_states_req = {};
+static const tlv_cast_<link_states_rsp_list,  tlv_<104> > tlv_link_states_rsp = {};
+static const tlv_cast_<link_desc_req,         tlv_<105> > tlv_link_descriptor_req = {};
+static const tlv_cast_<link_desc_rsp_list,    tlv_<106> > tlv_link_descriptor_rsp = {};
+static const tlv_cast_<link_action,           tlv_<107> > tlv_link_action = {};
+static const tlv_cast_<link_ac_result,        tlv_<108> > tlv_link_ac_result = {};
+static const tlv_cast_<link_scan_rsp_list,    tlv_<109> > tlv_link_scan_rsp_list = {};
+static const tlv_cast_<link_det_info,         tlv_<110> > tlv_link_det_info = {};
+static const tlv_cast_<link_id,               tlv_<111> > tlv_interface_type_addr = {};
+static const tlv_cast_<user_role,             tlv_<112> > tlv_user_role = {};
+static const tlv_cast_<mos_dscv,              tlv_<113> > tlv_mos_dscv = {};
 
 
 ///////////////////////////////////////////////////////////////////////////////

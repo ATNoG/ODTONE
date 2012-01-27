@@ -4,16 +4,16 @@
 <title>Client</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../../index.html" title="ODTONE 0.3">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../app.html" title="Applications">
-<link rel="prev" href="link_sap_index.html" title="Link SAP">
+<link rel="prev" href="link_sap_icmp_index.html" title="ICMP Link SAP">
 <link rel="next" href="dummyserver_index.html" title="Dummyserver">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="link_sap_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="dummyserver_index.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="link_sap_icmp_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="dummyserver_index.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -22,8 +22,8 @@
 <div class="toc"><dl><dt><span class="section"><a href="client_index.html#odtone.app.client_index.client_getStart">Getting Started</a></span></dt></dl></div>
 <p>
         The <span class="emphasis"><em>client</em></span> is a simple application that lets you send
-        any kind of message to a particular destination. In this way, it is possible
-        to send a specific message to a choose destination in order to test is behaviour
+        any kind of message to a particular destination. In this way, oyou can send
+        a specific message to a specific destination in order to test its behaviour
         easily and quickly.
       </p>
 <p>
@@ -43,7 +43,7 @@
 <a name="odtone.app.client_index.client_getStart.configuration"></a><a class="link" href="client_index.html#odtone.app.client_index.client_getStart.configuration" title="Configuration">Configuration</a>
 </h5></div></div></div>
 <p>
-            The configuration of the client consist in define the listening port
+            The configuration of the client consists in defining the listening port
             of message's destination.
           </p>
 <p>
@@ -51,12 +51,12 @@
           </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-                Passing it directly in command line:
+                Passing it directly in command line: 
 <pre class="programlisting"><span class="special">--</span><span class="identifier">port</span><span class="special">=&lt;</span><span class="identifier">port</span> <span class="identifier">number</span><span class="special">&gt;</span>
 </pre>
               </li>
 <li class="listitem">
-                or configuring it in the configuration file:
+                or configuring it in the configuration file: 
 <pre class="programlisting"><span class="identifier">port</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">port</span> <span class="identifier">number</span><span class="special">&gt;</span>
 </pre>
               </li>
@@ -72,7 +72,7 @@
           </p>
 <p>
             <span class="bold"><strong>1st step:</strong></span> Define a new configuration
-            option.
+            option. 
 </p>
 <pre class="programlisting"><span class="identifier">desc</span><span class="special">.</span><span class="identifier">add_options</span><span class="special">()</span>
 	<span class="comment">// ...</span>
@@ -86,6 +86,7 @@
             for creating and sending the message.
           </p>
 <p>
+            
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">send_newMessage</span><span class="special">(</span><span class="identifier">handler</span> <span class="special">&amp;</span><span class="identifier">sap</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">dst</span><span class="special">)</span>
 <span class="special">{</span>
@@ -102,7 +103,7 @@
           </p>
 <p>
             <span class="bold"><strong>3rd step:</strong></span> Add a condition in the main
-            function to decide which message will be sent.
+            function to decide which message will be sent. 
 </p>
 <pre class="programlisting"><span class="keyword">if</span> <span class="special">(</span><span class="identifier">cfg</span><span class="special">.</span><span class="identifier">count</span><span class="special">(</span><span class="identifier">kConf_MIH_NewMessage</span><span class="special">))</span> <span class="special">{</span>
 	<span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"sent a new message"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
@@ -138,9 +139,9 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2011 Universidade
-      Aveiro<br>Copyright &#169; 2009-2011 Instituto de
-      Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license
@@ -150,7 +151,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="link_sap_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="dummyserver_index.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="link_sap_icmp_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="dummyserver_index.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

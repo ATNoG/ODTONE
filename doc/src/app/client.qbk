@@ -4,8 +4,8 @@
  /------------------------------------------------------------------------------
  / ODTONE - Open Dot Twenty One
  /
- / Copyright (C) 2009-2011 Universidade Aveiro
- / Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+ / Copyright (C) 2009-2012 Universidade Aveiro
+ / Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
  /
  / This software is distributed under a license. The full license
  / agreement can be found in the file LICENSE in this distribution.
@@ -18,8 +18,8 @@
 [section:client_index Client]
 
 The ['client] is a simple application that lets you send any kind of message
-to a particular destination. In this way, it is possible to send a specific message
-to a choose destination in order to test is behaviour easily and quickly.
+to a particular destination. In this way, oyou can send a specific message
+to a specific destination in order to test its behaviour easily and quickly.
 
 The destination could be either a MIHF or a MIH SAP (MIH-User/Link SAP).
 
@@ -27,7 +27,7 @@ The destination could be either a MIHF or a MIH SAP (MIH-User/Link SAP).
 
 [section Configuration]
 
-The configuration of the client consist in define the
+The configuration of the client consists in defining the
 listening port of message's destination.
 
 The listening port can be configured in two ways:

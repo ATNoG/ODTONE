@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -181,6 +181,7 @@ public:
 	 *
 	 * @param out ostream.
 	 * @param tp MAC_ADDR data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& out, const mac_addr& tp)
 	{
@@ -231,6 +232,7 @@ struct l2_3gpp_2g_cell_id {
 	 *
 	 * @param out ostream.
 	 * @param addr L2_3GPP_2G_CELL_ID data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_2g_cell_id& addr)
 	{
@@ -279,6 +281,7 @@ struct l2_3gpp_3g_cell_id {
 	 *
 	 * @param out ostream.
 	 * @param addr L2_3GPP_3G_CELL_ID data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_3g_cell_id& addr)
 	{
@@ -321,6 +324,7 @@ struct l2_3gpp_addr  {
 	 *
 	 * @param out ostream.
 	 * @param addr L2_3GPP_ADDR data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp_addr& addr)
 	{
@@ -362,6 +366,7 @@ struct l2_3gpp2_addr {
 	 *
 	 * @param out ostream.
 	 * @param addr L2_3GPP2_ADDR data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& out, const l2_3gpp2_addr& addr)
 	{
@@ -403,6 +408,7 @@ struct other_l2_addr {
 	 *
 	 * @param out ostream.
 	 * @param addr OTHER_L2_ADDR data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& out, const other_l2_addr& addr)
 	{
@@ -475,6 +481,18 @@ public:
 	{ }
 
 	/**
+	 * Construct a IP_ADDR data type.
+	 *
+	 * @param tp IP address type.
+	 * @param raw IP address string format.
+	 */
+	explicit ip_addr(type_ip_enum tp, const octet_string& addr)
+		: transport_addr(tp)
+	{
+		this->address(addr);
+	}
+
+	/**
 	 * Get the IP address string.
 	 *
 	 * @return The IP address string.
@@ -493,6 +511,7 @@ public:
 	 *
 	 * @param out ostream.
 	 * @param tp IP_ADDR data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& out, const ip_addr& tp)
 	{

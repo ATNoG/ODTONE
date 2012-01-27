@@ -4,8 +4,8 @@
 // ----------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -22,6 +22,12 @@
 namespace odtone { namespace net { namespace ip {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Get the IPv6 Prefix from a string.
+ *
+ * @param str The input string.
+ * @return The extracted IPv6 Prefix.
+ */
 prefix_v6 prefix_v6::from_string(const std::string& str)
 {
 	size_t pos = str.rfind('/');
@@ -35,12 +41,21 @@ prefix_v6 prefix_v6::from_string(const std::string& str)
 	return prefix_v6(addr, plen);
 }
 
+/**
+ * Construct an empty IPv6 Prefix.
+ */
 prefix_v6::prefix_v6()
 {
 	_prefix.fill(0);
 	_length = 0;
 }
 
+/**
+ * Construct an IPv6 Prefix.
+ *
+ * @param addr The IPv6 address raw bytes.
+ * @param length The IPv6 address byte length.
+ */
 prefix_v6::prefix_v6(const bytes_type& addr, uint length)
 {
 	if (length > 128) {
@@ -53,6 +68,12 @@ prefix_v6::prefix_v6(const bytes_type& addr, uint length)
 	}
 }
 
+/**
+ * Construct an IPv6 Prefix.
+ *
+ * @param addr The IPv6 address.
+ * @param length The IPv6 address byte length.
+ */
 prefix_v6::prefix_v6(const address_v6& addr, uint length)
 {
 	if (length > 128) {
@@ -65,6 +86,12 @@ prefix_v6::prefix_v6(const address_v6& addr, uint length)
 	}
 }
 
+/**
+ * Check if the IPv6 Prefix is equal to another IPv6 Prefix.
+ *
+ * @param addr The IPv6 Prefix to compare with.
+ * @return True if they are equal or false otherwise.
+ */
 bool prefix_v6::match(const address_v6& addr) const
 {
 	address_v6::bytes_type a(addr.to_bytes());
@@ -84,6 +111,13 @@ bool prefix_v6::match(const address_v6& addr) const
 	return true;
 }
 
+/**
+ * IPv6 Prefix output.
+ *
+ * @param out ostream.
+ * @param lhr The IPv6 Prefix.
+ * @return ostream reference.
+ */
 std::ostream& operator<<(std::ostream& out, const prefix_v6& lhr)
 {
 	return out << address_v6(lhr._prefix)

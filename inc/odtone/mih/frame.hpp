@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -126,6 +126,8 @@ struct frame {
 	/**
 	 * Convert a byte buffer to a frame.
 	 *
+	 * @param buff The byte buffer.
+	 * @param len The size of the byte buffer.
 	 * @return The pointer of the returning frame.
 	 */
 	static frame* cast(void* buff, size_t len)
@@ -141,6 +143,8 @@ struct frame {
 	/**
 	 * Convert a byte buffer to a frame.
 	 *
+	 * @param buff The byte buffer.
+	 * @param len The size of the byte buffer.
 	 * @return The pointer of the returning frame.
 	 */
 	static const frame* cast(const void* buff, size_t len)
@@ -366,6 +370,7 @@ typedef buffer_vla<frame> frame_vla;
  *
  * @param os ostream.
  * @param fm Frame.
+ * @return ostream reference.
  */
 inline std::ostream& operator<<(std::ostream& os, const frame& fm)
 {

@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -32,21 +32,22 @@
 namespace odtone { namespace mihf {
 
 /**
- * Struct to store pending Link SAP responses.
- * FIXME: use boost::variant
+ * Struct to store the link action parameters.
+ */
+struct action {
+	mih::link_ac_result	link_ac_result;	/**< The link action results. */
+	boost::optional<mih::link_scan_rsp_list> link_scan_rsp_list; /**< The link scan response list.	*/
+};
+
+/**
+ * Struct to store pending Link SAP responses
  */
 struct pending_link_response {
-	mih::octet_string    user;			/**< The MIH source identifier. 	*/
-	uint16               tid;			/**< The transaction identifier. 	*/
-	struct capabilities {				/**< The supported capabilities. 	*/
-		mih::event_list   event_list;	/**< The supported events. 			*/
-		mih::command_list command_list;	/**< The supported commands. 		*/
-	} cap;
-	mih::link_status_rsp link_status;	/**< The link status. 			*/
-	struct action_response {			/**< The link action response. 	*/
-		boost::optional<mih::link_ac_result>     link_ac_result;	/**< The link action results. 		*/
-		boost::optional<mih::link_scan_rsp_list> link_scan_rsp_list;/**< The link scan response list.	*/
-	} action;
+	mih::octet_string	user;			/**< The MIH source identifier. 	*/
+	uint16				tid;			/**< The transaction identifier. 	*/
+	mih::status			st;				/**< Status. 						*/
+	boost::variant<	mih::link_status_rsp,
+					action > response;	/**< The response parameters. 		*/
 };
 
 /**
@@ -59,19 +60,6 @@ public:
 	 * Construct a Link Response Pool.
 	 */
 	link_response_pool();
-
-	/**
-	 * Add a new entry in the Link Responde Pool.
-	 *
-	 * @param user The MIH source identifier.
-	 * @param tid The transaction identifier.
-	 * @param event The supported event list.
-	 * @param command The supported command list.
-	 */
-	void add(mih::octet_string user,
-                 uint16 tid,
-                 mih::event_list event,
-                 mih::command_list command);
 
 	/**
 	 * Add a new entry in the Link Responde Pool.
@@ -93,9 +81,9 @@ public:
 	 * @param link_ac_result The link action result
 	 */
 	void add(mih::octet_string user,
-                 uint16 tid,
+             uint16 tid,
 	         boost::optional<mih::link_scan_rsp_list> link_scan_rsp_list,
-	         boost::optional<mih::link_ac_result> link_ac_result);
+	         mih::link_ac_result link_ac_result);
 
 	/**
 	 * Remove an existing record from the Link Response Pool

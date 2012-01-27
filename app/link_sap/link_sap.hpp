@@ -1,11 +1,11 @@
-//=============================================================================
+//==============================================================================
 // Brief   : Link SAP
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -38,7 +38,7 @@ public:
 	 * Construct the Link SAP.
 	 *
 	 * @param cfg Configuration options.
-	 * @param io The io_service object that the IEEE 802.21 driver will use to
+	 * @param io The io_service object that Link SAP will use to
 	 * dispatch handlers for any asynchronous operations performed on the socket. 
 	 */
 	link_sap(const odtone::mih::config& cfg, boost::asio::io_service& io);

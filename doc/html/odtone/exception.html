@@ -4,8 +4,8 @@
 <title>Class exception</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../index.html" title="ODTONE 0.3">
-<link rel="up" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.exception_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/exception.hpp&gt;">
+<link rel="home" href="../index.html" title="ODTONE 0.4">
+<link rel="up" href="../odtone_base_library.html#header..home.carlos.Desktop.release.inc.odtone.exception_hpp" title="Header &lt;/home/carlos/Desktop/release/inc/odtone/exception.hpp&gt;">
 <link rel="prev" href="../ODTONE_NEVER_HERE.html" title="Macro ODTONE_NEVER_HERE">
 <link rel="next" href="list_node.html" title="Class list_node">
 </head>
@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src=".././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../ODTONE_NEVER_HERE.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.exception_hpp"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="list_node.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../ODTONE_NEVER_HERE.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../odtone_base_library.html#header..home.carlos.Desktop.release.inc.odtone.exception_hpp"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="list_node.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.exception"></a><div class="titlepage"></div>
@@ -22,27 +22,27 @@
 <p>odtone::exception</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.exception_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/exception.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/exception.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../odtone_base_library.html#header..home.carlos.Desktop.release.inc.odtone.exception_hpp" title="Header &lt;/home/carlos/Desktop/release/inc/odtone/exception.hpp&gt;">/home/carlos/Desktop/release/inc/odtone/exception.hpp</a>&gt;
 
 </span>
 <span class="keyword">class</span> <a class="link" href="exception.html" title="Class exception">exception</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="exception.html#odtone.exceptionconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="exception.html#idp4254608-bb"><span class="identifier">exception</span></a><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <span class="special">=</span> <span class="string">"&lt;exception&gt;"</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="exception.html#id2521215-bb"><span class="identifier">exception</span></a><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <span class="special">=</span> <span class="string">"&lt;exception&gt;"</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="exception.html#idp4253336-bb">public member functions</a></span>
-  <span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <a class="link" href="exception.html#idp4253520-bb"><span class="identifier">what</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="exception.html#id2521194-bb">public member functions</a></span>
+  <span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <a class="link" href="exception.html#id2521197-bb"><span class="identifier">what</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp10277856"></a><h2>Description</h2>
+<a name="id2932640"></a><h2>Description</h2>
 <p>Base class for all ODTONE exceptions. This is the base class for all exceptions thrown by the ODTONE library. You are free to derive your own exception classes, or use a different hierarchy, or to throw non-class data (e.g., fundamental types). </p>
 <div class="refsect2">
-<a name="idp10278432"></a><h3>
+<a name="id2932650"></a><h3>
 <a name="odtone.exceptionconstruct-copy-destruct"></a><code class="computeroutput">exception</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp4254608-bb"></a><span class="identifier">exception</span><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> what <span class="special">=</span> <span class="string">"&lt;exception&gt;"</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="id2521215-bb"></a><span class="identifier">exception</span><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> what <span class="special">=</span> <span class="string">"&lt;exception&gt;"</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Constructor a new exception.</p>
 <p>
 </p>
@@ -62,10 +62,10 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp10284448"></a><h3>
-<a name="idp4253336-bb"></a><code class="computeroutput">exception</code> public member functions</h3>
+<a name="id2932750"></a><h3>
+<a name="id2521194-bb"></a><code class="computeroutput">exception</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <a name="idp4253520-bb"></a><span class="identifier">what</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <a name="id2521197-bb"></a><span class="identifier">what</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get a string describing the general cause of the current error.</p>
 <p>
 </p>
@@ -82,9 +82,9 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2011 Universidade
-      Aveiro<br>Copyright &#169; 2009-2011 Instituto de
-      Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license
@@ -94,7 +94,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../ODTONE_NEVER_HERE.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.exception_hpp"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="list_node.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../ODTONE_NEVER_HERE.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../odtone_base_library.html#header..home.carlos.Desktop.release.inc.odtone.exception_hpp"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="list_node.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

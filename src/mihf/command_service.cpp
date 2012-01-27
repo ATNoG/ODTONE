@@ -5,8 +5,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -31,6 +31,8 @@
 #include <odtone/mih/confirm.hpp>
 #include <odtone/mih/response.hpp>
 #include <odtone/mih/tlv_types.hpp>
+
+#include <boost/make_shared.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 extern odtone::uint16 kConf_MIHF_Link_Response_Time_Value;
@@ -41,27 +43,30 @@ namespace odtone { namespace mihf {
 /**
  * Construct the command service.
  *
- * @param io The io_service object that Link SAP I/O Service will use to
+ * @param io The io_service object that command service module will use to
  * dispatch handlers for any asynchronous operations performed on
  * the socket.
  * @param lpool The local transaction pool module.
  * @param t The transmit module.
+ * @param abook The address book module.
  * @param link_abook The link book module.
  * @param user_abook The user book module.
  * @param lrpool The link response pool module.
  */
 command_service::command_service(io_service &io,
-                                 local_transaction_pool &lpool,
-                                 transmit &t,
-                                 link_book &link_abook,
-                                 user_book &user_abook,
-                                 link_response_pool &lrpool)
-	: _lpool(lpool),
+								 local_transaction_pool &lpool,
+								 transmit &t,
+								 address_book &abook,
+								 link_book &link_abook,
+								 user_book &user_abook,
+								 link_response_pool &lrpool)
+	: _io(io),
+	  _lpool(lpool),
 	  _transmit(t),
+	  _abook(abook),
 	  _link_abook(link_abook),
 	  _user_abook(user_abook),
-	  _lrpool(lrpool),
-	  _timer(io, boost::posix_time::milliseconds(1))
+	  _lrpool(lrpool)
 {
 }
 
@@ -69,10 +74,20 @@ command_service::command_service(io_service &io,
  * Handler responsible for processing the received Link Get Parameters
  * responses from Link SAPs.
  *
+ * @param ec Error code.
  * @param in The input message.
  */
-void command_service::link_get_parameters_response_handler(meta_message_ptr &in)
+void command_service::link_get_parameters_response_handler(const boost::system::error_code &ec, meta_message_ptr &in)
 {
+	if(ec)
+		return;
+
+	{
+		boost::mutex::scoped_lock lock(_mutex);
+		_timer.erase(in->tid());
+	}
+
+	mih::status st = mih::status_failure;
 	mih::link_id             lid;
 	mih::link_status_rsp	 lsr;
 	mih::status_rsp          sr;
@@ -83,15 +98,7 @@ void command_service::link_get_parameters_response_handler(meta_message_ptr &in)
 	std::vector<mih::octet_string> ids = _link_abook.get_ids();
 	std::vector<mih::octet_string>::iterator it_link;
 	for(it_link = ids.begin(); it_link != ids.end(); it_link++) {
-		// Delete unanswered Link SAP from known Link SAPs list
-		if(!_lrpool.check(in->tid(), *it_link)) {
-			_lpool.del(*it_link, in->tid());
-			uint16 fails = _link_abook.fail(*it_link);
-			if(fails >= kConf_MIHF_Link_Delete_Value && fails != -1) {
-				_link_abook.del(*it_link);
-			}
-		}
-		else {
+		if(_lrpool.check(in->tid(), *it_link)) {
 			// fill GetStatusResponseList
 			link_entry a;
 			mih::link_id lid;
@@ -105,26 +112,40 @@ void command_service::link_get_parameters_response_handler(meta_message_ptr &in)
 			pending_link_response tmp = _lrpool.find(in->tid(), *it_link);
 			_lrpool.del(in->tid(), *it_link);
 
-			lsr = tmp.link_status;
+			mih::link_status_rsp& link_status = boost::get<mih::link_status_rsp>(tmp.response);
+			lsr = link_status;
 
 			sr.id = lid;
 			sr.rsp = lsr;
 
 			srl.push_back(sr);
+
+			// If one or more responses are successful the status
+			// is set to success
+			st = mih::status_success;
 		}
 	}
 
 	// Send Link_Get_Parameters.confirm to the user
-	ODTONE_LOG(1, "(mism) setting response to Link_Get_Parameters.request");
-	*out << mih::response(mih::response::link_get_parameters)
-	    & mih::tlv_status(mih::status_success)
-//	    & mih::tlv_dev_states_rsp_list(dsrl)
-	    & mih::tlv_get_status_rsp_list(srl);
+	if(st == mih::status_success) {
+		ODTONE_LOG(1, "(micm) setting response to Link_Get_Parameters.request");
+		*out << mih::response(mih::response::link_get_parameters)
+			& mih::tlv_status(mih::status_success)
+	//	    & mih::tlv_dev_states_rsp_list(dsrl)
+			& mih::tlv_get_status_rsp_list(srl);
+	} else {
+		ODTONE_LOG(1, "(micm) setting failure response to Link_Get_Parameters.request");
+		*out << mih::response(mih::response::link_get_parameters)
+		    & mih::tlv_status(st);
+	}
 
 	out->tid(in->tid());
 	out->destination(in->source());
 	out->source(mihfid);
 
+	out->ip(in->ip());
+	out->scope(in->scope());
+	out->port(in->port());
 	_transmit(out);
 }
 
@@ -165,20 +186,43 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 		    & mih::tlv_link_states_req(lsr._states_req)
 		    & mih::tlv_link_descriptor_req(lsr._desc_req);
 
+		out->tid(in->tid());
+		out->source(mihfid);
+
 		// For each Link_ID in request message
 		std::vector<mih::link_id>::iterator lid;
 		for(lid = lil.begin(); lid != lil.end(); lid++) {
 			out->destination(mih::id(_link_abook.search_interface((*lid).type, (*lid).addr)));
 			// If the Link SAP it is known send message
-			if (out->destination().to_string().compare(""))
-				utils::forward_request(out, _lpool, _transmit);
+			if (out->destination().to_string().compare("") != 0) {
+				// Check if the Link SAP is still active
+				uint16 fails = _link_abook.fail(out->destination().to_string());
+				if(fails > kConf_MIHF_Link_Delete_Value) {
+					mih::octet_string dst = out->destination().to_string();
+					_link_abook.inactive(dst);
+
+					// Update MIHF capabilities
+					utils::update_local_capabilities(_abook, _link_abook);
+				} else {
+					ODTONE_LOG(1, "(mics) forwarding Link_Get_Parameters.request to ",
+						out->destination().to_string());
+					utils::forward_request(out, _lpool, _transmit);
+				}
+			}
 		}
 
-		// Lauched the thread responsible for respond to the get parameters request
-		_timer.expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
-		_timer.async_wait(boost::bind(&command_service::link_get_parameters_response_handler, this, in));
+		// Set the timer that will be responsible for aggregate and
+		// response to this resquest
+		boost::shared_ptr<boost::asio::deadline_timer> timer = boost::make_shared<boost::asio::deadline_timer>(_io);
+		timer->expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
+		timer->async_wait(boost::bind(&command_service::link_get_parameters_response_handler, this, _1, in));
 
-		// Do not respond to the request. The thread lauched will be
+		{
+			boost::mutex::scoped_lock lock(_mutex);
+			_timer[in->tid()] = timer;
+		}
+
+		// Do not respond to the request. The response handler will be
 		// responsible for that.
 		return false;
 	} else {
@@ -229,15 +273,15 @@ bool command_service::link_get_parameters_confirm(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mics) received Link_Get_Parameters.confirm from ",
 	    in->source().to_string());
 
-	if(_lpool.set_user_tid(in)) {
-		_link_abook.reset(in->source().to_string());
+	_link_abook.reset(in->source().to_string());
 
+	if(_lpool.set_user_tid(in)) {
 		mih::status st;
 		boost::optional<mih::link_param_list> lpl;
 		boost::optional<mih::link_states_rsp_list> lsrl;
 		boost::optional<mih::link_desc_rsp_list> ldrl;
 
-		*in >> mih::confirm()
+		*in >> mih::confirm(mih::confirm::link_get_parameters)
 		       & mih::tlv_status(st)
 		       & mih::tlv_link_parameters_status_list(lpl)
 		       & mih::tlv_link_states_rsp(lsrl)
@@ -263,6 +307,42 @@ bool command_service::link_get_parameters_confirm(meta_message_ptr &in,
 }
 
 /**
+ * Handler responsible for processing the received Link Get Parameters
+ * responses from Link SAPs.
+ *
+ * @param ec Error code.
+ * @param in The input message.
+ */
+void command_service::link_configure_thresholds_response_timeout(const boost::system::error_code &ec, meta_message_ptr &in)
+{
+	if(ec)
+		return;
+
+	{
+		boost::mutex::scoped_lock lock(_mutex);
+		_timer.erase(in->tid());
+	}
+
+	mih::link_tuple_id link;
+	meta_message_ptr out(new meta_message());
+
+	*in >> mih::request(mih::request::link_configure_thresholds)
+		& mih::tlv_link_identifier(link);
+
+	// Send failure message to the user
+	ODTONE_LOG(1, "(mics) setting failure response to Link_Configure_Thresholds.request");
+	*out << mih::response(mih::response::link_configure_thresholds)
+	    & mih::tlv_status(mih::status_failure)
+	    & mih::tlv_link_identifier(link);
+
+	out->tid(in->tid());
+	out->destination(in->source());
+	out->source(mihfid);
+
+	_transmit(out);
+}
+
+/**
  * Link Configure Thresholds Request message handler.
  *
  * @param in The input message.
@@ -272,7 +352,7 @@ bool command_service::link_get_parameters_confirm(meta_message_ptr &in,
 bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 							meta_message_ptr &out)
 {
-	ODTONE_LOG(1, "(mics) received a Link_Configure_Thresholds.request from",
+	ODTONE_LOG(1, "(mics) received a Link_Configure_Thresholds.request from ",
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
@@ -287,7 +367,7 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 		mih::link_tuple_id       lti;
 		mih::link_cfg_param_list lcpl;
 
-		*in >> mih::request()
+		*in >> mih::request(mih::request::link_configure_thresholds)
 		       & mih::tlv_link_identifier(lti)
 		       & mih::tlv_link_cfg_param_list(lcpl);
 		
@@ -298,18 +378,45 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 		out->source(in->source());
 		out->tid(in->tid());
 
-		uint16 fails = _link_abook.fail(out->destination().to_string());
-		if(fails == -1)
-			return false;
+		// If the Link SAP it is known continue
+		if (out->destination().to_string().compare("") == 0) {
+			*out << mih::response(mih::response::link_configure_thresholds)
+				& mih::tlv_status(mih::status_failure)
+				& mih::tlv_link_identifier(lti);
 
-		if(fails <= kConf_MIHF_Link_Delete_Value) {
+			out->tid(in->tid());
+			out->source(mihfid);
+			out->destination(in->source());
+
+			ODTONE_LOG(1, "(mies) forwarding Link_Configure_Thresholds.response to ",
+				out->destination().to_string());
+
+			return true;
+		}
+
+		// Check if the Link SAP is still active
+		uint16 fails = _link_abook.fail(out->destination().to_string());
+		if(fails > kConf_MIHF_Link_Delete_Value) {
+			mih::octet_string dst = out->destination().to_string();
+			_link_abook.inactive(dst);
+
+			// Update MIHF capabilities
+			utils::update_local_capabilities(_abook, _link_abook);
+		} else {
 			ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.request to ",
 			    out->destination().to_string());
 			utils::forward_request(out, _lpool, _transmit);
-		}
-		else {
-			mih::octet_string dst = out->destination().to_string();
-			_link_abook.del(dst);
+
+			// Set the timer that will be responsible for sending a failure
+			// response if necessary
+			boost::shared_ptr<boost::asio::deadline_timer> timer = boost::make_shared<boost::asio::deadline_timer>(_io);
+			timer->expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
+			timer->async_wait(boost::bind(&command_service::link_configure_thresholds_response_timeout, this, _1, in));
+
+			{
+				boost::mutex::scoped_lock lock(_mutex);
+				_timer[in->tid()] = timer;
+			}
 		}
 
 		return false;
@@ -360,13 +467,19 @@ bool command_service::link_configure_thresholds_confirm(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mics) received Link_Configure_Thresholds.confirm from ",
 	    in->source().to_string());
 
-	if(!_lpool.set_user_tid(in)) {
+	_link_abook.reset(in->source().to_string());
+
+	out->source(in->source());
+	if (!_lpool.set_user_tid(out)) {
 		ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
 		    "discarding it");
 		return false;
 	}
 
-	_link_abook.reset(in->source().to_string());
+	{
+		boost::mutex::scoped_lock lock(_mutex);
+		_timer.erase(in->tid());
+	}
 
 	mih::status st;
 	boost::optional<mih::link_cfg_status_list> lcsl;
@@ -379,28 +492,38 @@ bool command_service::link_configure_thresholds_confirm(meta_message_ptr &in,
 		& mih::tlv_status(st)
 		& mih::tlv_link_cfg_status_list(lcsl);
 
-	*in << mih::response(mih::response::link_configure_thresholds)
+	*out << mih::response(mih::response::link_configure_thresholds)
 		& mih::tlv_status(st)
 		& mih::tlv_link_identifier(li)
 		& mih::tlv_link_cfg_status_list(lcsl);
 
-	in->source(mihfid);
+	out->source(mihfid);
 
-	ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.confirm to ", in->destination().to_string());
+	ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.confirm to ", out->destination().to_string());
 
-	_transmit(in);
+	_transmit(out);
 
 	return false;
 }
 
 /**
- * Handler responsible for processing the received Link Action
- * responses from Link SAPs.
+ * Handler responsible for setting a failure Link Action
+ * responses.
  *
+ * @param ec Error code.
  * @param in The input message.
  */
-void command_service::link_actions_response_handler(meta_message_ptr &in)
+void command_service::link_actions_response_handler(const boost::system::error_code &ec,
+													meta_message_ptr &in)
 {
+	if(ec)
+		return;
+
+	{
+		boost::mutex::scoped_lock lock(_mutex);
+		_timer.erase(in->tid());
+	}
+
 	mih::status st = mih::status_failure;
 	mih::link_action_rsp_list larl;
 	mih::link_action_rsp      lar;
@@ -411,15 +534,7 @@ void command_service::link_actions_response_handler(meta_message_ptr &in)
 	std::vector<mih::octet_string> ids = _link_abook.get_ids();
 	std::vector<mih::octet_string>::iterator it_link;
 	for(it_link = ids.begin(); it_link != ids.end(); it_link++) {
-		// Delete unanswered Link SAP from known Link SAPs list
-		if(!_lrpool.check(in->tid(), *it_link)) {
-			_lpool.del(*it_link, in->tid());
-
-			uint16 fails = _link_abook.fail(*it_link);
-			if(fails >= kConf_MIHF_Link_Delete_Value && fails != -1) {
-				_link_abook.del(*it_link);
-			}
-		} else {
+		if(_lrpool.check(in->tid(), *it_link)) {
 			// fill LinkActionsResultList
 			link_entry a;
 			mih::link_id lid;
@@ -433,31 +548,28 @@ void command_service::link_actions_response_handler(meta_message_ptr &in)
 			pending_link_response tmp = _lrpool.find(in->tid(), *it_link);
 			_lrpool.del(in->tid(), *it_link);
 
-			if(tmp.action.link_ac_result.is_initialized()) {
-				if(tmp.action.link_scan_rsp_list.is_initialized()) {
-					lar.scan_list = tmp.action.link_scan_rsp_list.get();
-				}
-				lar.result = tmp.action.link_ac_result.get();
-				larl.push_back(lar);
-				
-				// If one or more responses are successful the status
-				// is set to success
-				st = mih::status_success;
-			} else {
-				mih::null null;
-				lar.scan_list = null;
+			action& ac = boost::get<action>(tmp.response);
+
+			if(ac.link_scan_rsp_list.is_initialized()) {
+				lar.scan_list = ac.link_scan_rsp_list.get();
 			}
+			lar.result = ac.link_ac_result.get();
+			larl.push_back(lar);
+
+			// If one or more responses are successful the status
+			// is set to success
+			st = mih::status_success;
 		}
 	}
 
 	// Send Link_Actions.confirm to the user
-	ODTONE_LOG(1, "(mism) setting response to Link_Actions.request");
-	
 	if(st == mih::status_success) {
+		ODTONE_LOG(1, "(mics) setting response to Link_Actions.request");
 		*out << mih::response(mih::response::link_actions)
 		    & mih::tlv_status(st)
 		    & mih::tlv_link_action_rsp_list(larl);
 	} else {
+		ODTONE_LOG(1, "(mics) setting failure response to Link_Actions.request");
 		*out << mih::response(mih::response::link_actions)
 		    & mih::tlv_status(st);
 	}
@@ -466,6 +578,9 @@ void command_service::link_actions_response_handler(meta_message_ptr &in)
 	out->destination(in->source());
 	out->source(mihfid);
 
+	out->ip(in->ip());
+	out->scope(in->scope());
+	out->port(in->port());
 	_transmit(out);
 }
 
@@ -479,7 +594,7 @@ void command_service::link_actions_response_handler(meta_message_ptr &in)
 bool command_service::link_actions_request(meta_message_ptr &in,
 										   meta_message_ptr &out)
 {
-	ODTONE_LOG(1, "(mics) received a Link_Actions.request from",
+	ODTONE_LOG(1, "(mics) received a Link_Actions.request from ",
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
@@ -492,7 +607,7 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 		//
 		mih::link_action_list lal;
 
-		*in >> mih::request()
+		*in >> mih::request(mih::request::link_actions)
 		       & mih::tlv_link_action_list(lal);
 
 		// For each Link_ID in request message
@@ -500,29 +615,50 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 		for(lar = lal.begin(); lar != lal.end(); lar++) {
 			out->destination(mih::id(_link_abook.search_interface((*lar).id.type, (*lar).id.addr)));
 			// If the Link SAP it is known send message
-			if (out->destination().to_string().compare("")) {
-				mih::link_addr* a = boost::get<mih::link_addr>(&(*lar).addr);
-				if (a && ((*lar).action.attr.get(mih::link_ac_attr_data_fwd_req)) ) {
-					*out << mih::request(mih::request::link_actions)
-								& mih::tlv_link_action((*lar).action)
-								& mih::tlv_time_interval((*lar).ex_time)
-								& mih::tlv_poa(*a);
-				}
-				else {
-					*out << mih::request(mih::request::link_actions)
-								& mih::tlv_link_action((*lar).action)
-								& mih::tlv_time_interval((*lar).ex_time);
-				}
+			if (out->destination().to_string().compare("") != 0) {
+				// Check if the Link SAP is still active
+				uint16 fails = _link_abook.fail(out->destination().to_string());
+				if(fails > kConf_MIHF_Link_Delete_Value) {
+					mih::octet_string dst = out->destination().to_string();
+					_link_abook.inactive(dst);
 
-				utils::forward_request(out, _lpool, _transmit);
+					// Update MIHF capabilities
+					utils::update_local_capabilities(_abook, _link_abook);
+				} else {
+					mih::link_addr* a = boost::get<mih::link_addr>(&(*lar).addr);
+					if (a && ((*lar).action.attr.get(mih::link_ac_attr_data_fwd_req)) ) {
+						*out << mih::request(mih::request::link_actions)
+									& mih::tlv_link_action((*lar).action)
+									& mih::tlv_time_interval((*lar).ex_time)
+									& mih::tlv_poa(*a);
+					} else {
+						*out << mih::request(mih::request::link_actions)
+									& mih::tlv_link_action((*lar).action)
+									& mih::tlv_time_interval((*lar).ex_time);
+					}
+
+					out->tid(in->tid());
+					out->source(mihfid);
+
+					ODTONE_LOG(1, "(mics) forwarding Link_Actions.request to ",
+						out->destination().to_string());
+					utils::forward_request(out, _lpool, _transmit);
+				}
 			}
 		}
 
-		// Lauched the thread responsible for respond to the link actions request
-		_timer.expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
-		_timer.async_wait(boost::bind(&command_service::link_actions_response_handler, this, in));
+		// Set the timer that will be responsible for aggregate and
+		// response to this resquest
+		boost::shared_ptr<boost::asio::deadline_timer> timer = boost::make_shared<boost::asio::deadline_timer>(_io);
+		timer->expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
+		timer->async_wait(boost::bind(&command_service::link_actions_response_handler, this, _1, in));
 
-		// Do not respond to the request. The thread lauched will be
+		{
+			boost::mutex::scoped_lock lock(_mutex);
+			_timer[in->tid()] = timer;
+		}
+
+		// Do not respond to the request. The thread response handler will be
 		// responsible for that.
 		return false;
 	} else {
@@ -571,20 +707,24 @@ bool command_service::link_actions_confirm(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mics) received Link_Actions.confirm from ",
 	    in->source().to_string());
 
+	_link_abook.reset(in->source().to_string());
+
 	if(_lpool.set_user_tid(in)) {
 		mih::status st;
 		boost::optional<mih::link_scan_rsp_list> lsrl;
 		boost::optional<mih::link_ac_result> lar;
 
-		*in >> mih::confirm()
+		*in >> mih::confirm(mih::confirm::link_actions)
 		       & mih::tlv_status(st)
 		       & mih::tlv_link_scan_rsp_list(lsrl)
 		       & mih::tlv_link_ac_result(lar);
 
-		_lrpool.add(in->source().to_string(),
-			       in->tid(),
-			       lsrl,
-			       lar);
+		if(st == mih::status_success) {
+			_lrpool.add(in->source().to_string(),
+					   in->tid(),
+					   lsrl,
+					   lar.get());
+		}
 
 		return false;
 	}
@@ -597,7 +737,7 @@ bool command_service::link_actions_confirm(meta_message_ptr &in,
 /**
  * Currently command service handover related messages are handled by
  * a single MIH-user. If this MIHF is the destination of the message,
- * forward it to the MIH-User with mobility function.
+ * forward it to the MIH-User with mobility role.
  *
  * @param recv_msg The receive message output.
  * @param send_msg The send message output.
@@ -616,8 +756,14 @@ bool command_service::generic_command_request(const char *recv_msg,
 		//
 		// Kick this message to MIH User for handover as an indication
 		//
+		boost::optional<mih::octet_string> mob_user = _user_abook.mobility_user();
+		if(!mob_user.is_initialized()) {
+			ODTONE_LOG(1, "There are no mobility MIH-users known by the MIHF");
+			return false;
+		}
+
 		in->opcode(mih::operation::indication);
-		in->destination(mih::id(_user_abook.handover_user()));
+		in->destination(mih::id(mob_user.get()));
 		//
 		// source identifier is the remote MIHF
 		//

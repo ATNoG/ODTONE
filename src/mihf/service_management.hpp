@@ -5,8 +5,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -25,6 +25,7 @@
 #include "local_transaction_pool.hpp"
 #include "transmit.hpp"
 #include "meta_message.hpp"
+#include "discover_service.hpp"
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 ///////////////////////////////////////////////////////////////////////////////
@@ -40,8 +41,8 @@ public:
 	/**
 	 * Construct the service management.
 	 *
-	 * @param io The io_service object that Link SAP I/O Service will use to
-	 * dispatch handlers for any asynchronous operations performed on
+	 * @param io The io_service object that service management module will
+	 * use to dispatch handlers for any asynchronous operations performed on
 	 * the socket.
 	 * @param lpool The local transaction pool module.
 	 * @param link_abook The link book module.
@@ -49,8 +50,7 @@ public:
 	 * @param address_abook The address book module.
 	 * @param t The transmit module.
 	 * @param lrpool The link response pool module.
-	 * @param enable_broadcast True if response to broadcast to
-	 *                          Capability_Discover.request is enable or false otherwise.
+	 * @param enable_unsolicited Allows unsolicited discovery.
 	 */
 	service_management(io_service &io,
 			   local_transaction_pool &lpool,
@@ -59,7 +59,7 @@ public:
 			   address_book &address_book,
 			   transmit &t,
 			   link_response_pool &lrpool,
-			   bool enable_broadcast = false);
+			   bool enable_unsolicited);
 
 	/**
 	 * Capability Discover Request message handler.
@@ -111,7 +111,7 @@ public:
 	bool user_register_indication(meta_message_ptr &in,
 	                              meta_message_ptr &out);
 
-private:
+protected:
 	/**
 	 * Asks for the capabilities of all local Link SAPs.
 	 *
@@ -119,18 +119,44 @@ private:
 	 * @param out The output message.
 	 * @return Always false, because it does not send any response directly.
 	 */
-	bool forward_to_link_capability_discover_request(meta_message_ptr &in,
-													 meta_message_ptr &out);
+	bool link_capability_discover_request(meta_message_ptr &in,
+										  meta_message_ptr &out);
 
 	/**
-	 * Handler responsible for processing the received Link Capability Discover
-	 * responses from Link SAPs.
+	 * Piggyback local MIHF Capabilities in request message.
 	 *
 	 * @param in input message.
+	 * @param out output message.
 	 */
-	void link_capability_discover_response_handler(meta_message_ptr &in);
+	void piggyback_capabilities(meta_message_ptr& in, meta_message_ptr& out);
 
-protected:
+	/**
+	 * Parse all capabilities from MIH Capability Discover message and stores
+	 * them.
+	 *
+	 * @param in input message.
+	 * @param out output message.
+	 */
+	void get_capabilities(meta_message_ptr& in, meta_message_ptr& out);
+
+	/**
+	 * Set response to MIH Capability Discover message.
+	 *
+	 * @param in input message.
+	 * @param out output message.
+	 */
+	void set_capability_discover_response(meta_message_ptr& in,
+										  meta_message_ptr& out);
+
+	/**
+	 * Send Capability Discover Indication message to all MIH Users.
+	 *
+	 * @param in input message.
+	 * @param out output message.
+	 */
+	void send_indication(meta_message_ptr& in, meta_message_ptr& out);
+
+private:
 	local_transaction_pool	&_lpool;		/**< Local transaction pool module.	*/
 	link_book				&_link_abook;	/**< Link book module.				*/
 	user_book				&_user_abook;	/**< User book module.				*/
@@ -138,9 +164,8 @@ protected:
 	transmit				&_transmit;		/**< Transmit book module.			*/
 	link_response_pool		&_lrpool;		/**< Link response pool module.		*/
 
-	boost::asio::deadline_timer _timer;		/**< Multiple Link SAP requests timer.*/
-
-	bool _enable_broadcast;	/**< Set to true if this MIHF responds to broadcast messages.*/
+	bool				_enable_unsolicited;/**< Allows unsolicited discovery.	*/
+	discover_service	_discover;			/**< Discovery service module.		*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

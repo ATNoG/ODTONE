@@ -1,11 +1,11 @@
-//=============================================================================
+//==============================================================================
 // Brief   : MIH User SAP IO Service
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -33,7 +33,7 @@ namespace ip = boost::asio::ip;
  * void(odtone::mih::message&, const boost::system::error_code&).
  *
  * @param cfg Configuration parameters.
- * @param io The io_service object that Link SAP I/O Service will use to
+ * @param io The io_service object that MIH-User SAP I/O Service will use to
 	         dispatch handlers for any asynchronous operations performed on
 	         the socket.
  * @param h Message processing handler.
@@ -61,7 +61,7 @@ user::user(const mih::config& cfg, boost::asio::io_service& io, const handler& h
  * The signature of the callback is:
  * void(odtone::mih::message&, const boost::system::error_code&).
  *
- * @param io The io_service object that Link SAP I/O Service will use to
+ * @param io The io_service object that MIH-User SAP I/O Service will use to
  * dispatch handlers for any asynchronous operations performed on
  * the socket.
  * @param h Message processing handler.
@@ -166,11 +166,15 @@ void user::recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system:
 				handler h;
 
 				get_handler(fm->tid(), h);
-				if (h)
+				if (h) {
 					h(pm, ec);
-				else
+				// Unsolicited MIH capability discover reception
+				} else if(fm->sid() == mih::service::management &&
+				        fm->aid() == mih::action::capability_discover) {
+					_handler(pm, ec);
+				} else {
 					_handler(pm, boost::system::errc::make_error_code(boost::system::errc::bad_message));
-
+				}
 			} else if (fm->opcode() != mih::operation::indication) {
 				_handler(pm, boost::system::errc::make_error_code(boost::system::errc::bad_message));
 			} else {

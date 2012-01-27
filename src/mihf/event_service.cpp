@@ -5,8 +5,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -31,23 +31,69 @@
 #include <odtone/mih/indication.hpp>
 #include <odtone/mih/tlv_types.hpp>
 
+#include <boost/make_shared.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
+extern odtone::uint16 kConf_MIHF_Link_Response_Time_Value;
 extern odtone::uint16 kConf_MIHF_Link_Delete_Value;
 
 namespace odtone { namespace mihf {
+
 /**
  * Construct the event service.
  *
+ * @param io The io_service object that event service module will use to
+ * dispatch handlers for any asynchronous operations performed on
+ * the socket.
  * @param lpool The local transaction pool module.
  * @param t The transmit module.
- * @param link_abook The link book module.
+ * @param abook The address book module.
+ * @param lbook The link book module.
  */
-event_service::event_service(local_transaction_pool &lpool, transmit &t, link_book &lbook)
-	: _lpool(lpool),
+event_service::event_service(io_service &io, local_transaction_pool &lpool,
+							 transmit &t, address_book &abook, link_book &lbook)
+	: _io(io),
+	  _lpool(lpool),
 	  _transmit(t),
+	  _abook(abook),
 	  _link_abook(lbook)
 {
+}
+
+/**
+ * Handler responsible for setting a failure Link Event Subscribe
+ * response.
+ *
+ * @param ec Error code.
+ * @param in The input message.
+ */
+void event_service::link_event_subscribe_response_timeout(const boost::system::error_code &ec, meta_message_ptr &in)
+{
+	if(ec)
+		return;
+
+	{
+		boost::mutex::scoped_lock lock(_mutex);
+		_timer.erase(in->tid());
+	}
+
+	mih::link_tuple_id link;
+	meta_message_ptr out(new meta_message());
+
+	*in >> mih::request(mih::request::event_subscribe)
+		& mih::tlv_link_identifier(link);
+
+	// Send failure message to the user
+	ODTONE_LOG(1, "(mism) setting failure response to Link_Event_Subscribe.request");
+	*out << mih::response(mih::response::event_subscribe)
+	    & mih::tlv_status(mih::status_failure)
+	    & mih::tlv_link_identifier(link);
+
+	out->tid(in->tid());
+	out->destination(in->source());
+	out->source(mihfid);
+
+	_transmit(out);
 }
 
 /**
@@ -71,9 +117,13 @@ mih::status event_service::subscribe(const mih::id &user,
 	for(int i = 0; i < 32; i++) {
 		if (events.get((mih::event_list_enum) i)) {
 			reg.event = (mih::event_list_enum) i;
-			_event_subscriptions.push_back(reg);
-			ODTONE_LOG(3, "(mies) added subscription ", reg.user,
-			    ":", reg.link.addr, ":", reg.event);
+			std::list<event_registration_t>::iterator tmp;
+			tmp = std::find(_event_subscriptions.begin(), _event_subscriptions.end(), reg);
+			if (tmp == _event_subscriptions.end()) {
+				_event_subscriptions.push_back(reg);
+				ODTONE_LOG(3, "(mies) added subscription ", reg.user,
+					":", reg.link.addr, ":", reg.event);
+			}
 		}
 	}
 
@@ -119,13 +169,15 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 		return true;
 	}
 
-	// If the MIHF already subscribed the requested events with Link SAP
-	std::map<mih::octet_string, mih::event_list>::iterator it = _link_subscriptions.find(link_id);
 	mih::event_list event_tmp;
-	if(it != _link_subscriptions.end()) {
-		event_tmp = it->second;
-	}
+	{
+		boost::mutex::scoped_lock lock(_link_mutex);
 
+		// If the MIHF already subscribed the requested events with Link SAP
+		std::map<mih::octet_string, mih::event_list>::iterator it = _link_subscriptions.find(link_id);
+		if(it != _link_subscriptions.end())
+			event_tmp = it->second;
+	}
 	event_tmp.common(events);
 	if(events == event_tmp) {
 		mih::status st = subscribe(in->source(), link, events);
@@ -156,26 +208,34 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 		out->destination(mih::id(link_id));
 		out->source(in->source());
 		out->tid(in->tid());
-		_lpool.add(out);
-		out->source(mihfid);
 
+		// Check if the Link SAP is still active
 		uint16 fails = _link_abook.fail(out->destination().to_string());
-		if(fails == -1)
-			return false;
+		if(fails > kConf_MIHF_Link_Delete_Value) {
+			mih::octet_string dst = out->destination().to_string();
+			_link_abook.inactive(dst);
 
-		if(fails <= kConf_MIHF_Link_Delete_Value) {
+			// Update MIHF capabilities
+			utils::update_local_capabilities(_abook, _link_abook);
+		} else {
 			ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.request to ",
 			    out->destination().to_string());
-			_transmit(out);
-		}
-		else {
-			mih::octet_string dst = out->destination().to_string();
-			_link_abook.del(dst);
+			utils::forward_request(out, _lpool, _transmit);
+
+			// Set the timer that will be responsible for sending a failure
+			// response if necessary
+			boost::shared_ptr<boost::asio::deadline_timer> timer = boost::make_shared<boost::asio::deadline_timer>(_io);
+			timer->expires_from_now(boost::posix_time::milliseconds(kConf_MIHF_Link_Response_Time_Value));
+			timer->async_wait(boost::bind(&event_service::link_event_subscribe_response_timeout, this, _1, in));
+
+			{
+				boost::mutex::scoped_lock lock(_mutex);
+				_timer[in->tid()] = timer;
+			}
 		}
 
 		return false;
 	}
-
 }
 
 /**
@@ -233,7 +293,6 @@ bool event_service::event_subscribe_response(meta_message_ptr &in,
 
 	// add a subscription
 	if (st == mih::status_success) {
-		// TODO: Optimize in order to have a mapping of subscriptions in peer MIHFs.
 		st = subscribe(mih::id(in->destination().to_string()), link, events.get());
 	}
 
@@ -269,10 +328,15 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 		return false;
 	}
 
-	mih::status        st;
+	{
+		boost::mutex::scoped_lock lock(_mutex);
+		_timer.erase(in->tid());
+	}
+
+	mih::status st;
 	boost::optional<mih::event_list>    events;
 
-	*in >> mih::confirm()
+	*in >> mih::confirm(mih::confirm::event_subscribe)
 		& mih::tlv_status(st)
 		& mih::tlv_event_list(events);
 
@@ -281,16 +345,20 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 	link.addr = _link_abook.get(in->source().to_string()).link_id.addr;
 
 	if(st == mih::status_success) {
-		*out << mih::confirm(mih::confirm::event_subscribe)
+		*out << mih::response(mih::response::event_subscribe)
 			& mih::tlv_status(st)
 			& mih::tlv_link_identifier(link)
 			& mih::tlv_event_list(events);
 
 		// add a subscription
-		_link_subscriptions[out->source().to_string()].merge(events.get());
+		{
+			boost::mutex::scoped_lock lock(_link_mutex);
+
+			_link_subscriptions[out->source().to_string()].merge(events.get());
+		}
 		st = subscribe(mih::id(out->destination().to_string()), link, events.get());
 	} else {
-		*out << mih::confirm(mih::confirm::event_subscribe)
+		*out << mih::response(mih::response::event_subscribe)
 				& mih::tlv_status(st)
 				& mih::tlv_link_identifier(link);
 	}
@@ -334,7 +402,11 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
 	// Check which events can be unsubscribed with Link SAP
 	bool send_msg = false;
 	mih::octet_string link_id = _link_abook.search_interface(link.type, link.addr);
-	mih::event_list link_event = _link_subscriptions.find(link_id)->second;
+	mih::event_list link_event;
+	{
+		boost::mutex::scoped_lock lock(_link_mutex);
+		link_event = _link_subscriptions.find(link_id)->second;
+	}
 	for(int i = 0; i < 32; i++) {
 		if((events.get((mih::event_list_enum) i) == link_event.get((mih::event_list_enum) i)) &&
 		   (el.get((mih::event_list_enum) i) != events.get((mih::event_list_enum) i))) {
@@ -347,6 +419,7 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
 	}
 
 	// Only send message to Link SAP if there is any event to unsubscribed
+	// with it
 	if(send_msg)
 	{
 		*in << mih::request(mih::request::event_unsubscribe)
@@ -356,17 +429,19 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
 		in->destination(mih::id(link_id));
 		in->source(mihfid);
 
+		// Check if the Link SAP is still active
 		uint16 fails = _link_abook.fail(in->destination().to_string());
-		if(fails != -1) {
-			if(fails <= kConf_MIHF_Link_Delete_Value) {
-				ODTONE_LOG(1, "(mies) forwarding Event_Unsubscribe.request to ",
-				    in->destination().to_string());
-				_transmit(in);
-			}
-			else {
-				mih::octet_string dst = in->destination().to_string();
-				_link_abook.del(dst);
-			}
+		if(fails > kConf_MIHF_Link_Delete_Value) {
+			mih::octet_string dst = in->destination().to_string();
+			_link_abook.inactive(dst);
+
+			// Update MIHF capabilities
+			utils::update_local_capabilities(_abook, _link_abook);
+		}
+		else {
+			ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.request to ",
+			    in->destination().to_string());
+			utils::forward_request(in, _lpool, _transmit);
 		}
 	}
 }
@@ -493,7 +568,7 @@ bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 	boost::optional<mih::event_list> events;
 
 	// parse incoming message to (event_registration_t) reg
-	*in >>  mih::response()
+	*in >>  mih::response(mih::response::event_unsubscribe)
 		& mih::tlv_status(st)
 		& mih::tlv_link_identifier(link)
 		& mih::tlv_event_list(events);
@@ -507,7 +582,7 @@ bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 	    in->destination().to_string());
 
 	// forward to user
-	in->opcode(mih::operation::confirm);
+	in->opcode(mih::operation::response);
 	_transmit(in);
 
 	return false;
@@ -528,11 +603,18 @@ bool event_service::event_unsubscribe_confirm(meta_message_ptr &in,
 
 	_link_abook.reset(in->source().to_string());
 
+	// do we have a request from a user?
+	if (!_lpool.set_user_tid(in)) {
+		ODTONE_LOG(1, "(mies) warning: no local transaction for this msg ",
+		    "discarding it");
+		return false;
+	}
+
 	mih::status	st;
 	boost::optional<mih::event_list> events;
 
 	// parse incoming message to (event_registration_t) reg
-	*in >> mih::confirm()
+	*in >> mih::confirm(mih::confirm::event_unsubscribe)
 		& mih::tlv_status(st)
 		& mih::tlv_event_list(events);
 
@@ -540,6 +622,7 @@ bool event_service::event_unsubscribe_confirm(meta_message_ptr &in,
 		// Update events subscribed information
 		for(int i = 0; i < 32; i++) {
 			if(events.get().get((mih::event_list_enum)i) == true) {
+				boost::mutex::scoped_lock lock(_link_mutex);
 				_link_subscriptions[in->source().to_string()].clear((mih::event_list_enum)i);
 			}
 		}
@@ -573,7 +656,7 @@ void event_service::msg_forward(meta_message_ptr &msg,
 	    it != _event_subscriptions.end();
 	    it++, i++) {
 		if ((it->event == event) && (it->link == li)) {
-			ODTONE_LOG(3, i, " (mies) found registration of user: ",
+			ODTONE_LOG(3, "(mies) found registration of user: ",
 			    it->user, " for event type ", event);
 			msg->destination(mih::id(it->user));
 			_transmit(msg);
@@ -612,7 +695,8 @@ bool event_service::link_up_indication(meta_message_ptr &in, meta_message_ptr &o
 	ODTONE_LOG(1, "(mies) received Link_Up.indication from ",
 	    in->source().to_string());
 
-	_link_abook.reset(in->source().to_string());
+	if(in->is_local())
+		_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_up);
 
@@ -632,7 +716,8 @@ bool event_service::link_down_indication(meta_message_ptr &in, meta_message_ptr 
 	ODTONE_LOG(1, "(mies) received Link_Down.indication from ",
 	    in->source().to_string());
 
-	_link_abook.reset(in->source().to_string());
+	if(in->is_local())
+		_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_down);
 
@@ -702,7 +787,8 @@ bool event_service::link_going_down_indication(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mies) received Link_Going_Down.indication from ",
 	    in->source().to_string());
 
-	_link_abook.reset(in->source().to_string());
+	if(in->is_local())
+		_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_going_down);
 
@@ -722,7 +808,8 @@ bool event_service::link_parameters_report_indication(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mies) received Link_Parameters_Report.indication from ",
 	    in->source().to_string());
 
-	_link_abook.reset(in->source().to_string());
+	if(in->is_local())
+		_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_parameters_report);
 
@@ -742,7 +829,8 @@ bool event_service::link_handover_imminent_indication(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mies) received Link_Handover_Imminent.indication from ",
 	    in->source().to_string());
 
-	_link_abook.reset(in->source().to_string());
+	if(in->is_local())
+		_link_abook.reset(in->source().to_string());
 
 	std::list<event_registration_t>::iterator it;
 	int i = 0; // for logging purposes
@@ -777,7 +865,8 @@ bool event_service::link_handover_complete_indication(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mies) received Link_Handover_Complete.indication from ",
 	    in->source().to_string());
 
-	_link_abook.reset(in->source().to_string());
+	if(in->is_local())
+		_link_abook.reset(in->source().to_string());
 
 	mih::link_tuple_id oli;
 	mih::link_tuple_id nli;
@@ -839,7 +928,8 @@ bool event_service::link_pdu_transmit_status_indication(meta_message_ptr &in,
 	ODTONE_LOG(1, "(mies) received Link_PDU_Transmit_Status.indication from ",
 	    in->source().to_string());
 
-	_link_abook.reset(in->source().to_string());
+	if(in->is_local())
+		_link_abook.reset(in->source().to_string());
 
 	link_event_forward(in, mih::link_pdu_transmit_status);
 

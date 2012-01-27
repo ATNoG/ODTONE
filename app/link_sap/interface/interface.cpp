@@ -1,11 +1,11 @@
-//=============================================================================
+//==============================================================================
 // Brief   : Generic Network Interface
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -46,7 +46,7 @@ static void interface_disposer(interface* p)
  * @param type The interface technology type. 
  */
 interface::interface(if_id const& id, odtone::mih::link_type type)
-	: _id(id), _type(type)
+	: _type(type), _id(id)
 {
 }
 

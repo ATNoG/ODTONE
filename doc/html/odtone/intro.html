@@ -3,10 +3,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Introduction</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../index.html" title="ODTONE 0.3">
-<link rel="up" href="../index.html" title="ODTONE 0.3">
-<link rel="prev" href="../index.html" title="ODTONE 0.3">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="ODTONE 0.4">
+<link rel="up" href="../index.html" title="ODTONE 0.4">
+<link rel="prev" href="../index.html" title="ODTONE 0.4">
 <link rel="next" href="getStart.html" title="Getting Started">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -76,30 +76,50 @@
       <a class="link" href="intro.html#odtone.intro.changes_in_this_release">Changes in this release</a>
     </h4>
 <p>
-      ODTONE 0.3 - Open Dot Twenty ONE.
+      <span class="bold"><strong>ODTONE 0.4 - Open Dot Twenty ONE.</strong></span>
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-          Added IPv4/IPv6 support.
+          Optimization of the local discovery:
+          <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+                Changes in the interface used by MIH-Users to register with the local
+                MIHF.
+              </li></ul></div>
         </li>
 <li class="listitem">
-          Added MIH Confirm Messages.
+          Implementation of mechanisms for discovering remote peer MIHFs:
+          <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+                DNS-User: discovery mechanims which uses DNS services;
+              </li>
+<li class="listitem">
+                DHCP-User: discovery mechanims which uses DHCP services.
+              </li>
+</ul></div>
         </li>
 <li class="listitem">
-          Added internal Link SAP/MIH User discovery mechanism.
+          Several bug-fixes.
         </li>
 <li class="listitem">
-          Added support for multiple Link SAPs.
+          Fix compilation with more recent gcc version.
         </li>
 <li class="listitem">
-          MIHF capabilities are configured at Link SAPs.
+          Provision of a new Link SAP example: this new Link SAP uses the ICMP protocol
+          to detect the attachment of another node.
         </li>
 <li class="listitem">
-          Fixed MIH Protocol state machines.
+          Definition of new messages in the client application.
         </li>
 <li class="listitem">
-          New documentation: general documentation and incode documentation (that
-          could be generated with Doxygen).
+          Provision of a new library named NET library: it defines a set of classes
+          which offer several network protocols and terminology support.
+        </li>
+<li class="listitem">
+          Response timers: all messages are associated with a timer. which replies
+          with a failure message in case of timeout.
+        </li>
+<li class="listitem">
+          ODTONE documentation revision.
         </li>
 </ul></div>
 </div>

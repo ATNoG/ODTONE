@@ -5,8 +5,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -74,6 +74,17 @@ public:
 	bool operator==(const id& other) const
 	{
 		return (_id.compare(other.to_string()) == 0);
+	}
+
+	/**
+	 * Check if the MIHF_ID is different of another MIHF_ID.
+	 *
+	 * @param other MIHF ID to compare with.
+	 * @return True if they are different or false otherwise.
+	 */
+	bool operator!=(const id& other) const
+	{
+		return (_id.compare(other.to_string()) != 0);
 	}
 
 	/**

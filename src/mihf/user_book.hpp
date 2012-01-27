@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -20,7 +20,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
-#include <odtone/mih/types/capabilities.hpp>
+#include <odtone/mih/types/odtone.hpp>
 
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
@@ -35,9 +35,10 @@ namespace odtone { namespace mihf {
  */
 struct user_entry
 {
-	mih::octet_string ip;					/**< IP address.		*/
-	uint16            port;					/**< Listening port.	*/
-	bool              mbbhandover_support;	/**< Handover support.	*/
+	mih::octet_string	ip;			/**< IP address.		*/
+	uint16				port;		/**< Listening port.	*/
+	mih::user_role		role;		/**< MIH-User role.		*/
+	uint8				priority;	/**< Role priority.		*/
 };
 
 /**
@@ -55,12 +56,28 @@ public:
 	 * @param id MIH-User MIH Identifier.
 	 * @param ip MIH-User IP address.
 	 * @param port MIH-User listening port.
-	 * @param mbbsupport MIH-User Handover support.
+	 * @param role MIH-User role.
 	 */
 	void add(const mih::octet_string &id,
 	         mih::octet_string &ip,
 	         uint16 port,
-	         bool mbbsupport);
+	         mih::user_role	role);
+
+	/**
+	 * Set the IP address of an existing MIH-User entry.
+	 *
+	 * @param id MIH-User MIH Identifier.
+	 * @param ip The IP address to set.
+	 */
+	void set_ip(const mih::octet_string &id, std::string ip);
+
+	/**
+	 * Set the port of an existing MIH-User entry.
+	 *
+	 * @param id MIH-User MIH Identifier.
+	 * @param port The port to set.
+	 */
+	void set_port(const mih::octet_string &id, uint16 port);
 
 	/**
 	 * Remove an existing MIH-User entry.
@@ -85,12 +102,38 @@ public:
 	const std::vector<mih::octet_string> get_ids();
 
 	/**
-	 * Get the MIH-User associated to the handover operations.
+	 * Get the MIH-User associated with the handover operations.
 	 *
-	 * @return The identifier of the MIH-User associated to the handover
+	 * @return The identifier of the MIH-User associated with the handover
 	 * operations.
 	 */
-	const mih::octet_string handover_user();
+	const boost::optional<mih::octet_string> mobility_user();
+
+	/**
+	 * Get the MIH-User associated with the information server operations.
+	 *
+	 * @return The identifier of the MIH-User associated with the information
+	 * server operations.
+	 */
+	const boost::optional<mih::octet_string> information_user();
+
+	/**
+	 * Get the MIH-User associated with the discovery operations.
+	 *
+	 * @return The identifier of the MIH-User associated with the discovery
+	 * operations.
+	 */
+	const boost::optional<mih::octet_string> discovery_user();
+
+	/**
+	 * Get the list of all known MIH-Users associated with the discovery
+	 * operations.
+	 *
+	 * @return The list of all known MIH-Users associated with the
+	 * discovery operations.
+	 */
+	const std::map<mih::octet_string, user_entry> get_discovery_users();
+
 private:
 
 	std::map<mih::octet_string, user_entry> _ubook;	/**< User book map.	*/

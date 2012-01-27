@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -33,11 +33,14 @@ namespace odtone { namespace mihf {
  *
  * @param lpool The local transaction pool module.
  * @param t The transmit module.
+ * @param user_abook The user book module.
  */
 information_service::information_service(local_transaction_pool &lpool,
-					 transmit &t)
+										 transmit &t,
+										 user_book &user_abook)
 	: _lpool(lpool),
-	  _transmit(t)
+	  _transmit(t),
+	  _user_abook(user_abook)
 {
 }
 
@@ -51,14 +54,21 @@ information_service::information_service(local_transaction_pool &lpool,
 bool information_service::get_information_request(meta_message_ptr &in,
 						  meta_message_ptr &out)
 {
-	ODTONE_LOG(1, "(miis) received a Get_Information.request from",
+	ODTONE_LOG(1, "(miis) received a Get_Information.request from ",
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
 		//
 		// Kick this message to Information Service.
 		//
-		in->destination(mih::id("miis"));
+		boost::optional<mih::octet_string> info_user = _user_abook.information_user();
+		if(!info_user.is_initialized()) {
+			ODTONE_LOG(1, "There are no information MIH-users known by the MIHF");
+			return false;
+		}
+
+
+		in->destination(mih::id(info_user.get()));
 		in->opcode(mih::operation::indication);
 		_lpool.add(in);
 		in->source(mihfid);
@@ -113,7 +123,7 @@ bool information_service::get_information_response(meta_message_ptr &in,
 bool information_service::push_information_request(meta_message_ptr &in,
 						   meta_message_ptr &out)
 {
-	ODTONE_LOG(1, "(miis) received a Get_Information.request from",
+	ODTONE_LOG(1, "(miis) received a Get_Information.request from ",
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
@@ -148,7 +158,7 @@ bool information_service::push_information_indication(meta_message_ptr &in,
 	    in->source().to_string());
 
 	if(!_lpool.set_user_tid(in)) {
-		ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
+		ODTONE_LOG(1, "(miis) warning: no local transaction for this msg ",
 		    "discarding it");
 
 		return false;

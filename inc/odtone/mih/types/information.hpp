@@ -5,8 +5,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -422,6 +422,7 @@ struct network_type {
 	 *
 	 * @param os ostream.
 	 * @param nt NETWORK_TYPE data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const network_type& nt)
 	{
@@ -568,6 +569,7 @@ struct net_type_addr {
 	 *
 	 * @param os ostream.
 	 * @param nta NET_TYPE_ADDR data type.
+	 * @return ostream reference.
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const net_type_addr& nta)
 	{

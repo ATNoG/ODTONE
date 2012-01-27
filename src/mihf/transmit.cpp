@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -26,7 +26,7 @@ namespace odtone { namespace mihf {
 /**
  * Construct a transmit module.
  *
- * @param io The io_service object that Link SAP I/O Service will use to
+ * @param io The io_service object that transmit module will use to
  * dispatch handlers for any asynchronous operations performed on
  * the socket.
  * @param user_abook The user book module.
@@ -36,12 +36,14 @@ namespace odtone { namespace mihf {
 transmit::transmit(io_service &io,
 		           user_book &user_abook,
 		           link_book &link_abook,
-		           message_out &msg_out)
+		           message_out &msg_out,
+				   uint16 port)
 	: _io(io),
 	  _user_abook(user_abook),
 	  _link_abook(link_abook),
 	  _msg_out(msg_out)
 {
+	_port = port;
 }
 
 /**
@@ -60,19 +62,18 @@ void transmit::operator()(meta_message_ptr& msg)
 			if(msg->opcode() == mih::operation::response) {
 				msg->opcode(mih::operation::confirm);
 			}
-			utils::udp_send(_io, msg, user.ip.c_str(), user.port);
+			utils::udp_send(_io, msg, user.ip.c_str(), user.port, _port);
 			ODTONE_LOG(1, "(transmit) sending local message to: ",
-			    msg->destination().to_string(), " ", user.ip, " ", user.port);
+			    msg->destination().to_string(), " : ", user.ip, " : ", user.port);
 		}
 		else {
 			link_entry link = _link_abook.get(msg->destination().to_string());
-			utils::udp_send(_io, msg, link.ip.c_str(), link.port);
+			utils::udp_send(_io, msg, link.ip.c_str(), link.port, _port);
 			ODTONE_LOG(1, "(transmit) sending local message to: ",
-			    msg->destination().to_string(), " ", link.ip, " ", link.port);
+			    msg->destination().to_string(), " : ", link.ip, " : ", link.port);
 		}
 	} catch (...) {
-		if(msg->opcode() == mih::operation::confirm)
-		{
+		if(msg->opcode() == mih::operation::confirm) {
 			msg->opcode(mih::operation::response);
 		}
 		ODTONE_LOG(1, "(transmit) forwarding to message_out");

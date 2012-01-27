@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -45,17 +45,19 @@ public:
 	/**
 	 * Construct a transmit module.
 	 *
-	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * @param io The io_service object that transmit module will use to
 	 * dispatch handlers for any asynchronous operations performed on
 	 * the socket.
 	 * @param user_abook The user book module.
 	 * @param link_abook The link book module.
 	 * @param msg_out The output message.
+	 * @param port Port used to send the messages.
 	 */
 	transmit(io_service &io,
 			 user_book &user_abook,
 			 link_book &link_abook,
-			 message_out &msg_out);
+			 message_out &msg_out,
+			 uint16 port);
 
 	/**
 	 * Send message to a local entity. If the output message destination is a peer
@@ -66,11 +68,11 @@ public:
 	void operator()(meta_message_ptr& msg);
 
 private:
-	io_service &_io;		/**< The io_service object.		*/
-	user_book &_user_abook;	/**< The user book module.		*/
-	link_book &_link_abook;	/**< The link book module.		*/
-	message_out &_msg_out;	/**< The message output module.	*/
-
+	io_service &_io;		/**< The io_service object.				*/
+	user_book &_user_abook;	/**< The user book module.				*/
+	link_book &_link_abook;	/**< The link book module.				*/
+	message_out &_msg_out;	/**< The message output module.			*/
+	uint16 _port;			/**< Port used to send the messages.	*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

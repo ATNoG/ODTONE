@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -134,7 +134,6 @@ public:
 
 		  _rsp_init_lbl_:
 			{
-				// ack = (new mih::message);
 				ack->ackreq(false);
 				ack->ackrsp(true);
 				ack->opcode((mih::operation::type)opcode);
@@ -142,6 +141,8 @@ public:
 				ack->mid(in->mid());
 				ack->source(my_mihf_id);
 				ack->destination(peer_mihf_id);
+				ack->ip(in->ip());
+				ack->port(in->port());
 
 				if (msg_out_avail)
 					goto _rsp_piggybacking_lbl_;

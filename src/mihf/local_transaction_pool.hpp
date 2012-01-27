@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -38,7 +38,8 @@ struct pending_transaction
 {
 	mih::octet_string	user;			/**< The MIH source identifier.			*/
 	mih::octet_string	destination;	/**< The MIH destination identifier.	*/
-	uint16              tid;			/**< The transaction identifier.		*/
+	uint16              ltid;			/**< The local transaction identifier.		*/
+	uint16              rtid;			/**< The remote transaction identifier.		*/
 };
 
 /**
@@ -60,21 +61,33 @@ public:
 	void add(meta_message_ptr& in);
 
 	/**
+	 * Set the remote transaction identifier related to a given local transaction.
+	 *
+	 * @param dst The identifier of the destination of the transaction.
+	 * @param ltid The local transaction identifier.
+	 * @param rtid The remote transaction identifier.
+	 */
+	void set_remote_tid(const mih::octet_string &dst, const uint16 ltid,
+	                    const uint16 rtid);
+
+	/**
 	 * Remove an existing entry from the Local Transaction Pool.
 	 *
 	 * @param id The MIH source identifier.
 	 * @param tid The transaction identifier.
+	 * @return True if removed or false otherwise.
 	 */
-	void del(const mih::octet_string user, uint16 tid);
+	bool del(const mih::octet_string user, uint16 tid);
 
 	/**
 	 * Searchs for a record in the Local Transaction Pool.
 	 *
 	 * @param from The MIH source identifier.
+	 * @param tid The MIH transaction identifier.
 	 * @return The list of active transaction from the given source.
 	 */
 	std::list<pending_transaction>::iterator
-	find(const mih::octet_string &from);
+	find(const mih::octet_string &from, uint16 tid);
 
 	/**
 	 * Check the existence of an active transaction. It also set the

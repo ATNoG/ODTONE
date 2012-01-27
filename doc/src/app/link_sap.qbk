@@ -4,8 +4,8 @@
  /------------------------------------------------------------------------------
  / ODTONE - Open Dot Twenty One
  /
- / Copyright (C) 2009-2011 Universidade Aveiro
- / Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+ / Copyright (C) 2009-2012 Universidade Aveiro
+ / Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
  /
  / This software is distributed under a license. The full license
  / agreement can be found in the file LICENSE in this distribution.
@@ -34,9 +34,10 @@ implementation use Windows SDK libraries.
 
 [$./images/link_sap_state_machine.png]
 
-At the bootstrap, the Link SAP will send a Link_Register.indication message
-to the MIHF. Then, it stays in a waiting state for messages from the
-its local MIHF and/or events from the network interfaces.
+At the bootstrap, the Link SAP will send a "Link_Register.indication" message
+to the MIHF in order to register itself with the MIHF. Then, it stays in a
+waiting state for messages from the its local MIHF and/or events
+from the network interfaces.
 
 When a change in the network interface is detected, the following method
 is called in order to process it:
@@ -117,8 +118,10 @@ based on the received requets.
 
 [section Running]
 
-There is no running recommendation for the Link SAP.
-Now you can trigger some events by just disconnecting, disabling or shutting down
+Before running the Link SAP, the local MIHF should already be running. Otherwise,
+the Link SAP will try to register with a non-exitent MIHF.
+
+You can trigger some events by just disconnecting, disabling or shutting down
 your network cable/interface or wireless card (according to what you configured).
 
 [endsect]

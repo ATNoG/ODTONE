@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -48,10 +48,12 @@ public:
 	 * Construct a meta message.
 	 *
 	 * @param ip The source IP address.
+	 * @param scope The scope ID.
 	 * @param port The source port.
 	 * @param fm The message frame from where extract the message data.
 	 */
-	meta_message(mih::octet_string ip, uint16 port, const mih::frame &fm);
+	meta_message(mih::octet_string ip, uint16 scope,
+	             uint16 port, const mih::frame &fm);
 
 	/**
 	 * Check if the message is from a local entity.
@@ -65,7 +67,14 @@ public:
 	 *
 	 * @return The IP address if the source of the message.
 	 */
-	const mih::octet_string& ip();
+	mih::octet_string& ip();
+
+	/**
+	 * Get the scope ID of the message.
+	 *
+	 * @return The scope ID of the message.
+	 */
+	uint16 scope();
 
 	/**
 	 * Get the port of the source of the message.
@@ -82,6 +91,13 @@ public:
 	void ip(const mih::octet_string &ip);
 
 	/**
+	 * Set the scope IP of the message.
+	 *
+	 * @param scope The scope IP of the message.
+	 */
+	void scope(uint16 scope);
+
+	/**
 	 * Set the port of the source of the message.
 	 *
 	 * @param p The port of the source of the message.
@@ -91,6 +107,7 @@ public:
 protected:
 	bool _local;			/**< True if message was sent from a local entity.	*/
 	mih::octet_string _ip;	/**< The IP address of the source of the message.	*/
+	uint16 _scope;			/**< The scope ID.									*/
 	uint16 _port;			/**< The port of the source of the message.			*/
 };
 

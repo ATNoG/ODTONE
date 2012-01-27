@@ -1,11 +1,11 @@
-//=============================================================================
+//==============================================================================
 // Brief   : Logging Facilities
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -30,7 +30,7 @@ namespace odtone {
  * @param log Logger to copy.
  */
 logger::logger(char const* const name, logger& log)
-	: _name(name), _lock(log._lock), _sink(log._sink), _level(log._level)
+	: _lock(log._lock), _name(name), _sink(log._sink), _level(log._level)
 {
 	ODTONE_ASSERT(name);
 }
@@ -43,7 +43,7 @@ logger::logger(char const* const name, logger& log)
  *             format output.
  */
 logger::logger(char const* const name, std::ostream& sink)
-	: _name(name), _lock(boost::make_shared<boost::mutex>()), _sink(sink), _level(0)
+	: _lock(boost::make_shared<boost::mutex>()), _name(name), _sink(sink), _level(0)
 {
 	ODTONE_ASSERT(name);
 }

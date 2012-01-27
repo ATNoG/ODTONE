@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -24,8 +24,8 @@ namespace odtone { namespace mihf {
 /**
  * Construct a transaction pool.
  *
- * @param io The io_service object that Link SAP I/O Service will use to
- * dispatch handlers for any asynchronous operations performed on
+ * @param io The io_service object that transaction pool module will
+ * use to dispatch handlers for any asynchronous operations performed on
  * the socket.
  */
 transaction_pool::transaction_pool(io_service &io)
