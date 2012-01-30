@@ -900,6 +900,131 @@ provided by ODTONE.
 [endsect]
 
 
+[section Sensor SAPs Support]
+
+[section Introduction]
+
+In this walkthrough we will demonstrate how to setup, deploy and run the Sensor SAP demo
+released on the ODTONE latest version using SunSPOTs.
+
+[endsect]
+
+[section Requirements]
+
+* Latest ODTONE version installed.
+* Java Open JDK 6 or later
+* Netbeans with SunSPOT Plugin
+* SunSPOTs with Yellow SDK version installed
+
+[endsect]
+
+[section Configuration]
+
+The ODTONE-MIHF configuration file:
+``
+	[mihf]
+	id = mihf1
+	local_port = 1025
+	remote_port = 4551
+	peers = mihf2 0.0.0.0 4552 udp
+	users = user 1234 mobility
+	links = sensor_sap 1235 Sensor sensoraddress
+	transport = udp
+``
+
+[endsect]
+
+[section Sterp-by-Step]
+
+#Connect the SunSPOT Basestation to your computer.
+
+#Make sure you have connectivity between your computer and the SunSPOT
+by opening the SpotManager and on the Sun SPOTs tab, click Refresh and
+make sure that in the dropdown list you basestation’s MAC address is
+selected.
+
+#Open the Netbeans IDE, go to File, Open Project and browse to the
+folder where you have your copy of the Dummy Sensor SAP. The NetbeansIDE
+should immediately recognize it as a Netbeans project so you should be
+able to select it and click “Open Project”. The Dummy Sensor SAP project
+is now open in your Netbeans IDE Projects navigator (at the left side of
+the IDE by default)
+
+#With your mouse’s right button click on top of the Dummy Sensor SAP project
+and click on “Run”.
+
+#The Dummy Sensor SAP is now being deployed to your Basestation and as soon
+as it is ready it will automatically run itself.
+
+#Now go to the ODTONE’s MIHF folter (../ODTONE/dist/odtone-mihf) and
+start the MIHF.
+
+#You can now run the Dummy Sensor MIH-User (../ODTONE/dist/mih_sensor_usr)
+and execute the demo.
+
+[endsect]
+
+[section Technical Walkthrough]
+
+The MIH User will subscribe the Sensor SAP for some events ([*A]), then it
+is going to configure some threshold values ([*B]), obtain current operation
+parameters ([*C]), request that an action be performed ([*D]), and then receive
+two events ([*E] and [*F]) for which it had subscribed to.
+
+[$./images/sensor_scenario.png]
+
+[h4 Event Subscription (A)]
+- In this message the TLV Parameter “RequestedMIHEventList” is configured so
+that Sensor_UP and Link_Parameter_Report events are subscribed.
+
+[h4 Threshold Configuration (B)]
+- The threshold configuration is set to trigger an action when the value of
+25 (not specified the type of sensor) is crossed above threshold.
+
+[h4 Operation Parameters (C)]
+- This message allows the user to retrieve the operation mode of the sensors.
+
+[h4 Actions (D)]
+- The Link actions message will request that the sensor returns a message with
+the sensor present readings.
+
+[h4 Events (E and F)]
+- These events are related to the subscription performed in (A).
+
+[endsect]
+
+[section Publications]
+
+* Marcelo Lebre, Daniel Corujo, Diogo Gomes, Rui L. Aguiar,
+"Context Transport Based on 802.21", Proc. 1 CNRS 2011 - Conference on Wireless
+Sensor Networks, Coimbra, Portugal, Mar 2011
+
+* Daniel Corujo, Marcelo Lebre, Diogo Gomes, Rui L. Aguiar,
+"Media Independent Transport Service for Ambient Intelligence", Proc. 2011
+Conferência sobre Redes de Computadores, Coimbra, Portugal, Nov 2011
+
+* Daniel Corujo, Marcelo Lebre, Diogo Gomes, Rui L. Aguiar,
+"A Framework for Flexible Sensor Information Dissemination", Proc. 2nd
+International Workshop on Interconnections of Wireless Sensor Networks,
+Barcelona, Spain, Jun 2011
+
+* Daniel Corujo, Marcelo Lebre, Diogo Gomes, Rui L. Aguiar, "Sensor Context
+Information for Energy-Efficient Optimization of Wireless Procedures ", Proc.
+22nd IEEE International Symposium on Personal, Indoor and Mobile Radio
+Communications (PIMRC), Toronto, Canada, Sep 2011
+
+* Daniel Corujo, Marcelo Lebre, Diogo Gomes, Rui L. Aguiar, "A Framework for
+the Connectivity of an Internet of Things", Proc. IEEE Sensors, Special
+Session: Ambient Intelligence Technologies & Applications Session, Limerick,
+Ireland, Oct 2011
+
+[endsect]
+
+[endsect]
+
+[endsect]
+
+
 [section:library Libraries]
 
 [variablelist
