@@ -67,6 +67,41 @@ For defining the default search domain the ['--user.domain] option should be use
 The use of the additional resource records presented in the DNS messages can be
 enable or disable using the ['--user.additional_rr] option.
 
+[h3 BIND configuration example]
+
+At the ['named.conf] file insert the next piece of code:
+
+``
+zone "odtone.test" IN {
+    type master;
+    file "/etc/bind/pri/odtone.dnszone";
+};
+``
+
+Then create a file named ['odtone.dnszone] which will include the next content:
+``
+$ORIGIN odtone.test.
+$TTL 1W
+@                       1D IN SOA       localhost. root.localhost. (
+                                        2006101001      ; serial
+                                        3H              ; refresh
+                                        15M             ; retry
+                                        1W              ; expiry
+                                        1D )            ; minimum
+
+                        1D IN NS        ns
+ns                      1D IN A         127.0.0.1
+
+
+_MIHIS._udp               1D SRV 0 0 4551 mos
+
+
+mos.odtone.test.      1D IN A         192.168.1.1
+odtone.test.          1D IN A         192.168.1.1
+odtone.test.          1D IN NAPTR 50 50 "s" "MIHIS+M2U" ""      _MIHIS._udp
+``
+
+
 [endsect]
 
 [section Running]
