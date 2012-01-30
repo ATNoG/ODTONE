@@ -489,182 +489,11 @@ primitives. Confirm primitives set the opcode to 0 (zero).
 
 [endsect]
 
-[section Local discovery]
-
-Due to the decoupled architecture of the MIHF and the local entities (i.e. Link SAPs and
-MIH-Users), it is necessary to configure these entities in the MIHF in order to know about its
-existence. They can be configured statically, by the user, or automatically, using a discovery
-mechanism. The static configuration can be very limited, and may fail when, for example, the
-MN activates/deactivates an interface or even hot-plugs new ones. However, the IEEE 802.21
-standard does not define any mechanism to discover the local entities so, the development of
-a novel local discovery procedure is required, allowing the MIHF to discover its Link SAPs
-and MIH-Users and their capabilities in a dynamic way. Thus, local discovery refers to the
-procedure that allows the MIHF to discover its Link SAPs and their capabilities, as well as
-its MIH-Users.
-
-
-[*Link SAP Discovery]
-
-[$./images/Internal_link_discovery.png]
-
-The local discovery mechanisms implemented on ODTONE enables the discovery and
-management of the available Link SAPs. Thus, Link SAPs discovery is divided
-in three main phases: the registration, SAP availability and SAP unavailability.
-
-In the registration phase, the MIHF is permanently
-listening for incoming messages from the Link SAPs at a fixed port. When a Link SAP
-becomes active, it locally sends a "Link_Register.indication" message
-to the MIHF indicating its intention to register
-with the MIHF. This message carries information about the Link SAP, including its
-ID, listening port, link layer technology and link address. Next, the MIHF requests the Link
-SAP for its capabilities by sending a "Link_Capability_Discover.request" message. This
-process is repeated for all Link SAPs in order to provide the MIHF with the full capabilities
-belonging to that node.
-
-[note
-Because there is no primitive/message in the 802.21 standard that allows the Link
-SAP to send the register information to the MIHF, the "Link_Register.indication"
-message was created. This message allows the Link SAP to send informations
-to the MIHF about which technology supports and which interface it manages.
-Associated with the creation of this new message type was also created a new
-TLV type named “Interface Type Addr TLV” whose correspondent data type is a “LINK_ID”.
-
-[$./images/link_register_indication_message.png]
-]
-
-The second phase is availability and, as the name implies,
-deals with the Link SAP availability, i.e., the MIHF must be able to detect the active presence
-of the Link SAP. So, when the MIHF receives a response or an event notification from the
-Link SAP, it detects the Link SAP as active.
-
-Finally, the third phase deals with SAP unavailability.
-When the MIHF does not receive a response from a Link SAP, the Link SAP must be
-considered as inactive or unresponsive. The MIHF must, therefore, initiate the procedures to
-update its local capabilities.
-
-[note The waiting time interval for response message and how many fail responses
-can occur before the MIHF forget Link SAP can be defined at the MIHF configuration file.]
-
-[*MIH User Discovery]
-
-[$./images/Internal_user_discovery.png]
-
-The process of discovering MIH-Users implemented on ODTONE is based on a
-registration process of the MIH-User with the MIHF. When the MIH-User becomes active,
-it locally sends a "User_Register.indication" message to the MIHF, including
-information about its listening port and role (Information server, Mobility, Monitoring
-or Discovery).
-
-Upon the reception of the "User_Register.indication" message, the MIHF learns about the
-MIH-User and the communications between them can start normally.
-
-[note
-Because there is no primitive/message in the 802.21 standard that allows MIH-User
-to send register information to the MIHF the “User_Register.indication” message was
-created. This message allows the Link SAP to send informations
-to the MIHF about its function.
-Associated with the creation of this new message type was also created a new
-TLV type named “User Role TLV” whose correspondent data type is a “USER_ROLE” (which
-was also created).
-
-[$./images/user_register_indication_message.png]
-]
-
-[note Only one MIH-User for handling handover operations could exists in each MIHF.
-This way, the last MIU-User to register with that role will be the MIH-User
-that will handle the handover operations. The same occurs with the Information server.]
-
-[endsect]
-
-[section Remote discovery]
-The remote discovery mechanisms involve the discovery of peer MIHFs and its
-capabilities. This is known as MIHF discovery and it can be achieved by using
-L2 or L3 discovery mechanisms. It allows a MN to discover 802.21-enabled
-network entities and vice-versa, as well as a network entity to discover
-each other. In addition, by combining it with the MIH Capability Discover
-procedure, it is possible to find out the capabilities of the discovered
-entities, i.e., the services provided by them.
-
-The ODTONE implementation provides L3 mechanisms which enable the remote
-discovery. It can be achieved by using the MIH Capability Discover procedure
-defined in the IEEE 802.21 standard and/or mechanisms that involve using DHCP
-and DNS services. Compared with the standard architecture of the IEEE 802.21, the node has two new
-components: DHCP and/or DNS users. These are seen as MIH-enabled entities of the upper
-layers (i.e., MIH-Users) with which the MIHF interacts to request the discovery
-of available PoS. The DNS-User and the DHCP-User are then responsible for directly
-communicate with the respective server, in order to discover PoS entities and
-to obtain associated transport information.
-
-[$./images/l3_arch.png]
-
-[note The DNS-User and DHCP-User are working only for Linux. However, you can
-implement your own discovery entities with guidelines defined as follows.]
-
-The MIH protocol does not support the necessary mechanisms to carry the
-information about the discovered entities. Therefore, a new optional TLV type was created
-and added to the MIH_Capability_Discover messages of the base ODTONE implementation.
-Consequently, a new data type was defined as well.
-
-[$./images/mos_dscv.png]
-
-The MOS_DSCV data type carries the discovered PoS divided by service type. Each PoS is
-identified by an instance of the MOS_INFO data type, which carries information about its ID,
-IP address and listening port.
-
-The L3 discovery mechanisms can be enabled by registering a MIH-User (with the discovery role)
-with the MIHF. The order by which they are registered defines the order by which the
-entities will be requested for discovering PoS. For example, if no entity is configured with
-discovery role, the discovery mechanisms will not be enable and therefore, the discovery
-mechanisms are the default ones, i.e., it is only possible to discover entities by multicasting
-MIH Capability Discover messages as defined in the IEEE 802.21 standard. Otherwise, the
-discovery mechanisms are enabled and, upon the receiving of a discovery request, the MIHF
-invokes the first discovery entity configured. By receiving the discovery results, the MIHF
-checks if all necessary information about the PoS was discovered and, based on that, decides
-to complement it with other discover mechanism or to initiate the MIH Capability exchange
-procedure.
-
-The discovery entities retrieve the discovered information to the MIHF divided by services,
-i.e., for each service the MIHF receives a list of available PoS, which are individually requested
-for its capabilities. However, with this approach, if a given PoS provides more than one
-service it appears in more than one list and therefore, it is requested more than once for its
-capabilities. To avoid this repetition the MIHF tracks the requested PoS and, if it detects a
-repeated one it drops the request.
-
-
-[section Scenarios]
-
-The following figures represents the discovery scenarios using the DNS and DHCP services
-provided by ODTONE.
-
-[section DHCP]
-[$./images/dhcp_disc.png]
-[endsect]
-
-[section DHCP bootstrap]
-[$./images/dhcp_boot_disc.png]
-[endsect]
-
-[section DNS]
-[$./images/dns_disc.png]
-[endsect]
-
-[section DHCP + DNS]
-[$./images/dhcp_dns_disc.png]
-[endsect]
-
-[section DHCP bootstrap + DNS]
-[$./images/dhcp_boot_dns_disc.png]	
-[endsect]
-
-[endsect]
-
-[endsect]
-
 
 [section Multiple Link SAP support]
 
-With the implementation of dynamic Link SAP discovery mechanisms, it was necessary
-that ODTONE supports multiple Link SAP. So, when a new request is received at
+With the assumption that each Link SAP manages a single network interface, it was
+necessary to ODTONE to support multiple Link SAP. So, when a new request is received at
 the MIHF and whose destination is a Link SAP, the MIHF processes it and redirects
 the request to the proper Link SAP, based on the information collected by the
 local discovery mechanism and the information presented on the request
@@ -678,8 +507,8 @@ processes all received responses from Link SAPs and sends the response to the re
 [note The time that the MIHF waits for all responses can be configured in the
 MIHF (configuration file or command line).]
 
-
 [endsect]
+
 
 [section Remote Link SAP support]
 
@@ -830,40 +659,6 @@ the new TLVs and its data type:
 [endsect]
 
 
-[section:library Libraries]
-
-[variablelist
-    [[ODTONE Base] [
-    The ODTONE BASE library contains a set of classes which offers several helper
-	mechanisms (such as debug, list management, log, exceptions and random values
-    generation) to facilitate the information management.]]
-
-    [[ODTONE MIH] [
-    The ODTONE MIH library defines all MIH data types presented in the 802.21
-    standard. In addition, it provides a set of classes which facilitates
-    the creation and parsing of MIH messages.]]
-
-    [[ODTONE SAP] [
-    The ODTONE SAP library contains a set of I/O service classes, providing the ability
-    to send and receive MIH messages. The implementation is based on the
-    boost::asio and it only supports asynchronous operation.
-    [*Note:] It is important to be familiar with the boost::asio library.
-    It is also recommend to be familiar with boost::function and
-    boost::bind.]]
-
-    [[ODTONE NET] [
-	The ODTONE NET library defines a set of classes which offer several network
-	protocols and terminology support.]]
-]
-
-[xinclude ../odtone_base_lib.xml]
-[xinclude ../odtone_mih_lib.xml]
-[xinclude ../odtone_sap_lib.xml]
-[xinclude ../odtone_net_lib.xml]
-
-[endsect]
-
-
 [section:app Applications]
 
 [variablelist
@@ -928,6 +723,213 @@ the new TLVs and its data type:
 [include app/link_sap_icmp.qbk]
 [include app/client.qbk]
 [include app/dummyserver.qbk]
+
+[endsect]
+
+[section:extensions ODTONE Extensions]
+
+[section Local discovery]
+
+Due to the decoupled architecture of the MIHF and the local entities (i.e. Link SAPs and
+MIH-Users), it is necessary to configure these entities in the MIHF in order to know about its
+existence. They can be configured statically, by the user, or automatically, using a discovery
+mechanism. The static configuration can be very limited, and may fail when, for example, the
+MN activates/deactivates an interface or even hot-plugs new ones. However, the IEEE 802.21
+standard does not define any mechanism to discover the local entities so, the development of
+a novel local discovery procedure is required, allowing the MIHF to discover its Link SAPs
+and MIH-Users and their capabilities in a dynamic way. Thus, local discovery refers to the
+procedure that allows the MIHF to discover its Link SAPs and their capabilities, as well as
+its MIH-Users.
+
+
+[*Link SAP Discovery]
+
+[$./images/Internal_link_discovery.png]
+
+The local discovery mechanisms implemented on ODTONE enables the discovery and
+management of the available Link SAPs. Thus, Link SAPs discovery is divided
+in three main phases: the registration, SAP availability and SAP unavailability.
+
+In the registration phase, the MIHF is permanently
+listening for incoming messages from the Link SAPs at a fixed port. When a Link SAP
+becomes active, it locally sends a "Link_Register.indication" message
+to the MIHF indicating its intention to register
+with the MIHF. This message carries information about the Link SAP, including its
+ID, listening port, link layer technology and link address. Next, the MIHF requests the Link
+SAP for its capabilities by sending a "Link_Capability_Discover.request" message. This
+process is repeated for all Link SAPs in order to provide the MIHF with the full capabilities
+belonging to that node.
+
+[note
+Because there is no primitive/message in the 802.21 standard that allows the Link
+SAP to send the register information to the MIHF, the "Link_Register.indication"
+message was created. This message allows the Link SAP to send informations
+to the MIHF about which technology supports and which interface it manages.
+Associated with the creation of this new message type was also created a new
+TLV type named “Interface Type Addr TLV” whose correspondent data type is a “LINK_ID”.
+
+[$./images/link_register_indication_message.png]
+]
+
+The second phase is availability and, as the name implies,
+deals with the Link SAP availability, i.e., the MIHF must be able to detect the active presence
+of the Link SAP. So, when the MIHF receives a response or an event notification from the
+Link SAP, it detects the Link SAP as active.
+
+Finally, the third phase deals with SAP unavailability.
+When the MIHF does not receive a response from a Link SAP, the Link SAP must be
+considered as inactive or unresponsive. The MIHF must, therefore, initiate the procedures to
+update its local capabilities.
+
+[note The waiting time interval for response message and how many fail responses
+can occur before the MIHF forget Link SAP can be defined at the MIHF configuration file.]
+
+[*MIH User Discovery]
+
+[$./images/Internal_user_discovery.png]
+
+The process of discovering MIH-Users implemented on ODTONE is based on a
+registration process of the MIH-User with the MIHF. When the MIH-User becomes active,
+it locally sends a "User_Register.indication" message to the MIHF, including
+information about its listening port and role (Information server, Mobility, Monitoring
+or Discovery).
+
+Upon the reception of the "User_Register.indication" message, the MIHF learns about the
+MIH-User and the communications between them can start normally.
+
+[note
+	Because there is no primitive/message in the 802.21 standard that allows MIH-User
+	to send register information to the MIHF the “User_Register.indication” message was
+	created. This message allows the Link SAP to send informations
+	to the MIHF about its function.
+	Associated with the creation of this new message type was also created a new
+	TLV type named “User Role TLV” whose correspondent data type is a “USER_ROLE” (which
+	was also created).
+
+	[$./images/user_register_indication_message.png]
+]
+
+[note Only one MIH-User for handling handover operations could exists in each MIHF.
+This way, the last MIU-User to register with that role will be the MIH-User
+that will handle the handover operations. The same occurs with the Information server.]
+
+[endsect]
+
+[section Remote discovery]
+The remote discovery mechanisms involve the discovery of peer MIHFs and its
+capabilities. This is known as MIHF discovery and it can be achieved by using
+L2 or L3 discovery mechanisms. It allows a MN to discover 802.21-enabled
+network entities and vice-versa, as well as a network entity to discover
+each other. In addition, by combining it with the MIH Capability Discover
+procedure, it is possible to find out the capabilities of the discovered
+entities, i.e., the services provided by them.
+
+The ODTONE implementation provides L3 mechanisms which enable the remote
+discovery. It can be achieved by using the MIH Capability Discover procedure
+defined in the IEEE 802.21 standard and/or mechanisms that involve using DHCP
+and DNS services. Compared with the standard architecture of the IEEE 802.21, the node has two new
+components: DHCP and/or DNS users. These are seen as MIH-enabled entities of the upper
+layers (i.e., MIH-Users) with which the MIHF interacts to request the discovery
+of available PoS. The DNS-User and the DHCP-User are then responsible for directly
+communicate with the respective server, in order to discover PoS entities and
+to obtain associated transport information.
+
+[$./images/l3_arch.png]
+
+[note The DNS-User and DHCP-User are working only for Linux. However, you can
+implement your own discovery entities with guidelines defined as follows.]
+
+The MIH protocol does not support the necessary mechanisms to carry the
+information about the discovered entities. Therefore, a new optional TLV type was created
+and added to the MIH_Capability_Discover messages of the base ODTONE implementation.
+Consequently, a new data type was defined as well.
+
+[$./images/mos_dscv.png]
+
+The MOS_DSCV data type carries the discovered PoS divided by service type. Each PoS is
+identified by an instance of the MOS_INFO data type, which carries information about its ID,
+IP address and listening port.
+
+The L3 discovery mechanisms can be enabled by registering a MIH-User (with the discovery role)
+with the MIHF. The order by which they are registered defines the order by which the
+entities will be requested for discovering PoS. For example, if no entity is configured with
+discovery role, the discovery mechanisms will not be enable and therefore, the discovery
+mechanisms are the default ones, i.e., it is only possible to discover entities by multicasting
+MIH Capability Discover messages as defined in the IEEE 802.21 standard. Otherwise, the
+discovery mechanisms are enabled and, upon the receiving of a discovery request, the MIHF
+invokes the first discovery entity configured. By receiving the discovery results, the MIHF
+checks if all necessary information about the PoS was discovered and, based on that, decides
+to complement it with other discover mechanism or to initiate the MIH Capability exchange
+procedure.
+
+The discovery entities retrieve the discovered information to the MIHF divided by services,
+i.e., for each service the MIHF receives a list of available PoS, which are individually requested
+for its capabilities. However, with this approach, if a given PoS provides more than one
+service it appears in more than one list and therefore, it is requested more than once for its
+capabilities. To avoid this repetition the MIHF tracks the requested PoS and, if it detects a
+repeated one it drops the request.
+
+
+[section Scenarios]
+
+The following figures represents the discovery scenarios using the DNS and DHCP services
+provided by ODTONE.
+
+[section DHCP]
+[$./images/dhcp_disc.png]
+[endsect]
+
+[section DHCP bootstrap]
+[$./images/dhcp_boot_disc.png]
+[endsect]
+
+[section DNS]
+[$./images/dns_disc.png]
+[endsect]
+
+[section DHCP + DNS]
+[$./images/dhcp_dns_disc.png]
+[endsect]
+
+[section DHCP bootstrap + DNS]
+[$./images/dhcp_boot_dns_disc.png]
+[endsect]
+
+[endsect]
+
+[endsect]
+
+
+[section:library Libraries]
+
+[variablelist
+    [[ODTONE Base] [
+    The ODTONE BASE library contains a set of classes which offers several helper
+	mechanisms (such as debug, list management, log, exceptions and random values
+    generation) to facilitate the information management.]]
+
+    [[ODTONE MIH] [
+    The ODTONE MIH library defines all MIH data types presented in the 802.21
+    standard. In addition, it provides a set of classes which facilitates
+    the creation and parsing of MIH messages.]]
+
+    [[ODTONE SAP] [
+    The ODTONE SAP library contains a set of I/O service classes, providing the ability
+    to send and receive MIH messages. The implementation is based on the
+    boost::asio and it only supports asynchronous operation.
+    [*Note:] It is important to be familiar with the boost::asio library.
+    It is also recommend to be familiar with boost::function and
+    boost::bind.]]
+
+    [[ODTONE NET] [
+	The ODTONE NET library defines a set of classes which offer several network
+	protocols and terminology support.]]
+]
+
+[xinclude ../odtone_base_lib.xml]
+[xinclude ../odtone_mih_lib.xml]
+[xinclude ../odtone_sap_lib.xml]
+[xinclude ../odtone_net_lib.xml]
 
 [endsect]
 
