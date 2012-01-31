@@ -171,6 +171,20 @@ public:
 	}
 
 	/**
+	 * Clear the values of the bitmap, if they are set on the given BITMAP.
+	 * @note Both bitmaps must have the same size
+	 *
+	 * @param b The BITMAP data type with the values to clear.
+	 */
+	void except(bitmap b)
+	{
+		ODTONE_STATIC_ASSERT((sizeof(_bitmap) == sizeof(b._bitmap)),
+		                    "Both bitmaps must have the same size");
+		for (size_t i = 0; i < sizeof(_bitmap); ++i)
+			_bitmap[i] &= ~b._bitmap[i];
+	}
+
+	/**
 	 * Set all poisition of the BITMAP data type.
 	 */
 	void full()
