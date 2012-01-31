@@ -19,7 +19,6 @@
 #define ODTONE_DNS_RESOLVER__HPP_
 
 #include <list>
-#include <netinet/in.h>
 
 #include <boost/asio.hpp>
 #include <boost/function.hpp>

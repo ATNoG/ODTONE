@@ -25,12 +25,7 @@
 #include <errno.h>
 #include <iostream>
 
-#ifdef _WIN32
-	#pragma comment(lib,"ws2_32")
-	#pragma comment(lib,"advapi32")
-	#include <winsock.h>
-	typedef	int		socklen_t;
-#else
+#ifndef _WIN32
 	#include <netinet/in.h>
 	#include <unistd.h>
 	#include <sys/types.h>
@@ -59,55 +54,28 @@ namespace odtone { namespace dns {
 static std::string get_dns_ip()
 {
 	struct sockaddr_in sa;
-	int ret = 0;
 
-#ifdef _WIN32
-	int	i;
-	LONG	err;
-	HKEY	hKey, hSub;
-	char	subkey[512], dhcpns[512], ns[512], value[128], *key =
-	"SYSTEM\\ControlSet001\\Services\\Tcpip\\Parameters\\Interfaces";
-
-	if ((err = RegOpenKey(HKEY_LOCAL_MACHINE,
-	    key, &hKey)) != ERROR_SUCCESS) {
-		fprintf(stderr, "cannot open reg key %s: %d\n", key, err);
-		ret--;
-	} else {
-		for (ret--, i = 0; RegEnumKey(hKey, i, subkey,
-		    sizeof(subkey)) == ERROR_SUCCESS; i++) {
-			DWORD type, len = sizeof(value);
-			if (RegOpenKey(hKey, subkey, &hSub) == ERROR_SUCCESS &&
-			    (RegQueryValueEx(hSub, "NameServer", 0,
-			    &type, value, &len) == ERROR_SUCCESS ||
-			    RegQueryValueEx(hSub, "DhcpNameServer", 0,
-			    &type, value, &len) == ERROR_SUCCESS)) {
-				sa.sin_addr.s_addr = inet_addr(value);
-				ret++;
-				RegCloseKey(hSub);
-				break;
-			}
-		}
-		RegCloseKey(hKey);
-	}
-#else
+#ifndef _WIN32
 	FILE	*fp;
 	char	line[512];
 	int	a, b, c, d;
 
 	if ((fp = fopen("/etc/resolv.conf", "r")) == NULL) {
-		ret--;
+		return "";
 	} else {
-		for (ret--; fgets(line, sizeof(line), fp) != NULL; ) {
+		for ( ; fgets(line, sizeof(line), fp) != NULL; ) {
 			if (sscanf(line, "nameserver %d.%d.%d.%d",
 			   &a, &b, &c, &d) == 4) {
 				sa.sin_addr.s_addr =
 				    htonl(a << 24 | b << 16 | c << 8 | d);
-				ret++;
 				break;
 			}
 		}
 		(void) fclose(fp);
 	}
+#else
+	// Not implemented yet
+	return "";
 #endif /* _WIN32 */
 
 	std::string ip(inet_ntoa(sa.sin_addr));

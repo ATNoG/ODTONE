@@ -69,7 +69,7 @@ octet_string ip_addr::address() const
 {
 	octet_string str;
 	if(_type == ip_addr::ipv4) {
-		int tmp[_addr.size()];
+		std::vector<int> tmp(_addr.size());
 
 		for (size_t i = 0; i < _addr.size(); ++i) {
 			if(i != 0)

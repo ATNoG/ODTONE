@@ -24,6 +24,7 @@
 #include <utility>
 #include <string>
 #include <ostream>
+#include <cctype>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace net { namespace link {

@@ -37,7 +37,7 @@ struct bind_rv_ : T {
 	operator T&&() { return *this; }
 
 private:
-	bind_rv_& operator=(const bind_rv_&) = delete;
+	bind_rv_& operator=(const bind_rv_&)/* = delete*/;
 };
 
 template<class T>

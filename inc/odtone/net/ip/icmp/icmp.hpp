@@ -23,7 +23,10 @@
 #include <odtone/net/ip/address.hpp>
 #include <boost/asio/ip/icmp.hpp>
 #include <boost/type_traits/is_base_of.hpp>
-#include <netinet/icmp6.h>
+
+#ifndef _WIN32
+	#include <netinet/icmp6.h>
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace net { namespace ip {
@@ -444,6 +447,7 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+#ifndef _WIN32
 /**
  * This class represents an ICMP filter.
  */
@@ -497,6 +501,7 @@ public:
 private:
 	::icmp6_filter _filter;	/**< Filter.	*/
 };
+#endif WIN32
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace ip */ } /* namespace net */ } /* namespace odtone */

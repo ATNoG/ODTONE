@@ -66,13 +66,15 @@ link_sap::link_sap(const odtone::mih::config& cfg,
 	register_local_mihf();
 
 	// Init the ICMP socket
-	odtone::net::ip::icmp::filter fo(true, ND_ROUTER_SOLICIT);
 	boost::asio::ip::multicast::join_group mo(boost::asio::ip::address_v6::from_string("ff02::2"));
 	_icmp_sock.open(boost::asio::ip::icmp::socket::protocol_type::v6());
-	_icmp_sock.set_option(fo);
+#ifndef _WIN32
+	_icmp_sock.set_option(odtone::net::ip::icmp::filter(true, ND_ROUTER_SOLICIT));
+#endif
 	_icmp_sock.set_option(mo);
 
 	// Bind the socket to a specific interface
+#ifndef _WIN32
 	struct ifreq ifr;
 	memset(&ifr, 0, sizeof(ifr));
 	strncpy(ifr.ifr_name, _ifname.c_str(), sizeof(ifr.ifr_name) - 1);
@@ -80,7 +82,7 @@ link_sap::link_sap(const odtone::mih::config& cfg,
 		log_(0, "Cannot bind to specific interface.");
 		throw("Cannot bind to specific interface.");
 	}
-	//
+#endif
 
 	icmp_recv_async();
 }

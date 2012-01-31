@@ -41,8 +41,8 @@ template<class T>
 class buffer {
 	ODTONE_STATIC_ASSERT(boost::is_pod<T>::value, "T must be POD type");
 
-	buffer(const buffer&) = delete;
-	buffer& operator=(const buffer&) = delete;
+	buffer(const buffer&)/* = delete*/;
+	buffer& operator=(const buffer&)/* = delete*/;
 
 public:
 	/**
@@ -180,8 +180,8 @@ class buffer_vla : buffer<uint8> {
 
 	typedef buffer<uint8> base;
 
-	buffer_vla(const buffer_vla&) = delete;
-	buffer_vla& operator=(const buffer_vla&) = delete;
+	buffer_vla(const buffer_vla&)/* = delete*/;
+	buffer_vla& operator=(const buffer_vla&)/* = delete*/;
 
 public:
 	/**
