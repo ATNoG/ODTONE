@@ -5,8 +5,8 @@
 #------------------------------------------------------------------------------
 # ODTONE - Open Dot Twenty One
 #
-# Copyright (C) 2010 Universidade Aveiro
-# Copyright (C) 2010 Instituto de Telecomunicações - Pólo Aveiro
+# Copyright (C) 2009-2012 Universidade Aveiro
+# Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 #
 # This software is distributed under a license. The full license
 # agreement can be found in the file LICENSE in this distribution.
@@ -40,6 +40,7 @@ project odtone
 	: build-dir bin.v2
 	;
 
+path-constant odtone-root : . ;
 #
 # Import the boost project
 #
@@ -52,7 +53,7 @@ boost-root ?= [ option.get boost-root ] ;
 boost-root ?= [ os.environ BOOST_ROOT ] ;
 
 if ! $(boost-root) {
-	boost-root = [ path.join [ path.pwd ] ../boost_$(boost-major)_$(boost-minor)_$(boost-patch) ] ;
+	boost-root = [ path.join $(odtone-root) ../boost_$(boost-major)_$(boost-minor)_$(boost-patch) ] ;
 
 	local version = $(boost-major).$(boost-minor).$(boost-patch) ;
 
@@ -104,6 +105,7 @@ explicit-alias sap  : lib/odtone/sap//odtone_sap ;
 explicit-alias net  : lib/odtone/net//odtone_net ;
 
 use-project /odtone/base : lib/odtone ;
+use-project /odtone/mih  : lib/odtone/mih ;
 use-project /odtone/net  : lib/odtone/net ;
 use-project /odtone/sap  : lib/odtone/sap ;
 
@@ -123,7 +125,7 @@ install odtone-dist
 debian odtone-mihf
 	: <bin> src/mihf//odtone-mihf
 	  <etc> src/mihf/odtone.conf
-	: <version>0.3
+	: <version>0.4
 	  <section>net
 	  <maintainer-name>"Bruno Santos"
 	  <maintainer-email>"bsantos@av.it.pt"
