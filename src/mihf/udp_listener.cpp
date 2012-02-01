@@ -132,18 +132,18 @@ void udp_listener::handle_receive(buffer<uint8> &buff,
 				_dispatch(in);
 			}
 		}
+	}
 
-		void *rbuff = buff.get();
-		size_t rlen = buff.size();
+	void *rbuff = buff.get();
+	size_t rlen = buff.size();
 
-		_sock.async_receive_from(asio::buffer(rbuff, rlen),
-					 _rmt_endp,
-					 bind(&udp_listener::handle_receive,
-					      this,
-					      bind_rv(buff),
-					      asio::placeholders::bytes_transferred,
-					      asio::placeholders::error));
-        }
+	_sock.async_receive_from(asio::buffer(rbuff, rlen),
+				 _rmt_endp,
+				 bind(&udp_listener::handle_receive,
+				      this,
+				      bind_rv(buff),
+				      asio::placeholders::bytes_transferred,
+				      asio::placeholders::error));
 }
 
 
