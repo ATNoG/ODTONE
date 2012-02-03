@@ -316,9 +316,6 @@ private:
 	address_book            &_abook;		/**< Address book module.			*/
 	link_book               &_link_abook;	/**< Link book module.				*/
 
-	std::map<mih::octet_string, mih::mih_evt_list> _link_subscriptions; /**< Map of subscriptions. */
-	boost::mutex                                   _link_mutex;         /**< Mutex. */
-
 	std::list<event_registration_t>	_event_subscriptions;	/**< List of subscription.	*/
 	boost::mutex					_event_mutex;			/**< Mutex.	*/
 

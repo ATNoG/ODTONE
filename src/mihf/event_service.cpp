@@ -32,6 +32,7 @@
 #include <odtone/mih/tlv_types.hpp>
 
 #include <boost/make_shared.hpp>
+#include <boost/foreach.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 extern odtone::uint16 kConf_MIHF_Link_Response_Time_Value;
@@ -169,16 +170,18 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 		return true;
 	}
 
+	// Check if requested events have been already subscribed
 	mih::mih_evt_list event_tmp;
 	{
-		boost::mutex::scoped_lock lock(_link_mutex);
+		boost::mutex::scoped_lock lock(_event_mutex);
 
-		// If the MIHF already subscribed the requested events with Link SAP
-		std::map<mih::octet_string, mih::mih_evt_list>::iterator it = _link_subscriptions.find(link_id);
-		if(it != _link_subscriptions.end())
-			event_tmp = it->second;
+		BOOST_FOREACH(event_registration_t item, _event_subscriptions)
+		{
+			if(item.link == link)
+				event_tmp.set(item.event);
+		}
 	}
-	event_tmp.common(events);
+
 	if(events == event_tmp) {
 		mih::status st = subscribe(in->source(), link, events);
 
@@ -371,12 +374,6 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 			& mih::tlv_link_identifier(link)
 			& mih::tlv_event_list(evt);
 
-		// add a subscription
-		{
-			boost::mutex::scoped_lock lock(_link_mutex);
-
-			_link_subscriptions[out->source().to_string()].merge(evt);
-		}
 		st = subscribe(mih::id(out->destination().to_string()), link, evt);
 	} else {
 		*out << mih::response(mih::response::event_subscribe)
@@ -408,46 +405,27 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
 {
 	boost::mutex::scoped_lock lock(_event_mutex);
 
-	std::list<event_registration_t>::iterator it;
-	mih::mih_evt_list el;
-
-	// Get all subscriptions for the given Link SAP
-	for(it = _event_subscriptions.begin();
-	    it != _event_subscriptions.end();
-	    it++) {
-			if (it->link == link) {
-				el.set(it->event);
-			}
-	}
-
-	// Check which events can be unsubscribed with Link SAP
-	bool send_msg = false;
-	mih::octet_string link_id = _link_abook.search_interface(link.type, link.addr);
-	mih::mih_evt_list link_event;
+	// Check if requested events have been already subscribed
+	mih::mih_evt_list event_unsubscribe = events;
+	BOOST_FOREACH(event_registration_t item, _event_subscriptions)
 	{
-		boost::mutex::scoped_lock lock(_link_mutex);
-		link_event = _link_subscriptions.find(link_id)->second;
-	}
-	for(int i = 0; i < 32; i++) {
-		if((events.get((mih::mih_evt_list_enum) i) == link_event.get((mih::mih_evt_list_enum) i)) &&
-		   (el.get((mih::mih_evt_list_enum) i) != events.get((mih::mih_evt_list_enum) i))) {
-				el.set((mih::mih_evt_list_enum) i);
-				send_msg = true;
-		}
-		else {
-			el.clear((mih::mih_evt_list_enum) i);
+		if(item.link == link) {
+			if(item.user.compare(in->source().to_string()) != 0) {
+				event_unsubscribe.clear(item.event);
+			}
 		}
 	}
 
 	// Only send message to Link SAP if there is any event to unsubscribed
 	// with it
-	if(send_msg)
+	mih::mih_evt_list empty;
+	if(!(empty == event_unsubscribe))
 	{
 		mih::link_evt_list evt;
 		// Since the two bitmaps have the same values
 		// we can assign them directly
 		for (size_t i = 0; i < 32; ++i) {
-			if(el.get((mih::mih_evt_list_enum)i)) {
+			if(event_unsubscribe.get((mih::mih_evt_list_enum)i)) {
 				evt.set((mih::link_evt_list_enum)i);
 			}
 		}
@@ -650,14 +628,6 @@ bool event_service::event_unsubscribe_confirm(meta_message_ptr &in,
 		& mih::tlv_link_evt_list(events);
 
 	if (st == mih::status_success) {
-		// Update events subscribed information
-		for(int i = 0; i < 32; i++) {
-			if(events.get().get((mih::link_evt_list_enum)i) == true) {
-				boost::mutex::scoped_lock lock(_link_mutex);
-				_link_subscriptions[in->source().to_string()].clear((mih::mih_evt_list_enum)i);
-			}
-		}
-
 		ODTONE_LOG(1, "(mies) Events successfully unsubscribed in Link SAP ",
 			in->source().to_string());
 	}
