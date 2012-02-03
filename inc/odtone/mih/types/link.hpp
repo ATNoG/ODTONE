@@ -66,7 +66,7 @@ typedef uint16 link_ac_ex_time;
 /**
  * SIG_STRENGTH data type.
  */
-typedef boost::variant<uint8, percentage> sig_strength;
+typedef boost::variant<sint8, percentage> sig_strength;
 
 /**
  * LINK_RES_STATUS data type.
