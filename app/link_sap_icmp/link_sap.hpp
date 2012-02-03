@@ -50,8 +50,8 @@ public:
 			 boost::asio::io_service& io,
 			 mih::octet_string ifname,
 			 mih::link_id link_id,
-			 mih::event_list capabilities_event_list,
-			 mih::command_list capabilities_command_list);
+			 mih::link_evt_list capabilities_event_list,
+			 mih::link_cmd_list capabilities_command_list);
 
 	/**
 	 * Destruct a Link SAP module.
@@ -95,8 +95,8 @@ private:
 
 	mih::octet_string	_ifname;					/**< Interface name.	*/
 	mih::link_id		_link_id;					/**< Link identifier.	*/
-	mih::event_list		_capabilities_event_list;	/**< Supported events. 	*/
-	mih::command_list	_capabilities_command_list;	/**< Supported commands.*/
+	mih::link_evt_list	_capabilities_event_list;	/**< Supported events. 	*/
+	mih::link_cmd_list	_capabilities_command_list;	/**< Supported commands.*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////

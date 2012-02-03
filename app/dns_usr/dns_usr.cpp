@@ -105,8 +105,8 @@ void dns_user::event_handler(mih::message& msg,
 
 			// Decode the message looking for a mos_dscv TLV
 			boost::optional<mih::net_type_addr_list> capabilities_list_net_type_addr;
-			boost::optional<mih::event_list>		 capabilities_event_list;
-			boost::optional<mih::command_list>		 capabilities_cmd_list;
+			boost::optional<mih::mih_evt_list>		 capabilities_event_list;
+			boost::optional<mih::mih_cmd_list>		 capabilities_cmd_list;
 			boost::optional<mih::iq_type_list>		 capabilities_query_type;
 			boost::optional<mih::transport_list>	 capabilities_trans_list;
 			boost::optional<mih::mbb_ho_supp_list>	 capabilities_mbb_ho_supp;

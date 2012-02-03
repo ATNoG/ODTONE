@@ -673,14 +673,34 @@ typedef std::vector<link_action_rsp> link_action_rsp_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
+ * LINK_EVT_LIST data type enumeration.
+ */
+enum link_evt_list_enum {
+	evt_link_detected = 0,				/**< Link detected				*/
+	evt_link_up = 1,					/**< Link up					*/
+	evt_link_down = 2,					/**< Link down					*/
+	evt_link_parameters_report = 3,		/**< Link parameters report		*/
+	evt_link_going_down = 4,			/**< Link doing down			*/
+	evt_link_handover_imminent = 5,		/**< Link handover imminent		*/
+	evt_link_handover_complete = 6,		/**< Link handover complete		*/
+	evt_link_pdu_transmit_status = 7,	/**< Link PDU transmit status	*/
+};
+
+/**
+ * LINK_EVT_LIST data type.
+ */
+typedef bitmap<32, link_evt_list_enum> link_evt_list;
+
+///////////////////////////////////////////////////////////////////////////////
+/**
  * LINK_CMD_LIST data type enumeration.
  */
 enum link_cmd_list_enum {
-	link_cmd_event_subscribe      = 1,	/**< Event subscribe.		*/
-	link_cmd_event_unsubscribe    = 2,	/**< Event unsubscribe.		*/
-	link_cmd_get_parameters       = 3,	/**< Get parameters.		*/
-	link_cmd_configure_thresholds = 4,	/**< Configure thresholds.	*/
-	link_cmd_action               = 5,	/**< Action.	*/
+	cmd_link_event_subscribe      = 1,	/**< Event subscribe.		*/
+	cmd_link_event_unsubscribe    = 2,	/**< Event unsubscribe.		*/
+	cmd_link_get_parameters       = 3,	/**< Get parameters.		*/
+	cmd_link_configure_thresholds = 4,	/**< Configure thresholds.	*/
+	cmd_link_action               = 5,	/**< Action.				*/
 };
 
 /**

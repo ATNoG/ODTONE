@@ -209,7 +209,7 @@ void mih_user::capability_discover_confirm(odtone::mih::message& msg, const boos
 
 	odtone::mih::status st;
 	boost::optional<odtone::mih::net_type_addr_list> ntal;
-	boost::optional<odtone::mih::event_list> evt;
+	boost::optional<odtone::mih::mih_evt_list> evt;
 
 	msg >> odtone::mih::confirm()
 		& odtone::mih::tlv_status(st)

@@ -30,8 +30,8 @@ static const tlv_cast_<id,                    tlv_< 1> > tlv_source_id = {};
 static const tlv_cast_<id,                    tlv_< 2> > tlv_destination_id = {};
 static const tlv_cast_<status,                tlv_< 3> > tlv_status = {};
 static const tlv_cast_<link_type,             tlv_< 4> > tlv_link_type = {};
-static const tlv_cast_<event_list,            tlv_< 5> > tlv_event_list = {};
-static const tlv_cast_<command_list,          tlv_< 6> > tlv_command_list = {};
+static const tlv_cast_<mih_evt_list,          tlv_< 5> > tlv_event_list = {};
+static const tlv_cast_<mih_cmd_list,          tlv_< 6> > tlv_command_list = {};
 static const tlv_cast_<iq_type_list,          tlv_< 7> > tlv_query_type_list = {};
 static const tlv_cast_<transport_list,        tlv_< 8> > tlv_transport_option_list = {};
 static const tlv_cast_<net_type_addr_list,    tlv_< 9> > tlv_net_type_addr_list = {};
@@ -91,19 +91,21 @@ static const tlv_cast_<network_type,          tlv_<62> > tlv_network_type = {};
 static const tlv_cast_<rq_res_set,            tlv_<63> > tlv_request_resource_set = {};
 
 // ODTONE specific TLVs
-static const tlv_cast_<link_param_type_list,  tlv_<101> > tlv_link_parameters_req = {};
-static const tlv_cast_<link_param_list,       tlv_<102> > tlv_link_parameters_status_list = {};
-static const tlv_cast_<link_states_req,       tlv_<103> > tlv_link_states_req = {};
-static const tlv_cast_<link_states_rsp_list,  tlv_<104> > tlv_link_states_rsp = {};
-static const tlv_cast_<link_desc_req,         tlv_<105> > tlv_link_descriptor_req = {};
-static const tlv_cast_<link_desc_rsp_list,    tlv_<106> > tlv_link_descriptor_rsp = {};
-static const tlv_cast_<link_action,           tlv_<107> > tlv_link_action = {};
-static const tlv_cast_<link_ac_result,        tlv_<108> > tlv_link_ac_result = {};
-static const tlv_cast_<link_scan_rsp_list,    tlv_<109> > tlv_link_scan_rsp_list = {};
-static const tlv_cast_<link_det_info,         tlv_<110> > tlv_link_det_info = {};
-static const tlv_cast_<link_id,               tlv_<111> > tlv_interface_type_addr = {};
-static const tlv_cast_<user_role,             tlv_<112> > tlv_user_role = {};
-static const tlv_cast_<mos_dscv,              tlv_<113> > tlv_mos_dscv = {};
+static const tlv_cast_<link_evt_list,         tlv_<101> > tlv_link_evt_list = {};
+static const tlv_cast_<link_cmd_list,         tlv_<102> > tlv_link_cmd_list = {};
+static const tlv_cast_<link_param_type_list,  tlv_<103> > tlv_link_parameters_req = {};
+static const tlv_cast_<link_param_list,       tlv_<104> > tlv_link_parameters_status_list = {};
+static const tlv_cast_<link_states_req,       tlv_<105> > tlv_link_states_req = {};
+static const tlv_cast_<link_states_rsp_list,  tlv_<106> > tlv_link_states_rsp = {};
+static const tlv_cast_<link_desc_req,         tlv_<107> > tlv_link_descriptor_req = {};
+static const tlv_cast_<link_desc_rsp_list,    tlv_<108> > tlv_link_descriptor_rsp = {};
+static const tlv_cast_<link_action,           tlv_<109> > tlv_link_action = {};
+static const tlv_cast_<link_ac_result,        tlv_<110> > tlv_link_ac_result = {};
+static const tlv_cast_<link_scan_rsp_list,    tlv_<111> > tlv_link_scan_rsp_list = {};
+static const tlv_cast_<link_det_info,         tlv_<112> > tlv_link_det_info = {};
+static const tlv_cast_<link_id,               tlv_<113> > tlv_interface_type_addr = {};
+static const tlv_cast_<user_role,             tlv_<114> > tlv_user_role = {};
+static const tlv_cast_<mos_dscv,              tlv_<115> > tlv_mos_dscv = {};
 
 
 ///////////////////////////////////////////////////////////////////////////////

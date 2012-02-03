@@ -108,7 +108,7 @@ void dhcp_user::cap_disc_handler(mih::message& msg,
 
 	mih::status st;
 	boost::optional<mih::net_type_addr_list> ntal;
-	boost::optional<mih::event_list> evt;
+	boost::optional<mih::mih_evt_list> evt;
 
 	msg >> mih::confirm()
 		& mih::tlv_status(st)
@@ -127,7 +127,7 @@ void dhcp_user::cap_disc_handler(mih::message& msg,
 	}
 
 	if(evt) {
-		if(!evt->get(mih::link_up) || !evt->get(mih::link_down)) {
+		if(!evt->get(mih::mih_evt_link_up) || !evt->get(mih::mih_evt_link_down)) {
 			log(1, "cannot register for link_up and link_down events");
 			return;
 		}

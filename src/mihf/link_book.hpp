@@ -38,8 +38,8 @@ struct link_entry
 	mih::octet_string	ip;			/**< IP address.						*/
 	uint16				port;		/**< Listening port.					*/
 	mih::link_id		link_id;	/**< Link identifier.					*/
-	mih::event_list		event_list;	/**< Supported event list.				*/
-	mih::command_list	cmd_list;	/**< Supported command list.			*/
+	mih::link_evt_list	event_list;	/**< Supported event list.				*/
+	mih::link_cmd_list	cmd_list;	/**< Supported command list.			*/
 	uint16				fail;		/**< Number of fail responses.			*/
 	bool				status;		/**< Status of the Link SAP (on/off).	*/
 };
@@ -90,8 +90,8 @@ public:
 	 * @param cmd_list Supported command list.
 	 */
 	void update_capabilities(const mih::octet_string &id,
-							 mih::event_list event_list,
-							 mih::command_list cmd_list);
+							 mih::link_evt_list event_list,
+							 mih::link_cmd_list cmd_list);
 
 	/**
 	 * Remove an existing Link SAP entry.

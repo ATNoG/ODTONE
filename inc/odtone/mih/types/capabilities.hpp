@@ -41,46 +41,46 @@ typedef std::vector<evt_cfg_info> evt_cfg_info_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * EVENT_LIST data type enumeration.
+ * MIH_EVT_LIST data type enumeration.
  */
-enum event_list_enum {
-	link_detected = 0,				/**< Link detected				*/
-	link_up = 1,					/**< Link up					*/
-	link_down = 2,					/**< Link down					*/
-	link_parameters_report = 3,		/**< Link parameters report		*/
-	link_going_down = 4,			/**< Link doing down			*/
-	link_handover_imminent = 5,		/**< Link handover imminent		*/
-	link_handover_complete = 6,		/**< Link handover complete		*/
-	link_pdu_transmit_status = 7,	/**< Link PDU transmit status	*/
+enum mih_evt_list_enum {
+	mih_evt_link_detected = 0,				/**< Link detected				*/
+	mih_evt_link_up = 1,					/**< Link up					*/
+	mih_evt_link_down = 2,					/**< Link down					*/
+	mih_evt_link_parameters_report = 3,		/**< Link parameters report		*/
+	mih_evt_link_going_down = 4,			/**< Link doing down			*/
+	mih_evt_link_handover_imminent = 5,		/**< Link handover imminent		*/
+	mih_evt_link_handover_complete = 6,		/**< Link handover complete		*/
+	mih_evt_link_pdu_transmit_status = 7,	/**< Link PDU transmit status	*/
 };
 
 /**
- * EVENT_LIST data type.
+ * MIH_EVT_LIST data type.
  */
-typedef bitmap<32, event_list_enum> event_list;
+typedef bitmap<32, mih_evt_list_enum> mih_evt_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * COMMAND_LIST data type enumeration.
+ * MIH_CMD_LIST data type enumeration.
  */
-enum command_list_enum {
-	link_get_parameters = 0,		/**< Link get parameters			*/
-	link_configure_thresholds = 1,	/**< Link configure thresholds 		*/
-	link_actions = 2,				/**< Link actions					*/
-	net_ho_candidate_query = 3,		/**< NET handover candidate query	*/
-	net_ho_commit = 3,				/**< NET handover commit			*/
-	n2n_ho_query_resources = 3,		/**< N2N handover query resources	*/
-	n2n_ho_commit = 3,				/**< N2N handover commit			*/
-	n2n_ho_Complete = 3,			/**< N2N handover complete			*/
-	mn_ho_candidate_query = 4,		/**< MN handover candidate query	*/
-	mn_ho_commit = 4,				/**< MN handover commit				*/
-	mn_ho_complete = 4,				/**< MN handover complete			*/
+enum mih_cmd_list_enum {
+	mih_cmd_link_get_parameters = 0,		/**< Link get parameters			*/
+	mih_cmd_link_configure_thresholds = 1,	/**< Link configure thresholds 		*/
+	mih_cmd_link_actions = 2,				/**< Link actions					*/
+	mih_cmd_net_ho_candidate_query = 3,		/**< NET handover candidate query	*/
+	mih_cmd_net_ho_commit = 3,				/**< NET handover commit			*/
+	mih_cmd_n2n_ho_query_resources = 3,		/**< N2N handover query resources	*/
+	mih_cmd_n2n_ho_commit = 3,				/**< N2N handover commit			*/
+	mih_cmd_n2n_ho_Complete = 3,			/**< N2N handover complete			*/
+	mih_cmd_mn_ho_candidate_query = 4,		/**< MN handover candidate query	*/
+	mih_cmd_mn_ho_commit = 4,				/**< MN handover commit				*/
+	mih_cmd_mn_ho_complete = 4,				/**< MN handover complete			*/
 };
 
 /**
- * COMMAND_LIST data type.
+ * MIH_CMD_LIST data type.
  */
-typedef bitmap<32, command_list_enum> command_list;
+typedef bitmap<32, mih_cmd_list_enum> mih_cmd_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**

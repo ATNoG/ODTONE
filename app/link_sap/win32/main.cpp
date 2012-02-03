@@ -79,8 +79,8 @@ void wlan_event_handler(const WLAN_NOTIFICATION_DATA& nd, boost::asio::io_servic
 namespace po = boost::program_options;
 
 odtone::mih::link_id link_id;
-odtone::mih::event_list capabilities_event_list;
-odtone::mih::command_list capabilities_command_list;
+odtone::mih::link_evt_list capabilities_event_list;
+odtone::mih::link_cmd_list capabilities_command_list;
 
 void __trim(odtone::mih::octet_string &str, const char chr)
 {
@@ -165,17 +165,18 @@ void set_supported_event_list(odtone::mih::octet_string &list)
 
 	std::map<std::string, odtone::uint16> enum_map;
 
-	enum_map["link_detected"]	   = (odtone::uint16) odtone::mih::link_detected;
-	enum_map["link_up"]		   = (odtone::uint16) odtone::mih::link_up;
-	enum_map["link_down"]		   = (odtone::uint16) odtone::mih::link_down;
-	enum_map["link_parameters_report"] = (odtone::uint16) odtone::mih::link_parameters_report;
-	enum_map["link_going_down"]	   = (odtone::uint16) odtone::mih::link_going_down;
-	enum_map["link_handover_imminent"] = (odtone::uint16) odtone::mih::link_handover_imminent;
-	enum_map["link_handover_complete"] = (odtone::uint16) odtone::mih::link_handover_complete;
+	enum_map["link_detected"]	         = (odtone::uint16) odtone::mih::evt_link_detected;
+	enum_map["link_up"]		             = (odtone::uint16) odtone::mih::evt_link_up;
+	enum_map["link_down"]		         = (odtone::uint16) odtone::mih::evt_link_down;
+	enum_map["link_parameters_report"]   = (odtone::uint16) odtone::mih::evt_link_parameters_report;
+	enum_map["link_going_down"]	         = (odtone::uint16) odtone::mih::evt_link_going_down;
+	enum_map["link_handover_imminent"]   = (odtone::uint16) odtone::mih::evt_link_handover_imminent;
+	enum_map["link_handover_complete"]   = (odtone::uint16) odtone::mih::evt_link_handover_complete;
+	enum_map["link_pdu_transmit_status"] = (odtone::uint16) odtone::mih::evt_link_pdu_transmit_status;
 
 	BOOST_FOREACH(odtone::mih::octet_string event, tokens) {
 		if(enum_map.find(event) != enum_map.end())
-			capabilities_event_list.set((odtone::mih::event_list_enum) enum_map[event]);
+			capabilities_event_list.set((odtone::mih::link_evt_list_enum) enum_map[event]);
 	}
 }
 
@@ -193,21 +194,15 @@ void set_supported_command_list(odtone::mih::octet_string &list)
 
 	std::map<std::string, odtone::uint16> enum_map;
 
-	enum_map["link_get_parameters"]       = (odtone::uint16) odtone::mih::link_get_parameters;
-	enum_map["link_configure_thresholds"] = (odtone::uint16) odtone::mih::link_configure_thresholds;
-	enum_map["link_actions"]              = (odtone::uint16) odtone::mih::link_actions;
-	enum_map["net_ho_candidate_query"]    = (odtone::uint16) odtone::mih::net_ho_candidate_query;
-	enum_map["net_ho_commit"]             = (odtone::uint16) odtone::mih::net_ho_commit;
-	enum_map["n2n_ho_query_resources"]    = (odtone::uint16) odtone::mih::n2n_ho_query_resources;
-	enum_map["n2n_ho_commit"]             = (odtone::uint16) odtone::mih::n2n_ho_commit;
-	enum_map["n2n_ho_Complete"]           = (odtone::uint16) odtone::mih::n2n_ho_Complete;
-	enum_map["mn_ho_candidate_query"]     = (odtone::uint16) odtone::mih::mn_ho_candidate_query;
-	enum_map["mn_ho_commit"]              = (odtone::uint16) odtone::mih::mn_ho_commit;
-	enum_map["mn_ho_complete"]            = (odtone::uint16) odtone::mih::mn_ho_complete;
+	enum_map["link_subscribe"]            = (odtone::uint16) odtone::mih::cmd_link_event_subscribe;
+	enum_map["link_unsubscribe"]          = (odtone::uint16) odtone::mih::cmd_link_event_unsubscribe;
+	enum_map["link_get_parameters"]       = (odtone::uint16) odtone::mih::cmd_link_get_parameters;
+	enum_map["link_configure_thresholds"] = (odtone::uint16) odtone::mih::cmd_link_configure_thresholds;
+	enum_map["link_action"]               = (odtone::uint16) odtone::mih::cmd_link_action;
 
 	BOOST_FOREACH(odtone::mih::octet_string command, tokens) {
 		if(enum_map.find(command) != enum_map.end())
-			capabilities_command_list.set((odtone::mih::command_list_enum) enum_map[command]);
+			capabilities_command_list.set((odtone::mih::link_cmd_list_enum) enum_map[command]);
 	}
 }
 

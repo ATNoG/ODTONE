@@ -29,9 +29,9 @@
 #include "link_sap.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
-extern odtone::mih::event_list   capabilities_event_list;
-extern odtone::mih::command_list capabilities_command_list;
-extern odtone::mih::link_id      link_id;
+extern odtone::mih::link_id       link_id;
+extern odtone::mih::link_evt_list capabilities_event_list;
+extern odtone::mih::link_cmd_list capabilities_command_list;
 namespace link_sap {
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -123,8 +123,8 @@ void link_sap::default_handler(odtone::mih::message& msg, const boost::system::e
 
 			m << odtone::mih::confirm(odtone::mih::confirm::capability_discover)
 				& odtone::mih::tlv_status(st)
-				& odtone::mih::tlv_event_list(capabilities_event_list)
-				& odtone::mih::tlv_command_list(capabilities_command_list);
+				& odtone::mih::tlv_link_evt_list(capabilities_event_list)
+				& odtone::mih::tlv_link_cmd_list(capabilities_command_list);
 			m.tid(msg.tid());
 
 			_mihf.async_send(m);
@@ -133,9 +133,9 @@ void link_sap::default_handler(odtone::mih::message& msg, const boost::system::e
 
 	case odtone::mih::request::event_subscribe:
 		{
-			odtone::mih::event_list events;
+			odtone::mih::link_evt_list events;
 			msg >> odtone::mih::request()
-				& odtone::mih::tlv_event_list(events);
+				& odtone::mih::tlv_link_evt_list(events);
 
 			odtone::mih::message m;
 
@@ -144,7 +144,7 @@ void link_sap::default_handler(odtone::mih::message& msg, const boost::system::e
 
 			m << odtone::mih::confirm(odtone::mih::confirm::event_subscribe)
 				& odtone::mih::tlv_status(st)
-				& odtone::mih::tlv_event_list(events);
+				& odtone::mih::tlv_link_evt_list(events);
 			m.tid(msg.tid());
 
 			_mihf.async_send(m);
@@ -154,9 +154,9 @@ void link_sap::default_handler(odtone::mih::message& msg, const boost::system::e
 
 	case odtone::mih::request::event_unsubscribe:
 		{
-			odtone::mih::event_list events;
+			odtone::mih::link_evt_list events;
 			msg >> odtone::mih::request()
-				& odtone::mih::tlv_event_list(events);
+				& odtone::mih::tlv_link_evt_list(events);
 
 			odtone::mih::message m;
 
@@ -165,7 +165,7 @@ void link_sap::default_handler(odtone::mih::message& msg, const boost::system::e
 
 			m << odtone::mih::confirm(odtone::mih::confirm::event_unsubscribe)
 				& odtone::mih::tlv_status(st)
-				& odtone::mih::tlv_event_list(events);
+				& odtone::mih::tlv_link_evt_list(events);
 			m.tid(msg.tid());
 
 			_mihf.async_send(m);

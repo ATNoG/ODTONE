@@ -105,7 +105,7 @@ void address_book::set_link_address_list(const mih::octet_string &id,
  * @param event_list The list of supported events to set.
  */
 void address_book::set_event_list(const mih::octet_string &id,
-								  boost::optional<mih::event_list> event_list)
+								  boost::optional<mih::mih_evt_list> event_list)
 {
 	boost::mutex::scoped_lock lock(_mutex);
 
@@ -123,7 +123,7 @@ void address_book::set_event_list(const mih::octet_string &id,
  * @param cmd_list The list of supported commands to set.
  */
 void address_book::set_command_list(const mih::octet_string &id,
-									boost::optional<mih::command_list> cmd_list)
+									boost::optional<mih::mih_cmd_list> cmd_list)
 {
 	boost::mutex::scoped_lock lock(_mutex);
 

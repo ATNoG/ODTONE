@@ -400,8 +400,8 @@ void send_event_unsubscribe_request(handler &sap, const char *dst)
 	mac.address("00:11:22:33:44:55");
 	li.type = mih::link_type_802_11;
 	li.addr = mac;
-	odtone::mih::event_list evt;
-	evt.set(odtone::mih::link_up);
+	odtone::mih::mih_evt_list evt;
+	evt.set(odtone::mih::mih_evt_link_up);
 
 	p << mih::request(mih::request::event_unsubscribe)
 		& odtone::mih::tlv_link_identifier(li)

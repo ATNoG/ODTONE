@@ -106,7 +106,7 @@ void event_service::link_event_subscribe_response_timeout(const boost::system::e
  */
 mih::status event_service::subscribe(const mih::id &user,
 				     mih::link_tuple_id &link,
-				     mih::event_list &events)
+				     mih::mih_evt_list &events)
 {
 	event_registration_t reg;
 	reg.user.assign(user.to_string());
@@ -115,8 +115,8 @@ mih::status event_service::subscribe(const mih::id &user,
 	boost::mutex::scoped_lock lock(_event_mutex);
 
 	for(int i = 0; i < 32; i++) {
-		if (events.get((mih::event_list_enum) i)) {
-			reg.event = (mih::event_list_enum) i;
+		if (events.get((mih::mih_evt_list_enum) i)) {
+			reg.event = (mih::mih_evt_list_enum) i;
 			std::list<event_registration_t>::iterator tmp;
 			tmp = std::find(_event_subscriptions.begin(), _event_subscriptions.end(), reg);
 			if (tmp == _event_subscriptions.end()) {
@@ -142,7 +142,7 @@ mih::status event_service::subscribe(const mih::id &user,
 bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 						  meta_message_ptr &out)
 {
-	mih::event_list		events;
+	mih::mih_evt_list	events;
 	mih::link_tuple_id	link;
 
 	// TODO: optional is not take in cosideration yet
@@ -169,12 +169,12 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 		return true;
 	}
 
-	mih::event_list event_tmp;
+	mih::mih_evt_list event_tmp;
 	{
 		boost::mutex::scoped_lock lock(_link_mutex);
 
 		// If the MIHF already subscribed the requested events with Link SAP
-		std::map<mih::octet_string, mih::event_list>::iterator it = _link_subscriptions.find(link_id);
+		std::map<mih::octet_string, mih::mih_evt_list>::iterator it = _link_subscriptions.find(link_id);
 		if(it != _link_subscriptions.end())
 			event_tmp = it->second;
 	}
@@ -202,8 +202,18 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 
 		return true;
 	} else { // Subscribe requested events with Link SAP
+		mih::link_evt_list evt;
+		// Since the two bitmaps have the same values
+		// we can assign them directly
+		for (size_t i = 0; i < 32; ++i) {
+			if(events.get((mih::mih_evt_list_enum)i)) {
+				evt.set((mih::link_evt_list_enum)i);
+			}
+		}
+		//
+
 		*out << mih::request(mih::request::event_subscribe)
-			& mih::tlv_event_list(events);
+			& mih::tlv_link_evt_list(evt);
 
 		out->destination(mih::id(link_id));
 		out->source(in->source());
@@ -283,7 +293,7 @@ bool event_service::event_subscribe_response(meta_message_ptr &in,
 
 	mih::status        st;
 	mih::link_tuple_id link;
-	boost::optional<mih::event_list>    events;
+	boost::optional<mih::mih_evt_list> events;
 
 	// parse incoming message to (event_registration_t) reg
 	*in >> mih::response()
@@ -334,29 +344,40 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
 	}
 
 	mih::status st;
-	boost::optional<mih::event_list>    events;
+	boost::optional<mih::link_evt_list> events;
 
 	*in >> mih::confirm(mih::confirm::event_subscribe)
 		& mih::tlv_status(st)
-		& mih::tlv_event_list(events);
+		& mih::tlv_link_evt_list(events);
 
 	mih::link_tuple_id link;
 	link.type = _link_abook.get(in->source().to_string()).link_id.type;
 	link.addr = _link_abook.get(in->source().to_string()).link_id.addr;
 
 	if(st == mih::status_success) {
+		mih::mih_evt_list evt;
+
+		// Since the two bitmaps have the same values
+		// we can assign them directly
+		for (size_t i = 0; i < 32; ++i) {
+			if(events.get().get((mih::link_evt_list_enum)i)) {
+				evt.set((mih::mih_evt_list_enum)i);
+			}
+		}
+		//
+
 		*out << mih::response(mih::response::event_subscribe)
 			& mih::tlv_status(st)
 			& mih::tlv_link_identifier(link)
-			& mih::tlv_event_list(events);
+			& mih::tlv_event_list(evt);
 
 		// add a subscription
 		{
 			boost::mutex::scoped_lock lock(_link_mutex);
 
-			_link_subscriptions[out->source().to_string()].merge(events.get());
+			_link_subscriptions[out->source().to_string()].merge(evt);
 		}
-		st = subscribe(mih::id(out->destination().to_string()), link, events.get());
+		st = subscribe(mih::id(out->destination().to_string()), link, evt);
 	} else {
 		*out << mih::response(mih::response::event_subscribe)
 				& mih::tlv_status(st)
@@ -383,12 +404,12 @@ bool event_service::event_subscribe_confirm(meta_message_ptr &in,
  */
 void event_service::link_unsubscribe(meta_message_ptr &in,
                                      mih::link_tuple_id &link,
-                                     mih::event_list &events)
+                                     mih::mih_evt_list &events)
 {
 	boost::mutex::scoped_lock lock(_event_mutex);
 
 	std::list<event_registration_t>::iterator it;
-	mih::event_list el;
+	mih::mih_evt_list el;
 
 	// Get all subscriptions for the given Link SAP
 	for(it = _event_subscriptions.begin();
@@ -402,19 +423,19 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
 	// Check which events can be unsubscribed with Link SAP
 	bool send_msg = false;
 	mih::octet_string link_id = _link_abook.search_interface(link.type, link.addr);
-	mih::event_list link_event;
+	mih::mih_evt_list link_event;
 	{
 		boost::mutex::scoped_lock lock(_link_mutex);
 		link_event = _link_subscriptions.find(link_id)->second;
 	}
 	for(int i = 0; i < 32; i++) {
-		if((events.get((mih::event_list_enum) i) == link_event.get((mih::event_list_enum) i)) &&
-		   (el.get((mih::event_list_enum) i) != events.get((mih::event_list_enum) i))) {
-				el.set((mih::event_list_enum) i);
+		if((events.get((mih::mih_evt_list_enum) i) == link_event.get((mih::mih_evt_list_enum) i)) &&
+		   (el.get((mih::mih_evt_list_enum) i) != events.get((mih::mih_evt_list_enum) i))) {
+				el.set((mih::mih_evt_list_enum) i);
 				send_msg = true;
 		}
 		else {
-			el.clear((mih::event_list_enum) i);
+			el.clear((mih::mih_evt_list_enum) i);
 		}
 	}
 
@@ -422,8 +443,18 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
 	// with it
 	if(send_msg)
 	{
+		mih::link_evt_list evt;
+		// Since the two bitmaps have the same values
+		// we can assign them directly
+		for (size_t i = 0; i < 32; ++i) {
+			if(el.get((mih::mih_evt_list_enum)i)) {
+				evt.set((mih::link_evt_list_enum)i);
+			}
+		}
+		//
+
 		*in << mih::request(mih::request::event_unsubscribe)
-				& mih::tlv_event_list(el);
+				& mih::tlv_link_evt_list(evt);
 
 		mih::octet_string link_id = _link_abook.search_interface(link.type, link.addr);
 		in->destination(mih::id(link_id));
@@ -456,7 +487,7 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
  */
 mih::status event_service::unsubscribe(const mih::id &user,
 				       mih::link_tuple_id &link,
-				       mih::event_list &events)
+				       mih::mih_evt_list &events)
 {
 	boost::mutex::scoped_lock lock(_event_mutex);
 
@@ -467,7 +498,7 @@ mih::status event_service::unsubscribe(const mih::id &user,
 	{
 		if (it->link == link &&
 		    (it->user.compare(user.to_string()) == 0) &&
-		    events.get((mih::event_list_enum) it->event)) {
+		    events.get((mih::mih_evt_list_enum) it->event)) {
 				ODTONE_LOG(3, "(mies) removed subscription ", it->user,
 				    ":", it->link.addr ,":", it->event);
 				_event_subscriptions.erase(it++);
@@ -493,7 +524,7 @@ bool event_service::local_event_unsubscribe_request(meta_message_ptr &in,
 {
 	mih::status st;
 	mih::link_tuple_id link;
-	mih::event_list events;
+	mih::mih_evt_list events;
 
 	*in >> mih::request(mih::request::event_unsubscribe)
 		& mih::tlv_link_identifier(link)
@@ -565,7 +596,7 @@ bool event_service::event_unsubscribe_response(meta_message_ptr &in,
 
 	mih::status	       st;
 	mih::link_tuple_id link;
-	boost::optional<mih::event_list> events;
+	boost::optional<mih::mih_evt_list> events;
 
 	// parse incoming message to (event_registration_t) reg
 	*in >>  mih::response(mih::response::event_unsubscribe)
@@ -611,19 +642,19 @@ bool event_service::event_unsubscribe_confirm(meta_message_ptr &in,
 	}
 
 	mih::status	st;
-	boost::optional<mih::event_list> events;
+	boost::optional<mih::link_evt_list> events;
 
 	// parse incoming message to (event_registration_t) reg
 	*in >> mih::confirm(mih::confirm::event_unsubscribe)
 		& mih::tlv_status(st)
-		& mih::tlv_event_list(events);
+		& mih::tlv_link_evt_list(events);
 
 	if (st == mih::status_success) {
 		// Update events subscribed information
 		for(int i = 0; i < 32; i++) {
-			if(events.get().get((mih::event_list_enum)i) == true) {
+			if(events.get().get((mih::link_evt_list_enum)i) == true) {
 				boost::mutex::scoped_lock lock(_link_mutex);
-				_link_subscriptions[in->source().to_string()].clear((mih::event_list_enum)i);
+				_link_subscriptions[in->source().to_string()].clear((mih::mih_evt_list_enum)i);
 			}
 		}
 
@@ -644,7 +675,7 @@ bool event_service::event_unsubscribe_confirm(meta_message_ptr &in,
  */
 void event_service::msg_forward(meta_message_ptr &msg,
 				mih::link_tuple_id &li,
-				mih::event_list_enum event)
+				mih::mih_evt_list_enum event)
 {
 	std::list<event_registration_t>::iterator it;
 	int i = 0; // for logging purposes
@@ -673,7 +704,7 @@ void event_service::msg_forward(meta_message_ptr &msg,
  * @param event The related event.
  */
 void event_service::link_event_forward(meta_message_ptr &msg,
-				       mih::event_list_enum event)
+				       mih::mih_evt_list_enum event)
 {
 	mih::link_tuple_id li;
 	*msg >> mih::indication()
@@ -698,7 +729,7 @@ bool event_service::link_up_indication(meta_message_ptr &in, meta_message_ptr &o
 	if(in->is_local())
 		_link_abook.reset(in->source().to_string());
 
-	link_event_forward(in, mih::link_up);
+	link_event_forward(in, mih::mih_evt_link_up);
 
 	return false;
 }
@@ -719,7 +750,7 @@ bool event_service::link_down_indication(meta_message_ptr &in, meta_message_ptr 
 	if(in->is_local())
 		_link_abook.reset(in->source().to_string());
 
-	link_event_forward(in, mih::link_down);
+	link_event_forward(in, mih::mih_evt_link_down);
 
 	return false;
 }
@@ -763,9 +794,9 @@ bool event_service::link_detected_indication(meta_message_ptr &in,
 	for(it = _event_subscriptions.begin();
 	    it != _event_subscriptions.end();
 	    it++, i++) {
-		if (it->event == mih::link_detected) {
+		if (it->event == mih::mih_evt_link_detected) {
 			ODTONE_LOG(3, i, " (mies) found registration of user: ",
-			    it->user, " for event type ", mih::link_detected);
+			    it->user, " for event type ", mih::mih_evt_link_detected);
 			in->destination(mih::id(it->user));
 			_transmit(in);
 		}
@@ -790,7 +821,7 @@ bool event_service::link_going_down_indication(meta_message_ptr &in,
 	if(in->is_local())
 		_link_abook.reset(in->source().to_string());
 
-	link_event_forward(in, mih::link_going_down);
+	link_event_forward(in, mih::mih_evt_link_going_down);
 
 	return false;
 }
@@ -811,7 +842,7 @@ bool event_service::link_parameters_report_indication(meta_message_ptr &in,
 	if(in->is_local())
 		_link_abook.reset(in->source().to_string());
 
-	link_event_forward(in, mih::link_parameters_report);
+	link_event_forward(in, mih::mih_evt_link_parameters_report);
 
 	return false;
 }
@@ -841,9 +872,9 @@ bool event_service::link_handover_imminent_indication(meta_message_ptr &in,
 	for(it = _event_subscriptions.begin();
 	    it != _event_subscriptions.end();
 	    it++, i++) {
-		if (it->event == mih::link_handover_imminent) {
+		if (it->event == mih::mih_evt_link_handover_imminent) {
 			ODTONE_LOG(3, i, " (mies) found registration of user: ",
-			    it->user, " for event type ", mih::link_handover_imminent);
+			    it->user, " for event type ", mih::mih_evt_link_handover_imminent);
 			in->destination(mih::id(it->user));
 			_transmit(in);
 		}
@@ -904,9 +935,9 @@ bool event_service::link_handover_complete_indication(meta_message_ptr &in,
 	for(it = _event_subscriptions.begin();
 	    it != _event_subscriptions.end();
 	    it++, i++) {
-		if (it->event == mih::link_handover_complete) {
+		if (it->event == mih::mih_evt_link_handover_complete) {
 			ODTONE_LOG(3, i, " (mies) found registration of user: ",
-			    it->user, " for event type ", mih::link_handover_complete);
+			    it->user, " for event type ", mih::mih_evt_link_handover_complete);
 			in->destination(mih::id(it->user));
 			_transmit(in);
 		}
@@ -931,7 +962,7 @@ bool event_service::link_pdu_transmit_status_indication(meta_message_ptr &in,
 	if(in->is_local())
 		_link_abook.reset(in->source().to_string());
 
-	link_event_forward(in, mih::link_pdu_transmit_status);
+	link_event_forward(in, mih::mih_evt_link_pdu_transmit_status);
 
 	return false;
 }

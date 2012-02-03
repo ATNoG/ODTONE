@@ -54,8 +54,8 @@ link_sap::link_sap(const odtone::mih::config& cfg,
 					boost::asio::io_service& io,
 					odtone::mih::octet_string ifname,
 					odtone::mih::link_id link_id,
-					odtone::mih::event_list capabilities_event_list,
-					odtone::mih::command_list capabilities_command_list)
+					odtone::mih::link_evt_list capabilities_event_list,
+					odtone::mih::link_cmd_list capabilities_command_list)
 	: _mihf(cfg, io, boost::bind(&link_sap::ieee80221_handler, this, _1, _2)),
 	  _icmp_sock(io),
 	  _ifname(ifname),
@@ -152,8 +152,8 @@ void link_sap::ieee80221_handler(odtone::mih::message& msg, const boost::system:
 
 			m << odtone::mih::confirm(odtone::mih::confirm::capability_discover)
 				& odtone::mih::tlv_status(st)
-				& odtone::mih::tlv_event_list(_capabilities_event_list)
-				& odtone::mih::tlv_command_list(_capabilities_command_list);
+				& odtone::mih::tlv_link_evt_list(_capabilities_event_list)
+				& odtone::mih::tlv_link_cmd_list(_capabilities_command_list);
 			m.tid(msg.tid());
 
 			_mihf.async_send(m);
@@ -162,9 +162,9 @@ void link_sap::ieee80221_handler(odtone::mih::message& msg, const boost::system:
 
 	case odtone::mih::request::event_subscribe:
 		{
-			odtone::mih::event_list events;
+			odtone::mih::link_evt_list events;
 			msg >> odtone::mih::request()
-				& odtone::mih::tlv_event_list(events);
+				& odtone::mih::tlv_link_evt_list(events);
 
 			odtone::mih::message m;
 
@@ -173,7 +173,7 @@ void link_sap::ieee80221_handler(odtone::mih::message& msg, const boost::system:
 
 			m << odtone::mih::confirm(odtone::mih::confirm::event_subscribe)
 				& odtone::mih::tlv_status(st)
-				& odtone::mih::tlv_event_list(events);
+				& odtone::mih::tlv_link_evt_list(events);
 			m.tid(msg.tid());
 
 			_mihf.async_send(m);

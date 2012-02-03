@@ -43,8 +43,8 @@ struct address_entry
 
 	// MIHF capabilities information
 	boost::optional<mih::net_type_addr_list> capabilities_list_net_type_addr;
-	boost::optional<mih::event_list>         capabilities_event_list;
-	boost::optional<mih::command_list>       capabilities_cmd_list;
+	boost::optional<mih::mih_evt_list>       capabilities_event_list;
+	boost::optional<mih::mih_cmd_list>       capabilities_cmd_list;
 	boost::optional<mih::iq_type_list>       capabilities_query_type;
 	boost::optional<mih::transport_list>     capabilities_trans_list;
 	boost::optional<mih::mbb_ho_supp_list>   capabilities_mbb_ho_supp;
@@ -99,7 +99,7 @@ public:
 	 * @param event_list The list of supported events to set.
 	 */
 	void set_event_list(const mih::octet_string &id,
-							   boost::optional<mih::event_list> event_list);
+							   boost::optional<mih::mih_evt_list> event_list);
 
 	/**
 	 * Set the list of supported commands of an existing MIHF entry.
@@ -108,7 +108,7 @@ public:
 	 * @param cmd_list The list of supported commands to set.
 	 */
 	void set_command_list(const mih::octet_string &id,
-							   boost::optional<mih::command_list> cmd_list);
+							   boost::optional<mih::mih_cmd_list> cmd_list);
 
 	/**
 	 * Set the list of supported queries of an existing MIHF entry.

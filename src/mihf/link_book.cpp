@@ -92,8 +92,8 @@ void link_book::set_port(const mih::octet_string &id, uint16 port)
  * @param cmd_list Supported command list.
  */
 void link_book::update_capabilities(const mih::octet_string &id,
-									mih::event_list event_list,
-									mih::command_list cmd_list)
+									mih::link_evt_list event_list,
+									mih::link_cmd_list cmd_list)
 
 {
 	boost::mutex::scoped_lock lock(_mutex);

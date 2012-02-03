@@ -79,8 +79,8 @@ void discover_service::response(meta_message_ptr& in, meta_message_ptr& out)
 
 	mih::status									st;
 	boost::optional<mih::net_type_addr_list>	capabilities_list_net_type_addr;
-	boost::optional<mih::event_list>			capabilities_event_list;
-	boost::optional<mih::command_list>			capabilities_cmd_list;
+	boost::optional<mih::mih_evt_list>			capabilities_event_list;
+	boost::optional<mih::mih_cmd_list>			capabilities_cmd_list;
 	boost::optional<mih::iq_type_list>			capabilities_query_type;
 	boost::optional<mih::transport_list>		capabilities_trans_list;
 	boost::optional<mih::mbb_ho_supp_list>		capabilities_mbb_ho_supp;

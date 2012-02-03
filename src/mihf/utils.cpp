@@ -216,14 +216,17 @@ void forward_request(meta_message_ptr &in,
 void update_local_capabilities(address_book &abook, link_book &lbook)
 {
 	mih::net_type_addr_list  capabilities_list_net_type_addr;
-	mih::event_list	         capabilities_event_list;
-	mih::command_list        capabilities_cmd_list;
+	mih::mih_evt_list	     capabilities_event_list;
+	mih::mih_cmd_list        capabilities_cmd_list;
 
 	const std::vector<mih::octet_string> link_sap_list = lbook.get_ids();
 	capabilities_event_list.full();
 	capabilities_cmd_list.full();
 
 	BOOST_FOREACH(mih::octet_string id, link_sap_list) {
+		mih::mih_evt_list events;
+		mih::mih_cmd_list commands;
+
 		link_entry link_sap;
 		link_sap = lbook.get(id);
 		if(link_sap.status) {
@@ -234,17 +237,35 @@ void update_local_capabilities(address_book &abook, link_book &lbook)
 			nta.addr = link_sap.link_id.addr;
 			capabilities_list_net_type_addr.push_back(nta);
 
+
 			// fill capabilities
-			capabilities_event_list.common(link_sap.event_list);
-			capabilities_cmd_list.common(link_sap.cmd_list);
+
+			// Since the two bitmaps have the same values
+			// we can assign them directly
+			for (size_t i = 0; i < 32; ++i) {
+				if(link_sap.event_list.get((mih::link_evt_list_enum)i)) {
+					events.set((mih::mih_evt_list_enum)i);
+				}
+			}
+			//
+
+			if(link_sap.cmd_list.get(mih::cmd_link_get_parameters))
+				commands.set(mih::mih_cmd_link_get_parameters);
+			if(link_sap.cmd_list.get(mih::cmd_link_configure_thresholds))
+				commands.set(mih::mih_cmd_link_configure_thresholds);
+			if(link_sap.cmd_list.get(mih::cmd_link_action))
+				commands.set(mih::mih_cmd_link_actions);
+
+			capabilities_event_list.common(events);
+			capabilities_cmd_list.common(commands);
 		}
 	}
 
 	// If the MIHF does not have any active Link SAP
 	if(capabilities_list_net_type_addr.size() == 0) {
 		boost::optional<mih::net_type_addr_list>	empty_list_net_type_addr;
-		boost::optional<mih::event_list>			empty_event_list;
-		boost::optional<mih::command_list>			empty_cmd_list;
+		boost::optional<mih::mih_evt_list>			empty_event_list;
+		boost::optional<mih::mih_cmd_list>			empty_cmd_list;
 
 		abook.set_link_address_list(mihfid_t::instance()->to_string(), empty_list_net_type_addr);
 		abook.set_event_list(mihfid_t::instance()->to_string(), empty_event_list);
@@ -252,7 +273,7 @@ void update_local_capabilities(address_book &abook, link_book &lbook)
 	} else {
 		abook.set_link_address_list(mihfid_t::instance()->to_string(), capabilities_list_net_type_addr);
 		abook.set_event_list(mihfid_t::instance()->to_string(), capabilities_event_list);
-		abook.set_command_list(mihfid_t::instance()->to_string(), capabilities_cmd_list);
+//		abook.set_command_list(mihfid_t::instance()->to_string(), capabilities_cmd_list);
 	}
 }
 

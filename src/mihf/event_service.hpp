@@ -43,7 +43,7 @@ struct event_registration_t
 {
 	mih::octet_string		user;	/**< MIH-User/MIHF identifier.	*/
 	mih::link_tuple_id		link;	/**< Link identifier.			*/
-	mih::event_list_enum	event;	/**< Event subscribed.			*/
+	mih::mih_evt_list_enum	event;	/**< Event subscribed.			*/
 
 	/**
 	 * Check if the MAC_ADDR is equal to another MAC_ADDR.
@@ -230,7 +230,7 @@ protected:
 	 */
 	void msg_forward(meta_message_ptr& msg,
 			 mih::link_tuple_id &li,
-			 mih::event_list_enum event);
+			 mih::mih_evt_list_enum event);
 
 	/**
 	 * Parse the link identifier from incoming message and forwards the
@@ -240,7 +240,7 @@ protected:
 	 * @param event The related event.
 	 */
 	void link_event_forward(meta_message_ptr &msg,
-				mih::event_list_enum event);
+				mih::mih_evt_list_enum event);
 
 	/**
 	 * Deserialize the message, subscribe the user and send a response immediatly
@@ -274,7 +274,7 @@ protected:
 	 * @return The status of the operation.
 	 */
 	mih::status subscribe(const mih::id &user, mih::link_tuple_id &link,
-			      mih::event_list &events);
+			      mih::mih_evt_list &events);
 
 	/**
 	 * Unsubscribe the events related to a given user.
@@ -285,7 +285,7 @@ protected:
 	 * @return The status of the operation.
 	 */
 	mih::status unsubscribe(const mih::id &user, mih::link_tuple_id &link,
-				mih::event_list &events);
+				mih::mih_evt_list &events);
 
 	/**
 	 * Check if there is events subscribed to a given Link SAP, which
@@ -297,7 +297,7 @@ protected:
 	 */
 	void link_unsubscribe(meta_message_ptr &in,
 	                      mih::link_tuple_id &link,
-	                      mih::event_list &events);
+	                      mih::mih_evt_list &events);
 
 	/**
 	 * Handler responsible for setting a failure Link Event Subscribe
@@ -316,8 +316,8 @@ private:
 	address_book            &_abook;		/**< Address book module.			*/
 	link_book               &_link_abook;	/**< Link book module.				*/
 
-	std::map<mih::octet_string, mih::event_list> _link_subscriptions;	/**< Map of subscriptions. */
-	boost::mutex								 _link_mutex;			/**< Mutex.	*/
+	std::map<mih::octet_string, mih::mih_evt_list> _link_subscriptions; /**< Map of subscriptions. */
+	boost::mutex                                   _link_mutex;         /**< Mutex. */
 
 	std::list<event_registration_t>	_event_subscriptions;	/**< List of subscription.	*/
 	boost::mutex					_event_mutex;			/**< Mutex.	*/

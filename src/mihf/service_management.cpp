@@ -368,13 +368,13 @@ bool service_management::capability_discover_confirm(meta_message_ptr &in,
 	}
 
 	mih::status st;
-	boost::optional<mih::event_list> event;
-	boost::optional<mih::command_list> command;
+	boost::optional<mih::link_evt_list> event;
+	boost::optional<mih::link_cmd_list> command;
 
 	*in >> mih::confirm(mih::confirm::capability_discover)
 	       & mih::tlv_status(st)
-	       & mih::tlv_event_list(event)
-	       & mih::tlv_command_list(command);
+	       & mih::tlv_link_evt_list(event)
+	       & mih::tlv_link_cmd_list(command);
 
 	if(st == mih::status_success) {
 		// Update Link SAP capabilities in the Link Book
