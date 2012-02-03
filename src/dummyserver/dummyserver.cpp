@@ -70,8 +70,8 @@ int main(int argc, char **argv)
 	boost::asio::io_service io_service;
 
 	dispatch_t dispatch = boost::bind(process_message, _1);
-	mihf::udp_listener listen(io_service, boost::asio::ip::udp::v4(),
-				  "127.0.0.1", 4000, dispatch);
+	mihf::udp_listener listen(io_service, 4096, boost::asio::ip::udp::v6(),
+				  "::", 4000, dispatch, true);
 
 	listen.start();
 	io_service.run();

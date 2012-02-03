@@ -20,8 +20,8 @@ project dummyserver
 
 exe dummyserver
 	: dummyserver.cpp
+	  udp_listener.cpp
 	  ../mihf/log.cpp
-	  ../mihf/udp_listener.cpp
 	  ../mihf/meta_message.cpp
 	  ../../lib/odtone//odtone_base
 	  ../../lib/odtone/mih//odtone_mih
