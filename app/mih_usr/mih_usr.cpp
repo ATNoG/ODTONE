@@ -153,12 +153,7 @@ private:
 	odtone::sap::user _mihf;	/**< User SAP helper.		*/
 	odtone::mih::id   _mihfid;	/**< MIHF destination ID.	*/
 };
-/**
- * Destruct the MIH-User.
- */
-mih_user::~mih_user()
-{
-}
+
 /**
  * Construct the MIH-User.
  *
@@ -169,7 +164,7 @@ mih_user::~mih_user()
 mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	: _mihf(cfg, io, boost::bind(&mih_user::event_handler, this, _1, _2))
 {
-/*	odtone::mih::message m;
+	odtone::mih::message m;
 	boost::optional<odtone::mih::mih_cmd_list> supp_cmd = parse_supported_commands(cfg);
 
 	m << odtone::mih::indication(odtone::mih::indication::user_register)
@@ -178,7 +173,14 @@ mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
 
 	_mihf.async_send(m, boost::bind(&mih_user::user_reg_handler, this, boost::cref(cfg), _2));
 }
-*/
+
+
+/**
+ * Destruct the MIH-User.
+ */
+mih_user::~mih_user()
+{
+}
 
 /**
  * User registration handler.
@@ -186,10 +188,10 @@ mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
  * @param cfg Configuration options.
  * @param ec Error Code.
  */
-/*void mih_user::user_reg_handler(const odtone::mih::config& cfg, const boost::system::error_code& ec)
+void mih_user::user_reg_handler(const odtone::mih::config& cfg, const boost::system::error_code& ec)
 {
 	log_(0, "MIH-User register result: ", ec.message());
-*/
+
 	odtone::mih::message msg;
 
 	odtone::mih::octet_string destination = cfg.get<odtone::mih::octet_string>(odtone::sap::kConf_MIH_SAP_dest);
