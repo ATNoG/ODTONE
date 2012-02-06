@@ -34,6 +34,20 @@
 
 namespace odtone { namespace mihf {
 
+/**
+ * Construct the discovery service.
+ *
+ * @param io The io_service object that discovery module module will
+ * use to dispatch handlers for any asynchronous operations performed on
+ * the socket.
+ * @param lpool The local transaction pool module.
+ * @param address_abook The address book module.
+ * @param user_abook The user book module.
+ * @param t The transmit module.
+ * @param dscv_order Ordered list of entities that will manage the
+ * discovery of new PoS.
+ * @param enable_unsolicited Allows unsolicited discovery.
+ */
 discover_service::discover_service(io_service &io,
 								   local_transaction_pool &lpool,
 								   address_book &address_abook,
@@ -51,6 +65,12 @@ discover_service::discover_service(io_service &io,
 	_enable_unsolicited = enable_unsolicited;
 }
 
+/**
+ * Discovery request handler.
+ *
+ * @param in The input message.
+ * @param out The output message.
+ */
 void discover_service::request(meta_message_ptr& in, meta_message_ptr& out)
 {
 	ODTONE_LOG(1, "(discovery) Received a request to discover a new PoS");
@@ -59,6 +79,12 @@ void discover_service::request(meta_message_ptr& in, meta_message_ptr& out)
 	utils::forward_request(in, _lpool, _transmit);
 }
 
+/**
+ * Discovery response handler.
+ *
+ * @param in The input message.
+ * @param out The output message.
+ */
 void discover_service::response(meta_message_ptr& in, meta_message_ptr& out)
 {
 	bool unsolicited;
@@ -212,6 +238,13 @@ void discover_service::response(meta_message_ptr& in, meta_message_ptr& out)
 	}
 }
 
+/**
+ * Request PoS capabilities using MIH Capability Discover procedure.
+ *
+ * @param out The output message.
+ * @param pos The PoS information.
+ * @param unsolicited Allows unsolicited discovery.
+ */
 void discover_service::request_pos_capabilities(meta_message_ptr& out, mih::mos_info &pos, bool unsolicited)
 {
 	ODTONE_LOG(1, "(discovery) Requesting capabilities of a discovered PoS: ", pos.id.to_string());
