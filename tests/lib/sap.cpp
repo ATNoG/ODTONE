@@ -45,7 +45,7 @@ test::test(boost::asio::io_service& io, const mih::config& cfg, const default_ha
 	      cfg.get<ushort>(kConf_MIHF1_Local_Port)),
 	  _ep2(ip::address::from_string("127.0.0.1"),
 	      cfg.get<ushort>(kConf_MIHF2_Local_Port)),
-	  _link_id(odtone::mih::id(cfg.get<std::string>(kConf_MIH_SAP_id)))
+	  _link_id(odtone::mih::id("Test"))
 {
 	buffer<uint8> buff(cfg.get<uint>(kConf_Receive_Buffer_Len));
 	void* rbuff = buff.get();

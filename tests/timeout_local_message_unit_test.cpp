@@ -26,6 +26,7 @@
  * timeout_unit_test: Send MIH_Link_Up.indication
  * timeout_unit_test: Send MIH_Link_Down.indication
  * timeout_unit_test: Send MIH_Event_Unsubscribe.request
+ * failure_unit_test: has received a "MIH_Event_Unsubscribe.request"
  * timeout_unit_test: has received a "MIH_Event_Unsubscribe.confirm"
  * timeout_unit_test: Send MIH_Link_Up.indication
  * timeout_unit_test: Send MIH_Link_Down.indication
@@ -100,8 +101,7 @@ message_unit_test::message_unit_test(const mih::config& cfg, boost::asio::io_ser
 {
 	// Register MIH-User
 	mih::message user_message;
-	user_message << mih::indication(mih::indication::user_register, mih::id("mihf1"))
-	    & mih::tlv_user_role(mih::user_role_mobility);
+	user_message << mih::indication(mih::indication::user_register, mih::id("mihf1"));
 	_mihf.async_send_mihf1(user_message);
 
 	// Register Link SAP
@@ -327,8 +327,8 @@ void message_unit_test::event_handler(mih::message& msg, const boost::system::er
 
 			mih::status									st;
 			boost::optional<mih::net_type_addr_list>	capabilities_list_net_type_addr;
-			boost::optional<mih::event_list>			capabilities_event_list;
-			boost::optional<mih::command_list>			capabilities_cmd_list;
+			boost::optional<mih::mih_evt_list>			capabilities_event_list;
+			boost::optional<mih::mih_cmd_list>			capabilities_cmd_list;
 			boost::optional<mih::iq_type_list>			capabilities_query_type;
 			boost::optional<mih::transport_list>		capabilities_trans_list;
 			boost::optional<mih::mbb_ho_supp_list>		capabilities_mbb_ho_supp;
@@ -348,7 +348,7 @@ void message_unit_test::event_handler(mih::message& msg, const boost::system::er
 			}
 
 			if(capabilities_event_list.is_initialized()) {
-				if(capabilities_event_list.get().get(mih::link_up) == 1) {
+				if(capabilities_event_list.get().get(mih::mih_evt_link_up) == 1) {
 					log_(0, "Error!");
 					return;
 				}
@@ -382,7 +382,7 @@ void message_unit_test::event_handler(mih::message& msg, const boost::system::er
 
 		mih::status							st;
 		mih::link_tuple_id					lid;
-		boost::optional<mih::event_list>	event_list;
+		boost::optional<mih::mih_evt_list>	event_list;
 
 		msg >> mih::confirm(mih::confirm::event_subscribe)
 			& mih::tlv_status(st)
@@ -430,7 +430,7 @@ void message_unit_test::event_handler(mih::message& msg, const boost::system::er
 
 		mih::status							st;
 		mih::link_tuple_id					lid;
-		boost::optional<mih::event_list>	event_list;
+		boost::optional<mih::mih_evt_list>	event_list;
 
 		msg >> mih::confirm(mih::confirm::event_unsubscribe)
 			& mih::tlv_status(st)
@@ -677,11 +677,6 @@ void message_unit_test::send_capability_discover()
 	log_(0, "Send MIH_Capability_Discover.request");
 
 	mih::message 		req;
-	mih::event_list		capabilities_event_list;
-	mih::command_list	capabilities_command_list;
-
-	capabilities_event_list.set(mih::link_up);
-	capabilities_command_list.set(mih::link_get_parameters);
 
 	req << mih::request(mih::request::capability_discover, mih::id("mihf1"));
 	req.tid(55);
@@ -695,9 +690,9 @@ void message_unit_test::send_event_subscribe()
 
 	mih::message		req;
 	mih::link_tuple_id	lid;
-	mih::event_list		event_list;
+	mih::mih_evt_list		event_list;
 
-	event_list.set(mih::link_up);
+	event_list.set(mih::mih_evt_link_up);
 	lid.type = mih::link_type_802_11;
 	mih::mac_addr mac;
 	mac.address("00:11:22:33:44:55");
@@ -717,9 +712,9 @@ void message_unit_test::send_event_unsubscribe()
 
 	mih::message		req;
 	mih::link_tuple_id	lid;
-	mih::event_list		event_list;
+	mih::mih_evt_list		event_list;
 
-	event_list.set(mih::link_up);
+	event_list.set(mih::mih_evt_link_up);
 	lid.type = mih::link_type_802_11;
 	mih::mac_addr mac;
 	mac.address("00:11:22:33:44:55");
@@ -905,7 +900,7 @@ int main(int argc, char** argv)
 	try {
 		boost::asio::io_service ios;
 
-		po::options_description desc(odtone::mih::octet_string("MIH Usr Configuration"));
+		po::options_description desc(odtone::mih::octet_string("Configuration"));
 		desc.add_options()
 				("help", "Display configuration options")
 				(odtone::test::kConf_File, po::value<std::string>()->default_value("test.conf"), "Configuration file")
