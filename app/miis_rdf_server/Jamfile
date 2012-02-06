@@ -25,6 +25,11 @@ exe miis_rdf_server
 	  ../../lib/odtone//odtone_base
 	  ../../lib/odtone/mih//odtone_mih
 	  ../../lib/odtone/sap//odtone_sap
-	  rdf
-	: <link>shared
+	: <linkflags>-lrdf
+	;
+
+install install
+	: miis_rdf_server
+	  miis_rdf_server.conf
+	: <location>../../dist
 	;
