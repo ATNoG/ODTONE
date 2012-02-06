@@ -20,6 +20,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
+#include <odtone/mih/types/capabilities.hpp>
 #include <odtone/mih/types/odtone.hpp>
 
 #include <boost/bind.hpp>
@@ -36,10 +37,10 @@ namespace odtone { namespace mihf {
  */
 struct user_entry
 {
-	mih::octet_string	ip;			/**< IP address.		*/
-	uint16				port;		/**< Listening port.	*/
-	mih::user_role		role;		/**< MIH-User role.		*/
-	uint8				priority;	/**< Role priority.		*/
+	mih::octet_string	ip;			/**< IP address.				*/
+	uint16				port;		/**< Listening port.			*/
+	boost::optional<mih::mih_cmd_list> supp_cmd;/**< List of supported commands.*/
+	boost::optional<mih::iq_type_list> supp_iq;	/**< List of supported information server queries.*/
 };
 
 /**
@@ -57,12 +58,14 @@ public:
 	 * @param id MIH-User MIH Identifier.
 	 * @param ip MIH-User IP address.
 	 * @param port MIH-User listening port.
-	 * @param role MIH-User role.
+	 * @param supp_cmd MIH-User list of supported commands.
+	 * @param supp_iq MIH-User list of supported information server queries.
 	 */
 	void add(const mih::octet_string &id,
 	         mih::octet_string &ip,
 	         uint16 port,
-	         mih::user_role	role);
+	         boost::optional<mih::mih_cmd_list> supp_cmd,
+	         boost::optional<mih::iq_type_list> supp_iq);
 
 	/**
 	 * Set the IP address of an existing MIH-User entry.
@@ -103,37 +106,12 @@ public:
 	const std::vector<mih::octet_string> get_ids();
 
 	/**
-	 * Get the MIH-User associated with the handover operations.
-	 *
-	 * @return The identifier of the MIH-User associated with the handover
-	 * operations.
-	 */
-	const boost::optional<mih::octet_string> mobility_user();
-
-	/**
 	 * Get the MIH-User associated with the information server operations.
 	 *
 	 * @return The identifier of the MIH-User associated with the information
 	 * server operations.
 	 */
 	const boost::optional<mih::octet_string> information_user();
-
-	/**
-	 * Get the MIH-User associated with the discovery operations.
-	 *
-	 * @return The identifier of the MIH-User associated with the discovery
-	 * operations.
-	 */
-	const boost::optional<mih::octet_string> discovery_user();
-
-	/**
-	 * Get the list of all known MIH-Users associated with the discovery
-	 * operations.
-	 *
-	 * @return The list of all known MIH-Users associated with the
-	 * discovery operations.
-	 */
-	const std::map<mih::octet_string, user_entry> get_discovery_users();
 
 private:
 

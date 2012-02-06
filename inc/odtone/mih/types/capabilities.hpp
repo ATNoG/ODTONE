@@ -71,7 +71,7 @@ enum mih_cmd_list_enum {
 	mih_cmd_net_ho_commit = 3,				/**< NET handover commit			*/
 	mih_cmd_n2n_ho_query_resources = 3,		/**< N2N handover query resources	*/
 	mih_cmd_n2n_ho_commit = 3,				/**< N2N handover commit			*/
-	mih_cmd_n2n_ho_Complete = 3,			/**< N2N handover complete			*/
+	mih_cmd_n2n_ho_complete = 3,			/**< N2N handover complete			*/
 	mih_cmd_mn_ho_candidate_query = 4,		/**< MN handover candidate query	*/
 	mih_cmd_mn_ho_commit = 4,				/**< MN handover commit				*/
 	mih_cmd_mn_ho_complete = 4,				/**< MN handover complete			*/

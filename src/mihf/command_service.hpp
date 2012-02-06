@@ -327,12 +327,15 @@ protected:
 	 * @param send_msg The send message output.
 	 * @param in The input message.
 	 * @param out The output message.
+	 * @param cmd The command that the MIH-Users must support in order to
+	 * receive an indication about the reception opf this message.
 	 * @return True if the response is sent immediately or false otherwise.
 	 */
 	bool generic_command_request(const char *recv_msg,
 				     const char *send_msg,
 				     meta_message_ptr &in,
-				     meta_message_ptr &out);
+				     meta_message_ptr &out,
+				     mih::mih_cmd_list_enum cmd);
 
 	/**
 	 * Currently command service handover related messages are handled by

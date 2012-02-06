@@ -23,16 +23,19 @@
 #include <odtone/mih/indication.hpp>
 #include <odtone/mih/tlv_types.hpp>
 #include <odtone/sap/user.hpp>
-#include <boost/utility.hpp>
-#include <boost/bind.hpp>
+
 #include <iostream>
 
+#include <boost/utility.hpp>
+#include <boost/bind.hpp>
+#include <boost/foreach.hpp>
+#include <boost/tokenizer.hpp>
+
 extern "C" {
-#include <redland.h>
+	#include <redland.h>
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
 namespace po = boost::program_options;
 
 using odtone::uint;
@@ -40,7 +43,78 @@ using odtone::ushort;
 
 odtone::logger log_("information server", std::cout);
 
-static const char* const kConf_Databse = "database";
+static const char* const kConf_Database = "database";
+static const char* const kConf_MIH_Queries = "user.queries";
+
+///////////////////////////////////////////////////////////////////////////////
+void __trim(odtone::mih::octet_string &str, const char chr)
+{
+	str.erase(std::remove(str.begin(), str.end(), chr), str.end());
+}
+
+/**
+ * Parse supported commands.
+ *
+ * @param cfg Configuration options.
+ * @return A bitmap mapping the supported commands.
+ */
+boost::optional<odtone::mih::iq_type_list> parse_supported_queries(const odtone::mih::config &cfg)
+{
+	using namespace boost;
+
+	odtone::mih::iq_type_list queries;
+	bool has_iq = false;
+
+	std::map<std::string, odtone::mih::iq_type_list_enum> enum_map;
+	enum_map["iq_type_binary_data"]            = odtone::mih::iq_type_binary_data;
+	enum_map["iq_type_rdf_data"]               = odtone::mih::iq_type_rdf_data;
+	enum_map["iq_type_rdf_schema_url"]         = odtone::mih::iq_type_rdf_schema_url;
+	enum_map["iq_type_rdf_schema"]             = odtone::mih::iq_type_rdf_schema;
+	enum_map["iq_type_ie_network_type"]        = odtone::mih::iq_type_ie_network_type;
+	enum_map["iq_type_ie_operator_id"]         = odtone::mih::iq_type_ie_operator_id;
+	enum_map["iq_type_ie_service_provider_id"] = odtone::mih::iq_type_ie_service_provider_id;
+	enum_map["iq_type_ie_country_code"]        = odtone::mih::iq_type_ie_country_code;
+	enum_map["iq_type_ie_network_id"]          = odtone::mih::iq_type_ie_network_id;
+	enum_map["iq_type_ie_network_aux_id"]      = odtone::mih::iq_type_ie_network_aux_id;
+	enum_map["iq_type_ie_roaming_parteners"]   = odtone::mih::iq_type_ie_roaming_parteners;
+	enum_map["iq_type_ie_cost"]                = odtone::mih::iq_type_ie_cost;
+	enum_map["iq_type_ie_network_qos"]         = odtone::mih::iq_type_ie_network_qos;
+	enum_map["iq_type_ie_network_data_rate"]   = odtone::mih::iq_type_ie_network_data_rate;
+	enum_map["iq_type_ie_net_regult_domain"]   = odtone::mih::iq_type_ie_net_regult_domain;
+	enum_map["iq_type_ie_net_frequency_bands"] = odtone::mih::iq_type_ie_net_frequency_bands;
+	enum_map["iq_type_ie_net_ip_cfg_methods"]  = odtone::mih::iq_type_ie_net_ip_cfg_methods;
+	enum_map["iq_type_ie_net_capabilities"]    = odtone::mih::iq_type_ie_net_capabilities;
+	enum_map["iq_type_ie_net_supported_lcp"]   = odtone::mih::iq_type_ie_net_supported_lcp;
+	enum_map["iq_type_ie_net_mob_mgmt_prot"]   = odtone::mih::iq_type_ie_net_mob_mgmt_prot;
+	enum_map["iq_type_ie_net_emserv_proxy"]    = odtone::mih::iq_type_ie_net_emserv_proxy;
+	enum_map["iq_type_ie_net_ims_proxy_cscf"]  = odtone::mih::iq_type_ie_net_ims_proxy_cscf;
+	enum_map["iq_type_ie_net_mobile_network"]  = odtone::mih::iq_type_ie_net_mobile_network;
+	enum_map["iq_type_ie_poa_link_addr"]       = odtone::mih::iq_type_ie_poa_link_addr;
+	enum_map["iq_type_ie_poa_location"]        = odtone::mih::iq_type_ie_poa_location;
+	enum_map["iq_type_ie_poa_channel_range"]   = odtone::mih::iq_type_ie_poa_channel_range;
+	enum_map["iq_type_ie_poa_system_info"]     = odtone::mih::iq_type_ie_poa_system_info;
+	enum_map["iq_type_ie_poa_subnet_info"]     = odtone::mih::iq_type_ie_poa_subnet_info;
+	enum_map["iq_type_ie_poa_ip_addr "]        = odtone::mih::iq_type_ie_poa_ip_addr;
+
+	std::string tmp = cfg.get<std::string>(kConf_MIH_Queries);
+	__trim(tmp, ' ');
+
+	char_separator<char> sep1(",");
+	tokenizer< char_separator<char> > list_tokens(tmp, sep1);
+
+	BOOST_FOREACH(std::string str, list_tokens) {
+		if(enum_map.find(str) != enum_map.end()) {
+			queries.set((odtone::mih::iq_type_list_enum) enum_map[str]);
+			has_iq = true;
+		}
+	}
+
+	boost::optional<odtone::mih::iq_type_list> supp_iq;
+	if(has_iq)
+		supp_iq = queries;
+
+	return supp_iq;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
@@ -105,7 +179,7 @@ private:
  */
 miis_rdf_server::miis_rdf_server(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	: _mihf(cfg, io, boost::bind(&miis_rdf_server::event_handler, this, _1, _2)),
-	  _path_to_database(cfg.get<std::string>(kConf_Databse))
+	  _path_to_database(cfg.get<std::string>(kConf_Database))
 {
 	_world = librdf_new_world();
 	librdf_world_open(_world);
@@ -131,13 +205,13 @@ miis_rdf_server::miis_rdf_server(const odtone::mih::config& cfg, boost::asio::io
 
 	// Register with the MIHF
 	odtone::mih::message m;
-	odtone::mih::user_role role = odtone::mih::user_role_is;
+	boost::optional<odtone::mih::iq_type_list> supp_iq = parse_supported_queries(cfg);
 
 	m << odtone::mih::indication(odtone::mih::indication::user_register)
-	    & odtone::mih::tlv_user_role(role);
+	    & odtone::mih::tlv_query_type_list(supp_iq);
 	m.destination(odtone::mih::id("local-mihf"));
 
-	_mihf.async_send(m, boost::bind(&mih_user::user_reg_handler, this, boost::cref(cfg), _2));
+	_mihf.async_send(m, boost::bind(&miis_rdf_server::user_reg_handler, this, boost::cref(cfg), _2));
 }
 
 /**
@@ -272,9 +346,10 @@ int main(int argc, char** argv)
 			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1236), "Listening port")
 			(odtone::sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive Buffer Length")
 			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("miis"), "MIIS Server ID")
+			(kConf_MIH_Queries, po::value<std::string>()->default_value(""), "MIIS Server supported queries")
 			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF IP address")
 			(odtone::sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "Local MIHF communication port")
-			(kConf_Databse, po::value<std::string>()->default_value("database"), "/path/to MIIS server sqlite database ");
+			(kConf_Database, po::value<std::string>()->default_value("database"), "/path/to MIIS server sqlite database ");
 
 		odtone::mih::config cfg(desc);
 		cfg.parse(argc, argv, odtone::sap::kConf_File);

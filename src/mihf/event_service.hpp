@@ -24,6 +24,7 @@
 #include "local_transaction_pool.hpp"
 #include "address_book.hpp"
 #include "link_book.hpp"
+#include "user_book.hpp"
 #include "transmit.hpp"
 #include "meta_message.hpp"
 
@@ -74,9 +75,11 @@ public:
 	 * @param t The transmit module.
 	 * @param abook The address book module.
 	 * @param lbook The link book module.
+	 * @param ubook The user book module.
 	 */
 	event_service(io_service &io, local_transaction_pool &lpool,
-				  transmit &t, address_book &abook, link_book &lbook);
+				  transmit &t, address_book &abook, link_book &lbook,
+				  user_book &ubook);
 
 	/**
 	 * Event Subscribe Request message handler.
@@ -315,6 +318,7 @@ private:
 	transmit				&_transmit;		/**< Transmit module.				*/
 	address_book            &_abook;		/**< Address book module.			*/
 	link_book               &_link_abook;	/**< Link book module.				*/
+	user_book               &_user_abook;	/**< User book module.				*/
 
 	std::list<event_registration_t>	_event_subscriptions;	/**< List of subscription.	*/
 	boost::mutex					_event_mutex;			/**< Mutex.	*/

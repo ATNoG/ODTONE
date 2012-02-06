@@ -29,55 +29,25 @@ namespace odtone { namespace mihf {
  * @param id MIH-User MIH Identifier.
  * @param ip MIH-User IP address.
  * @param port MIH-User listening port.
- * @param role MIH-User role.
+ * @param supp_cmd MIH-User list of supported commands.
+ * @param supp_iq MIH-User list of supported information server queries.
  */
 void user_book::add(const mih::octet_string &id,
 		            mih::octet_string& ip,
 		            uint16 port,
-		            mih::user_role role)
+		            boost::optional<mih::mih_cmd_list> supp_cmd,
+		            boost::optional<mih::iq_type_list> supp_iq)
 {
 	boost::mutex::scoped_lock lock(_mutex);
 
 	user_entry a;
 	a.ip.assign(ip);
 	a.port = port;
-	a.role = role;
-
-	std::map<mih::octet_string, user_entry>::iterator it;
-	it = _ubook.find(id);
-
-	if (it != _ubook.end()) {
-		a.priority = it->second.priority;
-		return;
-	}
-
-	// Set the priority
-	if(role == mih::user_role_is) {
-		a.priority = 0;
-		for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); ++it) {
-			if(it->second.role == mih::user_role_is)
-				(it->second.priority)++;
-		}
-	} else if(role == mih::user_role_mobility) {
-		a.priority = 0;
-		for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); ++it) {
-			if(it->second.role == mih::user_role_mobility)
-				(it->second.priority)++;
-		}
-	} else if(role == mih::user_role_discovery) {
-		uint8 priority = 0;
-		for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); ++it) {
-			if(it->second.role == mih::user_role_discovery)
-				priority++;
-		}
-		a.priority = priority;
-	} else {
-		a.priority = 0;
-	}
-	//
+	a.supp_cmd = supp_cmd;
+	a.supp_iq = supp_iq;
 
 	_ubook[id] = a;
-	ODTONE_LOG(4, "(user_book) added: ", id, " : ", ip, " : ", port, " : ", role);
+	ODTONE_LOG(4, "(user_book) added: ", id, " : ", ip, " : ", port);
 }
 
 /**
@@ -163,29 +133,6 @@ const std::vector<mih::octet_string> user_book::get_ids()
 }
 
 /**
- * Get the MIH-User associated with the handover operations.
- *
- * @return The identifier of the MIH-User associated with the handover
- * operations.
- */
-const boost::optional<mih::octet_string> user_book::mobility_user()
-{
-	boost::mutex::scoped_lock lock(_mutex);
-
-	boost::optional<mih::octet_string> ret;
-
-	std::vector<mih::octet_string> ids;
-	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
-		if(it->second.role == mih::user_role_mobility && it->second.priority == 0) {
-			ret = it->first;
-			break;
-		}
-	}
-
-	return ret;
-}
-
-/**
  * Get the MIH-User associated with the information server operations.
  *
  * @return The identifier of the MIH-User associated with the information
@@ -197,59 +144,9 @@ const boost::optional<mih::octet_string> user_book::information_user()
 
 	boost::optional<mih::octet_string> ret;
 
-	std::vector<mih::octet_string> ids;
-	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
-		if(it->second.role == mih::user_role_is && it->second.priority == 0) {
-			ret = it->first;
-			break;
-		}
-	}
+
 
 	return ret;
-}
-
-/**
- * Get the MIH-User associated with the discovery operations.
- *
- * @return The identifier of the MIH-User associated with the discovery
- * operations.
- */
-const boost::optional<mih::octet_string> user_book::discovery_user()
-{
-	boost::mutex::scoped_lock lock(_mutex);
-
-	boost::optional<mih::octet_string> ret;
-
-	std::vector<mih::octet_string> ids;
-	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
-		if(it->second.role == mih::user_role_discovery && it->second.priority == 0) {
-			ret = it->first;
-			break;
-		}
-	}
-
-	return ret;
-}
-
-/**
- * Get the list of all known MIH-Users associated with the discovery
- * operations.
- *
- * @return The list of all known MIH-Users associated with the
- * discovery operations.
- */
-const std::map<mih::octet_string, user_entry> user_book::get_discovery_users()
-{
-	boost::mutex::scoped_lock lock(_mutex);
-
-	std::map<mih::octet_string, user_entry> ids;
-	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
-		if(it->second.role == mih::user_role_discovery) {
-			ids[it->first] = it->second;
-		}
-	}
-
-	return ids;
 }
 
 } /* namespace mihf */ } /* namespace odtone */

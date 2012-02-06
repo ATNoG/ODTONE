@@ -39,6 +39,7 @@ discover_service::discover_service(io_service &io,
 								   address_book &address_abook,
 								   user_book &user_abook,
 								   transmit &t,
+								   std::vector<mih::octet_string> &dscv_order,
 								   bool enable_unsolicited)
 	: _io(io),
 	  _lpool(lpool),
@@ -46,13 +47,14 @@ discover_service::discover_service(io_service &io,
 	  _user_abook(user_abook),
 	  _transmit(t)
 {
+	_dscv_order = dscv_order;
 	_enable_unsolicited = enable_unsolicited;
 }
 
 void discover_service::request(meta_message_ptr& in, meta_message_ptr& out)
 {
 	ODTONE_LOG(1, "(discovery) Received a request to discover a new PoS");
-	in->destination(mih::id(_user_abook.discovery_user().get()));
+	in->destination(mih::id(_dscv_order.front()));
 	in->opcode(mih::operation::indication);
 	utils::forward_request(in, _lpool, _transmit);
 }
@@ -160,24 +162,14 @@ void discover_service::response(meta_message_ptr& in, meta_message_ptr& out)
 
 		if(!all) {
 			// Check the next discovery mechanism to use
-			mih::octet_string next_disc_user;
-			std::map<mih::octet_string, user_entry> user_map = _user_abook.get_discovery_users();
-			std::map<mih::octet_string, user_entry>::iterator src = user_map.find(in->source().to_string());
-
-			std::map<mih::octet_string, user_entry>::iterator it;
-			for(it = user_map.begin() ; it != user_map.end(); ++it) {
-				if(it->second.priority == (src->second.priority + 1)) {
-					next_disc_user = it->first;
-					break;
-				}
-			}
-
-			if(next_disc_user.size() != 0) {
-				ODTONE_LOG(1, "(discovery) Using a complementar mechanism ",
-						   "to discover the remaining PoS");
+			std::vector<mih::octet_string>::iterator it;
+			it = std::find(_dscv_order.begin(), _dscv_order.end(), in->source().to_string());
+			if(++it != _dscv_order.end()) {
+				ODTONE_LOG(1, "(discovery) Using a complementar mechanism (",
+						   *it, ") to discover the remaining PoS");
 				*out << mih::indication(mih::indication::capability_discover)
 					& mih::tlv_mos_dscv(missing);
-				out->destination(mih::id(next_disc_user));
+				out->destination(mih::id(*it));
 				if(!unsolicited)
 					utils::forward_request(out, _lpool, _transmit);
 				else
@@ -195,23 +187,13 @@ void discover_service::response(meta_message_ptr& in, meta_message_ptr& out)
 		}
 	} else {
 		// Check the next discovery mechanism to use
-		mih::octet_string next_disc_user;
-		std::map<mih::octet_string, user_entry> user_map = _user_abook.get_discovery_users();
-		std::map<mih::octet_string, user_entry>::iterator src = user_map.find(in->source().to_string());
-
-		std::map<mih::octet_string, user_entry>::iterator it;
-		for(it = user_map.begin() ; it != user_map.end(); ++it) {
-			if(it->second.priority == (src->second.priority + 1)) {
-				next_disc_user = it->first;
-				break;
-			}
-		}
-
-		if(next_disc_user.size() != 0) {
+		std::vector<mih::octet_string>::iterator it;
+		it = std::find(_dscv_order.begin(), _dscv_order.end(), in->source().to_string());
+		if(++it != _dscv_order.end()) {
 			ODTONE_LOG(1, "(discovery) The discover mechanism cannot discover any PoS.",
-					   " Trying ", next_disc_user, " discover mechanims.");
+					   " Trying ", *it, " discover mechanims.");
 			*out << mih::indication(mih::indication::capability_discover);
-			out->destination(mih::id(next_disc_user));
+			out->destination(mih::id(*it));
 			if(!unsolicited)
 				utils::forward_request(out, _lpool, _transmit);
 			else

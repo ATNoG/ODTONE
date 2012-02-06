@@ -50,6 +50,8 @@ public:
 	 * @param address_abook The address book module.
 	 * @param t The transmit module.
 	 * @param lrpool The link response pool module.
+	 * @param dscv_order Ordered list of entities that will manage the
+	 * discovery of new PoS.
 	 * @param enable_unsolicited Allows unsolicited discovery.
 	 */
 	service_management(io_service &io,
@@ -59,6 +61,7 @@ public:
 			   address_book &address_book,
 			   transmit &t,
 			   link_response_pool &lrpool,
+			   std::vector<mih::octet_string> &dscv_order,
 			   bool enable_unsolicited);
 
 	/**
@@ -166,6 +169,7 @@ private:
 
 	bool				_enable_unsolicited;/**< Allows unsolicited discovery.	*/
 	discover_service	_discover;			/**< Discovery service module.		*/
+	std::vector<mih::octet_string> _dscv_order; /**< Ordered list of discovery entities.*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

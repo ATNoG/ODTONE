@@ -35,8 +35,6 @@ static const char* const kConf_File               = "conf.file";
 static const char* const kConf_Port               = "conf.port";
 static const char* const kConf_Receive_Buffer_Len = "conf.recv_buff_len";
 
-static const char* const kConf_MIH_Role = "user.role";
-
 static const char* const kConf_MIH_SAP_id   = "user.id";
 static const char* const kConf_MIH_SAP_dest = "dest";
 

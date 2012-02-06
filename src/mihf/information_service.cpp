@@ -24,6 +24,8 @@
 
 #include <odtone/debug.hpp>
 #include <odtone/mih/request.hpp>
+
+#include <boost/foreach.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
@@ -58,21 +60,16 @@ bool information_service::get_information_request(meta_message_ptr &in,
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
-		//
-		// Kick this message to Information Service.
-		//
-		boost::optional<mih::octet_string> info_user = _user_abook.information_user();
-		if(!info_user.is_initialized()) {
-			ODTONE_LOG(1, "There are no information MIH-users known by the MIHF");
-			return false;
-		}
-
-
-		in->destination(mih::id(info_user.get()));
+		// Forward this message to MIH-User for handover as an indication
 		in->opcode(mih::operation::indication);
-		_lpool.add(in);
-		in->source(mihfid);
-		_transmit(in);
+		std::vector<mih::octet_string> user_list = _user_abook.get_ids();
+		BOOST_FOREACH(mih::octet_string id, user_list) {
+			user_entry user = _user_abook.get(id);
+			if(user.supp_iq.is_initialized()) {
+				in->destination(mih::id(id));
+				utils::forward_request(in, _lpool, _transmit);
+			}
+		}
 
 		return false;
 	} else {

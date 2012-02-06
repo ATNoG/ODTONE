@@ -24,10 +24,17 @@
 #include <odtone/mih/confirm.hpp>
 #include <odtone/mih/tlv_types.hpp>
 #include <odtone/sap/user.hpp>
+
 #include <boost/utility.hpp>
 #include <boost/bind.hpp>
+#include <boost/tokenizer.hpp>
+#include <boost/foreach.hpp>
+
 #include <iostream>
 
+///////////////////////////////////////////////////////////////////////////////
+
+static const char* const kConf_MIH_Commands = "user.commands";
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace po = boost::program_options;
@@ -36,6 +43,58 @@ using odtone::uint;
 using odtone::ushort;
 
 odtone::logger log_("mih_usr", std::cout);
+
+///////////////////////////////////////////////////////////////////////////////
+void __trim(odtone::mih::octet_string &str, const char chr)
+{
+	str.erase(std::remove(str.begin(), str.end(), chr), str.end());
+}
+
+/**
+ * Parse supported commands.
+ *
+ * @param cfg Configuration options.
+ * @return A bitmap mapping the supported commands.
+ */
+boost::optional<odtone::mih::mih_cmd_list> parse_supported_commands(const odtone::mih::config &cfg)
+{
+	using namespace boost;
+
+	odtone::mih::mih_cmd_list commands;
+	bool has_cmd = false;
+
+	std::map<std::string, odtone::mih::mih_cmd_list_enum> enum_map;
+	enum_map["mih_link_get_parameters"]       = odtone::mih::mih_cmd_link_get_parameters;
+	enum_map["mih_link_configure_thresholds"] = odtone::mih::mih_cmd_link_configure_thresholds;
+	enum_map["mih_link_actions"]              = odtone::mih::mih_cmd_link_actions;
+	enum_map["mih_net_ho_candidate_query"]    = odtone::mih::mih_cmd_net_ho_candidate_query;
+	enum_map["mih_net_ho_commit"]             = odtone::mih::mih_cmd_net_ho_commit;
+	enum_map["mih_n2n_ho_query_resources"]    = odtone::mih::mih_cmd_n2n_ho_query_resources;
+	enum_map["mih_n2n_ho_commit"]             = odtone::mih::mih_cmd_n2n_ho_commit;
+	enum_map["mih_n2n_ho_complete"]           = odtone::mih::mih_cmd_n2n_ho_complete;
+	enum_map["mih_mn_ho_candidate_query"]     = odtone::mih::mih_cmd_mn_ho_candidate_query;
+	enum_map["mih_mn_ho_commit"]              = odtone::mih::mih_cmd_mn_ho_commit;
+	enum_map["mih_mn_ho_complete"]            = odtone::mih::mih_cmd_mn_ho_complete;
+
+	std::string tmp = cfg.get<std::string>(kConf_MIH_Commands);
+	__trim(tmp, ' ');
+
+	char_separator<char> sep1(",");
+	tokenizer< char_separator<char> > list_tokens(tmp, sep1);
+
+	BOOST_FOREACH(std::string str, list_tokens) {
+		if(enum_map.find(str) != enum_map.end()) {
+			commands.set((odtone::mih::mih_cmd_list_enum) enum_map[str]);
+			has_cmd = true;
+		}
+	}
+
+	boost::optional<odtone::mih::mih_cmd_list> supp_cmd;
+	if(has_cmd)
+		supp_cmd = commands;
+
+	return supp_cmd;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
@@ -94,7 +153,12 @@ private:
 	odtone::sap::user _mihf;	/**< User SAP helper.		*/
 	odtone::mih::id   _mihfid;	/**< MIHF destination ID.	*/
 };
-
+/**
+ * Destruct the MIH-User.
+ */
+mih_user::~mih_user()
+{
+}
 /**
  * Construct the MIH-User.
  *
@@ -105,30 +169,16 @@ private:
 mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
 	: _mihf(cfg, io, boost::bind(&mih_user::event_handler, this, _1, _2))
 {
-	odtone::mih::message m;
-
-	std::map<std::string, odtone::mih::user_role_enum> enum_map;
-	enum_map["is"] 			= odtone::mih::user_role_is;
-	enum_map["mobility"]	= odtone::mih::user_role_mobility;
-	enum_map["monitoring"]	= odtone::mih::user_role_monitoring;
-	enum_map["discovery"]	= odtone::mih::user_role_discovery;
-
-	std::string tmp = cfg.get<std::string>(odtone::sap::kConf_MIH_Role);
-	odtone::mih::user_role role = odtone::mih::user_role_enum(enum_map[tmp]);
+/*	odtone::mih::message m;
+	boost::optional<odtone::mih::mih_cmd_list> supp_cmd = parse_supported_commands(cfg);
 
 	m << odtone::mih::indication(odtone::mih::indication::user_register)
-	    & odtone::mih::tlv_user_role(role);
+	    & odtone::mih::tlv_command_list(supp_cmd);
 	m.destination(odtone::mih::id("local-mihf"));
 
 	_mihf.async_send(m, boost::bind(&mih_user::user_reg_handler, this, boost::cref(cfg), _2));
 }
-
-/**
- * Destruct the MIH-User.
- */
-mih_user::~mih_user()
-{
-}
+*/
 
 /**
  * User registration handler.
@@ -136,10 +186,10 @@ mih_user::~mih_user()
  * @param cfg Configuration options.
  * @param ec Error Code.
  */
-void mih_user::user_reg_handler(const odtone::mih::config& cfg, const boost::system::error_code& ec)
+/*void mih_user::user_reg_handler(const odtone::mih::config& cfg, const boost::system::error_code& ec)
 {
 	log_(0, "MIH-User register result: ", ec.message());
-
+*/
 	odtone::mih::message msg;
 
 	odtone::mih::octet_string destination = cfg.get<odtone::mih::octet_string>(odtone::sap::kConf_MIH_SAP_dest);
@@ -295,7 +345,7 @@ int main(int argc, char** argv)
 			(odtone::sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive buffer length")
 			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1234), "Listening port")
 			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("user"), "MIH-User ID")
-			(odtone::sap::kConf_MIH_Role, po::value<std::string>()->default_value("mobility"), "MIH-User role")
+			(kConf_MIH_Commands, po::value<std::string>()->default_value(""), "MIH-User supported commands")
 			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF IP address")			
 			(odtone::sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "Local MIHF communication port")
 			(odtone::sap::kConf_MIH_SAP_dest, po::value<std::string>()->default_value(""), "MIHF destination");

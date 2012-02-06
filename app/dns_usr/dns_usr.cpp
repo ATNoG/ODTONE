@@ -58,8 +58,7 @@ dns_user::dns_user(boost::asio::io_service& io,
 	// Register with MIHF
 	mih::message m;
 
-	m << odtone::mih::indication(odtone::mih::indication::user_register)
-	    & odtone::mih::tlv_user_role(odtone::mih::user_role_discovery);
+	m << odtone::mih::indication(odtone::mih::indication::user_register);
 	m.destination(odtone::mih::id("local-mihf"));
 
 	_mihf.async_send(m, boost::bind(&dns_user::user_reg_handler, this, boost::cref(cfg), _2));

@@ -23,6 +23,7 @@
 #include "local_transaction_pool.hpp"
 #include "address_book.hpp"
 #include "link_book.hpp"
+#include "user_book.hpp"
 
 #include <odtone/base.hpp>
 #include "meta_message.hpp"
@@ -100,8 +101,9 @@ bool is_multicast(meta_message_ptr &msg);
  *
  * @param abook The address book module.
  * @param lbook The link book module.
+ * @param ubook The user book module.
  */
-void update_local_capabilities(address_book &abook, link_book &lbook);
+void update_local_capabilities(address_book &abook, link_book &lbook, user_book &ubook);
 
 
 } /* namespace utils */ } /* namespace mihf */ } /* namespace odtone */

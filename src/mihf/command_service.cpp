@@ -33,6 +33,7 @@
 #include <odtone/mih/tlv_types.hpp>
 
 #include <boost/make_shared.hpp>
+#include <boost/foreach.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 extern odtone::uint16 kConf_MIHF_Link_Response_Time_Value;
@@ -202,7 +203,7 @@ bool command_service::link_get_parameters_request(meta_message_ptr &in,
 					_link_abook.inactive(dst);
 
 					// Update MIHF capabilities
-					utils::update_local_capabilities(_abook, _link_abook);
+					utils::update_local_capabilities(_abook, _link_abook, _user_abook);
 				} else {
 					ODTONE_LOG(1, "(mics) forwarding Link_Get_Parameters.request to ",
 						out->destination().to_string());
@@ -401,7 +402,7 @@ bool command_service::link_configure_thresholds_request(meta_message_ptr &in,
 			_link_abook.inactive(dst);
 
 			// Update MIHF capabilities
-			utils::update_local_capabilities(_abook, _link_abook);
+			utils::update_local_capabilities(_abook, _link_abook, _user_abook);
 		} else {
 			ODTONE_LOG(1, "(mics) forwarding Link_Configure_Thresholds.request to ",
 			    out->destination().to_string());
@@ -623,7 +624,7 @@ bool command_service::link_actions_request(meta_message_ptr &in,
 					_link_abook.inactive(dst);
 
 					// Update MIHF capabilities
-					utils::update_local_capabilities(_abook, _link_abook);
+					utils::update_local_capabilities(_abook, _link_abook, _user_abook);
 				} else {
 					mih::link_addr* a = boost::get<mih::link_addr>(&(*lar).addr);
 					if (a && ((*lar).action.attr.get(mih::link_ac_attr_data_fwd_req)) ) {
@@ -743,35 +744,33 @@ bool command_service::link_actions_confirm(meta_message_ptr &in,
  * @param send_msg The send message output.
  * @param in The input message.
  * @param out The output message.
+ * @param cmd The command that the MIH-Users must support in order to
+ * receive an indication about the reception opf this message.
  * @return True if the response is sent immediately or false otherwise.
  */
 bool command_service::generic_command_request(const char *recv_msg,
 					      const char *send_msg,
 					      meta_message_ptr &in,
-					      meta_message_ptr &out)
+					      meta_message_ptr &out,
+					      mih::mih_cmd_list_enum cmd)
 {
 	ODTONE_LOG(1, recv_msg, in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
-		//
-		// Kick this message to MIH User for handover as an indication
-		//
-		boost::optional<mih::octet_string> mob_user = _user_abook.mobility_user();
-		if(!mob_user.is_initialized()) {
-			ODTONE_LOG(1, "There are no mobility MIH-users known by the MIHF");
-			return false;
-		}
-
+		// Forward this message to MIH-User for handover as an indication
 		in->opcode(mih::operation::indication);
-		in->destination(mih::id(mob_user.get()));
-		//
-		// source identifier is the remote MIHF
-		//
-		ODTONE_LOG(1, send_msg);
+		std::vector<mih::octet_string> user_list = _user_abook.get_ids();
+		BOOST_FOREACH(mih::octet_string id, user_list) {
+			user_entry user = _user_abook.get(id);
+			if(user.supp_cmd.is_initialized()) {
+				if(user.supp_cmd->get(cmd)) {
+					in->destination(mih::id(id));
+					utils::forward_request(in, _lpool, _transmit);
 
-		_lpool.add(in);
-		in->source(mihfid);
-		_transmit(in);
+					ODTONE_LOG(1, send_msg , in->destination().to_string());
+				}
+			}
+		}
 
 		return false;
 	} else {
@@ -809,7 +808,7 @@ bool command_service::generic_command_response(const char *recv_msg,
 		return false;
 	}
 
-	in->source(mihfid);
+	in->opcode(mih::operation::confirm);
 
 	ODTONE_LOG(1, send_msg , in->destination().to_string());
 
@@ -828,9 +827,9 @@ bool command_service::generic_command_response(const char *recv_msg,
 bool command_service::net_ho_candidate_query_request(meta_message_ptr &in,
 						     meta_message_ptr &out)
 {
-	return generic_command_request("(mics) received a Net_HO_Candidate_Query.request from",
-				       "(mics) sending a Net_HO_Candidate_Query.indication to user.",
-				       in, out);
+	return generic_command_request("(mics) received Net_HO_Candidate_Query.request from ",
+					"(mics) sending a Net_HO_Candidate_Query.indication to ",
+					in, out, mih::mih_cmd_net_ho_candidate_query);
 }
 
 /**
@@ -844,7 +843,7 @@ bool command_service::net_ho_candidate_query_response(meta_message_ptr &in,
 						      meta_message_ptr &out)
 {
 	return generic_command_response("(mics) received Net_HO_Candidate_Query.response from ",
-					"(mics) sending a Net_HO_Candidate_Query.confirm to user",
+					"(mics) sending a Net_HO_Candidate_Query.confirm to ",
 					in, out);
 }
 
@@ -858,9 +857,9 @@ bool command_service::net_ho_candidate_query_response(meta_message_ptr &in,
 bool command_service::mn_ho_candidate_query_request(meta_message_ptr &in,
 						    meta_message_ptr &out)
 {
-	return generic_command_request("(mics) received a MN_HO_Candidate_Query.request from",
-				       "(mics) sending a MN_HO_Candidate_Query.indication to user.",
-				       in, out);
+	return generic_command_request("(mics) received a MN_HO_Candidate_Query.request from ",
+				       "(mics) sending a MN_HO_Candidate_Query.indication to ",
+				       in, out, mih::mih_cmd_mn_ho_candidate_query);
 }
 
 /**
@@ -874,7 +873,7 @@ bool command_service::mn_ho_candidate_query_response(meta_message_ptr &in,
 						     meta_message_ptr &out)
 {
 	return generic_command_response("(mics) received MN_HO_Candidate_Query.response from ",
-					"(mics) sending a MN_HO_Candidate_Query.confirm to user",
+					"(mics) sending a MN_HO_Candidate_Query.confirm to ",
 					in, out);
 }
 
@@ -888,9 +887,9 @@ bool command_service::mn_ho_candidate_query_response(meta_message_ptr &in,
 bool command_service::n2n_ho_query_resources_request(meta_message_ptr &in,
 						     meta_message_ptr &out)
 {
-	return generic_command_request("(mics) received a MN_N2N_HO_Query_Resources.request from",
-				       "(mics) sending a MN_N2N_HO_Query_Resources.indication to user.",
-				       in, out);
+	return generic_command_request("(mics) received a MN_N2N_HO_Query_Resources.request from ",
+				       "(mics) sending a MN_N2N_HO_Query_Resources.indication to ",
+				       in, out, mih::mih_cmd_n2n_ho_query_resources);
 }
 
 /**
@@ -904,7 +903,7 @@ bool command_service::n2n_ho_query_resources_response(meta_message_ptr &in,
 						      meta_message_ptr &out)
 {
 	return generic_command_response("(mics) received MN_N2N_HO_Query_Resources.response from ",
-					"(mics) sending a MN_N2N_HO_Query_Resources.confirm to user",
+					"(mics) sending a MN_N2N_HO_Query_Resources.confirm to ",
 					in, out);
 }
 
@@ -919,9 +918,9 @@ bool command_service::n2n_ho_query_resources_response(meta_message_ptr &in,
 bool command_service::mn_ho_commit_request(meta_message_ptr &in,
 					   meta_message_ptr &out)
 {
-	return generic_command_request("(mics) received a MN_HO_Commit.request from",
-				       "(mics) sending a MN_HO_Commit.indication to user.",
-				       in, out);
+	return generic_command_request("(mics) received a MN_HO_Commit.request from ",
+				       "(mics) sending a MN_HO_Commit.indication to ",
+				       in, out, mih::mih_cmd_mn_ho_commit);
 }
 
 /**
@@ -935,7 +934,7 @@ bool command_service::mn_ho_commit_response(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
 	return generic_command_response("(mics) received MN_HO_Commit.response from ",
-					"(mics) sending a MN_HO_Commit.confirm to user",
+					"(mics) sending a MN_HO_Commit.confirm to ",
 					in, out);
 }
 
@@ -949,9 +948,9 @@ bool command_service::mn_ho_commit_response(meta_message_ptr &in,
 bool command_service::net_ho_commit_request(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
-	return generic_command_request("(mics) received a Net_HO_Commit.request from",
-				       "(mics) sending a Net_HO_Commit.indication to user.",
-				       in, out);
+	return generic_command_request("(mics) received a Net_HO_Commit.request from ",
+				       "(mics) sending a Net_HO_Commit.indication to ",
+				       in, out, mih::mih_cmd_net_ho_commit);
 }
 
 /**
@@ -965,7 +964,7 @@ bool command_service::net_ho_commit_response(meta_message_ptr &in,
 					     meta_message_ptr &out)
 {
 	return generic_command_response("(mics) received Net_HO_Commit.response from ",
-					"(mics) sending a Net_HO_Commit.confirm to user",
+					"(mics) sending a Net_HO_Commit.confirm to ",
 					in, out);
 }
 
@@ -979,9 +978,9 @@ bool command_service::net_ho_commit_response(meta_message_ptr &in,
 bool command_service::mn_ho_complete_request(meta_message_ptr &in,
 					     meta_message_ptr &out)
 {
-	return generic_command_request("(mics) received a MN_HO_Complete.request from",
-				       "(mics) sending a MN_HO_Complete.indication to user.",
-				       in, out);
+	return generic_command_request("(mics) received a MN_HO_Complete.request from ",
+				       "(mics) sending a MN_HO_Complete.indication to ",
+				       in, out, mih::mih_cmd_mn_ho_complete);
 }
 
 /**
@@ -995,7 +994,7 @@ bool command_service::mn_ho_complete_response(meta_message_ptr &in,
 					      meta_message_ptr &out)
 {
 	return generic_command_response("(mics) received MN_HO_Complete.response from ",
-					"(mics) sending a MN_HO_Complete.confirm to user",
+					"(mics) sending a MN_HO_Complete.confirm to ",
 					in, out);
 }
 
@@ -1009,9 +1008,9 @@ bool command_service::mn_ho_complete_response(meta_message_ptr &in,
 bool command_service::n2n_ho_commit_request(meta_message_ptr &in,
 					    meta_message_ptr &out)
 {
-	return generic_command_request("(mics) received a N2N_HO_Commit.request from",
-				       "(mics) sending a N2N_HO_Commit.indication to user.",
-				       in, out);
+	return generic_command_request("(mics) received a N2N_HO_Commit.request from ",
+				       "(mics) sending a N2N_HO_Commit.indication to ",
+				       in, out, mih::mih_cmd_n2n_ho_commit);
 }
 
 /**
@@ -1025,7 +1024,7 @@ bool command_service::n2n_ho_commit_response(meta_message_ptr &in,
 					     meta_message_ptr &out)
 {
 	return generic_command_response("(mics) received N2N_HO_Commit.response from ",
-					"(mics) sending a N2N_HO_Commit.confirm to user",
+					"(mics) sending a N2N_HO_Commit.confirm to ",
 					in, out);
 }
 
@@ -1040,9 +1039,9 @@ bool command_service::n2n_ho_commit_response(meta_message_ptr &in,
 bool command_service::n2n_ho_complete_request(meta_message_ptr &in,
 					      meta_message_ptr &out)
 {
-	return generic_command_request("(mics) received a N2N_HO_Complete.request from",
-				       "(mics) sending a N2N_HO_Complete.indication to user.",
-				       in, out);
+	return generic_command_request("(mics) received a N2N_HO_Complete.request from ",
+				       "(mics) sending a N2N_HO_Complete.indication to ",
+				       in, out, mih::mih_cmd_n2n_ho_complete);
 }
 
 /**
@@ -1056,7 +1055,7 @@ bool command_service::n2n_ho_complete_response(meta_message_ptr &in,
 					       meta_message_ptr &out)
 {
 	return generic_command_response("(mics) received N2N_HO_Complete.response from ",
-					"(mics) sending a N2N_HO_Complete.confirm to user",
+					"(mics) sending a N2N_HO_Complete.confirm to ",
 					in, out);
 }
 

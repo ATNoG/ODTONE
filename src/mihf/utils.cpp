@@ -212,17 +212,20 @@ void forward_request(meta_message_ptr &in,
  *
  * @param abook The address book module.
  * @param lbook The link book module.
+ * @param ubook The user book module.
  */
-void update_local_capabilities(address_book &abook, link_book &lbook)
+void update_local_capabilities(address_book &abook, link_book &lbook, user_book &ubook)
 {
 	mih::net_type_addr_list  capabilities_list_net_type_addr;
 	mih::mih_evt_list	     capabilities_event_list;
 	mih::mih_cmd_list        capabilities_cmd_list;
+	mih::iq_type_list        capabilities_query_type;
 
-	const std::vector<mih::octet_string> link_sap_list = lbook.get_ids();
 	capabilities_event_list.full();
 	capabilities_cmd_list.full();
 
+	// Get capabilities from Link SAPs
+	const std::vector<mih::octet_string> link_sap_list = lbook.get_ids();
 	BOOST_FOREACH(mih::octet_string id, link_sap_list) {
 		mih::mih_evt_list events;
 		mih::mih_cmd_list commands;
@@ -237,9 +240,7 @@ void update_local_capabilities(address_book &abook, link_book &lbook)
 			nta.addr = link_sap.link_id.addr;
 			capabilities_list_net_type_addr.push_back(nta);
 
-
 			// fill capabilities
-
 			// Since the two bitmaps have the same values
 			// we can assign them directly
 			for (size_t i = 0; i < 32; ++i) {
@@ -247,7 +248,6 @@ void update_local_capabilities(address_book &abook, link_book &lbook)
 					events.set((mih::mih_evt_list_enum)i);
 				}
 			}
-			//
 
 			if(link_sap.cmd_list.get(mih::cmd_link_get_parameters))
 				commands.set(mih::mih_cmd_link_get_parameters);
@@ -273,7 +273,57 @@ void update_local_capabilities(address_book &abook, link_book &lbook)
 	} else {
 		abook.set_link_address_list(mihfid_t::instance()->to_string(), capabilities_list_net_type_addr);
 		abook.set_event_list(mihfid_t::instance()->to_string(), capabilities_event_list);
-//		abook.set_command_list(mihfid_t::instance()->to_string(), capabilities_cmd_list);
+		abook.set_command_list(mihfid_t::instance()->to_string(), capabilities_cmd_list);
+	}
+
+
+	// Get capabilities from MIH-Users
+	bool has_cmd = false;
+	bool has_iq = false;
+	const std::vector<mih::octet_string> user_sap_list = ubook.get_ids();
+	BOOST_FOREACH(mih::octet_string id, user_sap_list) {
+		mih::mih_cmd_list commands;
+		mih::iq_type_list queries;
+
+		user_entry user_sap;
+		user_sap = ubook.get(id);
+
+		// fill capabilities
+		if(user_sap.supp_cmd.is_initialized()) {
+			for (size_t i = 3; i < 32; ++i) {
+				if(user_sap.supp_cmd->get((mih::mih_cmd_list_enum)i)) {
+					commands.set((mih::mih_cmd_list_enum)i);
+					has_cmd = true;
+				}
+			}
+		}
+
+		if(user_sap.supp_iq.is_initialized()) {
+			for (size_t i = 0; i < 32; ++i) {
+				if(user_sap.supp_iq->get((mih::iq_type_list_enum)i)) {
+					queries.set((mih::iq_type_list_enum)i);
+					has_iq = true;
+				}
+			}
+		}
+
+		capabilities_cmd_list.merge(commands);
+		capabilities_query_type.merge(queries);
+	}
+
+	// If the MIHF does not have any active Link SAP
+	if(has_cmd) {
+		abook.set_command_list(mihfid_t::instance()->to_string(), capabilities_cmd_list);
+	} else {
+		boost::optional<mih::mih_cmd_list> empty_cmd_list;
+		abook.set_command_list(mihfid_t::instance()->to_string(), empty_cmd_list);
+	}
+
+	if(has_iq) {
+		abook.set_query_list(mihfid_t::instance()->to_string(), capabilities_query_type);
+	} else {
+		boost::optional<mih::iq_type_list> empty_query_type;
+		abook.set_query_list(mihfid_t::instance()->to_string(), empty_query_type);
 	}
 }
 

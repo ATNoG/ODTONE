@@ -79,6 +79,7 @@ static const char* const kConf_MIHF_Remote_Port        = "mihf.remote_port";
 static const char* const kConf_MIHF_Local_Port         = "mihf.local_port";
 static const char* const kConf_MIHF_Link_Response_Time = "mihf.link_response_time";
 static const char* const kConf_MIHF_Link_Delete        = "mihf.link_delete";
+static const char* const kConf_MIHF_Discover           = "mihf.discover";
 static const char* const kConf_MIHF_Multicast          = "enable_multicast";
 static const char* const kConf_MIHF_Unsolicited        = "enable_unsolicited";
 static const char* const kConf_MIHF_Verbosity          = "log";
@@ -167,20 +168,82 @@ void set_users(mih::octet_string &list, user_book &ubook)
 		if ((iss_port >> port_).fail())
 			throw "invalid port";
 
-		mih::user_role role;
+		mih::mih_cmd_list supp_cmd_tmp;
+		mih::iq_type_list supp_iq_tmp;
+		bool has_cmd = false;
+		bool has_iq = false;
 		if(it != tokens.end()) {
-			std::map<std::string, mih::user_role_enum> enum_map;
-			enum_map["is"] 			= mih::user_role_is;
-			enum_map["mobility"]	= mih::user_role_mobility;
-			enum_map["monitoring"]	= mih::user_role_monitoring;
-			enum_map["discovery"]	= mih::user_role_discovery;
+			std::map<std::string, mih::mih_cmd_list_enum> enum_map_cmd;
+			enum_map_cmd["mih_link_get_parameters"]       = mih::mih_cmd_link_get_parameters;
+			enum_map_cmd["mih_link_configure_thresholds"] = mih::mih_cmd_link_configure_thresholds;
+			enum_map_cmd["mih_link_actions"]              = mih::mih_cmd_link_actions;
+			enum_map_cmd["mih_net_ho_candidate_query"]    = mih::mih_cmd_net_ho_candidate_query;
+			enum_map_cmd["mih_net_ho_commit"]             = mih::mih_cmd_net_ho_commit;
+			enum_map_cmd["mih_n2n_ho_query_resources"]    = mih::mih_cmd_n2n_ho_query_resources;
+			enum_map_cmd["mih_n2n_ho_commit"]             = mih::mih_cmd_n2n_ho_commit;
+			enum_map_cmd["mih_n2n_ho_complete"]           = mih::mih_cmd_n2n_ho_complete;
+			enum_map_cmd["mih_mn_ho_candidate_query"]     = mih::mih_cmd_mn_ho_candidate_query;
+			enum_map_cmd["mih_mn_ho_commit"]              = mih::mih_cmd_mn_ho_commit;
+			enum_map_cmd["mih_mn_ho_complete"]            = mih::mih_cmd_mn_ho_complete;
 
-			role = mih::user_role_enum(enum_map[*it]);
-		} else {
-			role = mih::user_role_mobility;
+			std::map<std::string, mih::iq_type_list_enum> enum_map_iq;
+			enum_map_iq["iq_type_binary_data"]            = mih::iq_type_binary_data;
+			enum_map_iq["iq_type_rdf_data"]               = mih::iq_type_rdf_data;
+			enum_map_iq["iq_type_rdf_schema_url"]         = mih::iq_type_rdf_schema_url;
+			enum_map_iq["iq_type_rdf_schema"]             = mih::iq_type_rdf_schema;
+			enum_map_iq["iq_type_ie_network_type"]        = mih::iq_type_ie_network_type;
+			enum_map_iq["iq_type_ie_operator_id"]         = mih::iq_type_ie_operator_id;
+			enum_map_iq["iq_type_ie_service_provider_id"] = mih::iq_type_ie_service_provider_id;
+			enum_map_iq["iq_type_ie_country_code"]        = mih::iq_type_ie_country_code;
+			enum_map_iq["iq_type_ie_network_id"]          = mih::iq_type_ie_network_id;
+			enum_map_iq["iq_type_ie_network_aux_id"]      = mih::iq_type_ie_network_aux_id;
+			enum_map_iq["iq_type_ie_roaming_parteners"]   = mih::iq_type_ie_roaming_parteners;
+			enum_map_iq["iq_type_ie_cost"]                = mih::iq_type_ie_cost;
+			enum_map_iq["iq_type_ie_network_qos"]         = mih::iq_type_ie_network_qos;
+			enum_map_iq["iq_type_ie_network_data_rate"]   = mih::iq_type_ie_network_data_rate;
+			enum_map_iq["iq_type_ie_net_regult_domain"]   = mih::iq_type_ie_net_regult_domain;
+			enum_map_iq["iq_type_ie_net_frequency_bands"] = mih::iq_type_ie_net_frequency_bands;
+			enum_map_iq["iq_type_ie_net_ip_cfg_methods"]  = mih::iq_type_ie_net_ip_cfg_methods;
+			enum_map_iq["iq_type_ie_net_capabilities"]    = mih::iq_type_ie_net_capabilities;
+			enum_map_iq["iq_type_ie_net_supported_lcp"]   = mih::iq_type_ie_net_supported_lcp;
+			enum_map_iq["iq_type_ie_net_mob_mgmt_prot"]   = mih::iq_type_ie_net_mob_mgmt_prot;
+			enum_map_iq["iq_type_ie_net_emserv_proxy"]    = mih::iq_type_ie_net_emserv_proxy;
+			enum_map_iq["iq_type_ie_net_ims_proxy_cscf"]  = mih::iq_type_ie_net_ims_proxy_cscf;
+			enum_map_iq["iq_type_ie_net_mobile_network"]  = mih::iq_type_ie_net_mobile_network;
+			enum_map_iq["iq_type_ie_poa_link_addr"]       = mih::iq_type_ie_poa_link_addr;
+			enum_map_iq["iq_type_ie_poa_location"]        = mih::iq_type_ie_poa_location;
+			enum_map_iq["iq_type_ie_poa_channel_range"]   = mih::iq_type_ie_poa_channel_range;
+			enum_map_iq["iq_type_ie_poa_system_info"]     = mih::iq_type_ie_poa_system_info;
+			enum_map_iq["iq_type_ie_poa_subnet_info"]     = mih::iq_type_ie_poa_subnet_info;
+			enum_map_iq["iq_type_ie_poa_ip_addr"]        = mih::iq_type_ie_poa_ip_addr;
+
+			while(it != tokens.end()) {
+				if(enum_map_cmd.find(*it) != enum_map_cmd.end()) {
+					supp_cmd_tmp.set((mih::mih_cmd_list_enum) enum_map_cmd[*it]);
+					has_cmd = true;
+				} else if(enum_map_iq.find(*it) != enum_map_iq.end()) {
+					supp_iq_tmp.set((mih::iq_type_list_enum) enum_map_iq[*it]);
+					has_iq = true;
+				}
+
+				++it;
+			}
 		}
 
-		ubook.add(id, ip, port_, role);
+		boost::optional<mih::mih_cmd_list> supp_cmd;
+		boost::optional<mih::iq_type_list> supp_iq;
+
+		if(has_cmd) {
+			supp_cmd = supp_cmd_tmp;
+		} else {
+			supp_cmd_tmp.full();
+			supp_cmd = supp_cmd_tmp;
+		}
+
+		if(has_iq)
+			supp_iq = supp_iq_tmp;
+
+		ubook.add(id, ip, port_, supp_cmd, supp_iq);
 	}
 }
 
@@ -317,6 +380,23 @@ void parse_sap_registrations(mih::config &cfg, user_book &ubook, link_book &lboo
 
 	set_users(users, ubook);
 	set_links(lsaps, lbook);
+}
+
+std::vector<std::string> parse_discover_order(mih::config &cfg)
+{
+	using namespace boost;
+
+	mih::octet_string order = cfg.get<mih::octet_string>(kConf_MIHF_Discover);
+	std::vector<std::string> list;
+
+	char_separator<char> sep(",");
+	tokenizer< char_separator<char> > list_tokens(order, sep);
+
+	BOOST_FOREACH(mih::octet_string str, list_tokens) {
+		list.push_back(str);
+	}
+
+	return list;
 }
 
 void sm_register_callbacks(service_management &sm)
@@ -505,6 +585,7 @@ int main(int argc, char **argv)
 		(kConf_MIHF_Transport_List, po::value<std::string>()->default_value("udp, tcp"), "List of supported transport protocols")		
 		(kConf_MIHF_Link_Response_Time, po::value<uint16>()->default_value(300), "Link SAP response time (milliseconds)")
 		(kConf_MIHF_Link_Delete, po::value<uint16>()->default_value(2), "Link SAP response fails to forget")
+		(kConf_MIHF_Discover, po::value<std::string>()->default_value(""), "MIHF Discovery Mechanisms Order")
 		(kConf_MIHF_Multicast,  "Allows multicast messages")
 		(kConf_MIHF_Unsolicited,  "Allows unsolicited discovery")
 		(kConf_MIHF_Verbosity, po::value<uint16>()->default_value(1), "Log level [0-4]")
@@ -532,6 +613,7 @@ int main(int argc, char **argv)
 	uint16 loglevel = cfg.get<uint16>(kConf_MIHF_Verbosity);
 	kConf_MIHF_Link_Response_Time_Value = cfg.get<uint16>(kConf_MIHF_Link_Response_Time);
 	kConf_MIHF_Link_Delete_Value = cfg.get<uint16>(kConf_MIHF_Link_Delete);
+	std::vector<std::string> dscv_order = parse_discover_order(cfg);
 	//
 
 	// set this mihf id
@@ -602,10 +684,10 @@ int main(int argc, char **argv)
 		remotelistener_tcp.start();
 
 	// instantiate mihf services
-	event_service		mies(io, lpool, trnsmt, mihf_abook, link_abook);
+	event_service		mies(io, lpool, trnsmt, mihf_abook, link_abook, user_abook);
 	command_service		mics(io, lpool, trnsmt, mihf_abook, link_abook, user_abook, lrpool);
 	information_service	miis(lpool, trnsmt, user_abook);
-	service_management	sm(io, lpool, link_abook, user_abook, mihf_abook, trnsmt, lrpool, enable_unsolicited);
+	service_management	sm(io, lpool, link_abook, user_abook, mihf_abook, trnsmt, lrpool, dscv_order, enable_unsolicited);
 
 	// register callbacks with service access controller
 	sm_register_callbacks(sm);

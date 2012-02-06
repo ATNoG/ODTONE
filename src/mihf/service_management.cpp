@@ -50,6 +50,8 @@ namespace odtone { namespace mihf {
  * @param address_abook The address book module.
  * @param t The transmit module.
  * @param lrpool The link response pool module.
+ * @param dscv_order Ordered list of entities that will manage the
+ * discovery of new PoS.
  * @param enable_unsolicited Allows unsolicited discovery.
  */
 service_management::service_management(io_service &io,
@@ -59,6 +61,7 @@ service_management::service_management(io_service &io,
 										address_book &address_book,
 										transmit &t,
 										link_response_pool &lrpool,
+										std::vector<mih::octet_string> &dscv_order,
 										bool enable_unsolicited)
 	: _lpool(lpool),
 	  _link_abook(link_abook),
@@ -66,9 +69,13 @@ service_management::service_management(io_service &io,
 	  _abook(address_book),
 	  _transmit(t),
 	  _lrpool(lrpool),
-	  _discover(io, lpool, address_book, user_abook, t, enable_unsolicited)
+	  _discover(io, lpool, address_book, user_abook, t, dscv_order, enable_unsolicited)
 {
+	_dscv_order = dscv_order;
 	_enable_unsolicited = enable_unsolicited;
+
+	// Update MIHF capabilities
+	utils::update_local_capabilities(_abook, _link_abook, _user_abook);
 
 	// Get capabilities from statically configured Link SAPs
 	const std::vector<mih::octet_string> link_sap_list = _link_abook.get_ids();
@@ -110,7 +117,7 @@ bool service_management::link_capability_discover_request(meta_message_ptr &in,
 		_link_abook.inactive(dst);
 
 		// Update MIHF capabilities
-		utils::update_local_capabilities(_abook, _link_abook);
+		utils::update_local_capabilities(_abook, _link_abook, _user_abook);
 	}
 	else {
 		ODTONE_LOG(1, "(mics) forwarding Link_Capability_Discover.request to ",
@@ -221,10 +228,12 @@ void service_management::send_indication(meta_message_ptr& in,
 	std::vector<mih::octet_string> ids = _user_abook.get_ids();
 	in->opcode(mih::operation::indication);
 	for (std::vector<mih::octet_string>::iterator it = ids.begin(); it < ids.end(); ++it) {
-		in->destination(mih::id(*it));
-		_transmit(in);
-		ODTONE_LOG(3, "(mism) Capability_Discover.indication sent to ",
-				  in->destination().to_string());
+		if(std::find(_dscv_order.begin(), _dscv_order.end(), *it) == _dscv_order.end()) {
+			in->destination(mih::id(*it));
+			_transmit(in);
+			ODTONE_LOG(3, "(mism) Capability_Discover.indication sent to ",
+					  in->destination().to_string());
+		}
 	}
 }
 
@@ -245,8 +254,7 @@ bool service_management::capability_discover_request(meta_message_ptr& in,
 	// User requests the capabilities of a remote MIHF
 	if (in->is_local() && !utils::this_mihf_is_destination(in)) {
 		// Multicast && Discover Module ON
-		boost::optional<mih::octet_string> disc_user = _user_abook.discovery_user();
-		if(utils::is_multicast(in) && disc_user.is_initialized()) {
+		if(utils::is_multicast(in) && _dscv_order.size() != 0) {
 			_discover.request(in, out);
 			return false;
 		}
@@ -292,12 +300,11 @@ bool service_management::capability_discover_response(meta_message_ptr &in,
 	    in->source().to_string());
 
 	// Check if it is a discovery message
-	if(in->is_local()) {
-		user_entry user = _user_abook.get(in->source().to_string());
-		if(user.role == mih::user_role_discovery) {
-			_discover.response(in, out);
-			return false;
-		}
+	if(in->is_local() && std::find(_dscv_order.begin(),
+	                               _dscv_order.end(),
+	                               in->source().to_string()) != _dscv_order.end()) {
+		_discover.response(in, out);
+		return false;
 	}
 
 	// Store remote MIHF capabilities
@@ -331,9 +338,8 @@ bool service_management::capability_discover_response(meta_message_ptr &in,
 
 		std::vector<mih::octet_string> user_id_list = _user_abook.get_ids();
 		BOOST_FOREACH(mih::octet_string user, user_id_list) {
-			// TODO mudar para log 3
-			ODTONE_LOG(1, "forwarding Capability_Discover.response to all ",
-				"MIH-Users");
+			ODTONE_LOG(3, "forwarding Capability_Discover.response to ",
+				user);
 			in->opcode(mih::operation::confirm);
 			in->source(mihfid);
 			in->destination(mih::id(user));
@@ -381,7 +387,7 @@ bool service_management::capability_discover_confirm(meta_message_ptr &in,
 		_link_abook.update_capabilities(in->source().to_string(), event.get(), command.get());
 
 		// Update MIHF capabilities
-		utils::update_local_capabilities(_abook, _link_abook);
+		utils::update_local_capabilities(_abook, _link_abook, _user_abook);
 	}
 
 	return false;
@@ -449,15 +455,19 @@ bool service_management::user_register_indication(meta_message_ptr &in,
 	    in->source().to_string());
 
 	// Add MIH User to the list of known MIH Users
-	mih::status st;
-	mih::user_role role;
+	boost::optional<mih::mih_cmd_list> supp_cmd;
+	boost::optional<mih::iq_type_list> supp_iq;
 
 	mih::octet_string ip(in->ip());
 
 	*in >> odtone::mih::indication()
-		& odtone::mih::tlv_user_role(role);
+		& odtone::mih::tlv_command_list(supp_cmd)
+		& odtone::mih::tlv_query_type_list(supp_iq);
 
-	_user_abook.add(in->source().to_string(), ip, in->port(), role);
+	_user_abook.add(in->source().to_string(), ip, in->port(), supp_cmd, supp_iq);
+
+	// Update MIHF capabilities
+	utils::update_local_capabilities(_abook, _link_abook, _user_abook);
 
 	return false;
 }

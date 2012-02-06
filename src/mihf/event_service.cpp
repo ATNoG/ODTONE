@@ -50,14 +50,17 @@ namespace odtone { namespace mihf {
  * @param t The transmit module.
  * @param abook The address book module.
  * @param lbook The link book module.
+ * @param ubook The user book module.
  */
 event_service::event_service(io_service &io, local_transaction_pool &lpool,
-							 transmit &t, address_book &abook, link_book &lbook)
+							 transmit &t, address_book &abook, link_book &lbook,
+							 user_book &ubook)
 	: _io(io),
 	  _lpool(lpool),
 	  _transmit(t),
 	  _abook(abook),
-	  _link_abook(lbook)
+	  _link_abook(lbook),
+	  _user_abook(ubook)
 {
 }
 
@@ -229,7 +232,7 @@ bool event_service::local_event_subscribe_request(meta_message_ptr &in,
 			_link_abook.inactive(dst);
 
 			// Update MIHF capabilities
-			utils::update_local_capabilities(_abook, _link_abook);
+			utils::update_local_capabilities(_abook, _link_abook, _user_abook);
 		} else {
 			ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.request to ",
 			    out->destination().to_string());
@@ -445,7 +448,7 @@ void event_service::link_unsubscribe(meta_message_ptr &in,
 			_link_abook.inactive(dst);
 
 			// Update MIHF capabilities
-			utils::update_local_capabilities(_abook, _link_abook);
+			utils::update_local_capabilities(_abook, _link_abook, _user_abook);
 		}
 		else {
 			ODTONE_LOG(1, "(mies) forwarding Event_Subscribe.request to ",

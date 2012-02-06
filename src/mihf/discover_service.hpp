@@ -40,6 +40,7 @@ public:
 					 address_book &abook,
 					 user_book &user_abook,
 					 transmit &t,
+					 std::vector<mih::octet_string> &dscv_order,
 					 bool enable_unsolicited);
 
 	void request(meta_message_ptr& in, meta_message_ptr& out);
@@ -55,6 +56,7 @@ private:
 	address_book			&_abook;
 	user_book				&_user_abook;
 	transmit				&_transmit;
+	std::vector<mih::octet_string> _dscv_order;
 	bool					_enable_unsolicited;
 };
 

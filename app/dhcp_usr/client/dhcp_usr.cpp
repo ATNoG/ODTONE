@@ -53,8 +53,7 @@ dhcp_user::dhcp_user(boost::asio::io_service& io,
 	// Register with MIHF
 	mih::message m;
 
-	m << mih::indication(mih::indication::user_register)
-	    & mih::tlv_user_role(mih::user_role_discovery);
+	m << mih::indication(mih::indication::user_register);
 	m.destination(mih::id("local-mihf"));
 
 	_mihf.async_send(m, boost::bind(&dhcp_user::user_reg_handler, this, boost::cref(cfg), _2));
