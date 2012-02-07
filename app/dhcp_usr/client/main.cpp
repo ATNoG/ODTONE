@@ -93,6 +93,6 @@ int main(int argc, char** argv)
 		io.run();
 
 	} catch(std::exception& e) {
-		log(0, "exception: ", e.what());
+		ODTONE_LOG(0, "exception: ", e.what());
 	}
 }

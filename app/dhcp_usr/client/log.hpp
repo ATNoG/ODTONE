@@ -44,7 +44,7 @@ private:
 	static logger		*ptr_instance;
 };
 
-#define log (*log_t::instance())
+#define ODTONE_LOG (*log_t::instance())
 
 } /* namespace odtone */
 

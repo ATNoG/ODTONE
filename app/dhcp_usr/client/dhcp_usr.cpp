@@ -76,11 +76,11 @@ void dhcp_user::user_reg_handler(const mih::config& cfg,
                                  const boost::system::error_code& ec)
 {
 	if (ec) {
-		log(1, __FUNCTION__, " error: ", ec.message());
+		ODTONE_LOG(1, __FUNCTION__, " error: ", ec.message());
 		return;
 	}
 
-	log(0, "DHCP-User register result: ", ec.message());
+	ODTONE_LOG(0, "DHCP-User register result: ", ec.message());
 
 	// Request the capabilities of the local MIHF
 	mih::message msg;
@@ -88,7 +88,7 @@ void dhcp_user::user_reg_handler(const mih::config& cfg,
 
 	_mihf.async_send(msg, boost::bind(&dhcp_user::cap_disc_handler, this, _1, _2));
 
-	log(0, "sent a Capability_Discover.request towards its local MIHF");
+	ODTONE_LOG(0, "sent a Capability_Discover.request towards its local MIHF");
 }
 
 /**
@@ -101,7 +101,7 @@ void dhcp_user::cap_disc_handler(mih::message& msg,
                                  const boost::system::error_code& ec)
 {
 	if (ec) {
-		log(0, __FUNCTION__, " error: ", ec.message());
+		ODTONE_LOG(0, __FUNCTION__, " error: ", ec.message());
 		return;
 	}
 
@@ -114,24 +114,24 @@ void dhcp_user::cap_disc_handler(mih::message& msg,
 		& mih::tlv_net_type_addr_list(ntal)
 		& mih::tlv_event_list(evt);
 
-	log(0, "received a Capability_Discover.confirm with status ",
+	ODTONE_LOG(0, "received a Capability_Discover.confirm with status ",
 			st.get(), " and the following capabilities:");
 
 	if (ntal) {
 		for (mih::net_type_addr_list::iterator i = ntal->begin(); i != ntal->end(); ++i) {
-			log(0,  *i);
+			ODTONE_LOG(0,  *i);
 		}
 	} else {
-		log(0,  "none");
+		ODTONE_LOG(0,  "none");
 	}
 
 	if(evt) {
 		if(!evt->get(mih::mih_evt_link_up) || !evt->get(mih::mih_evt_link_down)) {
-			log(1, "cannot register for link_up and link_down events");
+			ODTONE_LOG(1, "cannot register for link_up and link_down events");
 			return;
 		}
 	} else {
-		log(1, "cannot register for link_up and link_down events");
+		ODTONE_LOG(1, "cannot register for link_up and link_down events");
 		return;
 	}
 
@@ -157,7 +157,7 @@ void dhcp_user::cap_disc_handler(mih::message& msg,
 
 				_mihf.async_send(req, boost::bind(&dhcp_user::subscription_handler, this, _1, _2));
 
-				log(0, "sent Event_Subscribe.request");
+				ODTONE_LOG(0, "sent Event_Subscribe.request");
 			}
 		}
 	}
@@ -173,7 +173,7 @@ void dhcp_user::subscription_handler(mih::message& msg,
                                      const boost::system::error_code& ec)
 {
 	if (ec) {
-		log(0, __FUNCTION__, " error: ", ec.message());
+		ODTONE_LOG(0, __FUNCTION__, " error: ", ec.message());
 		return;
 	}
 
@@ -181,7 +181,7 @@ void dhcp_user::subscription_handler(mih::message& msg,
 	msg >> mih::confirm()
 		& mih::tlv_status(st);
 
-	log(0, "received a Event_Subscribe.confirm with status ", st.get());
+	ODTONE_LOG(0, "received a Event_Subscribe.confirm with status ", st.get());
 }
 
 /**
@@ -194,14 +194,14 @@ void dhcp_user::event_handler(mih::message& msg,
                               const boost::system::error_code& ec)
 {
 	if (ec) {
-		log(0, __FUNCTION__, " error: ", ec.message());
+		ODTONE_LOG(0, __FUNCTION__, " error: ", ec.message());
 		return;
 	}
 
 	switch (msg.mid()) {
 		case mih::indication::link_up:
 		{
-			log(0, "received a local event \"link_up\"");
+			ODTONE_LOG(0, "received a local event \"link_up\"");
 
 			// There is no need to decode all TLVs because only
 			// Link Identifier information is needed.
@@ -222,7 +222,7 @@ void dhcp_user::event_handler(mih::message& msg,
 					_sessions.push_back(ifname.get());
 					_control.new_session(ifname.get());
 				} else {
-					log(0, "This interface has an active session.");
+					ODTONE_LOG(0, "This interface has an active session.");
 				}
 			}
 		}
@@ -230,7 +230,7 @@ void dhcp_user::event_handler(mih::message& msg,
 
 		case mih::indication::link_down:
 		{
-			log(0, "received a local event \"link_down\"");
+			ODTONE_LOG(0, "received a local event \"link_down\"");
 			mih::link_tuple_id li;
 			msg >> mih::indication(mih::indication::link_down)
 			    & mih::tlv_link_identifier(li);
@@ -244,7 +244,7 @@ void dhcp_user::event_handler(mih::message& msg,
 				std::vector<std::string>::iterator it;
 				it = std::find(_sessions.begin(), _sessions.end(), ifname.get());
 				if (it == _sessions.end()) {
-					log(0, "This interface does not have an active session");
+					ODTONE_LOG(0, "This interface does not have an active session");
 				} else {
 					_control.shutdown_session(ifname.get());
 					_sessions.erase(it, it+1);
@@ -255,7 +255,7 @@ void dhcp_user::event_handler(mih::message& msg,
 
 		case mih::indication::capability_discover:
 		{
-			log(0, "received a \"capability_discover\" indication");
+			ODTONE_LOG(0, "received a \"capability_discover\" indication");
 
 			boost::mutex::scoped_lock lock(_mutex);
 
@@ -269,7 +269,7 @@ void dhcp_user::event_handler(mih::message& msg,
 
 		default:
 		{
-			log(0, "received a unknown message. Discarding it...");
+			ODTONE_LOG(0, "received a unknown message. Discarding it...");
 		}
 		break;
 	}
@@ -296,10 +296,10 @@ void dhcp_user::dhcp_results_handler(mih::mos_dscv &pos_list)
 
 			_mihf.async_send(rsp, [this](mih::message& msg, const boost::system::error_code& ec) {
 				    if (ec) {
-				        log(0, __FUNCTION__, " error: ", ec.message());
+				        ODTONE_LOG(0, __FUNCTION__, " error: ", ec.message());
 				        return;
 				    } else {
-						log(0, "Sent DHCP discovery results to the MIHF");
+						ODTONE_LOG(0, "Sent DHCP discovery results to the MIHF");
 					}
 			});
 		}
@@ -311,10 +311,10 @@ void dhcp_user::dhcp_results_handler(mih::mos_dscv &pos_list)
 
 		_mihf.async_send(rsp, [this](mih::message& msg, const boost::system::error_code& ec) {
 		        if (ec) {
-		            log(0, __FUNCTION__, " error: ", ec.message());
+		            ODTONE_LOG(0, __FUNCTION__, " error: ", ec.message());
 		            return;
 		        } else {
-					log(0, "Sent DHCP discovery results to the MIHF");
+					ODTONE_LOG(0, "Sent DHCP discovery results to the MIHF");
 				}
 		});
 	}
@@ -339,11 +339,11 @@ boost::optional<std::string> dhcp_user::find_nic(mih::link_addr addr)
 		} break;
 
  		case 1: { 
-			log(0, "Not supported yet");
+			ODTONE_LOG(0, "Not supported yet");
 		} break;
 
 		case 2: {
-			log(0, "Not supported yet");
+			ODTONE_LOG(0, "Not supported yet");
 		} break;
 
 		case 3: {
@@ -362,7 +362,7 @@ boost::optional<std::string> dhcp_user::find_nic(mih::link_addr addr)
 		} break;
 
 		default: {
-			log(0, "Invalid Link Address");
+			ODTONE_LOG(0, "Invalid Link Address");
 			return nic;
 		} break;
 	}
