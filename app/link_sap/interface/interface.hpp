@@ -40,7 +40,7 @@ namespace link_sap { namespace nic {
  */
 class if_id {
 
-#ifdef WIN32
+#ifdef _WIN32
 	typedef boost::array<uint32, 4> value_type;
 #else
 	typedef int                     value_type;
