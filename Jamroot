@@ -47,7 +47,7 @@ path-constant odtone-root : . ;
 # Import the boost project
 #
 local boost-major = 1 ;
-local boost-minor = 47 ;
+local boost-minor = 48 ;
 local boost-patch = 0 ;
 local boost-root ;
 
@@ -133,6 +133,10 @@ install odtone-dist
 	  app/link_sap/link_sap.conf
 	  app/mih_usr//mih_usr
 	  app/mih_usr/mih_usr.conf
+	  app/client//client
+	  src/dummyserver//dummyserver
+	  app/miis_rdf_server//miis_rdf_server
+	  app/miis_rdf_server/miis_rdf_server.conf
 	  source-list
 	: <location>dist
 	;

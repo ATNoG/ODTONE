@@ -18,14 +18,13 @@
 project miis_rdf_server
 	;
 
-lib rdf : : <name>rdf ;
-
 exe miis_rdf_server
 	: miis_rdf_server.cpp
 	  ../../lib/odtone//odtone_base
 	  ../../lib/odtone/mih//odtone_mih
 	  ../../lib/odtone/sap//odtone_sap
 	: <linkflags>-lrdf
+	  <link>shared
 	;
 
 install install

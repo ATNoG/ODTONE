@@ -17,7 +17,6 @@
 #===============================================================================
 
 project link_sap
-	: requirements <target-os>windows:<define>_WIN32_WINNT=0x0600
 	;
 
 odtone.explicit-alias source-list
