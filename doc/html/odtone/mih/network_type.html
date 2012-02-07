@@ -27,13 +27,13 @@
 </span>
 <span class="keyword">struct</span> <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <span class="special">{</span>
   <span class="comment">// <a class="link" href="network_type.html#odtone.mih.network_typeconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="network_type.html#id2560373-bb"><span class="identifier">network_type</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="network_type.html#id2431536-bb"><span class="identifier">network_type</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="network_type.html#id2560338-bb">public member functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="network_type.html#id2560342-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="network_type.html#id2431501-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="network_type.html#id2431504-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="network_type.html#id2560378-bb">friend functions</a></span>
-  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="network_type.html#id2560382-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="network_type.html#id2431541-bb">friend functions</a></span>
+  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="network_type.html#id2431545-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="network_type.html#odtone.mih.network_typepublic-data-members">public data members</a></span>
   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <a class="link" href="link_type.html" title="Type definition link_type">link_type</a> <span class="special">&gt;</span> <a class="link" href="network_type.html#odtone.mih.network_type.link"><span class="identifier">link</span></a><span class="special">;</span>
@@ -41,23 +41,23 @@
   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <span class="identifier">type_ext</span> <span class="special">&gt;</span> <a class="link" href="network_type.html#odtone.mih.network_type.typeext"><span class="identifier">typeext</span></a><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id3023401"></a><h2>Description</h2>
+<a name="id3501485"></a><h2>Description</h2>
 <p>NETWORK_TYPE data type. </p>
 <div class="refsect2">
-<a name="id3023406"></a><h3>
+<a name="id3501490"></a><h3>
 <a name="odtone.mih.network_typeconstruct-copy-destruct"></a><code class="computeroutput">network_type</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="id2560373-bb"></a><span class="identifier">network_type</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="id2431536-bb"></a><span class="identifier">network_type</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty NETWORK_TYPE data type. </p>
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="id3023459"></a><h3>
-<a name="id2560338-bb"></a><code class="computeroutput">network_type</code> public member functions</h3>
+<a name="id3501537"></a><h3>
+<a name="id2431501-bb"></a><code class="computeroutput">network_type</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id2560342-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id2431504-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize/deserialize the NETWORK_TYPE data type.</p>
 <p>
 </p>
@@ -77,10 +77,10 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="id3023577"></a><h3>
-<a name="id2560378-bb"></a><code class="computeroutput">network_type</code> friend functions</h3>
+<a name="id3501644"></a><h3>
+<a name="id2431541-bb"></a><code class="computeroutput">network_type</code> friend functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="id2560382-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> os<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <span class="special">&amp;</span> nt<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="id2431545-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> os<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <span class="special">&amp;</span> nt<span class="special">)</span><span class="special">;</span></pre>
 <p>NETWORK_TYPE data type output.</p>
 <p>
 
@@ -113,7 +113,7 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="id3023748"></a><h3>
+<a name="id3501798"></a><h3>
 <a name="odtone.mih.network_typepublic-data-members"></a><code class="computeroutput">network_type</code> 
         public
        public data members</h3>

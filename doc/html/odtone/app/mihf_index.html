@@ -63,23 +63,24 @@
 <p>
             
 </p>
-<pre class="programlisting"><span class="identifier">MIHF</span> <span class="identifier">Configuration</span> <span class="identifier">Options</span><span class="special">:</span>
-   <span class="special">--</span><span class="identifier">help</span>                               <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
-   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">file</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">odtone</span><span class="special">.</span><span class="identifier">conf</span><span class="special">)</span>       <span class="identifier">Configuration</span> <span class="identifier">file</span>
-   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">recv_buff_len</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4096</span><span class="special">)</span>     <span class="identifier">Receive</span> <span class="identifier">buffer</span> <span class="identifier">length</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">mihf</span><span class="special">)</span>                <span class="identifier">MIHF</span> <span class="identifier">ID</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">ip</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">127.0</span><span class="special">.</span><span class="number">0.1</span><span class="special">)</span>           <span class="identifier">MIHF</span> <span class="identifier">IP</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">remote_port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4551</span><span class="special">)</span>       <span class="identifier">Remote</span> <span class="identifier">MIHF</span> <span class="identifier">communication</span> <span class="identifier">port</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">local_port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1025</span><span class="special">)</span>        <span class="identifier">Local</span> <span class="identifier">SAPs</span> <span class="identifier">communication</span> <span class="identifier">port</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">peers</span> <span class="identifier">arg</span>                     <span class="identifier">List</span> <span class="identifier">of</span> <span class="identifier">peer</span> <span class="identifier">MIHFs</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">users</span> <span class="identifier">arg</span>                     <span class="identifier">List</span> <span class="identifier">of</span> <span class="identifier">local</span> <span class="identifier">MIH</span><span class="special">-</span><span class="identifier">Users</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">links</span> <span class="identifier">arg</span>                     <span class="identifier">List</span> <span class="identifier">of</span> <span class="identifier">local</span> <span class="identifier">Links</span> <span class="identifier">SAPs</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">transport</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">udp</span><span class="special">,</span> <span class="identifier">tcp</span><span class="special">)</span>     <span class="identifier">List</span> <span class="identifier">of</span> <span class="identifier">supported</span> <span class="identifier">transport</span> <span class="identifier">protocols</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">link_response_time</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">300</span><span class="special">)</span> <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">response</span> <span class="identifier">time</span> <span class="special">(</span><span class="identifier">milliseconds</span><span class="special">)</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">link_delete</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">2</span><span class="special">)</span>          <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">response</span> <span class="identifier">fails</span> <span class="identifier">to</span> <span class="identifier">forget</span>
-   <span class="special">--</span><span class="identifier">enable_broadcast</span>                   <span class="identifier">Allows</span> <span class="identifier">broadcast</span> <span class="identifier">messages</span>
-   <span class="special">--</span><span class="identifier">enable_unsolicited</span>                 <span class="identifier">Allows</span> <span class="identifier">unsolicited</span> <span class="identifier">discovery</span>
-   <span class="special">--</span><span class="identifier">log</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1</span><span class="special">)</span>                       <span class="identifier">Log</span> <span class="identifier">level</span> <span class="special">[</span><span class="number">0</span><span class="special">-</span><span class="number">4</span><span class="special">]</span>
+<pre class="programlisting">MIHF Configuration Options:
+   --help                               Display configuration options
+   --conf.file arg (=odtone.conf)       Configuration file
+   --conf.recv_buff_len arg (=4096)     Receive buffer length
+   --mihf.id arg (=mihf)                MIHF ID
+   --mihf.ip arg (=127.0.0.1)           MIHF IP
+   --mihf.remote_port arg (=4551)       Remote MIHF communication port
+   --mihf.local_port arg (=1025)        Local SAPs communication port
+   --mihf.peers arg                     List of peer MIHFs
+   --mihf.users arg                     List of local MIH-Users
+   --mihf.links arg                     List of local Links SAPs
+   --mihf.transport arg (=udp, tcp)     List of supported transport protocols
+   --mihf.link_response_time arg (=300) Link SAP response time (milliseconds)
+   --mihf.link_delete arg (=2)          Link SAP response fails to forget
+   --mihf.discover arg                  MIHF Discovery Mechanisms Order
+   --enable_broadcast                   Allows broadcast messages
+   --enable_unsolicited                 Allows unsolicited discovery
+   --log arg (=1)                       Log level [0-4]
 </pre>
 <p>
           </p>
@@ -106,8 +107,8 @@
               list of local MIH User SAP.
             </p>
 <p>
-              Usage: mihf.users = &lt;user sap id&gt; &lt;port&gt; &lt;role&gt;,
-              ...
+              Usage: mihf.users = &lt;user sap id&gt; &lt;port&gt; &lt;supported
+              commands&gt; &lt;supported queries&gt;, ...
             </p>
 <p>
               <span class="bold"><strong>List of local Link SAPs:</strong></span> Comma separated
@@ -137,17 +138,17 @@
             transport protocols. Edit the ODTONE-MIHF configuration file and add
             an entry to peers MIHFs in the form:
           </p>
-<pre class="programlisting"><span class="special">&lt;</span><span class="identifier">mihf_id</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">ip</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">port</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">list</span> <span class="identifier">of</span> <span class="identifier">supported</span> <span class="identifier">transport</span> <span class="identifier">protocols</span><span class="special">&gt;</span>
+<pre class="programlisting">&lt;mihf_id&gt; &lt;ip&gt; &lt;port&gt; &lt;list of supported transport protocols&gt;
 </pre>
 <p>
             The ODTONE-MIHF configuration file can look like: 
 </p>
-<pre class="programlisting"><span class="special">[</span><span class="identifier">mihf</span><span class="special">]</span>
-<span class="identifier">id</span> <span class="special">=</span> <span class="identifier">mihf1</span>
-<span class="identifier">local_port</span> <span class="special">=</span> <span class="number">1025</span>
-<span class="identifier">remote_port</span> <span class="special">=</span> <span class="number">4551</span>
-<span class="identifier">peers</span> <span class="special">=</span> <span class="identifier">mihf2</span> <span class="number">192.168</span><span class="special">.</span><span class="number">0.1</span> <span class="number">4551</span> <span class="identifier">udp</span>
-<span class="identifier">transport</span> <span class="special">=</span> <span class="identifier">udp</span>
+<pre class="programlisting">[mihf]
+id = mihf1
+local_port = 1025
+remote_port = 4551
+peers = mihf2 192.168.0.1 4551 udp
+transport = udp
 </pre>
 <p>
           </p>

@@ -31,9 +31,10 @@ discover, event subscribe and event notification mechanisms.
 
 [section Registering with the MIHF]
 
-The MIH-User is registering with the MIHF with a "mobility" role. Therefore,
-all request messages related to the handover procedure are only forwarded to this
-MIH-User. This behaviour is due to the local discovery provided by ODTONE.
+When registering with the MIHF, the MIH-User defines which commands it supports.
+
+Therefore at the reception of a MIH message, if it is supported by the MIH-User, the message
+will be forwarded to the MIH-User.
 
 [endsect]
 
@@ -93,7 +94,7 @@ of, the MIH-User only records in the log what type of message was received.
 	   --conf.recv_buff_len arg (=4096) Receive buffer length
 	   --conf.port arg (=1234)          Listening port
 	   --user.id arg (=user)            MIH-User ID
-	   --user.handover arg (=1)         MIH-User handover support
+	   --user.commands arg              MIH-User supported commands
 	   --mihf.ip arg (=127.0.0.1)       Local MIHF IP address
 	   --mihf.local_port arg (=1025)    Local MIHF communication port
 	   --dest arg                       MIHF destination

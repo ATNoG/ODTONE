@@ -42,9 +42,13 @@ forwarded to the MIHF through a "MIH_Capability_Discover.response" message.
 
 [section Registering with the MIHF]
 
-The DHCP-User is registering with the MIHF with a "discovery" role. Therefore,
-and when necessary, the MIHF can trigger the discovery process at this entity.
-This behaviour is due to the local/remote discovery provided by ODTONE.
+The DHCP-User does not need provide any information during the registration process.
+To give this entity
+the discovery role, it must be configured in the MIHF using the following option:
+``
+	[mihf]
+	discovery = DHCP
+``
 
 [endsect]
 

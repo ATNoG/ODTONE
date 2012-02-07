@@ -57,6 +57,7 @@ next:
 	   --mihf.transport arg (=udp, tcp)     List of supported transport protocols
 	   --mihf.link_response_time arg (=300) Link SAP response time (milliseconds)
 	   --mihf.link_delete arg (=2)          Link SAP response fails to forget
+	   --mihf.discover arg                  MIHF Discovery Mechanisms Order
 	   --enable_broadcast                   Allows broadcast messages
 	   --enable_unsolicited                 Allows unsolicited discovery
 	   --log arg (=1)                       Log level [0-4]
@@ -72,7 +73,7 @@ Usage: mihf.peers = <mihf id> <ip> <port> <list of supported transport protocols
 
 [*List of local MIH-Users:] Comma separated list of local MIH User SAP.
 
-Usage: mihf.users = <user sap id> <port> <role>, ...
+Usage: mihf.users = <user sap id> <port> <supported commands> <supported queries>, ...
 
 [*List of local Link SAPs:] Comma separated list of local MIH Link SAPs.
 

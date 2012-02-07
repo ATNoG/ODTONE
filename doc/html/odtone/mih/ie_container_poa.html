@@ -27,10 +27,10 @@
 </span>
 <span class="keyword">struct</span> <a class="link" href="ie_container_poa.html" title="Struct ie_container_poa">ie_container_poa</a> <span class="special">{</span>
 
-  <span class="comment">// <a class="link" href="ie_container_poa.html#id2561679-bb">public member functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="ie_container_poa.html#id2561682-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="ie_container_poa.html#id2561714-bb"><span class="identifier">serialize_opt_lists</span></a><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="ie_container_poa.html#id2561741-bb"><span class="identifier">serialize_opt_lists</span></a><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="ie_container_poa.html#id2432842-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="ie_container_poa.html#id2432845-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="ie_container_poa.html#id2432877-bb"><span class="identifier">serialize_opt_lists</span></a><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="ie_container_poa.html#id2432903-bb"><span class="identifier">serialize_opt_lists</span></a><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// public data members</span>
   <span class="identifier">ie_poa_link_addr</span> <span class="identifier">poa_link_addr</span><span class="special">;</span>
@@ -42,14 +42,14 @@
   <a class="link" href="vendor_ie_list.html" title="Class vendor_ie_list">vendor_ie_list</a> <span class="identifier">vendor_ies</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id3033400"></a><h2>Description</h2>
+<a name="id3511324"></a><h2>Description</h2>
 <p>PoA IE type. </p>
 <div class="refsect2">
-<a name="id3033406"></a><h3>
-<a name="id2561679-bb"></a><code class="computeroutput">ie_container_poa</code> public member functions</h3>
+<a name="id3511330"></a><h3>
+<a name="id2432842-bb"></a><code class="computeroutput">ie_container_poa</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id2561682-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id2432845-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize/deserialize the PoA IE type.</p>
 <p>
 </p>
@@ -68,7 +68,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id2561714-bb"></a><span class="identifier">serialize_opt_lists</span><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id2432877-bb"></a><span class="identifier">serialize_opt_lists</span><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Deserialize optional IEs.</p>
 <p>
 </p>
@@ -87,7 +87,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id2561741-bb"></a><span class="identifier">serialize_opt_lists</span><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id2432903-bb"></a><span class="identifier">serialize_opt_lists</span><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize optional IEs.</p>
 <p>
 </p>

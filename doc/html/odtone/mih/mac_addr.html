@@ -28,29 +28,29 @@
 <span class="keyword">class</span> <a class="link" href="mac_addr.html" title="Class mac_addr">mac_addr</a> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">transport_addr</span> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="mac_addr.html#odtone.mih.mac_addrconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="mac_addr.html#id2555092-bb"><span class="identifier">mac_addr</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">explicit</span> <a class="link" href="mac_addr.html#id2555102-bb"><span class="identifier">mac_addr</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="mac_addr.html#id2555125-bb"><span class="identifier">mac_addr</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="mac_addr.html#id2426223-bb"><span class="identifier">mac_addr</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="mac_addr.html#id2426233-bb"><span class="identifier">mac_addr</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="mac_addr.html#id2426256-bb"><span class="identifier">mac_addr</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="mac_addr.html#id2555014-bb">public member functions</a></span>
-  <span class="identifier">octet_string</span> <a class="link" href="mac_addr.html#id2555017-bb"><span class="identifier">address</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="mac_addr.html#id2555036-bb"><span class="identifier">address</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="mac_addr.html#id2555060-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="mac_addr.html" title="Class mac_addr">mac_addr</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="mac_addr.html#id2426145-bb">public member functions</a></span>
+  <span class="identifier">octet_string</span> <a class="link" href="mac_addr.html#id2426148-bb"><span class="identifier">address</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="mac_addr.html#id2426167-bb"><span class="identifier">address</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="mac_addr.html#id2426191-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="mac_addr.html" title="Class mac_addr">mac_addr</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="mac_addr.html#id2555154-bb">friend functions</a></span>
-  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="mac_addr.html#id2555158-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="mac_addr.html" title="Class mac_addr">mac_addr</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="mac_addr.html#id2426286-bb">friend functions</a></span>
+  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="mac_addr.html#id2426289-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="mac_addr.html" title="Class mac_addr">mac_addr</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id2987330"></a><h2>Description</h2>
+<a name="id3465132"></a><h2>Description</h2>
 <p>MAC_ADDR data type. </p>
 <div class="refsect2">
-<a name="id2987336"></a><h3>
+<a name="id3465138"></a><h3>
 <a name="odtone.mih.mac_addrconstruct-copy-destruct"></a><code class="computeroutput">mac_addr</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="id2555092-bb"></a><span class="identifier">mac_addr</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="id2426223-bb"></a><span class="identifier">mac_addr</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty MAC_ADDR data type. </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -63,7 +63,7 @@
 </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">explicit</span> <a name="id2555102-bb"></a><span class="identifier">mac_addr</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span> addr<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="id2426233-bb"></a><span class="identifier">mac_addr</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span> addr<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty MAC_ADDR data type. </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -90,7 +90,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="id2555125-bb"></a><span class="identifier">mac_addr</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> raw<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="id2426256-bb"></a><span class="identifier">mac_addr</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> raw<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty MAC_ADDR data type. </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -125,11 +125,11 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="id2987585"></a><h3>
-<a name="id2555014-bb"></a><code class="computeroutput">mac_addr</code> public member functions</h3>
+<a name="id3465387"></a><h3>
+<a name="id2426145-bb"></a><code class="computeroutput">mac_addr</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">octet_string</span> <a name="id2555017-bb"></a><span class="identifier">address</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">octet_string</span> <a name="id2426148-bb"></a><span class="identifier">address</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MAC address string (format: XX:XX:XX:XX:XX:XX).</p>
 <p>
 </p>
@@ -142,7 +142,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id2555036-bb"></a><span class="identifier">address</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span> addr<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id2426167-bb"></a><span class="identifier">address</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span> addr<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the MAC address.</p>
 <p>
 </p>
@@ -161,7 +161,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="id2555060-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="mac_addr.html" title="Class mac_addr">mac_addr</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id2426191-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="mac_addr.html" title="Class mac_addr">mac_addr</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Check if the MAC_ADDR is equal to another MAC_ADDR.</p>
 <p>
 
@@ -189,10 +189,10 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="id2987852"></a><h3>
-<a name="id2555154-bb"></a><code class="computeroutput">mac_addr</code> friend functions</h3>
+<a name="id3465654"></a><h3>
+<a name="id2426286-bb"></a><code class="computeroutput">mac_addr</code> friend functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="id2555158-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="mac_addr.html" title="Class mac_addr">mac_addr</a> <span class="special">&amp;</span> tp<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="id2426289-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="mac_addr.html" title="Class mac_addr">mac_addr</a> <span class="special">&amp;</span> tp<span class="special">)</span><span class="special">;</span></pre>
 <p>MAC_ADDR data type output.</p>
 <p>
 

@@ -29,19 +29,19 @@
   <span class="comment">// types</span>
   <span class="keyword">typedef</span> <a class="link" href="oui_.html" title="Struct template oui_">oui_</a><span class="special">&lt;</span> <span class="identifier">A</span><span class="special">,</span> <span class="identifier">B</span><span class="special">,</span> <span class="identifier">C</span> <span class="special">&gt;</span> <a name="odtone.mih.oui_.tlv_serializer"></a><span class="identifier">tlv_serializer</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="oui_.html#id2552914-bb">public static functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">bool</span> <a class="link" href="oui_.html#id2552918-bb"><span class="identifier">serialize</span></a><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">void</span> <a class="link" href="oui_.html#id2552966-bb"><span class="identifier">serialize</span></a><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="oui_.html#id2424026-bb">public static functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">bool</span> <a class="link" href="oui_.html#id2424030-bb"><span class="identifier">serialize</span></a><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">void</span> <a class="link" href="oui_.html#id2424077-bb"><span class="identifier">serialize</span></a><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id2974390"></a><h2>Description</h2>
+<a name="id3452072"></a><h2>Description</h2>
 <p>Vendor's IEEE organizationally unique identifier (OUI). </p>
 <div class="refsect2">
-<a name="id2974397"></a><h3>
-<a name="id2552914-bb"></a><code class="computeroutput">oui_</code> public static functions</h3>
+<a name="id3452079"></a><h3>
+<a name="id2424026-bb"></a><code class="computeroutput">oui_</code> public static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">bool</span> <a name="id2552918-bb"></a><span class="identifier">serialize</span><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">bool</span> <a name="id2424030-bb"></a><span class="identifier">serialize</span><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Deserialize the TLV type value.</p>
 <p>
 
@@ -73,7 +73,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">void</span> <a name="id2552966-bb"></a><span class="identifier">serialize</span><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">void</span> <a name="id2424077-bb"></a><span class="identifier">serialize</span><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize the TLV type value.</p>
 <p>
 </p>

@@ -52,12 +52,12 @@
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
                 Passing it directly in command line: 
-<pre class="programlisting"><span class="special">--</span><span class="identifier">port</span><span class="special">=&lt;</span><span class="identifier">port</span> <span class="identifier">number</span><span class="special">&gt;</span>
+<pre class="programlisting">--port=&lt;port number&gt;
 </pre>
               </li>
 <li class="listitem">
                 or configuring it in the configuration file: 
-<pre class="programlisting"><span class="identifier">port</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">port</span> <span class="identifier">number</span><span class="special">&gt;</span>
+<pre class="programlisting">port = &lt;port number&gt;
 </pre>
               </li>
 </ul></div>
@@ -74,10 +74,10 @@
             <span class="bold"><strong>1st step:</strong></span> Define a new configuration
             option. 
 </p>
-<pre class="programlisting"><span class="identifier">desc</span><span class="special">.</span><span class="identifier">add_options</span><span class="special">()</span>
-	<span class="comment">// ...</span>
-	<span class="special">(</span><span class="identifier">kConf_MIH_NewMessage</span><span class="special">,</span> <span class="string">"Send a New Message"</span><span class="special">)</span>
-<span class="special">;</span>
+<pre class="programlisting">desc.add_options()
+	// ...
+	(kConf_MIH_NewMessage, "Send a New Message")
+;
 </pre>
 <p>
           </p>
@@ -88,16 +88,16 @@
 <p>
             
 </p>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">send_newMessage</span><span class="special">(</span><span class="identifier">handler</span> <span class="special">&amp;</span><span class="identifier">sap</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">dst</span><span class="special">)</span>
-<span class="special">{</span>
-	<span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span>        <span class="identifier">p</span><span class="special">;</span>
+<pre class="programlisting">void send_newMessage(handler &amp;sap, const char *dst)
+{
+	mih::message        p;
 
-	<span class="comment">//...</span>
-	<span class="comment">// Define the message to send here</span>
-	<span class="comment">//...</span>
+	//...
+	// Define the message to send here
+	//...
 
-	<span class="identifier">sap</span><span class="special">.</span><span class="identifier">send</span><span class="special">(</span><span class="identifier">p</span><span class="special">);</span>
-<span class="special">}</span>
+	sap.send(p);
+}
 </pre>
 <p>
           </p>
@@ -105,10 +105,10 @@
             <span class="bold"><strong>3rd step:</strong></span> Add a condition in the main
             function to decide which message will be sent. 
 </p>
-<pre class="programlisting"><span class="keyword">if</span> <span class="special">(</span><span class="identifier">cfg</span><span class="special">.</span><span class="identifier">count</span><span class="special">(</span><span class="identifier">kConf_MIH_NewMessage</span><span class="special">))</span> <span class="special">{</span>
-	<span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"sent a new message"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
-	<span class="identifier">send_newMessage</span><span class="special">(</span><span class="identifier">sap</span><span class="special">,</span> <span class="identifier">argv</span><span class="special">[</span><span class="number">1</span><span class="special">]);</span>
-<span class="special">}</span>
+<pre class="programlisting">if (cfg.count(kConf_MIH_NewMessage)) {
+	std::cout &lt;&lt; "sent a new message" &lt;&lt; std::endl;
+	send_newMessage(sap, argv[1]);
+}
 </pre>
 <p>
           </p>

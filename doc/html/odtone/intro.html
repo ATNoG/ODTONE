@@ -80,28 +80,23 @@
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-          Optimization of the local discovery:
-          <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-                Changes in the interface used by MIH-Users to register with the local
-                MIHF.
-              </li></ul></div>
+          Redefinition of the interface used by MIH-Users to register themselves
+          with the local MIHF.
         </li>
 <li class="listitem">
           Implementation of mechanisms for discovering remote peer MIHFs:
           <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-                DNS-User: discovery mechanims which uses DNS services;
+                DNS-User: discovery mechanim which uses DNS services;
               </li>
 <li class="listitem">
-                DHCP-User: discovery mechanims which uses DHCP services.
+                DHCP-User: discovery mechanim which uses DHCP services.
               </li>
 </ul></div>
         </li>
 <li class="listitem">
-          Several bug-fixes.
-        </li>
-<li class="listitem">
-          Fix compilation with more recent gcc version.
+          Response timers: all messages are associated with a timer, which replies
+          with a failure message in case of timeout.
         </li>
 <li class="listitem">
           Provision of a new Link SAP example: this new Link SAP uses the ICMP protocol
@@ -115,8 +110,10 @@
           which offer several network protocols and terminology support.
         </li>
 <li class="listitem">
-          Response timers: all messages are associated with a timer. which replies
-          with a failure message in case of timeout.
+          Several bug-fixes.
+        </li>
+<li class="listitem">
+          Fix compilation with more recent gcc version.
         </li>
 <li class="listitem">
           ODTONE documentation revision.

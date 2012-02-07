@@ -28,24 +28,25 @@
 <span class="keyword">class</span> <a class="link" href="bitmap.html" title="Class template bitmap">bitmap</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="bitmap.html#odtone.mih.bitmapconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="bitmap.html#id2556598-bb"><span class="identifier">bitmap</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="bitmap.html#id2427758-bb"><span class="identifier">bitmap</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="bitmap.html#id2556357-bb">private member functions</a></span>
-   <a class="link" href="bitmap.html#id2556361-bb"><span class="identifier">ODTONE_STATIC_ASSERT</span></a><span class="special">(</span><span class="special">!</span><span class="special">,</span> <span class="string">"N must be a multiple of 8"</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="bitmap.html#id2427488-bb">private member functions</a></span>
+   <a class="link" href="bitmap.html#id2427492-bb"><span class="identifier">ODTONE_STATIC_ASSERT</span></a><span class="special">(</span><span class="special">!</span><span class="special">,</span> <span class="string">"N must be a multiple of 8"</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="bitmap.html#id2556380-bb">public member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="bitmap.html#id2556383-bb"><span class="identifier">clear</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="bitmap.html#id2556395-bb"><span class="identifier">clear</span></a><span class="special">(</span><span class="identifier">EnumT</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="bitmap.html#id2556419-bb"><span class="identifier">set</span></a><span class="special">(</span><span class="identifier">EnumT</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="bitmap.html#id2556442-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="identifier">EnumT</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="bitmap.html#id2556466-bb"><span class="identifier">merge</span></a><span class="special">(</span><a class="link" href="bitmap.html" title="Class template bitmap">bitmap</a><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="bitmap.html#id2556495-bb"><span class="identifier">common</span></a><span class="special">(</span><a class="link" href="bitmap.html" title="Class template bitmap">bitmap</a><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="bitmap.html#id2556523-bb"><span class="identifier">full</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="bitmap.html#id2556535-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="bitmap.html" title="Class template bitmap">bitmap</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="bitmap.html#id2556566-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="bitmap.html#id2427511-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="bitmap.html#id2427514-bb"><span class="identifier">clear</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="bitmap.html#id2427526-bb"><span class="identifier">clear</span></a><span class="special">(</span><span class="identifier">EnumT</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="bitmap.html#id2427550-bb"><span class="identifier">set</span></a><span class="special">(</span><span class="identifier">EnumT</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="bitmap.html#id2427574-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="identifier">EnumT</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="bitmap.html#id2427597-bb"><span class="identifier">merge</span></a><span class="special">(</span><a class="link" href="bitmap.html" title="Class template bitmap">bitmap</a><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="bitmap.html#id2427626-bb"><span class="identifier">common</span></a><span class="special">(</span><a class="link" href="bitmap.html" title="Class template bitmap">bitmap</a><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="bitmap.html#id2427654-bb"><span class="identifier">except</span></a><span class="special">(</span><a class="link" href="bitmap.html" title="Class template bitmap">bitmap</a><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="bitmap.html#id2427683-bb"><span class="identifier">full</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="bitmap.html#id2427695-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="bitmap.html" title="Class template bitmap">bitmap</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="bitmap.html#id2427726-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id2995955"></a><h2>Description</h2>
+<a name="id3473793"></a><h2>Description</h2>
 <p>BITMAP data type. </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -57,30 +58,30 @@
 <p>
 </p>
 <div class="refsect2">
-<a name="id2995966"></a><h3>
+<a name="id3473803"></a><h3>
 <a name="odtone.mih.bitmapconstruct-copy-destruct"></a><code class="computeroutput">bitmap</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="id2556598-bb"></a><span class="identifier">bitmap</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="id2427758-bb"></a><span class="identifier">bitmap</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Contruct an empty BITMAP data type. </p>
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="id2996019"></a><h3>
-<a name="id2556357-bb"></a><code class="computeroutput">bitmap</code> private member functions</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"> <a name="id2556361-bb"></a><span class="identifier">ODTONE_STATIC_ASSERT</span><span class="special">(</span><span class="special">!</span><span class="special">,</span> <span class="string">"N must be a multiple of 8"</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+<a name="id3473856"></a><h3>
+<a name="id2427488-bb"></a><code class="computeroutput">bitmap</code> private member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"> <a name="id2427492-bb"></a><span class="identifier">ODTONE_STATIC_ASSERT</span><span class="special">(</span><span class="special">!</span><span class="special">,</span> <span class="string">"N must be a multiple of 8"</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
 <div class="refsect2">
-<a name="id2996085"></a><h3>
-<a name="id2556380-bb"></a><code class="computeroutput">bitmap</code> public member functions</h3>
+<a name="id3473922"></a><h3>
+<a name="id2427511-bb"></a><code class="computeroutput">bitmap</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id2556383-bb"></a><span class="identifier">clear</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id2427514-bb"></a><span class="identifier">clear</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Clear the BITMAP data type. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id2556395-bb"></a><span class="identifier">clear</span><span class="special">(</span><span class="identifier">EnumT</span> pos<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id2427526-bb"></a><span class="identifier">clear</span><span class="special">(</span><span class="identifier">EnumT</span> pos<span class="special">)</span><span class="special">;</span></pre>
 <p>Clear the position.</p>
 <p>
 </p>
@@ -99,7 +100,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id2556419-bb"></a><span class="identifier">set</span><span class="special">(</span><span class="identifier">EnumT</span> pos<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id2427550-bb"></a><span class="identifier">set</span><span class="special">(</span><span class="identifier">EnumT</span> pos<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the position.</p>
 <p>
 </p>
@@ -118,7 +119,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="id2556442-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="identifier">EnumT</span> pos<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id2427574-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="identifier">EnumT</span> pos<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the position value.</p>
 <p>
 </p>
@@ -137,7 +138,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id2556466-bb"></a><span class="identifier">merge</span><span class="special">(</span><a class="link" href="bitmap.html" title="Class template bitmap">bitmap</a> b<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id2427597-bb"></a><span class="identifier">merge</span><span class="special">(</span><a class="link" href="bitmap.html" title="Class template bitmap">bitmap</a> b<span class="special">)</span><span class="special">;</span></pre>
 <p>Merge the value of the bitmap with another BITMAP data type. </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -164,7 +165,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id2556495-bb"></a><span class="identifier">common</span><span class="special">(</span><a class="link" href="bitmap.html" title="Class template bitmap">bitmap</a> b<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id2427626-bb"></a><span class="identifier">common</span><span class="special">(</span><a class="link" href="bitmap.html" title="Class template bitmap">bitmap</a> b<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the common values between the BITMAP and another BITMAP data type. </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -191,11 +192,38 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="id2556523-bb"></a><span class="identifier">full</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id2427654-bb"></a><span class="identifier">except</span><span class="special">(</span><a class="link" href="bitmap.html" title="Class template bitmap">bitmap</a> b<span class="special">)</span><span class="special">;</span></pre>
+<p>Clear the values of the bitmap, if they are set on the given BITMAP. </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Both bitmaps must have the same size</p></td></tr>
+</table></div>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">b</code></span></p></td>
+<td><p>The BITMAP data type with the values to clear. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="id2427683-bb"></a><span class="identifier">full</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Set all poisition of the BITMAP data type. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="id2556535-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="bitmap.html" title="Class template bitmap">bitmap</a> <span class="special">&amp;</span> bit<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id2427695-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="bitmap.html" title="Class template bitmap">bitmap</a> <span class="special">&amp;</span> bit<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Check if the two bitmaps are equal. </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -222,7 +250,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id2556566-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id2427726-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize/deserialize the BITMAP data type.</p>
 <p>
 </p>

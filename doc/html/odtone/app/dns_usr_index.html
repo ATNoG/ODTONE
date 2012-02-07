@@ -66,26 +66,30 @@
           with the MIHF</a>
 </h5></div></div></div>
 <p>
-            The DNS-User is registering with the MIHF with a "discovery"
-            role. Therefore, and when necessary, the MIHF can trigger the discovery
-            process at this entity. This behaviour is due to the local/remote discovery
-            provided by ODTONE.
+            The DHCP-User does not need provide any information during the registration
+            process. To give this entity the discovery role, it must be configured
+            in the MIHF using the following option: 
+</p>
+<pre class="programlisting">[mihf]
+discovery = DNS
+</pre>
+<p>
           </p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.app.dns_usr_index.dns_usr_getStart.configuration"></a><a class="link" href="dns_usr_index.html#odtone.app.dns_usr_index.dns_usr_getStart.configuration" title="Configuration">Configuration</a>
 </h5></div></div></div>
-<pre class="programlisting"><span class="identifier">DNS</span><span class="special">-</span><span class="identifier">User</span> <span class="identifier">Configuration</span><span class="special">:</span>
-    <span class="special">--</span><span class="identifier">help</span>                           <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
-    <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">file</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">dns</span><span class="special">.</span><span class="identifier">conf</span><span class="special">)</span>      <span class="identifier">Configuration</span> <span class="identifier">File</span>
-    <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">DNS</span><span class="special">)</span>             <span class="identifier">MIH</span> <span class="identifier">User</span> <span class="identifier">ID</span>
-    <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1234</span><span class="special">)</span>          <span class="identifier">Listening</span> <span class="identifier">Port</span>
-    <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">recv_buff_len</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4096</span><span class="special">)</span> <span class="identifier">Receive</span> <span class="identifier">Buffer</span> <span class="identifier">Length</span>
-    <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">ip</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">127.0</span><span class="special">.</span><span class="number">0.1</span><span class="special">)</span>       <span class="identifier">MIHF</span> <span class="identifier">Local</span> <span class="identifier">Communications</span> <span class="identifier">IP</span> <span class="identifier">Address</span>
-    <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">local_port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1025</span><span class="special">)</span>    <span class="identifier">MIHF</span> <span class="identifier">Local</span> <span class="identifier">Communications</span> <span class="identifier">Port</span>
-    <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">domain</span> <span class="identifier">arg</span>                <span class="identifier">Domain</span> <span class="identifier">name</span>
-    <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">additional_rr</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1</span><span class="special">)</span>    <span class="identifier">Use</span> <span class="identifier">additional</span> <span class="identifier">resource</span> <span class="identifier">records</span>
+<pre class="programlisting">DNS-User Configuration:
+    --help                           Display configuration options
+    --conf.file arg (=dns.conf)      Configuration File
+    --user.id arg (=DNS)             MIH User ID
+    --conf.port arg (=1234)          Listening Port
+    --conf.recv_buff_len arg (=4096) Receive Buffer Length
+    --mihf.ip arg (=127.0.0.1)       MIHF Local Communications IP Address
+    --mihf.local_port arg (=1025)    MIHF Local Communications Port
+    --user.domain arg                Domain name
+    --user.additional_rr arg (=1)    Use additional resource records
 </pre>
 <p>
             The DNS-User can be configured based on a set of parameters, which can
@@ -97,6 +101,51 @@
             option should be used. The use of the additional resource records presented
             in the DNS messages can be enable or disable using the <span class="emphasis"><em>--user.additional_rr</em></span>
             option.
+          </p>
+<a name="odtone.app.dns_usr_index.dns_usr_getStart.configuration.bind_configuration_example"></a><h4>
+<a name="odtone.app.dns_usr_index.dns_usr_getStart.configuration.bind_configuration_example-heading"></a>
+            <a class="link" href="dns_usr_index.html#odtone.app.dns_usr_index.dns_usr_getStart.configuration.bind_configuration_example">BIND
+            configuration example</a>
+          </h4>
+<p>
+            At the <span class="emphasis"><em>named.conf</em></span> file insert the next piece of
+            code:
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting">zone "odtone.test" IN {
+    type master;
+    file "/etc/bind/pri/odtone.dnszone";
+};
+</pre>
+<p>
+          </p>
+<p>
+            Then create a file named <span class="emphasis"><em>odtone.dnszone</em></span> which will
+            include the next content: 
+</p>
+<pre class="programlisting">$ORIGIN odtone.test.
+$TTL 1W
+@                       1D IN SOA       localhost. root.localhost. (
+                                        2006101001      ; serial
+                                        3H              ; refresh
+                                        15M             ; retry
+                                        1W              ; expiry
+                                        1D )            ; minimum
+
+                        1D IN NS        ns
+ns                      1D IN A         127.0.0.1
+
+
+_MIHIS._udp               1D SRV 0 0 4551 mos
+
+
+mos.odtone.test.      1D IN A         192.168.1.1
+odtone.test.          1D IN A         192.168.1.1
+odtone.test.          1D IN NAPTR 50 50 "s" "MIHIS+M2U" ""      _MIHIS._udp
+</pre>
+<p>
           </p>
 </div>
 <div class="section">

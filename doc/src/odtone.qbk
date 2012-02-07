@@ -76,21 +76,20 @@ support. We would be more than happy to known about your work on these matters!
 
 [*ODTONE 0.4 - Open Dot Twenty ONE.]
 
-* Optimization of the local discovery:
-	* Changes in the interface used by MIH-Users to register with the local MIHF.
+* Redefinition of the interface used by MIH-Users to register themselves with
+the local MIHF.
 * Implementation of mechanisms for discovering remote peer MIHFs:
-	* DNS-User: discovery mechanims which uses DNS services;
-	* DHCP-User: discovery mechanims which uses DHCP services.
-* Several bug-fixes.
-* Fix compilation with more recent gcc version.
+	* DNS-User: discovery mechanim which uses DNS services;
+	* DHCP-User: discovery mechanim which uses DHCP services.
+* Response timers: all messages are associated with a timer, which replies
+with a failure message in case of timeout.
 * Provision of a new Link SAP example: this new Link SAP uses the ICMP protocol
 to detect the attachment of another node.
 * Definition of new messages in the client application.
 * Provision of a new library named NET library: it defines a set of classes
 which offer several network protocols and terminology support.
-* Response timers: all messages are associated with a timer.
-which enables to reply with a failure message in case of timeout.
-* Use the same port for receiving and sending messages.
+* Several bug-fixes.
+* Fix compilation with more recent gcc version.
 * ODTONE documentation revision.
 
 
@@ -110,21 +109,21 @@ notes on specific platforms that might prove an obstacle.
 In order to correctly use ODTONE, you must first make sure that you have the
 required dependencies:
 
-* *Boost Developer libraries (v1.47)*
+* *Boost Developer libraries (v1.48)*
 
 [h4 1.1. Boost Quick Guide]
 Boost is required to compile ODTONE, so in order to correctly use ODTONE
 you must first make sure you have the Boost libraries sources and Boost.Build
 installed in your system.
 
-*Download the Boost library(v1.47) [@http://www.boost.org/ boost's website]
+*Download the Boost library(v1.48) [@http://www.boost.org/ boost's website]
 and unpack it. We recommend that you unpack it in a project directory next to
 odtone.
 
 [teletype]``
 projects/
     |
-    +-- boost_1_47_0/
+    +-- boost_1_48_0/
     |
     +-- odtone/
 ``
@@ -154,7 +153,7 @@ boost-build path-to-boost/tools/build/v2 ;
     ]
 ]
 
-*To install Boost.Build got to 'boost_1_47_0/tools/build/v2/'. On unix like
+*To install Boost.Build got to 'boost_1_48_0/tools/build/v2/'. On unix like
 systems run './bootstrap.sh' and then 'sudo ./b2 install'.
 On windows like systems run 'bootstrap.bat' and then 'b2 install'.
 
@@ -279,6 +278,7 @@ next:
 	   --mihf.transport arg (=udp, tcp)     List of supported transport protocols
 	   --mihf.link_response_time arg (=300) Link SAP response time (milliseconds)
 	   --mihf.link_delete arg (=2)          Link SAP response fails to forget
+	   --mihf.discover arg                  MIHF Discovery Mechanisms Order
 	   --enable_broadcast                   Allows broadcast messages
 	   --enable_unsolicited                 Allows unsolicited discovery
 	   --log arg (=1)                       Log level [0-4]
@@ -292,9 +292,9 @@ we will only mention those that are more complex to configure.
 
 Usage: mihf.peers = <mihf id> <ip> <port> <list of supported transport protocols>, ...
 
-[*List of local MIH-Users:] Comma separated list of local MIH User SAP.
+[*List of local MIH-Users:] Comma separated list of local MIH-User SAP.
 
-Usage: mihf.users = <user sap id> <port> <role>, ...
+Usage: mihf.users = <user sap id> <port> <supported commands> <supported queries>, ...
 
 [*List of local Link SAPs:] Comma separated list of local MIH Link SAPs.
 
@@ -315,11 +315,23 @@ Usage: mihf.transport = <udp/tcp>, ...
 	   --conf.recv_buff_len arg (=4096) Receive buffer length
 	   --conf.port arg (=1234)          Listening port
 	   --user.id arg (=user)            MIH-User ID
-	   --user.role arg (=mobility)      MIH-User role
+	   --user.commands arg              MIH-User supported commands
 	   --mihf.ip arg (=127.0.0.1)       Local MIHF IP address
 	   --mihf.local_port arg (=1025)    Local MIHF communication port
 	   --dest arg                       MIHF destination
 ``
+
+[note
+All configurable parameters are self-explained and, therefore,
+we will only mention those that are more complex to configure.
+
+[*List of supported events:] Comma separated list of the MIH-Users supported commands.
+
+Usage: command = <command 1>, <command 2>, (...), <command N>
+
+]
+
+
 
 ``
 	MIH Link SAP Configuration:
@@ -563,93 +575,100 @@ the new TLVs and its data type:
     ]
 
     [
+		[SupportedLinkEventList]
+		[tlv_link_evt_list]
+		[101]
+		[LINK_EVT_LIST]
+    ]
+
+    [
+		[SupportedLinkCommandList]
+		[tlv_link_cmd_list]
+		[102]
+		[LINK_CMD_LIST]
+    ]
+
+    [
 		[LinkParametersRequest]
 		[tlv_link_parameters_req]
-		[101]
+		[103]
 		[LIST(LINK_PARAM_TYPE)]
     ]
 
     [
 		[LinkParametersStatusList]
 		[tlv_link_parameters_status_list]
-		[102]
+		[104]
 		[LIST(LINK_PARAM_TYPE)]
     ]
 
     [
         [LinkStatesRequest]
 		[tlv_link_states_req]
-		[103]
+		[105]
 		[LINK_STATES_REQ]
     ]
 
     [
         [LinkStatesResponse]
 		[tlv_link_states_rsp]
-		[104]
+		[106]
 		[LIST(LINK_STATES_RSP)]
     ]
 
     [
         [LinkDescriptorsRequest]
 		[tlv_link_descriptor_req]
-		[105]
+		[107]
 		[LINK_DESC_REQ]
     ]
 
     [
         [LinkDescriptorsResponse]
 		[tlv_link_descriptor_rsp]
-		[106]
+		[108]
 		[LIST(LINK_DESC_RSP)]
     ]
 
     [
 		[LinkAction]
 		[tlv_link_action]
-		[107]
+		[109]
 		[LINK_ACTION]
     ]
 
     [
 		[LinkActionResult]
 		[tlv_link_ac_result]
-		[108]
+		[110]
 		[LINK_AC_RESULT]
     ]
 
     [
 		[ScanResponseSet]
 		[tlv_link_scan_rsp_list]
-		[109]
+		[111]
 		[LIST(LINK_SCAN_RSP)]
     ]
     
     [
 		[LinkDetInfo]
 		[tlv_link_det_info]
-		[110]
+		[112]
 		[LINK_DET_INFO]
     ]
 
 	[
 		[InterfaceTypeAddress]
 		[tlv_interface_type_addr]
-		[111]
+		[113]
 		[LINK_ID]
-    ]
-
-    [
-		[UserRole]
-		[tlv_user_role]
-		[112]
-		[USER_ROLE]
     ]
 
     [
 		[MobilityServicesDiscovery]
 		[tlv_mos_dscv]
-		[113]
+		[114]
 		[MOS_DSCV]
     ]
 ]
@@ -791,8 +810,7 @@ can occur before the MIHF forget Link SAP can be defined at the MIHF configurati
 The process of discovering MIH-Users implemented on ODTONE is based on a
 registration process of the MIH-User with the MIHF. When the MIH-User becomes active,
 it locally sends a "User_Register.indication" message to the MIHF, including
-information about its listening port and role (Information server, Mobility, Monitoring
-or Discovery).
+information about its listening port, supported commands and/or supported queries.
 
 Upon the reception of the "User_Register.indication" message, the MIHF learns about the
 MIH-User and the communications between them can start normally.
@@ -800,18 +818,11 @@ MIH-User and the communications between them can start normally.
 [note
 	Because there is no primitive/message in the 802.21 standard that allows MIH-User
 	to send register information to the MIHF the “User_Register.indication” message was
-	created. This message allows the Link SAP to send informations
-	to the MIHF about its function.
-	Associated with the creation of this new message type was also created a new
-	TLV type named “User Role TLV” whose correspondent data type is a “USER_ROLE” (which
-	was also created).
+	created. This message allows the MIH-Users to send informations
+	to the MIHF about the supported commands and/or queries.
 
 	[$./images/user_register_indication_message.png]
 ]
-
-[note Only one MIH-User for handling handover operations could exists in each MIHF.
-This way, the last MIU-User to register with that role will be the MIH-User
-that will handle the handover operations. The same occurs with the Information server.]
 
 [endsect]
 
@@ -836,7 +847,7 @@ to obtain associated transport information.
 
 [$./images/l3_arch.png]
 
-[note The DNS-User and DHCP-User are working only for Linux. However, you can
+[note The DNS-User and DHCP-User are working only for Linux environment. However, you can
 implement your own discovery entities with guidelines defined as follows.]
 
 The MIH protocol does not support the necessary mechanisms to carry the
@@ -850,8 +861,8 @@ The MOS_DSCV data type carries the discovered PoS divided by service type. Each 
 identified by an instance of the MOS_INFO data type, which carries information about its ID,
 IP address and listening port.
 
-The L3 discovery mechanisms can be enabled by registering a MIH-User (with the discovery role)
-with the MIHF. The order by which they are registered defines the order by which the
+The L3 discovery mechanisms can be enabled by configuring in the MIHF the list of discovery
+entities. The order by which they are configured defines the order by which the
 entities will be requested for discovering PoS. For example, if no entity is configured with
 discovery role, the discovery mechanisms will not be enable and therefore, the discovery
 mechanisms are the default ones, i.e., it is only possible to discover entities by multicasting
@@ -904,6 +915,17 @@ provided by ODTONE.
 
 [section Introduction]
 
+Wireless Sensor Networks are an important and exciting research area: using
+automated sensing mechanisms can help in many situations ranging from health,
+security, leisure and others. However, there is a great number of different
+sensor makers with their different specific mechanisms and parameters.
+Instituto de Telecomunicações, Aveiro, Portugal, have developed a MIH Sensor
+SAP having as base our ODTONE 802.21 implementation. This MIH Sensor SAP
+provides abstraction mechanisms towards all sensor technologies, facilitating
+Wireless Sensor Network operations and adding new sensing events and parameters
+which can further even more an optimized handover decision in mobility-supporting
+networks.
+
 In this walkthrough we will demonstrate how to setup, deploy and run the Sensor SAP demo
 released on the ODTONE latest version using SunSPOTs.
 
@@ -927,7 +949,7 @@ The ODTONE-MIHF configuration file:
 	local_port = 1025
 	remote_port = 4551
 	peers = mihf2 0.0.0.0 4552 udp
-	users = user 1234 mobility
+	users = user 1234
 	links = sensor_sap 1235 Sensor sensoraddress
 	transport = udp
 ``

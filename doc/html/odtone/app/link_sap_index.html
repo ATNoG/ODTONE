@@ -66,7 +66,7 @@
             When a change in the network interface is detected, the following method
             is called in order to process it: 
 </p>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">link_sap</span><span class="special">::</span><span class="identifier">link_sap</span><span class="special">::</span><span class="identifier">update</span><span class="special">(</span><span class="identifier">nic</span><span class="special">::</span><span class="identifier">interface</span><span class="special">*</span> <span class="identifier">it</span><span class="special">);</span>
+<pre class="programlisting">void link_sap::link_sap::update(nic::interface* it);
 </pre>
 <p>
           </p>
@@ -92,19 +92,19 @@
 <p>
             
 </p>
-<pre class="programlisting"><span class="identifier">MIH</span> <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">Configuration</span><span class="special">:</span>
-     <span class="special">--</span><span class="identifier">help</span>                           <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
-     <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">file</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">link_sap</span><span class="special">.</span><span class="identifier">conf</span><span class="special">)</span> <span class="identifier">Configuration</span> <span class="identifier">file</span>
-     <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">recv_buff_len</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4096</span><span class="special">)</span> <span class="identifier">Receive</span> <span class="identifier">buffer</span> <span class="identifier">length</span>
-     <span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">link</span><span class="special">)</span>            <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">ID</span>
-     <span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1235</span><span class="special">)</span>          <span class="identifier">Listening</span> <span class="identifier">Port</span>
-     <span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">tec</span> <span class="identifier">arg</span>                   <span class="identifier">Technology</span> <span class="identifier">type</span>
-     <span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">link_addr_list</span> <span class="identifier">arg</span>        <span class="identifier">Interface</span> <span class="identifier">address</span>
-     <span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">event_list</span> <span class="identifier">arg</span>            <span class="identifier">List</span> <span class="identifier">of</span> <span class="identifier">supported</span> <span class="identifier">events</span>
-     <span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">command_list</span> <span class="identifier">arg</span>          <span class="identifier">List</span> <span class="identifier">of</span> <span class="identifier">supported</span> <span class="identifier">commands</span>
-     <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">ip</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">127.0</span><span class="special">.</span><span class="number">0.1</span><span class="special">)</span>       <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">IP</span>
-     <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">local</span><span class="special">-</span><span class="identifier">mihf</span><span class="special">)</span>      <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">ID</span>
-     <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">local_port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1025</span><span class="special">)</span>    <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">communication</span> <span class="identifier">port</span>
+<pre class="programlisting">MIH Link SAP Configuration:
+     --help                           Display configuration options
+     --conf.file arg (=link_sap.conf) Configuration file
+     --conf.recv_buff_len arg (=4096) Receive buffer length
+     --link.id arg (=link)            Link SAP ID
+     --link.port arg (=1235)          Listening Port
+     --link.tec arg                   Technology type
+     --link.link_addr_list arg        Interface address
+     --link.event_list arg            List of supported events
+     --link.command_list arg          List of supported commands
+     --mihf.ip arg (=127.0.0.1)       Local MIHF IP
+     --mihf.id arg (=local-mihf)      Local MIHF ID
+     --mihf.local_port arg (=1025)    Local MIHF communication port
 </pre>
 <p>
           </p>
@@ -171,7 +171,7 @@
             received request message. In this way, the Link SAP can adopt its behaviour
             based on the received requets. 
 </p>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">link_sap</span><span class="special">::</span><span class="identifier">default_handler</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span><span class="special">&amp;</span> <span class="identifier">msg</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">)</span>
+<pre class="programlisting">void link_sap::default_handler(odtone::mih::message&amp; msg, const boost::system::error_code&amp; ec)
 </pre>
 <p>
           </p>

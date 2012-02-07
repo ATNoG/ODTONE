@@ -28,9 +28,10 @@ libraries for parsing and querying a sqlite database.
 
 [section Registering with the MIHF]
 
-The MIIS is registering with the MIHF with a "information service" role. Therefore,
-all received requests related with the information service are only forwarded to
-this entity. This behaviour is due to the local discovery provided by ODTONE.
+When registering with the MIHF, the MIH-User defines which queries it supports.
+
+Therefore at the reception of a request message belonging to the information service,
+it will be forwarded to the MIIS Server.
 
 [endsect]
 
@@ -73,6 +74,7 @@ and sent in a MIH_Get_Information.response message to the MIHF.
 	   --conf.port arg (=1236)                 Listening port
 	   --conf.recv_buff_len arg (=4096)        Receive buffer length
 	   --user.id arg (=miis)                   MIIS server ID
+	   --user.queries arg                      MIIS Server supported queries
 	   --mihf.ip arg (=127.0.0.1)              Local MIHF IP address
 	   --mihf.local_port arg (=1025)           Local MIHF communication port
 	   --database arg (=database)              /path/to MIIS server sqlite database

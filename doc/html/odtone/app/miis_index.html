@@ -46,10 +46,12 @@
           with the MIHF</a>
 </h5></div></div></div>
 <p>
-            The MIIS is registering with the MIHF with a "information service"
-            role. Therefore, all received requests related with the information service
-            are only forwarded to this entity. This behaviour is due to the local
-            discovery provided by ODTONE.
+            When registering with the MIHF, the MIH-User defines which queries it
+            supports.
+          </p>
+<p>
+            Therefore at the reception of a request message belonging to the information
+            service, it will be forwarded to the MIIS Server.
           </p>
 </div>
 <div class="section">
@@ -98,15 +100,16 @@
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.app.miis_index.miis_getStart.configuration"></a><a class="link" href="miis_index.html#odtone.app.miis_index.miis_getStart.configuration" title="Configuration">Configuration</a>
 </h5></div></div></div>
-<pre class="programlisting"><span class="identifier">MIH</span> <span class="identifier">Usr</span> <span class="identifier">Configuration</span><span class="special">:</span>
-   <span class="special">--</span><span class="identifier">help</span>                                  <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
-   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">file</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">miis_rdf_server</span><span class="special">.</span><span class="identifier">conf</span><span class="special">)</span> <span class="identifier">Configuration</span> <span class="identifier">file</span>
-   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1236</span><span class="special">)</span>                 <span class="identifier">Listening</span> <span class="identifier">port</span>
-   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">recv_buff_len</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4096</span><span class="special">)</span>        <span class="identifier">Receive</span> <span class="identifier">buffer</span> <span class="identifier">length</span>
-   <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">miis</span><span class="special">)</span>                   <span class="identifier">MIIS</span> <span class="identifier">server</span> <span class="identifier">ID</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">ip</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">127.0</span><span class="special">.</span><span class="number">0.1</span><span class="special">)</span>              <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">IP</span> <span class="identifier">address</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">local_port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1025</span><span class="special">)</span>           <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">communication</span> <span class="identifier">port</span>
-   <span class="special">--</span><span class="identifier">database</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">database</span><span class="special">)</span>              <span class="special">/</span><span class="identifier">path</span><span class="special">/</span><span class="identifier">to</span> <span class="identifier">MIIS</span> <span class="identifier">server</span> <span class="identifier">sqlite</span> <span class="identifier">database</span>
+<pre class="programlisting">MIH Usr Configuration:
+   --help                                  Display configuration options
+   --conf.file arg (=miis_rdf_server.conf) Configuration file
+   --conf.port arg (=1236)                 Listening port
+   --conf.recv_buff_len arg (=4096)        Receive buffer length
+   --user.id arg (=miis)                   MIIS server ID
+   --user.queries arg                      MIIS Server supported queries
+   --mihf.ip arg (=127.0.0.1)              Local MIHF IP address
+   --mihf.local_port arg (=1025)           Local MIHF communication port
+   --database arg (=database)              /path/to MIIS server sqlite database
 </pre>
 <p>
             MIIS Server can be configured either through a configuration file or
@@ -122,12 +125,12 @@
             1) Create a sqlite database and parse a base schema which is in rdfxml
             syntax:
           </p>
-<pre class="programlisting"><span class="identifier">rdfproc</span> <span class="special">-</span><span class="identifier">s</span> <span class="identifier">sqlite</span> <span class="identifier">database_name</span> <span class="identifier">parse</span> <span class="identifier">file</span><span class="special">:/</span><span class="identifier">path</span><span class="special">/</span><span class="identifier">to</span><span class="special">/</span><span class="identifier">schema</span><span class="special">.</span><span class="identifier">xml</span>
+<pre class="programlisting">rdfproc -s sqlite database_name parse file:/path/to/schema.xml
 </pre>
 <p>
             2) Parse and add some data, in Turtle format, to the database:
           </p>
-<pre class="programlisting"><span class="identifier">rdfproc</span> <span class="special">-</span><span class="identifier">s</span> <span class="identifier">sqlite</span> <span class="identifier">database_name</span> <span class="identifier">parse</span> <span class="identifier">file</span><span class="special">:/</span><span class="identifier">path</span><span class="special">/</span><span class="identifier">to</span><span class="special">/</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">xml</span> <span class="identifier">turtle</span>
+<pre class="programlisting">rdfproc -s sqlite database_name parse file:/path/to/data.xml turtle
 </pre>
 </div>
 </div>

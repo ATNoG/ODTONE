@@ -27,25 +27,25 @@
 </span>
 <span class="keyword">struct</span> <a class="link" href="l2_3gpp2_addr.html" title="Struct l2_3gpp2_addr">l2_3gpp2_addr</a> <span class="special">{</span>
 
-  <span class="comment">// <a class="link" href="l2_3gpp2_addr.html#id2555630-bb">public member functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="l2_3gpp2_addr.html#id2555634-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="l2_3gpp2_addr.html#id2555666-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="l2_3gpp2_addr.html" title="Struct l2_3gpp2_addr">l2_3gpp2_addr</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="l2_3gpp2_addr.html#id2426761-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="l2_3gpp2_addr.html#id2426765-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="l2_3gpp2_addr.html#id2426797-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="l2_3gpp2_addr.html" title="Struct l2_3gpp2_addr">l2_3gpp2_addr</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="l2_3gpp2_addr.html#id2555698-bb">friend functions</a></span>
-  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="l2_3gpp2_addr.html#id2555701-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="l2_3gpp2_addr.html" title="Struct l2_3gpp2_addr">l2_3gpp2_addr</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="l2_3gpp2_addr.html#id2426829-bb">friend functions</a></span>
+  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="l2_3gpp2_addr.html#id2426832-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="l2_3gpp2_addr.html" title="Struct l2_3gpp2_addr">l2_3gpp2_addr</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="l2_3gpp2_addr.html#odtone.mih.l2_3gpp2_addrpublic-data-members">public data members</a></span>
   <span class="identifier">octet_string</span> <a class="link" href="l2_3gpp2_addr.html#odtone.mih.l2_3gpp2_addr.value"><span class="identifier">value</span></a><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id2990932"></a><h2>Description</h2>
+<a name="id3468731"></a><h2>Description</h2>
 <p>Define L2_3GPP2_ADDR data type. </p>
 <div class="refsect2">
-<a name="id2990938"></a><h3>
-<a name="id2555630-bb"></a><code class="computeroutput">l2_3gpp2_addr</code> public member functions</h3>
+<a name="id3468736"></a><h3>
+<a name="id2426761-bb"></a><code class="computeroutput">l2_3gpp2_addr</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id2555634-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id2426765-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize/deserialize the L2_3GPP2_ADDR data type.</p>
 <p>
 </p>
@@ -64,7 +64,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="id2555666-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="l2_3gpp2_addr.html" title="Struct l2_3gpp2_addr">l2_3gpp2_addr</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id2426797-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="l2_3gpp2_addr.html" title="Struct l2_3gpp2_addr">l2_3gpp2_addr</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Check if the L2_3GPP2_ADDR is equal to another L2_3GPP2_ADDR.</p>
 <p>
 
@@ -92,11 +92,11 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="id2991161"></a><h3>
-<a name="id2555698-bb"></a><code class="computeroutput">l2_3gpp2_addr</code> friend functions</h3>
+<a name="id3468960"></a><h3>
+<a name="id2426829-bb"></a><code class="computeroutput">l2_3gpp2_addr</code> friend functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
 <pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> 
-<a name="id2555701-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="l2_3gpp2_addr.html" title="Struct l2_3gpp2_addr">l2_3gpp2_addr</a> <span class="special">&amp;</span> addr<span class="special">)</span><span class="special">;</span></pre>
+<a name="id2426832-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="l2_3gpp2_addr.html" title="Struct l2_3gpp2_addr">l2_3gpp2_addr</a> <span class="special">&amp;</span> addr<span class="special">)</span><span class="special">;</span></pre>
 <p>L2_3GPP2_ADDR data type output.</p>
 <p>
 
@@ -129,7 +129,7 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="id2991334"></a><h3>
+<a name="id3469133"></a><h3>
 <a name="odtone.mih.l2_3gpp2_addrpublic-data-members"></a><code class="computeroutput">l2_3gpp2_addr</code> 
         public
        public data members</h3>

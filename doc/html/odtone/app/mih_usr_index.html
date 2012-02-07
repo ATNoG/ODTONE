@@ -53,10 +53,12 @@
           with the MIHF</a>
 </h5></div></div></div>
 <p>
-            The MIH-User is registering with the MIHF with a "mobility"
-            role. Therefore, all request messages related to the handover procedure
-            are only forwarded to this MIH-User. This behaviour is due to the local
-            discovery provided by ODTONE.
+            When registering with the MIHF, the MIH-User defines which commands it
+            supports.
+          </p>
+<p>
+            Therefore at the reception of a MIH message, if it is supported by the
+            MIH-User, the message will be forwarded to the MIH-User.
           </p>
 </div>
 <div class="section">
@@ -74,8 +76,8 @@
 <p>
             
 </p>
-<pre class="programlisting"><span class="identifier">msg</span> <span class="special">&lt;&lt;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">request</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">request</span><span class="special">::</span><span class="identifier">capability_discover</span><span class="special">,</span> <span class="identifier">_mihfid</span><span class="special">);</span>
-<span class="identifier">_mihf</span><span class="special">.</span><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">msg</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">capability_discover_response</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">_1</span><span class="special">,</span> <span class="identifier">_2</span><span class="special">));</span>
+<pre class="programlisting">msg &lt;&lt; odtone::mih::request(odtone::mih::request::capability_discover, _mihfid);
+_mihf.async_send(msg, boost::bind(&amp;mih_user::capability_discover_response, this, _1, _2));
 </pre>
 <p>
           </p>
@@ -86,22 +88,22 @@
 <p>
             
 </p>
-<pre class="programlisting"><span class="identifier">msg</span> <span class="special">&gt;&gt;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">response</span><span class="special">()</span>
-	<span class="special">&amp;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_status</span><span class="special">(</span><span class="identifier">st</span><span class="special">)</span>
-	<span class="special">&amp;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_net_type_addr_list</span><span class="special">(</span><span class="identifier">ntal</span><span class="special">)</span>
-	<span class="special">&amp;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_event_list</span><span class="special">(</span><span class="identifier">evt</span><span class="special">);</span>
+<pre class="programlisting">msg &gt;&gt; odtone::mih::response()
+	&amp; odtone::mih::tlv_status(st)
+	&amp; odtone::mih::tlv_net_type_addr_list(ntal)
+	&amp; odtone::mih::tlv_event_list(evt);
 
-<span class="comment">//...</span>
+//...
 
-<span class="keyword">if</span> <span class="special">(</span><span class="identifier">ntal</span> <span class="special">&amp;&amp;</span> <span class="identifier">evt</span><span class="special">)</span> <span class="special">{</span>
-	<span class="keyword">for</span> <span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">net_type_addr_list</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">i</span> <span class="special">=</span> <span class="identifier">ntal</span><span class="special">-&gt;</span><span class="identifier">begin</span><span class="special">();</span> <span class="identifier">i</span> <span class="special">!=</span> <span class="identifier">ntal</span><span class="special">-&gt;</span><span class="identifier">end</span><span class="special">();</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="special">{</span>
-		<span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="identifier">req</span><span class="special">;</span>
+if (ntal &amp;&amp; evt) {
+	for (odtone::mih::net_type_addr_list::iterator i = ntal-&gt;begin(); i != ntal-&gt;end(); ++i) {
+		odtone::mih::message req;
 
-		<span class="comment">// ...</span>
+		// ...
 
-		<span class="identifier">_mihf</span><span class="special">.</span><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">req</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">event_subscribe_response</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">_1</span><span class="special">,</span> <span class="identifier">_2</span><span class="special">));</span>
-	<span class="special">}</span>
-<span class="special">}</span>
+		_mihf.async_send(req, boost::bind(&amp;mih_user::event_subscribe_response, this, _1, _2));
+	}
+}
 </pre>
 <p>
           </p>
@@ -115,7 +117,7 @@
 <p>
             
 </p>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">event_handler</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span><span class="special">&amp;</span> <span class="identifier">msg</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">);</span>
+<pre class="programlisting">void event_handler(odtone::mih::message&amp; msg, const boost::system::error_code&amp; ec);
 </pre>
 <p>
           </p>
@@ -129,16 +131,16 @@
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.app.mih_usr_index.mih_usr_getStart.configuration"></a><a class="link" href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.configuration" title="Configuration">Configuration</a>
 </h5></div></div></div>
-<pre class="programlisting"><span class="identifier">MIH</span> <span class="identifier">Usr</span> <span class="identifier">Configuration</span><span class="special">:</span>
-   <span class="special">--</span><span class="identifier">help</span>                           <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
-   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">file</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">mih_usr</span><span class="special">.</span><span class="identifier">conf</span><span class="special">)</span>  <span class="identifier">Configuration</span> <span class="identifier">file</span>
-   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">recv_buff_len</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4096</span><span class="special">)</span> <span class="identifier">Receive</span> <span class="identifier">buffer</span> <span class="identifier">length</span>
-   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1234</span><span class="special">)</span>          <span class="identifier">Listening</span> <span class="identifier">port</span>
-   <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">user</span><span class="special">)</span>            <span class="identifier">MIH</span><span class="special">-</span><span class="identifier">User</span> <span class="identifier">ID</span>
-   <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">handover</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1</span><span class="special">)</span>         <span class="identifier">MIH</span><span class="special">-</span><span class="identifier">User</span> <span class="identifier">handover</span> <span class="identifier">support</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">ip</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">127.0</span><span class="special">.</span><span class="number">0.1</span><span class="special">)</span>       <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">IP</span> <span class="identifier">address</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">local_port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1025</span><span class="special">)</span>    <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">communication</span> <span class="identifier">port</span>
-   <span class="special">--</span><span class="identifier">dest</span> <span class="identifier">arg</span>                       <span class="identifier">MIHF</span> <span class="identifier">destination</span>
+<pre class="programlisting">MIH Usr Configuration:
+   --help                           Display configuration options
+   --conf.file arg (=mih_usr.conf)  Configuration file
+   --conf.recv_buff_len arg (=4096) Receive buffer length
+   --conf.port arg (=1234)          Listening port
+   --user.id arg (=user)            MIH-User ID
+   --user.commands arg              MIH-User supported commands
+   --mihf.ip arg (=127.0.0.1)       Local MIHF IP address
+   --mihf.local_port arg (=1025)    Local MIHF communication port
+   --dest arg                       MIHF destination
 </pre>
 <p>
             The MIH-User can be configured based on a set of parameters, which can
@@ -169,22 +171,22 @@
 <p>
             
 </p>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">event_handler</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span><span class="special">&amp;</span> <span class="identifier">msg</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">)</span>
-<span class="special">{</span>
-	<span class="comment">// ...</span>
+<pre class="programlisting">void mih_user::event_handler(odtone::mih::message&amp; msg, const boost::system::error_code&amp; ec)
+{
+	// ...
 
-	<span class="keyword">switch</span> <span class="special">(</span><span class="identifier">msg</span><span class="special">.</span><span class="identifier">mid</span><span class="special">())</span> <span class="special">{</span>
-	<span class="keyword">case</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">::</span><span class="identifier">link_up</span><span class="special">:</span>
-		<span class="identifier">log_</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="string">"MIH-User has received a local event \"link_up\""</span><span class="special">);</span>
+	switch (msg.mid()) {
+	case odtone::mih::indication::link_up:
+		log_(0, "MIH-User has received a local event \"link_up\"");
 
-		<span class="comment">// Add some specific behaviour here</span>
+		// Add some specific behaviour here
 
-		<span class="keyword">break</span><span class="special">;</span>
+		break;
 
-	<span class="comment">// ... other link events</span>
+	// ... other link events
 
-	<span class="special">}</span>
-<span class="special">}</span>
+	}
+}
 </pre>
 <p>
           </p>
@@ -192,7 +194,7 @@
             You can also define other handlers that will be responsible for handling
             the response message: 
 </p>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">new_handler</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span><span class="special">&amp;</span> <span class="identifier">msg</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">);</span>
+<pre class="programlisting">void new_handler(odtone::mih::message&amp; msg, const boost::system::error_code&amp; ec);
 </pre>
 <p>
           </p>
@@ -200,15 +202,15 @@
             It must be associated with the sent message, so when the response arrives
             the handler is called: 
 </p>
-<pre class="programlisting"><span class="identifier">_mihf</span><span class="special">.</span><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">msg</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">new_handler</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">_1</span><span class="special">,</span> <span class="identifier">_2</span><span class="special">));</span>
+<pre class="programlisting">_mihf.async_send(msg, boost::bind(&amp;mih_user::new_handler, this, _1, _2));
 </pre>
 <p>
           </p>
 <p>
             It can be defined as the default handler of the MIH-User: 
 </p>
-<pre class="programlisting"><span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">mih_user</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">config</span><span class="special">&amp;</span> <span class="identifier">cfg</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span><span class="special">&amp;</span> <span class="identifier">io</span><span class="special">)</span>
-	<span class="special">:</span> <span class="identifier">_mihf</span><span class="special">(</span><span class="identifier">cfg</span><span class="special">,</span> <span class="identifier">io</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">new_handler</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">_1</span><span class="special">,</span> <span class="identifier">_2</span><span class="special">))</span>
+<pre class="programlisting">mih_user::mih_user(const odtone::mih::config&amp; cfg, boost::asio::io_service&amp; io)
+	: _mihf(cfg, io, boost::bind(&amp;mih_user::new_handler, this, _1, _2))
 </pre>
 <p>
           </p>

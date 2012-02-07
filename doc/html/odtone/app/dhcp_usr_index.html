@@ -77,26 +77,30 @@
           with the MIHF</a>
 </h5></div></div></div>
 <p>
-            The DHCP-User is registering with the MIHF with a "discovery"
-            role. Therefore, and when necessary, the MIHF can trigger the discovery
-            process at this entity. This behaviour is due to the local/remote discovery
-            provided by ODTONE.
+            The DHCP-User does not need provide any information during the registration
+            process. To give this entity the discovery role, it must be configured
+            in the MIHF using the following option: 
+</p>
+<pre class="programlisting">[mihf]
+discovery = DHCP
+</pre>
+<p>
           </p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration"></a><a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration" title="Configuration">Configuration</a>
 </h5></div></div></div>
-<pre class="programlisting"><span class="identifier">DHCP</span><span class="special">-</span><span class="identifier">User</span> <span class="identifier">Configuration</span><span class="special">:</span>
-    <span class="special">--</span><span class="identifier">help</span>                           <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
-    <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">file</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">dhcp_usr</span><span class="special">.</span><span class="identifier">conf</span><span class="special">)</span> <span class="identifier">Configuration</span> <span class="identifier">File</span>
-    <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">DHCP</span><span class="special">)</span>            <span class="identifier">MIH</span> <span class="identifier">User</span> <span class="identifier">ID</span>
-    <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1234</span><span class="special">)</span>          <span class="identifier">Listening</span> <span class="identifier">Port</span>
-    <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">recv_buff_len</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4096</span><span class="special">)</span> <span class="identifier">Receive</span> <span class="identifier">Buffer</span> <span class="identifier">Length</span>
-    <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">ip_version</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4</span><span class="special">)</span>       <span class="identifier">IP</span> <span class="identifier">Protocol</span> <span class="identifier">Version</span> <span class="special">(</span><span class="number">4</span><span class="special">/</span><span class="number">6</span><span class="special">)</span>
-    <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">nic</span> <span class="identifier">arg</span>                   <span class="identifier">Interface</span> <span class="identifier">Info</span> <span class="identifier">List</span>
-    <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">ip</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">127.0</span><span class="special">.</span><span class="number">0.1</span><span class="special">)</span>       <span class="identifier">MIHF</span> <span class="identifier">Local</span> <span class="identifier">Communications</span> <span class="identifier">IP</span> <span class="identifier">Address</span>
-    <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">local_port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1025</span><span class="special">)</span>    <span class="identifier">MIHF</span> <span class="identifier">Local</span> <span class="identifier">Communications</span> <span class="identifier">Port</span>
+<pre class="programlisting">DHCP-User Configuration:
+    --help                           Display configuration options
+    --conf.file arg (=dhcp_usr.conf) Configuration File
+    --user.id arg (=DHCP)            MIH User ID
+    --conf.port arg (=1234)          Listening Port
+    --conf.recv_buff_len arg (=4096) Receive Buffer Length
+    --user.ip_version arg (=4)       IP Protocol Version (4/6)
+    --user.nic arg                   Interface Info List
+    --mihf.ip arg (=127.0.0.1)       MIHF Local Communications IP Address
+    --mihf.local_port arg (=1025)    MIHF Local Communications Port
 </pre>
 <p>
             The DHCP-User can be configured based on a set of parameters, which can
@@ -144,18 +148,18 @@
 <p>
             
 </p>
-<pre class="programlisting"><span class="preprocessor"># IPv4</span>
+<pre class="programlisting"># IPv4
 
-<span class="identifier">request</span> <span class="identifier">subnet</span><span class="special">-</span><span class="identifier">mask</span><span class="special">,</span> <span class="identifier">broadcast</span><span class="special">-</span><span class="identifier">address</span><span class="special">,</span> <span class="identifier">time</span><span class="special">-</span><span class="identifier">offset</span><span class="special">,</span> <span class="identifier">routers</span><span class="special">,</span>
-		<span class="identifier">domain</span><span class="special">-</span><span class="identifier">name</span><span class="special">,</span> <span class="identifier">domain</span><span class="special">-</span><span class="identifier">name</span><span class="special">-</span><span class="identifier">servers</span><span class="special">,</span> <span class="identifier">domain</span><span class="special">-</span><span class="identifier">search</span><span class="special">,</span> <span class="identifier">host</span><span class="special">-</span><span class="identifier">name</span><span class="special">,</span>
-		<span class="identifier">netbios</span><span class="special">-</span><span class="identifier">name</span><span class="special">-</span><span class="identifier">servers</span><span class="special">,</span> <span class="identifier">netbios</span><span class="special">-</span><span class="identifier">scope</span><span class="special">,</span> <span class="identifier">interface</span><span class="special">-</span><span class="identifier">mtu</span><span class="special">,</span>
-		<span class="identifier">ntp</span><span class="special">-</span><span class="identifier">servers</span><span class="special">,</span> <span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv4</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_ip</span><span class="special">,</span> <span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv4</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_fqdn</span>
-		<span class="special">;</span>
+request subnet-mask, broadcast-address, time-offset, routers,
+		domain-name, domain-name-servers, domain-search, host-name,
+		netbios-name-servers, netbios-scope, interface-mtu,
+		ntp-servers, option-ipv4-address-mos_ip, option-ipv4-address-mos_fqdn
+		;
 
-<span class="preprocessor"># IPv6</span>
+# IPv6
 
-<span class="identifier">also</span> <span class="identifier">request</span> <span class="identifier">dhcp6</span><span class="special">.</span><span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv6</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_ip</span><span class="special">;</span>
-<span class="identifier">also</span> <span class="identifier">request</span> <span class="identifier">dhcp6</span><span class="special">.</span><span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv6</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_fqdn</span><span class="special">;</span>
+also request dhcp6.option-ipv6-address-mos_ip;
+also request dhcp6.option-ipv6-address-mos_fqdn;
 </pre>
 <p>
           </p>
@@ -191,44 +195,44 @@
 <p>
             
 </p>
-<pre class="programlisting"><span class="preprocessor"># IPv4</span>
+<pre class="programlisting"># IPv4
 
-<span class="identifier">option</span> <span class="identifier">domain</span><span class="special">-</span><span class="identifier">name</span> <span class="string">"odtone.test"</span><span class="special">;</span>
-<span class="identifier">option</span> <span class="identifier">domain</span><span class="special">-</span><span class="identifier">name</span><span class="special">-</span><span class="identifier">servers</span> <span class="identifier">ns1</span><span class="special">.</span><span class="identifier">odtone</span><span class="special">.</span><span class="identifier">test</span><span class="special">,</span> <span class="identifier">ns2</span><span class="special">.</span><span class="identifier">odtone</span><span class="special">.</span><span class="identifier">test</span><span class="special">;</span>
+option domain-name "odtone.test";
+option domain-name-servers ns1.odtone.test, ns2.odtone.test;
 
-<span class="keyword">default</span><span class="special">-</span><span class="identifier">lease</span><span class="special">-</span><span class="identifier">time</span> <span class="number">600</span><span class="special">;</span>
-<span class="identifier">max</span><span class="special">-</span><span class="identifier">lease</span><span class="special">-</span><span class="identifier">time</span> <span class="number">7200</span><span class="special">;</span>
-<span class="identifier">log</span><span class="special">-</span><span class="identifier">facility</span> <span class="identifier">local7</span><span class="special">;</span>
+default-lease-time 600;
+max-lease-time 7200;
+log-facility local7;
 
-<span class="identifier">subnet</span> <span class="number">192.168</span><span class="special">.</span><span class="number">1.0</span> <span class="identifier">netmask</span> <span class="number">255.255</span><span class="special">.</span><span class="number">255.0</span> <span class="special">{</span>
-	    <span class="identifier">authoritative</span><span class="special">;</span>
-	    <span class="identifier">range</span> <span class="number">192.168</span><span class="special">.</span><span class="number">1.10</span> <span class="number">192.168</span><span class="special">.</span><span class="number">1.30</span><span class="special">;</span>
-	    <span class="identifier">option</span> <span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv4</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_ip</span><span class="special">.</span><span class="identifier">is</span> <span class="number">10.110</span><span class="special">.</span><span class="number">1.1</span><span class="special">;</span>
-	    <span class="identifier">option</span> <span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv4</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_fqdn</span><span class="special">.</span><span class="identifier">is</span> <span class="string">"odtone.test"</span><span class="special">;</span>
-<span class="special">}</span>
+subnet 192.168.1.0 netmask 255.255.255.0 {
+	    authoritative;
+	    range 192.168.1.10 192.168.1.30;
+	    option option-ipv4-address-mos_ip.is 10.110.1.1;
+	    option option-ipv4-address-mos_fqdn.is "odtone.test";
+}
 
-<span class="preprocessor"># IPv6</span>
+# IPv6
 
-<span class="keyword">default</span><span class="special">-</span><span class="identifier">lease</span><span class="special">-</span><span class="identifier">time</span> <span class="number">600</span><span class="special">;</span>
-<span class="identifier">max</span><span class="special">-</span><span class="identifier">lease</span><span class="special">-</span><span class="identifier">time</span> <span class="number">7200</span><span class="special">;</span>
-<span class="identifier">log</span><span class="special">-</span><span class="identifier">facility</span> <span class="identifier">local7</span><span class="special">;</span>
-<span class="identifier">subnet6</span> <span class="number">2000</span><span class="special">:</span><span class="identifier">aaaa</span><span class="special">:</span><span class="identifier">bbbb</span><span class="special">:</span><span class="identifier">cccc</span><span class="special">::/</span><span class="number">64</span> <span class="special">{</span>
-	    <span class="preprocessor"># Range</span> <span class="keyword">for</span> <span class="identifier">clients</span>
-	    <span class="identifier">range6</span> <span class="number">2000</span><span class="special">:</span><span class="identifier">aaaa</span><span class="special">:</span><span class="identifier">bbbb</span><span class="special">:</span><span class="identifier">cccc</span><span class="special">::</span><span class="number">2</span> <span class="number">2000</span><span class="special">:</span><span class="identifier">aaaa</span><span class="special">:</span><span class="identifier">bbbb</span><span class="special">:</span><span class="identifier">cccc</span><span class="special">::</span><span class="number">20</span><span class="special">;</span>
-	    <span class="preprocessor"># Additional</span> <span class="identifier">options</span>
-	    <span class="identifier">option</span> <span class="identifier">dhcp6</span><span class="special">.</span><span class="identifier">name</span><span class="special">-</span><span class="identifier">servers</span> <span class="identifier">fec0</span><span class="special">:</span><span class="number">0</span><span class="special">:</span><span class="number">0</span><span class="special">:</span><span class="number">1</span><span class="special">::</span><span class="number">1</span><span class="special">;</span>
-	    <span class="identifier">option</span> <span class="identifier">dhcp6</span><span class="special">.</span><span class="identifier">domain</span><span class="special">-</span><span class="identifier">search</span> <span class="string">"domain.example"</span><span class="special">;</span>
-	    <span class="preprocessor"># Prefix</span> <span class="identifier">range</span> <span class="keyword">for</span> <span class="identifier">delegation</span> <span class="identifier">to</span> <span class="identifier">sub</span><span class="special">-</span><span class="identifier">routers</span>
-	    <span class="identifier">prefix6</span> <span class="number">2001</span><span class="special">:</span><span class="identifier">db8</span><span class="special">:</span><span class="number">0</span><span class="special">:</span><span class="number">100</span><span class="special">::</span> <span class="number">2001</span><span class="special">:</span><span class="identifier">db8</span><span class="special">:</span><span class="number">0</span><span class="special">:</span><span class="identifier">f00</span><span class="special">::</span> <span class="special">/</span><span class="number">56</span><span class="special">;</span>
-	    <span class="preprocessor"># Example</span> <span class="keyword">for</span> <span class="identifier">a</span> <span class="identifier">fixed</span> <span class="identifier">host</span> <span class="identifier">address</span>
-	    <span class="identifier">host</span> <span class="identifier">specialclient</span> <span class="special">{</span>
-	            <span class="identifier">host</span><span class="special">-</span><span class="identifier">identifier</span> <span class="identifier">option</span> <span class="identifier">dhcp6</span><span class="special">.</span><span class="identifier">client</span><span class="special">-</span><span class="identifier">id</span> <span class="number">00</span><span class="special">:</span><span class="number">01</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">01</span><span class="special">:</span><span class="number">4</span><span class="identifier">a</span><span class="special">:</span><span class="number">1f</span><span class="special">:</span><span class="identifier">ba</span><span class="special">:</span><span class="identifier">e3</span><span class="special">:</span><span class="number">60</span><span class="special">:</span><span class="identifier">b9</span><span class="special">:</span><span class="number">1f</span><span class="special">:</span><span class="number">01</span><span class="special">:</span><span class="number">23</span><span class="special">:</span><span class="number">45</span><span class="special">;</span>
-	            <span class="identifier">fixed</span><span class="special">-</span><span class="identifier">address6</span> <span class="number">2001</span><span class="special">:</span><span class="identifier">db8</span><span class="special">:</span><span class="number">0</span><span class="special">:</span><span class="number">1</span><span class="special">::</span><span class="number">127</span><span class="special">;</span>
-	    <span class="special">}</span>
+default-lease-time 600;
+max-lease-time 7200;
+log-facility local7;
+subnet6 2000:aaaa:bbbb:cccc::/64 {
+	    # Range for clients
+	    range6 2000:aaaa:bbbb:cccc::2 2000:aaaa:bbbb:cccc::20;
+	    # Additional options
+	    option dhcp6.name-servers fec0:0:0:1::1;
+	    option dhcp6.domain-search "domain.example";
+	    # Prefix range for delegation to sub-routers
+	    prefix6 2001:db8:0:100:: 2001:db8:0:f00:: /56;
+	    # Example for a fixed host address
+	    host specialclient {
+	            host-identifier option dhcp6.client-id 00:01:00:01:4a:1f:ba:e3:60:b9:1f:01:23:45;
+	            fixed-address6 2001:db8:0:1::127;
+	    }
 
-	    <span class="identifier">option</span> <span class="identifier">dhcp6</span><span class="special">.</span><span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv6</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_ip</span> <span class="number">00</span><span class="special">:</span><span class="number">01</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">10</span><span class="special">:</span><span class="identifier">fe</span><span class="special">:</span><span class="number">80</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">02</span><span class="special">:</span><span class="number">03</span><span class="special">:</span><span class="number">1d</span><span class="special">:</span><span class="identifier">ff</span><span class="special">:</span><span class="identifier">fe</span><span class="special">:</span><span class="number">07</span><span class="special">:</span><span class="number">15</span><span class="special">:</span><span class="number">73</span> <span class="special">;</span>
-	    <span class="identifier">option</span> <span class="identifier">dhcp6</span><span class="special">.</span><span class="identifier">option</span><span class="special">-</span><span class="identifier">ipv6</span><span class="special">-</span><span class="identifier">address</span><span class="special">-</span><span class="identifier">mos_fqdn</span> <span class="number">00</span><span class="special">:</span><span class="number">01</span><span class="special">:</span><span class="number">00</span><span class="special">:</span><span class="number">0d</span><span class="special">:</span><span class="number">06</span><span class="special">:</span><span class="number">6f</span><span class="special">:</span><span class="number">64</span><span class="special">:</span><span class="number">74</span><span class="special">:</span><span class="number">6f</span><span class="special">:</span><span class="error">6</span><span class="identifier">e</span><span class="special">:</span><span class="number">65</span><span class="special">:</span><span class="number">04</span><span class="special">:</span><span class="number">74</span><span class="special">:</span><span class="number">65</span><span class="special">:</span><span class="number">73</span><span class="special">:</span><span class="number">74</span><span class="special">:</span><span class="number">00</span> <span class="special">;</span>
-<span class="special">}</span>
+	    option dhcp6.option-ipv6-address-mos_ip 00:01:00:10:fe:80:00:00:00:00:00:00:02:03:1d:ff:fe:07:15:73 ;
+	    option dhcp6.option-ipv6-address-mos_fqdn 00:01:00:0d:06:6f:64:74:6f:6e:65:04:74:65:73:74:00 ;
+}
 </pre>
 <p>
           </p>

@@ -38,35 +38,34 @@
       required dependencies:
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-          <span class="bold"><strong>Boost Developer libraries (v1.47 or higher):</strong></span>
-          If you don't have them installed in your system, you can go to <a href="http://www.boost.org/" target="_top">boost's
-          website</a> and download the most recent version of the Boost libraries.
+          <span class="bold"><strong>Boost Developer libraries (v1.48)</strong></span>
         </li></ul></div>
-<a name="odtone.getStart.1_1__boost_library_quick_guide"></a><h5>
-<a name="odtone.getStart.1_1__boost_library_quick_guide-heading"></a>
-      <a class="link" href="getStart.html#odtone.getStart.1_1__boost_library_quick_guide">1.1. Boost Library
-      Quick Guide</a>
+<a name="odtone.getStart.1_1__boost_quick_guide"></a><h5>
+<a name="odtone.getStart.1_1__boost_quick_guide-heading"></a>
+      <a class="link" href="getStart.html#odtone.getStart.1_1__boost_quick_guide">1.1. Boost Quick Guide</a>
     </h5>
 <p>
-      Boost is required to compile ODTONE so you must make sure that you have the
-      Boost libraries sources and Boost.Build installed in your system.
+      Boost is required to compile ODTONE, so in order to correctly use ODTONE you
+      must first make sure you have the Boost libraries sources and Boost.Build installed
+      in your system.
     </p>
-<div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
-          Download the most recent version of Boost library <a href="http://www.boost.org/" target="_top">boost's
-          website</a> and unpack it.
-        </li>
-
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          Download the Boost library(v1.48) <a href="http://www.boost.org/" target="_top">boost's
+          website</a> and unpack it. We recommend that you unpack it in a project
+          directory next to odtone.
+        </li></ul></div>
+<p>
+      
 </p>
 <pre class="programlisting">projects/
     |
-    +-- boost_1_47_0/
+    +-- boost_1_48_0/
     |
     +-- odtone/
 </pre>
 <p>
-
-<li class="listitem">
+    </p>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
           Install Boost.Build (if your already have it, skip this step). To compile
           the Boost.Build engine, you can use the bootstrap script from the Boost
           library sources and then you can copy the resulting binary (b2) to a proper
@@ -75,8 +74,7 @@
           Boost.Build installation, you must tell Boost.Build engine where to find
           the remaining of Boost.Build. To do it, you can setup a boost-build.jam
           file in your home directory. Example:
-        </li>
-</ol></div>
+        </li></ol></div>
 <div class="table">
 <a name="odtone.getStart.setup_boost_build_jam"></a><p class="title"><b>Table&#160;1.&#160;Setup boost-build.jam</b></p>
 <div class="table-contents"><table class="table" summary="Setup boost-build.jam">
@@ -94,15 +92,15 @@
               <p>
                 
 </p>
-<pre class="programlisting"><span class="error">#</span><span class="special">==============================================================================</span>
-<span class="preprocessor"># Put</span> <span class="keyword">this</span> <span class="identifier">file</span> <span class="identifier">at</span> <span class="identifier">the</span> <span class="identifier">root</span> <span class="identifier">directory</span> <span class="identifier">of</span> <span class="identifier">your</span> <span class="identifier">project</span> <span class="keyword">or</span> <span class="identifier">in</span> <span class="identifier">any</span> <span class="identifier">of</span> <span class="identifier">its</span> <span class="identifier">parent</span>
-<span class="preprocessor"># directories</span><span class="special">.</span> <span class="identifier">Replace</span> <span class="char">'path-to-boost'</span> <span class="identifier">with</span> <span class="identifier">the</span> <span class="identifier">path</span> <span class="identifier">to</span> <span class="identifier">the</span> <span class="identifier">boost</span> <span class="identifier">libraries</span>
-<span class="preprocessor"># sources</span><span class="special">.</span>
-<span class="error">#</span>
-<span class="preprocessor"># See</span> <span class="identifier">the</span> <span class="identifier">Boost</span><span class="special">.</span><span class="identifier">Build</span> <span class="identifier">documentation</span> <span class="keyword">for</span> <span class="identifier">more</span> <span class="identifier">details</span><span class="special">!</span>
-<span class="error">#</span><span class="special">==============================================================================</span>
+<pre class="programlisting">#==============================================================================
+# Put this file at the root directory of your project or in any of its parent
+# directories. Replace 'path-to-boost' with the path to the boost libraries
+# sources.
+#
+# See the Boost.Build documentation for more details!
+#==============================================================================
 
-<span class="identifier">boost</span><span class="special">-</span><span class="identifier">build</span> <span class="identifier">path</span><span class="special">-</span><span class="identifier">to</span><span class="special">-</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">tools</span><span class="special">/</span><span class="identifier">build</span><span class="special">/</span><span class="identifier">v2</span> <span class="special">;</span>
+boost-build path-to-boost/tools/build/v2 ;
         </pre>
 <p>
               </p>
@@ -110,12 +108,23 @@
 </tr></tbody>
 </table></div>
 </div>
-<br class="table-break"><p>
-      Finally, run 'b2' to compile ODTONE.
-    </p>
+<br class="table-break"><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          To install Boost.Build got to 'boost_1_48_0/tools/build/v2/'. On unix like
+          systems run './bootstrap.sh' and then 'sudo ./b2 install'. On windows like
+          systems run 'bootstrap.bat' and then 'b2 install'.
+        </li></ul></div>
 <p>
-      Consult the Boost.Build documentation for more details!
+      To compile ODTONE go to 'odtone' and run 'b2'.
     </p>
+<div class="important"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Consult the Boost.Build documentation for more details
+      </p></td></tr>
+</table></div>
 <a name="odtone.getStart.2__getting_odtone"></a><h4>
 <a name="odtone.getStart.2__getting_odtone-heading"></a>
       <a class="link" href="getStart.html#odtone.getStart.2__getting_odtone">2. Getting ODTONE</a>
@@ -147,7 +156,7 @@
 <p>
       To clone the git repository you must run the next command: 
 </p>
-<pre class="programlisting"><span class="identifier">git</span> <span class="identifier">clone</span> <span class="identifier">https</span><span class="special">://</span><span class="identifier">user</span><span class="error">@</span><span class="identifier">helios</span><span class="special">.</span><span class="identifier">av</span><span class="special">.</span><span class="identifier">it</span><span class="special">.</span><span class="identifier">pt</span><span class="special">/</span><span class="identifier">git</span><span class="special">/</span><span class="identifier">odtone</span><span class="special">/</span> <span class="identifier">odtone</span>
+<pre class="programlisting">git clone https://user@helios.av.it.pt/git/odtone/ odtone
 </pre>
 <p>
     </p>
@@ -155,18 +164,18 @@
       Then, in order to get the last changes in the code, you must checkout the "dev/master"
       branch: 
 </p>
-<pre class="programlisting"><span class="identifier">git</span> <span class="identifier">checkout</span> <span class="special">-</span><span class="identifier">b</span> <span class="special">&lt;</span><span class="identifier">your</span> <span class="identifier">branch</span> <span class="identifier">name</span><span class="special">&gt;</span> <span class="identifier">origin</span><span class="special">/</span><span class="identifier">dev</span><span class="special">/</span><span class="identifier">master</span>
+<pre class="programlisting">git checkout -b &lt;your branch name&gt; origin/dev/master
 </pre>
 <p>
     </p>
-<a name="odtone.getStart.3__compiling_and_installing_odtone"></a><h4>
-<a name="odtone.getStart.3__compiling_and_installing_odtone-heading"></a>
-      <a class="link" href="getStart.html#odtone.getStart.3__compiling_and_installing_odtone">3. Compiling
-      and installing ODTONE</a>
+<a name="odtone.getStart.3__compiling_odtone"></a><h4>
+<a name="odtone.getStart.3__compiling_odtone-heading"></a>
+      <a class="link" href="getStart.html#odtone.getStart.3__compiling_odtone">3. Compiling ODTONE</a>
     </h4>
 <p>
-      Once you have obtained the ODTONE source code and assured that you have the
-      right dependencies installed, you are ready to compile and install ODTONE.
+      Once you have obtained the ODTONE source code and have assured that you have
+      the right dependencies you can compile it. ODTONE does not require any special
+      procedures or layout for installation.
     </p>
 <div class="table">
 <a name="odtone.getStart.platform_support"></a><p class="title"><b>Table&#160;2.&#160;Platform Support</b></p>
@@ -257,14 +266,6 @@
         We recommend GCC. Most distributions already come with the necessary pre-requisites,
         you may additionally need to install g++.
       </p>
-<p>
-        If you get link errors relative to undefined pthread symbols, this means
-        that your compiler does not link to pthreads by default. You can either pass
-        the "<em class="replaceable"><code>linkflags=-lpthread</code></em>" option to
-        bjam. Or, you can also configure the toolset to link to this library, set
-        "<em class="replaceable"><code>using gcc : : : &lt;linkflags&gt;-lpthread ;</code></em>"
-        without quotes at your user-config.jam.
-      </p>
 </td></tr>
 </table></div>
 <div class="note"><table border="0" summary="Note">
@@ -292,15 +293,11 @@
         <span class="bold"><strong>For Android</strong></span>
       </p>
 <p>
-        Current Android Bionic headers are still too buggy to compile ODTONE. For
-        example, the boost::asio::ip headers does no compile because of buggy &lt;netinet/in.h&gt;
-        and &lt;netinet/in6.h&gt; headers.
-      </p>
-<p>
-        However, since Android is based on linux, it is possible to compile ODTONE
-        with the CodeSourcery GNU Toolchain for ARM Processors, at the expense of
-        a bigger binary, since we have to link all libraries statically. The target
-        must be arm-none-linux-gnueabi.
+        Android Bionic headers have several missing definitions for sockets and networking,
+        this makes ODTONE impossible to compile with the Android SDK. However, since
+        Android is based on linux, it is possible to compile ODTONE with the CodeSourcery
+        GNU Toolchain for ARM Processors, at the expense of a bigger binary, since
+        we have to link all libraries statically. The target must be arm-none-linux-gnueabi.
       </p>
 <p>
         Prebuild binaries are available at <a href="http://www.codesourcery.com/sgpp/lite/arm" target="_top">CodeSourcery</a>
@@ -338,12 +335,12 @@
       configuration file for you. To do this call Doxygen from the command line with
       the -g option:
     </p>
-<pre class="programlisting"><span class="identifier">doxygen</span> <span class="special">-</span><span class="identifier">g</span> <span class="special">&lt;</span><span class="identifier">config</span><span class="special">-</span><span class="identifier">file</span><span class="special">&gt;</span>
+<pre class="programlisting">doxygen -g &lt;config-file&gt;
 </pre>
 <p>
       To generate the documentation you can enter:
     </p>
-<pre class="programlisting"><span class="identifier">doxygen</span> <span class="special">&lt;</span><span class="identifier">config</span><span class="special">-</span><span class="identifier">file</span><span class="special">&gt;</span>
+<pre class="programlisting">doxygen &lt;config-file&gt;
 </pre>
 <a name="odtone.getStart.odtone_user_guide"></a><h4>
 <a name="odtone.getStart.odtone_user_guide-heading"></a>
@@ -364,23 +361,24 @@
 <p>
       
 </p>
-<pre class="programlisting"><span class="identifier">MIHF</span> <span class="identifier">Configuration</span> <span class="identifier">Options</span><span class="special">:</span>
-   <span class="special">--</span><span class="identifier">help</span>                               <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
-   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">file</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">odtone</span><span class="special">.</span><span class="identifier">conf</span><span class="special">)</span>       <span class="identifier">Configuration</span> <span class="identifier">file</span>
-   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">recv_buff_len</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4096</span><span class="special">)</span>     <span class="identifier">Receive</span> <span class="identifier">buffer</span> <span class="identifier">length</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">mihf</span><span class="special">)</span>                <span class="identifier">MIHF</span> <span class="identifier">ID</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">ip</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">127.0</span><span class="special">.</span><span class="number">0.1</span><span class="special">)</span>           <span class="identifier">MIHF</span> <span class="identifier">IP</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">remote_port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4551</span><span class="special">)</span>       <span class="identifier">Remote</span> <span class="identifier">MIHF</span> <span class="identifier">communication</span> <span class="identifier">port</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">local_port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1025</span><span class="special">)</span>        <span class="identifier">Local</span> <span class="identifier">SAPs</span> <span class="identifier">communication</span> <span class="identifier">port</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">peers</span> <span class="identifier">arg</span>                     <span class="identifier">List</span> <span class="identifier">of</span> <span class="identifier">peer</span> <span class="identifier">MIHFs</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">users</span> <span class="identifier">arg</span>                     <span class="identifier">List</span> <span class="identifier">of</span> <span class="identifier">local</span> <span class="identifier">MIH</span><span class="special">-</span><span class="identifier">Users</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">links</span> <span class="identifier">arg</span>                     <span class="identifier">List</span> <span class="identifier">of</span> <span class="identifier">local</span> <span class="identifier">Links</span> <span class="identifier">SAPs</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">transport</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">udp</span><span class="special">,</span> <span class="identifier">tcp</span><span class="special">)</span>     <span class="identifier">List</span> <span class="identifier">of</span> <span class="identifier">supported</span> <span class="identifier">transport</span> <span class="identifier">protocols</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">link_response_time</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">300</span><span class="special">)</span> <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">response</span> <span class="identifier">time</span> <span class="special">(</span><span class="identifier">milliseconds</span><span class="special">)</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">link_delete</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">2</span><span class="special">)</span>          <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">response</span> <span class="identifier">fails</span> <span class="identifier">to</span> <span class="identifier">forget</span>
-   <span class="special">--</span><span class="identifier">enable_broadcast</span>                   <span class="identifier">Allows</span> <span class="identifier">broadcast</span> <span class="identifier">messages</span>
-   <span class="special">--</span><span class="identifier">enable_unsolicited</span>                 <span class="identifier">Allows</span> <span class="identifier">unsolicited</span> <span class="identifier">discovery</span>
-   <span class="special">--</span><span class="identifier">log</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1</span><span class="special">)</span>                       <span class="identifier">Log</span> <span class="identifier">level</span> <span class="special">[</span><span class="number">0</span><span class="special">-</span><span class="number">4</span><span class="special">]</span>
+<pre class="programlisting">MIHF Configuration Options:
+   --help                               Display configuration options
+   --conf.file arg (=odtone.conf)       Configuration file
+   --conf.recv_buff_len arg (=4096)     Receive buffer length
+   --mihf.id arg (=mihf)                MIHF ID
+   --mihf.ip arg (=127.0.0.1)           MIHF IP
+   --mihf.remote_port arg (=4551)       Remote MIHF communication port
+   --mihf.local_port arg (=1025)        Local SAPs communication port
+   --mihf.peers arg                     List of peer MIHFs
+   --mihf.users arg                     List of local MIH-Users
+   --mihf.links arg                     List of local Links SAPs
+   --mihf.transport arg (=udp, tcp)     List of supported transport protocols
+   --mihf.link_response_time arg (=300) Link SAP response time (milliseconds)
+   --mihf.link_delete arg (=2)          Link SAP response fails to forget
+   --mihf.discover arg                  MIHF Discovery Mechanisms Order
+   --enable_broadcast                   Allows broadcast messages
+   --enable_unsolicited                 Allows unsolicited discovery
+   --log arg (=1)                       Log level [0-4]
 </pre>
 <p>
     </p>
@@ -404,10 +402,11 @@
       </p>
 <p>
         <span class="bold"><strong>List of local MIH-Users:</strong></span> Comma separated
-        list of local MIH User SAP.
+        list of local MIH-User SAP.
       </p>
 <p>
-        Usage: mihf.users = &lt;user sap id&gt; &lt;port&gt; &lt;role&gt;, ...
+        Usage: mihf.users = &lt;user sap id&gt; &lt;port&gt; &lt;supported commands&gt;
+        &lt;supported queries&gt;, ...
       </p>
 <p>
         <span class="bold"><strong>List of local Link SAPs:</strong></span> Comma separated
@@ -430,35 +429,55 @@
 <p>
       <span class="bold"><strong>SAP's</strong></span> 
 </p>
-<pre class="programlisting"><span class="identifier">MIH</span> <span class="identifier">Usr</span> <span class="identifier">Configuration</span><span class="special">:</span>
-   <span class="special">--</span><span class="identifier">help</span>                           <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
-   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">file</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">mih_usr</span><span class="special">.</span><span class="identifier">conf</span><span class="special">)</span>  <span class="identifier">Configuration</span> <span class="identifier">file</span>
-   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">recv_buff_len</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4096</span><span class="special">)</span> <span class="identifier">Receive</span> <span class="identifier">buffer</span> <span class="identifier">length</span>
-   <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1234</span><span class="special">)</span>          <span class="identifier">Listening</span> <span class="identifier">port</span>
-   <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">user</span><span class="special">)</span>            <span class="identifier">MIH</span><span class="special">-</span><span class="identifier">User</span> <span class="identifier">ID</span>
-   <span class="special">--</span><span class="identifier">user</span><span class="special">.</span><span class="identifier">role</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">mobility</span><span class="special">)</span>      <span class="identifier">MIH</span><span class="special">-</span><span class="identifier">User</span> <span class="identifier">role</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">ip</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">127.0</span><span class="special">.</span><span class="number">0.1</span><span class="special">)</span>       <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">IP</span> <span class="identifier">address</span>
-   <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">local_port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1025</span><span class="special">)</span>    <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">communication</span> <span class="identifier">port</span>
-   <span class="special">--</span><span class="identifier">dest</span> <span class="identifier">arg</span>                       <span class="identifier">MIHF</span> <span class="identifier">destination</span>
+<pre class="programlisting">MIH Usr Configuration:
+   --help                           Display configuration options
+   --conf.file arg (=mih_usr.conf)  Configuration file
+   --conf.recv_buff_len arg (=4096) Receive buffer length
+   --conf.port arg (=1234)          Listening port
+   --user.id arg (=user)            MIH-User ID
+   --user.commands arg              MIH-User supported commands
+   --mihf.ip arg (=127.0.0.1)       Local MIHF IP address
+   --mihf.local_port arg (=1025)    Local MIHF communication port
+   --dest arg                       MIHF destination
 </pre>
 <p>
     </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+        All configurable parameters are self-explained and, therefore, we will only
+        mention those that are more complex to configure.
+      </p>
+<p>
+        <span class="bold"><strong>List of supported events:</strong></span> Comma separated
+        list of the MIH-Users supported commands.
+      </p>
+<p>
+        Usage: command = &lt;command 1&gt;, &lt;command 2&gt;, (...), &lt;command
+        N&gt;
+      </p>
+</td></tr>
+</table></div>
 <p>
       
 </p>
-<pre class="programlisting"><span class="identifier">MIH</span> <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">Configuration</span><span class="special">:</span>
-     <span class="special">--</span><span class="identifier">help</span>                           <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
-     <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">file</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">link_sap</span><span class="special">.</span><span class="identifier">conf</span><span class="special">)</span> <span class="identifier">Configuration</span> <span class="identifier">file</span>
-     <span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">recv_buff_len</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4096</span><span class="special">)</span> <span class="identifier">Receive</span> <span class="identifier">buffer</span> <span class="identifier">length</span>
-     <span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">link</span><span class="special">)</span>            <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">ID</span>
-     <span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1235</span><span class="special">)</span>          <span class="identifier">Listening</span> <span class="identifier">Port</span>
-     <span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">tec</span> <span class="identifier">arg</span>                   <span class="identifier">Technology</span> <span class="identifier">type</span>
-     <span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">link_addr_list</span> <span class="identifier">arg</span>        <span class="identifier">Interface</span> <span class="identifier">address</span>
-     <span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">event_list</span> <span class="identifier">arg</span>            <span class="identifier">List</span> <span class="identifier">of</span> <span class="identifier">supported</span> <span class="identifier">events</span>
-     <span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">command_list</span> <span class="identifier">arg</span>          <span class="identifier">List</span> <span class="identifier">of</span> <span class="identifier">supported</span> <span class="identifier">commands</span>
-     <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">ip</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">127.0</span><span class="special">.</span><span class="number">0.1</span><span class="special">)</span>       <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">IP</span>
-     <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">local</span><span class="special">-</span><span class="identifier">mihf</span><span class="special">)</span>      <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">ID</span>
-     <span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">local_port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1025</span><span class="special">)</span>    <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">communication</span> <span class="identifier">port</span>
+<pre class="programlisting">MIH Link SAP Configuration:
+     --help                           Display configuration options
+     --conf.file arg (=link_sap.conf) Configuration file
+     --conf.recv_buff_len arg (=4096) Receive buffer length
+     --link.id arg (=link)            Link SAP ID
+     --link.port arg (=1235)          Listening Port
+     --link.tec arg                   Technology type
+     --link.link_addr_list arg        Interface address
+     --link.event_list arg            List of supported events
+     --link.command_list arg          List of supported commands
+     --mihf.ip arg (=127.0.0.1)       Local MIHF IP
+     --mihf.id arg (=local-mihf)      Local MIHF ID
+     --mihf.local_port arg (=1025)    Local MIHF communication port
 </pre>
 <p>
     </p>
@@ -570,7 +589,7 @@
       on each one of the MIHFs. Edit the ODTONE-MIHF configuration file and add an
       entry to peers MIHFs in the form:
     </p>
-<pre class="programlisting"><span class="special">&lt;</span><span class="identifier">mihf_id</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">ip</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">port</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">list</span> <span class="identifier">of</span> <span class="identifier">supported</span> <span class="identifier">transport</span> <span class="identifier">protocols</span><span class="special">&gt;</span>
+<pre class="programlisting">&lt;mihf_id&gt; &lt;ip&gt; &lt;port&gt; &lt;list of supported transport protocols&gt;
 </pre>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -584,24 +603,24 @@
 <p>
       The mihf1 configuration file must look like: 
 </p>
-<pre class="programlisting"><span class="special">[</span><span class="identifier">mihf</span><span class="special">]</span>
-<span class="identifier">id</span> <span class="special">=</span> <span class="identifier">mihf1</span>
-<span class="identifier">local_port</span> <span class="special">=</span> <span class="number">1025</span>
-<span class="identifier">remote_port</span> <span class="special">=</span> <span class="number">4551</span>
-<span class="identifier">peers</span> <span class="special">=</span> <span class="identifier">mihf2</span> <span class="special">&lt;</span><span class="identifier">mihf2_IP_address</span><span class="special">&gt;</span> <span class="number">4551</span> <span class="identifier">udp</span>
-<span class="identifier">transport</span> <span class="special">=</span> <span class="identifier">udp</span>
+<pre class="programlisting">[mihf]
+id = mihf1
+local_port = 1025
+remote_port = 4551
+peers = mihf2 &lt;mihf2_IP_address&gt; 4551 udp
+transport = udp
 </pre>
 <p>
     </p>
 <p>
       The mihf2 configuration file must look like: 
 </p>
-<pre class="programlisting"><span class="special">[</span><span class="identifier">mihf</span><span class="special">]</span>
-<span class="identifier">id</span> <span class="special">=</span> <span class="identifier">mihf2</span>
-<span class="identifier">local_port</span> <span class="special">=</span> <span class="number">1025</span>
-<span class="identifier">remote_port</span> <span class="special">=</span> <span class="number">4551</span>
-<span class="identifier">peers</span> <span class="special">=</span> <span class="identifier">mihf1</span> <span class="special">&lt;</span><span class="identifier">mihf1_IP_address</span><span class="special">&gt;</span> <span class="number">4551</span> <span class="identifier">udp</span>
-<span class="identifier">transport</span> <span class="special">=</span> <span class="identifier">udp</span>
+<pre class="programlisting">[mihf]
+id = mihf2
+local_port = 1025
+remote_port = 4551
+peers = mihf1 &lt;mihf1_IP_address&gt; 4551 udp
+transport = udp
 </pre>
 <p>
     </p>
