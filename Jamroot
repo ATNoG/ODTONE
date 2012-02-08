@@ -69,7 +69,7 @@ use-project boost : $(boost-root) ;
 # General utilities
 #
 rule explicit-alias ( main-target-name :
-                      sources + :
+                      sources * :
                       requirements * :
                       default-build * :
                       usage-requirements * )
