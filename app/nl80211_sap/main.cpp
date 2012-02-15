@@ -120,22 +120,20 @@ void set_link_id()
 	link_id.type = mih::link_type(mih::link_type_802_11);
 }
 
-// Auxiliary function to set the supported event list.
-// (hardcoded)
+// Auxiliary function to set the supported event list. (hardcoded)
 void set_supported_event_list()
 {
 	capabilities_event_list.set(mih::evt_link_detected);
 	capabilities_event_list.set(mih::evt_link_up);
 	capabilities_event_list.set(mih::evt_link_down);
 	capabilities_event_list.set(mih::evt_link_parameters_report);
-	//capabilities_event_list.set(mih::evt_link_going_down); // TODO
+	//capabilities_event_list.set(mih::evt_link_going_down);
 	//capabilities_event_list.set(mih::evt_link_handover_imminent);
 	//capabilities_event_list.set(mih::evt_link_handover_complete);
 	//capabilities_event_list.set(mih::evt_link_pdu_transmit_status);
 }
 
-// Auxiliary function to set the supported command list.
-// (hardcoded)
+// Auxiliary function to set the supported command list. (hardcoded)
 void set_supported_command_list()
 {
 	capabilities_command_list.set(mih::cmd_link_event_subscribe);
@@ -212,8 +210,7 @@ void dispatch_link_down(unsigned short rc)
 	lid.type = link_id.type;
 	lid.addr = link_id.addr;
 
-	// based on iw's reason.c
-	// http://linuxwireless.org/en/users/Documentation/iw
+	// based on iw's reason.c [ http://linuxwireless.org/en/users/Documentation/iw ]
 	mih::link_dn_reason rs;
 	switch (rc) {
 		case 39:
@@ -284,44 +281,38 @@ void dispatch_strongest_scan_results(scan_results_data &d)
 		announced[d.l[d.associated_index.get()].network_id] = true;
 	}
 
-	mih::octet_string attached = d.l[d.associated_index.get()].network_id;
 	std::vector<mih::link_det_info>::iterator aux_it, strongest_it;
 	std::vector<mih::link_det_info>::iterator l_it = d.l.begin();
 	while (l_it != d.l.end()) {
-		if (announced[l_it->network_id]) {
-			++l_it;
-		} else {
+		if (!announced[l_it->network_id]) {
 			announced[l_it->network_id] = true;
 
 			// this code just selects the strongest signal with the same SSID
 			aux_it = strongest_it = l_it;
 			while (aux_it != d.l.end()) {
-				if (aux_it->network_id != strongest_it->network_id) {
-					continue;
-				}
-
-				// compare the signal between both
-				sint8 *aux_dbm = boost::get<sint8>(&aux_it->signal);
-				sint8 *strongest_dbm = boost::get<sint8>(&strongest_it->signal);
-				if (aux_dbm && strongest_dbm) {
-					if (*aux_dbm > *strongest_dbm) {
-						strongest_it = aux_it;
-					}
-					++aux_it;
-					continue;
-				}
-
-				mih::percentage *aux_pct = boost::get<mih::percentage>(&aux_it->signal);
-				mih::percentage *strongest_pct = boost::get<mih::percentage>(&strongest_it->signal);
-				if (aux_pct && strongest_pct) {
-					if (*aux_pct > *strongest_pct) {
-						strongest_it = aux_it;
+				if (aux_it->network_id == strongest_it->network_id) {
+					// compare the signal between both
+					sint8 *aux_dbm = boost::get<sint8>(&aux_it->signal);
+					sint8 *strongest_dbm = boost::get<sint8>(&strongest_it->signal);
+					if (aux_dbm && strongest_dbm) {
+						if (*aux_dbm > *strongest_dbm) {
+							strongest_it = aux_it;
+						}
+					} else {
+						mih::percentage *aux_pct = boost::get<mih::percentage>(&aux_it->signal);
+						mih::percentage *strongest_pct = boost::get<mih::percentage>(&strongest_it->signal);
+						if (aux_pct && strongest_pct) {
+							if (*aux_pct > *strongest_pct) {
+								strongest_it = aux_it;
+							}
+						}
 					}
 				}
 				++aux_it;
 			}
 			ios.dispatch(boost::bind(&dispatch_link_detected, *strongest_it));
 		}
+		++l_it;
 	}
 }
 
@@ -339,8 +330,7 @@ void _trigger_scan()
 	}
 
 	try {
-		// Changing to true eliminates overlapping (high frequency) requests from this scheduler
-		// (but other apps might be asking the card to do them)
+		// Consider changing to true for high frequency scanning (prevent overlapping)
 		nl80211->trigger_scan(false);
 	} catch (std::string str) {
 		ODTONE_LOG(0, "Error triggering scheduled scan. \"", str, "\"");
@@ -390,7 +380,7 @@ int handle_scan_results(nl_msg *msg, void *arg)
 			if (bss[NL80211_BSS_FREQUENCY]) {
 				unsigned int frequency = nla_get_u32(bss[NL80211_BSS_FREQUENCY]);
 				d->associated_channel_id = frequency_to_channel_id(frequency);
-				d->associated_index = d->l.size(); // .size() but only before inserting!
+				d->associated_index = d->l.size(); // .size(), before inserting!
 				associated = true;
 			}
 		}
@@ -425,9 +415,8 @@ int handle_scan_results(nl_msg *msg, void *arg)
 		i.signal = signal;
 	}
 
-	// Parse the noise level
-	// This value can be retrieved with a GET_SURVEY command
-	// It just doesn't work with my setup
+	// Parse the noise level. This value can be retrieved with a GET_SURVEY command
+	// But it has to be after all scan results have been parsed!
 	i.sinr = 0;
 
 	// Parse data rate
@@ -460,7 +449,7 @@ int handle_scan_results(nl_msg *msg, void *arg)
 // For cross-value-alert threshold types
 void _check_global_thresholds()
 {
-//	if (!subscribed_event_list.get(mih::link_up)) { break; }
+	if (!subscribed_event_list.get(mih::evt_link_parameters_report)) { return; }
 	ODTONE_LOG(0, "(link) Performing periodic threshold check");
 
 	scan_results_data d(true);
@@ -555,7 +544,7 @@ int handle_nl_event(nl_msg *msg, void *arg)
 	case NL80211_CMD_CONNECT: // LINK_UP
 		{
 			ODTONE_LOG(0, "(nl mc) Connect event");
-//			if (!subscribed_event_list.get(mih::link_up)) { break; }
+			if (!subscribed_event_list.get(mih::evt_link_up)) { break; }
 
 			if (!tb[NL80211_ATTR_STATUS_CODE]) {
 				ODTONE_LOG(0, "(nl mc) Unknown connect status");
@@ -580,7 +569,7 @@ int handle_nl_event(nl_msg *msg, void *arg)
 	case NL80211_CMD_DISCONNECT: // LINK_DOWN
 		{
 			ODTONE_LOG(0, "(nl mc) Disconnect");
-//			if (!subscribed_event_list.get(mih::link_down)) { break; }
+			if (!subscribed_event_list.get(mih::evt_link_down)) { break; }
 
 			unsigned short reason_code = 0; // "local request"
 			if (tb[NL80211_ATTR_REASON_CODE]) {
@@ -601,7 +590,7 @@ int handle_nl_event(nl_msg *msg, void *arg)
 		{
 			_scanning = false;
 			ODTONE_LOG(0, "(nl mc) New scan results");
-//			if (!subscribed_event_list.get(mih::link_detected)) { break; }
+			if (!subscribed_event_list.get(mih::evt_link_detected)) { break; }
 
 			// The multicast message just informs of new results.
 			// The complete information must be retrieved with a GET_SCAN.
@@ -1072,6 +1061,9 @@ void handle_link_actions(uint16 tid,
 	mih::link_scan_rsp_list scan_rsp_list;
 	if (action.type != mih::link_ac_type_power_down) {
 		if (action.attr.get(mih::link_ac_attr_scan)) {
+			// We could check if there's an ongoing scan and just wait
+			// for the results, but they could arrive in the meantime,
+			// and then we'd be facing a race condition
 			nl80211->trigger_scan(true);
 
 			scan_results_data d;
@@ -1213,9 +1205,9 @@ int main(int argc, char** argv)
 	std::map<uint32, std::string> msg_type_map;
 
 	if (geteuid()) {
-		std::cerr << "#########" << std::endl;
-		std::cerr << " WARNING: some functionalities may fail without root privileges" << std::endl;
-		std::cerr << "#########" << std::endl;
+		std::cerr << "###########" << std::endl;
+		std::cerr << "# WARNING: some functionalities may fail without root privileges" << std::endl;
+		std::cerr << "###########" << std::endl;
 	}
 
 	try {
@@ -1275,9 +1267,6 @@ int main(int argc, char** argv)
 		boost::thread io(boost::bind(&boost::asio::io_service::run, &ios));
 
 		// Start the scheduled scan, if configured to.
-		// If need be, the timer_task can be declared globally
-		// and stopped when the link connects, to prevent
-		// connection drops on scan triggers
 		uint scan_period = cfg.get<uint>(kConf_Sched_Scan_Period);
 		timer_task *sched_scan;
 		if (scan_period > 0) {

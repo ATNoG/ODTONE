@@ -520,7 +520,7 @@ void nl80211_helper::set_op_mode(const odtone::mih::link_ac_type_enum &mode)
 				throw "unable to allocate link object";
 			}
 
-			// TODO: verify if not really changing anything?
+			// check if not really changing anything?
 			if (mode == odtone::mih::link_ac_type_power_down) {
 				rtnl_link_unset_flags(change, IFF_UP);
 			} else /*if (mode == odtone::mih::link_ac_type_power_up) */{
