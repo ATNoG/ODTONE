@@ -209,7 +209,7 @@ void link_sap::default_handler(odtone::mih::message& msg, const boost::system::e
 			odtone::mih::link_cfg_status_list lcsl;
 
 			m << odtone::mih::confirm(odtone::mih::confirm::link_configure_thresholds)
-				& odtone::mih::tlv_status(st);
+				& odtone::mih::tlv_status(st)
 				& odtone::mih::tlv_link_cfg_status_list(lcsl);
 			m.tid(msg.tid());
 
