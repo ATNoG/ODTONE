@@ -1,0 +1,214 @@
+[/==============================================================================
+ / Brief   : Link SAP ICMP App Documentation
+ / Authors : André Prata <aprata@av.it.pt>
+ /------------------------------------------------------------------------------
+ / ODTONE - Open Dot Twenty One
+ /
+ / Copyright (C) 2009-2012 Universidade Aveiro
+ / Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
+ /
+ / This software is distributed under a license. The full license
+ / agreement can be found in the file LICENSE in this distribution.
+ / This software may not be copied, modified, sold or distributed
+ / other than expressed in the named license agreement.
+ /
+ / This software is distributed without any warranty.
+ /=============================================================================]
+
+[section:nl80211_sap_index NL80211 Link SAP]
+
+The NL80211 Link SAP is a Linux implementation of a Link SAP for 802.11 interfaces.
+
+[section Requirements]
+
+Apart from the boost libraries, which ODTONE globally needs, this specific Link
+SAP requires the installation of libnl-3 in your GNU/Linux system.
+
+This code has been tested in a Linux-3.2 setup, with libnl-3.2.7, and an Intel
+6200-agn wireless card.
+For implementation details and considerations, please check the Support section.
+
+[endsect]
+
+[section Getting Started]
+
+[section Configuration]
+
+``
+	MIH Link SAP Configuration:
+	     --help                               Display configuration options
+	     --link.name arg (=wlan0)             Device name
+	     --link.sched_scan_period arg (=0)    Scheduled scan interval (millis)
+	     --link.default_th_period arg (=1000) Default threshold checking interval (millis)
+	     --link.port arg (=1235)              Port
+	     --conf.file arg (=nl80211_sap.conf)  Configuration File
+	     --conf.recv_buff_len arg (=4096)     Receive Buffer Length
+	     --mihf.ip arg (=127.0.0.1)           Local MIHF Ip
+	     --mihf.local_port arg (=1025)        MIHF Local Communications Port
+	     --mihf.id arg (=local-mihf)          Local MIHF Id
+	     --link.id arg (=link)                Link SAP Id
+``
+
+[note
+
+All configurable parameters are self-explained,
+but here's a further clarification for two of them:
+
+[*Scheduled scan interval:] Link_Detected.indication events will only
+be generated after scans are triggered. Usually it is a user
+application that is required to ask the kernel for scan triggers. This
+parameter allows this Link SAP to periodically request scan triggers.
+The interval is specified in milliseconds.
+
+Usage: sched_scan_period = <time in ms>
+
+[*Default threshold checking interval:] The kernel allows the configuration of
+one RSSI threshold value to receive alerts when crossed. To configure multiple
+thresholds (to different user subscriptions) we must poll the RSSI values
+ourselves. The frequency of polling is defined by this parameter, in
+milliseconds.
+
+Usage: default_th_period = <time in ms>
+
+]
+
+The Link SAP can be configured based on a set of parameters, which can be
+configured either using an configuration file or passing them directly
+in the command line.
+
+[endsect]
+
+[section Running]
+
+The Link SAP is launched normally, provided that the MIHF is already running.
+``
+	$ ./nl80211_sap
+``
+
+[note
+Some funcionalities, like triggering scans and changing the device operating
+mode, require super user permissions. The Link SAP will run normally if
+launched by a regular user, but a warning message will be shown, and such
+functionalities will generate a failure when invoked.
+]
+
+[endsect]
+
+[endsect]
+
+[section:nl80211_sap_support Support]
+
+This section is a reading on special considerations for each Event and Command
+of the standard, and how they are handled here.
+
+[section Events]
+
+Most supported events are handled in a netlink callback:
+``
+	int handle_nl_event(nl_msg *msg, void *arg)
+``
+
+The Link_Parameters_Report.indication may be generated in either of the
+following methods:
+``
+void _check_global_thresholds()
+void periodic_report_data::_report_value()
+``
+
+[*Link_Going_Down.indication:] Not implemented.
+
+[*Link_Handover_Imminent.indication:] Not supported.
+
+[*Link_Handover_Complete.indication:] Not supported.
+
+[*Link_PDU_Transmit_Status.indication:] Not supported.
+
+[*Link_Detected.indication:]
+Every time a scan is finished, the kernel sends either an
+NL80211_CMD_NEW_SCAN_RESULTS or NL80211_CMD_SCAN_ABORTED message.
+
+[*Link_Up.indication:]
+This event is generated for every successful NL80211_CMD_CONNECT event.
+
+[*Link_Down.indication:]
+This event is generated for every NL80211_CMD_DISCONNECT event.
+
+When a NEW_SCAN_RESULTS event occurs, we get a scan results dump from the
+kernel with an NL80211_GET_SCAN message. It is common that, even with a
+SCAN_ABORTED message, new scan results are available. To enable Link_Detected
+event generation for this case as well, you just have to let the "case
+NL80211_CMD_SCAN_ABORTED" statement fall into the
+"NL80211_CMD_NEW_SCAN_RESULTS" by commenting the "break" statement.
+
+``
+	case NL80211_CMD_SCAN_ABORTED: // LINK_DETECTED?
+	    {
+	        _scanning = false;
+	        ODTONE_LOG(0, "(nl mc) Scan aborted");
+	    }
+	    break;
+	case NL80211_CMD_NEW_SCAN_RESULTS: // LINK DETECTED
+	    {
+``
+
+When more than one scan result contains multiple results with the same SSID,
+only the one with the strongest signal gets its Link_Detected.indication message.
+
+[*Link_Parameters_Report.indication:] For each configred periodic report there's
+a timer that triggers a message of this type at the specified interval.
+
+For configured thresholds, a threshold check is performed periodically, according
+to the [*default_th_period] launching parameter. The message is sent everytime
+one of these checks detects a crossing of the subscribed nature.
+
+[endsect]
+
+[section Commands]
+
+[*Capability_Discover.request:]
+This command is immediatly responded with the list of supported Events and Commands.
+This list of supported Events and Commands is statically configured in the code.
+``
+	void set_supported_event_list()
+	void set_supported_command_list()
+``
+
+[*Event_Subscribe.request:]
+All supported events are always successfully subscribed, even ones already
+subscribed.
+
+[*Event_Unsubscribe.request:]
+All supported events are always successfully unsubscribed, even ones never
+subscribed.
+
+[*Link_Get_Parameters.request:]
+This command may fail if any netlink error occurrs.
+It will also fail if a non-supported parameter is requested.
+Currently only link_param_802_11_rssi, link_states_req_op_mode and
+link_states_req_channel_id are supported.
+
+[*Link_Configure_Thresholds.request:]
+This command may fail if any netlink error occurrs.
+It will also fail on any attempt to configure an unsupported threshold type.
+Currently only link_param_802_11_rssi thresholds are supported.
+
+[*Link_Actions.request:]
+This command may fail if any netlink error occurrs.
+It will also fail if any unsupported action is requested.
+Currently every link_ac_type and link_ac_attr_scan are the supported link
+actions.
+
+[endsect]
+
+[section Common considerations]
+
+[*Signal to Noise Ratio:] We were unable to determine this value in our setup.
+The noise value for a link can be obtained in a similar manner the scan results
+are obtained, but instead using an NL80211_CMD_GET_SURVEY command, and parsing
+the response with the corresponding attributes for the specific reply.
+
+[endsect]
+
+[endsect]
+
+[endsect]
