@@ -605,21 +605,6 @@ void mac_addr_n2a(char *mac_addr, unsigned char *arg)
 	}
 }
 
-void init_bss_policy(nla_policy *bss_policy)
-{
-	bss_policy[NL80211_BSS_TSF].type = NLA_U64;
-	bss_policy[NL80211_BSS_FREQUENCY].type = NLA_U32;
-	bss_policy[NL80211_BSS_BSSID] = { };
-	bss_policy[NL80211_BSS_BEACON_INTERVAL].type = NLA_U16;
-	bss_policy[NL80211_BSS_CAPABILITY].type = NLA_U16;
-	bss_policy[NL80211_BSS_INFORMATION_ELEMENTS] = { };
-	bss_policy[NL80211_BSS_SIGNAL_MBM].type = NLA_U32;
-	bss_policy[NL80211_BSS_SIGNAL_UNSPEC].type = NLA_U8;
-	bss_policy[NL80211_BSS_STATUS].type = NLA_U32;
-	bss_policy[NL80211_BSS_SEEN_MS_AGO].type = NLA_U32;
-	bss_policy[NL80211_BSS_BEACON_IES] = { };
-}
-
 
 #define IE_ARRAY_SIZE 128
 #define IE_WIFI_SIZE 4

@@ -44,8 +44,7 @@ using namespace odtone;
 ///////////////////////////////////////////////////////////////////////////////
 //// Auxiliary Variables and Types
 ///////////////////////////////////////////////////////////////////////////////
-
-nla_policy bss_policy[NL80211_BSS_MAX + 1];
+static bss_parse_policy bss_policy;
 
 struct scan_results_data {
 	mih::link_det_info_list l;
@@ -310,7 +309,7 @@ void _trigger_scan()
 }
 
 // For NL80211_CMD_GET_SCAN message.
-int handle_scan_results(nl_msg *msg, void *arg)
+int _handle_scan_results(nl_msg *msg, void *arg)
 {
 	nlmsghdr *nlh = nlmsg_hdr(msg);
 	genlmsghdr *gnlh = (genlmsghdr *)nlmsg_data(nlh);
@@ -330,7 +329,7 @@ int handle_scan_results(nl_msg *msg, void *arg)
 		return NL_SKIP;
 	}
 
-	if (nla_parse_nested(bss, NL80211_BSS_MAX, tb[NL80211_ATTR_BSS], bss_policy)) {
+	if (nla_parse_nested(bss, NL80211_BSS_MAX, tb[NL80211_ATTR_BSS], bss_policy.pol)) {
 		ODTONE_LOG(2, "(nl) Error parsing scan dump item");
 		return NL_SKIP;
 	}
@@ -426,7 +425,7 @@ void _check_global_thresholds()
 
 	scan_results_data d(true);
 
-	nl80211->get_scan_results(handle_scan_results, &d);
+	nl80211->get_scan_results(_handle_scan_results, &d);
 	if (!d.associated_index) {
 		ODTONE_LOG(0, "(link) Scan dump did not return associated station info");
 		return;
@@ -491,7 +490,7 @@ void _check_global_thresholds()
 }
 
 // For multicast messages from the kernel (groups "scan", "mlme", etc)
-int handle_nl_event(nl_msg *msg, void *arg)
+int _handle_nl_event(nl_msg *msg, void *arg)
 {
 	nlmsghdr *nlh = nlmsg_hdr(msg);
 	genlmsghdr *gnlh = (genlmsghdr *)nlmsg_data(nlh);
@@ -571,7 +570,7 @@ int handle_nl_event(nl_msg *msg, void *arg)
 			// The complete information must be retrieved with a GET_SCAN.
 
 			scan_results_data d;
-			nl80211->get_scan_results(handle_scan_results, static_cast<void*>(&d));
+			nl80211->get_scan_results(_handle_scan_results, static_cast<void*>(&d));
 			dispatch_strongest_scan_results(d);
 		}
 		break;
@@ -594,7 +593,7 @@ void periodic_report_data::_report_value()
 
 	if (type == mih::link_param_802_11_rssi) {
 		scan_results_data d(true);
-		nl80211->get_scan_results(handle_scan_results, &d);
+		nl80211->get_scan_results(_handle_scan_results, &d);
 		if (!d.associated_index) {
 			ODTONE_LOG(0, "(link) Scan dump did not return associated station info");
 			return;
@@ -732,7 +731,7 @@ void handle_link_get_parameters(uint16 tid,
 	// NOTE: Most effective code would use a GET_STATION command,
 	//       but that won't yield all the required information...
 	scan_results_data d(true);
-	nl80211->get_scan_results(handle_scan_results, static_cast<void*>(&d));
+	nl80211->get_scan_results(_handle_scan_results, static_cast<void*>(&d));
 
 	// If the scan results failed to return associated ap, fail
 	if (!d.associated_index) {
@@ -1042,7 +1041,7 @@ void handle_link_actions(uint16 tid,
 			nl80211->trigger_scan(true);
 
 			scan_results_data d;
-			nl80211->get_scan_results(handle_scan_results, static_cast<void*>(&d));
+			nl80211->get_scan_results(_handle_scan_results, static_cast<void*>(&d));
 
 			BOOST_FOREACH (mih::link_det_info &i, d.l) {
 				mih::link_scan_rsp scan_rsp;
@@ -1089,7 +1088,7 @@ void default_handler(mih::message& msg, const boost::system::error_code& ec)
 	switch (msg.mid()) {
 	case mih::request::capability_discover:
 		{
-			ODTONE_LOG(0, "(cmd) Received cpability_discover message");
+			ODTONE_LOG(0, "(cmd) Received capability_discover message");
 			handle_capability_discover(msg.tid());
 		}
 		break;
@@ -1227,10 +1226,8 @@ int main(int argc, char** argv)
 
 		nl80211 = new nl80211_helper(cfg.get<std::string>(kConf_Dev_Id));
 		nl80211->init();
-		nl80211->set_custom_callback(handle_nl_event, NULL);
+		nl80211->set_custom_callback(_handle_nl_event, NULL);
 		nl80211->join_multicast_groups(multicast_groups);
-
-		init_bss_policy(bss_policy);
 
 		// Set some local variables
 		set_link_id();

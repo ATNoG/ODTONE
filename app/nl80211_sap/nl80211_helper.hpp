@@ -238,11 +238,6 @@ void mac_addr_n2a(char *mac_addr, unsigned char *arg);
 /**
  * 
  */
-void init_bss_policy(nla_policy *bss_policy);
-
-/**
- * 
- */
 std::string get_essid(unsigned char *ie, int ielen);
 
 /**
@@ -264,6 +259,27 @@ bool has_qos_capabilities(odtone::uint16 capa);
  * 
  */
 unsigned int frequency_to_channel_id(unsigned int frequency);
+
+/**
+ * 
+ */
+struct bss_parse_policy {
+	nla_policy pol[NL80211_BSS_MAX + 1];
+
+	bss_parse_policy() {
+		pol[NL80211_BSS_TSF].type = NLA_U64;
+		pol[NL80211_BSS_FREQUENCY].type = NLA_U32;
+		pol[NL80211_BSS_BSSID] = { };
+		pol[NL80211_BSS_BEACON_INTERVAL].type = NLA_U16;
+		pol[NL80211_BSS_CAPABILITY].type = NLA_U16;
+		pol[NL80211_BSS_INFORMATION_ELEMENTS] = { };
+		pol[NL80211_BSS_SIGNAL_MBM].type = NLA_U32;
+		pol[NL80211_BSS_SIGNAL_UNSPEC].type = NLA_U8;
+		pol[NL80211_BSS_STATUS].type = NLA_U32;
+		pol[NL80211_BSS_SEEN_MS_AGO].type = NLA_U32;
+		pol[NL80211_BSS_BEACON_IES] = { };
+	}
+};
 
 // EOF ////////////////////////////////////////////////////////////////////////
 #endif /* NL_HELPER__HPP_ */
