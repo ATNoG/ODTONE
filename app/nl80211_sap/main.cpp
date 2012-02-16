@@ -77,6 +77,7 @@ struct threshold_cross_data {
 static const char* const kConf_Dev_Id = "link.name";
 static const char* const kConf_Sched_Scan_Period = "link.sched_scan_period";
 static const char* const kConf_Default_Threshold_Period = "link.default_th_period";
+static const char* const kConf_Sap_Verbosity = "link.verbosity";
 
 mih::link_id link_id;
 mih::link_evt_list capabilities_event_list;
@@ -1189,6 +1190,7 @@ int main(int argc, char** argv)
 		po::options_description desc("MIH Link SAP Configuration");
 		desc.add_options()
 			("help", "Display configuration options")
+			(kConf_Sap_Verbosity, po::value<uint>()->default_value(2), "Log level [0-2]")
 			(kConf_Dev_Id, po::value<std::string>()->default_value("wlan0"), "Device name")
 			(kConf_Sched_Scan_Period, po::value<uint>()->default_value(0), "Scheduled scan interval (millis)")
 			(kConf_Default_Threshold_Period, po::value<uint>()->default_value(1000), "Default threshold checking interval (millis)")
@@ -1207,6 +1209,8 @@ int main(int argc, char** argv)
 			std::cerr << desc << std::endl;
 			return EXIT_SUCCESS;
 		}
+
+		ODTONE_LOG.level(cfg.get<uint>(kConf_Sap_Verbosity));
 
 		// Check and set the default threshold period
 		uint th_period = cfg.get<uint>(kConf_Default_Threshold_Period);

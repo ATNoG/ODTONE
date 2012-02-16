@@ -37,6 +37,7 @@ For implementation details and considerations, please check the Support section.
 ``
 	MIH Link SAP Configuration:
 	     --help                               Display configuration options
+	     --link.verbosity                     Log level [0-3]
 	     --link.name arg (=wlan0)             Device name
 	     --link.sched_scan_period arg (=0)    Scheduled scan interval (millis)
 	     --link.default_th_period arg (=1000) Default threshold checking interval (millis)
