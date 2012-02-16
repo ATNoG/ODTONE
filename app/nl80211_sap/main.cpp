@@ -387,9 +387,9 @@ int handle_scan_results(nl_msg *msg, void *arg)
 		i.signal = signal;
 	}
 
-	// Parse the noise level. This value can be retrieved with a GET_SURVEY command
-	// But it has to be after all scan results have been parsed!
-	i.sinr = 0;
+	// SINR cannot be obtained, since we can only get the signal strength
+	// and the noise value (through NL80211_CMD_GET_SURVEY). (missing "interference")
+	//i.sinr = 0;
 
 	// Parse data rate
 	i.data_rate = get_max_supp_rate(ie, ielen);
