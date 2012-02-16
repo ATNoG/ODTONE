@@ -331,7 +331,7 @@ odtone::mih::mac_addr nl80211_helper::mac_address()
 
 void nl80211_helper::trigger_scan(bool wait)
 {
-	ODTONE_LOG(0, "(nl) Triggering scan");
+	ODTONE_LOG(2, "(nl) Triggering scan");
 
 	int error = 1;
 	int command = -1;
@@ -376,12 +376,12 @@ void nl80211_helper::trigger_scan(bool wait)
 		throw "netlink error, code: " + boost::lexical_cast<std::string>(error);
 	}
 
-	ODTONE_LOG(0, "(nl) Scan triggered");
+	ODTONE_LOG(2, "(nl) Scan triggered");
 }
 
 void nl80211_helper::get_scan_results(nl_recvmsg_msg_cb_t valid_handler, void *data)
 {
-	ODTONE_LOG(0, "(nl) Dumping scan results");
+	ODTONE_LOG(2, "(nl) Dumping scan results");
 
 	int error = 1;
 	nl_cb *cb = NULL;
@@ -413,7 +413,7 @@ void nl80211_helper::get_scan_results(nl_recvmsg_msg_cb_t valid_handler, void *d
 		throw "error, code: " + boost::lexical_cast<std::string>(error);
 	}
 
-	ODTONE_LOG(0, "(nl) Dumped scan results");
+	ODTONE_LOG(2, "(nl) Dumped scan results");
 }
 
 void nl80211_helper::recv_msgs()
@@ -428,7 +428,7 @@ bool nl80211_helper::error()
 
 odtone::mih::op_mode_enum nl80211_helper::get_op_mode()
 {
-	ODTONE_LOG(0, "(nl) Getting link op_mode");
+	ODTONE_LOG(2, "(nl) Getting link op_mode");
 
 	int error = 1;
 	int operstate;
@@ -484,7 +484,7 @@ odtone::mih::op_mode_enum nl80211_helper::get_op_mode()
 #define IF_OPER_LOWERLAYERDOWN 3
 void nl80211_helper::set_op_mode(const odtone::mih::link_ac_type_enum &mode)
 {
-	ODTONE_LOG(0, "(nl) Setting link op_mode");
+	ODTONE_LOG(2, "(nl) Setting link op_mode");
 
 	switch (mode) {
 	case odtone::mih::link_ac_type_none:

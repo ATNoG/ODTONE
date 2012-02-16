@@ -333,7 +333,7 @@ void _trigger_scan()
 		// Consider changing to true for high frequency scanning (prevent overlapping)
 		nl80211->trigger_scan(false);
 	} catch (std::string str) {
-		ODTONE_LOG(0, "Error triggering scheduled scan. \"", str, "\"");
+		ODTONE_LOG(0, "(link) Error triggering scheduled scan. \"", str, "\"");
 	}
 }
 
@@ -354,19 +354,19 @@ int handle_scan_results(nl_msg *msg, void *arg)
 	}
 
 	if (!tb[NL80211_ATTR_BSS]) {
-		ODTONE_LOG(0, "BSS info missing from scan dump item");
+		ODTONE_LOG(2, "(nl) BSS info missing from scan dump item");
 		return NL_SKIP;
 	}
 
 	if (nla_parse_nested(bss, NL80211_BSS_MAX, tb[NL80211_ATTR_BSS], bss_policy)) {
-		ODTONE_LOG(0, "Error parsing scan dump item");
+		ODTONE_LOG(2, "(nl) Error parsing scan dump item");
 		return NL_SKIP;
 	}
 
 	if (!bss[NL80211_BSS_BSSID]
 		|| !bss[NL80211_BSS_INFORMATION_ELEMENTS]
 		|| (!bss[NL80211_BSS_SIGNAL_MBM] && !bss[NL80211_BSS_SIGNAL_UNSPEC])) {
-		ODTONE_LOG(0, "Not all required elements in scan dump item");
+		ODTONE_LOG(2, "(nl) Not all required elements in scan dump item");
 		return NL_SKIP;
 	}
 
@@ -537,19 +537,19 @@ int handle_nl_event(nl_msg *msg, void *arg)
 		{
 			// This event is caught just to set this variable,
 			// and try to prevent overlapping ongoing scans
-			ODTONE_LOG(0, "(nl mc) Scan started");
+			ODTONE_LOG(1, "(nl mc) Scan started");
 			_scanning = true;
 		}
 		break;
 	case NL80211_CMD_CONNECT: // LINK_UP
 		{
-			ODTONE_LOG(0, "(nl mc) Connect event");
+			ODTONE_LOG(1, "(nl mc) Connect event");
 			if (!subscribed_event_list.get(mih::evt_link_up)) { break; }
 
 			if (!tb[NL80211_ATTR_STATUS_CODE]) {
-				ODTONE_LOG(0, "(nl mc) Unknown connect status");
+				ODTONE_LOG(1, "(nl mc) Unknown connect status");
 			} else if (nla_get_u16(tb[NL80211_ATTR_STATUS_CODE]) == 0) {
-				ODTONE_LOG(0, "(nl mc) Connection success");
+				ODTONE_LOG(1, "(nl mc) Connection success");
 				if (tb[NL80211_ATTR_MAC]) {
 					char addr[3 * ETH_ALEN];
 					mac_addr_n2a(addr, (unsigned char*)nla_data(tb[NL80211_ATTR_MAC]));
@@ -559,7 +559,7 @@ int handle_nl_event(nl_msg *msg, void *arg)
 					ios.dispatch(boost::bind(&dispatch_link_up));
 				}
 			} else {
-				ODTONE_LOG(0, "(nl mc) Connection failure, code ", nla_get_u16(tb[NL80211_ATTR_STATUS_CODE]));
+				ODTONE_LOG(1, "(nl mc) Connection failure, code ", nla_get_u16(tb[NL80211_ATTR_STATUS_CODE]));
 			}
 		}
 		break;
@@ -568,7 +568,7 @@ int handle_nl_event(nl_msg *msg, void *arg)
 //	case NL80211_CMD_DISASSOCIATE:
 	case NL80211_CMD_DISCONNECT: // LINK_DOWN
 		{
-			ODTONE_LOG(0, "(nl mc) Disconnect");
+			ODTONE_LOG(1, "(nl mc) Disconnect");
 			if (!subscribed_event_list.get(mih::evt_link_down)) { break; }
 
 			unsigned short reason_code = 0; // "local request"
@@ -583,13 +583,13 @@ int handle_nl_event(nl_msg *msg, void *arg)
 	case NL80211_CMD_SCAN_ABORTED: // LINK_DETECTED?
 		{
 			_scanning = false;
-			ODTONE_LOG(0, "(nl mc) Scan aborted");
+			ODTONE_LOG(1, "(nl mc) Scan aborted");
 		}
 		break;
 	case NL80211_CMD_NEW_SCAN_RESULTS: // LINK DETECTED
 		{
 			_scanning = false;
-			ODTONE_LOG(0, "(nl mc) New scan results");
+			ODTONE_LOG(1, "(nl mc) New scan results");
 			if (!subscribed_event_list.get(mih::evt_link_detected)) { break; }
 
 			// The multicast message just informs of new results.
@@ -774,7 +774,7 @@ void handle_link_get_parameters(uint16 tid,
 	BOOST_FOREACH (mih::link_param_type &pt, param_list) {
 		mih::link_param_802_11 *param = boost::get<mih::link_param_802_11>(&pt);
 		if (!param) {
-			ODTONE_LOG(0, "No link_param_802_11 link_param_type specified");
+			ODTONE_LOG(0, "(cmd) No link_param_802_11 link_param_type specified");
 			dispatch_status_failure(tid, mih::confirm::link_get_parameters);
 			return;
 		}
@@ -792,12 +792,12 @@ void handle_link_get_parameters(uint16 tid,
 			status_param.value = !ap_info.net_capabilities.get(mih::net_caps_qos_0);
 		} else if (*param == mih::link_param_802_11_multicast_packet_loss_rate) {
 			// not supported
-			ODTONE_LOG(0, "No support for specified link_param_802_11");
+			ODTONE_LOG(0, "(cmd) No support for specified link_param_802_11");
 			dispatch_status_failure(tid, mih::confirm::link_get_parameters);
 			return;
 		} else {
 			// huh??
-			ODTONE_LOG(0, "No support for specified link_param_802_11");
+			ODTONE_LOG(0, "(cmd) No support for specified link_param_802_11");
 			dispatch_status_failure(tid, mih::confirm::link_get_parameters);
 			return;
 		}
@@ -819,13 +819,13 @@ void handle_link_get_parameters(uint16 tid,
 	mih::link_desc_rsp_list desc_list;
 	if (desc_req.get(mih::link_desc_req_classes_of_service_supported)) {
 		// not supported
-		ODTONE_LOG(0, "No support for specified link_desc_req");
+		ODTONE_LOG(0, "(cmd) No support for specified link_desc_req");
 		dispatch_status_failure(tid, mih::confirm::link_get_parameters);
 		return;
 	}
 	if (desc_req.get(mih::link_desc_req_queues_supported)) {
 		// not supported
-		ODTONE_LOG(0, "No support for specified link_desc_req");
+		ODTONE_LOG(0, "(cmd) No support for specified link_desc_req");
 		dispatch_status_failure(tid, mih::confirm::link_get_parameters);
 		return;
 	}
