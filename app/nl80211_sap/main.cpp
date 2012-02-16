@@ -154,43 +154,14 @@ void set_supported_command_list()
 // the event usually always contains the attached POA's address
 //
 // See dispatch_link_up(mih::mac_addr&)
-void dispatch_link_up()
+void dispatch_link_up(mih::link_tuple_id lid)
 {
 	ODTONE_LOG(0, "(event) Dispatching link_up message");
-
-	mih::link_tuple_id lid;
-	lid.type = link_id.type;
-	lid.addr = link_id.addr;
 
 	mih::message m;
 	m << mih::indication(mih::indication::link_up)
 		& mih::tlv_link_identifier(lid)
 //		& mih::tlv_ip_renewal_flag(true) // according to docs
-		;
-
-	ls->async_send(m);
-}
-
-// Dispatch a link_up event, with POA indication.
-//
-// This is the expected code to be run once 
-// the kernel informs on the link establishment.
-//
-// LINK_UP implies that the Link was down,
-// so an (new) IP must be re-configured, always.
-void dispatch_link_up(mih::mac_addr &poa_addr)
-{
-	ODTONE_LOG(0, "(event) Dispatching link_up message with poa indication");
-
-	mih::link_tuple_id lid;
-	lid.type = link_id.type;
-	lid.addr = link_id.addr;
-
-	mih::message m;
-	m << mih::indication(mih::indication::link_up)
-		& mih::tlv_link_identifier(lid)
-		& mih::tlv_poa(poa_addr)
-//		& mih::tlv_ip_renewal_flag(true)
 		;
 
 	ls->async_send(m);
@@ -550,14 +521,17 @@ int handle_nl_event(nl_msg *msg, void *arg)
 				ODTONE_LOG(1, "(nl mc) Unknown connect status");
 			} else if (nla_get_u16(tb[NL80211_ATTR_STATUS_CODE]) == 0) {
 				ODTONE_LOG(1, "(nl mc) Connection success");
+				mih::link_tuple_id lid;
+				lid.type = link_id.type;
+				lid.addr = link_id.addr;
+
 				if (tb[NL80211_ATTR_MAC]) {
 					char addr[3 * ETH_ALEN];
 					mac_addr_n2a(addr, (unsigned char*)nla_data(tb[NL80211_ATTR_MAC]));
 					mih::mac_addr mac(addr);
-					ios.dispatch(boost::bind(&dispatch_link_up, mac));
-				} else {
-					ios.dispatch(boost::bind(&dispatch_link_up));
+					lid.poa_addr = mac;
 				}
+				ios.dispatch(boost::bind(&dispatch_link_up, lid));
 			} else {
 				ODTONE_LOG(1, "(nl mc) Connection failure, code ", nla_get_u16(tb[NL80211_ATTR_STATUS_CODE]));
 			}
