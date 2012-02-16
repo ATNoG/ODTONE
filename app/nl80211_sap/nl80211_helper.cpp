@@ -245,11 +245,11 @@ nl_cb *nl80211_helper::get_custom_callback(nl_recvmsg_msg_cb_t valid_handler, in
 
 int nl80211_helper::get_multicast_id(const char *group)
 {
-	struct nl_sock *sk = NULL;
-	struct nl_msg *msg = NULL;
-	struct nl_cb *cb = NULL;
+	nl_sock *sk = NULL;
+	nl_msg *msg = NULL;
+	nl_cb *cb = NULL;
 	int ret, ctrlid;
-	struct handler_args grp = { group, -ENOENT };
+	handler_args grp = { group, -ENOENT };
 
 	BOOST_SCOPE_EXIT ((&msg) (&cb) (&sk)) {
 		nl_cb_put(cb);
@@ -805,14 +805,14 @@ int family_handler(nl_msg *msg, void *arg) {
 		return NL_SKIP;
 	}
 
-	mcgrp = (struct nlattr *)nla_data(tb[CTRL_ATTR_MCAST_GROUPS]);
+	mcgrp = (nlattr *)nla_data(tb[CTRL_ATTR_MCAST_GROUPS]);
 	rem_mcgrp = nla_len(tb[CTRL_ATTR_MCAST_GROUPS]);
 	for ( ; nla_ok(mcgrp, rem_mcgrp); mcgrp = nla_next(mcgrp, &(rem_mcgrp))) {
 	// causes compilation warning, conversion from void* to nlattr*
 	//nla_for_each_nested(mcgrp, tb[CTRL_ATTR_MCAST_GROUPS], rem_mcgrp) {
-		struct nlattr *tb_mcgrp[CTRL_ATTR_MCAST_GRP_MAX + 1];
+		nlattr *tb_mcgrp[CTRL_ATTR_MCAST_GRP_MAX + 1];
 
-		nla_parse(tb_mcgrp, CTRL_ATTR_MCAST_GRP_MAX, (struct nlattr *)nla_data(mcgrp), nla_len(mcgrp), NULL);
+		nla_parse(tb_mcgrp, CTRL_ATTR_MCAST_GRP_MAX, (nlattr *)nla_data(mcgrp), nla_len(mcgrp), NULL);
 
 		if (!tb_mcgrp[CTRL_ATTR_MCAST_GRP_NAME] || !tb_mcgrp[CTRL_ATTR_MCAST_GRP_ID]) {
 			continue;

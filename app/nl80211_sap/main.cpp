@@ -312,10 +312,10 @@ void _trigger_scan()
 // For NL80211_CMD_GET_SCAN message.
 int handle_scan_results(nl_msg *msg, void *arg)
 {
-	struct nlmsghdr *nlh = nlmsg_hdr(msg);
-	struct genlmsghdr *gnlh = (genlmsghdr *)nlmsg_data(nlh);
-	struct nlattr *tb[NL80211_ATTR_MAX + 1];
-	struct nlattr *bss[NL80211_BSS_MAX + 1];
+	nlmsghdr *nlh = nlmsg_hdr(msg);
+	genlmsghdr *gnlh = (genlmsghdr *)nlmsg_data(nlh);
+	nlattr *tb[NL80211_ATTR_MAX + 1];
+	nlattr *bss[NL80211_BSS_MAX + 1];
 	char addr[3 * ETH_ALEN];
 	scan_results_data *d = static_cast<scan_results_data*>(arg);
 
@@ -493,9 +493,9 @@ void _check_global_thresholds()
 // For multicast messages from the kernel (groups "scan", "mlme", etc)
 int handle_nl_event(nl_msg *msg, void *arg)
 {
-	struct nlmsghdr *nlh = nlmsg_hdr(msg);
-	struct genlmsghdr *gnlh = (genlmsghdr *)nlmsg_data(nlh);
-	struct nlattr *tb[NL80211_ATTR_MAX + 1];
+	nlmsghdr *nlh = nlmsg_hdr(msg);
+	genlmsghdr *gnlh = (genlmsghdr *)nlmsg_data(nlh);
+	nlattr *tb[NL80211_ATTR_MAX + 1];
 
 	nla_parse(tb, NL80211_ATTR_MAX, genlmsg_attrdata(gnlh, 0), genlmsg_attrlen(gnlh, 0), NULL);
 
