@@ -298,7 +298,8 @@ void send_link_configure_thresholds_request(handler &sap, const char *dst)
 
 	std::vector<mih::threshold> th_list;
 
-	lcp.type = mih::link_type_802_11;
+	mih::link_param_802_11 lp = mih::link_param_802_11_rssi;
+	lcp.type = lp;
 	lcp.timer_interval = 1234;
 	lcp.action = mih::th_action_normal;
 	lcp.threshold_list = th_list;
