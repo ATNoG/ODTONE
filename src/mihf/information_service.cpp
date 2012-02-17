@@ -60,6 +60,9 @@ bool information_service::get_information_request(meta_message_ptr &in,
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
+		if(in->is_local())
+			in->source(mihfid);
+
 		// Forward this message to MIH-User for handover as an indication
 		in->opcode(mih::operation::indication);
 		std::vector<mih::octet_string> user_list = _user_abook.get_ids();
@@ -67,10 +70,13 @@ bool information_service::get_information_request(meta_message_ptr &in,
 			user_entry user = _user_abook.get(id);
 			if(user.supp_iq.is_initialized()) {
 				in->destination(mih::id(id));
-				utils::forward_request(in, _lpool, _transmit);
+				_lpool.add(in);
+				_transmit(in);
 			}
 		}
 
+		// Restore the original opcode after sending the indication message
+		in->opcode(mih::operation::request);
 		return false;
 	} else {
 		utils::forward_request(in, _lpool, _transmit);
@@ -93,19 +99,29 @@ bool information_service::get_information_response(meta_message_ptr &in,
 	ODTONE_LOG(1, "(miis) received Get_Information.response from ",
 	    in->source().to_string());
 
-	if(!_lpool.set_user_tid(in)) {
-		ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
-		    "discarding it");
-		return false;
-	}
+	if(utils::this_mihf_is_destination(in)) {
+		if(!_lpool.set_user_tid(in)) {
+			ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
+				"discarding it");
+			return false;
+		}
 
-	in->source(mihfid);
-	in->opcode(mih::operation::confirm);
-
-	ODTONE_LOG(1, "(miis) forwarding Get_Information.response to ",
+		ODTONE_LOG(1, "(miis) forwarding Get_Information.response to ",
 	    in->destination().to_string());
+		in->opcode(mih::operation::confirm);
+		_transmit(in);
+	} else {
+		if(!_lpool.set_user_tid(in)) {
+			ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
+				"discarding it");
+			return false;
+		}
 
-	_transmit(in);
+		ODTONE_LOG(1, "(miis) forwarding Get_Information.response to ",
+	    in->destination().to_string());
+		in->source(mihfid);
+		_transmit(in);
+	}
 
 	return false;
 }
