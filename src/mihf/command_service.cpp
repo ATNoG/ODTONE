@@ -757,6 +757,9 @@ bool command_service::generic_command_request(const char *recv_msg,
 	ODTONE_LOG(1, recv_msg, in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
+		if(in->is_local())
+			in->source(mihfid);
+
 		// Forward this message to MIH-User for handover as an indication
 		in->opcode(mih::operation::indication);
 		std::vector<mih::octet_string> user_list = _user_abook.get_ids();
@@ -765,13 +768,16 @@ bool command_service::generic_command_request(const char *recv_msg,
 			if(user.supp_cmd.is_initialized()) {
 				if(user.supp_cmd->get(cmd)) {
 					in->destination(mih::id(id));
-					utils::forward_request(in, _lpool, _transmit);
+					_lpool.add(in);
+					_transmit(in);
 
 					ODTONE_LOG(1, send_msg , in->destination().to_string());
 				}
 			}
 		}
 
+		// Restore the original opcode after sending the indication message
+		in->opcode(mih::operation::request);
 		return false;
 	} else {
 		// try to forward the message, this is to handle the
@@ -802,17 +808,27 @@ bool command_service::generic_command_response(const char *recv_msg,
 {
 	ODTONE_LOG(1, recv_msg, in->source().to_string());
 
-	if(!_lpool.set_user_tid(in)) {
-		ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
-		    "discarding it");
-		return false;
+	if(utils::this_mihf_is_destination(in)) {
+		if(!_lpool.set_user_tid(in)) {
+			ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
+				"discarding it");
+			return false;
+		}
+
+		ODTONE_LOG(1, send_msg , in->destination().to_string());
+		in->opcode(mih::operation::confirm);
+		_transmit(in);
+	} else {
+		if(!_lpool.set_user_tid(in)) {
+			ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
+				"discarding it");
+			return false;
+		}
+
+		ODTONE_LOG(1, send_msg , in->destination().to_string());
+		in->source(mihfid);
+		_transmit(in);
 	}
-
-	in->opcode(mih::operation::confirm);
-
-	ODTONE_LOG(1, send_msg , in->destination().to_string());
-
-	_transmit(in);
 
 	return false;
 }
