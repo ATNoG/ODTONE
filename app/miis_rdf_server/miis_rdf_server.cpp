@@ -285,6 +285,7 @@ void miis_rdf_server::event_handler(odtone::mih::message& msg, const boost::syst
 			& odtone::mih::tlv_status(odtone::mih::status_success)
 			& odtone::mih::tlv_info_resp_rdf_data_list(rsp_list);
 
+		response.tid(msg.tid());
 		response.destination(msg.source());
 
 		_mihf.async_send(response, boost::bind(recv_handler, _1, _2));
