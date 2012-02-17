@@ -38,12 +38,21 @@ public:
 	 * MIH Confirm Message ID
 	 */
 	enum mid {
-		capability_discover	= msg_id<1, 0, 1>::value,		/**< MIH_Capability_Discover.indication	*/
-		event_subscribe	= msg_id<1, 0, 4>::value,			/**< MIH_Event_Subscribe.request		*/
-		event_unsubscribe = msg_id<1, 0, 5>::value,			/**< MIH_Event_Unsubscribe.request		*/
-		link_get_parameters = msg_id<3, 0, 1>::value,		/**< MIH_Link_Get_Parameters.request	*/
-		link_configure_thresholds = msg_id<3, 0, 2>::value,	/**< MIH_Link_Configure_Thresholds.request*/
-		link_actions = msg_id<3, 0, 3>::value,				/**< MIH_Link_Actions.request			*/
+		capability_discover	= msg_id<1, 0, 1>::value,		/**< MIH_Capability_Discover.confirm		*/
+		event_subscribe	= msg_id<1, 0, 4>::value,			/**< MIH_Event_Subscribe.confirm			*/
+		event_unsubscribe = msg_id<1, 0, 5>::value,			/**< MIH_Event_Unsubscribe.confirm			*/
+		link_get_parameters = msg_id<3, 0, 1>::value,		/**< MIH_Link_Get_Parameters.confirm		*/
+		link_configure_thresholds = msg_id<3, 0, 2>::value,	/**< MIH_Link_Configure_Thresholds.confirm	*/
+		link_actions = msg_id<3, 0, 3>::value,				/**< MIH_Link_Actions.confirm				*/
+		net_ho_candidate_query = msg_id<3, 0, 4>::value,	/**< MIH_Net_HO_Candidate_Query.confirm		*/
+		mn_ho_candidate_query = msg_id<3, 0, 5>::value,		/**< MIH_MN_HO_Candidate_Query.confirm		*/
+		n2n_ho_query_resources = msg_id<3, 0, 6>::value,	/**< MIH_N2N_HO_Query_Resources.confirm		*/
+		mn_ho_commit = msg_id<3, 0, 7>::value,				/**< MIH_MN_HO_Commit.confirm				*/
+		net_ho_commit = msg_id<3, 0, 8>::value,				/**< MIH_Net_HO_Commit.confirm				*/
+		n2n_ho_commit = msg_id<3, 0, 9>::value,				/**< MIH_N2N_HO_Commit.confirm				*/
+		mn_ho_complete = msg_id<3, 0, 10>::value,			/**< MIH_N2N_HO_Complete.confirm			*/
+		n2n_ho_complete = msg_id<3, 0, 11>::value,			/**< MIH_N2N_HO_Commlete.confirm			*/
+		get_information = msg_id<4, 0, 1>::value,			/**< MIH_Get_Information.confirm			*/
 	};
 
 	/**
