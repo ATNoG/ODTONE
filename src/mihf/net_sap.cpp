@@ -68,7 +68,7 @@ void net_sap::send(meta_message_ptr &msg)
 	} catch(...) { // no registration was found
 
 		// check msg meta data for ip and use it
-		if (msg->ip().size() != 0) {
+		if (msg->ip().size() != 0 && msg->ip().compare("127.0.0.1") != 0) {
 			if(msg->port() != 0) {
 				utils::udp_send(_io, msg, msg->ip().c_str(), msg->port(), _port);
 			} else {
