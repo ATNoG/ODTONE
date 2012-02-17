@@ -24,8 +24,9 @@ The NL80211 Link SAP is a Linux implementation of a Link SAP for 802.11 interfac
 Apart from the boost libraries, which ODTONE globally needs, this specific Link
 SAP requires the installation of libnl-3 in your GNU/Linux system.
 
-This code has been tested in a Linux-3.2 setup, with libnl-3.2.7, and an Intel
-6200-agn wireless card.
+This module has been tested in a Linux-3.2 setup, with libnl-3.2.7.
+Both an Intel 6200-agn and a Ubiquiti SRX abg express card were tested.
+
 For implementation details and considerations, please check the Support section.
 
 [endsect]
@@ -33,6 +34,10 @@ For implementation details and considerations, please check the Support section.
 [section Getting Started]
 
 [section Configuration]
+
+The Link SAP can be configured based on a set of parameters, which can be
+configured either using an configuration file or passing them directly
+in the command line.
 
 ``
 	MIH Link SAP Configuration:
@@ -73,10 +78,6 @@ Usage: default_th_period = <time in ms>
 
 ]
 
-The Link SAP can be configured based on a set of parameters, which can be
-configured either using an configuration file or passing them directly
-in the command line.
-
 [endsect]
 
 [section Running]
@@ -104,43 +105,52 @@ of the standard, and how they are handled here.
 
 [section Events]
 
-Most supported events are handled in a netlink callback:
-``
-	int handle_nl_event(nl_msg *msg, void *arg)
-``
+[section Link_Going_Down.indication:]
 
-The Link_Parameters_Report.indication may be generated in either of the
-following methods:
-``
-void _check_global_thresholds()
-void periodic_report_data::_report_value()
-``
+Not implemented.
 
-[*Link_Going_Down.indication:] Not implemented.
+[endsect]
 
-[*Link_Handover_Imminent.indication:] Not supported.
 
-[*Link_Handover_Complete.indication:] Not supported.
+[section Link_Handover_Imminent.indication:]
 
-[*Link_PDU_Transmit_Status.indication:] Not supported.
+Not supported.
 
-[*Link_Detected.indication:]
-Every time a scan is finished, the kernel sends either an
-NL80211_CMD_NEW_SCAN_RESULTS or NL80211_CMD_SCAN_ABORTED message.
+[endsect]
 
-[*Link_Up.indication:]
-This event is generated for every successful NL80211_CMD_CONNECT event.
 
-[*Link_Down.indication:]
-This event is generated for every NL80211_CMD_DISCONNECT event.
+[section Link_Handover_Complete.indication:]
 
-When a NEW_SCAN_RESULTS event occurs, we get a scan results dump from the
-kernel with an NL80211_GET_SCAN message. It is common that, even with a
-SCAN_ABORTED message, new scan results are available. To enable Link_Detected
-event generation for this case as well, you just have to let the "case
-NL80211_CMD_SCAN_ABORTED" statement fall into the
-"NL80211_CMD_NEW_SCAN_RESULTS" by commenting the "break" statement.
+Not supported.
 
+
+[endsect]
+
+
+[section Link_PDU_Transmit_Status.indication:]
+
+Not supported.
+
+
+[endsect]
+
+
+[section Link_Detected.indication:]
+
+Every time a scan is finished, the kernel sends either a
+NL80211_CMD_NEW_SCAN_RESULTS or a NL80211_CMD_SCAN_ABORTED message.
+Upon this indication, the scan results are obtained with a NL80211_CMD_GET_SCAN_RESULTS,
+and the details of each scan result are parsed. For each new access network to
+which we are not attached, a new Link_Detected.indication is generated.
+
+[note
+A group of POAs are considered of the same access network if they announce the same SSID.
+When more than one scan result is detected with the same SSID, only the one with the strongest RSSI is indicated.
+]
+
+[note
+Scan results are only retrieved on NEW_SCAN_RESULTS. To fetch the scan results also for the SCAN_ABORTED message, just allow
+the SCAN_ABORTED case to fall into the SCAN_RESULTS by commenting the "break" keyword.
 ``
 	case NL80211_CMD_SCAN_ABORTED: // LINK_DETECTED?
 	    {
@@ -151,22 +161,95 @@ NL80211_CMD_SCAN_ABORTED" statement fall into the
 	case NL80211_CMD_NEW_SCAN_RESULTS: // LINK DETECTED
 	    {
 ``
+]
 
-When more than one scan result contains multiple results with the same SSID,
-only the one with the strongest signal gets its Link_Detected.indication message.
+[note
+When parsing the scan results, there's no indication of SINR, since no driver informs of the "Interference" component of the formula,
+and only a few drivers return "Noise" information, through the NL80211_CMD_GET_SURVEY command.
+]
 
-[*Link_Parameters_Report.indication:] For each configred periodic report there's
+[note
+See:
+``
+	int _handle_nl_event(nl_msg *msg, void *arg)
+	int _handle_scan_results(nl_msg *msg, void *arg)
+
+	void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
+	void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
+``
+]
+
+
+[endsect]
+
+
+[section Link_Up.indication:]
+
+This event is generated for every successful NL80211_CMD_CONNECT event.
+
+[note
+See:
+``
+	int _handle_nl_event(nl_msg *msg, void *arg)
+
+	void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
+	void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
+``
+]
+
+
+[endsect]
+
+
+[section Link_Down.indication:]
+
+This event is generated for every NL80211_CMD_DISCONNECT event.
+
+[note
+See:
+``
+	int _handle_nl_event(nl_msg *msg, void *arg)
+
+	void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
+	void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
+``
+]
+
+
+[endsect]
+
+
+[section Link_Parameters_Report.indication:]
+
+For each configred periodic report there's
 a timer that triggers a message of this type at the specified interval.
 
 For configured thresholds, a threshold check is performed periodically, according
 to the [*default_th_period] launching parameter. The message is sent everytime
 one of these checks detects a crossing of the subscribed nature.
 
+[note
+See:
+``
+	void _check_global_thresholds()
+	void periodic_report_data::_report_value()
+	void handle_link_configure_thresholds(uint16 tid, mih::link_cfg_param_list &param_list)
+
+	void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
+	void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
+``
+]
+
 [endsect]
+
+[endsect]
+
 
 [section Commands]
 
-[*Capability_Discover.request:]
+
+[section Capability_Discover.request:]
+
 This command is immediatly responded with the list of supported Events and Commands.
 This list of supported Events and Commands is statically configured in the code.
 ``
@@ -174,39 +257,98 @@ This list of supported Events and Commands is statically configured in the code.
 	void set_supported_command_list()
 ``
 
-[*Event_Subscribe.request:]
+
+[endsect]
+
+
+[section Event_Subscribe.request:]
+
 All supported events are always successfully subscribed, even ones already
 subscribed.
 
-[*Event_Unsubscribe.request:]
+[note
+See:
+``
+	void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
+	void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
+``
+]
+
+
+[endsect]
+
+
+[section Event_Unsubscribe.request:]
+
 All supported events are always successfully unsubscribed, even ones never
 subscribed.
 
-[*Link_Get_Parameters.request:]
+[note
+See:
+``
+	void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
+	void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
+``
+]
+
+
+[endsect]
+
+
+[section Link_Get_Parameters.request:]
+
 This command may fail if any netlink error occurrs.
 It will also fail if a non-supported parameter is requested.
 Currently only link_param_802_11_rssi, link_states_req_op_mode and
 link_states_req_channel_id are supported.
 
-[*Link_Configure_Thresholds.request:]
+[note
+See:
+``
+	void handle_link_get_parameters(uint16 tid,
+	    mih::link_param_type_list &param_list,
+	    mih::link_states_req &states_req,
+	    mih::link_desc_req &desc_req)
+``
+]
+
+[endsect]
+
+
+[section Link_Configure_Thresholds.request:]
+
 This command may fail if any netlink error occurrs.
 It will also fail on any attempt to configure an unsupported threshold type.
 Currently only link_param_802_11_rssi thresholds are supported.
 
-[*Link_Actions.request:]
+[note
+See:
+``
+	void handle_link_configure_thresholds(uint16 tid, mih::link_cfg_param_list &param_list)
+``
+]
+
+[endsect]
+
+
+[section Link_Actions.request:]
+
 This command may fail if any netlink error occurrs.
 It will also fail if any unsupported action is requested.
 Currently every link_ac_type and link_ac_attr_scan are the supported link
 actions.
 
+[note
+See:
+``
+	void handle_link_actions(uint16 tid,
+	    mih::link_action action,
+	    uint16 delay,
+	    boost::optional<mih::link_addr> poa)
+``
+]
+
 [endsect]
-
-[section Common considerations]
-
-[*Signal to Noise Ratio:] We were unable to determine this value in our setup.
-The noise value for a link can be obtained in a similar manner the scan results
-are obtained, but instead using an NL80211_CMD_GET_SURVEY command, and parsing
-the response with the corresponding attributes for the specific reply.
 
 [endsect]
 
