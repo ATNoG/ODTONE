@@ -123,7 +123,7 @@ rtnl_link *nl80211_helper::get_rtnl_link(nl_sock *sock)
 		throw "could not find such link, " + dev;
 	}
 
-	return link;
+	return (rtnl_link *)nl_object_clone((nl_object *)link);
 }
 
 void nl80211_helper::set_mac_and_if_index()
