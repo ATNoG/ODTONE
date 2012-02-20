@@ -693,7 +693,7 @@ bool has_security_features(unsigned char *ie, int ielen)
 	unsigned char* data;
 
 	while (ielen >= 2 && ielen >= ie[1]) {
-		if (ie[0] < IE_ARRAY_SIZE && ie[0] == IE_SUPP_RATES_INDEX) {
+		if (ie[0] < IE_ARRAY_SIZE && ie[0] == IE_RNS_INDEX) {
 			return true;
 		} else if (ie[0] == IE_VENDOR) {
 			data = ie + 2;
