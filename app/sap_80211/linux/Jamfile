@@ -1,0 +1,30 @@
+#==============================================================================
+# Brief   : Linux interface for 802.11 devices
+# Authors : André Prata <andreprata@ua.pt>
+#------------------------------------------------------------------------------
+# ODTONE - Open Dot Twenty One
+#
+# Copyright (C) 2009-2012 Universidade Aveiro
+# Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
+#
+# This software is distributed under a license. The full license
+# agreement can be found in the file LICENSE in this distribution.
+# This software may not be copied, modified, sold or distributed
+# other than expressed in the named license agreement.
+#
+# This software is distributed without any warranty.
+#==============================================================================
+
+project if_80211
+	;
+
+lib if_80211
+	: if_80211.cpp
+	  nlwrap/genl_msg.cpp
+	  nlwrap/genl_socket.cpp
+	  nlwrap/genl_cb.cpp
+	  nlwrap/rtnl_socket.cpp
+	  nlwrap/rtnl_link.cpp
+	  nlwrap/rtnl_link_cache.cpp
+	: <link>static
+	;

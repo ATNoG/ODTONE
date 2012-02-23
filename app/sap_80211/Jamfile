@@ -1,0 +1,40 @@
+#==============================================================================
+# Brief   : nl80211-based Link SAP Implementation
+# Authors : André Prata <andreprata@av.it.pt>
+#-----------------------------------------------------------------------------
+# ODTONE - Open Dot Twenty One
+#
+# Copyright (C) 2009-2012 Universidade Aveiro
+# Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
+#
+# This software is distributed under a license. The full license
+# agreement can be found in the file LICENSE in this distribution.
+# This software may not be copied, modified, sold or distributed
+# other than expressed in the named license agreement.
+#
+# This software is distributed without any warranty.
+#==============================================================================
+
+project sap_80211
+	: requirements
+	  <linkflags>-lnl-3
+	  <linkflags>-lnl-genl-3
+	  <linkflags>-lnl-route-3
+	  <include>/usr/include/libnl3
+	;
+
+exe sap_80211
+	: main.cpp
+	  timer_task.cpp
+	  linux//if_80211
+	  ../../lib/odtone//odtone_base
+	  ../../lib/odtone/mih//odtone_mih
+	  ../../lib/odtone/sap//odtone_sap
+	;
+
+install install
+	: sap_80211
+	  sap_80211.conf
+	: <location>../../dist
+	;
+
