@@ -1,0 +1,856 @@
+From 0265fb452a7a03f184429c5c685de6b1790e1bc4 Mon Sep 17 00:00:00 2001
+From: Marcelo Lebre <marcelolebre@av.it.pt>
+Date: Tue, 21 Feb 2012 16:26:18 +0000
+Subject: [PATCH] [PATCH] Sensor support
+
+---
+ Jamroot                                |    2 +
+ app/mih_sensor_usr/Jamfile             |   33 +++
+ app/mih_sensor_usr/mih_sensor_usr.conf |   17 ++
+ app/mih_sensor_usr/mih_usr.cpp         |  347 ++++++++++++++++++++++++++++++++
+ inc/odtone/mih/detail/archive.hpp      |  142 +++++++++++++
+ inc/odtone/mih/indication.hpp          |    6 +-
+ inc/odtone/mih/types/capabilities.hpp  |    2 +
+ inc/odtone/mih/types/link.hpp          |   22 ++-
+ src/mihf/event_service.cpp             |   20 ++
+ src/mihf/event_service.hpp             |   11 +
+ src/mihf/main.cpp                      |   11 +
+ src/mihf/odtone.conf                   |    3 +-
+ 12 files changed, 612 insertions(+), 4 deletions(-)
+ create mode 100644 app/mih_sensor_usr/Jamfile
+ create mode 100644 app/mih_sensor_usr/mih_sensor_usr.conf
+ create mode 100644 app/mih_sensor_usr/mih_usr.cpp
+
+diff --git a/Jamroot b/Jamroot
+index 65e7ecd..411a84d 100644
+--- a/Jamroot
++++ b/Jamroot
+@@ -138,6 +138,8 @@ install odtone-dist
+ 	  app/link_sap/link_sap.conf
+ 	  app/mih_usr//mih_usr
+ 	  app/mih_usr/mih_usr.conf
++	  app/mih_sensor_usr//mih_sensor_usr
++	  app/mih_sensor_usr/mih_sensor_usr.conf
+ 	  app/client//client
+ 	  src/dummyserver//dummyserver
+ 	  app/miis_rdf_server//miis_rdf_server
+diff --git a/app/mih_sensor_usr/Jamfile b/app/mih_sensor_usr/Jamfile
+new file mode 100644
+index 0000000..4dc3cf4
+--- /dev/null
++++ b/app/mih_sensor_usr/Jamfile
+@@ -0,0 +1,33 @@
++#==============================================================================
++# Brief   : User SAP Application Sample Project Build
++# Authors : Marcelo Lebre <marcelolebre@av.it.pt>
++#------------------------------------------------------------------------------
++# ODTONE - Open Dot Twenty One
++#
++# Copyright (C) 2009-2011 Universidade Aveiro
++# Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
++#
++# This software is distributed under a license. The full license
++# agreement can be found in the file LICENSE in this distribution.
++# This software may not be copied, modified, sold or distributed
++# other than expressed in the named license agreement.
++#
++# This software is distributed without any warranty.
++#==============================================================================
++
++project mih_sensor_usr
++	;
++
++exe mih_sensor_usr
++	: mih_usr.cpp
++	  ../../lib/odtone//odtone_base
++	  ../../lib/odtone/mih//odtone_mih
++	  ../../lib/odtone/sap//odtone_sap
++	;
++
++install install
++	: mih_sensor_usr
++	  mih_sensor_usr.conf
++	: <location>../../dist
++	;
++
+diff --git a/app/mih_sensor_usr/mih_sensor_usr.conf b/app/mih_sensor_usr/mih_sensor_usr.conf
+new file mode 100644
+index 0000000..f3f0b5f
+--- /dev/null
++++ b/app/mih_sensor_usr/mih_sensor_usr.conf
+@@ -0,0 +1,17 @@
++##
++## User id
++##
++[user]
++id = user
++
++##
++## Port used for communication with MIHF
++##
++[conf]
++port = 1234
++
++##
++## MIHF configuration. For the default demonstration leave as is.
++##
++[mihf]
++local_port = 1025
+diff --git a/app/mih_sensor_usr/mih_usr.cpp b/app/mih_sensor_usr/mih_usr.cpp
+new file mode 100644
+index 0000000..a233d3a
+--- /dev/null
++++ b/app/mih_sensor_usr/mih_usr.cpp
+@@ -0,0 +1,347 @@
++//=============================================================================
++// Brief   : MIH User Example
++// Authors : Bruno Santos <bsantos@av.it.pt>
++//	         Marcelo Lebre <marcelolebre@av.it.pt>
++//------------------------------------------------------------------------------
++// ODTONE - Open Dot Twenty One
++//
++// Copyright (C) 2009-2011 Universidade Aveiro
++// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
++//
++// This software is distributed under a license. The full license
++// agreement can be found in the file LICENSE in this distribution.
++// This software may not be copied, modified, sold or distributed
++// other than expressed in the named license agreement.
++//
++// This software is distributed without any warranty.
++//==============================================================================
++
++#include <odtone/base.hpp>
++#include <odtone/debug.hpp>
++#include <odtone/logger.hpp>
++#include <odtone/mih/request.hpp>
++#include <odtone/mih/response.hpp>
++#include <odtone/mih/indication.hpp>
++#include <odtone/mih/confirm.hpp>
++#include <odtone/mih/tlv_types.hpp>
++#include <odtone/sap/user.hpp>
++#include <boost/utility.hpp>
++#include <boost/bind.hpp>
++#include <iostream>
++
++///////////////////////////////////////////////////////////////////////////////
++
++namespace po = boost::program_options;
++
++using odtone::uint;
++using odtone::ushort;
++
++odtone::logger log_("mih_usr", std::cout);
++
++///////////////////////////////////////////////////////////////////////////////
++class mih_user : boost::noncopyable {
++public:
++	mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io);
++	~mih_user();
++
++protected:
++	void event_handler(odtone::mih::message& msg, const boost::system::error_code& ec);
++	void event_subscribe_confirm(odtone::mih::message& msg, const boost::system::error_code& ec);
++	void configure_thresholds_response(odtone::mih::message& msg, const boost::system::error_code& ec);
++	void link_actions_response(odtone::mih::message& msg, const boost::system::error_code& ec);
++	void link_get_parameters_response(odtone::mih::message& msg, const boost::system::error_code& ec);
++
++private:
++	odtone::sap::user _mihf;
++	odtone::mih::id   _mihfid;
++};
++
++mih_user::mih_user(const odtone::mih::config& cfg, boost::asio::io_service& io)
++	: _mihf(cfg, io, boost::bind(&mih_user::event_handler, this, _1, _2))
++{
++	odtone::mih::message req;
++	odtone::mih::mih_evt_list evt;
++	odtone::mih::link_tuple_id li;
++	odtone::mih::other_l2_addr ola;
++
++	ola.value = "sensoraddress";
++	li.addr = ola;
++	li.type = odtone::mih::link_type_sensor;
++	evt.set(odtone::mih::sensor_up);
++	evt.set(odtone::mih::mih_evt_link_parameters_report);
++
++	req << odtone::mih::request(odtone::mih::request::event_subscribe, _mihfid)
++		& odtone::mih::tlv_link_identifier(li)
++		& odtone::mih::tlv_event_list(evt);
++
++	req.destination(odtone::mih::id("mihf1"));
++	_mihf.async_send(req, boost::bind(&mih_user::event_subscribe_confirm, this, _1, _2));
++
++	log_(0, "MIH-User has sent Event_Subscribe.request");
++}
++
++mih_user::~mih_user()
++{
++}
++
++void mih_user::event_handler(odtone::mih::message& msg, const boost::system::error_code& ec)
++{
++	if (ec) {
++		log_(0, __FUNCTION__, " error: ", ec.message());
++		return;
++	}
++
++	switch (msg.mid()) {
++	case odtone::mih::indication::sensor_up:
++		log_(0, "MIH-User has received a local event \"sensor_up\"");
++	break;
++
++	case odtone::mih::indication::link_parameters_report: {
++		log_(0, "MIH-User has received a local event \"link_parameters_report\"");
++
++		odtone::mih::link_param_rpt_list lprl;
++		odtone::mih::link_tuple_id lid;
++		msg >> odtone::mih::indication()
++			& odtone::mih::tlv_link_identifier(lid)
++			& odtone::mih::tlv_link_param_rpt_list(lprl);
++
++		odtone::mih::link_param_report lpr = lprl.back();
++
++		log_(0, "Sensor Type: ", lpr.param.type);
++
++		if(odtone::mih::link_param_val *value = boost::get<odtone::mih::link_param_val>(&lpr.param.value)){
++			log_(0, "Sensor Value: ", *value);
++		};
++
++	} break;
++
++	default:
++		log_(0, "MIH-User has received an unexpected event");
++		break;
++	}
++}
++
++void mih_user::event_subscribe_confirm(odtone::mih::message& msg, const boost::system::error_code& ec)
++{
++	log_(0, __FUNCTION__, "(", msg.tid(), ")");
++
++	if (ec) {
++		log_(0, __FUNCTION__, " error: ", ec.message());
++		return;
++	}
++
++	log_(0, "MIH-User has received a Event_Subscribe.response");
++
++	odtone::mih::status st;
++
++	msg >> odtone::mih::confirm()
++		& odtone::mih::tlv_status(st);
++
++	if(st.get() == 0) {
++		log_(0, "Events Subscribed with Success");
++	}
++
++	odtone::mih::message req;
++	odtone::mih::link_tuple_id li;
++	odtone::mih::other_l2_addr ola;
++
++	ola.value = "sensoraddress";
++	li.addr = ola;
++	li.type = odtone::mih::link_type_sensor;
++
++	odtone::mih::link_cfg_param_list lcpl;
++	odtone::mih::link_cfg_param lcp;
++	odtone::mih::link_param_type lpt;
++	odtone::mih::sensor_param sp = odtone::mih::sensor_readings;
++
++	lpt = sp;
++	lcp.type = lpt;
++	lcp.timer_interval = 1000;
++	lcp.action = odtone::mih::th_action_normal;
++
++	odtone::mih::threshold thr;
++	thr.threshold_val = 25;
++	thr.threshold_x_dir = odtone::mih::threshold::type_ip_enum::above_threshold;
++
++	lcp.threshold_list.push_back(thr);
++
++	lcpl.push_back(lcp);
++
++	req << odtone::mih::request(odtone::mih::request::link_configure_thresholds, _mihfid)
++		& odtone::mih::tlv_link_identifier(li)
++		& odtone::mih::tlv_link_cfg_param_list(lcpl);
++
++	req.destination(odtone::mih::id("mihf1"));
++
++	_mihf.async_send(req, boost::bind(&mih_user::configure_thresholds_response, this, _1, _2));
++
++	log_(0, "MIH-User has sent Configure_Thresholds.request");
++}
++
++
++void mih_user::configure_thresholds_response(odtone::mih::message& msg, const boost::system::error_code& ec)
++{
++	odtone::mih::status st;
++
++	log_(0, "MIH-User has received a Configure_Thresholds.response");
++
++	msg >> odtone::mih::confirm()
++		& odtone::mih::tlv_status(st);
++
++	if(st.get() == 0) {
++		log_(0, "Thresholds Configured with Success");
++	}
++
++	odtone::mih::message req;
++	odtone::mih::link_tuple_id li;
++	odtone::mih::other_l2_addr ola;
++	odtone::mih::link_id_list lil;
++
++	ola.value = "sensoraddress";
++	li.addr = ola;
++	li.type = odtone::mih::link_type_sensor;
++	lil.push_back(li);
++
++	odtone::mih::link_status_req lsr;
++	odtone::mih::link_states_req lser;
++
++	lser.set(odtone::mih::link_states_req_op_mode);
++	lsr._states_req = lser;
++
++	odtone::mih::link_param_type lpt;
++	odtone::mih::sensor_param sp = odtone::mih::sensor_readings;
++	lpt = sp;
++
++	odtone::mih::link_param_type_list lptl;
++	lptl.push_back(lpt);
++	lsr._param_type_list = lptl;
++
++	odtone::mih::link_desc_req ldr;
++	ldr.set(odtone::mih::link_desc_req_classes_of_service_supported);
++	lsr._desc_req = ldr;
++
++	odtone::mih::dev_states_req dsr;
++	dsr.set(odtone::mih::dev_state_device_info);
++
++	req << odtone::mih::request(odtone::mih::request::link_get_parameters, _mihfid)
++		& odtone::mih::tlv_dev_states_req(dsr)
++		& odtone::mih::tlv_link_id_list(lil)
++		& odtone::mih::tlv_get_status_req_set(lsr);
++
++	req.destination(odtone::mih::id("mihf1"));
++
++	_mihf.async_send(req, boost::bind(&mih_user::link_get_parameters_response, this, _1, _2));
++
++	log_(0, "MIH-User has sent Link Get Parameters.request");
++
++}
++void mih_user::link_get_parameters_response(odtone::mih::message& msg, const boost::system::error_code& ec)
++{
++	odtone::mih::message req;
++	odtone::mih::status st;
++	odtone::mih::dev_states_rsp dsr;
++	odtone::mih::link_status_rsp_list lsrl;
++
++	log_(0, "MIH-User has received a Link_Get_Parameters.response");
++
++	msg >> odtone::mih::confirm(odtone::mih::confirm::link_get_parameters)
++		& odtone::mih::tlv_status(st);
++
++	if(st.get() == 0) {
++		log_(0, "Operating Status Normal ", st.get());
++	} else {
++		log_(0, "Not the response you were waiting for");
++	}
++
++	odtone::mih::link_action_list lal2;
++	odtone::mih::link_action_req lar2;
++	odtone::mih::link_id lid;
++	odtone::mih::link_addr la;
++	odtone::mih::link_action laction;
++	odtone::mih::link_ac_ex_time laet;
++
++	//Link ID
++	odtone::mih::other_l2_addr ola;
++	ola.value = "sensoraddress";
++	odtone::mih::link_addr laddr = ola;
++	lid.addr = laddr;
++	lid.type = odtone::mih::link_type_sensor;
++	la = ola;
++
++	//Link action
++	odtone::mih::link_ac_type type = odtone::mih::link_ac_type_do_something;
++	odtone::mih::link_ac_attr attr;
++	attr.set(odtone::mih::link_ac_attr_none);
++	laction.type = type;
++	laction.attr = attr;
++
++	//Link action ex time
++	laet = 1;
++
++	//add to lal
++	lar2.id = lid;
++	lar2.addr = la;
++	lar2.action = laction;
++	lar2.ex_time = laet;
++	lal2.push_back(lar2);
++
++	req << odtone::mih::request(odtone::mih::request::link_actions, _mihfid)
++		& odtone::mih::tlv_link_action_list(lal2);
++	req.destination(odtone::mih::id("mihf1"));
++
++	_mihf.async_send(req, boost::bind(&mih_user::link_actions_response, this, _1, _2));
++
++	log_(0, "MIH-User has sent Link_Actions.request");
++}
++
++void mih_user::link_actions_response(odtone::mih::message& msg, const boost::system::error_code& ec)
++{
++	odtone::mih::status st;
++
++	log_(0, "MIH-User has received a Link_Action.response");
++
++	msg >> odtone::mih::confirm(odtone::mih::confirm::link_actions)
++		& odtone::mih::tlv_status(st);
++
++	if(st.get() == 0) {
++		log_(0, "Action executed with Success");
++	}
++}
++
++int main(int argc, char** argv)
++{
++	odtone::setup_crash_handler();
++
++	try {
++		boost::asio::io_service ios;
++
++		// declare MIH Usr available options
++		po::options_description desc(odtone::mih::octet_string("MIH Usr Configuration"));
++		desc.add_options()
++			("help", "Display configuration options")
++			(odtone::sap::kConf_Port, po::value<ushort>()->default_value(1234), "Port")
++			(odtone::sap::kConf_File, po::value<std::string>()->default_value("mih_sensor_usr.conf"), "Configuration File")
++			(odtone::sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive Buffer Length")
++			(odtone::sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
++			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("user"), "User Id")
++			(odtone::sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "MIHF Local Communications Port")
++			(odtone::sap::kConf_MIH_SAP_dest, po::value<std::string>()->default_value(""), "MIH message destination of MIH User");
++
++		odtone::mih::config cfg(desc);
++		cfg.parse(argc, argv, odtone::sap::kConf_File);
++
++		if (cfg.help()) {
++			std::cerr << desc << std::endl;
++			return EXIT_SUCCESS;
++		}
++
++		mih_user usr(cfg, ios);
++
++		ios.run();
++
++	} catch(std::exception& e) {
++		log_(0, "exception: ", e.what());
++	}
++}
++
++// EOF ////////////////////////////////////////////////////////////////////////
+diff --git a/inc/odtone/mih/detail/archive.hpp b/inc/odtone/mih/detail/archive.hpp
+index b6d28c0..ba90b2f 100644
+--- a/inc/odtone/mih/detail/archive.hpp
++++ b/inc/odtone/mih/detail/archive.hpp
+@@ -1,6 +1,7 @@
+ //=============================================================================
+ // Brief   : Archive details
+ // Authors : Bruno Santos <bsantos@av.it.pt>
++//           Marcelo Lebre <marcelolebre@av.it.pt>
+ //------------------------------------------------------------------------------
+ // ODTONE - Open Dot Twenty One
+ //
+@@ -1145,6 +1146,147 @@ struct serialize<boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T1
+ 	}
+ };
+ 
++template<class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8, class T9, class T10, class T11, class T12, class T13>
++struct serialize<boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> > {
++	void operator()(iarchive& ar, boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>& val) const
++	{
++		octet selector;
++
++		ar & selector;
++		switch (selector) {
++		case 0:
++			val = T1();
++			ar & boost::get<T1>(val);
++			break;
++
++		case 1:
++			val = T2();
++			ar & boost::get<T2>(val);
++			break;
++
++		case 2:
++			val = T3();
++			ar & boost::get<T3>(val);
++			break;
++
++		case 3:
++			val = T4();
++			ar & boost::get<T4>(val);
++			break;
++
++		case 4:
++			val = T5();
++			ar & boost::get<T5>(val);
++			break;
++
++		case 5:
++			val = T6();
++			ar & boost::get<T6>(val);
++			break;
++
++		case 6:
++			val = T7();
++			ar & boost::get<T7>(val);
++			break;
++
++		case 7:
++			val = T8();
++			ar & boost::get<T8>(val);
++			break;
++
++		case 8:
++			val = T9();
++			ar & boost::get<T9>(val);
++			break;
++
++		case 9:
++			val = T10();
++			ar & boost::get<T10>(val);
++			break;
++
++		case 10:
++			val = T11();
++			ar & boost::get<T11>(val);
++			break;
++
++		case 11:
++			val = T12();
++			ar & boost::get<T12>(val);
++			break;
++
++		case 12:
++			val = T13();
++			ar & boost::get<T13>(val);
++			break;
++
++	//	default:
++	//		ODTONE_NEVER_HERE;
++		}
++	}
++
++	void operator()(oarchive& ar, boost::variant<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>& val) const
++	{
++		octet selector = val.which();
++
++		ar & selector;
++		switch (selector) {
++		case 0:
++			ar & boost::get<T1>(val);
++			break;
++
++		case 1:
++			ar & boost::get<T2>(val);
++			break;
++
++		case 2:
++			ar & boost::get<T3>(val);
++			break;
++
++		case 3:
++			ar & boost::get<T4>(val);
++			break;
++
++		case 4:
++			ar & boost::get<T5>(val);
++			break;
++
++		case 5:
++			ar & boost::get<T6>(val);
++			break;
++
++		case 6:
++			ar & boost::get<T7>(val);
++			break;
++
++		case 7:
++			ar & boost::get<T8>(val);
++			break;
++
++		case 8:
++			ar & boost::get<T9>(val);
++			break;
++
++		case 9:
++			ar & boost::get<T10>(val);
++			break;
++
++		case 10:
++			ar & boost::get<T11>(val);
++			break;
++
++		case 11:
++			ar & boost::get<T12>(val);
++			break;
++
++		case 12:
++			ar & boost::get<T13>(val);
++			break;
++
++	//	default:
++	//		ODTONE_NEVER_HERE;
++		}
++	}
++};
+ 
+ ///////////////////////////////////////////////////////////////////////////////
+ } /* namspace detail */
+diff --git a/inc/odtone/mih/indication.hpp b/inc/odtone/mih/indication.hpp
+index b5007ef..1f9c0ca 100644
+--- a/inc/odtone/mih/indication.hpp
++++ b/inc/odtone/mih/indication.hpp
+@@ -1,6 +1,7 @@
+ //=============================================================================
+ // Brief   : MIH Indication Message Helper
+ // Authors : Bruno Santos <bsantos@av.it.pt>
++//           Marcelo Lebre <marcelolebre@av.it.pt>
+ //------------------------------------------------------------------------------
+ // ODTONE - Open Dot Twenty One
+ //
+@@ -65,7 +66,10 @@ public:
+ 		push_information = msg_id<4, 3, 2>::value,			/**< MIH_Push_Information.indication*/
+ 		// ODTONE specific messages
+ 		link_register = msg_id<1, 3, 6>::value,				/**< Link_Register.indication	*/
+-		user_register = msg_id<1, 3, 7>::value				/**< User_Register.indication	*/
++		user_register = msg_id<1, 3, 7>::value,				/**< User_Register.indication	*/
++
++		// sensor specific messages
++		sensor_up = msg_id<2, 3, 9>::value					/**< Sensor_Up.indication		*/
+ 	};
+ 
+ 	/**
+diff --git a/inc/odtone/mih/types/capabilities.hpp b/inc/odtone/mih/types/capabilities.hpp
+index a039f73..538adf7 100644
+--- a/inc/odtone/mih/types/capabilities.hpp
++++ b/inc/odtone/mih/types/capabilities.hpp
+@@ -2,6 +2,7 @@
+ // Brief   : MIH Capabilities Types
+ // Authors : Bruno Santos <bsantos@av.it.pt>
+ //           Simao Reis   <sreis@av.it.pt>
++//           Marcelo Lebre <marcelolebre@av.it.pt>
+ //------------------------------------------------------------------------------
+ // ODTONE - Open Dot Twenty One
+ //
+@@ -52,6 +53,7 @@ enum mih_evt_list_enum {
+ 	mih_evt_link_handover_imminent = 5,		/**< Link handover imminent		*/
+ 	mih_evt_link_handover_complete = 6,		/**< Link handover complete		*/
+ 	mih_evt_link_pdu_transmit_status = 7,	/**< Link PDU transmit status	*/
++	sensor_up = 8							/**< Sensor up					*/
+ };
+ 
+ /**
+diff --git a/inc/odtone/mih/types/link.hpp b/inc/odtone/mih/types/link.hpp
+index 5f2063e..8940e39 100644
+--- a/inc/odtone/mih/types/link.hpp
++++ b/inc/odtone/mih/types/link.hpp
+@@ -2,6 +2,7 @@
+ // Brief   : MIH Link Types
+ // Authors : Bruno Santos <bsantos@av.it.pt>
+ //           Simao Reis   <sreis@av.it.pt>
++//           Marcelo Lebre <marcelolebre@av.it.pt>
+ //------------------------------------------------------------------------------
+ // ODTONE - Open Dot Twenty One
+ //
+@@ -208,6 +209,8 @@ enum link_ac_type_enum {
+ 	link_ac_type_low_power  = 2,	/**< Link low power.	*/
+ 	link_ac_type_power_down = 3,	/**< Link power down.	*/
+ 	link_ac_type_power_up   = 4,	/**< Link power up.		*/
++	link_ac_type_open_door 	= 5,	/**< Open door.			*/
++	link_ac_type_do_something = 6,	/**< Do something.		*/
+ };
+ 
+ /**
+@@ -223,6 +226,7 @@ enum link_ac_attr_enum {
+ 	link_ac_attr_scan         = 0,	/**< Link scan.				*/
+ 	link_ac_attr_res_retain   = 1,	/**< Link resource retain.	*/
+ 	link_ac_attr_data_fwd_req = 2,	/**< Link data forward.		*/
++	link_ac_attr_none         = 3,	/**< Link no attribute.		*/
+ };
+ 
+ /**
+@@ -286,7 +290,8 @@ enum link_type_enum {
+ 
+ 	link_type_802_16 = 27,			/**< Wireless - IEEE 802.16.	*/
+ 	link_type_802_20 = 28,			/**< Wireless - IEEE 802.20.	*/
+-	link_type_802_22 = 29			/**< Wireless - IEEE 802.22.	*/
++	link_type_802_22 = 29,			/**< Wireless - IEEE 802.22.	*/
++	link_type_sensor = 30			/**< Sensor type.				*/
+ };
+ 
+ /**
+@@ -502,6 +507,18 @@ enum link_param_802_22_enum {
+  */
+ typedef enumeration<link_param_802_22_enum> link_param_802_22;
+ 
++///////////////////////////////////////////////////////////////////////////////
++/**
++ * The enumeration of SENSOR_PARAM datatype.
++ */
++enum sensor_param_enum {
++	sensor_readings = 0
++};
++
++/**
++ * Define SENSOR_PARAM datatype.
++ */
++typedef enumeration<sensor_param_enum> sensor_param;
+ 
+ ///////////////////////////////////////////////////////////////////////////////
+ /**
+@@ -746,7 +763,8 @@ typedef boost::variant<link_param_gen,
+ 			link_param_hrpd,
+ 			link_param_802_16,
+ 			link_param_802_20,
+-			link_param_802_22> link_param_type;
++			link_param_802_22,
++			sensor_param> link_param_type;
+ 
+ /**
+  * LIST(LINK_PARAM_TYPE) data type.
+diff --git a/src/mihf/event_service.cpp b/src/mihf/event_service.cpp
+index 3a8e072..47719f6 100644
+--- a/src/mihf/event_service.cpp
++++ b/src/mihf/event_service.cpp
+@@ -2,6 +2,7 @@
+ // Brief   : Event Service
+ // Authors : Simao Reis <sreis@av.it.pt>
+ //           Carlos Guimarães <cguimaraes@av.it.pt>
++//           Marcelo Lebre <marcelolebre@av.it.pt>
+ //------------------------------------------------------------------------------
+ // ODTONE - Open Dot Twenty One
+ //
+@@ -940,5 +941,24 @@ bool event_service::link_pdu_transmit_status_indication(meta_message_ptr &in,
+ 	return false;
+ }
+ 
++/**
++ * Sensor Up Indication message handler.
++ *
++ * @param in input message.
++ * @param out output message.
++ * @return true if the response is sent immediately or false otherwise.
++ */
++bool event_service::sensor_up_indication(meta_message_ptr &in, meta_message_ptr&)
++{
++	ODTONE_LOG(1, "(mies) received Sensor_Up.indication from ",
++	    in->source().to_string());
++
++	_link_abook.reset(in->source().to_string());
++
++	link_event_forward(in, mih::sensor_up);
++
++	return false;
++}
++
+ } /* namespace mihf */ } /* namespace odtone */
+ // EOF ////////////////////////////////////////////////////////////////////////
+diff --git a/src/mihf/event_service.hpp b/src/mihf/event_service.hpp
+index 41e068f..45dd6fe 100644
+--- a/src/mihf/event_service.hpp
++++ b/src/mihf/event_service.hpp
+@@ -2,6 +2,7 @@
+ // Brief   : Event Service
+ // Authors : Simao Reis <sreis@av.it.pt>
+ //           Carlos Guimarães <cguimaraes@av.it.pt>
++//           Marcelo Lebre <marcelolebre@av.it.pt>
+ //------------------------------------------------------------------------------
+ // ODTONE - Open Dot Twenty One
+ //
+@@ -222,6 +223,16 @@ public:
+ 	bool link_pdu_transmit_status_indication(meta_message_ptr &in,
+ 						 meta_message_ptr &out);
+ 
++	/**
++	 * Sensor Up Indication message handler.
++	 *
++	 * @param in input message.
++	 * @param out output message.
++	 * @return true if the response is sent immediately or false otherwise.
++	 */
++	bool sensor_up_indication(meta_message_ptr &in,
++				meta_message_ptr &out);
++
+ protected:
+ 	/**
+ 	 * Forward the message for all users subscribed to event from the
+diff --git a/src/mihf/main.cpp b/src/mihf/main.cpp
+index f2ff6eb..2b1ae6d 100644
+--- a/src/mihf/main.cpp
++++ b/src/mihf/main.cpp
+@@ -2,6 +2,7 @@
+ // Brief   : ODTONE MIHF
+ // Authors : Simao Reis <sreis@av.it.pt>
+ //           Carlos Guimarães <cguimaraes@av.it.pt>
++//           Marcelo Lebre <marcelolebre@av.it.pt>
+ //------------------------------------------------------------------------------
+ // ODTONE - Open Dot Twenty One
+ //
+@@ -292,6 +293,7 @@ void set_links(mih::octet_string &list, link_book &lbook)
+ 		enum_map["802_16"]        = odtone::mih::link_type_802_16;
+ 		enum_map["802_20"]        = odtone::mih::link_type_802_20;
+ 		enum_map["802_22"]        = odtone::mih::link_type_802_22;
++		enum_map["Sensor"]        = odtone::mih::link_type_sensor;
+ 
+ 		mih::link_id lid;
+ 		if(enum_map.find(tec) != enum_map.end())
+@@ -323,6 +325,12 @@ void set_links(mih::octet_string &list, link_book &lbook)
+ 				throw "not supported yet";
+ 			break;
+ 
++			case mih::link_type_sensor: {
++				mih::other_l2_addr sensor_addr;
++				sensor_addr.value = address;
++				lid.addr = sensor_addr;
++			} break;
++
+ 			default: {
+ 				throw "invalid technology";
+ 			} break;
+@@ -455,6 +463,9 @@ void mies_register_callbacks(event_service &mies)
+ 	sac_register_callback(mih::indication::link_handover_complete,
+ 			      boost::bind(&event_service::link_handover_complete_indication,
+ 					  boost::ref(mies), _1, _2));
++	sac_register_callback(mih::indication::sensor_up,
++			      boost::bind(&event_service::sensor_up_indication,
++					  boost::ref(mies), _1, _2));
+ 	sac_register_callback(mih::request::event_unsubscribe,
+ 			      boost::bind(&event_service::event_unsubscribe_request,
+ 			      boost::ref(mies), _1, _2));
+diff --git a/src/mihf/odtone.conf b/src/mihf/odtone.conf
+index 445002c..789335f 100644
+--- a/src/mihf/odtone.conf
++++ b/src/mihf/odtone.conf
+@@ -1,6 +1,7 @@
+ #===============================================================================
+ # Brief   : MIHF configuration file
+ # Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
++#           Marcelo Lebre <marcelolebre@av.it.pt>
+ #-------------------------------------------------------------------------------
+ # ODTONE - Open Dot Twenty One
+ #
+@@ -59,7 +60,7 @@ users = user 1234
+ ##
+ ## Usage: links = <link sap id> <port> <techonoly type> <interface>, ...
+ ##
+-links = link 1235 802_11 00:11:22:33:44:55
++links = sensor_sap 1235 Sensor sensoraddress
+ 
+ ##
+ ## Comma separated list of the MIHF's transport protocol
+-- 
+1.7.5.4
+
