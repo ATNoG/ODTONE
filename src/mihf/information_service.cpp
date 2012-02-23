@@ -136,17 +136,27 @@ bool information_service::get_information_response(meta_message_ptr &in,
 bool information_service::push_information_request(meta_message_ptr &in,
 						   meta_message_ptr &out)
 {
-	ODTONE_LOG(1, "(miis) received a Get_Information.request from ",
+	ODTONE_LOG(1, "(miis) received a MIH_Push_information.request from ",
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
-		//
-		// Kick this message to Information Service.
-		//
-		in->destination(mih::id("miis"));
-		_lpool.add(in);
-		in->source(mihfid);
-		_transmit(in);
+		if(in->is_local())
+			in->source(mihfid);
+
+		// Forward this message to MIH-User for handover as an indication
+		in->opcode(mih::operation::indication);
+		std::vector<mih::octet_string> user_list = _user_abook.get_ids();
+		BOOST_FOREACH(mih::octet_string id, user_list) {
+			user_entry user = _user_abook.get(id);
+			if(user.supp_iq.is_initialized()) {
+				in->destination(mih::id(id));
+				_transmit(in);
+			}
+		}
+
+		// Restore the original opcode after sending the indication message
+		in->opcode(mih::operation::request);
+		return false;
 
 		return false;
 	} else {
