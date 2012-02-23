@@ -87,10 +87,10 @@ std::vector<periodic_report_data> period_rpt_list;
 ///////////////////////////////////////////////////////////////////////////////
 
 void dispatch_link_up(mih::link_tuple_id &lid,
-		boost::optional<mih::link_addr> &old_router,
-		boost::optional<mih::link_addr> &new_router,
-		boost::optional<bool> &ip_renew,
-		boost::optional<mih::ip_mob_mgmt> &mobility_management)
+	boost::optional<mih::link_addr> &old_router,
+	boost::optional<mih::link_addr> &new_router,
+	boost::optional<bool> &ip_renew,
+	boost::optional<mih::ip_mob_mgmt> &mobility_management)
 {
 	if (!subscribed_event_list.get(mih::evt_link_up)) {
 		return;
@@ -110,8 +110,8 @@ void dispatch_link_up(mih::link_tuple_id &lid,
 }
 
 void dispatch_link_down(mih::link_tuple_id &lid,
-		boost::optional<mih::link_addr> &old_router,
-		mih::link_dn_reason &rs)
+	boost::optional<mih::link_addr> &old_router,
+	mih::link_dn_reason &rs)
 {
 	if (!subscribed_event_list.get(mih::evt_link_down)) {
 		return;
@@ -144,7 +144,7 @@ void dispatch_link_detected(mih::link_det_info &l)
 }
 
 void dispatch_link_parameters_report(mih::link_tuple_id lid,
-		mih::link_param_rpt_list &rpt_list)
+	mih::link_param_rpt_list &rpt_list)
 {
 	if (!subscribed_event_list.get(mih::evt_link_parameters_report)) {
 		return;
@@ -367,10 +367,10 @@ void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
 // Aditionally, will fail if requesting any parameter outside of this list:
 // - link_param_802_11_rssi, link_states_req_op_mode, link_states_req_channel_id
 void handle_link_get_parameters(if_80211 &fi,
-		uint16 tid,
-		mih::link_param_type_list &param_list,
-		mih::link_states_req &states_req,
-		mih::link_desc_req &desc_req)
+	uint16 tid,
+	mih::link_param_type_list &param_list,
+	mih::link_states_req &states_req,
+	mih::link_desc_req &desc_req)
 {
 	log_(0, "(command) Handling link_get_parameters");
 
@@ -467,9 +467,9 @@ void handle_link_get_parameters(if_80211 &fi,
 // Dispatch a link_configure_thresholds confirm
 // Partially supported. Only RSSI, for now!
 void handle_link_configure_thresholds(boost::asio::io_service &ios,
-		if_80211 &fi,
-		uint16 tid,
-		mih::link_cfg_param_list &param_list)
+	if_80211 &fi,
+	uint16 tid,
+	mih::link_cfg_param_list &param_list)
 {
 	log_(0, "(command) Handling link_configure_thresholds");
 
@@ -552,7 +552,7 @@ void handle_link_configure_thresholds(boost::asio::io_service &ios,
 				periodic_report_data p;
 				p.type = *type;
 				std::unique_ptr<timer_task> timer(new timer_task(ios, *period,
-						boost::bind(&periodic_report_data::_report_value, boost::ref(p), boost::ref(ios), boost::ref(fi))));
+					boost::bind(&periodic_report_data::_report_value, boost::ref(p), boost::ref(ios), boost::ref(fi))));
 				p.task = std::move(timer);
 
 				p.task->start();
@@ -615,11 +615,11 @@ void handle_link_configure_thresholds(boost::asio::io_service &ios,
 // Low power mode cannot be enforced here,
 // instead we just enable power saving features on the device.
 void handle_link_actions(boost::asio::io_service &ios,
-		if_80211 &fi,
-		uint16 tid,
-		mih::link_action &action,
-		uint16 &delay,
-		boost::optional<mih::link_addr> &poa)
+	if_80211 &fi,
+	uint16 tid,
+	mih::link_action &action,
+	uint16 &delay,
+	boost::optional<mih::link_addr> &poa)
 {
 	log_(0, "(command) Handling link_action");
 

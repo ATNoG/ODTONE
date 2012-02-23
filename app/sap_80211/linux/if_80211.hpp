@@ -44,7 +44,7 @@ class if_80211 : boost::noncopyable {
 	                             boost::optional<mih::ip_mob_mgmt> &mobility_management)> link_up_handler;
 
 	typedef boost::function<void(mih::link_tuple_id &tuple_id,
-	                             boost::optional< mih::link_addr> &old_router,
+	                             boost::optional<mih::link_addr> &old_router,
 	                             mih::link_dn_reason &dn_reason)> link_down_handler;
 
 	typedef boost::function<void(mih::link_det_info &det_info)> link_detected_handler;
@@ -83,9 +83,9 @@ public:
 
 		boost::asio::io_service &_ios;
 
-		boost::optional<link_up_handler>                _up_handler;
-		boost::optional<link_down_handler>              _down_handler;
-		boost::optional<link_detected_handler>          _detected_handler;
+		boost::optional<link_up_handler>       _up_handler;
+		boost::optional<link_down_handler>     _down_handler;
+		boost::optional<link_detected_handler> _detected_handler;
 
 		bool				  _scanning;
 		int                   _family_id;
