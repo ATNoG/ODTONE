@@ -401,6 +401,26 @@ mih::link_id if_80211::link_id()
 	return id;
 }
 
+bool if_80211::link_up()
+{
+	nlwrap::rtnl_link_cache cache;
+	nlwrap::rtnl_link link(cache.get_by_ifindex(_ctx._ifindex));
+
+	return link.get_flags() & IFF_RUNNING;
+}
+
+poa_info if_80211::get_poa_info()
+{
+	scan_results_data d(_ctx);
+	fetch_scan_results(d);
+
+	if (!d.associated_index) {
+		throw "Not associated to a POA";
+	}
+
+	return d.l[d.associated_index.get()];
+}
+
 void if_80211::trigger_scan(bool wait)
 {
 	log_(0, "(command) Triggering scan");
@@ -448,18 +468,6 @@ mih::link_scan_rsp_list if_80211::get_scan_results()
 	}
 
 	return l;
-}
-
-poa_info if_80211::get_poa_info()
-{
-	scan_results_data d(_ctx);
-	fetch_scan_results(d);
-
-	if (!d.associated_index) {
-		throw "Not associated to a POA";
-	}
-
-	return d.l[d.associated_index.get()];
 }
 
 mih::op_mode_enum if_80211::get_op_mode()

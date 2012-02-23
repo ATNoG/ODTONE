@@ -37,6 +37,8 @@
 #include "linux/if_80211.hpp"
 #include "timer_task.hpp"
 
+#define STOP_SCHED_SCAN_ON_L2_UP
+
 namespace po = boost::program_options;
 using namespace odtone;
 
@@ -73,6 +75,7 @@ static logger log_("sap_80211", std::cout);
 
 std::unique_ptr<sap::link>  ls;
 std::unique_ptr<timer_task> threshold_check_task;
+std::unique_ptr<timer_task> scheduled_scan_task;
 
 mih::link_evt_list capabilities_event_list;
 mih::link_cmd_list capabilities_command_list;
@@ -92,6 +95,13 @@ void dispatch_link_up(mih::link_tuple_id &lid,
 	boost::optional<bool> &ip_renew,
 	boost::optional<mih::ip_mob_mgmt> &mobility_management)
 {
+#ifdef STOP_SCHED_SCAN_ON_L2_UP
+	if (scheduled_scan_task && scheduled_scan_task->running()) {
+		log_(0, "Stopping scheduled scan");
+		scheduled_scan_task->stop();
+	}
+#endif /* STOP_SCHED_SCAN_ON_L2_UP */
+
 	if (!subscribed_event_list.get(mih::evt_link_up)) {
 		return;
 	}
@@ -113,6 +123,13 @@ void dispatch_link_down(mih::link_tuple_id &lid,
 	boost::optional<mih::link_addr> &old_router,
 	mih::link_dn_reason &rs)
 {
+#ifdef STOP_SCHED_SCAN_ON_L2_UP
+	if (scheduled_scan_task && !scheduled_scan_task->running()) {
+		log_(0, "Resuming scheduled scan");
+		scheduled_scan_task->start();
+	}
+#endif /* STOP_SCHED_SCAN_ON_L2_UP */
+
 	if (!subscribed_event_list.get(mih::evt_link_down)) {
 		return;
 	}
@@ -265,6 +282,17 @@ void periodic_report_data::_report_value(boost::asio::io_service &ios, if_80211 
 
 	ios.dispatch(boost::bind(&dispatch_link_parameters_report, lid, rpt_list));
 }
+
+void scheduled_scan_trigger(if_80211 &fi)
+{
+	log_(0, "Triggering scheduled scan");
+	try {
+		fi.trigger_scan(false);
+	} catch(...) {
+		log_(0, "Error triggering scheduled scan");
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //// Command handling functions
 ///////////////////////////////////////////////////////////////////////////////
@@ -854,6 +882,7 @@ int main(int argc, char** argv)
 			return EXIT_SUCCESS;
 		}
 
+		uint sched_scan_period = cfg.get<uint>(kConf_Sched_Scan_Period);
 		uint th_period = cfg.get<uint>(kConf_Default_Threshold_Period);
 		if (th_period == 0) {
 			std::cerr << "default_th_period must be positive!" << std::endl;
@@ -864,23 +893,36 @@ int main(int argc, char** argv)
 		set_supported_command_list();
 
 		boost::asio::io_service ios;
+
 		if_80211 fi(ios, mih::mac_addr(cfg.get<std::string>(sap::kConf_Interface_Addr)));
+		mih::link_id id = fi.link_id();
 
 		std::unique_ptr<sap::link> _ls(new sap::link(cfg, ios,
 			boost::bind(&default_handler, boost::ref(ios), boost::ref(fi), _1, _2)));
 		ls = std::move(_ls);
+		mihf_sap_init(id);
 
 		std::unique_ptr<timer_task> _threshold_check_task(new timer_task(ios, th_period,
 			boost::bind(&global_thresholds_check, boost::ref(ios), boost::ref(fi))));
 		threshold_check_task = std::move(_threshold_check_task);
 
+		if (sched_scan_period > 0) {
+			std::unique_ptr<timer_task> _scheduled_scan_task(new timer_task(ios, sched_scan_period,
+				boost::bind(&scheduled_scan_trigger, boost::ref(fi))));
+			scheduled_scan_task = std::move(_scheduled_scan_task);
+#ifndef STOP_SCHED_SCAN_ON_L2_UP
+			scheduled_scan_task->start();
+#else
+			if (!fi.link_up()) {
+				scheduled_scan_task->start();
+			}
+#endif /* STOP_SCHED_SCAN_ON_L2_UP */
+		}
+
 		fi.link_up_callback(boost::bind(&dispatch_link_up, _1, _2, _3, _4, _5));
 		fi.link_down_callback(boost::bind(&dispatch_link_down, _1, _2, _3));
 		fi.link_detected_callback(boost::bind(&dispatch_link_detected, _1));
 
-		mih::link_id id = fi.link_id();
-
-		mihf_sap_init(id);
 		ios.run();
 	} catch(std::exception &e) {
 		std::cerr << "Exception: " << e.what() << std::endl;
