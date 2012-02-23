@@ -557,9 +557,6 @@ void miis_register_callbacks(information_service &miis)
 	sac_register_callback(mih::request::push_information,
 			      boost::bind(&information_service::push_information_request,
 					  boost::ref(miis), _1, _2));
-	sac_register_callback(mih::indication::push_information,
-			      boost::bind(&information_service::push_information_indication,
-					  boost::ref(miis), _1, _2));
 }
 
 int main(int argc, char **argv)

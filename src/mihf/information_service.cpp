@@ -157,34 +157,4 @@ bool information_service::push_information_request(meta_message_ptr &in,
 	return false;
 }
 
-/**
- * MIH Push Information Indication message handler.
- *
- * @param in The input message.
- * @param out The output message.
- * @return True if the response is sent immediately or false otherwise.
- */
-bool information_service::push_information_indication(meta_message_ptr &in,
-						      meta_message_ptr &out)
-{
-	ODTONE_LOG(1, "(miis) received Push_Information.indication from ",
-	    in->source().to_string());
-
-	if(!_lpool.set_user_tid(in)) {
-		ODTONE_LOG(1, "(miis) warning: no local transaction for this msg ",
-		    "discarding it");
-
-		return false;
-	}
-
-	in->source(mihfid);
-
-	ODTONE_LOG(1, "(miis) forwarding Push_Information.indication to ",
-	    in->destination().to_string());
-
-	_transmit(in);
-
-	return false;
-}
-
 } /* namespace mihf */ } /* namespace odtone */
