@@ -16,7 +16,6 @@
 //==============================================================================
 
 #include "rtnl_link_cache.hpp"
-#include <boost/throw_exception.hpp>
 
 namespace nlwrap {
 

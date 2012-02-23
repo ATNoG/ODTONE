@@ -209,13 +209,12 @@ void fetch_scan_results(scan_results_data &data)
 	}
 
 	if (cb.error()) {
-		throw "error, code: " + boost::lexical_cast<std::string>(cb.error_code());
+		throw "Error, code: " + boost::lexical_cast<std::string>(cb.error_code());
 	}
 
 	log_(0, "(command) Dumped ", data.l.size(), " scan results");
 }
 
-// TODO this is bloat, think in algorithmic terms, not coding
 void dispatch_strongest_scan_results(scan_results_data &d)
 {
 	std::sort(d.l.begin(), d.l.end(), // sort by strongest signal
@@ -428,7 +427,7 @@ void if_80211::trigger_scan(bool wait)
 	}
 
 	if (cb.error()) {
-		throw "netlink error, code: " + boost::lexical_cast<std::string>(cb.error_code());
+		throw "Netlink error, code: " + boost::lexical_cast<std::string>(cb.error_code());
 	}
 
 	log_(0, "(command) Scan triggered");
@@ -558,7 +557,7 @@ void if_80211::set_op_mode(const mih::link_ac_type_enum &mode)
 		}
 		break;
 	default:
-		throw "mode not supported";
+		throw "Mode not supported";
 		break;
 	}
 }

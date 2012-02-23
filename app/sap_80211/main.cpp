@@ -233,6 +233,7 @@ void global_thresholds_check(boost::asio::io_service &ios, if_80211 &fi)
 // For periodic metric reporting
 void periodic_report_data::_report_value(boost::asio::io_service &ios, if_80211 &fi)
 {
+	// Periodic reports don't need to be subscribed?
 //	if (!subscribed_event_list.get(mih::evt_link_parameters_report)) {
 //		return;
 //	}
@@ -621,7 +622,6 @@ void handle_link_actions(boost::asio::io_service &ios,
 		boost::optional<mih::link_addr> &poa)
 {
 	log_(0, "(command) Handling link_action");
-	// Use specific "ac_results" instead of status failure?
 
 	try {
 		// This should be processed after the delay, but
@@ -883,11 +883,11 @@ int main(int argc, char** argv)
 		mihf_sap_init(id);
 		ios.run();
 	} catch(std::exception &e) {
-		std::cerr << "exception: " << e.what() << std::endl;
+		std::cerr << "Exception: " << e.what() << std::endl;
 	} catch(std::string &str) {
-		std::cerr << "exception: " << str << std::endl;
+		std::cerr << "Exception: " << str << std::endl;
 	} catch(const char *str) {
-		std::cerr << "exception: " << str << std::endl;
+		std::cerr << "Exception: " << str << std::endl;
 	}
 }
 
