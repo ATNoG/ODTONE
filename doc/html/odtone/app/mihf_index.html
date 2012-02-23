@@ -61,26 +61,25 @@
             next:
           </p>
 <p>
-            
 </p>
 <pre class="programlisting">MIHF Configuration Options:
-   --help                               Display configuration options
-   --conf.file arg (=odtone.conf)       Configuration file
-   --conf.recv_buff_len arg (=4096)     Receive buffer length
-   --mihf.id arg (=mihf)                MIHF ID
-   --mihf.ip arg (=127.0.0.1)           MIHF IP
-   --mihf.remote_port arg (=4551)       Remote MIHF communication port
-   --mihf.local_port arg (=1025)        Local SAPs communication port
-   --mihf.peers arg                     List of peer MIHFs
-   --mihf.users arg                     List of local MIH-Users
-   --mihf.links arg                     List of local Links SAPs
-   --mihf.transport arg (=udp, tcp)     List of supported transport protocols
-   --mihf.link_response_time arg (=300) Link SAP response time (milliseconds)
-   --mihf.link_delete arg (=2)          Link SAP response fails to forget
-   --mihf.discover arg                  MIHF Discovery Mechanisms Order
-   --enable_broadcast                   Allows broadcast messages
-   --enable_unsolicited                 Allows unsolicited discovery
-   --log arg (=1)                       Log level [0-4]
+   --help                                Display configuration options
+   --conf.file arg (=odtone.conf)        Configuration file
+   --conf.recv_buff_len arg (=4096)      Receive buffer length
+   --mihf.id arg (=mihf)                 MIHF ID
+   --mihf.ip arg (=127.0.0.1)            MIHF IP
+   --mihf.remote_port arg (=4551)        Remote MIHF communication port
+   --mihf.local_port arg (=1025)         Local SAPs communication port
+   --mihf.peers arg                      List of peer MIHFs
+   --mihf.users arg                      List of local MIH-Users
+   --mihf.links arg                      List of local Links SAPs
+   --mihf.transport arg (=udp, tcp)      List of supported transport protocols
+   --mihf.link_response_time arg (=3000) Link SAP response time (milliseconds)
+   --mihf.link_delete arg (=2)           Link SAP response fails to forget
+   --mihf.discover arg                   MIHF Discovery Mechanisms Order
+   --enable_broadcast                    Allows broadcast messages
+   --enable_unsolicited                  Allows unsolicited discovery
+   --log arg (=1)                        Log level [0-4]
 </pre>
 <p>
           </p>
@@ -128,9 +127,9 @@
             </p>
 </td></tr>
 </table></div>
-<a name="odtone.app.mihf_index.mihf_getStart.configuration.example"></a><h6>
-<a name="odtone.app.mihf_index.mihf_getStart.configuration.example-heading"></a>
-            <a class="link" href="mihf_index.html#odtone.app.mihf_index.mihf_getStart.configuration.example">Example</a>
+<h6>
+<a name="odtone.app.mihf_index.mihf_getStart.configuration.h0"></a>
+            <span><a name="odtone.app.mihf_index.mihf_getStart.configuration.example"></a></span><a class="link" href="mihf_index.html#odtone.app.mihf_index.mihf_getStart.configuration.example">Example</a>
           </h6>
 <p>
             The ODTONE-MIHF allows you to statically configure the peer MIHFs by
@@ -141,7 +140,7 @@
 <pre class="programlisting">&lt;mihf_id&gt; &lt;ip&gt; &lt;port&gt; &lt;list of supported transport protocols&gt;
 </pre>
 <p>
-            The ODTONE-MIHF configuration file can look like: 
+            The ODTONE-MIHF configuration file can look like:
 </p>
 <pre class="programlisting">[mihf]
 id = mihf1
@@ -182,9 +181,9 @@ transport = udp
             <span class="inlinemediaobject"><img src="../.././images/mihf_arch.png" alt="mihf_arch"></span>
           </p>
 </div>
-<a name="odtone.app.mihf_index.mihf_internal_arch.components"></a><h6>
-<a name="odtone.app.mihf_index.mihf_internal_arch.components-heading"></a>
-          <a class="link" href="mihf_index.html#odtone.app.mihf_index.mihf_internal_arch.components">Components</a>
+<h6>
+<a name="odtone.app.mihf_index.mihf_internal_arch.h0"></a>
+          <span><a name="odtone.app.mihf_index.mihf_internal_arch.components"></a></span><a class="link" href="mihf_index.html#odtone.app.mihf_index.mihf_internal_arch.components">Components</a>
         </h6>
 <p>
           The ODTONE's MIHF implements the three core MIH services, each containing

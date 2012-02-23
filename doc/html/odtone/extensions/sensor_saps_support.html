@@ -6,14 +6,14 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../extensions.html" title="ODTONE Extensions">
-<link rel="prev" href="remote_discovery.html" title="Remote discovery">
+<link rel="prev" href="mih_protocol_c_interface.html" title="MIH Protocol C interface">
 <link rel="next" href="../library.html" title="Libraries">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="remote_discovery.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../extensions.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="../library.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="mih_protocol_c_interface.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../extensions.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="../library.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -22,8 +22,9 @@
 <div class="toc"><dl>
 <dt><span class="section"><a href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.introduction">Introduction</a></span></dt>
 <dt><span class="section"><a href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.requirements">Requirements</a></span></dt>
+<dt><span class="section"><a href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.instalation">Instalation</a></span></dt>
 <dt><span class="section"><a href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.configuration">Configuration</a></span></dt>
-<dt><span class="section"><a href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.sterp_by_step">Sterp-by-Step</a></span></dt>
+<dt><span class="section"><a href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.step_by_step">Step-by-Step</a></span></dt>
 <dt><span class="section"><a href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough">Technical
         Walkthrough</a></span></dt>
 <dt><span class="section"><a href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.publications">Publications</a></span></dt>
@@ -45,8 +46,8 @@
           networks.
         </p>
 <p>
-          In this walkthrough we will demonstrate how to setup, deploy and run the
-          Sensor SAP demo released on the ODTONE latest version using SunSPOTs.
+          In this walkthrough we will demonstrate how to install, setup, deploy and
+          run the Sensor SAP demo released on the ODTONE 0.4 version using SunSPOTs.
         </p>
 </div>
 <div class="section">
@@ -70,10 +71,29 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.extensions.sensor_saps_support.instalation"></a><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.instalation" title="Instalation">Instalation</a>
+</h4></div></div></div>
+<p>
+          In the "extensions/sensors" folder you will find:
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              <span class="bold"><strong>0001-PATCH-Sensor-support.patch</strong></span>: this
+              file contains the changes to the MIHF and the MIH Protocol to support
+              sensors. You can apply it by running the <span class="emphasis"><em>git am &lt;path-to-patch&gt;</em></span>.
+            </li>
+<li class="listitem">
+              <span class="bold"><strong>Dummy_Sensor_SAP</strong></span>: this folder contains
+              the Dummy Sensor SAP Netbeans project.
+            </li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
 <a name="odtone.extensions.sensor_saps_support.configuration"></a><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.configuration" title="Configuration">Configuration</a>
 </h4></div></div></div>
 <p>
-          The ODTONE-MIHF configuration file: 
+          The ODTONE-MIHF configuration file:
 </p>
 <pre class="programlisting">[mihf]
 id = mihf1
@@ -89,7 +109,7 @@ transport = udp
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="odtone.extensions.sensor_saps_support.sterp_by_step"></a><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.sterp_by_step" title="Sterp-by-Step">Sterp-by-Step</a>
+<a name="odtone.extensions.sensor_saps_support.step_by_step"></a><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.step_by_step" title="Step-by-Step">Step-by-Step</a>
 </h4></div></div></div>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -142,44 +162,44 @@ transport = udp
 <p>
           <span class="inlinemediaobject"><img src="../.././images/sensor_scenario.png" alt="sensor_scenario"></span>
         </p>
-<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.event_subscription__a_"></a><h5>
-<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.event_subscription__a_-heading"></a>
-          <a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough.event_subscription__a_">Event
+<h5>
+<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.h0"></a>
+          <span><a name="odtone.extensions.sensor_saps_support.technical_walkthrough.event_subscription__a_"></a></span><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough.event_subscription__a_">Event
           Subscription (A)</a>
         </h5>
 <p>
           - In this message the TLV Parameter &#8220;RequestedMIHEventList&#8221; is configured
           so that Sensor_UP and Link_Parameter_Report events are subscribed.
         </p>
-<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.threshold_configuration__b_"></a><h5>
-<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.threshold_configuration__b_-heading"></a>
-          <a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough.threshold_configuration__b_">Threshold
+<h5>
+<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.h1"></a>
+          <span><a name="odtone.extensions.sensor_saps_support.technical_walkthrough.threshold_configuration__b_"></a></span><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough.threshold_configuration__b_">Threshold
           Configuration (B)</a>
         </h5>
 <p>
           - The threshold configuration is set to trigger an action when the value
           of 25 (not specified the type of sensor) is crossed above threshold.
         </p>
-<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.operation_parameters__c_"></a><h5>
-<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.operation_parameters__c_-heading"></a>
-          <a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough.operation_parameters__c_">Operation
+<h5>
+<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.h2"></a>
+          <span><a name="odtone.extensions.sensor_saps_support.technical_walkthrough.operation_parameters__c_"></a></span><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough.operation_parameters__c_">Operation
           Parameters (C)</a>
         </h5>
 <p>
           - This message allows the user to retrieve the operation mode of the sensors.
         </p>
-<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.actions__d_"></a><h5>
-<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.actions__d_-heading"></a>
-          <a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough.actions__d_">Actions
+<h5>
+<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.h3"></a>
+          <span><a name="odtone.extensions.sensor_saps_support.technical_walkthrough.actions__d_"></a></span><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough.actions__d_">Actions
           (D)</a>
         </h5>
 <p>
           - The Link actions message will request that the sensor returns a message
           with the sensor present readings.
         </p>
-<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.events__e_and_f_"></a><h5>
-<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.events__e_and_f_-heading"></a>
-          <a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough.events__e_and_f_">Events
+<h5>
+<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.h4"></a>
+          <span><a name="odtone.extensions.sensor_saps_support.technical_walkthrough.events__e_and_f_"></a></span><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough.events__e_and_f_">Events
           (E and F)</a>
         </h5>
 <p>
@@ -237,7 +257,7 @@ transport = udp
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="remote_discovery.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../extensions.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="../library.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="mih_protocol_c_interface.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../extensions.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="../library.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

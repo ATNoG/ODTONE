@@ -74,7 +74,6 @@
             the destination MIHF and waits for its response.
           </p>
 <p>
-            
 </p>
 <pre class="programlisting">msg &lt;&lt; odtone::mih::request(odtone::mih::request::capability_discover, _mihfid);
 _mihf.async_send(msg, boost::bind(&amp;mih_user::capability_discover_response, this, _1, _2));
@@ -86,7 +85,6 @@ _mihf.async_send(msg, boost::bind(&amp;mih_user::capability_discover_response, t
             the MIH-User will subscribe to all supported events.
           </p>
 <p>
-            
 </p>
 <pre class="programlisting">msg &gt;&gt; odtone::mih::response()
 	&amp; odtone::mih::tlv_status(st)
@@ -115,7 +113,6 @@ if (ntal &amp;&amp; evt) {
             At this moment, MIHF knows which events must forward to the MIH-User.
           </p>
 <p>
-            
 </p>
 <pre class="programlisting">void event_handler(odtone::mih::message&amp; msg, const boost::system::error_code&amp; ec);
 </pre>
@@ -169,7 +166,6 @@ if (ntal &amp;&amp; evt) {
             the actions that will performe for a particular event reception.
           </p>
 <p>
-            
 </p>
 <pre class="programlisting">void mih_user::event_handler(odtone::mih::message&amp; msg, const boost::system::error_code&amp; ec)
 {
@@ -192,7 +188,7 @@ if (ntal &amp;&amp; evt) {
           </p>
 <p>
             You can also define other handlers that will be responsible for handling
-            the response message: 
+            the response message:
 </p>
 <pre class="programlisting">void new_handler(odtone::mih::message&amp; msg, const boost::system::error_code&amp; ec);
 </pre>
@@ -200,14 +196,14 @@ if (ntal &amp;&amp; evt) {
           </p>
 <p>
             It must be associated with the sent message, so when the response arrives
-            the handler is called: 
+            the handler is called:
 </p>
 <pre class="programlisting">_mihf.async_send(msg, boost::bind(&amp;mih_user::new_handler, this, _1, _2));
 </pre>
 <p>
           </p>
 <p>
-            It can be defined as the default handler of the MIH-User: 
+            It can be defined as the default handler of the MIH-User:
 </p>
 <pre class="programlisting">mih_user::mih_user(const odtone::mih::config&amp; cfg, boost::asio::io_service&amp; io)
 	: _mihf(cfg, io, boost::bind(&amp;mih_user::new_handler, this, _1, _2))

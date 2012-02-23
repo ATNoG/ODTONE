@@ -68,7 +68,7 @@
 <p>
             The DHCP-User does not need provide any information during the registration
             process. To give this entity the discovery role, it must be configured
-            in the MIHF using the following option: 
+            in the MIHF using the following option:
 </p>
 <pre class="programlisting">[mihf]
 discovery = DNS
@@ -102,9 +102,9 @@ discovery = DNS
             in the DNS messages can be enable or disable using the <span class="emphasis"><em>--user.additional_rr</em></span>
             option.
           </p>
-<a name="odtone.app.dns_usr_index.dns_usr_getStart.configuration.bind_configuration_example"></a><h4>
-<a name="odtone.app.dns_usr_index.dns_usr_getStart.configuration.bind_configuration_example-heading"></a>
-            <a class="link" href="dns_usr_index.html#odtone.app.dns_usr_index.dns_usr_getStart.configuration.bind_configuration_example">BIND
+<h4>
+<a name="odtone.app.dns_usr_index.dns_usr_getStart.configuration.h0"></a>
+            <span><a name="odtone.app.dns_usr_index.dns_usr_getStart.configuration.bind_configuration_example"></a></span><a class="link" href="dns_usr_index.html#odtone.app.dns_usr_index.dns_usr_getStart.configuration.bind_configuration_example">BIND
             configuration example</a>
           </h4>
 <p>
@@ -112,7 +112,6 @@ discovery = DNS
             code:
           </p>
 <p>
-            
 </p>
 <pre class="programlisting">zone "odtone.test" IN {
     type master;
@@ -123,7 +122,7 @@ discovery = DNS
           </p>
 <p>
             Then create a file named <span class="emphasis"><em>odtone.dnszone</em></span> which will
-            include the next content: 
+            include the next content:
 </p>
 <pre class="programlisting">$ORIGIN odtone.test.
 $TTL 1W

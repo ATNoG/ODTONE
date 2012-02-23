@@ -51,12 +51,12 @@
           </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-                Passing it directly in command line: 
+                Passing it directly in command line:
 <pre class="programlisting">--port=&lt;port number&gt;
 </pre>
               </li>
 <li class="listitem">
-                or configuring it in the configuration file: 
+                or configuring it in the configuration file:
 <pre class="programlisting">port = &lt;port number&gt;
 </pre>
               </li>
@@ -72,7 +72,7 @@
           </p>
 <p>
             <span class="bold"><strong>1st step:</strong></span> Define a new configuration
-            option. 
+            option.
 </p>
 <pre class="programlisting">desc.add_options()
 	// ...
@@ -86,7 +86,6 @@
             for creating and sending the message.
           </p>
 <p>
-            
 </p>
 <pre class="programlisting">void send_newMessage(handler &amp;sap, const char *dst)
 {
@@ -103,7 +102,7 @@
           </p>
 <p>
             <span class="bold"><strong>3rd step:</strong></span> Add a condition in the main
-            function to decide which message will be sent. 
+            function to decide which message will be sent.
 </p>
 <pre class="programlisting">if (cfg.count(kConf_MIH_NewMessage)) {
 	std::cout &lt;&lt; "sent a new message" &lt;&lt; std::endl;
