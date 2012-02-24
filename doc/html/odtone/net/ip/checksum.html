@@ -28,33 +28,33 @@
 <span class="keyword">class</span> <a class="link" href="checksum.html" title="Class checksum">checksum</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="checksum.html#odtone.net.ip.checksumconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="checksum.html#idp5059312-bb"><span class="identifier">checksum</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="checksum.html#idp5084816-bb"><span class="identifier">checksum</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="checksum.html#idp5053416-bb">public member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="checksum.html#idp5053600-bb"><span class="identifier">update</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="checksum.html#idp5055576-bb"><span class="identifier">update</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint16</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">uint16</span> <a class="link" href="checksum.html#idp5057552-bb"><span class="identifier">final</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="checksum.html#idp5058600-bb"><span class="identifier">clear</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="checksum.html#idp5078920-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="checksum.html#idp5079104-bb"><span class="identifier">update</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="checksum.html#idp5081080-bb"><span class="identifier">update</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint16</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">uint16</span> <a class="link" href="checksum.html#idp5083056-bb"><span class="identifier">final</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="checksum.html#idp5084104-bb"><span class="identifier">clear</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp20225320"></a><h2>Description</h2>
+<a name="idp20220976"></a><h2>Description</h2>
 <p>This class represents the checksum field in IP packets. </p>
 <div class="refsect2">
-<a name="idp20225720"></a><h3>
+<a name="idp20221376"></a><h3>
 <a name="odtone.net.ip.checksumconstruct-copy-destruct"></a><code class="computeroutput">checksum</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp5059312-bb"></a><span class="identifier">checksum</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp5084816-bb"></a><span class="identifier">checksum</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an undefined checksum, i.e., it is set to zero value. </p>
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp20228952"></a><h3>
-<a name="idp5053416-bb"></a><code class="computeroutput">checksum</code> public member functions</h3>
+<a name="idp20224640"></a><h3>
+<a name="idp5078920-bb"></a><code class="computeroutput">checksum</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5053600-bb"></a><span class="identifier">update</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> data<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp5079104-bb"></a><span class="identifier">update</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> data<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
 <p>Update the checksum value based on the byte buffer.</p>
 <p>
 </p>
@@ -79,7 +79,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5055576-bb"></a><span class="identifier">update</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint16</span> <span class="special">*</span> data<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp5081080-bb"></a><span class="identifier">update</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint16</span> <span class="special">*</span> data<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
 <p>Update the checksum value based on the byte buffer.</p>
 <p>
 </p>
@@ -104,7 +104,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp5057552-bb"></a><span class="identifier">final</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp5083056-bb"></a><span class="identifier">final</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the value of the checksum.</p>
 <p>
 </p>
@@ -117,7 +117,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5058600-bb"></a><span class="identifier">clear</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp5084104-bb"></a><span class="identifier">clear</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Clear the value of the checksum. </p>
 </li>
 </ol></div>

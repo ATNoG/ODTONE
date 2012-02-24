@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../../../index.html" title="ODTONE 0.4">
-<link rel="up" href="../icmp.html#idp20418880" title="Description">
+<link rel="up" href="../icmp.html#idp20414576" title="Description">
 <link rel="prev" href="filter.html" title="Class filter">
 <link rel="next" href="neighbor_advertisement.html" title="Class neighbor_advertisement">
 </head>
@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="filter.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp20418880"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="neighbor_advertisement.html"><img src="../../../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="filter.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp20414576"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="neighbor_advertisement.html"><img src="../../../../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.net.ip.icmp.header"></a><div class="titlepage"></div>
@@ -29,26 +29,26 @@
 <span class="keyword">class</span> <a class="link" href="header.html" title="Class header">header</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="header.html#odtone.net.ip.icmp.headerconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="header.html#idp5075136-bb"><span class="identifier">header</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">,</span> <span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="header.html#idp5100640-bb"><span class="identifier">header</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">,</span> <span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="header.html#idp5068952-bb">public static functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="header.html#idp5069136-bb"><span class="identifier">cast</span></a><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="header.html#idp5094456-bb">public static functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="header.html#idp5094640-bb"><span class="identifier">cast</span></a><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="header.html#idp5071344-bb">public member functions</a></span>
-  <span class="identifier">uint8</span> <a class="link" href="header.html#idp5071528-bb"><span class="identifier">type</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint8</span> <a class="link" href="header.html#idp5072616-bb"><span class="identifier">code</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="header.html#idp5073704-bb"><span class="identifier">checksum</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="header.html#idp5096848-bb">public member functions</a></span>
+  <span class="identifier">uint8</span> <a class="link" href="header.html#idp5097032-bb"><span class="identifier">type</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint8</span> <a class="link" href="header.html#idp5098120-bb"><span class="identifier">code</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="header.html#idp5099208-bb"><span class="identifier">checksum</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp20514040"></a><h2>Description</h2>
+<a name="idp20509728"></a><h2>Description</h2>
 <p>This class represents the header of an ICMP packet. </p>
 <div class="refsect2">
-<a name="idp20514440"></a><h3>
+<a name="idp20510128"></a><h3>
 <a name="odtone.net.ip.icmp.headerconstruct-copy-destruct"></a><code class="computeroutput">header</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp5075136-bb"></a><span class="identifier">header</span><span class="special">(</span><span class="identifier">uint8</span> type<span class="special">,</span> <span class="identifier">uint8</span> code<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp5100640-bb"></a><span class="identifier">header</span><span class="special">(</span><span class="identifier">uint8</span> type<span class="special">,</span> <span class="identifier">uint8</span> code<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an ICMP packet header.</p>
 <p>
 </p>
@@ -68,10 +68,10 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp20520328"></a><h3>
-<a name="idp5068952-bb"></a><code class="computeroutput">header</code> public static functions</h3>
+<a name="idp20516016"></a><h3>
+<a name="idp5094456-bb"></a><code class="computeroutput">header</code> public static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">T</span> <span class="special">*</span> <a name="idp5069136-bb"></a><span class="identifier">cast</span><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span> buffer<span class="special">,</span> <span class="identifier">size_t</span> length<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">T</span> <span class="special">*</span> <a name="idp5094640-bb"></a><span class="identifier">cast</span><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span> buffer<span class="special">,</span> <span class="identifier">size_t</span> length<span class="special">)</span><span class="special">;</span></pre>
 <p>Convert a byte buffer ICMP packet.</p>
 <p>
 
@@ -86,11 +86,11 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp20527968"></a><h3>
-<a name="idp5071344-bb"></a><code class="computeroutput">header</code> public member functions</h3>
+<a name="idp20523624"></a><h3>
+<a name="idp5096848-bb"></a><code class="computeroutput">header</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint8</span> <a name="idp5071528-bb"></a><span class="identifier">type</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint8</span> <a name="idp5097032-bb"></a><span class="identifier">type</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the ICMP packet header type.</p>
 <p>
 </p>
@@ -103,7 +103,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint8</span> <a name="idp5072616-bb"></a><span class="identifier">code</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint8</span> <a name="idp5098120-bb"></a><span class="identifier">code</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the ICMP packet header code.</p>
 <p>
 </p>
@@ -116,7 +116,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5073704-bb"></a><span class="identifier">checksum</span><span class="special">(</span><span class="identifier">uint16</span> csum<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp5099208-bb"></a><span class="identifier">checksum</span><span class="special">(</span><span class="identifier">uint16</span> csum<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the ICMP packet checksum field.</p>
 <p>
 </p>
@@ -152,7 +152,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="filter.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp20418880"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="neighbor_advertisement.html"><img src="../../../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="filter.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp20414576"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="neighbor_advertisement.html"><img src="../../../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

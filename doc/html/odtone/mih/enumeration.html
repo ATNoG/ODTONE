@@ -28,40 +28,40 @@
 <span class="keyword">class</span> <a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="enumeration.html#odtone.mih.enumerationconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="enumeration.html#idp5895136-bb"><span class="identifier">enumeration</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="enumeration.html#idp5895440-bb"><span class="identifier">enumeration</span></a><span class="special">(</span><span class="identifier">T</span><span class="special">)</span><span class="special">;</span>
-  enumeration&amp; <a class="link" href="enumeration.html#idp5896464-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="identifier">T</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="enumeration.html#idp5920640-bb"><span class="identifier">enumeration</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="enumeration.html#idp5920944-bb"><span class="identifier">enumeration</span></a><span class="special">(</span><span class="identifier">T</span><span class="special">)</span><span class="special">;</span>
+  enumeration&amp; <a class="link" href="enumeration.html#idp5921968-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="identifier">T</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="enumeration.html#idp5883112-bb">private member functions</a></span>
-   <a class="link" href="enumeration.html#idp5883328-bb"><span class="identifier">ODTONE_STATIC_ASSERT</span></a><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_enum</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">,</span> 
+  <span class="comment">// <a class="link" href="enumeration.html#idp5908616-bb">private member functions</a></span>
+   <a class="link" href="enumeration.html#idp5908832-bb"><span class="identifier">ODTONE_STATIC_ASSERT</span></a><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_enum</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">,</span> 
                         <span class="string">"T must be an </span><a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a><span class="string">"</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="enumeration.html#idp5884680-bb">public member functions</a></span>
-  <span class="identifier">T</span> <a class="link" href="enumeration.html#idp5884896-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="enumeration.html#idp5886000-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="enumeration.html#idp5887904-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="enumeration.html#idp5889600-bb"><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="enumeration.html#idp5891296-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="enumeration.html#idp5893216-bb"><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="enumeration.html#idp5910184-bb">public member functions</a></span>
+  <span class="identifier">T</span> <a class="link" href="enumeration.html#idp5910400-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="enumeration.html#idp5911504-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="enumeration.html#idp5913408-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="enumeration.html#idp5915104-bb"><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="enumeration.html#idp5916800-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="enumeration.html#idp5918720-bb"><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="enumeration.html#idp5897496-bb">friend functions</a></span>
-  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="enumeration.html#idp5897704-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="enumeration.html#idp5923000-bb">friend functions</a></span>
+  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="enumeration.html#idp5923208-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp14171656"></a><h2>Description</h2>
+<a name="idp14166080"></a><h2>Description</h2>
 <p>ENUMERATED data type. </p>
 <div class="refsect2">
-<a name="idp14171992"></a><h3>
+<a name="idp14166416"></a><h3>
 <a name="odtone.mih.enumerationconstruct-copy-destruct"></a><code class="computeroutput">enumeration</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="idp5895136-bb"></a><span class="identifier">enumeration</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp5920640-bb"></a><span class="identifier">enumeration</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty ENUMERATION data type. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp5895440-bb"></a><span class="identifier">enumeration</span><span class="special">(</span><span class="identifier">T</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp5920944-bb"></a><span class="identifier">enumeration</span><span class="special">(</span><span class="identifier">T</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an ENUMERATION data type.</p>
 <p>
 </p>
@@ -80,7 +80,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout">enumeration&amp; <a name="idp5896464-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="identifier">T</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout">enumeration&amp; <a name="idp5921968-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="identifier">T</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the ENUMERATION data type.</p>
 <p>
 </p>
@@ -101,16 +101,16 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp14183624"></a><h3>
-<a name="idp5883112-bb"></a><code class="computeroutput">enumeration</code> private member functions</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"> <a name="idp5883328-bb"></a><span class="identifier">ODTONE_STATIC_ASSERT</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_enum</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">,</span> <span class="string">"T must be an </span><a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a><span class="string">"</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+<a name="idp14178048"></a><h3>
+<a name="idp5908616-bb"></a><code class="computeroutput">enumeration</code> private member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"> <a name="idp5908832-bb"></a><span class="identifier">ODTONE_STATIC_ASSERT</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_enum</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">,</span> <span class="string">"T must be an </span><a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a><span class="string">"</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp14190232"></a><h3>
-<a name="idp5884680-bb"></a><code class="computeroutput">enumeration</code> public member functions</h3>
+<a name="idp14184656"></a><h3>
+<a name="idp5910184-bb"></a><code class="computeroutput">enumeration</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">T</span> <a name="idp5884896-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">T</span> <a name="idp5910400-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the ENUMERATION data type value.</p>
 <p>
 </p>
@@ -123,7 +123,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp5886000-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp5911504-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize/deserialize the ENUMERATION data type.</p>
 <p>
 </p>
@@ -142,7 +142,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5887904-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="identifier">T</span> val<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5913408-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="identifier">T</span> val<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Check if the ENUMERATION value is equal to the argument value.</p>
 <p>
 
@@ -168,7 +168,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5889600-bb"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><span class="identifier">T</span> val<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5915104-bb"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><span class="identifier">T</span> val<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Check if the ENUMERATION value is equal to the argument value.</p>
 <p>
 
@@ -194,7 +194,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5891296-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a> <span class="special">&amp;</span> e<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5916800-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a> <span class="special">&amp;</span> e<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Check if the ENUMERATION is equal to another ENUMERATION.</p>
 <p>
 
@@ -220,7 +220,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5893216-bb"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a> <span class="special">&amp;</span> e<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5918720-bb"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a> <span class="special">&amp;</span> e<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Check if the ENUMERATION is equal to another ENUMERATION.</p>
 <p>
 
@@ -248,10 +248,10 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp14224256"></a><h3>
-<a name="idp5897496-bb"></a><code class="computeroutput">enumeration</code> friend functions</h3>
+<a name="idp14218688"></a><h3>
+<a name="idp5923000-bb"></a><code class="computeroutput">enumeration</code> friend functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="idp5897704-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> os<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a> <span class="special">&amp;</span> e<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="idp5923208-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> os<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="enumeration.html" title="Class template enumeration">enumeration</a> <span class="special">&amp;</span> e<span class="special">)</span><span class="special">;</span></pre>
 <p>ENUMERATION data type output.</p>
 <p>
 

@@ -74,23 +74,8 @@ support. We would be more than happy to known about your work on these matters!
 
 [h3 Changes in this release]
 
-[*ODTONE 0.4 - Open Dot Twenty ONE.]
-
-* Redefinition of the interface used by MIH-Users to register themselves with
-the local MIHF.
-* Implementation of mechanisms for discovering remote peer MIHFs:
-	* DNS-User: discovery mechanim which uses DNS services;
-	* DHCP-User: discovery mechanim which uses DHCP services.
-* Response timers: all messages are associated with a timer, which replies
-with a failure message in case of timeout.
-* Provision of a new Link SAP example: this new Link SAP uses the ICMP protocol
-to detect the attachment of another node.
-* Definition of new messages in the client application.
-* Provision of a new library named NET library: it defines a set of classes
-which offer several network protocols and terminology support.
-* Several bug-fixes.
-* Fix compilation with more recent gcc version.
-* ODTONE documentation revision.
+For changes from the previous release, please have a look at the
+[link odtone.changelog Changelog] section.
 
 
 [endsect]
@@ -912,9 +897,17 @@ provided by ODTONE.
 
 
 [section MIH Protocol C interface]
-The MIH Protocol C interface was developed and provided to us by Eurecom.
+The MIH Protocol C interface was developed and provided to us by [@http://www.eurecom.fr/en Eurecom],
+in Sophia-Antipolis, France. These libraries
+provide the necessary definitions of the messages and datatypes used to communicate
+with ODTONE's MIHF (using a local version of the MIH Protocol). As such, with this
+valuable contribution from Eurecom, users of the ODTONE implementation are able to
+create their MIH-Users and Link SAP modules using the C language.
 
 You can find it on "extensions/MIH_C_Protocol/" folder.
+
+For more information please contact: davide.brizzolara@eurecom.fr or
+michelle.wetterwald@eurecom.fr
 
 [endsect]
 
@@ -1097,6 +1090,196 @@ Ireland, Oct 2011
 [xinclude ../odtone_net_lib.xml]
 
 [endsect]
+
+[section:changelog Changelog]
+
+[*ODTONE 0.4 - Open Dot Twenty ONE.]
+
+* Fixed wrong LINK_CMD_LIST, LINK_EVENT_LIST, MIH_CMD_LIST and MIH_EVENT_LIST
+data type definition.
+	* If your SAPs make use of any of these data types you should have to update
+them ([link odtone.changelog.data_types_changes see more info below]).
+* Redefinition of the interface used by MIH-Users to register themselves with
+the local MIHF ([link odtone.extensions.local_discovery see local discovery]).
+* Implementation of mechanisms for discovering remote peer MIHFs:
+	* DNS-User: discovery mechanim which uses DNS services;
+	* DHCP-User: discovery mechanim which uses DHCP services.
+* Response timers: all messages are associated with a timer, which replies
+with a failure message in case of timeout.
+* Provision of a new Link SAP example: this new Link SAP uses the ICMP protocol
+to detect the attachment of another node.
+* Definition of new messages in the client application.
+* Provision of a new library named NET library: it defines a set of classes
+which offer several network protocols and terminology support.
+* Several bug-fixes.
+* Fix compilation with more recent gcc version.
+* ODTONE documentation revision.
+
+
+[h4 Data types changes]
+In the ODTONE 0.4 release was redefined the LINK_CMD_LIST, LINK_EVENT_LIST, MIH_CMD_LIST and MIH_EVENT_LIST
+that were not in accordance with the standard.
+
+[important Implementations of MIH-Users and Link_SAP modules using the LINK_CMD_LIST, LINK_EVENT_LIST,
+MIH_CMD_LIST and/or MIH_EVENT_LIST datatypes need to change their code, in order for it to work
+with the new changes. Take into consideration that this is necessary for absolute
+interoperability with the standard.]
+
+[*Data type definitions on ODTONE 0.3 and earlier]
+``
+/**
+ * The enumeration of MIH_EVENT_LIST and LINK_EVENT_LIST data type.
+ */
+enum event_list_enum {
+        link_detected = 0,             /**< Link detected.             */
+        link_up = 1,                   /**< Link up.                   */
+        link_down = 2,                 /**< Link down.                 */
+        link_parameters_report = 3,    /**< Link parameters report.    */
+        link_going_down = 4,           /**< Link doing down.           */
+        link_handover_imminent = 5,    /**< Link handover imminent.    */
+        link_handover_complete = 6,    /**< Link handover complete.    */
+        link_pdu_transmit_status = 7,  /**< Link PDU transmit status.  */
+};
+
+/**
+ * MIH_EVENT_LIST and LINK_EVENT_LIST data type.
+ */
+typedef bitmap<32, event_list_enum> event_list;
+
+///////////////////////////////////////////////////////////////////////////////
+/**
+ * The enumeration of MIH_CMD_LIST and LINK_CMD_LIST data type.
+ */
+enum command_list_enum {
+        link_get_parameters = 0,       /**< Link get parameters.           */
+        link_configure_thresholds = 1, /**< Link configure thresholds.     */
+        link_actions = 2,              /**< Link actions.                  */
+        net_ho_candidate_query = 3,    /**< NET handover candidate query.  */
+        net_ho_commit = 3,             /**< NET handover commit.           */
+        n2n_ho_query_resources = 3,    /**< N2N handover query resources.  */
+        n2n_ho_commit = 3,             /**< N2N handover commit.           */
+        n2n_ho_Complete = 3,           /**< N2N handover complete.         */
+        mn_ho_candidate_query = 4,     /**< MN handover candidate query.   */
+        mn_ho_commit = 4,              /**< MN handover commit.            */
+        mn_ho_complete = 4,            /**< MN handover complete.          */
+};
+
+/**
+ * MIH_CMD_LIST and LINK_CMD_LIST data type.
+ */
+typedef bitmap<32, command_list_enum> command_list;
+
+``
+
+[*Data type definitions on ODTONE 0.4]
+``
+/**
+ * MIH_CMD_LIST data type enumeration.
+ */
+enum mih_cmd_list_enum {
+	mih_cmd_link_get_parameters = 0,        /**< Link get parameters.           */
+	mih_cmd_link_configure_thresholds = 1,  /**< Link configure thresholds.     */
+	mih_cmd_link_actions = 2,               /**< Link actions.                  */
+	mih_cmd_net_ho_candidate_query = 3,     /**< NET handover candidate query.  */
+	mih_cmd_net_ho_commit = 3,              /**< NET handover commit.           */
+	mih_cmd_n2n_ho_query_resources = 3,     /**< N2N handover query resources.  */
+	mih_cmd_n2n_ho_commit = 3,              /**< N2N handover commit.           */
+	mih_cmd_n2n_ho_complete = 3,            /**< N2N handover complete.         */
+	mih_cmd_mn_ho_candidate_query = 4,      /**< MN handover candidate query.   */
+	mih_cmd_mn_ho_commit = 4,               /**< MN handover commit.            */
+	mih_cmd_mn_ho_complete = 4,             /**< MN handover complete.          */
+};
+
+/**
+ * MIH_CMD_LIST data type.
+ */
+typedef bitmap<32, mih_cmd_list_enum> mih_cmd_list;
+
+/**
+ * MIH_EVT_LIST data type enumeration.
+ */
+enum mih_evt_list_enum {
+	mih_evt_link_detected = 0,              /**< Link detected.             */
+	mih_evt_link_up = 1,                    /**< Link up.                   */
+	mih_evt_link_down = 2,                  /**< Link down.                 */
+	mih_evt_link_parameters_report = 3,     /**< Link parameters report.    */
+	mih_evt_link_going_down = 4,            /**< Link doing down.           */
+	mih_evt_link_handover_imminent = 5,     /**< Link handover imminent.    */
+	mih_evt_link_handover_complete = 6,     /**< Link handover complete.    */
+	mih_evt_link_pdu_transmit_status = 7,   /**< Link PDU transmit status.  */
+};
+
+/**
+ * MIH_EVT_LIST data type.
+ */
+typedef bitmap<32, mih_evt_list_enum> mih_evt_list;
+
+/**
+ * LINK_CMD_LIST data type enumeration.
+ */
+enum link_cmd_list_enum {
+	cmd_link_event_subscribe      = 1,  /**< Event subscribe.       */
+	cmd_link_event_unsubscribe    = 2,  /**< Event unsubscribe.     */
+	cmd_link_get_parameters       = 3,  /**< Get parameters.        */
+	cmd_link_configure_thresholds = 4,  /**< Configure thresholds.  */
+	cmd_link_action               = 5,  /**< Action.                */
+};
+
+/**
+ * LINK_CMD_LIST data type.
+ */
+typedef bitmap<32, link_cmd_list_enum> link_cmd_list;
+
+/**
+ * LINK_EVT_LIST data type enumeration.
+ */
+enum link_evt_list_enum {
+	evt_link_detected = 0,              /**< Link detected.             */
+	evt_link_up = 1,                    /**< Link up.                   */
+	evt_link_down = 2,                  /**< Link down.                 */
+	evt_link_parameters_report = 3,     /**< Link parameters report.    */
+	evt_link_going_down = 4,            /**< Link doing down.           */
+	evt_link_handover_imminent = 5,     /**< Link handover imminent.    */
+	evt_link_handover_complete = 6,     /**< Link handover complete.    */
+	evt_link_pdu_transmit_status = 7,   /**< Link PDU transmit status.  */
+};
+
+/**
+ * LINK_EVT_LIST data type.
+ */
+typedef bitmap<32, link_evt_list_enum> link_evt_list;
+``
+
+Due to this changes the definition of two new TLVs were necessary, in order to
+exchanges of LINK_CMD_LIST and LINK_EVENT_LIST data types between the MIHF and
+the Link SAPs.
+
+[table TLVs for LINK_CMD_LIST and LINK_EVENT_LIST
+    [
+		[MIH_LINK_SAP Primitive]
+		[TLV Type Name]
+		[TLV Type Value]
+		[Data type]
+    ]
+
+    [
+		[SupportedLinkEventList]
+		[tlv_link_evt_list]
+		[101]
+		[LINK_EVT_LIST]
+    ]
+
+    [
+		[SupportedLinkCommandList]
+		[tlv_link_cmd_list]
+		[102]
+		[LINK_CMD_LIST]
+    ]
+]
+
+
+[endsect]
+
 
 [section:license License]
 [h4 GNU LESSER GENERAL PUBLIC LICENSE]

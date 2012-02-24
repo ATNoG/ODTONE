@@ -28,40 +28,40 @@
 <span class="keyword">class</span> <a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="buffer.html#odtone.bufferconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="buffer.html#idp3288704-bb"><span class="identifier">buffer</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="buffer.html#idp3637728-bb"><span class="identifier">buffer</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="buffer.html#idp3638072-bb"><span class="identifier">buffer</span></a><span class="special">(</span><a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="buffer.html#idp3639176-bb"><span class="identifier">buffer</span></a><span class="special">(</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
-  buffer&amp; <a class="link" href="buffer.html#idp3289336-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  buffer&amp; <a class="link" href="buffer.html#idp3640432-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="buffer.html#idp3640176-bb"><span class="special">~</span><span class="identifier">buffer</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="buffer.html#idp3401680-bb"><span class="identifier">buffer</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="buffer.html#idp3663072-bb"><span class="identifier">buffer</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="buffer.html#idp3663416-bb"><span class="identifier">buffer</span></a><span class="special">(</span><a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="buffer.html#idp3664520-bb"><span class="identifier">buffer</span></a><span class="special">(</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  buffer&amp; <a class="link" href="buffer.html#idp3402312-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  buffer&amp; <a class="link" href="buffer.html#idp3665776-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="buffer.html#idp3665520-bb"><span class="special">~</span><span class="identifier">buffer</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="buffer.html#idp3287480-bb">private member functions</a></span>
-   <a class="link" href="buffer.html#idp3287664-bb"><span class="identifier">ODTONE_STATIC_ASSERT</span></a><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_pod</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">,</span> <span class="string">"T must be POD type"</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="buffer.html#idp3400456-bb">private member functions</a></span>
+   <a class="link" href="buffer.html#idp3400640-bb"><span class="identifier">ODTONE_STATIC_ASSERT</span></a><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_pod</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">,</span> <span class="string">"T must be POD type"</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="buffer.html#idp3289968-bb">public member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="buffer.html#idp3290152-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="buffer.html#idp3291616-bb"><span class="identifier">zero</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="buffer.html#idp3292344-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="buffer.html#idp3635616-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">size_t</span> <a class="link" href="buffer.html#idp3636672-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="buffer.html#idp3402944-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="buffer.html#idp3403128-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="buffer.html#idp3404592-bb"><span class="identifier">zero</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="buffer.html#idp3405320-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="buffer.html#idp3660960-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_t</span> <a class="link" href="buffer.html#idp3662016-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp9769688"></a><h2>Description</h2>
+<a name="idp9764456"></a><h2>Description</h2>
 <p>A container for data of a specific data type with linear and finite sequence of elements. </p>
 <div class="refsect2">
-<a name="idp9770120"></a><h3>
+<a name="idp9764888"></a><h3>
 <a name="odtone.bufferconstruct-copy-destruct"></a><code class="computeroutput">buffer</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><a name="idp3288704-bb"></a><span class="identifier">buffer</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idp3401680-bb"></a><span class="identifier">buffer</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp3637728-bb"></a><span class="identifier">buffer</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp3663072-bb"></a><span class="identifier">buffer</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty buffer. The created buffer will be empty and with zero length. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp3638072-bb"></a><span class="identifier">buffer</span><span class="special">(</span><a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;&amp;</span> buff<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp3663416-bb"></a><span class="identifier">buffer</span><span class="special">(</span><a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;&amp;</span> buff<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a buffer. The new created buffer will be a copy of another buffer.</p>
 <p>
 </p>
@@ -80,7 +80,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp3639176-bb"></a><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp3664520-bb"></a><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty buffer. Although the created buffer is empty, it has the length defined at its creation.</p>
 <p>
 </p>
@@ -98,9 +98,9 @@
 </tr></tbody>
 </table></div>
 </li>
-<li class="listitem"><pre class="literallayout">buffer&amp; <a name="idp3289336-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout">buffer&amp; <a name="idp3402312-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
 <li class="listitem">
-<pre class="literallayout">buffer&amp; <a name="idp3640432-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;&amp;</span> buff<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout">buffer&amp; <a name="idp3665776-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><a class="link" href="buffer.html" title="Class template buffer">buffer</a> <span class="special">&amp;&amp;</span> buff<span class="special">)</span><span class="special">;</span></pre>
 <p>Copy the elements from another buffer. The elements contained in the buffer will be overwrited.</p>
 <p>
 
@@ -126,22 +126,22 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp3640176-bb"></a><span class="special">~</span><span class="identifier">buffer</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp3665520-bb"></a><span class="special">~</span><span class="identifier">buffer</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Destruct a buffer. </p>
 </li>
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp9795544"></a><h3>
-<a name="idp3287480-bb"></a><code class="computeroutput">buffer</code> private member functions</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"> <a name="idp3287664-bb"></a><span class="identifier">ODTONE_STATIC_ASSERT</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_pod</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">,</span> <span class="string">"T must be POD type"</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+<a name="idp9790408"></a><h3>
+<a name="idp3400456-bb"></a><code class="computeroutput">buffer</code> private member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"> <a name="idp3400640-bb"></a><span class="identifier">ODTONE_STATIC_ASSERT</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_pod</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">,</span> <span class="string">"T must be POD type"</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp9801536"></a><h3>
-<a name="idp3289968-bb"></a><code class="computeroutput">buffer</code> public member functions</h3>
+<a name="idp9796400"></a><h3>
+<a name="idp3402944-bb"></a><code class="computeroutput">buffer</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp3290152-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp3403128-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the number of elements the buffer can store.</p>
 <p>
 </p>
@@ -160,11 +160,11 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp3291616-bb"></a><span class="identifier">zero</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp3404592-bb"></a><span class="identifier">zero</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Remove all stored elements from the buffer. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">T</span> <span class="special">*</span> <a name="idp3292344-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">T</span> <span class="special">*</span> <a name="idp3405320-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Get the pointer to the first element of the buffer.</p>
 <p>
 </p>
@@ -177,7 +177,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">*</span> <a name="idp3635616-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">*</span> <a name="idp3660960-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the pointer to the first element of the buffer.</p>
 <p>
 </p>
@@ -190,7 +190,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">size_t</span> <a name="idp3636672-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">size_t</span> <a name="idp3662016-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the number of elements the buffer can store.</p>
 <p>
 </p>

@@ -29,29 +29,29 @@
 <span class="keyword">public</span><span class="special">:</span>
   <span class="keyword">enum</span> <a class="link" href="ip_addr/type_ip_enum.html" title="Type type_ip_enum">type_ip_enum</a><span class="special">;</span>
   <span class="comment">// <a class="link" href="ip_addr.html#odtone.mih.ip_addrconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="ip_addr.html#idp5837928-bb"><span class="identifier">ip_addr</span></a><span class="special">(</span><span class="identifier">type_ip_enum</span> <span class="special">=</span> <span class="identifier">none</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="ip_addr.html#idp5839080-bb"><span class="identifier">ip_addr</span></a><span class="special">(</span><span class="identifier">type_ip_enum</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">explicit</span> <a class="link" href="ip_addr.html#idp5841248-bb"><span class="identifier">ip_addr</span></a><span class="special">(</span><span class="identifier">type_ip_enum</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="ip_addr.html#idp5863432-bb"><span class="identifier">ip_addr</span></a><span class="special">(</span><span class="identifier">type_ip_enum</span> <span class="special">=</span> <span class="identifier">none</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="ip_addr.html#idp5864584-bb"><span class="identifier">ip_addr</span></a><span class="special">(</span><span class="identifier">type_ip_enum</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="ip_addr.html#idp5866752-bb"><span class="identifier">ip_addr</span></a><span class="special">(</span><span class="identifier">type_ip_enum</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="ip_addr.html#idp5833296-bb">public member functions</a></span>
-  <span class="identifier">octet_string</span> <a class="link" href="ip_addr.html#idp5833512-bb"><span class="identifier">address</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="ip_addr.html#idp5834592-bb"><span class="identifier">address</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="ip_addr.html#idp5836016-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="ip_addr.html" title="Class ip_addr">ip_addr</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="ip_addr.html#idp5858800-bb">public member functions</a></span>
+  <span class="identifier">octet_string</span> <a class="link" href="ip_addr.html#idp5859016-bb"><span class="identifier">address</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="ip_addr.html#idp5860096-bb"><span class="identifier">address</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="ip_addr.html#idp5861520-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="ip_addr.html" title="Class ip_addr">ip_addr</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="ip_addr.html#idp5842752-bb">friend functions</a></span>
-  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="ip_addr.html#idp5842960-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="ip_addr.html" title="Class ip_addr">ip_addr</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="ip_addr.html#idp5868256-bb">friend functions</a></span>
+  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="ip_addr.html#idp5868464-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="ip_addr.html" title="Class ip_addr">ip_addr</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp13836616"></a><h2>Description</h2>
+<a name="idp13831008"></a><h2>Description</h2>
 <p>IP_ADDR data type. </p>
 <div class="refsect2">
-<a name="idp13836952"></a><h3>
+<a name="idp13831344"></a><h3>
 <a name="odtone.mih.ip_addrconstruct-copy-destruct"></a><code class="computeroutput">ip_addr</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="idp5837928-bb"></a><span class="identifier">ip_addr</span><span class="special">(</span><span class="identifier">type_ip_enum</span> tp <span class="special">=</span> <span class="identifier">none</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp5863432-bb"></a><span class="identifier">ip_addr</span><span class="special">(</span><span class="identifier">type_ip_enum</span> tp <span class="special">=</span> <span class="identifier">none</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a IP_ADDR data type.</p>
 <p>
 </p>
@@ -70,7 +70,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp5839080-bb"></a><span class="identifier">ip_addr</span><span class="special">(</span><span class="identifier">type_ip_enum</span> tp<span class="special">,</span> <span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> raw<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp5864584-bb"></a><span class="identifier">ip_addr</span><span class="special">(</span><span class="identifier">type_ip_enum</span> tp<span class="special">,</span> <span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> raw<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a IP_ADDR data type.</p>
 <p>
 </p>
@@ -99,7 +99,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">explicit</span> <a name="idp5841248-bb"></a><span class="identifier">ip_addr</span><span class="special">(</span><span class="identifier">type_ip_enum</span> tp<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span> addr<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="idp5866752-bb"></a><span class="identifier">ip_addr</span><span class="special">(</span><span class="identifier">type_ip_enum</span> tp<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span> addr<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a IP_ADDR data type.</p>
 <p>
 </p>
@@ -120,11 +120,11 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp13855704"></a><h3>
-<a name="idp5833296-bb"></a><code class="computeroutput">ip_addr</code> public member functions</h3>
+<a name="idp13850096"></a><h3>
+<a name="idp5858800-bb"></a><code class="computeroutput">ip_addr</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">octet_string</span> <a name="idp5833512-bb"></a><span class="identifier">address</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">octet_string</span> <a name="idp5859016-bb"></a><span class="identifier">address</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the IP address string.</p>
 <p>
 </p>
@@ -137,7 +137,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5834592-bb"></a><span class="identifier">address</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span> addr<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp5860096-bb"></a><span class="identifier">address</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">octet_string</span> <span class="special">&amp;</span> addr<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the IP address.</p>
 <p>
 </p>
@@ -156,7 +156,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5836016-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="ip_addr.html" title="Class ip_addr">ip_addr</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5861520-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="ip_addr.html" title="Class ip_addr">ip_addr</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Check if the IP_ADDR is equal to another IP_ADDR.</p>
 <p>
 
@@ -184,10 +184,10 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp13871672"></a><h3>
-<a name="idp5842752-bb"></a><code class="computeroutput">ip_addr</code> friend functions</h3>
+<a name="idp13866096"></a><h3>
+<a name="idp5868256-bb"></a><code class="computeroutput">ip_addr</code> friend functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="idp5842960-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="ip_addr.html" title="Class ip_addr">ip_addr</a> <span class="special">&amp;</span> tp<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="idp5868464-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="ip_addr.html" title="Class ip_addr">ip_addr</a> <span class="special">&amp;</span> tp<span class="special">)</span><span class="special">;</span></pre>
 <p>IP_ADDR data type output.</p>
 <p>
 

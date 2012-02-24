@@ -27,24 +27,24 @@
 </span>
 <span class="keyword">struct</span> <a class="link" href="net_type_addr.html" title="Struct net_type_addr">net_type_addr</a> <span class="special">{</span>
 
-  <span class="comment">// <a class="link" href="net_type_addr.html#idp6115600-bb">public member functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="net_type_addr.html#idp6115816-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="net_type_addr.html#idp6141104-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="net_type_addr.html#idp6141320-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="net_type_addr.html#idp6117720-bb">friend functions</a></span>
-  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="net_type_addr.html#idp6117928-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="net_type_addr.html" title="Struct net_type_addr">net_type_addr</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="net_type_addr.html#idp6143224-bb">friend functions</a></span>
+  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="net_type_addr.html#idp6143432-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="net_type_addr.html" title="Struct net_type_addr">net_type_addr</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="net_type_addr.html#odtone.mih.net_type_addrpublic-data-members">public data members</a></span>
   <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <a class="link" href="net_type_addr.html#odtone.mih.net_type_addr.nettype"><span class="identifier">nettype</span></a><span class="special">;</span>
   <span class="identifier">link_addr</span> <a class="link" href="net_type_addr.html#odtone.mih.net_type_addr.addr"><span class="identifier">addr</span></a><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp15790624"></a><h2>Description</h2>
+<a name="idp15785264"></a><h2>Description</h2>
 <p>NET_TYPE_ADDR data type. </p>
 <div class="refsect2">
-<a name="idp15790960"></a><h3>
-<a name="idp6115600-bb"></a><code class="computeroutput">net_type_addr</code> public member functions</h3>
+<a name="idp15785632"></a><h3>
+<a name="idp6141104-bb"></a><code class="computeroutput">net_type_addr</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp6115816-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp6141320-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize/deserialize the NET_TYPE_ADDR data type.</p>
 <p>
 </p>
@@ -64,10 +64,10 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp15798000"></a><h3>
-<a name="idp6117720-bb"></a><code class="computeroutput">net_type_addr</code> friend functions</h3>
+<a name="idp15792672"></a><h3>
+<a name="idp6143224-bb"></a><code class="computeroutput">net_type_addr</code> friend functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="idp6117928-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> os<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="net_type_addr.html" title="Struct net_type_addr">net_type_addr</a> <span class="special">&amp;</span> nta<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="idp6143432-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> os<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="net_type_addr.html" title="Struct net_type_addr">net_type_addr</a> <span class="special">&amp;</span> nta<span class="special">)</span><span class="special">;</span></pre>
 <p>NET_TYPE_ADDR data type output.</p>
 <p>
 
@@ -100,7 +100,7 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp15808312"></a><h3>
+<a name="idp15802952"></a><h3>
 <a name="odtone.mih.net_type_addrpublic-data-members"></a><code class="computeroutput">net_type_addr</code> 
         public
        public data members</h3>
