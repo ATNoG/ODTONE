@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -34,7 +34,7 @@ public:
 		typedef void (safe_bool_t::*safe_bool)();
 
 	public:
-		attr() : _data(odtone::nullptr), _len(0)
+		attr() : _data(nullptr), _len(0)
 		{ }
 		attr(const void* data, size_t len) : _data((const T*) data), _len(len)
 		{ }
@@ -42,8 +42,8 @@ public:
 		const T* get() const  { return _data; }
 		size_t   size() const { return _len; }
 
-		operator safe_bool() const { return _data != odtone::nullptr ? &safe_bool_t::true_ : 0; }
-		bool operator!() const     { return _data == odtone::nullptr; }
+		operator safe_bool() const { return _data ? &safe_bool_t::true_ : 0; }
+		bool operator!() const     { return !_data; }
 
 	private:
 		const T* _data;

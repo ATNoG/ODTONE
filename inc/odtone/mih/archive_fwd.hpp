@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -24,7 +24,14 @@
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mih {
 
+/**
+ * Input archive.
+ */
 class iarchive;
+
+/**
+ * Output archive.
+ */
 class oarchive;
 
 ///////////////////////////////////////////////////////////////////////////////

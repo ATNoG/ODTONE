@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -35,94 +35,140 @@ static const char* const kConf_File               = "conf.file";
 static const char* const kConf_Port               = "conf.port";
 static const char* const kConf_Receive_Buffer_Len = "conf.recv_buff_len";
 
-static const char* const kConf_MIH_Handover = "user.handover";
-
 static const char* const kConf_MIH_SAP_id   = "user.id";
 static const char* const kConf_MIH_SAP_dest = "dest";
 
-static const char* const kConf_MIHF_Id         = "mihf.id";
 static const char* const kConf_MIHF_Ip         = "mihf.ip";
 static const char* const kConf_MIHF_Local_Port = "mihf.local_port";
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * User SAP IO Service
+ * MIH-User SAP I/O Service
  *
- * This module handles the comunication between User SAP implementations and
- * the MIHF. After being initialized it must be running by invoking the run()
- * method of the provided boost::asio::io_service.
+ * This module handles the comunication between MIH-User SAP and its local the
+ * MIHF. After being initialized, and in order to run this service, it must
+ * be invoked the run() method of the boost::asio::io_service associated.
  */
 class user : public sap {
 	typedef boost::function<void(mih::message& pm, const boost::system::error_code&)> handler;
+	typedef boost::asio::ip::address ip_address;
 	typedef std::map<uint, handler> rmap;
 
 public:
 	/**
-	 * Construct an User SAP IO Service.
+	 * MIH-User SAP configurations structure.
+	 */
+	struct config {
+		config()
+			: id("user"), port(1234), mihf_address(boost::asio::ip::address_v4::loopback()),
+			  mihf_port(1025), buffer_length(4096)
+		{ }
+
+		std::string id;				/**< Identifier.			*/
+		uint        port;			/**< Listening port.		*/
+		ip_address  mihf_address;	/**< MIHF IP address.		*/
+		uint        mihf_port;		/**< MIHF listening port.	*/
+		size_t      buffer_length;	/**< Receive Buffer Length.	*/
+	};
+
+	/**
+	 * Construct a MIH-User SAP I/O Service.
+	 * The defined callback is invoked when a request message is received
+	 * The signature of the callback is:
+	 * void(odtone::mih::message&, const boost::system::error_code&).
 	 *
-	 * @param  cfg configuration with the parameters for MIH User port, MIHF ip:port and receive buffer size.
-	 * @param  io generic IO service.
-	 * @param  h handler callback as a function pointer/object. The handler callback is invoked when an message is received, offering a simple way to process incoming messages. The signature of the callback is: void(odtone::mih::message&, const boost::system::error_code&).
-	 * @throws boost::system::error_code
+	 * @param cfg Configuration parameters.
+	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * dispatch handlers for any asynchronous operations performed on
+	 * the socket.
+	 * @param h Message processing handler.
 	 */
 	user(const mih::config& cfg, boost::asio::io_service& io, const handler& h);
 
 	/**
-	 * Destruct an User SAP IO Service.
+	 * Construct a MIH-User SAP I/O Service.
+	 * The defined callback is invoked when a request message is received
+	 * The signature of the callback is:
+	 * void(odtone::mih::message&, const boost::system::error_code&).
+	 *
+	 * @param io The io_service object that Link SAP I/O Service will use to
+	 * dispatch handlers for any asynchronous operations performed on
+	 * the socket.
+	 * @param h Message processing handler.
+	 * @param cfg Configuration parameters.
+	 */
+	user(boost::asio::io_service& io, const handler& h, const config& cfg = config());
+
+	/**
+	 * Destruct a MIH-User SAP I/O Service.
 	 */
 	~user();
 
 	/**
-	 * Send the MIH message to the local MIHF asynchronously.
-	 * After the message is sended, the callback is called with the
-	 * response message or to report failure in delivering the message
-	 * to the MIHF.This method retuns immediately.
+	 * Asynchronously send a MIH message to the local MIHF.
+	 * After sending the message, the callback is called to report the
+	 * success or failure in delivering the message to the local MIHF.
+	 * This method retuns immediately.
 	 *
-	 * @param msg MIH message to send.
-	 * @param h Completion/Response callback handler as a function pointer/object.
+	 * @param pm MIH message to send.
+	 * @param h Response handler function.
 	 */
-	void async_send(mih::message& pm, const handler& h);
-
-	/**
-	 * Send the MIH message to the local MIHF synchronously.
-	 * After the message is sent, the callback is called to report
-	 * the success or failure in delivering the message to the MIHF. This method retuns immediately.
-	 *
-	 * @param msg MIH message to send
-	 * @param h Completion callback handler as a function pointer/object
-	 */
-	void sync_send(mih::message& msg);
+	template<class CompletionHandler>
+	void async_send(mih::message& pm, CompletionHandler h)
+	{
+		async_send_(pm, handler(h));
+	}
 
 private:
 	/**
-	 * Received message handler.
+	 * Asynchronously send a MIH message to the local MIHF.
+	 * After sending the message, the callback is called to report the
+	 * success or failure in delivering the message to the local MIHF.
+	 * This method retuns immediately.
 	 *
-	 * @param buff message byte buffer.
-	 * @param rbytes number of bytes of the message.
-	 * @param ec error code.
+	 * @param msg MIH message to send.
+	 * @param h Response handler function.
+	 */
+	void async_send_(mih::message& msg, handler&& h);
+
+	/**
+	 * Received message callback. This function is executed to process the
+	 * received messages. If this is a valid message, the message is
+	 * dispatched to the handler defined by the user.
+	 *
+	 * @param buff Message byte buffer.
+	 * @param rbytes Size of the message.
+	 * @param ec Error code.
 	 */
 	void recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system::error_code& ec);
 
 	/**
-	 * Sent message handler.
+	 * Sent message handler. After sending the message, this function is called to
+	 * report the success or failure in delivering the message to the local MIHF.
 	 *
-	 * @param fm message sent.
-	 * @param sbytes number of bytes of the message.
-	 * @param ec error code.
+	 * @param fm MIH message sent.
+	 * @param h Message handler.
+	 * @param ec Error code.
 	 */
-	void send_handler(mih::frame_vla& fm, size_t sbytes, const boost::system::error_code& ec);
+	void send_handler(mih::frame_vla& fm, handler& h, const boost::system::error_code& ec);
+
+	/**
+	 * Get the message handler function of the message.
+	 *
+	 * @param tid Transaction ID of the message.
+	 * @param h Reference to the message handler.
+	 */
+	void get_handler(uint tid, handler& h);
 
 private:
-	handler                        _handler;
-	boost::asio::ip::udp::socket   _sock;
-	mih::id                        _id;
-	boost::asio::ip::udp::endpoint _ep;
-	odtone::mih::id                _user_id;
-	odtone::mih::id                _mihf_id;
-	bool                           handover;
+	handler                        _handler;	/**< User defined handler.	*/
+	boost::asio::ip::udp::socket   _sock;		/**< Link SAP socket.		*/
+	boost::asio::ip::udp::endpoint _ep;			/**< Local MIHF endpoint.	*/
+	odtone::mih::id                _user_id;	/**< MIH-User MIH ID.		*/
 
-	boost::mutex _mutex;
-	rmap         _rmap;
+	boost::mutex _mutex;	/**< Mutex to avoid the simultaneous use of a
+								 common resource. */
+	rmap _rmap;				/**< Transactions map.		*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////

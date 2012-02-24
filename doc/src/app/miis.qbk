@@ -4,8 +4,8 @@
  /------------------------------------------------------------------------------
  / ODTONE - Open Dot Twenty One
  /
- / Copyright (C) 2009-2011 Universidade Aveiro
- / Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+ / Copyright (C) 2009-2012 Universidade Aveiro
+ / Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
  /
  / This software is distributed under a license. The full license
  / agreement can be found in the file LICENSE in this distribution.
@@ -17,15 +17,23 @@
 
 [section:miis_index MIIS Server]
 
-The MIIS Server provides details on the characteristics and
-services provided by the serving and neighboring networks. The information
+The MIIS Server provides details about the characteristics and
+services provided by the serving and neighbor networks. The information
 enables effective system access and effective handover decisions.
 
-This MIIS Server is only an example that uses the Redland RDF libraries for
-parsing and querying a sqlite database.
-
+This MIIS Server serves only as an example which uses the Redland RDF
+libraries for parsing and querying a sqlite database.
 
 [section:miis_getStart Getting Started]
+
+[section Registering with the MIHF]
+
+When registering with the MIHF, the MIH-User defines which queries it supports.
+
+Therefore at the reception of a request message belonging to the information service,
+it will be forwarded to the MIIS Server.
+
+[endsect]
 
 [section Detailed Description]
 
@@ -33,19 +41,19 @@ This MIIS Server example uses the Redland RDF libraries for parsing and querying
 a sqlite database (other databases can be used too). Check the
 [@http://librdf.org/docs/ Redland documentation] for more details.
 
-Although an example database is provided (example-database), it is possible to
-use other database previously created.
+Although an example database is provided (example-database), other database
+previously created can be used.
 
 [variablelist
 
     [[base-schema.xml]
-    [is the base schema provided in the standard]]
+    [is the base schema provided in the standard.]]
 
     [[example-data.ttl]
     [is a Turtle file with some random data for testing queries.
     Check [@http://www.w3.org/TeamSubmission/turtle http://www.w3.org/TeamSubmission/turtle]
     for more details. The example is in this format because it is more clearer
-	than the equivalent XML]]
+	than the equivalent XML.]]
 
     [[example-database]
     [is a sqlite database built from base-schema.xml and
@@ -53,8 +61,8 @@ use other database previously created.
 ]
 
 When a MIH_Get_Information.indication is received the message is deserialized
-and the Sparql queries are fetch. The queries are run and the results serialized
-and sent in a MIH_Get_Information.response to the MIHF.
+and the Sparql queries are fetch. The queries are executed and the results serialized
+and sent in a MIH_Get_Information.response message to the MIHF.
 
 [endsect]
 
@@ -62,14 +70,13 @@ and sent in a MIH_Get_Information.response to the MIHF.
 
 	MIH Usr Configuration:
 	   --help                                  Display configuration options
-	   --conf.port arg (=1236)                 Port
-	   --conf.file arg (=miis_rdf_server.conf) Configuration File
-	   --conf.recv_buff_len arg (=4096)        Receive Buffer Length
-	   --mihf.ip arg (=127.0.0.1)              Local MIHF Ip
-	   --mihf.id arg (=local-mihf)             Local MIHF Id
-	   --user.id arg (=miis)                   MIIS Server ID
-	   --mihf.local_port arg (=1025)           MIHF Local Communications Port
-	   --dest arg                              MIH message destination of MIIS server
+	   --conf.file arg (=miis_rdf_server.conf) Configuration file
+	   --conf.port arg (=1236)                 Listening port
+	   --conf.recv_buff_len arg (=4096)        Receive buffer length
+	   --user.id arg (=miis)                   MIIS server ID
+	   --user.queries arg                      MIIS Server supported queries
+	   --mihf.ip arg (=127.0.0.1)              Local MIHF IP address
+	   --mihf.local_port arg (=1025)           Local MIHF communication port
 	   --database arg (=database)              /path/to MIIS server sqlite database
 
 MIIS Server can be configured either through a configuration file or passing
@@ -86,30 +93,6 @@ The path to the database can be passed with the --database option.
 2) Parse and add some data, in Turtle format, to the database:
 
     rdfproc -s sqlite database_name parse file:/path/to/data.xml turtle
-
-[endsect]
-
-[section Extending]
-
-It is possible to do several extensions to MIIS Server in a simple and fast way.
-
-For example, in recv_handler can be added specific behaviour for an incoming
-message after MIIS Server sent MIH GET Information Response. So, MIIS Server
-can make its own decisions about the actions that must be initiated.
-
-``
-	static void recv_handler(odtone::mih::message &m, boost::system::error_code e)
-	{
-		// ...
-	}
-``
-
-[endsect]
-
-[section Running]
-
-There is no running recommendation for MIIS Server. It can be run after or before
-the local MIHF.
 
 [endsect]
 

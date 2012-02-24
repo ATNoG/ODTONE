@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir=".." name="Debug a SPOT host application">
+    <import file="../build.xml"/>
+
+    <!-- TODO: edit the following target according to your needs -->
+    <!-- (more info: http://www.netbeans.org/kb/41/freeform-config.html#debugj2se) -->
+
+    <target name="debug-nb"  depends="init,-set-selector-for-host-run,-do-find-spots,host-compile,-pre-host-run">
+        <nbjpdastart addressproperty="jpda.address" name="SPOTHostApp" transport="dt_socket">
+            <classpath path="${build.dir}${path.separator}${hostagent.run.classpath}"/>
+        </nbjpdastart>
+        
+        <java classname="${main.class}" 
+              classpath="${build.dir}${path.separator}${hostagent.run.classpath}"
+              fork="true">
+            <jvmarg value="-Xdebug"/>
+            <jvmarg value="-Xnoagent"/>
+            <jvmarg value="-Djava.compiler=none"/>
+            <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
+            <jvmarg value="-Djava.library.path=${sunspot.lib}${path.separator}${user.library.path}"/>
+            <sysproperty key="squawk.startup.arguments" value="${squawk.startup.arguments}"/>
+            <sysproperty key="SERIAL_PORT" value="${port}"/>
+	    <sysproperty key="spot.basestation.sharing" value="${basestation.shared}" />
+	    <sysproperty key="spotclient.addin.classes" value="${spotclient.all.addin.classes}" />
+	    <sysproperty key="remote.channel" value="${remote.channel}"/>
+	    <sysproperty key="remote.pan.id" value="${remote.pan.id}"/>
+	    <sysproperty key="remote.transmit.power" value="${remote.transmit.power}"/>
+            <sysproperty key="spot.mesh.route.logging" value="${spot.mesh.route.logging}"/>
+            <sysproperty key="spot.log.connections" value="${spot.log.connections}"/>
+            <sysproperty key="spotclient.verbose" value="${spotclient.verbose}"/>
+	    <sysproperty key="error.log" value="${error.log}"/>
+            <jvmarg line="${host.jvmargs}"/>
+            <arg line="${main.args}"/>
+        </java>
+    </target>
+    
+    <target name="debug-fix" depends="init,-pre-host-compile">
+        <javac srcdir="${src.dir}" destdir="${build.dir}" debug="true" 
+               classpath="${build.dir}${path.separator}${hostagent.compile.classpath}" >
+            <include name="${fix.file}.java"/>
+        </javac> 
+        <antcall target="-post-host-compile"/>
+        <nbjpdareload> 
+            <fileset dir="${build.dir}">
+                <include name="${fix.file}.class"/>
+            </fileset>
+        </nbjpdareload>
+    </target>  
+
+</project>

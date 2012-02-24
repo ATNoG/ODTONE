@@ -1,11 +1,11 @@
-//=============================================================================
+//==============================================================================
 // Brief   : MIH Link SAP IO Service
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -17,6 +17,7 @@
 
 #include <odtone/sap/link.hpp>
 #include <odtone/buffer.hpp>
+#include <odtone/bind_rv.hpp>
 #include <boost/bind.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -26,14 +27,16 @@ namespace ip = boost::asio::ip;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Construct a Link SAP IO Service.
- * The handler callback is invoked when a mensage is received such as a request
- * mensage. The signature of the callback is: void(odtone::mih::message&, const boost::system::error_code&).
+ * Construct a Link SAP I/O Service.
+ * The defined callback is invoked when a request message is received
+ * The signature of the callback is:
+ * void(odtone::mih::message&, const boost::system::error_code&).
  *
- * @param cfg configuration with the parameters for MIH Link SAP port, MIHF ip:port and receive buffer size.
- * @param io  generic IO service.
- * @param h   handler callback as a function pointer/object.
- * @throws boost::system::error_code
+ * @param cfg Configuration parameters.
+ * @param io The io_service object that Link SAP I/O Service will use to
+             dispatch handlers for any asynchronous operations performed on
+             the socket.
+ * @param h Message processing handler.
  */
 link::link(const mih::config& cfg, boost::asio::io_service& io, const default_handler& h)
 	: _handler(h), _sock(io, ip::udp::endpoint(ip::udp::v4(), cfg.get<ushort>(kConf_Port))),
@@ -50,24 +53,26 @@ link::link(const mih::config& cfg, boost::asio::io_service& io, const default_ha
 	_sock.async_receive(boost::asio::buffer(rbuff, rlen),
 						boost::bind(&link::recv_handler,
 									this,
-									move(buff),
+									bind_rv(buff),
 									boost::asio::placeholders::bytes_transferred,
 									boost::asio::placeholders::error));
 }
 
 /**
- * Destruct a Link SAP IO Service.
+ * Destruct a Link SAP I/O Service.
  */
 link::~link()
 {
 }
 
 /**
- * Send the MIH message to the local MIHF asynchronously.
- * After the message is sended, the callback is called to report the success or failure in delivering the message to the MIHF. This method retuns immediately.
+ * Asynchronously send a MIH message to the local MIHF.
+ * After sending the message, the callback is called to report the
+ * success or failure in delivering the message to the local MIHF.
+ * This method retuns immediately.
  *
  * @param msg MIH message to send.
- * @param h completion callback handler as a function pointer/object.
+ * @param h Response handler function.
  */
 void link::async_send(mih::message& msg, const handler& h)
 {
@@ -87,44 +92,23 @@ void link::async_send(mih::message& msg, const handler& h)
 			    _ep,
 			    boost::bind(&link::send_handler,
 					this,
-					move(fm),
+					bind_rv(fm),
 					h,
 					boost::asio::placeholders::bytes_transferred,
 					boost::asio::placeholders::error));
 }
 
 /**
- * Send the MIH message to the local MIHF synchronously.
- * After the message is sent, the callback is called to report
- * the success or failure in delivering the message to the MIHF. This method retuns immediately.
+ * Received message callback. This function is executed to process the
+ * received messages. If this is a valid message, the message is
+ * dispatched to the handler defined by the user.
  *
- * @param msg MIH message to send
- * @param h Completion callback handler as a function pointer/object
+ * @param buff Message byte buffer.
+ * @param rbytes Size of the message.
+ * @param ec Error code.
  */
-void link::sync_send(mih::message& msg)
-{
-	mih::frame_vla fm;
-	void* sbuff;
-	size_t slen;
-
-	msg.source(_link_id);
-	msg.destination(_mihf_id);
-	msg.get_frame(fm);
-
-	sbuff = fm.get();
-	slen = fm.size();
-
-	_sock.send_to(boost::asio::buffer(sbuff, slen), _ep);
-}
-
-/**
- * Received message handler.
- *
- * @param buff message byte buffer.
- * @param rbytes number of bytes of the message.
- * @param ec error code.
- */
-void link::recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system::error_code& ec)
+void link::recv_handler(buffer<uint8>& buff, size_t rbytes,
+						const boost::system::error_code& ec)
 {
 	if (ec) {
 		mih::message pm;
@@ -147,19 +131,21 @@ void link::recv_handler(buffer<uint8>& buff, size_t rbytes, const boost::system:
 	_sock.async_receive(boost::asio::buffer(rbuff, rlen),
 						boost::bind(&link::recv_handler,
 									this,
-									move(buff),
+									bind_rv(buff),
 									boost::asio::placeholders::bytes_transferred,
 									boost::asio::placeholders::error));
 }
 
 /**
- * Sent message handler.
+ * Sent message handler. After sending the message, this function is called to
+ * report the success or failure in delivering the message to the local MIHF.
  *
- * @param fm message sent.
- * @param sbytes number of bytes of the message.
- * @param ec error code.
+ * @param fm MIH message sent.
+ * @param h Message handler.
+ * @param sbytes Size of the message.
+ * @param ec Error code.
  */
-void link::send_handler(mih::frame_vla& /*fm*/, const handler& h, size_t /*sbytes*/, const boost::system::error_code& ec)
+void link::send_handler(mih::frame_vla& fm, const handler& h, size_t sbytes, const boost::system::error_code& ec)
 {
 	if (h)
 		h(ec);

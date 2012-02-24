@@ -1,0 +1,334 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Type mid</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../../index.html" title="ODTONE 0.4">
+<link rel="up" href="../confirm.html#idp11365936" title="Description">
+<link rel="prev" href="../confirm.html" title="Class confirm">
+<link rel="next" href="../service.html" title="Struct service">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../confirm.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../confirm.html#idp11365936"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../service.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="odtone.mih.confirm.mid"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Type mid</span></h2>
+<p>odtone::mih::confirm::mid</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.confirm_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/confirm.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/mih/confirm.hpp</a>&gt;
+
+</span>
+<span class="keyword">enum</span> <span class="identifier">mid</span> <span class="special">{</span> capability_discover =  msg_id&lt;1, <a class="link" href="mid.html#odtone.mih.confirm.mid.value">value</a>, 
+           event_subscribe =  msg_id&lt;1, <a class="link" href="mid.html#odtone.mih.confirm.mid.value">value</a>, event_unsubscribe =  msg_id&lt;1, 
+           <a class="link" href="mid.html#odtone.mih.confirm.mid.value">value</a>, link_get_parameters =  msg_id&lt;3, <a class="link" href="mid.html#odtone.mih.confirm.mid.value">value</a>, 
+           link_configure_thresholds =  msg_id&lt;3, <a class="link" href="mid.html#odtone.mih.confirm.mid.value">value</a>, 
+           link_actions =  msg_id&lt;3, <a class="link" href="mid.html#odtone.mih.confirm.mid.value">value</a>, 
+           net_ho_candidate_query =  msg_id&lt;3, <a class="link" href="mid.html#odtone.mih.confirm.mid.value">value</a>, 
+           mn_ho_candidate_query =  msg_id&lt;3, <a class="link" href="mid.html#odtone.mih.confirm.mid.value">value</a>, 
+           n2n_ho_query_resources =  msg_id&lt;3, <a class="link" href="mid.html#odtone.mih.confirm.mid.value">value</a>, 
+           mn_ho_commit =  msg_id&lt;3, <a class="link" href="mid.html#odtone.mih.confirm.mid.value">value</a>, net_ho_commit =  msg_id&lt;3, <a class="link" href="mid.html#odtone.mih.confirm.mid.value">value</a>, 
+           n2n_ho_commit =  msg_id&lt;3, <a class="link" href="mid.html#odtone.mih.confirm.mid.value">value</a>, mn_ho_complete =  msg_id&lt;3, 
+           <a class="link" href="mid.html#odtone.mih.confirm.mid.value">value</a>, n2n_ho_complete =  msg_id&lt;3, <a class="link" href="mid.html#odtone.mih.confirm.mid.value">value</a>, 
+           get_information =  msg_id&lt;4, <a class="link" href="mid.html#odtone.mih.confirm.mid.value">value</a> <span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp11391744"></a><h2>Description</h2>
+<p>MIH Confirm Message ID </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.confirm.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.confirm</p>
+<p>MIH_Event_Subscribe.confirm</p>
+<p>MIH_Event_Unsubscribe.confirm</p>
+<p>MIH_Link_Get_Parameters.confirm</p>
+<p>MIH_Link_Configure_Thresholds.confirm</p>
+<p>MIH_Link_Actions.confirm</p>
+<p>MIH_Net_HO_Candidate_Query.confirm</p>
+<p>MIH_MN_HO_Candidate_Query.confirm</p>
+<p>MIH_N2N_HO_Query_Resources.confirm</p>
+<p>MIH_MN_HO_Commit.confirm</p>
+<p>MIH_Net_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Complete.confirm</p>
+<p>MIH_N2N_HO_Commlete.confirm</p>
+<p>MIH_Get_Information.confirm </p>
+</dd>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.confirm.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.confirm</p>
+<p>MIH_Event_Subscribe.confirm</p>
+<p>MIH_Event_Unsubscribe.confirm</p>
+<p>MIH_Link_Get_Parameters.confirm</p>
+<p>MIH_Link_Configure_Thresholds.confirm</p>
+<p>MIH_Link_Actions.confirm</p>
+<p>MIH_Net_HO_Candidate_Query.confirm</p>
+<p>MIH_MN_HO_Candidate_Query.confirm</p>
+<p>MIH_N2N_HO_Query_Resources.confirm</p>
+<p>MIH_MN_HO_Commit.confirm</p>
+<p>MIH_Net_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Complete.confirm</p>
+<p>MIH_N2N_HO_Commlete.confirm</p>
+<p>MIH_Get_Information.confirm </p>
+</dd>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.confirm.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.confirm</p>
+<p>MIH_Event_Subscribe.confirm</p>
+<p>MIH_Event_Unsubscribe.confirm</p>
+<p>MIH_Link_Get_Parameters.confirm</p>
+<p>MIH_Link_Configure_Thresholds.confirm</p>
+<p>MIH_Link_Actions.confirm</p>
+<p>MIH_Net_HO_Candidate_Query.confirm</p>
+<p>MIH_MN_HO_Candidate_Query.confirm</p>
+<p>MIH_N2N_HO_Query_Resources.confirm</p>
+<p>MIH_MN_HO_Commit.confirm</p>
+<p>MIH_Net_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Complete.confirm</p>
+<p>MIH_N2N_HO_Commlete.confirm</p>
+<p>MIH_Get_Information.confirm </p>
+</dd>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.confirm.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.confirm</p>
+<p>MIH_Event_Subscribe.confirm</p>
+<p>MIH_Event_Unsubscribe.confirm</p>
+<p>MIH_Link_Get_Parameters.confirm</p>
+<p>MIH_Link_Configure_Thresholds.confirm</p>
+<p>MIH_Link_Actions.confirm</p>
+<p>MIH_Net_HO_Candidate_Query.confirm</p>
+<p>MIH_MN_HO_Candidate_Query.confirm</p>
+<p>MIH_N2N_HO_Query_Resources.confirm</p>
+<p>MIH_MN_HO_Commit.confirm</p>
+<p>MIH_Net_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Complete.confirm</p>
+<p>MIH_N2N_HO_Commlete.confirm</p>
+<p>MIH_Get_Information.confirm </p>
+</dd>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.confirm.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.confirm</p>
+<p>MIH_Event_Subscribe.confirm</p>
+<p>MIH_Event_Unsubscribe.confirm</p>
+<p>MIH_Link_Get_Parameters.confirm</p>
+<p>MIH_Link_Configure_Thresholds.confirm</p>
+<p>MIH_Link_Actions.confirm</p>
+<p>MIH_Net_HO_Candidate_Query.confirm</p>
+<p>MIH_MN_HO_Candidate_Query.confirm</p>
+<p>MIH_N2N_HO_Query_Resources.confirm</p>
+<p>MIH_MN_HO_Commit.confirm</p>
+<p>MIH_Net_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Complete.confirm</p>
+<p>MIH_N2N_HO_Commlete.confirm</p>
+<p>MIH_Get_Information.confirm </p>
+</dd>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.confirm.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.confirm</p>
+<p>MIH_Event_Subscribe.confirm</p>
+<p>MIH_Event_Unsubscribe.confirm</p>
+<p>MIH_Link_Get_Parameters.confirm</p>
+<p>MIH_Link_Configure_Thresholds.confirm</p>
+<p>MIH_Link_Actions.confirm</p>
+<p>MIH_Net_HO_Candidate_Query.confirm</p>
+<p>MIH_MN_HO_Candidate_Query.confirm</p>
+<p>MIH_N2N_HO_Query_Resources.confirm</p>
+<p>MIH_MN_HO_Commit.confirm</p>
+<p>MIH_Net_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Complete.confirm</p>
+<p>MIH_N2N_HO_Commlete.confirm</p>
+<p>MIH_Get_Information.confirm </p>
+</dd>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.confirm.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.confirm</p>
+<p>MIH_Event_Subscribe.confirm</p>
+<p>MIH_Event_Unsubscribe.confirm</p>
+<p>MIH_Link_Get_Parameters.confirm</p>
+<p>MIH_Link_Configure_Thresholds.confirm</p>
+<p>MIH_Link_Actions.confirm</p>
+<p>MIH_Net_HO_Candidate_Query.confirm</p>
+<p>MIH_MN_HO_Candidate_Query.confirm</p>
+<p>MIH_N2N_HO_Query_Resources.confirm</p>
+<p>MIH_MN_HO_Commit.confirm</p>
+<p>MIH_Net_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Complete.confirm</p>
+<p>MIH_N2N_HO_Commlete.confirm</p>
+<p>MIH_Get_Information.confirm </p>
+</dd>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.confirm.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.confirm</p>
+<p>MIH_Event_Subscribe.confirm</p>
+<p>MIH_Event_Unsubscribe.confirm</p>
+<p>MIH_Link_Get_Parameters.confirm</p>
+<p>MIH_Link_Configure_Thresholds.confirm</p>
+<p>MIH_Link_Actions.confirm</p>
+<p>MIH_Net_HO_Candidate_Query.confirm</p>
+<p>MIH_MN_HO_Candidate_Query.confirm</p>
+<p>MIH_N2N_HO_Query_Resources.confirm</p>
+<p>MIH_MN_HO_Commit.confirm</p>
+<p>MIH_Net_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Complete.confirm</p>
+<p>MIH_N2N_HO_Commlete.confirm</p>
+<p>MIH_Get_Information.confirm </p>
+</dd>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.confirm.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.confirm</p>
+<p>MIH_Event_Subscribe.confirm</p>
+<p>MIH_Event_Unsubscribe.confirm</p>
+<p>MIH_Link_Get_Parameters.confirm</p>
+<p>MIH_Link_Configure_Thresholds.confirm</p>
+<p>MIH_Link_Actions.confirm</p>
+<p>MIH_Net_HO_Candidate_Query.confirm</p>
+<p>MIH_MN_HO_Candidate_Query.confirm</p>
+<p>MIH_N2N_HO_Query_Resources.confirm</p>
+<p>MIH_MN_HO_Commit.confirm</p>
+<p>MIH_Net_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Complete.confirm</p>
+<p>MIH_N2N_HO_Commlete.confirm</p>
+<p>MIH_Get_Information.confirm </p>
+</dd>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.confirm.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.confirm</p>
+<p>MIH_Event_Subscribe.confirm</p>
+<p>MIH_Event_Unsubscribe.confirm</p>
+<p>MIH_Link_Get_Parameters.confirm</p>
+<p>MIH_Link_Configure_Thresholds.confirm</p>
+<p>MIH_Link_Actions.confirm</p>
+<p>MIH_Net_HO_Candidate_Query.confirm</p>
+<p>MIH_MN_HO_Candidate_Query.confirm</p>
+<p>MIH_N2N_HO_Query_Resources.confirm</p>
+<p>MIH_MN_HO_Commit.confirm</p>
+<p>MIH_Net_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Complete.confirm</p>
+<p>MIH_N2N_HO_Commlete.confirm</p>
+<p>MIH_Get_Information.confirm </p>
+</dd>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.confirm.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.confirm</p>
+<p>MIH_Event_Subscribe.confirm</p>
+<p>MIH_Event_Unsubscribe.confirm</p>
+<p>MIH_Link_Get_Parameters.confirm</p>
+<p>MIH_Link_Configure_Thresholds.confirm</p>
+<p>MIH_Link_Actions.confirm</p>
+<p>MIH_Net_HO_Candidate_Query.confirm</p>
+<p>MIH_MN_HO_Candidate_Query.confirm</p>
+<p>MIH_N2N_HO_Query_Resources.confirm</p>
+<p>MIH_MN_HO_Commit.confirm</p>
+<p>MIH_Net_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Complete.confirm</p>
+<p>MIH_N2N_HO_Commlete.confirm</p>
+<p>MIH_Get_Information.confirm </p>
+</dd>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.confirm.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.confirm</p>
+<p>MIH_Event_Subscribe.confirm</p>
+<p>MIH_Event_Unsubscribe.confirm</p>
+<p>MIH_Link_Get_Parameters.confirm</p>
+<p>MIH_Link_Configure_Thresholds.confirm</p>
+<p>MIH_Link_Actions.confirm</p>
+<p>MIH_Net_HO_Candidate_Query.confirm</p>
+<p>MIH_MN_HO_Candidate_Query.confirm</p>
+<p>MIH_N2N_HO_Query_Resources.confirm</p>
+<p>MIH_MN_HO_Commit.confirm</p>
+<p>MIH_Net_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Complete.confirm</p>
+<p>MIH_N2N_HO_Commlete.confirm</p>
+<p>MIH_Get_Information.confirm </p>
+</dd>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.confirm.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.confirm</p>
+<p>MIH_Event_Subscribe.confirm</p>
+<p>MIH_Event_Unsubscribe.confirm</p>
+<p>MIH_Link_Get_Parameters.confirm</p>
+<p>MIH_Link_Configure_Thresholds.confirm</p>
+<p>MIH_Link_Actions.confirm</p>
+<p>MIH_Net_HO_Candidate_Query.confirm</p>
+<p>MIH_MN_HO_Candidate_Query.confirm</p>
+<p>MIH_N2N_HO_Query_Resources.confirm</p>
+<p>MIH_MN_HO_Commit.confirm</p>
+<p>MIH_Net_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Complete.confirm</p>
+<p>MIH_N2N_HO_Commlete.confirm</p>
+<p>MIH_Get_Information.confirm </p>
+</dd>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.confirm.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.confirm</p>
+<p>MIH_Event_Subscribe.confirm</p>
+<p>MIH_Event_Unsubscribe.confirm</p>
+<p>MIH_Link_Get_Parameters.confirm</p>
+<p>MIH_Link_Configure_Thresholds.confirm</p>
+<p>MIH_Link_Actions.confirm</p>
+<p>MIH_Net_HO_Candidate_Query.confirm</p>
+<p>MIH_MN_HO_Candidate_Query.confirm</p>
+<p>MIH_N2N_HO_Query_Resources.confirm</p>
+<p>MIH_MN_HO_Commit.confirm</p>
+<p>MIH_Net_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Complete.confirm</p>
+<p>MIH_N2N_HO_Commlete.confirm</p>
+<p>MIH_Get_Information.confirm </p>
+</dd>
+<dt><span class="term"><code class="computeroutput">value</code><a name="odtone.mih.confirm.mid.value"></a></span></dt>
+<dd>
+<p>MIH_Capability_Discover.confirm</p>
+<p>MIH_Event_Subscribe.confirm</p>
+<p>MIH_Event_Unsubscribe.confirm</p>
+<p>MIH_Link_Get_Parameters.confirm</p>
+<p>MIH_Link_Configure_Thresholds.confirm</p>
+<p>MIH_Link_Actions.confirm</p>
+<p>MIH_Net_HO_Candidate_Query.confirm</p>
+<p>MIH_MN_HO_Candidate_Query.confirm</p>
+<p>MIH_N2N_HO_Query_Resources.confirm</p>
+<p>MIH_MN_HO_Commit.confirm</p>
+<p>MIH_Net_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Commit.confirm</p>
+<p>MIH_N2N_HO_Complete.confirm</p>
+<p>MIH_N2N_HO_Commlete.confirm</p>
+<p>MIH_Get_Information.confirm </p>
+</dd>
+</dl></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../confirm.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../confirm.html#idp11365936"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../service.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

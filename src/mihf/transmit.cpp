@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -24,29 +24,33 @@
 namespace odtone { namespace mihf {
 
 /**
- * Transmit module constructor.
+ * Construct a transmit module.
  *
- * @param io io_service.
- * @param user_abook user book module.
- * @param link_abook link book module.
- * @param msg_out output message.
+ * @param io The io_service object that transmit module will use to
+ * dispatch handlers for any asynchronous operations performed on
+ * the socket.
+ * @param user_abook The user book module.
+ * @param link_abook The link book module.
+ * @param msg_out The output message.
  */
 transmit::transmit(io_service &io,
 		           user_book &user_abook,
 		           link_book &link_abook,
-		           message_out &msg_out)
+		           message_out &msg_out,
+				   uint16 port)
 	: _io(io),
 	  _user_abook(user_abook),
 	  _link_abook(link_abook),
 	  _msg_out(msg_out)
 {
+	_port = port;
 }
 
 /**
  * Send message to a local entity. If the output message destination is a peer
  * MIHF redirect it to the message_out module.
  *
- * @param msg output message.
+ * @param msg The output message.
  */
 void transmit::operator()(meta_message_ptr& msg)
 {
@@ -55,22 +59,24 @@ void transmit::operator()(meta_message_ptr& msg)
 		// FIXME: Response shouldn't be send to MIH Users
 		if(msg->opcode() != mih::operation::request) {
 			user_entry user = _user_abook.get(msg->destination().to_string());
-			utils::udp_send(_io, msg, user.ip.c_str(), user.port);
-			log(1, "(transmit) sending local message to: ",
-			    msg->destination().to_string(), " ", user.ip, " ", user.port);
+			if(msg->opcode() == mih::operation::response) {
+				msg->opcode(mih::operation::confirm);
+			}
+			utils::udp_send(_io, msg, user.ip.c_str(), user.port, _port);
+			ODTONE_LOG(1, "(transmit) sending local message to: ",
+			    msg->destination().to_string(), " : ", user.ip, " : ", user.port);
 		}
 		else {
 			link_entry link = _link_abook.get(msg->destination().to_string());
-			utils::udp_send(_io, msg, link.ip.c_str(), link.port);
-			log(1, "(transmit) sending local message to: ",
-			    msg->destination().to_string(), " ", link.ip, " ", link.port);
+			utils::udp_send(_io, msg, link.ip.c_str(), link.port, _port);
+			ODTONE_LOG(1, "(transmit) sending local message to: ",
+			    msg->destination().to_string(), " : ", link.ip, " : ", link.port);
 		}
 	} catch (...) {
-		if(msg->opcode() == mih::operation::confirm)
-		{
+		if(msg->opcode() == mih::operation::confirm) {
 			msg->opcode(mih::operation::response);
 		}
-		log(1, "(transmit) forwarding to message_out");
+		ODTONE_LOG(1, "(transmit) forwarding to message_out");
 		_msg_out(msg);
 	}
 }

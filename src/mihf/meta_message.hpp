@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -26,75 +26,89 @@ namespace odtone { namespace mihf {
 /**
  * A meta_message is a derived class from odtone::mih::message with added metadata.
  * The metadata indicates if the message was received on the loopback interface
- * and also the IP address and port of the sender of the message. It's useful
- * mostly due to broadcast messages.
+ * and also the IP address and port of the sender of the message.
  */
 class meta_message
 	: public mih::message
 {
 public:
 	/**
-	 * Meta-message constructor.
+	 * Construct an empty meta message.
 	 */
 	meta_message();
 
 	/**
-	 * Meta-message constructor.
+	 * Construct a meta message.
 	 *
-	 * @param fm message frame.
+	 * @param fm The message frame from where extract the message data.
 	 */
 	meta_message(const mih::frame &fm);
 
 	/**
-	 * Meta-message constructor.
+	 * Construct a meta message.
 	 *
-	 * @param ip source IP Address.
-	 * @param port source port.
-	 * @param fm message frame.
+	 * @param ip The source IP address.
+	 * @param scope The scope ID.
+	 * @param port The source port.
+	 * @param fm The message frame from where extract the message data.
 	 */
-	meta_message(mih::octet_string ip, uint16 port, const mih::frame &fm);
+	meta_message(mih::octet_string ip, uint16 scope,
+	             uint16 port, const mih::frame &fm);
 
 	/**
-	 * Check if the message in from a local entity.
+	 * Check if the message is from a local entity.
 	 *
 	 * @return true if the message is from a local entity or false otherwise.
 	 */
 	bool is_local();
 
 	/**
-	 * Get the source IP Address of the message.
+	 * Get the IP address of the source of the message.
 	 *
-	 * @return The source IP Address.
+	 * @return The IP address if the source of the message.
 	 */
-	const mih::octet_string& ip();
+	mih::octet_string& ip();
 
 	/**
-	 * Get the source port of the message.
+	 * Get the scope ID of the message.
 	 *
-	 * @return The source port.
+	 * @return The scope ID of the message.
+	 */
+	uint16 scope();
+
+	/**
+	 * Get the port of the source of the message.
+	 *
+	 * @return The port of the source of the message.
 	 */
 	uint16 port();
 
 	/**
-	 * Set the source IP Address of the message.
+	 * Set the IP address of the source of the message.
 	 *
-	 * @param ip source IP Address.
+	 * @param ip The IP address of the source of the message.
 	 */
 	void ip(const mih::octet_string &ip);
 
 	/**
-	 * Set the source port of the message.
+	 * Set the scope IP of the message.
 	 *
-	 * @param p source port.
+	 * @param scope The scope IP of the message.
+	 */
+	void scope(uint16 scope);
+
+	/**
+	 * Set the port of the source of the message.
+	 *
+	 * @param p The port of the source of the message.
 	 */
 	void port(uint16 p);
 
 protected:
-	// true if message was sent from a local user/link sap
-	bool			_local;
-	// ip and port of who sent the message
-	mih::octet_string	_ip;
-	uint16			_port;
+	bool _local;			/**< True if message was sent from a local entity.	*/
+	mih::octet_string _ip;	/**< The IP address of the source of the message.	*/
+	uint16 _scope;			/**< The scope ID.									*/
+	uint16 _port;			/**< The port of the source of the message.			*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */
@@ -102,5 +116,3 @@ protected:
 typedef boost::shared_ptr<odtone::mihf::meta_message> meta_message_ptr;
 
 #endif
-
-

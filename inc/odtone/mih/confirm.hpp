@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -29,54 +29,51 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * This class permits parsing/generating MIH Confirm messages. It derives
- * from odtone::mih::message_helper and will inherit all the features from base
- * class.
+ * This class allows parsing and generating MIH Confirm messages.
  */
 class confirm : public message_helper {
 public:
 
+	/**
+	 * MIH Confirm Message ID
+	 */
 	enum mid {
-		capability_discover									/// MIH_Capability_Discover.indication
-									= msg_id<1, 0, 1>::value,
-
-		event_subscribe									/// MIH_Event_Subscribe.request
-									= msg_id<1, 0, 4>::value,
-
-		event_unsubscribe								/// MIH_Event_Unsubscribe.request
-									= msg_id<1, 0, 5>::value,
-
-		link_get_parameters								/// MIH_Link_Get_Parameters.request
-									= msg_id<3, 0, 1>::value,
-
-		link_configure_thresholds						/// MIH_Link_Configure_Thresholds.request
-									= msg_id<3, 0, 2>::value,
-
-		link_actions									/// MIH_Link_Actions.request
-									= msg_id<3, 0, 3>::value,
-
+		capability_discover	= msg_id<1, 0, 1>::value,		/**< MIH_Capability_Discover.confirm		*/
+		event_subscribe	= msg_id<1, 0, 4>::value,			/**< MIH_Event_Subscribe.confirm			*/
+		event_unsubscribe = msg_id<1, 0, 5>::value,			/**< MIH_Event_Unsubscribe.confirm			*/
+		link_get_parameters = msg_id<3, 0, 1>::value,		/**< MIH_Link_Get_Parameters.confirm		*/
+		link_configure_thresholds = msg_id<3, 0, 2>::value,	/**< MIH_Link_Configure_Thresholds.confirm	*/
+		link_actions = msg_id<3, 0, 3>::value,				/**< MIH_Link_Actions.confirm				*/
+		net_ho_candidate_query = msg_id<3, 0, 4>::value,	/**< MIH_Net_HO_Candidate_Query.confirm		*/
+		mn_ho_candidate_query = msg_id<3, 0, 5>::value,		/**< MIH_MN_HO_Candidate_Query.confirm		*/
+		n2n_ho_query_resources = msg_id<3, 0, 6>::value,	/**< MIH_N2N_HO_Query_Resources.confirm		*/
+		mn_ho_commit = msg_id<3, 0, 7>::value,				/**< MIH_MN_HO_Commit.confirm				*/
+		net_ho_commit = msg_id<3, 0, 8>::value,				/**< MIH_Net_HO_Commit.confirm				*/
+		n2n_ho_commit = msg_id<3, 0, 9>::value,				/**< MIH_N2N_HO_Commit.confirm				*/
+		mn_ho_complete = msg_id<3, 0, 10>::value,			/**< MIH_N2N_HO_Complete.confirm			*/
+		n2n_ho_complete = msg_id<3, 0, 11>::value,			/**< MIH_N2N_HO_Commlete.confirm			*/
+		get_information = msg_id<4, 0, 1>::value,			/**< MIH_Get_Information.confirm			*/
 	};
 
 	/**
-	 * Construct an MIH Confirm Message helper with MIH Message ID equals to
-	 * 0 (zero) and a null pointer for MIH Message Destination MIHF ID.
+	 * Construct an empty MIH Confirm Message helper.
 	 */
 	confirm() : message_helper(0, nullptr)
 	{ }
 
 	/**
-	 * Construct an MIH Confirm Message helper
+	 * Construct a MIH Confirm Message helper.
 	 *
-	 * @param m MIH Message ID
+	 * @param m The value of the MIH Message ID.
 	 */
 	explicit confirm(mid m) : message_helper(m, nullptr)
 	{ }
 
 	/**
-	 * Construct an MIH Confirm Message helper
+	 * Construct a MIH Confirm Message helper.
 	 *
-	 * @param m MIH Message ID
-	 * @param destination MIH Message Destination MIHF ID
+	 * @param m The value of the MIH Message ID.
+	 * @param destination The value of the MIH Message Destination MIHF ID.
 	 */
 	confirm(mid m, const id& destination) : message_helper(m, &destination)
 	{ }

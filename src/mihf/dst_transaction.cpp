@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -23,10 +23,10 @@
 namespace odtone { namespace mihf {
 
 /**
- * Constructor for Destination State Machine transaction.
+ * Constructor a Destination State Machine transaction.
  *
- * @param f transaction handler.
- * @param netsap netsap module.
+ * @param f The transaction handler.
+ * @param netsap The netsap module.
  */
 dst_transaction_t::dst_transaction_t(handler_t &f, net_sap &netsap)
 	: transaction_t(f, netsap)
@@ -91,13 +91,11 @@ void dst_transaction_t::run()
 		state = DST_SEND_RESPONSE;
 
 		start_ack_requestor  = out->ackreq();
+		if(start_ack_requestor)
+			ack_requestor();
 		ack_requestor_status = ONGOING;
 
 		_netsap.send(out);
-
-		// ?? probably not
-		// if (start_ack_requestor)
-		// 	tas->ack_requestor(t);
 	}
 
   _send_response_lbl_:

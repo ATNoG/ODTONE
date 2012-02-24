@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -26,23 +26,31 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define IQ_RDF_SCHEMA data type.
+ * IQ_RDF_SCHEMA data type.
  */
 typedef octet_string               iq_rdf_schema;
 
 /**
- * Define LIST(IQ_RDF_SCHEMA) data type.
+ * LIST(IQ_RDF_SCHEMA) data type.
  */
 typedef std::vector<iq_rdf_schema> iq_rdf_schema_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define IQ_RDF_DATA data type.
+ * IQ_RDF_DATA data type.
  */
 struct iq_rdf_data {
+	/**
+	 * Construct a IQ_RDF_DATA data type.
+	 */
 	iq_rdf_data() : _mime(null())
 	{ }
 
+	/**
+	 * Serialize/deserialize the IQ_RDF_DATA data type.
+	 *
+	 * @param ar The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -50,12 +58,12 @@ struct iq_rdf_data {
 		ar & _data;
 	}
 
-	boost::variant<null, octet_string> _mime;
-	octet_string                       _data;
+	boost::variant<null, octet_string> _mime;	/**< MIME type.			*/
+	octet_string                       _data;	/**< Value of the MIME.	*/
 };
 
 /**
- * Define LIST(IQ_RDF_DATA) data type.
+ * LIST(IQ_RDF_DATA) data type.
  */
 typedef std::vector<iq_rdf_data> iq_rdf_data_list;
 

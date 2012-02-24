@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -18,6 +18,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "tcp_listener.hpp"
 #include "log.hpp"
+#include "mihfid.hpp"
+
+#include <odtone/bind_rv.hpp>
 #include <boost/bind.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -25,15 +28,18 @@
 namespace odtone { namespace mihf {
 
 /**
- * TCP session constructor.
+ * Construct a TCP session.
  *
- * @param io io_service.
- * @param d dispatch function.
+ * @param io The io_service object that TCP session will use to
+ * dispatch handlers for any asynchronous operations performed on
+ * the socket.
+ * @param d The dispatch function.
  */
-session::session(io_service &io, dispatch_t &d)
+session::session(io_service &io, dispatch_t &d, bool enable_multicast)
 	: _sock(io),
 	  _dispatch(d)
 {
+	_enable_multicast = enable_multicast;
 }
 
 /**
@@ -47,7 +53,7 @@ ip::tcp::socket& session::socket()
 }
 
 /**
- * Start Session.
+ * Start a new session.
  */
 void session::start()
 {
@@ -58,33 +64,53 @@ void session::start()
 	_sock.async_read_some(boost::asio::buffer(rbuf, rlen),
 			      boost::bind(&session::handle_read,
 					  this,
-					  odtone::move(buff),
+					  odtone::bind_rv(buff),
 					  placeholders::bytes_transferred,
 					  placeholders::error));
 }
 
 /**
- * Handle completion of an asynchronous accept operation.
+ * Handle the reception of an asynchronous message.
  *
- * @param buff input message bytes.
- * @param rbytes number of bytes of the input message.
- * @param error error code.
+ * @param buff The input message bytes.
+ * @param rbytes The number of bytes of the input message.
+ * @param error The error code.
  */
 void session::handle_read(odtone::buffer<uint8> &buff,
 			  size_t rbytes,
 			  const boost::system::error_code &e)
 {
 	if (!e) {
-		mih::octet_string ip(_sock.remote_endpoint().address().to_string());
+		// Decode IP address
+		mih::octet_string ip;
+		uint16 scope = 0;
+		if(_sock.remote_endpoint().address().is_v4()) {
+			boost::asio::ip::address_v4 ip_addr = _sock.remote_endpoint().address().to_v4();
+			ip = ip_addr.to_string();
+		} else if(_sock.remote_endpoint().address().is_v6()) {
+			boost::asio::ip::address_v6 ip_addr = _sock.remote_endpoint().address().to_v6();
+			scope = ip_addr.scope_id();
+			ip_addr.scope_id(0);
+			ip = ip_addr.to_string();
+		}
+		// Decode port
 		uint16 port = _sock.remote_endpoint().port();
 
 		mih::frame *pud = mih::frame::cast(buff.get(), rbytes);
 		if(pud) {
-			log(1, "(tcp) received ", rbytes, " bytes from ", ip , ":", port);
+			ODTONE_LOG(1, "(tcp) received ", rbytes, " bytes from ", ip , " : ", port);
 
-			meta_message_ptr in(new meta_message(ip, port, *pud));
-			_dispatch(in);
-                }
+			meta_message_ptr in(new meta_message(ip, scope, port, *pud));
+
+			// discard messages if multicast messages are not supported
+			if(utils::is_multicast(in) && !_enable_multicast) {
+				ODTONE_LOG(1, "(tcp) Discarding message! Reason: ",
+							  "multicast messages are not supported");
+			} else {
+				_dispatch(in);
+			}
+		}
+
 		// close socket because we're not using it anymore
 		 _sock.close();
 	} else {
@@ -93,31 +119,43 @@ void session::handle_read(odtone::buffer<uint8> &buff,
 }
 
 /**
- * TCP Listener constructor.
+ * Construct a TCP Listener.
  *
- * @param io io_service.
- * @param ipv IP protocol.
- * @param ip IP Address.
- * @param port listening port.
- * @param d dispatch function.
+ * @param io The io_service object that TCP listener module will use to
+ * dispatch handlers for any asynchronous operations performed on
+ * the socket.
+ * @param buff_size The receive buffer length.
+ * @param ipv The IP protocol type.
+ * @param ip The IP address to be aware.
+ * @param port The listening port.
+ * @param d The dispatch function.
  */
 tcp_listener::tcp_listener(io_service &io,
+			   uint16 buff_size,
 			   ip::tcp ipv,
 			   const char* ip,
 			   uint16 port,
-			   dispatch_t &d)
+			   dispatch_t &d,
+			   bool enable_multicast)
 	: _io(io),
-	  _acceptor(io, ip::tcp::endpoint(ip::address::from_string(ip), port)),
+	  _acceptor(io),
 	  _dispatch(d)
 {
+	_enable_multicast = enable_multicast;
+
+	_acceptor.open(ipv);
+	_acceptor.set_option(boost::asio::socket_base::receive_buffer_size(buff_size));
+	_acceptor.set_option(boost::asio::socket_base::reuse_address(true));
+	_acceptor.bind(boost::asio::ip::tcp::endpoint(ip::address::from_string(ip), port));
 }
 
 /**
- * Start TCP listener socket.
+ * Start the TCP listener socket.
  */
 void tcp_listener::start()
 {
-	session *new_session = new session(_io, _dispatch);
+	session *new_session = new session(_io, _dispatch, _enable_multicast);
+	_acceptor.listen();
 	_acceptor.async_accept(new_session->socket(),
 			       boost::bind(&tcp_listener::handle_accept,
 					   this,
@@ -128,15 +166,15 @@ void tcp_listener::start()
 /**
  * TCP accept handler.
  *
- * @param s session.
- * @param error_code error code.
+ * @param new_session The session to handle the connection.
+ * @param error_code The error code.
  */
 void tcp_listener::handle_accept(session *new_session,
 			       const boost::system::error_code &e)
 {
 	if (!e) {
 		new_session->start();
-		new_session = new session(_io, _dispatch);
+		new_session = new session(_io, _dispatch, _enable_multicast);
 
 		_acceptor.async_accept(new_session->socket(),
 				       boost::bind(&tcp_listener::handle_accept,

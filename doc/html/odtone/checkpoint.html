@@ -1,0 +1,183 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class checkpoint</title>
+<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="ODTONE 0.4">
+<link rel="up" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.debug_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/debug.hpp&gt;">
+<link rel="prev" href="crash_ctx.html" title="Struct crash_ctx">
+<link rel="next" href="bug.html" title="Type bug">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src=".././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="crash_ctx.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.debug_hpp"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="bug.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="odtone.checkpoint"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class checkpoint</span></h2>
+<p>odtone::checkpoint</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.debug_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/debug.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/debug.hpp</a>&gt;
+
+</span>
+<span class="keyword">class</span> <a class="link" href="checkpoint.html" title="Class checkpoint">checkpoint</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// <a class="link" href="checkpoint.html#odtone.checkpointconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="checkpoint.html#idp3697792-bb"><span class="identifier">checkpoint</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">uint</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="checkpoint.html#idp3699872-bb"><span class="special">~</span><span class="identifier">checkpoint</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="checkpoint.html#idp3691592-bb">public static functions</a></span>
+  <span class="keyword">static</span> <a class="link" href="checkpoint.html" title="Class checkpoint">checkpoint</a> <span class="special">*</span> <a class="link" href="checkpoint.html#idp3691776-bb"><span class="identifier">top</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="checkpoint.html#idp3692992-bb">public member functions</a></span>
+  <a class="link" href="checkpoint.html" title="Class checkpoint">checkpoint</a> <span class="special">*</span> <a class="link" href="checkpoint.html#idp3693176-bb"><span class="identifier">previous</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a class="link" href="checkpoint.html#idp3694288-bb"><span class="identifier">file</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint</span> <a class="link" href="checkpoint.html#idp3695312-bb"><span class="identifier">line</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a class="link" href="checkpoint.html#idp3696336-bb"><span class="identifier">expression</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="checkpoint.html#idp3697360-bb"><span class="keyword">operator</span> <span class="keyword">bool</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp10050480"></a><h2>Description</h2>
+<p>Mechanism for debugging, which allows to follow the execution states of the application. It can be viewed as a linked list of checkpoints that maintains the execution states of the application. If a crash happens, the last checkpoint will point to its occurence. </p>
+<div class="refsect2">
+<a name="idp10051088"></a><h3>
+<a name="odtone.checkpointconstruct-copy-destruct"></a><code class="computeroutput">checkpoint</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a name="idp3697792-bb"></a><span class="identifier">checkpoint</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> file<span class="special">,</span> <span class="identifier">uint</span> line<span class="special">,</span> <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> exp<span class="special">)</span><span class="special">;</span></pre>
+<p>Construct a checkpoint and add it to the checkpoint list.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">exp</code></span></p></td>
+<td><p>expression of the checkpoint. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">file</code></span></p></td>
+<td><p>file name of the checkpoint. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">line</code></span></p></td>
+<td><p>line number of the checkpoint. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="idp3699872-bb"></a><span class="special">~</span><span class="identifier">checkpoint</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Destruct a checkpoint and remove it from the checkpoint list. </p>
+</li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="idp10062528"></a><h3>
+<a name="idp3691592-bb"></a><code class="computeroutput">checkpoint</code> public static functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<pre class="literallayout"><span class="keyword">static</span> <a class="link" href="checkpoint.html" title="Class checkpoint">checkpoint</a> <span class="special">*</span> <a name="idp3691776-bb"></a><span class="identifier">top</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Get the top checkpoint in the list.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The top checkpoint in the list. </p></td>
+</tr></tbody>
+</table></div>
+</li></ol></div>
+</div>
+<div class="refsect2">
+<a name="idp10067608"></a><h3>
+<a name="idp3692992-bb"></a><code class="computeroutput">checkpoint</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="checkpoint.html" title="Class checkpoint">checkpoint</a> <span class="special">*</span> <a name="idp3693176-bb"></a><span class="identifier">previous</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Get the previous checkpoint.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The previous checkpoint. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a name="idp3694288-bb"></a><span class="identifier">file</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Get the checkpoint's file name.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The checkpoint's file name. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">uint</span> <a name="idp3695312-bb"></a><span class="identifier">line</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Get the checkpoint's line number.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The checkpoint's line number. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a name="idp3696336-bb"></a><span class="identifier">expression</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Get the checkpoint's expression.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The checkpoint's expression. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem"><pre class="literallayout"><a name="idp3697360-bb"></a><span class="keyword">operator</span> <span class="keyword">bool</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="crash_ctx.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.debug_hpp"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="bug.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

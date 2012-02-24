@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -22,9 +22,11 @@
 namespace odtone { namespace mihf {
 
 /**
- * Constructor for Transaction Pool.
+ * Construct a transaction pool.
  *
- * @param io io_service.
+ * @param io The io_service object that transaction pool module will
+ * use to dispatch handlers for any asynchronous operations performed on
+ * the socket.
  */
 transaction_pool::transaction_pool(io_service &io)
 	: _timer(io, boost::posix_time::seconds(1)),
@@ -32,17 +34,17 @@ transaction_pool::transaction_pool(io_service &io)
 	  _src_mutex()
 {
 	// start timer
-	_timer.expires_at(_timer.expires_at() + boost::posix_time::seconds(1));
+	_timer.expires_from_now(boost::posix_time::seconds(1));
 	_timer.async_wait(boost::bind(&transaction_pool::tick, this));
 }
 
 /**
- * This procedure decrements the timer of each transaction only if its value is
+ * Decrements the timer of each transaction only if its value is
  * greater than 0.
  *
- * @param set transaction type.
- * @param it transaction.
- * @param mutex mutex.
+ * @param set The transaction type.
+ * @param it The transaction.
+ * @param mutex The mutex.
  */
 template <class Set, class SetIterator>
 void transaction_pool::dec(Set &set,
@@ -55,7 +57,6 @@ void transaction_pool::dec(Set &set,
 		boost::mutex::scoped_lock lock(mutex);
 
 		for(it = set.begin(); it != set.end(); it++) {
-
 			(*it)->transaction_stop_when--;
 			if ((*it)->transaction_stop_when == 0) {
 				(*it)->run();
@@ -64,7 +65,7 @@ void transaction_pool::dec(Set &set,
 					del_these.insert(*it);
 			}
 
-			if ((*it)->start_ack_requestor) {
+			if ((*it)->ack_requestor_status == ONGOING) {
 				(*it)->retransmission_when--;
 				if ((*it)->retransmission_when == 0) {
 					(*it)->ack_requestor();
@@ -83,12 +84,11 @@ void transaction_pool::dec(Set &set,
 }
 
 /**
- * Decrements each transaction timer that exist in the transaction pool. This is
- * set in response to a regular one-second tick.
+ * Decrements each transaction timer existente in the transaction pool.
  */
 void transaction_pool::tick()
 {
-	_timer.expires_at(_timer.expires_at() + boost::posix_time::seconds(1));
+	_timer.expires_from_now(boost::posix_time::seconds(1));
 	_timer.async_wait(boost::bind(&transaction_pool::tick, this));
 
 	src_transaction_set::iterator src_it;
@@ -103,7 +103,7 @@ void transaction_pool::tick()
 /**
  * Add a new source transaction entry in the transaction pool.
  *
- * @param t source transaction pointer.
+ * @param t The source transaction pointer.
  */
 void transaction_pool::add(src_transaction_ptr &t)
 {
@@ -114,7 +114,7 @@ void transaction_pool::add(src_transaction_ptr &t)
 /**
  * Add a new destination transaction entry in the transaction pool.
  *
- * @param t destination transaction pointer.
+ * @param t The destination transaction pointer.
  */
 void transaction_pool::add(dst_transaction_ptr &t)
 {
@@ -123,9 +123,9 @@ void transaction_pool::add(dst_transaction_ptr &t)
 }
 
 /**
- * Remove a existing source transaction entry from the transaction pool.
+ * Remove an existing source transaction entry from the transaction pool.
  *
- * @param t source transaction pointer.
+ * @param t The source transaction pointer to be removed.
  */
 void transaction_pool::del(const src_transaction_ptr &t)
 {
@@ -136,7 +136,7 @@ void transaction_pool::del(const src_transaction_ptr &t)
 /**
  * Remove a existing destination transaction entry from the transaction pool.
  *
- * @param t destination transaction pointer.
+ * @param t destination transaction pointer to be removed.
  */
 void transaction_pool::del(const dst_transaction_ptr &t)
 {
@@ -145,12 +145,11 @@ void transaction_pool::del(const dst_transaction_ptr &t)
 }
 
 /**
- * Find the source transaction of a given MIHF ID and transaction ID
- * in the transaction pool.
+ * Searchs for a source transaction in the transaction pool.
  *
- * @param id MIHF MIH Identifier.
- * @param tid Transaction ID.
- * @param t source transaction pointer.
+ * @param id The MIH destination identifier to search for.
+ * @param tid The transaction identifier to search for.
+ * @param t The source transaction pointer.
  */
 void transaction_pool::find(const mih::id &id, uint16 tid, src_transaction_ptr &t)
 {
@@ -166,12 +165,11 @@ void transaction_pool::find(const mih::id &id, uint16 tid, src_transaction_ptr &
 }
 
 /**
- * Find the destination transaction of a given MIHF ID and transaction ID
- * in the transaction pool.
+ * Searchs for a destination transaction in the transaction pool.
  *
- * @param id MIHF MIH Identifier.
- * @param tid Transaction ID.
- * @param t destination transaction pointer.
+ * @param id The MIH source identifier to search for.
+ * @param tid The transaction identifier to search for.
+ * @param t The destination transaction pointer.
  */
 void transaction_pool::find(const mih::id &id, uint16 tid, dst_transaction_ptr &t)
 {

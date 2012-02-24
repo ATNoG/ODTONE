@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -27,43 +27,18 @@
 namespace odtone { namespace mihf {
 
 /**
- * Link Response Pool constructor.
+ * Construct a Link Response Pool.
  */
 link_response_pool::link_response_pool()
 {
 }
 
 /**
- * Add a new Link Response entry in the Link Responde Pool.
+ * Add a new entry in the Link Responde Pool.
  *
- * @param user MIH User MIH Identifier.
- * @param tid MIH Message Transaction ID.
- * @param event event list.
- * @param command command list.
- */
-void link_response_pool::add(mih::octet_string user,
-                             uint16 tid,
-                             mih::event_list event,
-                             mih::command_list command)
-{
-	pending_link_response p;
-
-	p.user.assign(user);
-	p.tid = tid;
-	p.cap.event_list = event;
-	p.cap.command_list = command;
-
-	boost::mutex::scoped_lock lock(_mutex);
-	_cpool.push_back(p);
-
-}
-
-/**
- * Add a new Link Response entry in the Link Responde Pool.
- *
- * @param user MIH User MIH Identifier.
- * @param tid MIH Message Transaction ID.
- * @param link_status link status response.
+ * @param user The MIH source identifier.
+ * @param tid The transaction identifier.
+ * @param link_status The link status response.
  */
 void link_response_pool::add(mih::octet_string user,
                              uint16 tid,
@@ -73,7 +48,7 @@ void link_response_pool::add(mih::octet_string user,
 
 	p.user.assign(user);
 	p.tid = tid;
-	p.link_status = link_status;
+	p.response = link_status;
 
 	boost::mutex::scoped_lock lock(_mutex);
 	_cpool.push_back(p);
@@ -81,12 +56,12 @@ void link_response_pool::add(mih::octet_string user,
 }
 
 /**
- * Add a new Link Response entry in the Link Responde Pool.
+ * Add a new entry in the Link Responde Pool.
  *
- * @param user MIH User MIH Identifier.
- * @param tid MIH Message Transaction ID.
- * @param link_scan_rsp_list Link Scan Response List
- * @param link_ac_result Link AC Result
+ * @param user MIH source identifier.
+ * @param tid The transaction identifier.
+ * @param link_scan_rsp_list The link scan response list.
+ * @param link_ac_result The link action result
  */
 void link_response_pool::add(mih::octet_string user,
                              uint16 tid,
@@ -97,20 +72,22 @@ void link_response_pool::add(mih::octet_string user,
 
 	p.user.assign(user);
 	p.tid = tid;
+	action ac;
 	if(link_scan_rsp_list.is_initialized()) {
-		p.action.link_scan_rsp_list = link_scan_rsp_list;
+		ac.link_scan_rsp_list = link_scan_rsp_list;
 	}
-	p.action.link_ac_result = link_ac_result;
+	ac.link_ac_result = link_ac_result;
+	p.response = ac;
 
 	boost::mutex::scoped_lock lock(_mutex);
 	_cpool.push_back(p);
 }
 
 /**
- * Remove a existing Link Response entry from the Link Response Pool
+ * Remove an existing record from the Link Response Pool
  *
- * @param tid MIH Message Transaction ID.
- * @param id MIH User MIH Identifier.
+ * @param tid The transaction identifier to be removed.
+ * @param id The MIH source identifier to be removed.
  */
 void link_response_pool::del(const uint16 tid, const mih::octet_string id)
 {
@@ -126,11 +103,11 @@ void link_response_pool::del(const uint16 tid, const mih::octet_string id)
 }
 
 /**
- * Find a Link Response entry in the Link Response Pool
+ * Searchs for a record in the Link Response Pool.
  *
- * @param tid MIH Message Transaction ID.
- * @param id MIH User MIH Identifier.
- * @return The Link Response entry.
+ * @param tid The transaction identifier to search for.
+ * @param id The MIH source identifier to search for.
+ * @return The Link Response record found.
  */
 pending_link_response link_response_pool::find(const uint16 tid, const mih::octet_string id)
 {
@@ -144,10 +121,10 @@ pending_link_response link_response_pool::find(const uint16 tid, const mih::octe
 }
 
 /**
- * Check the existence of a Link Response entry in the Link Response Pool
+ * Check the existence of a record in the Link Response Pool.
  *
- * @param tid MIH Message Transaction ID.
- * @param id MIH User MIH Identifier.
+ * @param tid The transaction identifier to search for.
+ * @param id The MIH source identifier to search for.
  * @return True if exists or false otherwise.
  */
 bool link_response_pool::check(const uint16 tid, const mih::octet_string id)

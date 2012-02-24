@@ -1,11 +1,11 @@
-//=============================================================================
+//==============================================================================
 // Brief   : Debug Helpers (platform dependent implementation - linux)
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -17,7 +17,6 @@
 
 #include <odtone/debug.hpp>
 #include <odtone/list_node.hpp>
-#include <odtone/move.hpp>
 #include <boost/utility.hpp>
 #include <boost/assert.hpp>
 #include <boost/array.hpp>
@@ -39,11 +38,12 @@ using odtone::ulong;
 
 ///////////////////////////////////////////////////////////////////////////
 class process {
-	ODTONE_MOVABLE_BUT_NOT_COPYABLE(process)
+	process(const process&) = delete;
+	process& operator=(const process&) = delete;
 
 public:
-	process(move_<process>& ps);
-	process& operator=(move_<process>& ps);
+	process(process&& ps);
+	process& operator=(process&& ps);
 
 public:
 	struct console {
@@ -69,7 +69,8 @@ private:
 	int _stderr;
 };
 
-process::process(move_<process>& ps)
+process::process(process&& ps)
+	: _pid(-1), _stdin(-1), _stdout(-1), _stderr(-1)
 {
 	std::swap(_pid, ps._pid);
 	std::swap(_stdin, ps._stdin);
@@ -77,7 +78,7 @@ process::process(move_<process>& ps)
 	std::swap(_stderr, ps._stderr);
 }
 
-process& process::operator=(move_<process>& ps)
+process& process::operator=(process&& ps)
 {
 	if (this != &ps) {
 		std::swap(_pid, ps._pid);
@@ -197,8 +198,8 @@ public:
 		char buffer[512];
 		ssize_t len;
 		size_t n;
-		char* pn = odtone::nullptr;
-		char* pf = odtone::nullptr;
+		char* pn = 0;
+		char* pf = 0;
 
 		if (!init_addr2line()) {
 			std::fprintf(stderr, "%02u %016lX%*c%s\n", i, ulong(address), 24, ' ', this->name());
@@ -388,7 +389,7 @@ void build_module_list(module_list& ml)
 {
 	const size_t k_page_size = ::sysconf(_SC_PAGESIZE);
 	ulong start, end, rd, dump, pos = 0;
-	char path[PATH_MAX];
+	char path[4096];
 	char prot[4];
 	char* buffer;
 	char* endl;
@@ -425,12 +426,12 @@ void build_module_list(module_list& ml)
 		len = std::strlen(path);
 		if (len != 0) {
 			name = (char*) crash_alloc(len + 1);
-			if (name == nullptr)
+			if (!name)
 				return;
 			std::memcpy(name, path, len + 1);
 
 			m = new(crash_alloc(sizeof(module))) module(name, start, end, prot);
-			if (m == nullptr)
+			if (!m)
 				return;
 			ml.insert(m);
 		}
@@ -496,7 +497,7 @@ void dump_checkpoints()
 
 	std::fprintf(stderr, "\n"
 						 "== checkpoints ==\n");
-	for (odtone::checkpoint* i = checkpoint::top(); i != odtone::nullptr; i = i->previous()) {
+	for (odtone::checkpoint* i = checkpoint::top(); i; i = i->previous()) {
 		std::fprintf(stderr,	"%s (%s:%u)\n", i->expression(), i->file(), i->line());
 	}
 }
@@ -567,6 +568,10 @@ void dump_stack(module_list& ml, void* address)
 namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Setup the crash handler.
+ */
 void setup_crash_handler()
 {
 	struct sigaction handler;
@@ -582,6 +587,12 @@ void setup_crash_handler()
 	//SIGSTKFLT
 }
 
+/**
+ * Handle the crash context.
+ * Output the crash infromation and abort the application execution.
+ *
+ * @param ctx Crash context.
+ */
 void crash(const crash_ctx& ctx)
 {
 	module_list ml;

@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -29,14 +29,14 @@ namespace odtone {
 #ifdef BOOST_WINDOWS
 
 #define ODTONE_L     L
-typedef wchar_t      char_t;
-typedef std::wstring string;
+typedef wchar_t      char_t; /**< Wide char.	*/
+typedef std::wstring string; /**< Wide string.	*/
 
 #else
 
 #define ODTONE_L
-typedef char        char_t;
-typedef std::string string;
+typedef char        char_t; /**< Char.		*/
+typedef std::string string; /**< String.	*/
 
 #endif
 

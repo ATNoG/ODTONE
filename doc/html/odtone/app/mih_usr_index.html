@@ -1,40 +1,238 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>MIH User</title>
+<title>MIH-User</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../../index.html" title="ODTONE 0.3">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../app.html" title="Applications">
-<link rel="prev" href="mihf_index/mihf_internals.html" title="ODTONE MIHF internals">
-<link rel="next" href="mih_usr_index/mih_usr_getStart.html" title="Getting Started">
+<link rel="prev" href="mihf_index.html" title="ODTONE-MIHF">
+<link rel="next" href="miis_index.html" title="MIIS Server">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="mihf_index/mihf_internals.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="mih_usr_index/mih_usr_getStart.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="mihf_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="miis_index.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="MIH User">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="odtone.app.mih_usr_index"></a><a class="link" href="mih_usr_index.html" title="MIH User"> MIH User</a>
+<a name="odtone.app.mih_usr_index"></a><a class="link" href="mih_usr_index.html" title="MIH-User">MIH-User</a>
 </h3></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart">Getting
+        Started</a></span></dt></dl></div>
 <p>
-        The MIH_User specifies a media independent interface between the MIHF and
+        The MIH-User specifies a media independent interface between the MIHF and
         upper layers of the mobility management protocol stack. The upper layers
-        need to subscribe with the MIHF as users to receive MIHF-Generated events
-        and also for link-layer events that originate at layers below the MIHF but
-        are passed on to MIHF users through the MIHF. MIHF users directly send commands
-        to the local MIHF using the service primitives of the MIH User.
+        need to register with the MIHF as users to receive MIHF-generated events
+        and link-layer events which are originated at lower layers. MIH-Users directly
+        send commands to the local MIHF using the service primitives available in
+        the 802.21 standard.
       </p>
 <p>
-        This implementation of MIH User is very simple. It only support capability
-        discover, event subscribe and link events primitives.
+        The MIH-User implementation is very simple, supporting only capability discover,
+        event subscribe and event notification mechanisms.
       </p>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.mih_usr_index.mih_usr_getStart"></a><a class="link" href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart" title="Getting Started">Getting
+        Started</a>
+</h4></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.registering_with_the_mihf">Registering
+          with the MIHF</a></span></dt>
+<dt><span class="section"><a href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.detailed_description">Detailed
+          Description</a></span></dt>
+<dt><span class="section"><a href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.configuration">Configuration</a></span></dt>
+<dt><span class="section"><a href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.extending">Extending</a></span></dt>
+<dt><span class="section"><a href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.running">Running</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mih_usr_index.mih_usr_getStart.registering_with_the_mihf"></a><a class="link" href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.registering_with_the_mihf" title="Registering with the MIHF">Registering
+          with the MIHF</a>
+</h5></div></div></div>
+<p>
+            When registering with the MIHF, the MIH-User defines which commands it
+            supports.
+          </p>
+<p>
+            Therefore at the reception of a MIH message, if it is supported by the
+            MIH-User, the message will be forwarded to the MIH-User.
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mih_usr_index.mih_usr_getStart.detailed_description"></a><a class="link" href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.detailed_description" title="Detailed Description">Detailed
+          Description</a>
+</h5></div></div></div>
+<p>
+            <span class="inlinemediaobject"><img src="../.././images/mih_usr_state_machine.png" alt="mih_usr_state_machine"></span>
+          </p>
+<p>
+            At the bootstrap, the MIH-User sends a Capability Discover Request to
+            the destination MIHF and waits for its response.
+          </p>
+<p>
+</p>
+<pre class="programlisting">msg &lt;&lt; odtone::mih::request(odtone::mih::request::capability_discover, _mihfid);
+_mihf.async_send(msg, boost::bind(&amp;mih_user::capability_discover_response, this, _1, _2));
+</pre>
+<p>
+          </p>
+<p>
+            The response message is processed and for every discovered interface
+            the MIH-User will subscribe to all supported events.
+          </p>
+<p>
+</p>
+<pre class="programlisting">msg &gt;&gt; odtone::mih::response()
+	&amp; odtone::mih::tlv_status(st)
+	&amp; odtone::mih::tlv_net_type_addr_list(ntal)
+	&amp; odtone::mih::tlv_event_list(evt);
+
+//...
+
+if (ntal &amp;&amp; evt) {
+	for (odtone::mih::net_type_addr_list::iterator i = ntal-&gt;begin(); i != ntal-&gt;end(); ++i) {
+		odtone::mih::message req;
+
+		// ...
+
+		_mihf.async_send(req, boost::bind(&amp;mih_user::event_subscribe_response, this, _1, _2));
+	}
+}
+</pre>
+<p>
+          </p>
+<p>
+            For every Event Subscribe Request sent to the MIHF is received a Event
+            Subscribe Response.
+          </p>
+<p>
+            At this moment, MIHF knows which events must forward to the MIH-User.
+          </p>
+<p>
+</p>
+<pre class="programlisting">void event_handler(odtone::mih::message&amp; msg, const boost::system::error_code&amp; ec);
+</pre>
+<p>
+          </p>
+<p>
+            However, when a event message is received there is no specific behaviour.
+            Instead of, the MIH-User only records in the log what type of message
+            was received.
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mih_usr_index.mih_usr_getStart.configuration"></a><a class="link" href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.configuration" title="Configuration">Configuration</a>
+</h5></div></div></div>
+<pre class="programlisting">MIH Usr Configuration:
+   --help                           Display configuration options
+   --conf.file arg (=mih_usr.conf)  Configuration file
+   --conf.recv_buff_len arg (=4096) Receive buffer length
+   --conf.port arg (=1234)          Listening port
+   --user.id arg (=user)            MIH-User ID
+   --user.commands arg              MIH-User supported commands
+   --mihf.ip arg (=127.0.0.1)       Local MIHF IP address
+   --mihf.local_port arg (=1025)    Local MIHF communication port
+   --dest arg                       MIHF destination
+</pre>
+<p>
+            The MIH-User can be configured based on a set of parameters, which can
+            be configured either using an configuration file or passing them directly
+            in the command line.
+          </p>
+<p>
+            The destination MIHF must be defined using the <span class="emphasis"><em>--dest</em></span>
+            option in the command line. If this option is not specified, the MIH-User
+            will send a "MIH_Capability_Discover" message to a multicast
+            destination.
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mih_usr_index.mih_usr_getStart.extending"></a><a class="link" href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.extending" title="Extending">Extending</a>
+</h5></div></div></div>
+<p>
+            The provided implementation of the MIH-User can be used as the base of
+            your MIH-User implementation, since it allows to do several extensions
+            in a simple and fast way.
+          </p>
+<p>
+            For example, in event handler can be added specific behaviour for a received
+            event message. In this way, the MIH-User can make its own decisions about
+            the actions that will performe for a particular event reception.
+          </p>
+<p>
+</p>
+<pre class="programlisting">void mih_user::event_handler(odtone::mih::message&amp; msg, const boost::system::error_code&amp; ec)
+{
+	// ...
+
+	switch (msg.mid()) {
+	case odtone::mih::indication::link_up:
+		log_(0, "MIH-User has received a local event \"link_up\"");
+
+		// Add some specific behaviour here
+
+		break;
+
+	// ... other link events
+
+	}
+}
+</pre>
+<p>
+          </p>
+<p>
+            You can also define other handlers that will be responsible for handling
+            the response message:
+</p>
+<pre class="programlisting">void new_handler(odtone::mih::message&amp; msg, const boost::system::error_code&amp; ec);
+</pre>
+<p>
+          </p>
+<p>
+            It must be associated with the sent message, so when the response arrives
+            the handler is called:
+</p>
+<pre class="programlisting">_mihf.async_send(msg, boost::bind(&amp;mih_user::new_handler, this, _1, _2));
+</pre>
+<p>
+          </p>
+<p>
+            It can be defined as the default handler of the MIH-User:
+</p>
+<pre class="programlisting">mih_user::mih_user(const odtone::mih::config&amp; cfg, boost::asio::io_service&amp; io)
+	: _mihf(cfg, io, boost::bind(&amp;mih_user::new_handler, this, _1, _2))
+</pre>
+<p>
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mih_usr_index.mih_usr_getStart.running"></a><a class="link" href="mih_usr_index.html#odtone.app.mih_usr_index.mih_usr_getStart.running" title="Running">Running</a>
+</h5></div></div></div>
+<p>
+            Before running the MIH-User, the local MIHF should already be running.
+            Otherwise, the MIH-User will send the "MIH_Capability_Discover.request"
+            message and will wait for the response message that will never arrive.
+            The local messages are sent via UDP and no acknowledge mechanisms exists.
+          </p>
+<p>
+            The <span class="emphasis"><em>--dest</em></span> option must be used when the destination
+            MIHF is a not a multicast.
+          </p>
+</div>
+</div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Universidade Aveiro<br>Copyright &#169; 2009 -2011 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license
@@ -44,7 +242,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="mihf_index/mihf_internals.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="mih_usr_index/mih_usr_getStart.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="mihf_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="miis_index.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

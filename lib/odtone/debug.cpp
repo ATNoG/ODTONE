@@ -1,11 +1,11 @@
-//=============================================================================
+//==============================================================================
 // Brief   : Debug Helpers
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -23,6 +23,9 @@
 namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Bug code strings.
+ */
 char const* k_bug_code_string[] = {
 	"bug",
 	"assert",
@@ -49,9 +52,9 @@ char const* k_bug_code_string[] = {
 #endif
 
 /**
- * Get the checkpoint list.
+ * Get the top checkpoint in the list.
  *
- * @return The checkpoint list.
+ * @return The top checkpoint in the list.
  */
 checkpoint* checkpoint::top()
 {
@@ -59,11 +62,11 @@ checkpoint* checkpoint::top()
 }
 
 /**
- * Construct a Checkpoint.
+ * Construct a checkpoint and add it to the checkpoint list.
  *
- * @param file file name
- * @param line line number
- * @param exp expression
+ * @param file file name of the checkpoint.
+ * @param line line number of the checkpoint.
+ * @param exp expression of the checkpoint.
  */
 checkpoint::checkpoint(const char* file, uint line, const char* exp)
 	: _prev(check_point_list), _file(file), _line(line), _exp(exp)
@@ -72,13 +75,22 @@ checkpoint::checkpoint(const char* file, uint line, const char* exp)
 }
 
 /**
- * Destruct for Checkpoint.
+ * Destruct a checkpoint and remove it from the checkpoint list.
  */
 checkpoint::~checkpoint()
 {
 	ODTONE_CHECKPOINT_SET(_prev);
 }
 
+/**
+ * Creates the crash context and dispatch it to its handler.
+ *
+ * @param code Crash bug code.
+ * @param function Crash function.
+ * @param file Crash file name.
+ * @param line Crash line number.
+ * @param expression Crash expression.
+ */
 void crash(bug code, const char* function, const char* file, uint line, const char* expression)
 {
 	crash_ctx ctx;
@@ -97,6 +109,10 @@ void crash(bug code, const char* function, const char* file, uint line, const ch
 } /* namespace odtone */
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * XXX Delete.
+ */
 void boost::assertion_failed(char const* expr, char const* function, char const* file, long line)
 {
 	odtone::crash_ctx ctx;

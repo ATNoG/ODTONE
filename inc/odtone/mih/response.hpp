@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -29,72 +29,53 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * This class permits parsing/generating MIH Response messages. It derives
- * from odtone::mih::message_helper and will inherit all the features from base
- * class.
+ * This class allows parsing/generating MIH Response messages.
  */
 class response : public message_helper {
 public:
 
+	/**
+	 * MIH Response Message ID
+	 */
 	enum mid {
-		capability_discover								/// MIH_Capability_Discover.response
-							= msg_id<1, 2, 1>::value,
-		mih_register									/// MIH_Register.response
-							= msg_id<1, 2, 2>::value,
-		mih_deregister									/// MIH_DeRegister.response
-							= msg_id<1, 2, 3>::value,
-		event_subscribe									/// MIH_Event_Subscribe.response
-							= msg_id<1, 2, 4>::value,
-		event_unsubscribe								/// MIH_Event_Unsubscribe.response
-							= msg_id<1, 2, 5>::value,
-
-		link_get_parameters										/// MIH_Link_Get_Parameters.response
-									= msg_id<3, 2, 1>::value,
-		link_configure_thresholds								/// MIH_Link_Configure_Thresholds.response
-									= msg_id<3, 2, 2>::value,
-		link_actions											/// MIH_Link_Actions.response
-									= msg_id<3, 2, 3>::value,
-		net_ho_candidate_query									/// MIH_Net_HO_Candidate_Query.response
-									= msg_id<3, 2, 4>::value,
-		mn_ho_candidate_query									/// MIH_MN_HO_Candidate_Query.response
-									= msg_id<3, 2, 5>::value,
-		n2n_ho_query_resources									/// MIH_N2N_HO_Query_Resources.response
-									= msg_id<3, 2, 6>::value,
-		mn_ho_commit											/// MIH_MN_HO_Commit.response
-									= msg_id<3, 2, 7>::value,
-		net_ho_commit											/// MIH_Net_HO_Commit.response
-									= msg_id<3, 2, 8>::value,
-		n2n_ho_commit											/// MIH_N2N_HO_Commit.response
-									= msg_id<3, 2, 9>::value,
-		mn_ho_complete											/// MIH_N2N_HO_Complete.response
-									= msg_id<3, 2, 10>::value,
-		n2n_ho_complete											/// MIH_N2N_HO_Commlete.response
-									= msg_id<3, 2, 11>::value,
-
-		get_information								/// MIH_Get_Information.response
-						= msg_id<4, 2, 1>::value,
+		capability_discover	= msg_id<1, 2, 1>::value,		/**< MIH_Capability_Discover.response	*/
+		mih_register = msg_id<1, 2, 2>::value,				/**< MIH_Register.response				*/
+		mih_deregister = msg_id<1, 2, 3>::value,			/**< MIH_DeRegister.response			*/
+		event_subscribe	= msg_id<1, 2, 4>::value,			/**< MIH_Event_Subscribe.response		*/
+		event_unsubscribe = msg_id<1, 2, 5>::value,			/**< MIH_Event_Unsubscribe.response		*/
+		link_get_parameters	= msg_id<3, 2, 1>::value,		/**< MIH_Link_Get_Parameters.response	*/
+		link_configure_thresholds = msg_id<3, 2, 2>::value,	/**< MIH_Link_Configure_Thresholds.response*/
+		link_actions = msg_id<3, 2, 3>::value,				/**< MIH_Link_Actions.response			*/
+		net_ho_candidate_query = msg_id<3, 2, 4>::value,	/**< MIH_Net_HO_Candidate_Query.response*/
+		mn_ho_candidate_query = msg_id<3, 2, 5>::value,		/**< MIH_MN_HO_Candidate_Query.response	*/
+		n2n_ho_query_resources = msg_id<3, 2, 6>::value,	/**< MIH_N2N_HO_Query_Resources.response*/
+		mn_ho_commit = msg_id<3, 2, 7>::value,				/**< MIH_MN_HO_Commit.response			*/
+		net_ho_commit = msg_id<3, 2, 8>::value,				/**< MIH_Net_HO_Commit.response			*/
+		n2n_ho_commit = msg_id<3, 2, 9>::value,				/**< MIH_N2N_HO_Commit.response			*/
+		mn_ho_complete = msg_id<3, 2, 10>::value,			/**< MIH_N2N_HO_Complete.response		*/
+		n2n_ho_complete = msg_id<3, 2, 11>::value,			/**< MIH_N2N_HO_Commlete.response		*/
+		get_information	= msg_id<4, 2, 1>::value,			/**< MIH_Get_Information.response		*/
 	};
 
 	/**
-	 * Construct an MIH Response Message helper with MIH Message ID equals to
-	 * 0 (zero) and a null pointer for MIH Message Destination MIHF ID.
+	 * Construct an empty MIH Response Message helper.
 	 */
 	response() : message_helper(0, nullptr)
 	{ }
 
 	/**
-	 * Construct an MIH Response Message helper
+	 * Construct a MIH Response Message helper.
 	 *
-	 * @param m MIH Message ID
+	 * @param m The value of the MIH Message ID.
 	 */
 	explicit response(mid m) : message_helper(m, nullptr)
 	{ }
 
 	/**
-	 * Construct an MIH Response Message helper
+	 * Construct an MIH Response Message helper.
 	 *
-	 * @param m MIH Message ID
-	 * @param destination MIH Message Destination MIHF ID
+	 * @param m The value of the MIH Message ID.
+	 * @param destination The value of the MIH Message Destination MIHF ID.
 	 */
 	response(mid m, const id& destination) : message_helper(m, &destination)
 	{ }

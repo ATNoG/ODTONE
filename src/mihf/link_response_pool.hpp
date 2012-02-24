@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -32,99 +32,88 @@
 namespace odtone { namespace mihf {
 
 /**
- * Struct to store pending Link Responses informations.
+ * Struct to store the link action parameters.
  */
-struct pending_link_response {
-	mih::octet_string    user;
-	uint16               tid;
-	struct capabilities {
-		mih::event_list   event_list;
-		mih::command_list command_list;
-	} cap;
-	mih::link_status_rsp link_status;
-	struct action_response {
-		mih::link_ac_result                      link_ac_result;
-		boost::optional<mih::link_scan_rsp_list> link_scan_rsp_list;
-	} action;
+struct action {
+	mih::link_ac_result	link_ac_result;	/**< The link action results. */
+	boost::optional<mih::link_scan_rsp_list> link_scan_rsp_list; /**< The link scan response list.	*/
 };
 
 /**
- * This class allows to store a pool of pending link responses.
+ * Struct to store pending Link SAP responses
+ */
+struct pending_link_response {
+	mih::octet_string	user;			/**< The MIH source identifier. 	*/
+	uint16				tid;			/**< The transaction identifier. 	*/
+	mih::status			st;				/**< Status. 						*/
+	boost::variant<	mih::link_status_rsp,
+					action > response;	/**< The response parameters. 		*/
+};
+
+/**
+ * This class allows the storage of Link SAP responses.
  */
 class link_response_pool
 {
 public:
 	/**
-	 * Link Response Pool constructor.
+	 * Construct a Link Response Pool.
 	 */
 	link_response_pool();
 
 	/**
-	 * Add a new Link Response entry in the Link Responde Pool.
+	 * Add a new entry in the Link Responde Pool.
 	 *
-	 * @param user MIH User MIH Identifier.
-	 * @param tid MIH Message Transaction ID.
-	 * @param event event list.
-	 * @param command command list.
+	 * @param user The MIH source identifier.
+	 * @param tid The transaction identifier.
+	 * @param link_status The link status response.
 	 */
 	void add(mih::octet_string user,
-                 uint16 tid,
-                 mih::event_list event,
-                 mih::command_list command);
-
-	/**
-	 * Add a new Link Response entry in the Link Responde Pool.
-	 *
-	 * @param user MIH User MIH Identifier.
-	 * @param tid MIH Message Transaction ID.
-	 * @param link_status link status response.
-	 */
-	void add(mih::octet_string user,
-                 uint16 tid,
+             uint16 tid,
 	         mih::link_status_rsp link_status);
 
 	/**
-	 * Add a new Link Response entry in the Link Responde Pool.
+	 * Add a new entry in the Link Responde Pool.
 	 *
-	 * @param user MIH User MIH Identifier.
-	 * @param tid MIH Message Transaction ID.
-	 * @param link_scan_rsp_list Link Scan Response List
-	 * @param link_ac_result Link AC Result
+	 * @param user MIH source identifier.
+	 * @param tid The transaction identifier.
+	 * @param link_scan_rsp_list The link scan response list.
+	 * @param link_ac_result The link action result
 	 */
 	void add(mih::octet_string user,
-                 uint16 tid,
+             uint16 tid,
 	         boost::optional<mih::link_scan_rsp_list> link_scan_rsp_list,
 	         mih::link_ac_result link_ac_result);
 
 	/**
-	 * Remove a existing Link Response entry from the Link Response Pool
+	 * Remove an existing record from the Link Response Pool
 	 *
-	 * @param tid MIH Message Transaction ID.
-	 * @param id MIH User MIH Identifier.
+	 * @param tid The transaction identifier to be removed.
+	 * @param id The MIH source identifier to be removed.
 	 */
 	void del(const uint16 tid, const mih::octet_string id);
 
 	/**
-	 * Find a Link Response entry in the Link Response Pool
+	 * Searchs for a record in the Link Response Pool.
 	 *
-	 * @param tid MIH Message Transaction ID.
-	 * @param id MIH User MIH Identifier.
-	 * @return The Link Response entry.
+	 * @param tid The transaction identifier to search for.
+	 * @param id The MIH source identifier to search for.
+	 * @return The Link Response record found.
 	 */
 	pending_link_response find(const uint16 tid, const mih::octet_string id);
 
 	/**
-	 * Check the existence of a Link Response entry in the Link Response Pool
+	 * Check the existence of a record in the Link Response Pool.
 	 *
-	 * @param tid MIH Message Transaction ID.
-	 * @param id MIH User MIH Identifier.
+	 * @param tid The transaction identifier to search for.
+	 * @param id The MIH source identifier to search for.
 	 * @return True if exists or false otherwise.
 	 */
 	bool check(const uint16 tid, const mih::octet_string id);
 
 protected:
-	std::list<pending_link_response> _cpool;
-	boost::mutex _mutex;
+	std::list<pending_link_response> _cpool;	/**< The list of pending responses.	*/
+	boost::mutex _mutex;						/**< Mutex.							*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////

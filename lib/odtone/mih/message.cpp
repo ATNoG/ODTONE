@@ -1,11 +1,11 @@
-//=============================================================================
+//==============================================================================
 // Brief   : MIH Message
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -23,7 +23,7 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Construct a default MIH Message.
+ * Construct an empty MIH Message.
  *
  * The defaults for each field are:
  *    version = 1;
@@ -42,9 +42,9 @@ message::message()
 }
 
 /**
- * Construct a MIH Message parsing all fields from a frame.
+ * Construct a MIH Message by extracting the data from a frame.
  *
- * @param fm odtone::mih::frame from which to parse information.
+ * @param fm The frame from which extract the information.
  */
 message::message(const frame& fm)
 	: _payload(), _in(_payload), _out(_payload)
@@ -60,10 +60,10 @@ message::~message()
 }
 
 /**
- * Extract the MIH Message fields from a given odtone::mih::frame.
+ * Extract the message data from a frame.
  *
- * @param fm odtone::mih::frame from which to extract information.
- * @return odtone::mih::message with the fields updated.
+ * @param fm The frame from which extract the information.
+ * @return The message with updated data.
  */
 message& message::operator=(const frame& fm)
 {
@@ -91,9 +91,33 @@ message& message::operator=(const frame& fm)
 }
 
 /**
- * Get the MIH Message Frame
+ * Set the message payload by copying it from another message.
+ * @note The source and destination TLVs are not copied.
  *
- * @param fm a dynamic frame buffer to fill
+ * @param msg The message from which extract the payload.
+ */
+void message::payload(const message& msg)
+{
+	frame_vla fm;
+	msg.get_frame(fm);
+
+	archive ar;
+	iarchive in(ar);
+
+	id tmp;
+	ar.append(fm->payload(), fm->payload() + fm->plength());
+	in & tlv_source_id(tmp);
+	in & tlv_destination_id(tmp);
+
+	_payload.clear();
+	_payload.append(fm->payload() + ar.position(), fm->payload() + fm->plength());
+	_payload.position(0);
+}
+
+/**
+ * Get the MIH Message Frame.
+ *
+ * @param fm A dynamic frame buffer to store the information.
  */
 void message::get_frame(frame_vla& fm) const
 {

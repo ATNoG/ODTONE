@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -22,11 +22,11 @@
 namespace odtone { namespace mihf {
 
 /**
- * Message IN constructor.
+ * Construct a message input module.
  *
- * @param tpool transaction pool module.
- * @param f process message handler.
- * @param netsap netsap module.
+ * @param tpool The transaction pool module.
+ * @param f The message handler.
+ * @param netsap The netsap module.
  */
 message_in::message_in(transaction_pool &tpool, handler_t &f, net_sap &netsap)
 	: _tpool(tpool),
@@ -36,12 +36,11 @@ message_in::message_in(transaction_pool &tpool, handler_t &f, net_sap &netsap)
 }
 
 /**
- * The message_in checks the transaction_pool for a pending transaction for the
- * incoming message, or if a new source transaction must be created and then
- * added to the transaction pool. Then proceeds to run the newly created, or
- * found, transaction.
+ * Checks, in the transaction pool, if the incoming message belongs to a pending
+ * transaction. If true it runs the transaction, otherwise it creates a new
+ * transaction.
  *
- * @param m input message.
+ * @param in The input message.
  */
 void message_in::operator()(meta_message_ptr& in)
 {
@@ -66,15 +65,16 @@ void message_in::operator()(meta_message_ptr& in)
 			if (t->start_ack_responder)
 				t->ack_responder();
 
-			if(!(in->ackrsp() == true && in->opcode() == mih::operation::request))
-				t->run();
+			if(t->transaction_status == ONGOING)
+				if(!(in->ackrsp() == true && in->opcode() == mih::operation::request))
+					t->run();
 
-			if (t->transaction_status != ONGOING)
+			if (t->transaction_status != ONGOING && t->ack_requestor_status != ONGOING)
 				_tpool.del(t);
 		} else {
 			new_dst_transaction(in);
 		}
-        } else {
+	} else {
 		dst_transaction_ptr t;
 		_tpool.find(in->source(), in->tid(), t);
 
@@ -85,12 +85,13 @@ void message_in::operator()(meta_message_ptr& in)
 			if (t->start_ack_requestor)
 				t->ack_requestor();
 
-			t->run();
+			if(t->transaction_status == ONGOING)
+				t->run();
 
 			if (t->start_ack_responder && t->transaction_status == ONGOING)
 				t->ack_responder();
 
-			if (t->transaction_status != ONGOING)
+			if (t->transaction_status != ONGOING && t->ack_requestor_status != ONGOING)
 				_tpool.del(t);
 		} else {
 			new_dst_transaction(in);
@@ -101,7 +102,7 @@ void message_in::operator()(meta_message_ptr& in)
 /**
  * Create a new destination transaction for the incoming message.
  *
- * @param m input message.
+ * @param m The input message.
  */
 void message_in::new_dst_transaction(meta_message_ptr& m)
 {

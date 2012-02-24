@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -25,13 +25,13 @@
 namespace odtone { namespace mihf {
 
 /**
- * This class represents the logger.
+ * This class provides logging capabilities. It is implemented as a singleton.
  */
 class log_t
 {
 public:
 	/**
-	 * Create a instance of the logger.
+	 * Creates an instance of the logger.
 	 */
 	static logger* instance();
 
@@ -41,10 +41,10 @@ public:
 	~log_t();
 
 private:
-	static logger		*ptr_instance;
+	static logger		*ptr_instance;	/**< Logger instance pointer.	*/
 };
 
-#define log (*log_t::instance())
+#define ODTONE_LOG (*log_t::instance())
 
 } /* namespace mihf */ } /* namespace odtone */
 

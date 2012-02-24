@@ -4,34 +4,142 @@
 <title>MIIS Server</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../../index.html" title="ODTONE 0.3">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../app.html" title="Applications">
-<link rel="prev" href="mih_usr_index/mih_usr_getStart.html" title="Getting Started">
-<link rel="next" href="miis_index/miis_getStart.html" title="Getting Started">
+<link rel="prev" href="mih_usr_index.html" title="MIH-User">
+<link rel="next" href="dhcp_usr_index.html" title="DHCP-User">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="mih_usr_index/mih_usr_getStart.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="miis_index/miis_getStart.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="mih_usr_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="dhcp_usr_index.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="MIIS Server">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="odtone.app.miis_index"></a><a class="link" href="miis_index.html" title="MIIS Server"> MIIS Server</a>
+<a name="odtone.app.miis_index"></a><a class="link" href="miis_index.html" title="MIIS Server">MIIS Server</a>
 </h3></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="miis_index.html#odtone.app.miis_index.miis_getStart">Getting Started</a></span></dt></dl></div>
 <p>
-        The MIIS Server provides details on the characteristics and services provided
-        by the serving and neighboring networks. The information enables effective
-        system access and effective handover decisions.
+        The MIIS Server provides details about the characteristics and services provided
+        by the serving and neighbor networks. The information enables effective system
+        access and effective handover decisions.
       </p>
 <p>
-        This MIIS Server is only an example that uses the Redland RDF libraries for
-        parsing and querying a sqlite database.
+        This MIIS Server serves only as an example which uses the Redland RDF libraries
+        for parsing and querying a sqlite database.
       </p>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.miis_index.miis_getStart"></a><a class="link" href="miis_index.html#odtone.app.miis_index.miis_getStart" title="Getting Started">Getting Started</a>
+</h4></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="miis_index.html#odtone.app.miis_index.miis_getStart.registering_with_the_mihf">Registering
+          with the MIHF</a></span></dt>
+<dt><span class="section"><a href="miis_index.html#odtone.app.miis_index.miis_getStart.detailed_description">Detailed
+          Description</a></span></dt>
+<dt><span class="section"><a href="miis_index.html#odtone.app.miis_index.miis_getStart.configuration">Configuration</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.miis_index.miis_getStart.registering_with_the_mihf"></a><a class="link" href="miis_index.html#odtone.app.miis_index.miis_getStart.registering_with_the_mihf" title="Registering with the MIHF">Registering
+          with the MIHF</a>
+</h5></div></div></div>
+<p>
+            When registering with the MIHF, the MIH-User defines which queries it
+            supports.
+          </p>
+<p>
+            Therefore at the reception of a request message belonging to the information
+            service, it will be forwarded to the MIIS Server.
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.miis_index.miis_getStart.detailed_description"></a><a class="link" href="miis_index.html#odtone.app.miis_index.miis_getStart.detailed_description" title="Detailed Description">Detailed
+          Description</a>
+</h5></div></div></div>
+<p>
+            This MIIS Server example uses the Redland RDF libraries for parsing and
+            querying a sqlite database (other databases can be used too). Check the
+            <a href="http://librdf.org/docs/" target="_top">Redland documentation</a> for
+            more details.
+          </p>
+<p>
+            Although an example database is provided (example-database), other database
+            previously created can be used.
+          </p>
+<div class="variablelist">
+<p class="title"><b></b></p>
+<dl>
+<dt><span class="term">base-schema.xml</span></dt>
+<dd><p>
+                  is the base schema provided in the standard.
+                </p></dd>
+<dt><span class="term">example-data.ttl</span></dt>
+<dd><p>
+                  is a Turtle file with some random data for testing queries. Check
+                  <a href="http://www.w3.org/TeamSubmission/turtle" target="_top">http://www.w3.org/TeamSubmission/turtle</a>
+                  for more details. The example is in this format because it is more
+                  clearer than the equivalent XML.
+                </p></dd>
+<dt><span class="term">example-database</span></dt>
+<dd><p>
+                  is a sqlite database built from base-schema.xml and example-data.ttl.
+                </p></dd>
+</dl>
+</div>
+<p>
+            When a MIH_Get_Information.indication is received the message is deserialized
+            and the Sparql queries are fetch. The queries are executed and the results
+            serialized and sent in a MIH_Get_Information.response message to the
+            MIHF.
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.miis_index.miis_getStart.configuration"></a><a class="link" href="miis_index.html#odtone.app.miis_index.miis_getStart.configuration" title="Configuration">Configuration</a>
+</h5></div></div></div>
+<pre class="programlisting">MIH Usr Configuration:
+   --help                                  Display configuration options
+   --conf.file arg (=miis_rdf_server.conf) Configuration file
+   --conf.port arg (=1236)                 Listening port
+   --conf.recv_buff_len arg (=4096)        Receive buffer length
+   --user.id arg (=miis)                   MIIS server ID
+   --user.queries arg                      MIIS Server supported queries
+   --mihf.ip arg (=127.0.0.1)              Local MIHF IP address
+   --mihf.local_port arg (=1025)           Local MIHF communication port
+   --database arg (=database)              /path/to MIIS server sqlite database
+</pre>
+<p>
+            MIIS Server can be configured either through a configuration file or
+            passing directly, in command line, the configuration options.
+          </p>
+<p>
+            The path to the database can be passed with the --database option.
+          </p>
+<p>
+            <span class="bold"><strong>How to build a database:</strong></span>
+          </p>
+<p>
+            1) Create a sqlite database and parse a base schema which is in rdfxml
+            syntax:
+          </p>
+<pre class="programlisting">rdfproc -s sqlite database_name parse file:/path/to/schema.xml
+</pre>
+<p>
+            2) Parse and add some data, in Turtle format, to the database:
+          </p>
+<pre class="programlisting">rdfproc -s sqlite database_name parse file:/path/to/data.xml turtle
+</pre>
+</div>
+</div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Universidade Aveiro<br>Copyright &#169; 2009 -2011 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license
@@ -41,7 +149,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="mih_usr_index/mih_usr_getStart.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="miis_index/miis_getStart.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="mih_usr_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="dhcp_usr_index.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

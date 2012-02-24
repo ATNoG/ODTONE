@@ -1,0 +1,178 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>DNS-User</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="up" href="../app.html" title="Applications">
+<link rel="prev" href="dhcp_usr_index.html" title="DHCP-User">
+<link rel="next" href="link_sap_index.html" title="Link SAP">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="dhcp_usr_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="link_sap_index.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="odtone.app.dns_usr_index"></a><a class="link" href="dns_usr_index.html" title="DNS-User">DNS-User</a>
+</h3></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="dns_usr_index.html#odtone.app.dns_usr_index.dns_usr_getStart">Getting
+        Started</a></span></dt></dl></div>
+<p>
+        The DNS-User was implemented in order to enable the discovery of PoS entities
+        in a given domain according to the guidelines depicted in the RFC5679.
+      </p>
+<p>
+        The DNS-User has two modes of discovery operations: standalone operation
+        or complementary operation. In the standalone operation, the DNS-User discovers
+        all needed information about the PoS in the configured domain name. In the
+        complementary operation, the DNS-User operates as a second discovery mechanism,
+        used to discover the remaining PoS information, i.e., the MIHF provides the
+        domain name on which the DNS-User must discover PoS entities.
+      </p>
+<p>
+        The discovery process is triggered by the reception of a "MIH_Capability_Discover.indication"
+        message and, based on the information presented, the DNS-User decides on
+        which operation mode will execute the discovery of new PoS. The discovered
+        entities are grouped in one single message and are forwarded to the MIHF
+        through a "MIH_Capability_Discover.response" message.
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          The DNS-User is working only for Linux.
+        </p></td></tr>
+</table></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.dns_usr_index.dns_usr_getStart"></a><a class="link" href="dns_usr_index.html#odtone.app.dns_usr_index.dns_usr_getStart" title="Getting Started">Getting
+        Started</a>
+</h4></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="dns_usr_index.html#odtone.app.dns_usr_index.dns_usr_getStart.registering_with_the_mihf">Registering
+          with the MIHF</a></span></dt>
+<dt><span class="section"><a href="dns_usr_index.html#odtone.app.dns_usr_index.dns_usr_getStart.configuration">Configuration</a></span></dt>
+<dt><span class="section"><a href="dns_usr_index.html#odtone.app.dns_usr_index.dns_usr_getStart.running">Running</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.dns_usr_index.dns_usr_getStart.registering_with_the_mihf"></a><a class="link" href="dns_usr_index.html#odtone.app.dns_usr_index.dns_usr_getStart.registering_with_the_mihf" title="Registering with the MIHF">Registering
+          with the MIHF</a>
+</h5></div></div></div>
+<p>
+            The DHCP-User does not need provide any information during the registration
+            process. To give this entity the discovery role, it must be configured
+            in the MIHF using the following option:
+</p>
+<pre class="programlisting">[mihf]
+discovery = DNS
+</pre>
+<p>
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.dns_usr_index.dns_usr_getStart.configuration"></a><a class="link" href="dns_usr_index.html#odtone.app.dns_usr_index.dns_usr_getStart.configuration" title="Configuration">Configuration</a>
+</h5></div></div></div>
+<pre class="programlisting">DNS-User Configuration:
+    --help                           Display configuration options
+    --conf.file arg (=dns.conf)      Configuration File
+    --user.id arg (=DNS)             MIH User ID
+    --conf.port arg (=1234)          Listening Port
+    --conf.recv_buff_len arg (=4096) Receive Buffer Length
+    --mihf.ip arg (=127.0.0.1)       MIHF Local Communications IP Address
+    --mihf.local_port arg (=1025)    MIHF Local Communications Port
+    --user.domain arg                Domain name
+    --user.additional_rr arg (=1)    Use additional resource records
+</pre>
+<p>
+            The DNS-User can be configured based on a set of parameters, which can
+            be configured either using an configuration file or passing them directly
+            in the command line.
+          </p>
+<p>
+            For defining the default search domain the <span class="emphasis"><em>--user.domain</em></span>
+            option should be used. The use of the additional resource records presented
+            in the DNS messages can be enable or disable using the <span class="emphasis"><em>--user.additional_rr</em></span>
+            option.
+          </p>
+<h4>
+<a name="odtone.app.dns_usr_index.dns_usr_getStart.configuration.h0"></a>
+            <span><a name="odtone.app.dns_usr_index.dns_usr_getStart.configuration.bind_configuration_example"></a></span><a class="link" href="dns_usr_index.html#odtone.app.dns_usr_index.dns_usr_getStart.configuration.bind_configuration_example">BIND
+            configuration example</a>
+          </h4>
+<p>
+            At the <span class="emphasis"><em>named.conf</em></span> file insert the next piece of
+            code:
+          </p>
+<p>
+</p>
+<pre class="programlisting">zone "odtone.test" IN {
+    type master;
+    file "/etc/bind/pri/odtone.dnszone";
+};
+</pre>
+<p>
+          </p>
+<p>
+            Then create a file named <span class="emphasis"><em>odtone.dnszone</em></span> which will
+            include the next content:
+</p>
+<pre class="programlisting">$ORIGIN odtone.test.
+$TTL 1W
+@                       1D IN SOA       localhost. root.localhost. (
+                                        2006101001      ; serial
+                                        3H              ; refresh
+                                        15M             ; retry
+                                        1W              ; expiry
+                                        1D )            ; minimum
+
+                        1D IN NS        ns
+ns                      1D IN A         127.0.0.1
+
+
+_MIHIS._udp               1D SRV 0 0 4551 mos
+
+
+mos.odtone.test.      1D IN A         192.168.1.1
+odtone.test.          1D IN A         192.168.1.1
+odtone.test.          1D IN NAPTR 50 50 "s" "MIHIS+M2U" ""      _MIHIS._udp
+</pre>
+<p>
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.dns_usr_index.dns_usr_getStart.running"></a><a class="link" href="dns_usr_index.html#odtone.app.dns_usr_index.dns_usr_getStart.running" title="Running">Running</a>
+</h5></div></div></div>
+<p>
+            Before running the DNS-User, the local MIHF should already be running.
+            Otherwise, the DNS-User will try to register with a non-exitent MIHF.
+          </p>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="dhcp_usr_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="link_sap_index.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

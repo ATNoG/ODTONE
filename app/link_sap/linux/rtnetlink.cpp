@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -73,14 +73,14 @@ ODTONE_STATIC_ASSERT((uint) rtnetlink::if_link::dynamic        == IFF_DYNAMIC, "
 
 ///////////////////////////////////////////////////////////////////////////////
 rtnetlink::if_link::if_link()
-	: _type(0), _index(0), _flags(0), _mtu(odtone::nullptr), _link_type(odtone::nullptr),
-	_stats(odtone::nullptr)
+	: _type(0), _index(0), _flags(0), _mtu(nullptr), _link_type(nullptr),
+	_stats(nullptr)
 {
 }
 
 rtnetlink::if_link::if_link(message& msg)
-	: _type(0), _index(0), _flags(0), _mtu(odtone::nullptr), _link_type(odtone::nullptr),
-	_stats(odtone::nullptr)
+	: _type(0), _index(0), _flags(0), _mtu(nullptr), _link_type(nullptr),
+	_stats(nullptr)
 {
 	*this = msg;
 }

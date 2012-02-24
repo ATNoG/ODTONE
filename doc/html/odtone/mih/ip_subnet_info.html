@@ -1,0 +1,98 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Struct ip_subnet_info</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.ipconfig_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/ipconfig.hpp&gt;">
+<link rel="prev" href="ip_config.html" title="Struct ip_config">
+<link rel="next" href="ip_cfg_methods_enum.html" title="Type ip_cfg_methods_enum">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="ip_config.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.ipconfig_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="ip_cfg_methods_enum.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="odtone.mih.ip_subnet_info"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Struct ip_subnet_info</span></h2>
+<p>odtone::mih::ip_subnet_info</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.ipconfig_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/ipconfig.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/mih/types/ipconfig.hpp</a>&gt;
+
+</span>
+<span class="keyword">struct</span> <a class="link" href="ip_subnet_info.html" title="Struct ip_subnet_info">ip_subnet_info</a> <span class="special">{</span>
+
+  <span class="comment">// <a class="link" href="ip_subnet_info.html#idp6296528-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="ip_subnet_info.html#idp6296744-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="ip_subnet_info.html#odtone.mih.ip_subnet_infopublic-data-members">public data members</a></span>
+  <span class="identifier">ip_prefix_len</span> <a class="link" href="ip_subnet_info.html#odtone.mih.ip_subnet_info.ipprefixlen"><span class="identifier">ipprefixlen</span></a><span class="special">;</span>
+  <a class="link" href="ip_addr.html" title="Class ip_addr">ip_addr</a> <a class="link" href="ip_subnet_info.html#odtone.mih.ip_subnet_info.ipaddr"><span class="identifier">ipaddr</span></a><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp16814608"></a><h2>Description</h2>
+<p>IP_SUBNET_INFO data type. </p>
+<div class="refsect2">
+<a name="idp16814976"></a><h3>
+<a name="idp6296528-bb"></a><code class="computeroutput">ip_subnet_info</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp6296744-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<p>Serialize/deserialize the IP_SUBNET_INFO data type.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">ar</code></span></p></td>
+<td><p>The archive to/from where serialize/deserialize the data type. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li></ol></div>
+</div>
+<div class="refsect2">
+<a name="idp16822080"></a><h3>
+<a name="odtone.mih.ip_subnet_infopublic-data-members"></a><code class="computeroutput">ip_subnet_info</code> 
+        public
+       public data members</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">ip_prefix_len</span> <a name="odtone.mih.ip_subnet_info.ipprefixlen"></a><span class="identifier">ipprefixlen</span><span class="special">;</span></pre>
+<p>Network prefix IP Address lenght </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="ip_addr.html" title="Class ip_addr">ip_addr</a> <a name="odtone.mih.ip_subnet_info.ipaddr"></a><span class="identifier">ipaddr</span><span class="special">;</span></pre>
+<p>Network prefix IP address </p>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="ip_config.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.ipconfig_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="ip_cfg_methods_enum.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

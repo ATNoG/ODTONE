@@ -1,0 +1,144 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>ICMP Link SAP</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="up" href="../app.html" title="Applications">
+<link rel="prev" href="link_sap_index.html" title="Link SAP">
+<link rel="next" href="client_index.html" title="Client">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="link_sap_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="client_index.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="odtone.app.link_sap_icmp_index"></a><a class="link" href="link_sap_icmp_index.html" title="ICMP Link SAP">ICMP Link SAP</a>
+</h3></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="link_sap_icmp_index.html#odtone.app.link_sap_icmp_index.link_sap_icmp_getStart">Getting
+        Started</a></span></dt></dl></div>
+<p>
+        The Link SAP specifies an abstract media dependent interface between the
+        MIHF and lower layers media-specific protocol stacks of technologies such
+        as IEEE 802.3, IEEE 802.11, IEEE 802.16, 3GPP and 3GPP2.
+      </p>
+<p>
+        The provided ICMP Link SAP implementation is very simple and it can only
+        detect the attachment of a new node using the ICMP protocol.
+      </p>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.link_sap_icmp_index.link_sap_icmp_getStart"></a><a class="link" href="link_sap_icmp_index.html#odtone.app.link_sap_icmp_index.link_sap_icmp_getStart" title="Getting Started">Getting
+        Started</a>
+</h4></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="link_sap_icmp_index.html#odtone.app.link_sap_icmp_index.link_sap_icmp_getStart.configuration">Configuration</a></span></dt>
+<dt><span class="section"><a href="link_sap_icmp_index.html#odtone.app.link_sap_icmp_index.link_sap_icmp_getStart.running">Running</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.link_sap_icmp_index.link_sap_icmp_getStart.configuration"></a><a class="link" href="link_sap_icmp_index.html#odtone.app.link_sap_icmp_index.link_sap_icmp_getStart.configuration" title="Configuration">Configuration</a>
+</h5></div></div></div>
+<p>
+</p>
+<pre class="programlisting">MIH Link SAP Configuration:
+     --help                           Display configuration options
+     --conf.file arg (=link_sap.conf) Configuration file
+     --conf.recv_buff_len arg (=4096) Receive buffer length
+     --link.id arg (=link)            Link SAP ID
+     --link.port arg (=1235)          Listening Port
+     --link.tec arg                   Technology type
+     --link.link_addr_list arg        Interface address
+     --link.event_list arg            List of supported events
+     --link.command_list arg          List of supported commands
+     --mihf.ip arg (=127.0.0.1)       Local MIHF IP
+     --mihf.id arg (=local-mihf)      Local MIHF ID
+     --mihf.local_port arg (=1025)    Local MIHF communication port
+</pre>
+<p>
+          </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+              All configurable parameters are self-explained and, therefore, we will
+              only mention those that are more complex to configure.
+            </p>
+<p>
+              <span class="bold"><strong>Technology type:</strong></span> Network interface
+              card technology. Supported values: GSM, GPRS, EDGE, 802.3, Other, 802_11,
+              CDMA2000, UMTS, CDMA2000-HRPD, 802_16, 802_20, 802_22.
+            </p>
+<p>
+              Usage: tec = &lt;NIC technology&gt;
+            </p>
+<p>
+              <span class="bold"><strong>Interface Address:</strong></span> Network interface
+              card address.
+            </p>
+<p>
+              Usage: link_addr = &lt;interface address&gt;
+            </p>
+<p>
+              <span class="bold"><strong>List of supported events:</strong></span> Comma separated
+              list of the Link SAP's supported events.
+            </p>
+<p>
+              Usage: event_list = &lt;link event 1&gt;, &lt;link event 2&gt;, (...),
+              &lt;link event N&gt;
+            </p>
+<p>
+              <span class="bold"><strong>List of supported events:</strong></span> Comma separated
+              list of the Link SAP's supported commands.
+            </p>
+<p>
+              Usage: command_list = &lt;link command 1&gt;, &lt;link command 2&gt;,
+              (...), &lt;link command N&gt;
+            </p>
+</td></tr>
+</table></div>
+<p>
+            The Link SAP can be configured based on a set of parameters, which can
+            be configured either using an configuration file or passing them directly
+            in the command line.
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.link_sap_icmp_index.link_sap_icmp_getStart.running"></a><a class="link" href="link_sap_icmp_index.html#odtone.app.link_sap_icmp_index.link_sap_icmp_getStart.running" title="Running">Running</a>
+</h5></div></div></div>
+<p>
+            Before running the Link SAP, the local MIHF should already be running.
+            Otherwise, the Link SAP will try to register with a non-exitent MIHF.
+          </p>
+<p>
+            Now you can trigger some events by attaching another node to the device.
+          </p>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="link_sap_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="client_index.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

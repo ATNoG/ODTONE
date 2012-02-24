@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -34,7 +34,7 @@ inline void throw_error(const boost::system::error_code& ec)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-netlink::data::data() : _msg(odtone::nullptr)
+netlink::data::data() : _msg(nullptr)
 {
 }
 
@@ -50,7 +50,7 @@ netlink::data& netlink::data::operator=(message& msg)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-netlink::message::message() : _pos(odtone::nullptr), _len(0)
+netlink::message::message() : _pos(nullptr), _len(0)
 {
 	_buf.size(4096);
 }

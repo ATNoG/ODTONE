@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>MIH confirm messages must set the opcode to 0 (zero)</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="up" href="../mihf_internals.html" title="ODTONE MIHF internals">
+<link rel="prev" href="internal_communications_use_udp_sockets_on_loopback_interface.html" title="Internal Communications use UDP sockets on loopback interface">
+<link rel="next" href="multiple_link_sap_support.html" title="Multiple Link SAP support">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="internal_communications_use_udp_sockets_on_loopback_interface.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../mihf_internals.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="multiple_link_sap_support.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="odtone.mihf_internals.mih_confirm_messages_must_set_the_opcode_to_0__zero_"></a><a class="link" href="mih_confirm_messages_must_set_the_opcode_to_0__zero_.html" title="MIH confirm messages must set the opcode to 0 (zero)">MIH
+      confirm messages must set the opcode to 0 (zero)</a>
+</h3></div></div></div>
+<p>
+        Chapter 7 of the MIH standard defines the primitives that should be supported
+        by an implementation. These primitives show how a SAP can interact with a
+        MIHF.
+      </p>
+<p>
+        Chapter 8, of the same standard, defines the message MIH protocol messages
+        for remote communications (communications between MIHFs).
+      </p>
+<p>
+        The ODTONE implementation uses the messages defined on chapter 8 to implement
+        the primitives of chapter 7.
+      </p>
+<p>
+        Please note that the MIHF sends confirm messages to the MIH-Users and response
+        messages to the remote MIHFs. The MIH protocol allocates 16 bits for the
+        MIH message ID, where two of those bits are for the opcode. The opcode defines
+        if a message is a request, response or indication. So, with 2 bits we can
+        encode four values, where three are already taken. This leaves 1 available
+        combination for the missing confirm primitives. Confirm primitives set the
+        opcode to 0 (zero).
+      </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="internal_communications_use_udp_sockets_on_loopback_interface.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../mihf_internals.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="multiple_link_sap_support.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

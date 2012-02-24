@@ -1,0 +1,57 @@
+#===============================================================================
+# Brief   : DHCP User SAP Application Sample Project Build
+# Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
+#-------------------------------------------------------------------------------
+# ODTONE - Open Dot Twenty One
+#
+# Copyright (C) 2009-2012 Universidade Aveiro
+# Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
+#
+# This software is distributed under a license. The full license
+# agreement can be found in the file LICENSE in this distribution.
+# This software may not be copied, modified, sold or distributed
+# other than expressed in the named license agreement.
+#
+# This software is distributed without any warranty.
+#===============================================================================
+
+project dhcp_usr/client
+	: requirements
+	  <include>../include
+	  <linkflags>"-lisc"
+	;
+
+local rule explicit-alias ( id : targets + )
+{
+    alias $(id) : $(targets) ;
+    explicit $(id) ;
+}
+
+
+exe dhcp_usr
+	: clparse.c
+	  dhc6.c
+	  dhclient.c
+	  dhcp_usr.cpp
+	  dhcp_control.cpp
+	  log.cpp
+	  main.cpp
+	  libomapip
+	  libcommon
+	  libdns
+	  libisc
+	  ../../../lib/odtone//odtone_base
+	  ../../../lib/odtone/mih//odtone_mih
+	  ../../../lib/odtone/sap//odtone_sap
+	;
+
+install install
+	: dhcp_usr
+	  dhcp_usr.conf
+	: <location>../../../dist
+	;
+
+explicit-alias libcommon   : ../libs/libdhcp.a ;
+explicit-alias libomapip   : ../libs/libomapi.a ;
+explicit-alias libdns      : ../libs/libdns.a ;
+explicit-alias libisc      : ../libs/libisc.a ;

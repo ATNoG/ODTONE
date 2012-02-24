@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -29,26 +29,27 @@ namespace odtone { namespace mihf {
  */
 enum src_transaction_state_t
 	{
-        SRC_INIT,
-        SRC_WAIT_RESPONSE_MSG,
-        SRC_PROCESS_MSG,
-        SRC_WAIT_ACK,
-        SRC_FAILURE,
-        SRC_SUCCESS
+        SRC_INIT,				/**< Init state.					*/
+        SRC_WAIT_RESPONSE_MSG,	/**< Wait response message state.	*/
+        SRC_PROCESS_MSG,		/**< Process message state.			*/
+        SRC_WAIT_ACK,			/**< Wait acknowledge state.		*/
+        SRC_FAILURE,			/**< Failure state.					*/
+        SRC_SUCCESS				/**< Success state.					*/
 	};
 
-/**
- * This class represents the behavior of the Source State Machine.
+ /**
+ * This class represents an instance of the Source State Machine
+ * transaction.
  */
 class src_transaction_t
 	: public transaction_t
 {
 public:
 	/**
-	 * Constructor for Source State Machine transaction.
+	 * Constructor a Source State Machine transaction.
 	 *
-	 * @param f transaction handler.
-	 * @param netsap netsap module.
+	 * @param f The transaction handler.
+	 * @param netsap The netsap module.
 	 */
 	src_transaction_t(handler_t &f, net_sap &netsap);
 
@@ -57,7 +58,7 @@ public:
 	 */
 	void run();
 
-	src_transaction_state_t state;
+	src_transaction_state_t state;	/**< The current state of the transaction.	*/
 };
 
 

@@ -4,8 +4,8 @@
 #------------------------------------------------------------------------------
 # ODTONE - Open Dot Twenty One
 #
-# Copyright (C) 2009-2011 Universidade Aveiro
-# Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+# Copyright (C) 2009-2012 Universidade Aveiro
+# Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 #
 # This software is distributed under a license. The full license
 # agreement can be found in the file LICENSE in this distribution.
@@ -20,8 +20,8 @@ project dummyserver
 
 exe dummyserver
 	: dummyserver.cpp
+	  udp_listener.cpp
 	  ../mihf/log.cpp
-	  ../mihf/udp_listener.cpp
 	  ../mihf/meta_message.cpp
 	  ../../lib/odtone//odtone_base
 	  ../../lib/odtone/mih//odtone_mih

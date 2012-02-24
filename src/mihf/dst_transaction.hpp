@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -31,26 +31,27 @@ namespace odtone { namespace mihf {
  * Destination State Machine States.
  */
 enum dst_transaction_state_t
-	{
-        DST_INIT,
-        DST_WAIT_RESPONSE_PRM,
-        DST_SEND_RESPONSE,
-        DST_FAILURE,
-        DST_SUCCESS
-	};
+{
+	DST_INIT,				/**< Init state.				*/
+	DST_WAIT_RESPONSE_PRM,	/**< Wait for response state.	*/
+	DST_SEND_RESPONSE,		/**< Send response state.		*/
+	DST_FAILURE,			/**< Failure state.				*/
+	DST_SUCCESS				/**< Success state.				*/
+};
 
 /**
- * This class represents the behavior of the Destination State Machine.
+ * This class represents an instance of the Destination State Machine
+ * transaction.
  */
 class dst_transaction_t
 	: public transaction_t
 {
 public:
 	/**
-	 * Constructor for Destination State Machine transaction.
+	 * Constructor a Destination State Machine transaction.
 	 *
-	 * @param f transaction handler.
-	 * @param netsap netsap module.
+	 * @param f The transaction handler.
+	 * @param netsap The netsap module.
 	 */
 	dst_transaction_t(handler_t &process_message, net_sap &netsap);
 
@@ -59,7 +60,7 @@ public:
 	 */
 	void run();
 
-	dst_transaction_state_t state;
+	dst_transaction_state_t state;	/**< The current state of the transaction.	*/
 };
 
 typedef boost::shared_ptr< dst_transaction_t > dst_transaction_ptr;

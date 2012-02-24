@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -44,13 +44,71 @@ void link_book::add(const mih::octet_string &id,
 	a.port = port;
 	a.link_id = link_id;
 	a.fail = 0;
+	a.status = true;
 
 	_lbook[id] = a;
-	log(4, "(link_book) added: ", id, " ", ip, " ", port);
+	ODTONE_LOG(4, "(link_book) added: ", id, " ", ip, " ", port);
 }
 
 /**
- * Remove a existing Link SAP entry from the link book.
+ * Set the IP address of an existing Link SAP entry.
+ *
+ * @param id Link SAP MIH Identifier.
+ * @param ip The IP address to set.
+ */
+void link_book::set_ip(const mih::octet_string &id, std::string ip)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, link_entry>::iterator it;
+	it = _lbook.find(id);
+
+	if (it != _lbook.end())
+		it->second.ip = ip;
+}
+
+/**
+ * Set the port of an existing Link SAP entry.
+ *
+ * @param id Link SAP MIH Identifier.
+ * @param port The port to set.
+ */
+void link_book::set_port(const mih::octet_string &id, uint16 port)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, link_entry>::iterator it;
+	it = _lbook.find(id);
+
+	if (it != _lbook.end())
+		it->second.port = port;
+}
+
+/**
+ * Update the events and commands supported by a Link SAP.
+ *
+ * @param id Link SAP MIH Identifier.
+ * @param event_list Supported event list.
+ * @param cmd_list Supported command list.
+ */
+void link_book::update_capabilities(const mih::octet_string &id,
+									mih::link_evt_list event_list,
+									mih::link_cmd_list cmd_list)
+
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, link_entry>::iterator it;
+	it = _lbook.find(id);
+
+	if (it != _lbook.end()) {
+		it->second.event_list = event_list;
+		it->second.cmd_list = cmd_list;
+	}
+}
+
+/**
+ * Remove an existing Link SAP entry.
  *
  * @param id Link SAP MIH Identifier.
  */
@@ -62,10 +120,26 @@ void link_book::del(mih::octet_string &id)
 }
 
 /**
- * Get all informations stored from a given Link SAP.
+ * Inactive an existing Link SAP entry.
  *
  * @param id Link SAP MIH Identifier.
- * @return All informations stored from a given Link SAP.
+ */
+void link_book::inactive(mih::octet_string &id)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, link_entry>::iterator it;
+	it = _lbook.find(id);
+
+	if (it != _lbook.end())
+		it->second.status = false;
+}
+
+/**
+ * Get the record for a given Link SAP.
+ *
+ * @param id Link SAP MIH Identifier.
+ * @return The record for a given Link SAP.
  */
 const link_entry& link_book::get(const mih::octet_string &id)
 {
@@ -100,6 +174,8 @@ const std::vector<mih::octet_string> link_book::get_ids()
 /**
  * Search for the Link SAP MIH Identifier of a given interface.
  *
+ * @param lt The link type of the Link SAP to search for.
+ * @param la The link address of the Link SAP to search for.
  * @return The Link SAP MIH Identifier.
  */
 const mih::octet_string link_book::search_interface(mih::link_type lt, mih::link_addr la)
@@ -110,8 +186,10 @@ const mih::octet_string link_book::search_interface(mih::link_type lt, mih::link
 	for(std::map<mih::octet_string, link_entry>::iterator it = _lbook.begin(); it != _lbook.end(); it++) {
 		if(it->second.link_id.type == lt) {
 			if(it->second.link_id.addr == la) {
-				id = it->first;
-				break;
+				if(it->second.status) {
+					id = it->first;
+					break;
+				}
 			}
 		}
 	}
@@ -120,10 +198,10 @@ const mih::octet_string link_book::search_interface(mih::link_type lt, mih::link
 }
 
 /**
- * Update and return the number of failing to response of a given Link SAP.
+ * Update and return the number of fail responses of a given Link SAP.
  *
  * @param id Link SAP MIH Identifier.
- * @return The number of fails to response.
+ * @return The number of fails responses.
  */
 uint16 link_book::fail(const mih::octet_string &id)
 {
@@ -132,16 +210,15 @@ uint16 link_book::fail(const mih::octet_string &id)
 	std::map<mih::octet_string, link_entry>::iterator it;
 	it = _lbook.find(id);
 
-	if (it != _lbook.end()) {
-		(it->second.fail)++;
-		return it->second.fail;
-	}
+	if (it == _lbook.end())
+		throw ("no entry in link_book for this id");
 
-	return -1;
+	(it->second.fail)++;
+	return it->second.fail;
 }
 
 /**
- * Reset the number of failing to response of a given Link SAP.
+ * Reset the number of fail responses of a given Link SAP.
  *
  * @param id Link SAP MIH Identifier.
  */
@@ -152,8 +229,11 @@ void link_book::reset(const mih::octet_string &id)
 	std::map<mih::octet_string, link_entry>::iterator it;
 	it = _lbook.find(id);
 
-	if (it != _lbook.end())
-		it->second.fail = 0;
+	if (it == _lbook.end())
+		throw ("no entry in link_book for this id");
+
+	it->second.fail = 0;
+	it->second.status = true;
 }
 
 } /* namespace mihf */ } /* namespace odtone */

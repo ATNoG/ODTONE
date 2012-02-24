@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -33,14 +33,14 @@
 
 namespace odtone { namespace mihf {
 
-static std::map<uint, handler_t> _callbacks;
+static std::map<uint, handler_t> _callbacks;	/**< Callback map of the supported messages.*/
 
 /**
- * Registering a callback handler for a MIH message.
+ * Registering a callback handler for a MIH message identifier.
  * This should only be used on MIHF initialization because it's not thread safe.
  *
- * @param mid MIH Message ID.
- * @param func handler function.
+ * @param mid The MIH Message identifier.
+ * @param func The handler function.
  */
 void sac_register_callback(uint mid, handler_t func)
 {
@@ -48,9 +48,9 @@ void sac_register_callback(uint mid, handler_t func)
 }
 
 /**
- * Service Access Controller constructor.
+ * Construct a Service Access Controller.
  *
- * @param t transmit module.
+ * @param t The transmit module.
  */
 sac_dispatch::sac_dispatch(transmit &t)
 	: _transmit(t)
@@ -58,11 +58,10 @@ sac_dispatch::sac_dispatch(transmit &t)
 }
 
 /**
- * Checks if the message id is supported by the MIHF, but doesn't try to send
- * the message directly, it just returns to the transaction state machine that
- * called it.
+ * Check if there is a handler for this message and call it, else
+ * discard message.
  *
- * @param in input message.
+ * @param in The input message.
  */
 void sac_dispatch::operator()(meta_message_ptr& in)
 {
@@ -70,7 +69,7 @@ void sac_dispatch::operator()(meta_message_ptr& in)
 
 	uint mid = in->mid();
 
-	log(1, "(sac) dispatching message with mid: ", mid);
+	ODTONE_LOG(1, "(sac) dispatching message with mid: ", mid);
 	//
 	// no thread safety because insertion should __only__ be made
 	// on MIHF initialization
@@ -87,7 +86,7 @@ void sac_dispatch::operator()(meta_message_ptr& in)
 		if (process_message(in, out))
 		 	_transmit(out);
         } else {
-		log(1, "(sac) (warning) message with mid: ", mid,
+		ODTONE_LOG(1, "(sac) (warning) message with mid: ", mid,
 		    " unknown, discarding.");
 	}
 }
@@ -96,14 +95,25 @@ void sac_dispatch::operator()(meta_message_ptr& in)
  * Check if there's a handler for this message and call it, else
  * discard message.
  *
- * @param in input message.
- * @param out output message.
+ * @param in The input message.
+ * @param out The output message.
  */
 bool sac_process_message(meta_message_ptr& in, meta_message_ptr& out)
 {
 	// discard messages that this MIHF broadcasted to itself
-	if (in->source() == mihfid)
+	// discard messages that are not destined to this MIHF or if
+	// multicast messages are not supported
+	if(in->source() == mihfid) {
+		ODTONE_LOG(1, "(sac) Discarding message! Reason: ",
+					  "message was broadcasted to itself");
 		return false;
+	}
+
+	if(!utils::this_mihf_is_destination(in) && !utils::is_multicast(in)) {
+		ODTONE_LOG(1, "(sac) Discarding message! Reason: ",
+					  "this is not the message destination");
+		return false;
+	}
 
 	/** __no__ authentication at this point */
 
@@ -123,6 +133,7 @@ bool sac_process_message(meta_message_ptr& in, meta_message_ptr& out)
 
 		// set ip and port of response message
 		out->ip(in->ip());
+		out->scope(in->scope());
 		out->port(in->port());
 
 		// response message must have the same tid
@@ -130,7 +141,7 @@ bool sac_process_message(meta_message_ptr& in, meta_message_ptr& out)
 
 		return rsp;
 	} else {
-		log(1, "(sac) (warning) message with mid: ", mid,
+		ODTONE_LOG(1, "(sac) (warning) message with mid: ", mid,
 		    " unknown, discarding.");
 	}
 

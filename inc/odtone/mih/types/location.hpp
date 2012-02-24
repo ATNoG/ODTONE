@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -28,30 +28,35 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define XML_CIVIC_LOCATION data type.
+ * XML_CIVIC_LOCATION data type.
  */
 typedef octet_string xml_civic_location;
 
 /**
- * Define CIVIC_ADDR data type.
+ * CIVIC_ADDR data type.
  */
 typedef octet_string civic_addr;
 
 /**
- * Define BIN_GEO_LOCATION data type.
+ * BIN_GEO_LOCATION data type.
  */
 typedef boost::array<uint8, 16> bin_geo_location;
 
 /**
- * Define XML_GEO_LOCATION data type.
+ * XML_GEO_LOCATION data type.
  */
 typedef octet_string xml_geo_location;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define BIN_CIVIC_LOCATION data type.
+ * BIN_CIVIC_LOCATION data type.
  */
 struct bin_civic_location {
+	/**
+	 * Serialize/deserialize the BIN_CIVIC_LOCATION data type.
+	 *
+	 * @param ar The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -59,28 +64,27 @@ struct bin_civic_location {
 		ar & _civic_addr;
 	}
 
-
-	cntry_code	_country_code;
-	civic_addr  _civic_addr;
+	cntry_code	_country_code;	/**< Country code.	*/
+	civic_addr  _civic_addr;	/**< Civic address.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define CIVIC_LOCATION data type.
+ * CIVIC_LOCATION data type.
  */
 typedef boost::variant<bin_civic_location,
 					   xml_civic_location> civic_location;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define GEO_LOCATION data type.
+ * GEO_LOCATION data type.
  */
 typedef boost::variant<bin_geo_location,
 					   xml_geo_location> geo_location;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define LOCATION data type.
+ * LOCATION data type.
  */
 typedef boost::variant<civic_location,
 					   geo_location,

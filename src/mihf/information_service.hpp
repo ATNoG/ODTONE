@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -23,6 +23,7 @@
 #include "local_transaction_pool.hpp"
 #include "transmit.hpp"
 #include "meta_message.hpp"
+#include "user_book.hpp"
 
 #include <odtone/base.hpp>
 #include <odtone/mih/types.hpp>
@@ -31,31 +32,30 @@
 namespace odtone { namespace mihf {
 
 /**
- * This class is responsible for handling the information messages types.
+ * This class is responsible for handling the messages associated with
+ * the information service.
  */
 class information_service
 	: boost::noncopyable
 {
 public:
 	/**
-	 * Information service constructor.
+	 * Construct the information service.
 	 *
-	 * @param lpool local transction pool.
-	 * @param t transmit module.
+	 * @param lpool The local transaction pool module.
+	 * @param t The transmit module.
+	 * @param user_abook The user book module.
 	 */
-	information_service(local_transaction_pool &lpool, transmit &t);
+	information_service(local_transaction_pool &lpool,
+						transmit &t,
+						user_book &user_abook);
 
 	/**
 	 * Get Information Request message handler.
 	 *
-	 * Currently Information_Service messages are handled by a default local
-	 * Information server. If this MIHF is the destination of the message,
-	 * forward it to the default server. Add a local transaction indicating
-	 * where to send the response.
-	 *
-	 * @param in input message.
-	 * @param out output message.
-	 * @return true if the response is sent immediately or false otherwise.
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
 	 */
 	bool get_information_request(meta_message_ptr &in,
 				     meta_message_ptr &out);
@@ -63,13 +63,9 @@ public:
 	/**
 	 * Get Information Response message handler.
 	 *
-	 * Currently Information_Service messages are handled by a default local
-	 * server. If this MIHF is the destination of the message, check for a
-	 * pending transaction and forward the message.
-	 *
-	 * @param in input message.
-	 * @param out output message.
-	 * @return true if the response is sent immediately or false otherwise.
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
 	 */
 	bool get_information_response(meta_message_ptr &in,
 				      meta_message_ptr &out);
@@ -77,14 +73,9 @@ public:
 	/**
 	 * MIH Push Information Request message handler.
 	 *
-	 * Currently Information_Service messages are handled by a default local
-	 * Information server. If this MIHF is the destination of the message,
-	 * forward it to the default server. Add a local transaction indicating
-	 * where to send the response.
-	 *
-	 * @param in input message.
-	 * @param out output message.
-	 * @return true if the response is sent immediately or false otherwise.
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
 	 */
 	bool push_information_indication(meta_message_ptr &in,
 					 meta_message_ptr &out);
@@ -92,20 +83,17 @@ public:
 	/**
 	 * MIH Push Information Indication message handler.
 	 *
-	 * Currently Information_Service messages are handled by a default local
-	 * server. If this MIHF is the destination of the message, check for a
-	 * pending transaction and forward the message.
-	 *
-	 * @param in input message.
-	 * @param out output message.
-	 * @return true if the response is sent immediately or false otherwise.
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
 	 */
 	bool push_information_request(meta_message_ptr &in,
 				      meta_message_ptr &out);
 
 protected:
-	local_transaction_pool	&_lpool;
-	transmit		&_transmit;
+	local_transaction_pool	&_lpool;		/**< Local transaction pool module.	*/
+	transmit				&_transmit;		/**< Transmit module.				*/
+	user_book				&_user_abook;	/**< User book module.				*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

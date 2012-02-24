@@ -1,12 +1,12 @@
 #==============================================================================
-# Brief   : Odtone Base Library Project Build
+# Brief   : ODTONE Base Library Project Build
 # Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
 #           Bruno Santos     <bsantos@av.it.pt>
 #------------------------------------------------------------------------------
 # ODTONE - Open Dot Twenty One
 #
-# Copyright (C) 2009-2011 Universidade Aveiro
-# Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+# Copyright (C) 2009-2012 Universidade Aveiro
+# Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 #
 # This software is distributed under a license. The full license
 # agreement can be found in the file LICENSE in this distribution.
@@ -19,17 +19,18 @@
 project odtone/base
 	;
 
-alias source-list
+odtone.runtime-lib pthread  ;
+
+odtone.explicit-alias source-list
 	: debug_linux.cpp
+	  pthread
 	: <target-os>linux
 	;
 
-alias source-list
+odtone.explicit-alias source-list
 	: debug_win32.cpp
 	: <target-os>windows
 	;
-
-explicit source-list ;
 
 lib odtone_base
 	: debug.cpp

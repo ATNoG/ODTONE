@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -30,21 +30,24 @@
 namespace odtone { namespace mihf {
 
 /**
- * Struct to store Link SAP information like IP Address, listening port, transport
- * protocol and interface that Link SAP manages.
+ * Struct to store Link SAP information such as IP Address, listening port,
+ * interface that Link SAP manages and the number of fail responses.
  */
 struct link_entry
 {
-	mih::octet_string  ip;
-	uint16             port;
-	mih::link_id       link_id;
-	uint16             fail;
+	mih::octet_string	ip;			/**< IP address.						*/
+	uint16				port;		/**< Listening port.					*/
+	mih::link_id		link_id;	/**< Link identifier.					*/
+	mih::link_evt_list	event_list;	/**< Supported event list.				*/
+	mih::link_cmd_list	cmd_list;	/**< Supported command list.			*/
+	uint16				fail;		/**< Number of fail responses.			*/
+	bool				status;		/**< Status of the Link SAP (on/off).	*/
 };
 
 /**
- * This class is used to store information about all known Link SAPs. It makes
- * the correspondence between the Link SAP MIH Identifier and the informations
- * stored in the link_entry struct.
+ * This class is used to store the information about all known Link SAPs.
+ * It makes the correspondence between the Link SAP MIH Identifier and
+ * the information stored in the link_entry struct.
  */
 class link_book
 {
@@ -64,17 +67,51 @@ public:
 	         mih::link_id link_id);
 
 	/**
-	 * Remove a existing Link SAP entry from the link book.
+	 * Set the IP address of an existing Link SAP entry.
+	 *
+	 * @param id Link SAP MIH Identifier.
+	 * @param ip The IP address to set.
+	 */
+	void set_ip(const mih::octet_string &id, std::string ip);
+
+	/**
+	 * Set the port of an existing Link SAP entry.
+	 *
+	 * @param id Link SAP MIH Identifier.
+	 * @param port The port to set.
+	 */
+	void set_port(const mih::octet_string &id, uint16 port);
+
+	/**
+	 * Update the events and commands supported by a Link SAP.
+	 *
+	 * @param id Link SAP MIH Identifier.
+	 * @param event_list Supported event list.
+	 * @param cmd_list Supported command list.
+	 */
+	void update_capabilities(const mih::octet_string &id,
+							 mih::link_evt_list event_list,
+							 mih::link_cmd_list cmd_list);
+
+	/**
+	 * Remove an existing Link SAP entry.
 	 *
 	 * @param id Link SAP MIH Identifier.
 	 */
 	void del(mih::octet_string &id);
 
 	/**
-	 * Get all informations stored from a given Link SAP.
+	 * Inactive an existing Link SAP entry.
 	 *
 	 * @param id Link SAP MIH Identifier.
-	 * @return All informations stored from a given Link SAP.
+	 */
+	void inactive(mih::octet_string &id);
+
+	/**
+	 * Get the record for a given Link SAP.
+	 *
+	 * @param id Link SAP MIH Identifier.
+	 * @return The record for a given Link SAP.
 	 */
 	const link_entry& get(const mih::octet_string &id);
 
@@ -88,28 +125,30 @@ public:
 	/**
 	 * Search for the Link SAP MIH Identifier of a given interface.
 	 *
+	 * @param lt The link type of the Link SAP to search for.
+	 * @param la The link address of the Link SAP to search for.
 	 * @return The Link SAP MIH Identifier.
 	 */
 	const mih::octet_string search_interface(mih::link_type lt, mih::link_addr la);
 
 	/**
-	 * Update and return the number of failing to response of a given Link SAP.
+	 * Update and return the number of fail responses of a given Link SAP.
 	 *
 	 * @param id Link SAP MIH Identifier.
-	 * @return The number of fails to response.
+	 * @return The number of fails responses.
 	 */
 	uint16 fail(const mih::octet_string &id);
 
 	/**
-	 * Reset the number of failing to response of a given Link SAP.
+	 * Reset the number of fail responses of a given Link SAP.
 	 *
 	 * @param id Link SAP MIH Identifier.
 	 */
 	void reset(const mih::octet_string &id);
 private:
 
-	std::map<mih::octet_string, link_entry> _lbook;
-	boost::mutex _mutex;
+	std::map<mih::octet_string, link_entry> _lbook;	/**< Link book map.	*/
+	boost::mutex _mutex;							/**< Mutex.			*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

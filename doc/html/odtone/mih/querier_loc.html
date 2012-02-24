@@ -1,0 +1,115 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Struct querier_loc</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.bin_query_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/bin_query.hpp&gt;">
+<link rel="prev" href="../../operator__.html" title="Function template operator++">
+<link rel="next" href="rpt_limit.html" title="Struct rpt_limit">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../operator__.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.bin_query_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="rpt_limit.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="odtone.mih.querier_loc"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Struct querier_loc</span></h2>
+<p>odtone::mih::querier_loc</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.bin_query_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/bin_query.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/mih/types/bin_query.hpp</a>&gt;
+
+</span>
+<span class="keyword">struct</span> <a class="link" href="querier_loc.html" title="Struct querier_loc">querier_loc</a> <span class="special">{</span>
+  <span class="comment">// <a class="link" href="querier_loc.html#odtone.mih.querier_locconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="querier_loc.html#idp5940464-bb"><span class="identifier">querier_loc</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="querier_loc.html#idp5938344-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="querier_loc.html#idp5938560-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="querier_loc.html#odtone.mih.querier_locpublic-data-members">public data members</a></span>
+  <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <span class="identifier">location</span> <span class="special">&gt;</span> <a class="link" href="querier_loc.html#odtone.mih.querier_loc._location"><span class="identifier">_location</span></a><span class="special">;</span>
+  <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <span class="identifier">link_addr</span> <span class="special">&gt;</span> <a class="link" href="querier_loc.html#odtone.mih.querier_loc._link_addr"><span class="identifier">_link_addr</span></a><span class="special">;</span>
+  <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <span class="identifier">nghb_radius</span> <span class="special">&gt;</span> <a class="link" href="querier_loc.html#odtone.mih.querier_loc._nghb_radius"><span class="identifier">_nghb_radius</span></a><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp14320560"></a><h2>Description</h2>
+<p>QUERIER_LOC data type. </p>
+<div class="refsect2">
+<a name="idp14320928"></a><h3>
+<a name="odtone.mih.querier_locconstruct-copy-destruct"></a><code class="computeroutput">querier_loc</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<pre class="literallayout"><a name="idp5940464-bb"></a><span class="identifier">querier_loc</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Construct an empty QUERIER_LOC data type. </p>
+</li></ol></div>
+</div>
+<div class="refsect2">
+<a name="idp14324144"></a><h3>
+<a name="idp5938344-bb"></a><code class="computeroutput">querier_loc</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp5938560-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<p>Serialize/deserialize the QUERIER_LOC data type.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">ar</code></span></p></td>
+<td><p>The archive to/from where serialize/deserialize the data type. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li></ol></div>
+</div>
+<div class="refsect2">
+<a name="idp14331264"></a><h3>
+<a name="odtone.mih.querier_locpublic-data-members"></a><code class="computeroutput">querier_loc</code> 
+        public
+       public data members</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <span class="identifier">location</span> <span class="special">&gt;</span> <a name="odtone.mih.querier_loc._location"></a><span class="identifier">_location</span><span class="special">;</span></pre>
+<p>Location information. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <span class="identifier">link_addr</span> <span class="special">&gt;</span> <a name="odtone.mih.querier_loc._link_addr"></a><span class="identifier">_link_addr</span><span class="special">;</span></pre>
+<p>Link address. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <span class="identifier">nghb_radius</span> <span class="special">&gt;</span> <a name="odtone.mih.querier_loc._nghb_radius"></a><span class="identifier">_nghb_radius</span><span class="special">;</span></pre>
+<p>Radius from the center point of querier&#8217;s location. </p>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../operator__.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.bin_query_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="rpt_limit.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

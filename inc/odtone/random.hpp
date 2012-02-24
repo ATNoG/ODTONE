@@ -5,8 +5,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -25,7 +25,9 @@
 namespace odtone { namespace mih {
 
 /**
- * Generate a random odtone::sint8 value.
+ * Generate a random 8-bit signed integer value.
+ *
+ * @return A random 8-bit signed integer value.
  */
 inline sint8 srand8()
 {
@@ -36,39 +38,74 @@ inline sint8 srand8()
 }
 
 /**
- * Generate a random odtone::sint16 value.
+ * Generate a random 16-bit signed integer value.
+ *
+ * @return A random 16-bit signed integer value.
  */
-inline sint16 srand16() { return (sint16(srand8()) << 8) | srand8(); }
+inline sint16 srand16()
+{
+	return (sint16(srand8()) << 8) | srand8();
+}
 
 /**
- * Generate a random odtone::sint32 value.
+ * Generate a random 32-bit signed integer value.
+ *
+ * @return A random 32-bit signed integer value.
  */
-inline sint32 srand32() { return (sint32(srand16()) << 16) | srand16(); }
+inline sint32 srand32()
+{
+	return (sint32(srand16()) << 16) | srand16();
+}
 
 /**
- * Generate a random odtone::sint64 value.
+ * Generate a random 64-bit signed integer value.
+ *
+ * @return A random 64-bit signed integer value.
  */
-inline sint64 srand64() { return (sint64(srand32()) << 32) | srand32(); }
+inline sint64 srand64()
+{
+	return (sint64(srand32()) << 32) | srand32();
+}
 
 /**
- * Generate a random odtone::uint8 value.
+ * Generate a random 8-bit unsigned integer value.
+ *
+ * @return A random 8-bit unsigned integer value.
  */
-inline uint8  rand8()   { return uint8(srand8()); }
+inline uint8 rand8()
+{
+	return uint8(srand8());
+}
 
 /**
- * Generate a random odtone::uint16 value.
+ * Generate a random 16-bit unsigned integer value.
+ *
+ * @return A random 16-bit unsigned integer value.
  */
-inline uint16 rand16()  { return uint16(srand16()); }
+inline uint16 rand16()
+{
+	return uint16(srand16());
+}
 
 /**
- * Generate a random odtone::uint32 value.
+ * Generate a random 32-bit unsigned integer value.
+ *
+ * @return A random 32-bit unsigned integer value.
  */
-inline uint32 rand32()  { return uint32(srand32()); }
+inline uint32 rand32()
+{
+	return uint32(srand32());
+}
 
 /**
- * Generate a random odtone::uint64 value.
+ * Generate a random 64-bit unsigned integer value.
+ *
+ * @return A random 64-bit unsigned integer value.
  */
-inline uint64 rand64()  { return uint64(srand64()); }
+inline uint64 rand64()
+{
+	return uint64(srand64());
+}
 
 } /* namespace mihf */ } /* namespace odtone */
 

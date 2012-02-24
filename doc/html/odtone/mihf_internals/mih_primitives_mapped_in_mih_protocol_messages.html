@@ -1,0 +1,395 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>MIH Primitives mapped in MIH Protocol Messages</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="up" href="../mihf_internals.html" title="ODTONE MIHF internals">
+<link rel="prev" href="event_subscribe_unsubscribe_optimization.html" title="Event subscribe/unsubscribe optimization">
+<link rel="next" href="../app.html" title="Applications">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="event_subscribe_unsubscribe_optimization.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../mihf_internals.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="../app.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="odtone.mihf_internals.mih_primitives_mapped_in_mih_protocol_messages"></a><a class="link" href="mih_primitives_mapped_in_mih_protocol_messages.html" title="MIH Primitives mapped in MIH Protocol Messages">MIH
+      Primitives mapped in MIH Protocol Messages</a>
+</h3></div></div></div>
+<p>
+        ODTONE uses the MIH protocol to provide communications between the MIHF and
+        local entities. However, it was verified that some MIH LINK SAP primitives
+        cannot be mapped in the existing MIH protocol messages so, it was necessary
+        to define new TLVs that carry the information presented in these primitives.
+      </p>
+<p>
+        The following table show the correspondence between MIH_LINK_SAP primitive
+        and the new TLVs and its data type:
+      </p>
+<div class="table">
+<a name="odtone.mihf_internals.mih_primitives_mapped_in_mih_protocol_messages.odtone_specific_tlvs"></a><p class="title"><b>Table&#160;3.&#160;ODTONE specific TLVs</b></p>
+<div class="table-contents"><table class="table" summary="ODTONE specific TLVs">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  MIH_LINK_SAP Primitive
+                </p>
+              </th>
+<th>
+                <p>
+                  TLV Type Name
+                </p>
+              </th>
+<th>
+                <p>
+                  TLV Type Value
+                </p>
+              </th>
+<th>
+                <p>
+                  Data type
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  SupportedLinkEventList
+                </p>
+              </td>
+<td>
+                <p>
+                  tlv_link_evt_list
+                </p>
+              </td>
+<td>
+                <p>
+                  101
+                </p>
+              </td>
+<td>
+                <p>
+                  LINK_EVT_LIST
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  SupportedLinkCommandList
+                </p>
+              </td>
+<td>
+                <p>
+                  tlv_link_cmd_list
+                </p>
+              </td>
+<td>
+                <p>
+                  102
+                </p>
+              </td>
+<td>
+                <p>
+                  LINK_CMD_LIST
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkParametersRequest
+                </p>
+              </td>
+<td>
+                <p>
+                  tlv_link_parameters_req
+                </p>
+              </td>
+<td>
+                <p>
+                  103
+                </p>
+              </td>
+<td>
+                <p>
+                  LIST(LINK_PARAM_TYPE)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkParametersStatusList
+                </p>
+              </td>
+<td>
+                <p>
+                  tlv_link_parameters_status_list
+                </p>
+              </td>
+<td>
+                <p>
+                  104
+                </p>
+              </td>
+<td>
+                <p>
+                  LIST(LINK_PARAM_TYPE)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkStatesRequest
+                </p>
+              </td>
+<td>
+                <p>
+                  tlv_link_states_req
+                </p>
+              </td>
+<td>
+                <p>
+                  105
+                </p>
+              </td>
+<td>
+                <p>
+                  LINK_STATES_REQ
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkStatesResponse
+                </p>
+              </td>
+<td>
+                <p>
+                  tlv_link_states_rsp
+                </p>
+              </td>
+<td>
+                <p>
+                  106
+                </p>
+              </td>
+<td>
+                <p>
+                  LIST(LINK_STATES_RSP)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkDescriptorsRequest
+                </p>
+              </td>
+<td>
+                <p>
+                  tlv_link_descriptor_req
+                </p>
+              </td>
+<td>
+                <p>
+                  107
+                </p>
+              </td>
+<td>
+                <p>
+                  LINK_DESC_REQ
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkDescriptorsResponse
+                </p>
+              </td>
+<td>
+                <p>
+                  tlv_link_descriptor_rsp
+                </p>
+              </td>
+<td>
+                <p>
+                  108
+                </p>
+              </td>
+<td>
+                <p>
+                  LIST(LINK_DESC_RSP)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkAction
+                </p>
+              </td>
+<td>
+                <p>
+                  tlv_link_action
+                </p>
+              </td>
+<td>
+                <p>
+                  109
+                </p>
+              </td>
+<td>
+                <p>
+                  LINK_ACTION
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkActionResult
+                </p>
+              </td>
+<td>
+                <p>
+                  tlv_link_ac_result
+                </p>
+              </td>
+<td>
+                <p>
+                  110
+                </p>
+              </td>
+<td>
+                <p>
+                  LINK_AC_RESULT
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  ScanResponseSet
+                </p>
+              </td>
+<td>
+                <p>
+                  tlv_link_scan_rsp_list
+                </p>
+              </td>
+<td>
+                <p>
+                  111
+                </p>
+              </td>
+<td>
+                <p>
+                  LIST(LINK_SCAN_RSP)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  LinkDetInfo
+                </p>
+              </td>
+<td>
+                <p>
+                  tlv_link_det_info
+                </p>
+              </td>
+<td>
+                <p>
+                  112
+                </p>
+              </td>
+<td>
+                <p>
+                  LINK_DET_INFO
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  InterfaceTypeAddress
+                </p>
+              </td>
+<td>
+                <p>
+                  tlv_interface_type_addr
+                </p>
+              </td>
+<td>
+                <p>
+                  113
+                </p>
+              </td>
+<td>
+                <p>
+                  LINK_ID
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  MobilityServicesDiscovery
+                </p>
+              </td>
+<td>
+                <p>
+                  tlv_mos_dscv
+                </p>
+              </td>
+<td>
+                <p>
+                  114
+                </p>
+              </td>
+<td>
+                <p>
+                  MOS_DSCV
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="event_subscribe_unsubscribe_optimization.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../mihf_internals.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="../app.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

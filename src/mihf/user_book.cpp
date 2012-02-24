@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -24,42 +24,70 @@
 namespace odtone { namespace mihf {
 
 /**
- * Add a new MIH User entry in the user book.
+ * Add a new MIH-User entry in the user book.
  *
- * @param id MIH User MIH Identifier.
- * @param ip MIH User IP address.
- * @param port MIH User listening port.
- * @param mbbsupport MIH User Handover support.
+ * @param id MIH-User MIH Identifier.
+ * @param ip MIH-User IP address.
+ * @param port MIH-User listening port.
+ * @param supp_cmd MIH-User list of supported commands.
+ * @param supp_iq MIH-User list of supported information server queries.
  */
 void user_book::add(const mih::octet_string &id,
 		            mih::octet_string& ip,
 		            uint16 port,
-		            bool mbbhandover)
+		            boost::optional<mih::mih_cmd_list> supp_cmd,
+		            boost::optional<mih::iq_type_list> supp_iq)
 {
 	boost::mutex::scoped_lock lock(_mutex);
-	// TODO: add thread safety
-	user_entry a;
 
+	user_entry a;
 	a.ip.assign(ip);
 	a.port = port;
-
-	if(mbbhandover == true) {
-		std::vector<mih::octet_string> ids;
-		for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
-			it->second.mbbhandover_support = false;
-		}
-	}
-
-	a.mbbhandover_support = mbbhandover;
+	a.supp_cmd = supp_cmd;
+	a.supp_iq = supp_iq;
 
 	_ubook[id] = a;
-	log(4, "(user_book) added: ", id, " ", ip, " ", port);
+	ODTONE_LOG(4, "(user_book) added: ", id, " : ", ip, " : ", port);
 }
 
 /**
- * Remove a existing MIH User entry from the link book.
+ * Set the IP address of an existing MIH-User entry.
  *
- * @param id MIH User MIH Identifier.
+ * @param id MIH-User MIH Identifier.
+ * @param ip The IP address to set.
+ */
+void user_book::set_ip(const mih::octet_string &id, std::string ip)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, user_entry>::iterator it;
+	it = _ubook.find(id);
+
+	if (it == _ubook.end())
+		it->second.ip = ip;
+}
+
+/**
+ * Set the port of an existing MIH-User entry.
+ *
+ * @param id MIH-User MIH Identifier.
+ * @param port The port to set.
+ */
+void user_book::set_port(const mih::octet_string &id, uint16 port)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, user_entry>::iterator it;
+	it = _ubook.find(id);
+
+	if (it == _ubook.end())
+		it->second.port = port;
+}
+
+/**
+ * Remove an existing MIH-User entry.
+ *
+ * @param id MIH User MIH Identifier to remove.
  */
 void user_book::del(mih::octet_string &id)
 {
@@ -69,10 +97,10 @@ void user_book::del(mih::octet_string &id)
 }
 
 /**
- * Get all informations stored from a given MIH User.
+ * Get the record for a given MIH-User.
  *
- * @param id MIH User MIH Identifier.
- * @return All informations stored from a given MIH User.
+ * @param id MIH-User MIH Identifier.
+ * @return The record for a given MIH-User.
  */
 const user_entry& user_book::get(const mih::octet_string &id)
 {
@@ -88,9 +116,9 @@ const user_entry& user_book::get(const mih::octet_string &id)
 }
 
 /**
- * Get the list of all known MIH Users.
+ * Get the list of all known MIH-Users.
  *
- * @return The list of all known MIH Users.
+ * @return The list of all known MIH-Users.
  */
 const std::vector<mih::octet_string> user_book::get_ids()
 {
@@ -105,21 +133,20 @@ const std::vector<mih::octet_string> user_book::get_ids()
 }
 
 /**
- * Get the MIH User for handover operations.
+ * Get the MIH-User associated with the information server operations.
  *
- * @return The MIH User MIH Identifier for handover operations.
+ * @return The identifier of the MIH-User associated with the information
+ * server operations.
  */
-const mih::octet_string user_book::handover_user()
+const boost::optional<mih::octet_string> user_book::information_user()
 {
 	boost::mutex::scoped_lock lock(_mutex);
 
-	std::vector<mih::octet_string> ids;
-	for(std::map<mih::octet_string, user_entry>::iterator it = _ubook.begin(); it != _ubook.end(); it++) {
-		if(it->second.mbbhandover_support == true)
-			return it->first;
-	}
+	boost::optional<mih::octet_string> ret;
 
-	return "";
+
+
+	return ret;
 }
 
 } /* namespace mihf */ } /* namespace odtone */

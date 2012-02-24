@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -39,6 +39,11 @@
 using namespace odtone;
 using boost::asio::ip::udp;
 
+/**
+ * Default MIH event handler.
+ *
+ * @param msg Received message.
+ */
 static void process_message(meta_message_ptr& msg)
 {
 	std::cout << "MIH message: Service=" << msg->sid()
@@ -65,8 +70,8 @@ int main(int argc, char **argv)
 	boost::asio::io_service io_service;
 
 	dispatch_t dispatch = boost::bind(process_message, _1);
-	mihf::udp_listener listen(io_service, boost::asio::ip::udp::v4(),
-				  "127.0.0.1", 4000, dispatch);
+	mihf::udp_listener listen(io_service, 4096, boost::asio::ip::udp::v6(),
+				  "::", 4000, dispatch, true);
 
 	listen.start();
 	io_service.run();

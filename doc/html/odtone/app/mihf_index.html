@@ -4,54 +4,252 @@
 <title>ODTONE-MIHF</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../../index.html" title="ODTONE 0.3">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../app.html" title="Applications">
 <link rel="prev" href="../app.html" title="Applications">
-<link rel="next" href="mihf_index/mihf_getStart.html" title="Getting Started">
+<link rel="next" href="mih_usr_index.html" title="MIH-User">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../app.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="mihf_index/mihf_getStart.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../app.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="mih_usr_index.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
-<div class="section" title="ODTONE-MIHF">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="odtone.app.mihf_index"></a><a class="link" href="mihf_index.html" title="ODTONE-MIHF"> ODTONE-MIHF</a>
+<a name="odtone.app.mihf_index"></a><a class="link" href="mihf_index.html" title="ODTONE-MIHF">ODTONE-MIHF</a>
 </h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="mihf_index.html#odtone.app.mihf_index.mihf_getStart">Getting Started</a></span></dt>
+<dt><span class="section"><a href="mihf_index.html#odtone.app.mihf_index.mihf_internal_arch">MIHF Internal
+        Architecture</a></span></dt>
+</dl></div>
 <p>
-        MIHF is a logical entity that facilitates handover decision making. MIH Users
-        make handover decisions based on inputs from the MIHF. It provides abstracted
-        services to higher layers. The service primitives defined by this interface
-        are based on the technology-specific protocol entities of the different access
-        networks. The MIHF communicates with the lower layers of the mobility-management
-        protocol stack through technology-specific interfaces.
-      </p>
-<p>
-        In other words, the MIHF is a management entity that obtains link-layer information
-        from lower layers of different protocol stacks and also from other remote
-        nodes. The MIHF coordinates handover decision making with other peer MIHF
-        in the network.
+        MIHF is a logical entity that allows the optimization and facilitates handover
+        decisions. MIH-Users make handover decisions based on inputs from the MIHF.
+        It provides abstracted services to higher layers. The MIHF communicates with
+        the lower layers of the mobility-management protocol stack through technology-specific
+        interfaces. In other words, the MIHF is a management entity that obtains
+        link-layer information from lower layers of different protocol stacks and
+        also from other remote nodes and it provides them to the upper layers. The
+        MIHF coordinates handover decision with other peer MIHF in the network.
       </p>
 <p>
         The MIH Protocol provides capability for transferring MIH Messages between
         peer MIHF entities at L2 or at L3. These messages transfer information about
         different available networks and also provide network switching and handover
-        capability across different networks.
+        capability across different networks. All exchanges between the MIHF and
+        other functional entities occur through service primitives, grouped in service
+        access points (SAPs).
       </p>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.mihf_index.mihf_getStart"></a><a class="link" href="mihf_index.html#odtone.app.mihf_index.mihf_getStart" title="Getting Started">Getting Started</a>
+</h4></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="mihf_index.html#odtone.app.mihf_index.mihf_getStart.configuration">Configuration</a></span></dt>
+<dt><span class="section"><a href="mihf_index.html#odtone.app.mihf_index.mihf_getStart.running">Running</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mihf_index.mihf_getStart.configuration"></a><a class="link" href="mihf_index.html#odtone.app.mihf_index.mihf_getStart.configuration" title="Configuration">Configuration</a>
+</h5></div></div></div>
 <p>
-        The following image illustrate the position of the MIHF in a protocol stack
-        and the interaction of the MIHF with other elements of the system. All exchanges
-        between the MIHF and other functional entities occur through service primitives,
-        grouped in service access points (SAPs).
-      </p>
+            The MIHF can be configured based on a set of parameters, which can be
+            configured either using an configuration file or passing them directly
+            in the command line. The available configurable parameters are presented
+            next:
+          </p>
 <p>
-        <span class="inlinemediaobject"><img src="../.././images/mihf.png" alt="mihf"></span>
-      </p>
+</p>
+<pre class="programlisting">MIHF Configuration Options:
+   --help                                Display configuration options
+   --conf.file arg (=odtone.conf)        Configuration file
+   --conf.recv_buff_len arg (=4096)      Receive buffer length
+   --mihf.id arg (=mihf)                 MIHF ID
+   --mihf.ip arg (=127.0.0.1)            MIHF IP
+   --mihf.remote_port arg (=4551)        Remote MIHF communication port
+   --mihf.local_port arg (=1025)         Local SAPs communication port
+   --mihf.peers arg                      List of peer MIHFs
+   --mihf.users arg                      List of local MIH-Users
+   --mihf.links arg                      List of local Links SAPs
+   --mihf.transport arg (=udp, tcp)      List of supported transport protocols
+   --mihf.link_response_time arg (=3000) Link SAP response time (milliseconds)
+   --mihf.link_delete arg (=2)           Link SAP response fails to forget
+   --mihf.discover arg                   MIHF Discovery Mechanisms Order
+   --enable_broadcast                    Allows broadcast messages
+   --enable_unsolicited                  Allows unsolicited discovery
+   --log arg (=1)                        Log level [0-4]
+</pre>
+<p>
+          </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+              All configurable parameters are self-explained and, therefore, we will
+              only mention those that are more complex to configure.
+            </p>
+<p>
+              <span class="bold"><strong>List of peer MIHFs:</strong></span> Comma separated
+              list of remote MIHF's.
+            </p>
+<p>
+              Usage: mihf.peers = &lt;mihf id&gt; &lt;ip&gt; &lt;port&gt; &lt;list
+              of supported transport protocols&gt;, ...
+            </p>
+<p>
+              <span class="bold"><strong>List of local MIH-Users:</strong></span> Comma separated
+              list of local MIH User SAP.
+            </p>
+<p>
+              Usage: mihf.users = &lt;user sap id&gt; &lt;port&gt; &lt;supported
+              commands&gt; &lt;supported queries&gt;, ...
+            </p>
+<p>
+              <span class="bold"><strong>List of local Link SAPs:</strong></span> Comma separated
+              list of local MIH Link SAPs.
+            </p>
+<p>
+              Usage: mihf.links = &lt;link sap id&gt; &lt;port&gt; &lt;techonoly
+              type&gt; &lt;interface&gt;, ...
+            </p>
+<p>
+              <span class="bold"><strong>List of suppoted transport protocols:</strong></span>
+              Comma separed list of the transport protocols available. For now UDP
+              and TCP protocols are supported.
+            </p>
+<p>
+              Usage: mihf.transport = &lt;udp/tcp&gt;, ...
+            </p>
+</td></tr>
+</table></div>
+<h6>
+<a name="odtone.app.mihf_index.mihf_getStart.configuration.h0"></a>
+            <span><a name="odtone.app.mihf_index.mihf_getStart.configuration.example"></a></span><a class="link" href="mihf_index.html#odtone.app.mihf_index.mihf_getStart.configuration.example">Example</a>
+          </h6>
+<p>
+            The ODTONE-MIHF allows you to statically configure the peer MIHFs by
+            providing some information such as MIHF's IP addresses, port and supported
+            transport protocols. Edit the ODTONE-MIHF configuration file and add
+            an entry to peers MIHFs in the form:
+          </p>
+<pre class="programlisting">&lt;mihf_id&gt; &lt;ip&gt; &lt;port&gt; &lt;list of supported transport protocols&gt;
+</pre>
+<p>
+            The ODTONE-MIHF configuration file can look like:
+</p>
+<pre class="programlisting">[mihf]
+id = mihf1
+local_port = 1025
+remote_port = 4551
+peers = mihf2 192.168.0.1 4551 udp
+transport = udp
+</pre>
+<p>
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mihf_index.mihf_getStart.running"></a><a class="link" href="mihf_index.html#odtone.app.mihf_index.mihf_getStart.running" title="Running">Running</a>
+</h5></div></div></div>
+<p>
+            The ODTONE-MIHF must be executed passing directly, in command line, the
+            location of the configuration file.
+          </p>
+<p>
+            E.g.: ./odtone-mihf --conf.file=./src/mihf/odtone.conf
+          </p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.mihf_index.mihf_internal_arch"></a><a class="link" href="mihf_index.html#odtone.app.mihf_index.mihf_internal_arch" title="MIHF Internal Architecture">MIHF Internal
+        Architecture</a>
+</h4></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="mihf_index.html#odtone.app.mihf_index.mihf_internal_arch.mihf_architecture_overview">MIHF
+          Architecture overview</a></span></dt></dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.mihf_index.mihf_internal_arch.mihf_architecture_overview"></a><a class="link" href="mihf_index.html#odtone.app.mihf_index.mihf_internal_arch.mihf_architecture_overview" title="MIHF Architecture overview">MIHF
+          Architecture overview</a>
+</h5></div></div></div>
+<p>
+            <span class="inlinemediaobject"><img src="../.././images/mihf_arch.png" alt="mihf_arch"></span>
+          </p>
+</div>
+<h6>
+<a name="odtone.app.mihf_index.mihf_internal_arch.h0"></a>
+          <span><a name="odtone.app.mihf_index.mihf_internal_arch.components"></a></span><a class="link" href="mihf_index.html#odtone.app.mihf_index.mihf_internal_arch.components">Components</a>
+        </h6>
+<p>
+          The ODTONE's MIHF implements the three core MIH services, each containing
+          a set of logical components. The MIES module allows the MIHF to verify
+          if the received event messages are formatted according to the standard,
+          which MIH-Users have subscribed the events and, if applicable, to forward
+          the message to the subscribed MIH-Users. These represent, respectively,
+          the roles of the <span class="emphasis"><em>Event validator</em></span>, <span class="emphasis"><em>Event
+          subscriber</em></span> and <span class="emphasis"><em>Event publisher</em></span> modules.
+          The MICS module also provides a way to validate the received message and
+          to forward them to its destination, operations that are in charge of the
+          <span class="emphasis"><em>Command validator</em></span> and <span class="emphasis"><em>Command publisher</em></span>
+          modules. The definition of the IS is out of the scope of the standard.
+          In ODTONE, the IS acts as a MIH-User and therefore, the MIIS module is
+          responsible to forward the messages to the IS registered with the MIHF
+          or, if is that the case, forward the response message to the requestor.
+        </p>
+<p>
+          The previously mentioned modules allow the MIHF to provide the basic features
+          of the MIH protocol. Additionally, the ODTONE's MIHF architecture has other
+          components which allow not only to implement the remaining features of
+          the MIH protocol but also to add robustness to the MIHF:
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              <span class="bold"><strong>Service Manager:</strong></span> this module is responsible
+              for the management of the MIH Capability Discover messages, which provide
+              information about the services supported by an MIH peer.
+            </li>
+<li class="listitem">
+              <span class="bold"><strong>Communication handler:</strong></span> collects the
+              messages received from different SAPs or peer MIHFs entities and forwards
+              them to the <span class="emphasis"><em>Service Access Controller</em></span> module.
+            </li>
+<li class="listitem">
+              <span class="bold"><strong>Service access controller:</strong></span> responsible
+              for analyzing the header of the MIH messages and to forward them to
+              the respective MIH service. The decision is based on the MIH message
+              identifier and the registered callbacks.
+            </li>
+<li class="listitem">
+              <span class="bold"><strong>Link manager:</strong></span> stores the information
+              about the available Link SAPs.
+            </li>
+<li class="listitem">
+              <span class="bold"><strong>MIH-User manager:</strong></span> provides the MIHF
+              with information about the registered MIH-Users.
+            </li>
+<li class="listitem">
+              <span class="bold"><strong>Peer MIHF manager:</strong></span> provides the MIHF
+              with the transport information and the capabilities of the peer MIHFs.
+            </li>
+<li class="listitem">
+              <span class="bold"><strong>Transaction state machine controller:</strong></span>
+              keeps the state of each remote transaction with peer MIHF entities.
+              It is responsible, if applicable, for sending the acknowledge messages
+              and to detect the reception of duplicates messages.
+            </li>
+</ul></div>
+</div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Universidade Aveiro<br>Copyright &#169; 2009 -2011 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license
@@ -61,7 +259,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../app.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="mihf_index/mihf_getStart.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../app.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="mih_usr_index.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

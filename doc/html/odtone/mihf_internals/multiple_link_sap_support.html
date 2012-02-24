@@ -1,0 +1,66 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Multiple Link SAP support</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="up" href="../mihf_internals.html" title="ODTONE MIHF internals">
+<link rel="prev" href="mih_confirm_messages_must_set_the_opcode_to_0__zero_.html" title="MIH confirm messages must set the opcode to 0 (zero)">
+<link rel="next" href="remote_link_sap_support.html" title="Remote Link SAP support">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="mih_confirm_messages_must_set_the_opcode_to_0__zero_.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../mihf_internals.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="remote_link_sap_support.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="odtone.mihf_internals.multiple_link_sap_support"></a><a class="link" href="multiple_link_sap_support.html" title="Multiple Link SAP support">Multiple
+      Link SAP support</a>
+</h3></div></div></div>
+<p>
+        With the assumption that each Link SAP manages a single network interface,
+        it was necessary to ODTONE to support multiple Link SAP. So, when a new request
+        is received at the MIHF and whose destination is a Link SAP, the MIHF processes
+        it and redirects the request to the proper Link SAP, based on the information
+        collected by the local discovery mechanism and the information presented
+        on the request message.
+      </p>
+<p>
+        However, there are cases where the destination could be a set of Link SAPs.
+        In those cases, the MIHF sends a message to all destinations Link SAPs and
+        waits a time interval for all the responses of the Link SAPs. After that
+        time, the MIHF processes all received responses from Link SAPs and sends
+        the response to the requestor.
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          The time that the MIHF waits for all responses can be configured in the
+          MIHF (configuration file or command line).
+        </p></td></tr>
+</table></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="mih_confirm_messages_must_set_the_opcode_to_0__zero_.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../mihf_internals.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="remote_link_sap_support.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -28,48 +28,56 @@ namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * The enumeration of IP_CFG_METHODS data type.
+ * IP_CFG_METHODS data type enumeration.
  */
 enum ip_cfg_methods_enum {
-	ip_cfg_ipv4_static = 0,
-	ip_cfg_ipv4_dynamic = 1,
-	ip_cfg_ipv4_mobile_fa = 2,
-	ip_cfg_ipv4_mobile = 3,
+	ip_cfg_ipv4_static = 0,		/**< IPv4 static configuration.						*/
+	ip_cfg_ipv4_dynamic = 1,	/**< IPv4 dynamic configuration (DHCPv4).			*/
+	ip_cfg_ipv4_mobile_fa = 2,	/**< Mobile IPv4 with FA-CoA.						*/
+	ip_cfg_ipv4_mobile = 3,		/**< Mobile IPv4 without FA (Co-located CoA).		*/
 
-	ip_cfg_ipv6_stateless = 11,
-	ip_cfg_ipv6_stateful = 12,
-	ip_cfg_ipv6_manual = 13,
+	ip_cfg_ipv6_stateless = 11,	/**< IPv6 stateless address configuration.			*/
+	ip_cfg_ipv6_stateful = 12,	/**< IPv6 stateful address configuration (DHCPv6).	*/
+	ip_cfg_ipv6_manual = 13,	/**< IPv6 manual configuration.						*/
 };
 
 /**
- * Define IP_CFG_METHODS data type.
+ * IP_CFG_METHODS data type.
  */
 typedef bitmap<32, ip_cfg_methods_enum> ip_cfg_methods;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * IP_MOB_MGMT data type enumeration.
+ */
 enum ip_mob_mgmt_enum {
-	ip_mob_ipv4 = 0,
-	ip_mob_ipv4_regional_registration = 1,
-	ip_mob_ipv6 = 2,
-	ip_mob_hierarchical_ipv6 = 3,
-	ip_mob_low_latency_handoffs	= 4,
-	ip_mob_ipv6_fast_handovers = 5,
-	ip_mob_IKEv2 = 6,
+	ip_mob_ipv4 = 0,						/**< Mobile IPv4				*/
+	ip_mob_ipv4_regional_registration = 1,	/**< Mobile IPv4 Regional Registration*/
+	ip_mob_ipv6 = 2,						/**< Mobile IPv6				*/
+	ip_mob_hierarchical_ipv6 = 3,			/**< Hiearchical Mobile IPv6	*/
+	ip_mob_low_latency_handoffs	= 4,		/**< Low Latency Handoffs 		*/
+	ip_mob_ipv6_fast_handovers = 5,			/**< Mobile IPv6 Fast Handovers	*/
+	ip_mob_IKEv2 = 6,						/**< IKEv2 Mobility and Multihoming Protocol*/
 };
 
 /**
- * Define IP_MOB_MGMT data type.
+ * IP_MOB_MGMT data type.
  */
 typedef bitmap<16, ip_mob_mgmt_enum> ip_mob_mgmt;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define IP4_ADDR data type.
+ * IP4_ADDR data type.
  */
 struct ip4_addr
 {
-	uint8 addr[4];
+	uint8 addr[4];	/**< IPv4 byte values */
 
+	/**
+	 * Serialize/deserialize the IP4_ADDR data type.
+	 *
+	 * @param ar The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -82,12 +90,17 @@ struct ip4_addr
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define IP6_ADDR data type.
+ * IP6_ADDR data type.
  */
 struct ip6_addr
 {
-	uint8 addr[16];
+	uint8 addr[16];	/**< IPv6 byte values */
 
+	/**
+	 * Serialize/deserialize the IP6_ADDR data type.
+	 *
+	 * @param ar The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -99,21 +112,26 @@ struct ip6_addr
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define FQDN data type.
+ * FQDN data type.
  */
 typedef octet_string fqdn;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define IP_CONFIG data type.
+ * IP_CONFIG data type.
  */
 struct ip_config
 {
-	ip_cfg_methods						ipcfgmethods;
-	boost::variant<null, dhcp_serv>		dhcpserv;
-	boost::variant<null, fn_agent>		fnagent;
-	boost::variant<null, acc_rtr>		accrtr;
+	ip_cfg_methods					ipcfgmethods;	/**< IP configuration methods 			*/
+	boost::variant<null, dhcp_serv>	dhcpserv;		/**< DHCP IP address 					*/
+	boost::variant<null, fn_agent>	fnagent;		/**< Foreign Agent IP Address 			*/
+	boost::variant<null, acc_rtr>	accrtr;			/**< Candidate access router IP address.*/
 
+	/**
+	 * Serialize/deserialize the IP_CONFIG data type.
+	 *
+	 * @param ar The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{
@@ -126,25 +144,30 @@ struct ip_config
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define IP_PREFIX_LEN data type.
+ * IP_PREFIX_LEN data type.
  */
 typedef uint8 ip_prefix_len;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define IP_RENEWAL_FLAG data type.
+ * IP_RENEWAL_FLAG data type.
  */
 typedef bool ip_renewal_flag;
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define IP_SUBNET_INFO data type.
+ * IP_SUBNET_INFO data type.
  */
 struct ip_subnet_info
 {
-	ip_prefix_len		ipprefixlen;
-	ip_addr				ipaddr;
+	ip_prefix_len	ipprefixlen;	/**< Network prefix IP Address lenght	*/
+	ip_addr			ipaddr;			/**< Network prefix IP address 			*/
 
+	/**
+	 * Serialize/deserialize the IP_SUBNET_INFO data type.
+	 *
+	 * @param ar The archive to/from where serialize/deserialize the data type.
+	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
 	{

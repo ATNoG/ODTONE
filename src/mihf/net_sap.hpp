@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -34,29 +34,32 @@ using namespace boost::asio;
 namespace odtone { namespace mihf {
 
 /**
- * This class, when called, checks if the MIH destination identifier is in the
- * remote address book, if so the message is sent using on of udp_send or tcp_send.
+ * This class provides the methods to send the messages to remote MIHFs.
  */
 class net_sap
 {
 public:
 	/**
-	 * Netsap constructor.
+	 * Construct a netsap module.
 	 *
-	 * @param io io_service.
-	 * @param abook address_book module.
+	 * @param io The io_service object that netsap module will use to
+	 * dispatch handlers for any asynchronous operations performed on
+	 * the socket.
+	 * @param abook The address book module.
+	 * @param port Port used to send the messages.
 	 */
-	net_sap(io_service &io, address_book &abook);
+	net_sap(io_service &io, address_book &abook, uint16 port);
 
 	/**
-	 * Send the message to the peer MIHF.
+	 * Send the message to a peer MIHF.
 	 *
-	 * @param msg output message.
+	 * @param msg The output message.
 	 */
 	void send(meta_message_ptr &msg);
 private:
-	io_service &_io;
-	address_book &_abook;
+	io_service &_io;		/**< The io_service object.				*/
+	address_book &_abook;	/**< The address book module.			*/
+	uint16 _port;			/**< Port used to send the messages.	*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

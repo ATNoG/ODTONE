@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -25,24 +25,29 @@
 namespace odtone { namespace mihf {
 
 /**
- * This class represents the MIHF MIH Identifier.
+ * This class represents the MIHF MIH Identifier. It is implemented as a
+ * singleton.
  */
 class mihfid_t
 {
 public:
 	/**
-	 * Create a instance of the MIHF MIH Identifier.
+	 * Creates an instance of the MIHF MIH Identifier.
 	 */
 	static mih::id* instance();
 
 	/**
-	 * Destructor of MIHF MIH Identifier.
+	 * Destructor of the MIHF MIH Identifier.
 	 */
 	~mihfid_t();
 
 private:
-  mihfid_t();
-  static mih::id *ptr_instance;
+	/**
+	 * Constructor of the MIHF MIH Identifier.
+	 */
+	mihfid_t();
+
+	static mih::id *ptr_instance;	/**< MIHF MIH Identifier instance pointer.	*/
 };
 
 #define mihfid *mihfid_t::instance()

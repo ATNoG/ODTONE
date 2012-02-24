@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -26,23 +26,22 @@ namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * The BASE API offers support mechanisms for list management, providing operations
- * to add or remove elements, get or swap elements and to reverse elements.
- * These can be considered as a double-linked list that consists of a sequence
- * of data records such that in each record there is a field that contains a
- * reference to the next record and to the previous record in the sequence.
+ * Double linked list, which provides operations to add or remove elements,
+ * to get and swap elements and to reverse the elements order.
+ * Each node contains, besides the next-node link, a second link field pointing
+ * to the previous node in the sequence.
  */
 class list_node {
 public:
 	/**
-	 * Initialize the list only with the element that calls this method.
+	 * Initialize the double linked list with a single element.
 	 */
 	void init() { _next = _prev = this; }
 
 	/**
-	 * Insert a new element in the first position of the list.
+	 * Insert a new element in the first position of the double linked list.
 	 *
-	 * @param node the new element to insert in the list.
+	 * @param node The element to insert in the double linked list.
 	 */
 	void push_front(list_node* node)
 	{
@@ -53,9 +52,9 @@ public:
 	}
 
 	/**
-	 * Insert a new element in the last position of the list.
+	 * Insert a new element in the last position of the double linked list.
 	 *
-	 * @param node the new element to insert in the list.
+	 * @param node The element to insert in the double linked list.
 	 */
 	void push_back(list_node* node)
 	{
@@ -66,9 +65,9 @@ public:
 	}
 
 	/**
-	 * Remove and return the first element of the list.
+	 * Remove and return the first element of the double linked list.
 	 *
-	 * @return The first element of the list.
+	 * @return The first element of the double linked list.
 	 */
 	list_node* pop_front()
 	{
@@ -78,9 +77,9 @@ public:
 	}
 
 	/**
-	 * Remove and return the last element of the list.
+	 * Remove and return the last element of the double linked list.
 	 *
-	 * @return The last element of the list.
+	 * @return The last element of the double linked list.
 	 */
 	list_node* pop_back()
 	{
@@ -90,36 +89,49 @@ public:
 	}
 
 	/**
-	 * Return the first element of the list without removing it from the list.
+	 * Return the first element of the double linked list without removing it.
 	 *
-	 * @return The first element of the list.
+	 * @return The first element of the double linked list.
 	 */
-	list_node* front()	{ return _next; }
+	list_node* front()
+	{
+		return _next;
+	}
 
 	/**
-	 * Return the last element of the list without removing it from the list.
+	 * Return the last element of the double linked list without removing it.
 	 *
-	 * @return The last element of the list.
+	 * @return The last element of the double linked list.
 	 */
-	list_node* back()	{ return _prev; }
+	list_node* back()
+	{
+		return _prev;
+	}
 
 	/**
-	 * Return the first element of the list without removing it from the list.
+	 * Return the first element of the double linked list without removing it.
 	 *
-	 * @return The first element of the list.
+	 * @return The first element of the double linked list.
 	 */
-	const list_node* front() const	{ return _next; }
+	const list_node* front() const
+	{
+		return _next;
+	}
 
 	/**
-	 * Return the last element of the list without removing it from the list.
+	 * Return the last element of the double linked list without removing it.
 	 *
-	 * @return The last element of the list.
+	 * @return The last element of the double linked list without removing it.
 	 */
-	const list_node* back() const	{ return _prev; }
+	const list_node* back() const
+	{
+		return _prev;
+	}
 
 	/**
-	 * Swap the position of two elements of the list.
-	 * @param y the element with which to exchange the position.
+	 * Swap the position of two elements of the double linked list.
+	 *
+	 * @param y The element with which will exchange the position.
 	 */
 	void swap(list_node& y)
 	{
@@ -133,8 +145,9 @@ public:
 	}
 
 	/**
-	 * Reverse the element in the list. In other words, it exchange the
-	 * previous element with the next element of the checkpoint that calls this method.
+	 * Reverse the element order in the double linked list. In other words,
+	 * it exchange the previous element with the next element of the checkpoint
+	 * that calls this method.
 	 */
 	void reverse()
 	{
@@ -145,7 +158,7 @@ public:
 	}
 
 	/**
-	 * Remove an element from the list.
+	 * Remove an element from the double linked list.
 	 */
 	void remove()
 	{
@@ -154,14 +167,19 @@ public:
 	}
 
 	/**
-	 * Check if the element has a null reference for the next element.
-	 * @return True if has a null reference for the next element or false otherwise.
+	 * Check if the element is the single one in the double linked list.
+	 *
+	 * @return True if the element is the single one in the double linked list
+	 *         or false otherwise.
 	 */
-	bool empty() const { return (_next == this); }
+	bool empty() const
+	{
+		return (_next == this);
+	}
 
 private:
-	list_node* _next;
-	list_node* _prev;
+	list_node* _next;	/**< Pointer to the next element.		*/
+	list_node* _prev;	/**< Pointer to the previous element.	*/
 };
 
 ///////////////////////////////////////////////////////////////////////////////

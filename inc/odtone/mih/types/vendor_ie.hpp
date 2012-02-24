@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -30,6 +30,12 @@
 namespace odtone { namespace mih {
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+ * Check if the IE belongs to the Vendor_IE type.
+ *
+ * @param id TLV type.
+ * @return True if the IE belonds to the Vendor_IE type or false otherwise.
+ */
 inline bool is_vendor_ie(uint32 id)
 {
 #ifdef NDEBUG
@@ -44,10 +50,18 @@ inline bool is_vendor_ie(uint32 id)
  */
 class vendor_ie {
 public:
+	/**
+	 * Construct an empty Vendor_IE data type.
+	 */
 	vendor_ie()
 		: _id(0)
 	{ }
 
+	/**
+	 * Construct a Vendor_IE data type from another Vendor_IE data type.
+	 *
+	 * @param lhs Vendor_IE to copy.
+	 */
 	vendor_ie(const vendor_ie& lhs)
 		: _id(lhs._id)
 	{
@@ -55,6 +69,11 @@ public:
 		std::copy(lhs._data.get(), lhs._data.get() + lhs._data.size(), _data.get());
 	}
 
+	/**
+	 * Copy a Vendor_IE data type from another Vendor_IE data type.
+	 *
+	 * @param lhs Vendor_IE to copy.
+	 */
 	vendor_ie& operator=(const vendor_ie& lhs)
 	{
 		if (this != &lhs) {
@@ -66,8 +85,21 @@ public:
 		return *this;
 	}
 
-	uint32 id() const { return _id; }
+	/**
+	 * Get the Vendor_IE type.
+	 *
+	 * @return The Vendor_IE type.
+	 */
+	uint32 id() const
+	{
+		return _id;
+	}
 
+	/**
+	 * Deserialize the Vendor_IE data type.
+	 *
+	 * @param ar The archive from where deserialize the data type.
+	 */
 	bool serialize(iarchive& ar)
 	{
 		uint32 type;
@@ -88,6 +120,11 @@ public:
 		return true;
 	}
 
+	/**
+	 * Serialize the Vendor_IE data type.
+	 *
+	 * @param ar The archive to where serialize the data type.
+	 */
 	void serialize(oarchive& ar)
 	{
 		ar & _id;
@@ -96,13 +133,13 @@ public:
 	}
 
 private:
-	uint32        _id;
-	buffer<uint8> _data;
+	uint32        _id;		/**< Vendor_IE type */
+	buffer<uint8> _data;	/**< Vendor_IE value */
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Define LIST(VENDOR_IE) data type.
+ * Define LIST(Vendor_IE) data type.
  */
 class vendor_ie_list : std::vector<vendor_ie> {
 	typedef std::vector<vendor_ie> base;
@@ -122,12 +159,22 @@ public:
 	using base::resize;
 	using base::operator[];
 
+	/**
+	 * Serialize the LIST(Vendor_IE) data type.
+	 *
+	 * @param ar The archive to where serialize the data type.
+	 */
 	void serialize(oarchive& ar)
 	{
 		for (base::iterator i = base::begin(), e = base::end(); i != e; ++i)
 			i->serialize(ar);
 	}
 
+	/**
+	 * Deserialize the LIST(Vendor_IE) data type.
+	 *
+	 * @param ar The archive from where deserialize the data type.
+	 */
 	void serialize(iarchive& ar)
 	{
 		base::clear();

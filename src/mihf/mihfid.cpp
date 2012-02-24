@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -23,12 +23,15 @@ namespace odtone { namespace mihf {
 
 mih::id *mihfid_t::ptr_instance = NULL;
 
+/**
+ * Constructor of the MIHF MIH Identifier.
+ */
 mihfid_t::mihfid_t()
 {
 }
 
 /**
- * Destructor of MIHF MIH Identifier.
+ * Destructor of the MIHF MIH Identifier.
  */
 mihfid_t::~mihfid_t()
 {

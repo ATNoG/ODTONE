@@ -4,8 +4,8 @@
  /------------------------------------------------------------------------------
  / ODTONE - Open Dot Twenty One
  /
- / Copyright (C) 2009-2011 Universidade Aveiro
- / Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+ / Copyright (C) 2009-2012 Universidade Aveiro
+ / Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
  /
  / This software is distributed under a license. The full license
  / agreement can be found in the file LICENSE in this distribution.
@@ -19,116 +19,110 @@
 
 The Link SAP specifies an abstract media dependent interface between the MIHF
 and lower layers media-specific protocol stacks of technologies such as IEEE 802.3,
-IEEE 802.11, IEEE 802.16, 3GPP and 3GPP2. For different link-layer technologies,
-media-specific SAPs provide the functionality of Link SAP.
+IEEE 802.11, IEEE 802.16, 3GPP and 3GPP2.
 
-This implementation of Link SAP is very simple. It only support 2 kinds of events:
-link down and link up events.
+The provided Link SAP implementation is very simple, supporting only two
+types of events: link down and link up events.
 
 [section:link_sap_getStart Getting Started]
 
 [section Detailed Description]
 
-Link SAP has two different implementation: one for Linux and other one for
-Windows. However, they do the exactly same thing. The Linux implementation use
-['rtnetlink] and ['netlink] libraries to manage network interfaces, while windows
+The Link SAP is implemented for Linux and Windows OS. The Linux implementation use
+['rtnetlink] and ['netlink] libraries to manage network interfaces, while the Windows
 implementation use Windows SDK libraries.
-
-As this is a simple Link SAP, it only supports link down and link up events.
 
 [$./images/link_sap_state_machine.png]
 
-When Link SAP begins to run, it will send a Link_Register.indication message
-to the MIHF. Then, it stays in a state of waiting for messages from the
-network interfaces. When an incoming message is receive, Link SAP sends it to the
-event handler:
+At the bootstrap, the Link SAP will send a "Link_Register.indication" message
+to the MIHF in order to register itself with the MIHF. Then, it stays in a
+waiting state for messages from the its local MIHF and/or events
+from the network interfaces.
+
+When a change in the network interface is detected, the following method
+is called in order to process it:
 ``
 	void link_sap::link_sap::update(nic::interface* it);
 ``
 
-In the event handler, is verified if the state of network interface has been
-changed. If its state was changed, Link SAP will send a message to MIHF notifying
-it about the succeeded. Otherwise, it won't do nothing and will discard the message
-received.
+The state of the network interface is verified and if its state was changed,
+the Link SAP will propagate a event notification to its local MIHF. Otherwise,
+it won't do nothing and will discard the message received.
 
 [note Note that this implementation only process link up and link down events.]
-
-After this cycle, Link SAP enters in the state of waiting for messages from the
-network interfaces. When a new message is received the cycle begins.
 
 [endsect]
 
 [section Configuration]
 
+``
 	MIH Link SAP Configuration:
-	   --help                           Display configuration options
-	   --link.port arg (=1234)          Port
-	   --link.tec arg                   Link SAP Technology
-	   --link.link_addr_list arg        Link SAP Interface Address
-	   --link.event_list arg            List of supported events
-	   --link.command_list arg          List of supported commands
-	   --conf.file arg (=link_sap.conf) Configuration File
-	   --conf.recv_buff_len arg (=4096) Receive Buffer Length
-	   --mihf.ip arg (=127.0.0.1)       Local MIHF Ip
-	   --mihf.local_port arg (=1025)    MIHF Local Communications Port
-	   --mihf.id arg (=local-mihf)      Local MIHF Id
-	   --link.id arg (=link)            Link SAP Id
+	     --help                           Display configuration options
+	     --conf.file arg (=link_sap.conf) Configuration file
+	     --conf.recv_buff_len arg (=4096) Receive buffer length
+	     --link.id arg (=link)            Link SAP ID
+	     --link.port arg (=1235)          Listening Port
+	     --link.tec arg                   Technology type
+	     --link.link_addr_list arg        Interface address
+	     --link.event_list arg            List of supported events
+	     --link.command_list arg          List of supported commands
+	     --mihf.ip arg (=127.0.0.1)       Local MIHF IP
+	     --mihf.id arg (=local-mihf)      Local MIHF ID
+	     --mihf.local_port arg (=1025)    Local MIHF communication port
+``
 
 [note
-*Link SAP Technology*
+All configurable parameters are self-explained and, therefore,
+we will only mention those that are more complex to configure.
 
-Network interface card technology.
+[*Technology type:] Network interface card technology.
+Supported values: GSM, GPRS, EDGE, 802.3, Other, 802_11, CDMA2000, UMTS,
+CDMA2000-HRPD, 802_16, 802_20, 802_22.
 
 Usage: tec = <NIC technology>
 
-*Link SAP Interface Address*
+[*Interface Address:] Network interface card address.
 
-Network interface card address.
+Usage: link_addr = <interface address>
 
-Usage: link_addr_list = <interface address>
-
-*Link SAP List of supported events*
-
-Comma separated list of the Link SAP's supported events.
+[*List of supported events:] Comma separated list of the Link SAP's supported events.
 
 Usage: event_list = <link event 1>, <link event 2>, (...), <link event N>
 
-*Link SAP List of supported events*
-
-Comma separated list of the Link SAP's supported commands.
+[*List of supported events:] Comma separated list of the Link SAP's supported commands.
 
 Usage: command_list = <link command 1>, <link command 2>, (...), <link command N>
 
 ]
 
-Link SAP can be configured either through a configuration file or passing
-directly, in command line, the configuration options.
+The Link SAP can be configured based on a set of parameters, which can be
+configured either using an configuration file or passing them directly
+in the command line.
 
 [endsect]
 
 [section Extending]
 
-It is possible to do several extensions to Link SAP in a simple and fast way.
+The provided implementation of the Link SAP can be used as the base of
+your Link SAP implementation, since it allows to do several extensions
+in a simple and fast way.
 
-For example, in event handler can be added specific behaviour for other type of
-event message received. So, Link SAP can notify MIHF about other changes in the
-network interface.
-
+For example, in default handler can be added specific behaviour for a received
+request message. In this way, the Link SAP can adopt its behaviour
+based on the received requets.
 ``
-	void link_sap::link_sap::update(nic::interface* it);
+	void link_sap::default_handler(odtone::mih::message& msg, const boost::system::error_code& ec)
 ``
-
 
 [endsect]
 
 [section Running]
 
-There is no running recommendation for Link SAP. It can be run after or before
-the local MIHF.
+Before running the Link SAP, the local MIHF should already be running. Otherwise,
+the Link SAP will try to register with a non-exitent MIHF.
 
-So that the Link SAP detects some events, you should proceed to disconnect,
-disable or shutdown your network cable/interface or your wireless card according
-to your configuration file.
+You can trigger some events by just disconnecting, disabling or shutting down
+your network cable/interface or wireless card (according to what you configured).
 
 [endsect]
 

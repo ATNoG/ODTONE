@@ -1,0 +1,234 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class list_node</title>
+<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="ODTONE 0.4">
+<link rel="up" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.list_node_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/list_node.hpp&gt;">
+<link rel="prev" href="exception.html" title="Class exception">
+<link rel="next" href="logger.html" title="Class logger">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src=".././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="exception.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.list_node_hpp"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="logger.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="odtone.list_node"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class list_node</span></h2>
+<p>odtone::list_node</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.list_node_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/list_node.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/list_node.hpp</a>&gt;
+
+</span>
+<span class="keyword">class</span> <a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+
+  <span class="comment">// <a class="link" href="list_node.html#idp3717920-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="list_node.html#idp3718104-bb"><span class="identifier">init</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="list_node.html#idp3718792-bb"><span class="identifier">push_front</span></a><span class="special">(</span><a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="list_node.html#idp3720312-bb"><span class="identifier">push_back</span></a><span class="special">(</span><a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span> <a class="link" href="list_node.html#idp3721832-bb"><span class="identifier">pop_front</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span> <a class="link" href="list_node.html#idp3723032-bb"><span class="identifier">pop_back</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span> <a class="link" href="list_node.html#idp3724232-bb"><span class="identifier">front</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span> <a class="link" href="list_node.html#idp3725440-bb"><span class="identifier">back</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">const</span> <a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span> <a class="link" href="list_node.html#idp3726648-bb"><span class="identifier">front</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">const</span> <a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span> <a class="link" href="list_node.html#idp3727920-bb"><span class="identifier">back</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="list_node.html#idp3729208-bb"><span class="identifier">swap</span></a><span class="special">(</span><a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="list_node.html#idp3730720-bb"><span class="identifier">reverse</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="list_node.html#idp3731520-bb"><span class="identifier">remove</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="list_node.html#idp3732200-bb"><span class="identifier">empty</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp10219384"></a><h2>Description</h2>
+<p>Double linked list, which provides operations to add or remove elements, to get and swap elements and to reverse the elements order. Each node contains, besides the next-node link, a second link field pointing to the previous node in the sequence. </p>
+<div class="refsect2">
+<a name="idp10219976"></a><h3>
+<a name="idp3717920-bb"></a><code class="computeroutput">list_node</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp3718104-bb"></a><span class="identifier">init</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Initialize the double linked list with a single element. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp3718792-bb"></a><span class="identifier">push_front</span><span class="special">(</span><a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span> node<span class="special">)</span><span class="special">;</span></pre>
+<p>Insert a new element in the first position of the double linked list.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">node</code></span></p></td>
+<td><p>The element to insert in the double linked list. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp3720312-bb"></a><span class="identifier">push_back</span><span class="special">(</span><a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span> node<span class="special">)</span><span class="special">;</span></pre>
+<p>Insert a new element in the last position of the double linked list.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">node</code></span></p></td>
+<td><p>The element to insert in the double linked list. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span> <a name="idp3721832-bb"></a><span class="identifier">pop_front</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Remove and return the first element of the double linked list.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The first element of the double linked list. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span> <a name="idp3723032-bb"></a><span class="identifier">pop_back</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Remove and return the last element of the double linked list.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The last element of the double linked list. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span> <a name="idp3724232-bb"></a><span class="identifier">front</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Return the first element of the double linked list without removing it.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The first element of the double linked list. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span> <a name="idp3725440-bb"></a><span class="identifier">back</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Return the last element of the double linked list without removing it.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The last element of the double linked list. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">const</span> <a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span> <a name="idp3726648-bb"></a><span class="identifier">front</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Return the first element of the double linked list without removing it.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The first element of the double linked list. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">const</span> <a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">*</span> <a name="idp3727920-bb"></a><span class="identifier">back</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Return the last element of the double linked list without removing it.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The last element of the double linked list without removing it. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp3729208-bb"></a><span class="identifier">swap</span><span class="special">(</span><a class="link" href="list_node.html" title="Class list_node">list_node</a> <span class="special">&amp;</span> y<span class="special">)</span><span class="special">;</span></pre>
+<p>Swap the position of two elements of the double linked list.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">y</code></span></p></td>
+<td><p>The element with which will exchange the position. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp3730720-bb"></a><span class="identifier">reverse</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Reverse the element order in the double linked list. In other words, it exchange the previous element with the next element of the checkpoint that calls this method. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp3731520-bb"></a><span class="identifier">remove</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Remove an element from the double linked list. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp3732200-bb"></a><span class="identifier">empty</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Check if the element is the single one in the double linked list.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>True if the element is the single one in the double linked list or false otherwise. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="exception.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.list_node_hpp"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="logger.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

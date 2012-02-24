@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -23,16 +23,16 @@
 namespace odtone { namespace mihf {
 
 /**
- * Local Transaction Pool constructor.
+ * Construct a Local Transaction Pool.
  */
 local_transaction_pool::local_transaction_pool()
 {
 }
 
 /**
- * Add a new local transaction entry in the Local Transaction Pool.
+ * Add a new entry in the Local Transaction Pool.
  *
- * @param in input message.
+ * @param in The input message.
  */
 void local_transaction_pool::add(meta_message_ptr& in)
 {
@@ -40,11 +40,11 @@ void local_transaction_pool::add(meta_message_ptr& in)
 
 	p.user.assign(in->source().to_string());
 	p.destination.assign(in->destination().to_string());
-	p.tid = in->tid();
-	p.ack = in->ackreq();
+	p.ltid = in->tid();
+	p.rtid = in->tid();
 
-	log(3, "(local transactions) added transaction ", p.user, ":",
-	    p.destination, ":", p.tid, ":", p.ack);
+	ODTONE_LOG(3, "(local transactions) added transaction ", p.user, " : ",
+	    p.destination, " : ", p.ltid);
 
 	{
 		boost::mutex::scoped_lock lock(_mutex);
@@ -53,61 +53,86 @@ void local_transaction_pool::add(meta_message_ptr& in)
 }
 
 /**
- * Remove a existing local transaction entry from the Link Transaction Pool
+ * Set the remote transaction identifier related to a given local transaction.
  *
- * @param id MIH User MIH Identifier.
- * @param tid MIH Message Transaction ID.
+ * @param dst The identifier of the destination of the transaction.
+ * @param ltid The local transaction identifier.
+ * @param rtid The remote transaction identifier.
  */
-void local_transaction_pool::del(const mih::octet_string user,
-                                 uint16 tid)
+void local_transaction_pool::set_remote_tid(const mih::octet_string &dst,
+                                            const uint16 ltid,
+                                            const uint16 rtid)
 {
+	boost::mutex::scoped_lock lock(_mutex);
+
 	std::list<pending_transaction>::iterator it;
-	it = find(user);
+	it = find(dst, ltid);
 
 	if (it != _transactions.end()) {
-		if(it->tid == tid) {
-			boost::mutex::scoped_lock lock(_mutex);
-			_transactions.erase(it);
-		}
+		it->rtid = rtid;
 	}
 }
 
 /**
- * Find a local transaction entry in the Local Transaction Pool
+ * Remove an existing entry from the Local Transaction Pool.
  *
- * @param from MIH Identifier.
+ * @param id The MIH source identifier.
+ * @param tid The transaction identifier.
+ * @return True if removed or false otherwise.
+ */
+bool local_transaction_pool::del(const mih::octet_string user,
+                                 uint16 tid)
+{
+	std::list<pending_transaction>::iterator it;
+	it = find(user, tid);
+
+	if (it != _transactions.end()) {
+		if(it->ltid == tid) {
+			boost::mutex::scoped_lock lock(_mutex);
+			_transactions.erase(it);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Searchs for a record in the Local Transaction Pool.
+ *
+ * @param from The MIH source identifier.
+ * @param tid The MIH transaction identifier.
+ * @return The list of active transaction from the given source.
  */
 std::list<pending_transaction>::iterator
-local_transaction_pool::find(const mih::octet_string &from)
+local_transaction_pool::find(const mih::octet_string &from, uint16 tid)
 {
 	std::list<pending_transaction>::iterator it;
 
 	for(it = _transactions.begin(); it != _transactions.end(); it++) {
-		if (it->destination == from)
+		if (it->destination == from && it->rtid == tid)
 			break;
 	}
 	return it;
 }
 
 /**
- * Check if there is a pending transaction with the msg's mih source
- * identifier and set the transaction id and destination appropriately.
+ * Check the existence of an active transaction. It also set the
+ * MIH destination and the transaction identifier in the given message.
  *
- * @param msg MIH Message.
- * @return true if there is a pending transaction or false otherwise.
+ * @param msg The MIH Message.
+ * @return True if there is an active transaction or false otherwise.
  */
 bool local_transaction_pool::set_user_tid(meta_message_ptr &msg)
 {
 	boost::mutex::scoped_lock lock(_mutex);
 
 	std::list<pending_transaction>::iterator it;
-	it = find(msg->source().to_string());
+	it = find(msg->source().to_string(), msg->tid());
 
 	if (it != _transactions.end()) {
-
-		msg->tid(it->tid);
+		msg->tid(it->ltid);
 		msg->destination(mih::id(it->user));
-		msg->ackreq(it->ack);
 
 		_transactions.erase(it);
 		return true;

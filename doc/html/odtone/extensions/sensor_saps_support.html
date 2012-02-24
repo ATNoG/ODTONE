@@ -1,0 +1,263 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Sensor SAPs Support</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="up" href="../extensions.html" title="ODTONE Extensions">
+<link rel="prev" href="mih_protocol_c_interface.html" title="MIH Protocol C interface">
+<link rel="next" href="../library.html" title="Libraries">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="mih_protocol_c_interface.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../extensions.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="../library.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="odtone.extensions.sensor_saps_support"></a><a class="link" href="sensor_saps_support.html" title="Sensor SAPs Support">Sensor SAPs Support</a>
+</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.introduction">Introduction</a></span></dt>
+<dt><span class="section"><a href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.requirements">Requirements</a></span></dt>
+<dt><span class="section"><a href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.instalation">Instalation</a></span></dt>
+<dt><span class="section"><a href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.configuration">Configuration</a></span></dt>
+<dt><span class="section"><a href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.step_by_step">Step-by-Step</a></span></dt>
+<dt><span class="section"><a href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough">Technical
+        Walkthrough</a></span></dt>
+<dt><span class="section"><a href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.publications">Publications</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.extensions.sensor_saps_support.introduction"></a><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.introduction" title="Introduction">Introduction</a>
+</h4></div></div></div>
+<p>
+          Wireless Sensor Networks are an important and exciting research area: using
+          automated sensing mechanisms can help in many situations ranging from health,
+          security, leisure and others. However, there is a great number of different
+          sensor makers with their different specific mechanisms and parameters.
+          Instituto de Telecomunica&#231;&#245;es, Aveiro, Portugal, have developed a MIH
+          Sensor SAP having as base our ODTONE 802.21 implementation. This MIH Sensor
+          SAP provides abstraction mechanisms towards all sensor technologies, facilitating
+          Wireless Sensor Network operations and adding new sensing events and parameters
+          which can further even more an optimized handover decision in mobility-supporting
+          networks.
+        </p>
+<p>
+          In this walkthrough we will demonstrate how to install, setup, deploy and
+          run the Sensor SAP demo released on the ODTONE 0.4 version using SunSPOTs.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.extensions.sensor_saps_support.requirements"></a><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.requirements" title="Requirements">Requirements</a>
+</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              Latest ODTONE version installed.
+            </li>
+<li class="listitem">
+              Java Open JDK 6 or later
+            </li>
+<li class="listitem">
+              Netbeans with SunSPOT Plugin
+            </li>
+<li class="listitem">
+              SunSPOTs with Yellow SDK version installed
+            </li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.extensions.sensor_saps_support.instalation"></a><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.instalation" title="Instalation">Instalation</a>
+</h4></div></div></div>
+<p>
+          In the "extensions/sensors" folder you will find:
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              <span class="bold"><strong>0001-PATCH-Sensor-support.patch</strong></span>: this
+              file contains the changes to the MIHF and the MIH Protocol to support
+              sensors. You can apply it by running the <span class="emphasis"><em>git am &lt;path-to-patch&gt;</em></span>.
+            </li>
+<li class="listitem">
+              <span class="bold"><strong>Dummy_Sensor_SAP</strong></span>: this folder contains
+              the Dummy Sensor SAP Netbeans project.
+            </li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.extensions.sensor_saps_support.configuration"></a><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.configuration" title="Configuration">Configuration</a>
+</h4></div></div></div>
+<p>
+          The ODTONE-MIHF configuration file:
+</p>
+<pre class="programlisting">[mihf]
+id = mihf1
+local_port = 1025
+remote_port = 4551
+peers = mihf2 0.0.0.0 4552 udp
+users = user 1234
+links = sensor_sap 1235 Sensor sensoraddress
+transport = udp
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.extensions.sensor_saps_support.step_by_step"></a><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.step_by_step" title="Step-by-Step">Step-by-Step</a>
+</h4></div></div></div>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+              Connect the SunSPOT Basestation to your computer.
+            </li>
+<li class="listitem">
+              Make sure you have connectivity between your computer and the SunSPOT
+              by opening the SpotManager and on the Sun SPOTs tab, click Refresh
+              and make sure that in the dropdown list you basestation&#8217;s MAC address
+              is selected.
+            </li>
+<li class="listitem">
+              Open the Netbeans IDE, go to File, Open Project and browse to the folder
+              where you have your copy of the Dummy Sensor SAP. The NetbeansIDE should
+              immediately recognize it as a Netbeans project so you should be able
+              to select it and click &#8220;Open Project&#8221;. The Dummy Sensor SAP project
+              is now open in your Netbeans IDE Projects navigator (at the left side
+              of the IDE by default)
+            </li>
+<li class="listitem">
+              With your mouse&#8217;s right button click on top of the Dummy Sensor SAP
+              project and click on &#8220;Run&#8221;.
+            </li>
+<li class="listitem">
+              The Dummy Sensor SAP is now being deployed to your Basestation and
+              as soon as it is ready it will automatically run itself.
+            </li>
+<li class="listitem">
+              Now go to the ODTONE&#8217;s MIHF folter (../ODTONE/dist/odtone-mihf) and
+              start the MIHF.
+            </li>
+<li class="listitem">
+              You can now run the Dummy Sensor MIH-User (../ODTONE/dist/mih_sensor_usr)
+              and execute the demo.
+            </li>
+</ol></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.extensions.sensor_saps_support.technical_walkthrough"></a><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough" title="Technical Walkthrough">Technical
+        Walkthrough</a>
+</h4></div></div></div>
+<p>
+          The MIH User will subscribe the Sensor SAP for some events (<span class="bold"><strong>A</strong></span>),
+          then it is going to configure some threshold values (<span class="bold"><strong>B</strong></span>),
+          obtain current operation parameters (<span class="bold"><strong>C</strong></span>),
+          request that an action be performed (<span class="bold"><strong>D</strong></span>),
+          and then receive two events (<span class="bold"><strong>E</strong></span> and <span class="bold"><strong>F</strong></span>) for which it had subscribed to.
+        </p>
+<p>
+          <span class="inlinemediaobject"><img src="../.././images/sensor_scenario.png" alt="sensor_scenario"></span>
+        </p>
+<h5>
+<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.h0"></a>
+          <span><a name="odtone.extensions.sensor_saps_support.technical_walkthrough.event_subscription__a_"></a></span><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough.event_subscription__a_">Event
+          Subscription (A)</a>
+        </h5>
+<p>
+          - In this message the TLV Parameter &#8220;RequestedMIHEventList&#8221; is configured
+          so that Sensor_UP and Link_Parameter_Report events are subscribed.
+        </p>
+<h5>
+<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.h1"></a>
+          <span><a name="odtone.extensions.sensor_saps_support.technical_walkthrough.threshold_configuration__b_"></a></span><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough.threshold_configuration__b_">Threshold
+          Configuration (B)</a>
+        </h5>
+<p>
+          - The threshold configuration is set to trigger an action when the value
+          of 25 (not specified the type of sensor) is crossed above threshold.
+        </p>
+<h5>
+<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.h2"></a>
+          <span><a name="odtone.extensions.sensor_saps_support.technical_walkthrough.operation_parameters__c_"></a></span><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough.operation_parameters__c_">Operation
+          Parameters (C)</a>
+        </h5>
+<p>
+          - This message allows the user to retrieve the operation mode of the sensors.
+        </p>
+<h5>
+<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.h3"></a>
+          <span><a name="odtone.extensions.sensor_saps_support.technical_walkthrough.actions__d_"></a></span><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough.actions__d_">Actions
+          (D)</a>
+        </h5>
+<p>
+          - The Link actions message will request that the sensor returns a message
+          with the sensor present readings.
+        </p>
+<h5>
+<a name="odtone.extensions.sensor_saps_support.technical_walkthrough.h4"></a>
+          <span><a name="odtone.extensions.sensor_saps_support.technical_walkthrough.events__e_and_f_"></a></span><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.technical_walkthrough.events__e_and_f_">Events
+          (E and F)</a>
+        </h5>
+<p>
+          - These events are related to the subscription performed in (A).
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.extensions.sensor_saps_support.publications"></a><a class="link" href="sensor_saps_support.html#odtone.extensions.sensor_saps_support.publications" title="Publications">Publications</a>
+</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              Marcelo Lebre, Daniel Corujo, Diogo Gomes, Rui L. Aguiar, "Context
+              Transport Based on 802.21", Proc. 1 CNRS 2011 - Conference on
+              Wireless Sensor Networks, Coimbra, Portugal, Mar 2011
+            </li>
+<li class="listitem">
+              Daniel Corujo, Marcelo Lebre, Diogo Gomes, Rui L. Aguiar, "Media
+              Independent Transport Service for Ambient Intelligence", Proc.
+              2011 Confer&#234;ncia sobre Redes de Computadores, Coimbra, Portugal, Nov
+              2011
+            </li>
+<li class="listitem">
+              Daniel Corujo, Marcelo Lebre, Diogo Gomes, Rui L. Aguiar, "A Framework
+              for Flexible Sensor Information Dissemination", Proc. 2nd International
+              Workshop on Interconnections of Wireless Sensor Networks, Barcelona,
+              Spain, Jun 2011
+            </li>
+<li class="listitem">
+              Daniel Corujo, Marcelo Lebre, Diogo Gomes, Rui L. Aguiar, "Sensor
+              Context Information for Energy-Efficient Optimization of Wireless Procedures
+              ", Proc. 22nd IEEE International Symposium on Personal, Indoor
+              and Mobile Radio Communications (PIMRC), Toronto, Canada, Sep 2011
+            </li>
+<li class="listitem">
+              Daniel Corujo, Marcelo Lebre, Diogo Gomes, Rui L. Aguiar, "A Framework
+              for the Connectivity of an Internet of Things", Proc. IEEE Sensors,
+              Special Session: Ambient Intelligence Technologies &amp; Applications
+              Session, Limerick, Ireland, Oct 2011
+            </li>
+</ul></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="mih_protocol_c_interface.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../extensions.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="../library.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

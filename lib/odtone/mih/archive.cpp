@@ -1,11 +1,11 @@
-//=============================================================================
+//==============================================================================
 // Brief   : Archive for MIH Types Serialization
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2011 Universidade Aveiro
-// Copyright (C) 2009-2011 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2012 Universidade Aveiro
+// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -35,7 +35,7 @@ archive::archive() : _pos(0)
 }
 
 /**
- * Destructor for archive.
+ * Destruct an archive.
  */
 archive::~archive()
 {
@@ -43,7 +43,7 @@ archive::~archive()
 
 /**
  * Clear the contents of the archive.
- * Its size is set to 0 (zero) and the actual position is set to 0 (zero) too.
+ * Its size and actual position is set to 0 (zero).
  */
 void archive::clear()
 {
@@ -52,16 +52,11 @@ void archive::clear()
 }
 
 /**
- * Exchanges the content of the vector by the content of buffer, which
- * is another vector of the same type. Sizes may differ.
- * After the call to this member function, the elements in this container
- * are those which were in buffer before the call, and the elements of
- * buffer are those which were in this. All iterators, references and
+ * Exchanges the content of the archive by the content of buffer, which
+ * can have different sizes. All iterators, references and
  * pointers remain valid for the swapped vectors.
  *
- * @param buffer a vector providing the elements to be swapped, or a
- *               vector whose elements are to be exchanged with the
- *               actual ones.
+ * @param buffer A vector providing the elements to be swapped.
  */
 void archive::swap(std::vector<uint8>& buffer)
 {
@@ -72,8 +67,8 @@ void archive::swap(std::vector<uint8>& buffer)
 /**
  * Fills archive's contents.
  *
- * @param buf the elements to be copied to the archive.
- * @param len new archive's size.
+ * @param buf The elements to be copied to the archive.
+ * @param len The number of elements to be copied.
  */
 void archive::buffer(const uint8* buf, size_t len)
 {
@@ -96,8 +91,8 @@ std::vector<uint8>& archive::buffer()
 /**
  * Get a boolean type value from the current position in the input archive.
  *
- * @param val reference where to save the value.
- * @return Returns the input archive.
+ * @param val Reference to where save the value.
+ * @return The updated input archive.
  */
 iarchive& iarchive::operator&(bool& val)
 {
@@ -112,8 +107,8 @@ iarchive& iarchive::operator&(bool& val)
 /**
  * Get a odtone::uint8 type value from the current position in the input archive.
  *
- * @param val reference where to save the value.
- * @return Returns the input archive.
+ * @param val Reference to where save the value.
+ * @return The updated input archive.
  */
 iarchive& iarchive::operator&(uint8& val)
 {
@@ -129,8 +124,8 @@ iarchive& iarchive::operator&(uint8& val)
 /**
  * Get a odtone::uint16 type value from the current position in the input archive.
  *
- * @param val reference where to save the value.
- * @return Returns the input archive.
+ * @param val Reference to where save the value.
+ * @return The updated input archive.
  */
 iarchive& iarchive::operator&(uint16& val)
 {
@@ -147,8 +142,8 @@ iarchive& iarchive::operator&(uint16& val)
 /**
  * Get a odtone::uint32 type value from the current position in the input archive.
  *
- * @param val reference where to save the value.
- * @return Returns the input archive.
+ * @param val Reference to where save the value.
+ * @return The updated input archive.
  */
 iarchive& iarchive::operator&(uint32& val)
 {
@@ -167,8 +162,8 @@ iarchive& iarchive::operator&(uint32& val)
 /**
  * Get a odtone::uint64 type value from the current position in the input archive.
  *
- * @param val reference where to save the value.
- * @return Returns the input archive.
+ * @param val Reference to where save the value.
+ * @return The updated input archive.
  */
 iarchive& iarchive::operator&(uint64& val)
 {
@@ -191,8 +186,8 @@ iarchive& iarchive::operator&(uint64& val)
 /**
  * Get a odtone::sint8 type value from the current position in the input archive.
  *
- * @param val reference where to save the value.
- * @return Returns the input archive.
+ * @param val Reference to where save the value.
+ * @return The updated input archive.
  */
 iarchive& iarchive::operator&(sint8& val)
 {
@@ -211,8 +206,8 @@ iarchive& iarchive::operator&(sint8& val)
 /**
  * Get a odtone::sint16 type value from the current position in the input archive.
  *
- * @param val reference where to save the value.
- * @return Returns the input archive.
+ * @param val Reference to where save the value.
+ * @return The updated input archive.
  */
 iarchive& iarchive::operator&(sint16& val)
 {
@@ -232,8 +227,8 @@ iarchive& iarchive::operator&(sint16& val)
 /**
  * Get a odtone::sint32 type value from the current position in the input archive.
  *
- * @param val reference where to save the value.
- * @return Returns the input archive.
+ * @param val Reference to where save the value.
+ * @return The updated input archive.
  */
 iarchive& iarchive::operator&(sint32& val)
 {
@@ -252,8 +247,8 @@ iarchive& iarchive::operator&(sint32& val)
 /**
  * Get a odtone::sint64 type value from the current position in the input archive.
  *
- * @param val reference where to save the value.
- * @return Returns the input archive.
+ * @param val Reference to where save the value.
+ * @return The updated input archive.
  */
 iarchive& iarchive::operator&(sint64& val)
 {
@@ -272,8 +267,8 @@ iarchive& iarchive::operator&(sint64& val)
 /**
  * Get a odtone::mih::octet_string type value from the current position in the input archive.
  *
- * @param val reference where to save the value.
- * @return Returns the input archive.
+ * @param val Reference to where save the value.
+ * @return The updated input archive.
  */
 iarchive& iarchive::operator&(octet_string& val)
 {
@@ -301,8 +296,8 @@ iarchive& iarchive::operator&(octet_string& val)
 /**
  * Get a list of a particular type value from the current position in the input archive.
  *
- * @param val reference where to save the value.
- * @return Returns the input archive.
+ * @param buf Reference to where save the value.
+ * @return The updated input archive.
  */
 iarchive& iarchive::operator&(std::vector<uint8>& buf)
 {
@@ -328,9 +323,9 @@ iarchive& iarchive::operator&(std::vector<uint8>& buf)
 }
 
 /**
- * Get the size of a list of a particular type.
+ * Get the size of a list of a particular data type.
  *
- * @return The size of a list of a particular type.
+ * @return The size of a list of a particular data type.
  */
 uint iarchive::list_length()
 {
@@ -363,7 +358,7 @@ uint iarchive::list_length()
 /**
  * Inserts a boolean type value from the current position in the output archive.
  *
- * @param Reference where to get the value to insert.
+ * @param val The value to insert.
  * @return Returns the output archive.
  */
 oarchive& oarchive::operator&(bool val)
@@ -378,7 +373,7 @@ oarchive& oarchive::operator&(bool val)
 /**
  * Inserts a odtone::uint8 type value from the current position in the output archive.
  *
- * @param Reference where to get the value to insert.
+ * @param val The value to insert.
  * @return Returns the output archive.
  */
 oarchive& oarchive::operator&(uint8 val)
@@ -393,7 +388,7 @@ oarchive& oarchive::operator&(uint8 val)
 /**
  * Inserts a odtone::uint16 type value from the current position in the output archive.
  *
- * @param Reference where to get the value to insert.
+ * @param val The value to insert.
  * @return Returns the output archive.
  */
 oarchive& oarchive::operator&(uint16 val)
@@ -409,7 +404,7 @@ oarchive& oarchive::operator&(uint16 val)
 /**
  * Inserts a odtone::uint32 type value from the current position in the output archive.
  *
- * @param Reference where to get the value to insert.
+ * @param val The value to insert.
  * @return Returns the output archive.
  */
 oarchive& oarchive::operator&(uint32 val)
@@ -427,7 +422,7 @@ oarchive& oarchive::operator&(uint32 val)
 /**
  * Inserts a odtone::uint64 type value from the current position in the output archive.
  *
- * @param Reference where to get the value to insert.
+ * @param val The value to insert.
  * @return Returns the output archive.
  */
 oarchive& oarchive::operator&(uint64 val)
@@ -454,7 +449,7 @@ oarchive& oarchive::operator&(uint64 val)
 /**
  * Inserts a odtone::sint8 type value from the current position in the output archive.
  *
- * @param Reference where to get the value to insert.
+ * @param val The value to insert.
  * @return Returns the output archive.
  */
 oarchive& oarchive::operator&(sint8 val)
@@ -473,7 +468,7 @@ oarchive& oarchive::operator&(sint8 val)
 /**
  * Inserts a odtone::sint16 type value from the current position in the output archive.
  *
- * @param Reference where to get the value to insert.
+ * @param val The value to insert.
  * @return Returns the output archive.
  */
 oarchive& oarchive::operator&(sint16 val)
@@ -492,7 +487,7 @@ oarchive& oarchive::operator&(sint16 val)
 /**
  * Inserts a odtone::sint32 type value from the current position in the output archive.
  *
- * @param Reference where to get the value to insert.
+ * @param val The value to insert.
  * @return Returns the output archive.
  */
 oarchive& oarchive::operator&(sint32 val)
@@ -511,7 +506,7 @@ oarchive& oarchive::operator&(sint32 val)
 /**
  * Inserts a odtone::sint64 type value from the current position in the output archive.
  *
- * @param Reference where to get the value to insert.
+ * @param val The value to insert.
  * @return Returns the output archive.
  */
 oarchive& oarchive::operator&(sint64 val)
@@ -534,7 +529,7 @@ oarchive& oarchive::operator&(sint64 val)
 /**
  * Inserts a odtone::mih::octet_string type value from the current position in the output archive.
  *
- * @param Reference where to get the value to insert.
+ * @param val The value to insert.
  * @return Returns the output archive.
  */
 oarchive& oarchive::operator&(octet_string& val)
@@ -557,9 +552,10 @@ oarchive& oarchive::operator&(octet_string& val)
 }
 
 /**
- * Inserts a list of a particular type value from the current position in the output archive.
+ * Inserts a list of a particular data type value from the current position
+ * in the output archive.
  *
- * @param Reference where to get the value to insert.
+ * @param buf The value to insert.
  * @return Returns the output archive.
  */
 oarchive& oarchive::operator&(std::vector<uint8>& buf)
@@ -582,9 +578,9 @@ oarchive& oarchive::operator&(std::vector<uint8>& buf)
 }
 
 /**
- * Inserts the size of a list of a particular type.
+ * Inserts the size of a list of a particular data type.
  *
- * @param len the size of a list of a particular type.
+ * @param len the size of a list of a particular data type.
  */
 void oarchive::list_length(uint len)
 {
