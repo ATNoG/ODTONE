@@ -34,8 +34,8 @@
         </li>
 <li class="listitem">
           Redefinition of the interface used by MIH-Users to register themselves
-          with the local MIHF (<a class="link" href="extensions/local_discovery.html" title="Local discovery">see
-          local discovery</a>).
+          with the local MIHF (<a class="link" href="changelog.html#odtone.changelog.mih_users_registration_changes">see
+          more info below</a>).
         </li>
 <li class="listitem">
           Implementation of mechanisms for discovering remote peer MIHFs:
@@ -307,7 +307,97 @@ typedef bitmap&lt;32, link_evt_list_enum&gt; link_evt_list;
 </tbody>
 </table></div>
 </div>
-<br class="table-break">
+<br class="table-break"><h5>
+<a name="odtone.changelog.h1"></a>
+      <span><a name="odtone.changelog.mih_users_registration_changes"></a></span><a class="link" href="changelog.html#odtone.changelog.mih_users_registration_changes">MIH-Users
+      registration changes</a>
+    </h5>
+<p>
+      The message used by the MIH-Users to register with the MIHF has been modified
+      in order to specifically define which commands and queries it supports. In
+      this way, the MIHF can properly forward the messages to the MIH-Users. Check
+      <a class="link" href="extensions/local_discovery.html" title="Local discovery">this</a> for more info
+      about the local discovery.
+    </p>
+<p>
+      <span class="bold"><strong>MIH_User_Register.indication definition on ODTONE 0.3</strong></span>
+    </p>
+<p>
+      <span class="inlinemediaobject"><img src=".././images/user_register_indication_message_old.png" alt="user_register_indication_message_old"></span>
+    </p>
+<p>
+      <span class="bold"><strong>MIH_User_Register.indication definition on ODTONE 0.4</strong></span>
+    </p>
+<p>
+      <span class="inlinemediaobject"><img src=".././images/user_register_indication_message.png" alt="user_register_indication_message"></span>
+    </p>
+<p>
+      <span class="bold"><strong>Changes in the code</strong></span>
+    </p>
+<p>
+      ODTONE 0.3:
+    </p>
+<p>
+</p>
+<pre class="programlisting">// For the MIH-User
+odtone::mih::message m;
+
+m &lt;&lt; odtone::mih::indication(odtone::mih::indication::user_register)
+    &amp; odtone::mih::tlv_mbb_handover_support(true);
+
+// ----- || -------
+// For the MIIS
+odtone::mih::message m;
+
+m &lt;&lt; odtone::mih::indication(odtone::mih::indication::user_register)
+    &amp; odtone::mih::tlv_mbb_handover_support(false);
+</pre>
+<p>
+    </p>
+<p>
+      ODTONE 0.4:
+    </p>
+<p>
+</p>
+<pre class="programlisting">// For the MIH-User
+odtone::mih::message m;
+boost::optional&lt;odtone::mih::mih_cmd_list&gt; supp_cmd = parse_supported_commands(cfg);
+
+m &lt;&lt; odtone::mih::indication(odtone::mih::indication::user_register)
+    &amp; odtone::mih::tlv_command_list(supp_cmd);
+
+// ----- || -------
+// For the MIIS
+odtone::mih::message m;
+boost::optional&lt;odtone::mih::iq_type_list&gt; supp_iq = parse_supported_queries(cfg);
+
+m &lt;&lt; odtone::mih::indication(odtone::mih::indication::user_register)
+    &amp; odtone::mih::tlv_query_type_list(supp_iq);
+</pre>
+<p>
+    </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        The MIH-User provided by ODTONE was modified in order to parse the supported
+        commands from the configuration file. The MIIS provided by ODTONE was modified
+        in order to parse the supported queries from the configuration file.
+      </p></td></tr>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        In the MIHF configuration file you can configure which commands and queries
+        a given MIH-User supports. If nothing is specified it assume that the MIH-User
+        supports all commands but it does not support any query.
+      </p></td></tr>
+</table></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
