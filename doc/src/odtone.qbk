@@ -279,7 +279,7 @@ Usage: mihf.peers = <mihf id> <ip> <port> <list of supported transport protocols
 
 [*List of local MIH-Users:] Comma separated list of local MIH-User SAP.
 
-Usage: mihf.users = <user sap id> <port> <supported commands> <supported queries>, ...
+Usage: mihf.users = <user sap id> <port> [<supported commands> <supported queries>], ...
 
 [*List of local Link SAPs:] Comma separated list of local MIH Link SAPs.
 
@@ -1100,7 +1100,7 @@ data type definition.
 	* If your SAPs make use of any of these data types you should have to update
 them ([link odtone.changelog.data_types_changes see more info below]).
 * Redefinition of the interface used by MIH-Users to register themselves with
-the local MIHF ([link odtone.extensions.local_discovery see local discovery]).
+the local MIHF ([link odtone.changelog.mih_users_registration_changes see more info below]).
 * Implementation of mechanisms for discovering remote peer MIHFs:
 	* DNS-User: discovery mechanim which uses DNS services;
 	* DHCP-User: discovery mechanim which uses DHCP services.
@@ -1277,9 +1277,69 @@ the Link SAPs.
     ]
 ]
 
+[h4 MIH-Users registration changes]
+The message used by the MIH-Users to register with the MIHF has been modified in
+order to specifically define which commands and queries it supports. In this way,
+the MIHF can properly forward the messages to the MIH-Users. Check
+[link odtone.extensions.local_discovery this] for more info about the local
+discovery.
+
+[*MIH_User_Register.indication definition on ODTONE 0.3]
+
+[$./images/user_register_indication_message_old.png]
+
+[*MIH_User_Register.indication definition on ODTONE 0.4]
+
+[$./images/user_register_indication_message.png]
+
+
+[*Changes in the code]
+
+ODTONE 0.3:
+
+``
+	// For the MIH-User
+	odtone::mih::message m;
+
+	m << odtone::mih::indication(odtone::mih::indication::user_register)
+	    & odtone::mih::tlv_mbb_handover_support(true);
+
+	// ----- || -------
+	// For the MIIS
+	odtone::mih::message m;
+
+	m << odtone::mih::indication(odtone::mih::indication::user_register)
+	    & odtone::mih::tlv_mbb_handover_support(false);
+``
+
+ODTONE 0.4:
+
+``
+	// For the MIH-User
+	odtone::mih::message m;
+	boost::optional<odtone::mih::mih_cmd_list> supp_cmd = parse_supported_commands(cfg);
+
+	m << odtone::mih::indication(odtone::mih::indication::user_register)
+	    & odtone::mih::tlv_command_list(supp_cmd);
+
+	// ----- || -------
+	// For the MIIS
+	odtone::mih::message m;
+	boost::optional<odtone::mih::iq_type_list> supp_iq = parse_supported_queries(cfg);
+
+	m << odtone::mih::indication(odtone::mih::indication::user_register)
+	    & odtone::mih::tlv_query_type_list(supp_iq);
+``
+
+[note The MIH-User provided by ODTONE was modified in order to parse the supported
+commands from the configuration file. The MIIS provided by ODTONE was modified in
+order to parse the supported queries from the configuration file.]
+
+[note In the MIHF configuration file you can configure which commands and queries
+a given MIH-User supports. If nothing is specified it assume that the MIH-User
+supports all commands but it does not support any query.]
 
 [endsect]
-
 
 [section:license License]
 [h4 GNU LESSER GENERAL PUBLIC LICENSE]
