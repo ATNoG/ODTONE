@@ -896,6 +896,136 @@ provided by ODTONE.
 [endsect]
 
 
+[section MIH-Users and Link SAPs configuration]
+
+One of the extensions provided by the ODTONE is a mechanism which allows the MIH-Users
+or the Link SAPs to dynamically register with the MIHF, named
+[link odtone.extensions.local_discovery local discovery].
+
+However this mechanism is optional and, therefore, the statically configuration of the
+MIH-Users and Link SAPs is still possible. In this section we will depict the many
+ways to configure the MIH-Users and Link SAPs.
+
+[h4 MIH-Users configuration]
+
+[*Using the local discovery mechanism]
+
+You just need to configure in the MIH-User configuration file the following options:
+``
+	##
+	## Commands supported by the MIH-User
+	## e.g.: commands = mih_link_get_parameters, mih_link_configure_thresholds
+	##
+	commands = <comma separated list of supported commands>
+
+	##
+	## Queries supported by the MIH-User
+	## e.g: queries = iq_type_binary_data, iq_type_rdf_data
+	##
+	queries = <comma separated list of supported queries>
+``
+
+[*Statically configuration on the MIHF]
+
+You need to configure in the ODTONE-MIHF configuration file the following options:
+``
+	##
+	## Comma separated list of local MIH User SAPs id's and ports
+	## e.g.1: users = user 1234
+	## e.g.2: users = user 1234 mih_net_ho_candidate_query iq_type_binary_data
+	## e.g.3: users = user 1234 iq_type_binary_data
+	##
+	users = <user sap id> <port> [<supported commands> <supported queries>], ...
+``
+
+[note As presented on the previous example, the MIH-User can be configured in many
+ways. If the supported commands are not configured (e.g.1 and e.g.3) the MIHF will assume
+that the MIH-User supports all commands. However, this behaviour does not work
+for the supported queries, since its MIIS specific. In this way, if the supported
+queries are not configured (e.g.1) the MIHF will assume that the MIH-User does not
+support any query.
+
+Also, the configuration of the supported commands and supported queries can be
+specified (e.g.2) and, therefore, the MIHF will assume that the MIH-User only
+supports the configured commands and queries.]
+
+[h4 Link SAPs configuration]
+
+[*Using the local discovery mechanism]
+
+You just need to configure in the Link SAP configuration file the following options:
+``
+	##
+	## Link SAP interface technology
+	## e.g.: tec = 802_11
+	##
+	tec = <interface>
+
+	##
+	## Link SAP interface address
+	## e.g.: link_addr = 00:11:22:33:44:55
+	##
+	link_addr = <interface address>
+``
+
+[*Statically configuration on the MIHF]
+
+You need to configure in the ODTONE-MIHF configuration file the following options:
+``
+	##
+	## Comma separated list of local MIH Link SAPs id's and ports.
+	## e.g.: links = link 1235 802_11 00:11:22:33:44:55
+	##
+	links = <link sap id> <port> <technology type> <interface>, ...
+``
+
+[note In what concerns technology type, the MIHF only supports Ethernet, IEEE 802.11,
+IEEE 802.16, IEEE 802.20, IEEE 802.22 configuration.]
+
+[h4 Deactivate local discovery]
+
+By default the MIH-Users and Link SAPs provided by ODTONE have the local
+discovery enabled, i.e., at the bootstrap they send a registration message to their
+local MIHF. If you want to deactivate this behaviour you need to comment the following
+lines in the correspondent constructor:
+
+[*MIH-User]
+``
+	odtone::mih::message m;
+	boost::optional<odtone::mih::mih_cmd_list> supp_cmd = parse_supported_commands(cfg);
+
+	m << odtone::mih::indication(odtone::mih::indication::user_register)
+		& odtone::mih::tlv_command_list(supp_cmd);
+	m.destination(odtone::mih::id("local-mihf"));
+
+	_mihf.async_send(m, boost::bind(&mih_user::user_reg_handler, this, boost::cref(cfg), _2));
+``
+
+[*MIIS RDF Server]
+``
+	odtone::mih::message m;
+	boost::optional<odtone::mih::iq_type_list> supp_iq = parse_supported_queries(cfg);
+
+	m << odtone::mih::indication(odtone::mih::indication::user_register)
+	    & odtone::mih::tlv_query_type_list(supp_iq);
+	m.destination(odtone::mih::id("local-mihf"));
+
+	_mihf.async_send(m, boost::bind(&miis_rdf_server::user_reg_handler, this, boost::cref(cfg), _2));
+``
+
+[*Link SAP]
+``
+	init();
+``
+
+[*Link SAP ICMP]
+``
+	register_local_mihf();
+``
+
+[endsect]
+
+
 [section MIH Protocol C interface]
 The MIH Protocol C interface was developed and provided to us by [@http://www.eurecom.fr/en Eurecom],
 in Sophia-Antipolis, France. These libraries
