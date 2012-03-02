@@ -1039,6 +1039,64 @@ You can find it on "extensions/MIH_C_Protocol/" folder.
 For more information please contact: davide.brizzolara@eurecom.fr or
 michelle.wetterwald@eurecom.fr
 
+Together with the MIH Protocol C interface, some software that can be used to test
+the MIH Protocol C interface was provided. It consists in two entities:
+
+* a MIH-User Test (you can find it on "extensions/MIH_C_Protocol/mih_usr" folder);
+* a LTE Link SAP Test, named mRALlteInt (you can find it on
+"extensions/MIH_C_Protocol/LTE_link_Test" folder).
+
+[h4 Installation]
+
+The mRALlteInt is compiled and installed in the mRALlteInt folder
+("extensions/MIH_C_Protocol/LTE_link_Test/mRALlteInt"). To compile it you just
+need to run the following command:
+``
+make
+``
+
+The mih_usr and odtone-mihf executables will be available by compiling ODTONE.
+
+[note The mih-usr.cpp file provided must replace the default mih-usr.cpp provided
+by ODTONE in order to run the LTE Link SAP test Interface Scenario
+([link odtone.extensions.mih_protocol_c_interface.test_scenario depicted here]).]
+
+[h4 Test scenario]
+
+Messages are exchanged between the following entities:
+``
+ mih_usr <-> ODTONE <-> mRALlteInt
+``
+
+The test scenario is depicted in the following figure:
+
+[$./images/MIH_C_test_scenario.jpg]
+
+To test the validation scenario, execute the following programs, each in its own
+terminal, and in the following order:
+``
+   ./odtone-mihf
+   ./mRALlteInt <LOG_location> <LOG_level>
+   ./mih_usr --dest=mihf1
+``
+
+[note
+ mRALlteInt usage :
+
+ ./mRALlteInt <LOG_location> <LOG_level>
+
+ LOG_location can take the following values
+ 0 : Log to screen
+ 1 : Log to file (default is /tmp/log_MT_LTE.txt)
+ 2 : Log to system (syslog) -- FFS
+
+ If no value is entered, default value as log to file is assumed.
+
+ LOG_level can take the following values
+ 0 : DEBUG + ERROR
+ 1 : ERROR only
+]
+
 [endsect]
 
 
@@ -1214,10 +1272,7 @@ Ireland, Oct 2011
 	protocols and terminology support.]]
 ]
 
-[xinclude ../odtone_base_lib.xml]
-[xinclude ../odtone_mih_lib.xml]
-[xinclude ../odtone_sap_lib.xml]
-[xinclude ../odtone_net_lib.xml]
+
 
 [endsect]
 
