@@ -268,6 +268,14 @@ boost-build path-to-boost/tools/build/v2 ;
         We recommend GCC. Most distributions already come with the necessary pre-requisites,
         you may additionally need to install g++.
       </p>
+<p>
+        If you get link errors relative to undefined pthread symbols, this means
+        that your compiler does not link to pthreads by default. You can either pass
+        the "<em class="replaceable"><code>linkflags=-lpthread</code></em>" option to
+        bjam. Or, you can also configure the toolset to link to this library, set
+        "<em class="replaceable"><code>using gcc : : : &lt;linkflags&gt;-lpthread ;</code></em>"
+        without quotes at your user-config.jam.
+      </p>
 </td></tr>
 </table></div>
 <div class="note"><table border="0" summary="Note">
@@ -310,7 +318,8 @@ boost-build path-to-boost/tools/build/v2 ;
       </p>
 <p>
         "<em class="replaceable"><code>using gcc : android : path-to-toolset/arm-none-linux-gnueabi-g++
-        : &lt;linkflags&gt;"-Wl,--no-whole-archive -lc" ;</code></em>"
+        : &lt;linkflags&gt;"-Wl,--whole-archive -lpthread -Wl,--no-whole-archive
+        -lc" ;</code></em>"
       </p>
 <p>
         To use the Android toolset, pass the command line option "<em class="replaceable"><code>toolset=gcc-android</code></em>"

@@ -190,6 +190,12 @@ procedures or layout for installation.
 
 We recommend GCC. Most distributions already come with the necessary
 pre-requisites, you may additionally need to install g++.
+
+If you get link errors relative to undefined pthread symbols, this means
+that your compiler does not link to pthreads by default. You can either pass
+the "[~linkflags=-lpthread]" option to bjam. Or, you can also configure the
+toolset to link to this library, set "[~using gcc : : : <linkflags>-lpthread ;]"
+without quotes at your user-config.jam.
 ]
 
 [note *For Windows*
@@ -212,7 +218,7 @@ Prebuild binaries are available at
 In order to setup user-config.jam for Android, you must add the following line
 (without quotes):
 
-"[~using gcc : android	: path-to-toolset/arm-none-linux-gnueabi-g++ : <linkflags>"-Wl,--no-whole-archive -lc" ;]"
+"[~using gcc : android	: path-to-toolset/arm-none-linux-gnueabi-g++ : <linkflags>"-Wl,--whole-archive -lpthread -Wl,--no-whole-archive -lc" ;]"
 
 To use the Android toolset, pass the command line option "[~toolset=gcc-android]"
 while compiling.
