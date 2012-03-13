@@ -59,6 +59,14 @@ public:
 	~dns_user();
 
 protected:
+
+	/**
+	 * Handle completion of a send operation.
+	 *
+	 * @param ec The error code.
+	 */
+	void send_handler(odtone::mih::message& msg, const boost::system::error_code& ec);
+
 	/**
 	 * Default MIH event handler.
 	 *

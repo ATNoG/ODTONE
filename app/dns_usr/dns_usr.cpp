@@ -71,6 +71,25 @@ dns_user::~dns_user()
 {
 }
 
+/**
+ * Handle completion of a send operation.
+ *
+ * @param ec The error code.
+ */
+void dns_user::send_handler(odtone::mih::message& msg, const boost::system::error_code& ec)
+{
+	if (ec) {
+		ODTONE_LOG(1, __FUNCTION__, " error: ", ec.message());
+		return;
+	}
+}
+
+/**
+ * User registration handler.
+ *
+ * @param cfg Configuration options.
+ * @param ec Error Code.
+ */
 void dns_user::user_reg_handler(const mih::config& cfg,
                                  const boost::system::error_code& ec)
 {
@@ -424,12 +443,7 @@ void dns_user::forward_results(std::map<std::string, std::vector<query_entry> > 
 			rsp.tid(it_req->first);
 			rsp.destination(mih::id(""));
 
-			_mihf.async_send(rsp, [this](odtone::mih::message& msg, const boost::system::error_code& ec) {
-		            if (ec) {
-		                    ODTONE_LOG(0, __FUNCTION__, " error: ", ec.message());
-		                    return;
-		            }
-			});
+			_mihf.async_send(rsp, boost::bind(&dns_user::send_handler, this, _1, _2));
 
 			// Delete the complete request
 			std::vector<std::string> tmp = it_req->second;
