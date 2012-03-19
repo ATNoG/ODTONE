@@ -173,7 +173,7 @@ int handle_scan_results(::nl_msg *msg, void *arg)
 		i.channel_id = frequency_to_channel_id(m.bss_frequency.get());
 		i.id.type = mih::link_type_802_11;
 		i.id.addr = d->_ctx._mac;
-		i.id.poa_addr = mih::mac_addr(m.bss_bssid.get());
+		i.id.poa_addr = mih::mac_addr(m.bss_bssid.get().c_str());
 		i.signal = m.bss_signal_mbm.get();
 		i.data_rate = m.ie_max_data_rate.get();
 		i.mih_capabilities = mih::link_mihcap_flag();
@@ -282,7 +282,7 @@ int handle_nl_event(nl_msg *msg, void *arg)
 				lid.addr = ctx->_mac;
 
 				if (m.attr_mac) {
-					lid.poa_addr = mih::mac_addr(m.attr_mac.get());
+					lid.poa_addr = mih::mac_addr(m.attr_mac.get().c_str());
 				}
 
 				boost::optional<mih::link_addr> old_router;
