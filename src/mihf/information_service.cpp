@@ -60,9 +60,6 @@ bool information_service::get_information_request(meta_message_ptr &in,
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
-		if(in->is_local())
-			in->source(mihfid);
-
 		// Forward this message to MIH-User for handover as an indication
 		in->opcode(mih::operation::indication);
 		std::vector<mih::octet_string> user_list = _user_abook.get_ids();
@@ -71,6 +68,10 @@ bool information_service::get_information_request(meta_message_ptr &in,
 			if(user.supp_iq.is_initialized()) {
 				in->destination(mih::id(id));
 				_lpool.add(in);
+
+				if(in->is_local())
+					in->source(mihfid);
+
 				_transmit(in);
 			}
 		}

@@ -757,9 +757,6 @@ bool command_service::generic_command_request(const char *recv_msg,
 	ODTONE_LOG(1, recv_msg, in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
-		if(in->is_local())
-			in->source(mihfid);
-
 		// Forward this message to MIH-User for handover as an indication
 		in->opcode(mih::operation::indication);
 		std::vector<mih::octet_string> user_list = _user_abook.get_ids();
@@ -769,9 +766,12 @@ bool command_service::generic_command_request(const char *recv_msg,
 				if(user.supp_cmd->get(cmd)) {
 					in->destination(mih::id(id));
 					_lpool.add(in);
-					_transmit(in);
+
+					if(in->is_local())
+						in->source(mihfid);
 
 					ODTONE_LOG(1, send_msg , in->destination().to_string());
+					_transmit(in);
 				}
 			}
 		}
