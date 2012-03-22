@@ -1,6 +1,7 @@
 //==============================================================================
 // Brief   : Information Service
 // Authors : Simao Reis <sreis@av.it.pt>
+//           Carlos Guimarães <cguimaraes@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
@@ -141,9 +142,6 @@ bool information_service::push_information_request(meta_message_ptr &in,
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
-		if(in->is_local())
-			in->source(mihfid);
-
 		// Forward this message to MIH-User for handover as an indication
 		in->opcode(mih::operation::indication);
 		std::vector<mih::octet_string> user_list = _user_abook.get_ids();
@@ -151,6 +149,10 @@ bool information_service::push_information_request(meta_message_ptr &in,
 			user_entry user = _user_abook.get(id);
 			if(user.supp_iq.is_initialized()) {
 				in->destination(mih::id(id));
+
+				if(in->is_local())
+					in->source(mihfid);
+
 				_transmit(in);
 			}
 		}
@@ -161,7 +163,37 @@ bool information_service::push_information_request(meta_message_ptr &in,
 
 		return false;
 	} else {
+		in->opcode(mih::operation::indication);
 		utils::forward_request(in, _lpool, _transmit);
+		return false;
+	}
+
+	return false;
+}
+
+/**
+ * MIH Push Information Request message handler.
+ *
+ * @param in The input message.
+ * @param out The output message.
+ * @return True if the response is sent immediately or false otherwise.
+ */
+bool information_service::push_information_indication(meta_message_ptr &in,
+						   meta_message_ptr &out)
+{
+	ODTONE_LOG(1, "(miis) received a MIH_Push_information.indication from ",
+	    in->source().to_string());
+
+	if(utils::this_mihf_is_destination(in)) {
+		// Forward this message to MIH-User for handover as an indication
+		in->opcode(mih::operation::indication);
+		std::vector<mih::octet_string> user_list = _user_abook.get_ids();
+		BOOST_FOREACH(mih::octet_string id, user_list) {
+			user_entry user = _user_abook.get(id);
+			in->destination(mih::id(id));
+			_transmit(in);
+		}
+
 		return false;
 	}
 
