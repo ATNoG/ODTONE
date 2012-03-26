@@ -28,23 +28,23 @@
 <span class="keyword">class</span> <a class="link" href="ir_bin_iarchive.html" title="Class ir_bin_iarchive">ir_bin_iarchive</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="ir_bin_iarchive.html#odtone.mih.ir_bin_iarchiveconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="ir_bin_iarchive.html#idp5978048-bb"><span class="identifier">ir_bin_iarchive</span></a><span class="special">(</span><a class="link" href="ir_bin_data.html" title="Class ir_bin_data">ir_bin_data</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="ir_bin_iarchive.html#idp6022728-bb"><span class="identifier">ir_bin_iarchive</span></a><span class="special">(</span><a class="link" href="ir_bin_data.html" title="Class ir_bin_data">ir_bin_data</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="ir_bin_iarchive.html#idp5975504-bb">public member functions</a></span>
+  <span class="comment">// <a class="link" href="ir_bin_iarchive.html#idp6020184-bb">public member functions</a></span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">enable_if</span><span class="special">&lt;</span> <a class="link" href="is_tlv_type.html" title="Class template is_tlv_type">is_tlv_type</a><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">,</span> <a class="link" href="ir_bin_iarchive.html" title="Class ir_bin_iarchive">ir_bin_iarchive</a> <span class="special">&amp;</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> 
-    <a class="link" href="ir_bin_iarchive.html#idp5975720-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="ir_bin_iarchive.html#idp6020400-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp14638384"></a><h2>Description</h2>
+<a name="idp14504160"></a><h2>Description</h2>
 <p>IR_BIN_DATA input archive. </p>
 <div class="refsect2">
-<a name="idp14638704"></a><h3>
+<a name="idp14504528"></a><h3>
 <a name="odtone.mih.ir_bin_iarchiveconstruct-copy-destruct"></a><code class="computeroutput">ir_bin_iarchive</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp5978048-bb"></a><span class="identifier">ir_bin_iarchive</span><span class="special">(</span><a class="link" href="ir_bin_data.html" title="Class ir_bin_data">ir_bin_data</a> <span class="special">&amp;</span> data<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp6022728-bb"></a><span class="identifier">ir_bin_iarchive</span><span class="special">(</span><a class="link" href="ir_bin_data.html" title="Class ir_bin_data">ir_bin_data</a> <span class="special">&amp;</span> data<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a <code class="computeroutput"><a class="link" href="ir_bin_iarchive.html" title="Class ir_bin_iarchive">ir_bin_iarchive</a></code> from a <code class="computeroutput"><a class="link" href="ir_bin_data.html" title="Class ir_bin_data">ir_bin_data</a></code> data type.</p>
 <p>
 </p>
@@ -64,12 +64,12 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp14645264"></a><h3>
-<a name="idp5975504-bb"></a><code class="computeroutput">ir_bin_iarchive</code> public member functions</h3>
+<a name="idp14512112"></a><h3>
+<a name="idp6020184-bb"></a><code class="computeroutput">ir_bin_iarchive</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
 <pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">enable_if</span><span class="special">&lt;</span> <a class="link" href="is_tlv_type.html" title="Class template is_tlv_type">is_tlv_type</a><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">,</span> <a class="link" href="ir_bin_iarchive.html" title="Class ir_bin_iarchive">ir_bin_iarchive</a> <span class="special">&amp;</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> 
-  <a name="idp5975720-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+  <a name="idp6020400-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize an IE to the IR_BIN_DATA data type.</p>
 <p>
 </p>

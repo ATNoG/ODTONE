@@ -1278,7 +1278,10 @@ Ireland, Oct 2011
 	protocols and terminology support.]]
 ]
 
-
+[xinclude ../odtone_base_lib.xml]
+[xinclude ../odtone_mih_lib.xml]
+[xinclude ../odtone_sap_lib.xml]
+[xinclude ../odtone_net_lib.xml]
 
 [endsect]
 

@@ -27,19 +27,19 @@
 </span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ValueT<span class="special">,</span> <span class="identifier">ValueT</span> Value<span class="special">&gt;</span> 
 <span class="keyword">struct</span> <a class="link" href="base_tlv_.html" title="Struct template base_tlv_">base_tlv_</a> <span class="special">{</span>
 
-  <span class="comment">// <a class="link" href="base_tlv_.html#idp5665816-bb">public static functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">bool</span> <a class="link" href="base_tlv_.html#idp5666032-bb"><span class="identifier">serialize</span></a><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">void</span> <a class="link" href="base_tlv_.html#idp5668880-bb"><span class="identifier">serialize</span></a><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="base_tlv_.html#idp5710496-bb">public static functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">bool</span> <a class="link" href="base_tlv_.html#idp5710712-bb"><span class="identifier">serialize</span></a><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">void</span> <a class="link" href="base_tlv_.html#idp5713560-bb"><span class="identifier">serialize</span></a><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp12658792"></a><h2>Description</h2>
+<a name="idp12534504"></a><h2>Description</h2>
 <p>Base TLV. </p>
 <div class="refsect2">
-<a name="idp12659144"></a><h3>
-<a name="idp5665816-bb"></a><code class="computeroutput">base_tlv_</code> public static functions</h3>
+<a name="idp12534856"></a><h3>
+<a name="idp5710496-bb"></a><code class="computeroutput">base_tlv_</code> public static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">bool</span> <a name="idp5666032-bb"></a><span class="identifier">serialize</span><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">bool</span> <a name="idp5710712-bb"></a><span class="identifier">serialize</span><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Deserialize the TLV type value.</p>
 <p>
 
@@ -71,7 +71,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">void</span> <a name="idp5668880-bb"></a><span class="identifier">serialize</span><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">void</span> <a name="idp5713560-bb"></a><span class="identifier">serialize</span><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize the TLV type value.</p>
 <p>
 </p>

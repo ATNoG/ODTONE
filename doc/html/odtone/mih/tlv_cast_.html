@@ -6,14 +6,14 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.tlv_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/tlv.hpp&gt;">
-<link rel="prev" href="tlv_type_boost_optional_idp5689360.html" title="Class template tlv_type_&lt;boost::optional&lt; T &gt;, TLV&gt;">
+<link rel="prev" href="tlv_type_boost_optional_idp5734040.html" title="Class template tlv_type_&lt;boost::optional&lt; T &gt;, TLV&gt;">
 <link rel="next" href="is_tlv_type.html" title="Class template is_tlv_type">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="tlv_type_boost_optional_idp5689360.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.tlv_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="is_tlv_type.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="tlv_type_boost_optional_idp5734040.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.tlv_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="is_tlv_type.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.mih.tlv_cast_"></a><div class="titlepage"></div>
@@ -28,19 +28,19 @@
 <span class="keyword">class</span> <a class="link" href="tlv_cast_.html" title="Class template tlv_cast_">tlv_cast_</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
 
-  <span class="comment">// <a class="link" href="tlv_cast_.html#idp5697600-bb">public member functions</a></span>
-  tlv_type <a class="link" href="tlv_cast_.html#idp5697816-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  tlv_optional_type <a class="link" href="tlv_cast_.html#idp5699600-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="tlv_cast_.html#idp5742280-bb">public member functions</a></span>
+  tlv_type <a class="link" href="tlv_cast_.html#idp5742496-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  tlv_optional_type <a class="link" href="tlv_cast_.html#idp5744280-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp12836040"></a><h2>Description</h2>
+<a name="idp12712024"></a><h2>Description</h2>
 <p>Cast between the number of TLV and the data type presented in it, and the correspondent TLV type. </p>
 <div class="refsect2">
-<a name="idp12836480"></a><h3>
-<a name="idp5697600-bb"></a><code class="computeroutput">tlv_cast_</code> public member functions</h3>
+<a name="idp12712464"></a><h3>
+<a name="idp5742280-bb"></a><code class="computeroutput">tlv_cast_</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout">tlv_type <a name="idp5697816-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> val<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout">tlv_type <a name="idp5742496-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> val<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Cast between the number of TLV and the data type presented in it, and the correspondent TLV type.</p>
 <p>
 
@@ -66,7 +66,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout">tlv_optional_type <a name="idp5699600-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span> <span class="special">&amp;</span> val<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout">tlv_optional_type <a name="idp5744280-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span> <span class="special">&amp;</span> val<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Cast between the number of TLV and the data type presented in it, and the correspondent TLV type. However it supports optional value.</p>
 <p>
 
@@ -109,7 +109,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="tlv_type_boost_optional_idp5689360.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.tlv_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="is_tlv_type.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="tlv_type_boost_optional_idp5734040.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.tlv_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="is_tlv_type.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>
