@@ -175,7 +175,7 @@ int handle_scan_results(::nl_msg *msg, void *arg)
 		i.id.addr = d->_ctx._mac;
 		i.id.poa_addr = mih::mac_addr(m.bss_bssid.get().c_str());
 		i.signal = m.bss_signal_mbm.get();
-		i.data_rate = m.ie_max_data_rate.get();
+		i.data_rate = m.ie_max_data_rate.get() * 1000;
 		i.mih_capabilities = mih::link_mihcap_flag();
 		i.net_capabilities = caps;
 		//i.sinr = 0;
