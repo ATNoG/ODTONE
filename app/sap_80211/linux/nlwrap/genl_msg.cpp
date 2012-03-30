@@ -39,6 +39,7 @@ namespace nlwrap {
 // for security features
 #define IE_RNS_INDEX 48
 #define IE_VENDOR 221 // doesn't count for ARRAY_SIZE
+#define IE_WPA_INDEX 1
 
 #define WLAN_CAPABILITY_QOS (1<<9)
 
@@ -210,9 +211,6 @@ void genl_msg::parse_information_elements(unsigned char *ie, int ielen)
 	unsigned char* data;
 
 	while (ielen >= 2 && ielen >= ie[1]) {
-		if (ie[0] >= IE_ARRAY_SIZE) {
-			break;
-		}
 		data = ie + 2;
 
 		switch (ie[0]) {
@@ -237,7 +235,9 @@ void genl_msg::parse_information_elements(unsigned char *ie, int ielen)
 
 		case IE_VENDOR:
 			if (ie[1] >= 4 && ::memcmp(data, ms_oui, 3) == 0) {
-				ie_has_security_features = true;
+				if (data[3] == IE_WPA_INDEX) {
+					ie_has_security_features = true;
+				}
 			}
 			break;
 
