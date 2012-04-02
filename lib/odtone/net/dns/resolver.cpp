@@ -173,6 +173,18 @@ void resolver::receive_handler(buffer<uint8>& buff, size_t rbytes, const boost::
 }
 
 /**
+ * Handle of sending procedure.
+ *
+ * @param ec The error code.
+ * @param bytes_transferred Bytes transferred.
+ */
+void resolver::send_handler(const boost::system::error_code& ec,
+							std::size_t bytes_transferred) {
+	if (ec)
+		return;
+}
+
+/**
  * Find out if a given query is active.
  *
  * @param query The query information.
@@ -269,13 +281,8 @@ void resolver::dns_queue(void *ctx, std::string name,
 	slen = fm.size();
 
 	_sock.async_send_to(boost::asio::buffer(sbuff, slen),
-			   server,
-				[this](const boost::system::error_code& ec,
-					   std::size_t bytes_transferred) {
-							if (ec)
-								return;
-					   }
-	);
+						server,
+						boost::bind(&resolver::send_handler, this, _1, _2));
 
 	// Store query as active
 	struct query query_info;
@@ -377,7 +384,6 @@ void resolver::cleanup()
 		}
 	}
 }
-
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace dns */ } /* namespace odtone */
 

@@ -135,6 +135,15 @@ private:
 						 const boost::system::error_code& error);
 
 	/**
+	 * Handle of sending procedure.
+	 *
+	 * @param ec The error code.
+	 * @param bytes_transferred Bytes transferred.
+	 */
+	void send_handler(const boost::system::error_code& ec,
+					  std::size_t bytes_transferred);
+
+	/**
 	 * Find out if a given query is active.
 	 *
 	 * @param query The query information.
