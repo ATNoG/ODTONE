@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>ODTONE-MIHF</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../app.html" title="Applications">
 <link rel="prev" href="../app.html" title="Applications">
@@ -107,32 +107,26 @@
             </p>
 <p>
               Usage: mihf.users = &lt;user sap id&gt; &lt;port&gt; [&lt;supported
-              commands&gt; &lt;supported queries&gt;
+              commands&gt; &lt;supported queries&gt;], ...
+            </p>
+<p>
+              <span class="bold"><strong>List of local Link SAPs:</strong></span> Comma separated
+              list of local MIH Link SAPs.
+            </p>
+<p>
+              Usage: mihf.links = &lt;link sap id&gt; &lt;port&gt; &lt;techonoly
+              type&gt; &lt;interface&gt;, ...
+            </p>
+<p>
+              <span class="bold"><strong>List of suppoted transport protocols:</strong></span>
+              Comma separed list of the transport protocols available. For now UDP
+              and TCP protocols are supported.
+            </p>
+<p>
+              Usage: mihf.transport = &lt;udp/tcp&gt;, ...
             </p>
 </td></tr>
 </table></div>
-<p>
-            , ...
-          </p>
-<p>
-            <span class="bold"><strong>List of local Link SAPs:</strong></span> Comma separated
-            list of local MIH Link SAPs.
-          </p>
-<p>
-            Usage: mihf.links = &lt;link sap id&gt; &lt;port&gt; &lt;techonoly type&gt;
-            &lt;interface&gt;, ...
-          </p>
-<p>
-            <span class="bold"><strong>List of suppoted transport protocols:</strong></span>
-            Comma separed list of the transport protocols available. For now UDP
-            and TCP protocols are supported.
-          </p>
-<p>
-            Usage: mihf.transport = &lt;udp/tcp&gt;, ...
-          </p>
-<p>
-            ]
-          </p>
 <h6>
 <a name="odtone.app.mihf_index.mihf_getStart.configuration.h0"></a>
             <span><a name="odtone.app.mihf_index.mihf_getStart.configuration.example"></a></span><a class="link" href="mihf_index.html#odtone.app.mihf_index.mihf_getStart.configuration.example">Example</a>

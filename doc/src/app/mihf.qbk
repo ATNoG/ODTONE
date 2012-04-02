@@ -73,7 +73,7 @@ Usage: mihf.peers = <mihf id> <ip> <port> <list of supported transport protocols
 
 [*List of local MIH-Users:] Comma separated list of local MIH User SAP.
 
-Usage: mihf.users = <user sap id> <port> [<supported commands> <supported queries>], ...
+Usage: mihf.users = <user sap id> <port> [<supported commands> <supported queries>\], ...
 
 [*List of local Link SAPs:] Comma separated list of local MIH Link SAPs.
 

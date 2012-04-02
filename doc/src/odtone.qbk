@@ -221,6 +221,12 @@ while compiling.
 The Android SDK has the necessary tools to run, debug and deploy the ODTONE
 binaries.]
 
+[important By default, only the MIHF, the MIH-User and the Link SAP used in the
+demo are compiled. However, you can compile the remaining entities by defining their path
+during the compilation process. Here is an example on how to compile ICMP Link SAP:
+
+"b2 app/link_sap_icmp/"]
+
 [h3 4. Generate Doxygen Documentation]
 As a supplement to this documentation, it is possible to generate incode documentation.
 This can be done using Doxygen, which parses the sources and generates the documentation.
@@ -279,7 +285,7 @@ Usage: mihf.peers = <mihf id> <ip> <port> <list of supported transport protocols
 
 [*List of local MIH-Users:] Comma separated list of local MIH-User SAP.
 
-Usage: mihf.users = <user sap id> <port> [<supported commands> <supported queries>], ...
+Usage: mihf.users = <user sap id> <port> [supported commands> <supported queries>\], ...
 
 [*List of local Link SAPs:] Comma separated list of local MIH Link SAPs.
 

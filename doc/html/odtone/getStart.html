@@ -322,6 +322,23 @@ boost-build path-to-boost/tools/build/v2 ;
       </p>
 </td></tr>
 </table></div>
+<div class="important"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+        By default, only the MIHF, the MIH-User and the Link SAP used in the demo
+        are compiled. However, you can compile the remaining entities by defining
+        their path during the compilation process. Here is an example on how to compile
+        ICMP Link SAP:
+      </p>
+<p>
+        "b2 app/link_sap_icmp/"
+      </p>
+</td></tr>
+</table></div>
 <h4>
 <a name="odtone.getStart.h5"></a>
       <span><a name="odtone.getStart.4__generate_doxygen_documentation"></a></span><a class="link" href="getStart.html#odtone.getStart.4__generate_doxygen_documentation">4.
@@ -407,33 +424,27 @@ boost-build path-to-boost/tools/build/v2 ;
         list of local MIH-User SAP.
       </p>
 <p>
-        Usage: mihf.users = &lt;user sap id&gt; &lt;port&gt; [&lt;supported commands&gt;
-        &lt;supported queries&gt;
+        Usage: mihf.users = &lt;user sap id&gt; &lt;port&gt; [supported commands&gt;
+        &lt;supported queries&gt;], ...
+      </p>
+<p>
+        <span class="bold"><strong>List of local Link SAPs:</strong></span> Comma separated
+        list of local MIH Link SAPs.
+      </p>
+<p>
+        Usage: mihf.links = &lt;link sap id&gt; &lt;port&gt; &lt;techonoly type&gt;
+        &lt;interface&gt;, ...
+      </p>
+<p>
+        <span class="bold"><strong>List of suppoted transport protocols:</strong></span> Comma
+        separed list of the transport protocols available. For now UDP and TCP protocols
+        are supported.
+      </p>
+<p>
+        Usage: mihf.transport = &lt;udp/tcp&gt;, ...
       </p>
 </td></tr>
 </table></div>
-<p>
-      , ...
-    </p>
-<p>
-      <span class="bold"><strong>List of local Link SAPs:</strong></span> Comma separated list
-      of local MIH Link SAPs.
-    </p>
-<p>
-      Usage: mihf.links = &lt;link sap id&gt; &lt;port&gt; &lt;techonoly type&gt;
-      &lt;interface&gt;, ...
-    </p>
-<p>
-      <span class="bold"><strong>List of suppoted transport protocols:</strong></span> Comma
-      separed list of the transport protocols available. For now UDP and TCP protocols
-      are supported.
-    </p>
-<p>
-      Usage: mihf.transport = &lt;udp/tcp&gt;, ...
-    </p>
-<p>
-      ]
-    </p>
 <p>
       <span class="bold"><strong>SAP's</strong></span>
 </p>
