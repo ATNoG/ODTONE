@@ -223,9 +223,31 @@ binaries.]
 
 [important By default, only the MIHF, the MIH-User and the Link SAP used in the
 demo are compiled. However, you can compile the remaining entities by defining their path
-during the compilation process. Here is an example on how to compile ICMP Link SAP:
+during the compilation process.
 
-"b2 app/link_sap_icmp/"]
+Here is an example on how to compile ICMP Link SAP: "b2 app/link_sap_icmp/"
+
+[*Path of each entity provided by ODTONE:]
+
+*[*MIHF:] src/mihf/
+
+*[*Client:] app/client/
+
+*[*MIH-User:] app/mih_usr/
+
+*[*MIIS RDF Server:] app/miis_rdf_server/
+
+*[*DHCP-User:] app/dhcp_usr/
+
+*[*DNS-User:] app/dns_usr/
+
+*[*Link SAP:] app/link_sap/
+
+*[*ICMP LINK SAP:] app/link_sap_icmp/
+
+*[*Dummyserver:] src/dummyserver/
+
+]
 
 [h3 4. Generate Doxygen Documentation]
 As a supplement to this documentation, it is possible to generate incode documentation.
