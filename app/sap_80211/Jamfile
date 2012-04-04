@@ -23,10 +23,20 @@ project sap_80211
 	  <include>/usr/include/libnl3
 	;
 
+odtone.explicit-alias if_80211
+	: linux/if_80211.cpp
+	  linux/nlwrap/genl_msg.cpp
+	  linux/nlwrap/genl_socket.cpp
+	  linux/nlwrap/genl_cb.cpp
+	  linux/nlwrap/rtnl_socket.cpp
+	  linux/nlwrap/rtnl_link.cpp
+	  linux/nlwrap/rtnl_link_cache.cpp
+	;
+
 exe sap_80211
 	: main.cpp
 	  timer_task.cpp
-	  linux//if_80211
+	  if_80211
 	  ../../lib/odtone//odtone_base
 	  ../../lib/odtone/mih//odtone_mih
 	  ../../lib/odtone/sap//odtone_sap
