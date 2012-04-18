@@ -24,6 +24,21 @@
 namespace odtone { namespace mihf {
 
 /**
+ * Construct an address book.
+ *
+ * @param io The io_service object that address book module will
+ * use to dispatch handlers for any asynchronous operations performed on
+ * the socket.
+ */
+address_book::address_book(boost::asio::io_service &io)
+	: _timer(io, boost::posix_time::seconds(1))
+{
+	// start timer
+	_timer.expires_from_now(boost::posix_time::seconds(1));
+	_timer.async_wait(boost::bind(&address_book::tick, this));
+}
+
+/**
  * Add a new MIHF entry in the address book.
  *
  * @param id MIHF MIH Identifier.
@@ -44,6 +59,42 @@ void address_book::add(const mih::octet_string &id,
 
 	_abook[id] = entry_info;
 	ODTONE_LOG(4, "(address_book) added: ", id);
+}
+
+/*
+ * Change the registration status of an existing MIHF entry.
+ *
+ * @param id MIHF MIH Identifier.
+ * @param reg_link_list The list of registered interfaces.
+ */
+void address_book::set_registration(const mih::octet_string &id, boost::optional<mih::link_id_list> reg_link_list)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, address_entry>::iterator it;
+	it = _abook.find(id);
+
+	if (it != _abook.end()) {
+		it->second.reg_link_list = reg_link_list;
+		it->second.reg_interval = 0;
+	}
+}
+
+/*
+ * Change the registration status of an existing MIHF entry.
+ *
+ * @param id MIHF MIH Identifier.
+ * @param reg_interval The registration valid time interval.
+ */
+void address_book::set_registration(const mih::octet_string &id, boost::optional<uint16> reg_interval)
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	std::map<mih::octet_string, address_entry>::iterator it;
+	it = _abook.find(id);
+
+	if (it != _abook.end())
+		it->second.reg_interval = reg_interval;
 }
 
 /**
@@ -217,6 +268,22 @@ const address_entry& address_book::get(const mih::octet_string &id)
 	}
 
 	return it->second;
+}
+
+/**
+ * Decrements each registration timer.
+ */
+void address_book::tick()
+{
+	boost::mutex::scoped_lock lock(_mutex);
+
+	_timer.expires_from_now(boost::posix_time::seconds(1));
+	_timer.async_wait(boost::bind(&address_book::tick, this));
+
+	for(std::map<mih::octet_string, address_entry>::iterator it = _abook.begin(); it != _abook.end(); ++it) {
+		if(it->second.reg_interval.is_initialized())
+			it->second.reg_interval.get()--;
+	}
 }
 
 } /* namespace mihf */ } /* namespace odtone */

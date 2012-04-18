@@ -95,6 +95,46 @@ public:
 	                                 meta_message_ptr &out);
 
 	/**
+	 * Register Request message handler.
+	 *
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
+	 */
+	bool register_request(meta_message_ptr &in,
+	                      meta_message_ptr &out);
+
+	/**
+	 * Register Response message handler.
+	 *
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
+	 */
+	bool register_response(meta_message_ptr&in,
+	                       meta_message_ptr &out);
+
+	/**
+	 * DeRegister Request message handler.
+	 *
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
+	 */
+	bool deregister_request(meta_message_ptr &in,
+	                        meta_message_ptr &out);
+
+	/**
+	 * DeRegister Response message handler.
+	 *
+	 * @param in The input message.
+	 * @param out The output message.
+	 * @return True if the response is sent immediately or false otherwise.
+	 */
+	bool deregister_response(meta_message_ptr&in,
+	                         meta_message_ptr &out);
+
+	/**
 	 * Link Register Indication message handler.
 	 *
 	 * @param in The input message.

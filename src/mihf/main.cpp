@@ -413,6 +413,22 @@ void sm_register_callbacks(service_management &sm)
 			      boost::bind(&service_management::capability_discover_confirm,
 					  boost::ref(sm), _1, _2));
 
+	sac_register_callback(mih::request::mih_register,
+			      boost::bind(&service_management::register_request,
+					  boost::ref(sm), _1, _2));
+
+	sac_register_callback(mih::response::mih_register,
+			      boost::bind(&service_management::register_response,
+					  boost::ref(sm), _1, _2));
+
+	sac_register_callback(mih::request::mih_deregister,
+			      boost::bind(&service_management::deregister_request,
+					  boost::ref(sm), _1, _2));
+
+	sac_register_callback(mih::response::mih_deregister,
+			      boost::bind(&service_management::deregister_response,
+					  boost::ref(sm), _1, _2));
+
 	sac_register_callback(mih::indication::link_register,
 			      boost::bind(&service_management::link_register_indication,
 					  boost::ref(sm), _1, _2));
@@ -629,7 +645,7 @@ int main(int argc, char **argv)
 
 	// create address books that stores info on how to contact mih
 	// saps and peer mihfs
-	address_book mihf_abook;
+	address_book mihf_abook(io);
 	user_book user_abook;
 	link_book link_abook;
 	parse_mihf_information(cfg, mihf_abook);
