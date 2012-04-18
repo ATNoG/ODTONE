@@ -39,6 +39,8 @@ public:
 	 */
 	enum mid {
 		capability_discover	= msg_id<1, 0, 1>::value,		/**< MIH_Capability_Discover.confirm		*/
+		mih_register = msg_id<1, 0, 2>::value,				/**< MIH_Register.confirm					*/
+		mih_deregister = msg_id<1, 0, 3>::value,			/**< MIH_DeRegister.confirm					*/
 		event_subscribe	= msg_id<1, 0, 4>::value,			/**< MIH_Event_Subscribe.confirm			*/
 		event_unsubscribe = msg_id<1, 0, 5>::value,			/**< MIH_Event_Unsubscribe.confirm			*/
 		link_get_parameters = msg_id<3, 0, 1>::value,		/**< MIH_Link_Get_Parameters.confirm		*/
