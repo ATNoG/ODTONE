@@ -83,7 +83,7 @@ mih::link_evt_list subscribed_event_list;
 
 boost::shared_mutex _th_list_mutex;
 std::vector<threshold_cross_data> th_cross_list;
-std::vector<periodic_report_data> period_rpt_list;
+std::vector<std::unique_ptr<periodic_report_data>> period_rpt_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 //// Event dispatchers
@@ -256,31 +256,38 @@ void periodic_report_data::_report_value(boost::asio::io_service &ios, if_80211 
 //	}
 
 	log_(0, "(cmd) Handling periodic report");
-	boost::shared_lock<boost::shared_mutex> lock(_th_list_mutex);
 
-	mih::link_param_rpt_list rpt_list;
-	mih::link_tuple_id lid;
+	try {
+		boost::shared_lock<boost::shared_mutex> lock(_th_list_mutex);
 
-	if (type == mih::link_param_802_11_rssi) {
-		poa_info i = fi.get_poa_info();
+		mih::link_param_rpt_list rpt_list;
+		mih::link_tuple_id lid;
 
-		mih::link_param_report rpt;
+		if (type == mih::link_param_802_11_rssi) {
+			poa_info i = fi.get_poa_info();
 
-		rpt.param.type = type;
+			mih::link_param_report rpt;
 
-		lid = i.id;
+			rpt.param.type = type;
 
-		sint8 *d_signal = boost::get<sint8>(&i.signal);
-		rpt.param.value = *d_signal;
+			lid = i.id;
 
-		rpt_list.push_back(rpt);
-//	} else if (type == mih::link_param_802_11_no_qos) {
-//		// not supported
-//	} else if (type == mih::link_param_802_11_multicast_packet_loss_rate) {
-//		// not supported
+			sint8 *d_signal = boost::get<sint8>(&i.signal);
+			rpt.param.value = *d_signal;
+
+			rpt_list.push_back(rpt);
+//		} else if (type == mih::link_param_802_11_no_qos) {
+//			// not supported
+//		} else if (type == mih::link_param_802_11_multicast_packet_loss_rate) {
+//			// not supported
+		}
+
+		if (rpt_list.size() > 0) {
+			ios.dispatch(boost::bind(&dispatch_link_parameters_report, lid, rpt_list));
+		}
+	} catch (...) {
+		log_(0, "(cmd) Error handling periodic report");
 	}
-
-	ios.dispatch(boost::bind(&dispatch_link_parameters_report, lid, rpt_list));
 }
 
 void scheduled_scan_trigger(if_80211 &fi)
@@ -504,7 +511,7 @@ void handle_link_configure_thresholds(boost::asio::io_service &ios,
 	mih::link_cfg_status_list status_list;
 
 	std::vector<threshold_cross_data>::iterator cross_it;
-	std::vector<periodic_report_data>::iterator rpt_it;
+	std::vector<std::unique_ptr<periodic_report_data>>::iterator rpt_it;
 
 	BOOST_FOREACH (mih::link_cfg_param &param, param_list) {
 		mih::link_param_802_11 *type = boost::get<mih::link_param_802_11>(&param.type);
@@ -538,7 +545,7 @@ void handle_link_configure_thresholds(boost::asio::io_service &ios,
 
 				rpt_it = period_rpt_list.begin();
 				while (rpt_it != period_rpt_list.end()) {
-					if (rpt_it->type == *type) {
+					if (rpt_it->get()->type == *type) {
 						rpt_it = period_rpt_list.erase(rpt_it);
 					} else {
 						++rpt_it;
@@ -577,13 +584,13 @@ void handle_link_configure_thresholds(boost::asio::io_service &ios,
 				// dealing with a periodic configuration
 				log_(0, "(command) Inserting periodic report");
 
-				periodic_report_data p;
-				p.type = *type;
+				std::unique_ptr<periodic_report_data> p(new periodic_report_data);
+				p->type = *type;
 				std::unique_ptr<timer_task> timer(new timer_task(ios, *period,
-					boost::bind(&periodic_report_data::_report_value, boost::ref(p), boost::ref(ios), boost::ref(fi))));
-				p.task = std::move(timer);
+					boost::bind(&periodic_report_data::_report_value, p.get(), boost::ref(ios), boost::ref(fi))));
+				p->task = std::move(timer);
 
-				p.task->start();
+				p->task->start();
 				period_rpt_list.push_back(std::move(p));
 			}
 
