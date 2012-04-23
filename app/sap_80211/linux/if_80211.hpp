@@ -64,7 +64,7 @@ public:
 	 * @param ios An io_service instance
 	 * @param mac The MAC address of the underlying device.
 	 */
-	if_80211(boost::asio::io_service &ios, odtone::mih::mac_addr mac);
+	if_80211(boost::asio::io_service &ios, mih::mac_addr mac);
 
 	/**
 	 * Destruct the object.
@@ -171,6 +171,16 @@ public:
 		std::string           _dev;
 		odtone::mih::mac_addr _mac;
 	};
+
+private:
+	/**
+	 * Get the current RSSI with the given mac addr.
+	 *
+	 * @param addr The given mac address.
+	 *
+	 * @return The current RSSI.
+	 */
+	sint8 get_current_rssi(const mih::mac_addr &addr);
 
 private:
 	ctx_data _ctx;

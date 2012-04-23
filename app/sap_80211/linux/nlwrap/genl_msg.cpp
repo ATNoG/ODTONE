@@ -24,6 +24,7 @@
 
 namespace nlwrap {
 
+#define ETH_NLEN 6
 #define ETH_ALEN 18
 
 #define IE_ARRAY_SIZE 128
@@ -48,7 +49,13 @@ struct bss_parse_policy {
 	bss_parse_policy();
 } bss_policy;
 
+struct stats_parse_policy {
+	::nla_policy pol[NL80211_STA_INFO_MAX + 1];
+	stats_parse_policy();
+} stats_policy;
+
 void mac_addr_n2a(char *mac_addr, unsigned char *arg);
+int mac_addr_a2n(unsigned char *mac_addr, char *arg);
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -87,6 +94,15 @@ genl_msg::genl_msg(::nl_msg *msg)
 	}
 	parse_attr(tb);
 
+	// parse station info
+	if (tb[NL80211_ATTR_STA_INFO]) {
+		::nlattr *sta[NL80211_STA_INFO_MAX + 1];
+		if (::nla_parse_nested(sta, NL80211_STA_INFO_MAX, tb[NL80211_ATTR_STA_INFO], stats_policy.pol)) {
+			throw "Error parsing nl_msg station attributes";
+		}
+		parse_sta(sta);
+	}
+
 	// parse bss
 	if (!tb[NL80211_ATTR_BSS]) {
 		return;
@@ -123,14 +139,14 @@ genl_msg::operator ::nl_msg *()
 void genl_msg::put_ifindex(int ifindex)
 {
 	if (::nla_put_u32(_msg, NL80211_ATTR_IFINDEX, ifindex)) {
-		throw "Error putting ifindex in nl_msg";
+		throw "Error putting IFINDEX in nl_msg";
 	}
 }
 
 void genl_msg::put_family_name(std::string name)
 {
 	if (::nla_put_string(_msg, CTRL_ATTR_FAMILY_NAME, name.c_str())) {
-		throw "Error putting family_name in nl_msg";
+		throw "Error putting FAMILY_NAME in nl_msg";
 	}
 }
 
@@ -141,6 +157,17 @@ void genl_msg::put_ps_state(int state)
 	}
 }
 
+void genl_msg::put_mac(const std::string &mac)
+{
+	unsigned char nmac[ETH_NLEN];
+	if (!mac_addr_a2n(nmac, const_cast<char *>(mac.c_str()))) {
+		throw "Invalid mac address given";
+	}
+
+	if(::nla_put(_msg, NL80211_ATTR_MAC, ETH_NLEN, nmac)) {
+		throw "Error putting MAC in nl_msg";
+	}
+}
 
 int genl_msg::cmd()
 {
@@ -201,6 +228,13 @@ void genl_msg::parse_bss(::nlattr *bss[NL80211_BSS_MAX + 1])
 	}
 }
 
+void genl_msg::parse_sta(::nlattr *sta[NL80211_STA_INFO_MAX + 1])
+{
+	if (sta[NL80211_STA_INFO_SIGNAL]) {
+		sta_info_signal = nla_get_u8(sta[NL80211_STA_INFO_SIGNAL]);
+	}
+}
+
 void genl_msg::parse_information_elements(unsigned char *ie, int ielen)
 {
 	static unsigned char ms_oui[3] = { 0x00, 0x50, 0xf2 };
@@ -257,7 +291,7 @@ void mac_addr_n2a(char *mac_addr, unsigned char *arg)
 	int i, l;
 
 	l = 0;
-	for (i = 0; i < 6; i++) {
+	for (i = 0; i < ETH_NLEN; i++) {
 		if (i == 0) {
 			sprintf(mac_addr+l, "%02x", arg[i]);
 			l += 2;
@@ -266,6 +300,33 @@ void mac_addr_n2a(char *mac_addr, unsigned char *arg)
 			l += 3;
 		}
 	}
+}
+
+int mac_addr_a2n(unsigned char *mac_addr, char *arg)
+{
+        int i;
+
+        for (i = 0; i < ETH_ALEN ; i++) {
+                int temp;
+                char *cp = strchr(arg, ':');
+                if (cp) {
+                        *cp = 0;
+                        cp++;
+                }
+                if (sscanf(arg, "%x", &temp) != 1)
+                        return -1;
+                if (temp < 0 || temp > 255)
+                        return -1;
+
+                mac_addr[i] = temp;
+                if (!cp)
+                        break;
+                arg = cp;
+        }
+        if (i < ETH_ALEN - 1)
+                return -1;
+
+        return 0;
 }
 
 bss_parse_policy::bss_parse_policy() {
@@ -280,6 +341,22 @@ bss_parse_policy::bss_parse_policy() {
 	pol[NL80211_BSS_STATUS].type = NLA_U32;
 	pol[NL80211_BSS_SEEN_MS_AGO].type = NLA_U32;
 	pol[NL80211_BSS_BEACON_IES] = { };
+}
+
+stats_parse_policy::stats_parse_policy() {
+	pol[NL80211_STA_INFO_INACTIVE_TIME].type = NLA_U32;
+	pol[NL80211_STA_INFO_RX_BYTES].type = NLA_U32;
+	pol[NL80211_STA_INFO_TX_BYTES].type = NLA_U32;
+	pol[NL80211_STA_INFO_RX_PACKETS].type = NLA_U32;
+	pol[NL80211_STA_INFO_TX_PACKETS].type = NLA_U32;
+	pol[NL80211_STA_INFO_SIGNAL].type = NLA_U8;
+	pol[NL80211_STA_INFO_TX_BITRATE].type = NLA_NESTED;
+	pol[NL80211_STA_INFO_LLID].type = NLA_U16;
+	pol[NL80211_STA_INFO_PLID].type = NLA_U16;
+	pol[NL80211_STA_INFO_PLINK_STATE].type = NLA_U8;
+	pol[NL80211_STA_INFO_TX_RETRIES].type = NLA_U32;
+	pol[NL80211_STA_INFO_TX_FAILED].type = NLA_U32;
+	pol[NL80211_STA_INFO_STA_FLAGS].minlen = sizeof(nl80211_sta_flag_update);
 }
 
 }

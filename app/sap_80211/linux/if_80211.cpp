@@ -130,11 +130,15 @@ struct scan_results_data {
 
 int handle_operstate(nl_msg *msg, void *arg)
 {
-	nlwrap::genl_msg m(msg);
-	int *state = static_cast<int *>(arg);
+	try {
+		nlwrap::genl_msg m(msg);
+		int *state = static_cast<int *>(arg);
 
-	if (m.attr_ps_state) {
-		*state = m.attr_ps_state.get();
+		if (m.attr_ps_state) {
+			*state = m.attr_ps_state.get();
+		}
+	} catch(...) {
+		log_(0, "(command) Error parsing ps_state message");
 	}
 
 	return NL_SKIP;
@@ -185,7 +189,22 @@ int handle_scan_results(::nl_msg *msg, void *arg)
 		d->l.push_back(i);
 	} catch(...) {
 		log_(0, "(command) Error parsing scan dump message");
-		return NL_SKIP;
+	}
+
+	return NL_SKIP;
+}
+
+int handle_station_results(::nl_msg *msg, void *arg)
+{
+	try {
+		nlwrap::genl_msg m(msg);
+		sint8 *d = static_cast<sint8 *>(arg);
+
+		if (m.sta_info_signal) {
+			*d = m.sta_info_signal.get();
+		}
+	} catch(...) {
+		log_(0, "(command) Error parsing station dump message");
 	}
 
 	return NL_SKIP;
@@ -409,6 +428,32 @@ bool if_80211::link_up()
 	return link.get_flags() & IFF_RUNNING;
 }
 
+sint8 if_80211::get_current_rssi(const mih::mac_addr &addr)
+{
+	log_(0, "(command) Dumping station results");
+
+	nlwrap::genl_socket s;
+
+	nlwrap::genl_msg m(s.family_id("nl80211"), NL80211_CMD_GET_STATION, NLM_F_DUMP);
+	m.put_ifindex(_ctx._ifindex);
+	m.put_mac(addr.address());
+
+	sint8 rssi = 0;
+	nlwrap::genl_cb cb(handle_station_results, static_cast<void *>(&rssi));
+
+	s.send(m);
+
+	while (!cb.finish()) {
+		s.receive(cb);
+	}
+
+	if (cb.error()) {
+		throw "Error getting station RSSI, code: " + boost::lexical_cast<std::string>(cb.error_code());
+	}
+
+	return rssi;
+}
+
 poa_info if_80211::get_poa_info()
 {
 	scan_results_data d(_ctx);
@@ -418,7 +463,11 @@ poa_info if_80211::get_poa_info()
 		throw "Not associated to a POA";
 	}
 
-	return d.l[d.associated_index.get()];
+	poa_info i = d.l[d.associated_index.get()];
+	mih::mac_addr addr = boost::get<mih::mac_addr>(boost::get<mih::link_addr>(i.id.poa_addr));
+	i.signal = get_current_rssi(addr);
+
+	return i;
 }
 
 void if_80211::trigger_scan(bool wait)

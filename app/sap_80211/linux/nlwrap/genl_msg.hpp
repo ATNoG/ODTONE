@@ -90,6 +90,13 @@ public:
 	void put_ps_state(int state);
 
 	/**
+	 * Put a MAC attribute in the message.
+	 *
+	 * @param mac The mac address to put.
+	 */
+	void put_mac(const std::string &mac);
+
+	/**
 	 * Get the command from a parsed message.
 	 *
 	 * @return The command from the parsed message.
@@ -113,10 +120,12 @@ public:
 	boost::optional<unsigned int> ie_max_data_rate;
 	boost::optional<bool> ie_has_security_features;
 
+	boost::optional<int> sta_info_signal;
 
 private:
 	void parse_attr(::nlattr *tb[NL80211_ATTR_MAX + 1]);
 	void parse_bss(::nlattr *bss[NL80211_BSS_MAX + 1]);
+	void parse_sta(::nlattr *bss[NL80211_STA_INFO_MAX + 1]);
 	void parse_information_elements(unsigned char *ie, int ielen);
 
 private:
