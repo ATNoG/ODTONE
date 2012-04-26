@@ -96,12 +96,28 @@ void dispatch_link_up(mih::link_tuple_id &lid,
 	boost::optional<mih::ip_mob_mgmt> &mobility_management)
 {
 #ifdef STOP_SCHED_SCAN_ON_L2_UP
+	// start the scheduled scan
 	if (scheduled_scan_task && scheduled_scan_task->running()) {
 		log_(0, "Stopping scheduled scan");
 		scheduled_scan_task->stop();
 	}
 #endif /* STOP_SCHED_SCAN_ON_L2_UP */
 
+	// restart checking the thresholds
+	if (th_cross_list.size() > 0 && !threshold_check_task->running()) {
+		log_(0, "(cmd) Starting global threshold check task");
+		threshold_check_task->start();
+	}
+	if (period_rpt_list.size() > 0) {
+		log_(0, "(cmd) Starting the periodic reports");
+		auto it = period_rpt_list.begin();
+		while (it != period_rpt_list.end()) {
+			it->get()->task->start();
+			it++;
+		}
+	}
+
+	// propagate the event
 	if (!subscribed_event_list.get(mih::evt_link_up)) {
 		return;
 	}
@@ -124,12 +140,28 @@ void dispatch_link_down(mih::link_tuple_id &lid,
 	mih::link_dn_reason &rs)
 {
 #ifdef STOP_SCHED_SCAN_ON_L2_UP
+	// start scheduled scan
 	if (scheduled_scan_task && !scheduled_scan_task->running()) {
 		log_(0, "Resuming scheduled scan");
 		scheduled_scan_task->start();
 	}
 #endif /* STOP_SCHED_SCAN_ON_L2_UP */
 
+	// stop parameters report
+	if (th_cross_list.size() > 0 && threshold_check_task->running()) {
+		log_(0, "(cmd) Stopping global threshold check task");
+		threshold_check_task->stop();
+	}
+	if (period_rpt_list.size() > 0) {
+		log_(0, "(cmd) Stopping the periodic reports");
+		auto it = period_rpt_list.begin();
+		while (it != period_rpt_list.end()) {
+			it->get()->task->stop();
+			it++;
+		}
+	}
+
+	// propagate the event
 	if (!subscribed_event_list.get(mih::evt_link_down)) {
 		return;
 	}
