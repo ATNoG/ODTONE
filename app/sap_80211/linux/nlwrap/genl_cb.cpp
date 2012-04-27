@@ -16,6 +16,7 @@
 //==============================================================================
 
 #include "genl_cb.hpp"
+#include <stdexcept>
 
 namespace nlwrap {
 
@@ -49,23 +50,23 @@ genl_cb::genl_cb() : _err(1)
 {
 	_cb = ::nl_cb_alloc(NL_CB_DEFAULT);
 	if (!_cb) {
-		throw "Error allocating nl_cb";
+		throw std::runtime_error("Error allocating nl_cb");
 	}
 
 	if (::nl_cb_set(_cb, NL_CB_SEQ_CHECK, NL_CB_CUSTOM, no_seq_check, NULL)) {
-		throw "Error setting no_sequence_check callback";
+		throw std::runtime_error("Error setting no_sequence_check callback");
 	}
 
 	if (::nl_cb_set(_cb, NL_CB_FINISH, NL_CB_CUSTOM, finish_handler, static_cast<void *>(&_err))) {
-		throw "Error setting finish_handler callback";
+		throw std::runtime_error("Error setting finish_handler callback");
 	}
 
 	if (::nl_cb_set(_cb, NL_CB_ACK, NL_CB_CUSTOM, ack_handler, static_cast<void *>(&_err))) {
-		throw "Error setting ack_handler callback";
+		throw std::runtime_error("Error setting ack_handler callback");
 	}
 
 	if (::nl_cb_err(_cb, NL_CB_CUSTOM, error_handler, static_cast<void *>(&_err))) {
-		throw "Error setting error_handler callback";
+		throw std::runtime_error("Error setting error_handler callback");
 	}
 }
 
@@ -73,27 +74,27 @@ genl_cb::genl_cb(::nl_recvmsg_msg_cb_t func, void *arg) : _err(1)
 {
 	_cb = ::nl_cb_alloc(NL_CB_DEFAULT);
 	if (!_cb) {
-		throw "Error allocating nl_cb";
+		throw std::runtime_error("Error allocating nl_cb");
 	}
 
 	if (::nl_cb_set(_cb, NL_CB_SEQ_CHECK, NL_CB_CUSTOM, no_seq_check, NULL)) {
-		throw "Error setting no_sequence_check callback";
+		throw std::runtime_error("Error setting no_sequence_check callback");
 	}
 
 	if (::nl_cb_set(_cb, NL_CB_FINISH, NL_CB_CUSTOM, finish_handler, static_cast<void *>(&_err))) {
-		throw "Error setting finish_handler callback";
+		throw std::runtime_error("Error setting finish_handler callback");
 	}
 
 	if (::nl_cb_set(_cb, NL_CB_ACK, NL_CB_CUSTOM, ack_handler, static_cast<void *>(&_err))) {
-		throw "Error setting ack_handler callback";
+		throw std::runtime_error("Error setting ack_handler callback");
 	}
 
 	if (::nl_cb_err(_cb, NL_CB_CUSTOM, error_handler, static_cast<void *>(&_err))) {
-		throw "Error setting error_handler callback";
+		throw std::runtime_error("Error setting error_handler callback");
 	}
 
 	if (::nl_cb_set(_cb, NL_CB_VALID, NL_CB_CUSTOM, func, arg)) {
-		throw "Error setting custom callback";
+		throw std::runtime_error("Error setting custom callback");
 	}
 }
 
@@ -107,7 +108,7 @@ genl_cb::~genl_cb()
 void genl_cb::custom(::nl_recvmsg_msg_cb_t func, void *arg)
 {
 	if (::nl_cb_set(_cb, NL_CB_VALID, NL_CB_CUSTOM, func, arg)) {
-		throw "Error setting custom callback";
+		throw std::runtime_error("Error setting custom callback");
 	}
 }
 

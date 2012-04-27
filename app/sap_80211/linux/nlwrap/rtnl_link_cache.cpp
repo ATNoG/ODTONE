@@ -17,6 +17,8 @@
 
 #include "rtnl_link_cache.hpp"
 
+#include <stdexcept>
+
 namespace nlwrap {
 
 #define ETH_ALEN 18
@@ -24,7 +26,7 @@ namespace nlwrap {
 rtnl_link_cache::rtnl_link_cache()
 {
 	if (::rtnl_link_alloc_cache(_socket, AF_UNSPEC, &_cache)) {
-		throw "Error allocating link cache";
+		throw std::runtime_error("Error allocating link cache");
 	}
 }
 
@@ -65,13 +67,13 @@ rtnl_link rtnl_link_cache::get_by_addr(std::string address)
 		l = reinterpret_cast< ::rtnl_link * >(::nl_cache_get_next(reinterpret_cast< ::nl_object * >(l)));
 	}
 
-	throw "No such link";
+	throw std::runtime_error("No such link");
 }
 
 void rtnl_link_cache::change(rtnl_link &original, rtnl_link &changes)
 {
 	if (::rtnl_link_change(_socket, original, changes, 0)) {
-		throw "Error changing link";
+		throw std::runtime_error("Error changing link");
 	}
 }
 

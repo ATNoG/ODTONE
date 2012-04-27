@@ -28,6 +28,7 @@
 
 #include <odtone/logger.hpp>
 #include <iostream>
+#include <stdexcept>
 
 #include "nlwrap/nlwrap.hpp"
 #define _LINUX_IF_H // workaround
@@ -228,7 +229,7 @@ void fetch_scan_results(scan_results_data &data)
 	}
 
 	if (cb.error()) {
-		throw "Error, code: " + boost::lexical_cast<std::string>(cb.error_code());
+		throw std::runtime_error("Error, code: " + boost::lexical_cast<std::string>(cb.error_code()));
 	}
 
 	log_(0, "(command) Dumped ", data.l.size(), " scan results");
@@ -252,7 +253,7 @@ void dispatch_strongest_scan_results(scan_results_data &d)
 					return _a > _b;
 				}
 			}
-			throw "SIG_STRENGTH info not available for sorting";
+			throw std::runtime_error("SIG_STRENGTH info not available for sorting");
 		});
 
 	std::map<mih::octet_string, bool> announced;
@@ -372,7 +373,7 @@ void recv_forever(nlwrap::genl_socket &sock, nlwrap::genl_cb &cb)
 		sock.receive(cb);
 	}
 
-	throw "Unexpected netlink error, code " + boost::lexical_cast<std::string>(cb.error_code());
+	throw std::runtime_error("Unexpected netlink error, code " + boost::lexical_cast<std::string>(cb.error_code()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -448,7 +449,7 @@ sint8 if_80211::get_current_rssi(const mih::mac_addr &addr)
 	}
 
 	if (cb.error()) {
-		throw "Error getting station RSSI, code: " + boost::lexical_cast<std::string>(cb.error_code());
+		throw std::runtime_error("Error getting station RSSI, code: " + boost::lexical_cast<std::string>(cb.error_code()));
 	}
 
 	return rssi;
@@ -460,7 +461,7 @@ poa_info if_80211::get_poa_info()
 	fetch_scan_results(d);
 
 	if (!d.associated_index) {
-		throw "Not associated to a POA";
+		throw std::runtime_error("Not associated to a POA");
 	}
 
 	poa_info i = d.l[d.associated_index.get()];
@@ -496,7 +497,7 @@ void if_80211::trigger_scan(bool wait)
 	}
 
 	if (cb.error()) {
-		throw "Netlink error, code: " + boost::lexical_cast<std::string>(cb.error_code());
+		throw std::runtime_error("Netlink error, code: " + boost::lexical_cast<std::string>(cb.error_code()));
 	}
 
 	log_(0, "(command) Scan triggered");
@@ -541,7 +542,7 @@ mih::op_mode_enum if_80211::get_op_mode()
 	}
 
 	if (cb.error()) {
-		throw "Error getting op mode, code: " + boost::lexical_cast<std::string>(cb.error_code());
+		throw std::runtime_error("Error getting op mode, code: " + boost::lexical_cast<std::string>(cb.error_code()));
 	}
 
 	if (operstate == NL80211_PS_ENABLED) {
@@ -590,7 +591,7 @@ void if_80211::set_op_mode(const mih::link_ac_type_enum &mode)
 			}
 
 			if (cb.error()) {
-				throw "Error disconnecting, code: " + boost::lexical_cast<std::string>(cb.error_code());
+				throw std::runtime_error("Error disconnecting, code: " + boost::lexical_cast<std::string>(cb.error_code()));
 			}
 		}
 		break;
@@ -609,12 +610,12 @@ void if_80211::set_op_mode(const mih::link_ac_type_enum &mode)
 			}
 
 			if (cb.error()) {
-				throw "Error setting power_save, code: " + boost::lexical_cast<std::string>(cb.error_code());
+				throw std::runtime_error("Error setting power_save, code: " + boost::lexical_cast<std::string>(cb.error_code()));
 			}
 		}
 		break;
 	default:
-		throw "Mode not supported";
+		throw std::runtime_error("Mode not supported");
 		break;
 	}
 }

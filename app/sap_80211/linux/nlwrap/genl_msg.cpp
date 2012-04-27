@@ -20,7 +20,7 @@
 #include <netlink/genl/genl.h>
 #include <linux/nl80211.h>
 
-#include <iostream>
+#include <stdexcept>
 
 namespace nlwrap {
 
@@ -63,7 +63,7 @@ genl_msg::genl_msg()
 {
 	_msg = ::nlmsg_alloc();
 	if (!_msg) {
-		throw "Error allocating netlink message";
+		throw std::runtime_error("Error allocating netlink message");
 	}
 	_own = true;
 }
@@ -72,7 +72,7 @@ genl_msg::genl_msg(int family, int type, int flags)
 {
 	_msg = ::nlmsg_alloc();
 	if (!_msg) {
-		throw "Error allocating netlink message";
+		throw std::runtime_error("Error allocating netlink message");
 	}
 	_own = true;
 
@@ -90,7 +90,7 @@ genl_msg::genl_msg(::nl_msg *msg)
 	// parse attr
 	::nlattr *tb[NL80211_ATTR_MAX + 1];
 	if (nla_parse(tb, NL80211_ATTR_MAX, ::genlmsg_attrdata(gnlh, 0), ::genlmsg_attrlen(gnlh, 0), NULL)) {
-		throw "Error parsing nl_msg attributes";
+		throw std::runtime_error("Error parsing nl_msg attributes");
 	}
 	parse_attr(tb);
 
@@ -98,7 +98,7 @@ genl_msg::genl_msg(::nl_msg *msg)
 	if (tb[NL80211_ATTR_STA_INFO]) {
 		::nlattr *sta[NL80211_STA_INFO_MAX + 1];
 		if (::nla_parse_nested(sta, NL80211_STA_INFO_MAX, tb[NL80211_ATTR_STA_INFO], stats_policy.pol)) {
-			throw "Error parsing nl_msg station attributes";
+			throw std::runtime_error("Error parsing nl_msg station attributes");
 		}
 		parse_sta(sta);
 	}
@@ -110,7 +110,7 @@ genl_msg::genl_msg(::nl_msg *msg)
 
 	::nlattr *bss[NL80211_BSS_MAX + 1];
 	if (::nla_parse_nested(bss, NL80211_BSS_MAX, tb[NL80211_ATTR_BSS], bss_policy.pol)) {
-		throw "Error parsing nl_msg bss attributes";
+		throw std::runtime_error("Error parsing nl_msg bss attributes");
 	}
 	parse_bss(bss);
 
@@ -139,21 +139,21 @@ genl_msg::operator ::nl_msg *()
 void genl_msg::put_ifindex(int ifindex)
 {
 	if (::nla_put_u32(_msg, NL80211_ATTR_IFINDEX, ifindex)) {
-		throw "Error putting IFINDEX in nl_msg";
+		throw std::runtime_error("Error putting IFINDEX in nl_msg");
 	}
 }
 
 void genl_msg::put_family_name(std::string name)
 {
 	if (::nla_put_string(_msg, CTRL_ATTR_FAMILY_NAME, name.c_str())) {
-		throw "Error putting FAMILY_NAME in nl_msg";
+		throw std::runtime_error("Error putting FAMILY_NAME in nl_msg");
 	}
 }
 
 void genl_msg::put_ps_state(int state)
 {
 	if (::nla_put_u32(_msg, NL80211_ATTR_PS_STATE, state)) {
-		throw "Error putting PS_STATE in nl_msg";
+		throw std::runtime_error("Error putting PS_STATE in nl_msg");
 	}
 }
 
@@ -161,11 +161,11 @@ void genl_msg::put_mac(const std::string &mac)
 {
 	unsigned char nmac[ETH_NLEN];
 	if (!mac_addr_a2n(nmac, const_cast<char *>(mac.c_str()))) {
-		throw "Invalid mac address given";
+		throw std::runtime_error("Invalid mac address given");
 	}
 
 	if(::nla_put(_msg, NL80211_ATTR_MAC, ETH_NLEN, nmac)) {
-		throw "Error putting MAC in nl_msg";
+		throw std::runtime_error("Error putting MAC in nl_msg");
 	}
 }
 

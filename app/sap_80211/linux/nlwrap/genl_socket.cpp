@@ -23,7 +23,7 @@
 
 #include <errno.h>
 
-#include <iostream>
+#include <stdexcept>
 
 namespace nlwrap {
 
@@ -38,11 +38,11 @@ genl_socket::genl_socket()
 {
 	_sock = ::nl_socket_alloc();
 	if (!_sock) {
-		throw "Error allocating socket";
+		throw std::runtime_error("Error allocating socket");
 	}
 
 	if (::genl_connect(_sock)) {
-		throw "Error connecting to GENERIC protocol";
+		throw std::runtime_error("Error connecting to GENERIC protocol");
 	}
 }
 
@@ -62,7 +62,7 @@ genl_socket::operator nl_sock *()
 void genl_socket::send(genl_msg &msg)
 {
 	if (::nl_send_auto_complete(_sock, msg) < 0) {
-		throw "Error sending netlink message";
+		throw std::runtime_error("Error sending netlink message");
 	}
 }
 
@@ -93,7 +93,7 @@ int genl_socket::multicast_id(std::string group)
 	}
 
 	if (cb.error()) {
-		throw "Error getting multicast id";
+		throw std::runtime_error("Error getting multicast id");
 	}
 
 	return grp.id;
@@ -102,7 +102,7 @@ int genl_socket::multicast_id(std::string group)
 void genl_socket::join_multicast_group(std::string group)
 {
 	if(::nl_socket_add_membership(_sock, multicast_id(group))) {
-		throw "Error joining multicast group";
+		throw std::runtime_error("Error joining multicast group");
 	}
 }
 

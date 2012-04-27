@@ -17,6 +17,8 @@
 
 #include "rtnl_link.hpp"
 
+#include <stdexcept>
+
 namespace nlwrap {
 
 #define ETH_ALEN 18
@@ -25,7 +27,7 @@ rtnl_link::rtnl_link()
 {
 	_link = ::rtnl_link_alloc();
 	if (!_link) {
-		throw "Error allocating rtnl_link";
+		throw std::runtime_error("Error allocating rtnl_link");
 	}
 
 	_own = true;
@@ -41,7 +43,7 @@ rtnl_link::rtnl_link(const rtnl_link &copy)
 {
 	_link = reinterpret_cast< ::rtnl_link * >(::nl_object_clone(reinterpret_cast< ::nl_object * >(copy._link)));
 	if (!_link) {
-		throw "Error cloning rtnl_link";
+		throw std::runtime_error("Error cloning rtnl_link");
 	}
 
 	_own = true;
@@ -76,7 +78,7 @@ std::string rtnl_link::address()
 	char mac_addr[ETH_ALEN];
 	::nl_addr *addr = ::rtnl_link_get_addr(_link);
 	if (!addr) {
-		throw "Error getting link address";
+		throw std::runtime_error("Error getting link address");
 	}
 
 	::nl_addr2str(addr, mac_addr, ETH_ALEN);
@@ -87,7 +89,7 @@ int rtnl_link::ifindex()
 {
 	int ifindex = ::rtnl_link_get_ifindex(_link);
 	if (ifindex == 0) {
-		throw "Error getting link if index";
+		throw std::runtime_error("Error getting link if index");
 	}
 
 	return ifindex;
@@ -97,7 +99,7 @@ std::string rtnl_link::name()
 {
 	char *name = ::rtnl_link_get_name(_link);
 	if (!name) {
-		throw "Error getting link name";
+		throw std::runtime_error("Error getting link name");
 	}
 
 	return std::string(name);

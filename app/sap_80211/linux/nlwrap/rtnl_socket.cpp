@@ -17,7 +17,9 @@
 
 #include "rtnl_socket.hpp"
 
-#include <netlink/route/link.h>	
+#include <netlink/route/link.h>
+
+#include <stdexcept>
 
 namespace nlwrap {
 
@@ -25,11 +27,11 @@ rtnl_socket::rtnl_socket()
 {
 	_sock = ::nl_socket_alloc();
 	if (!_sock) {
-		throw "Error allocating netlink socket";
+		throw std::runtime_error("Error allocating netlink socket");
 	}
 
 	if (::nl_connect(_sock, NETLINK_ROUTE)) {
-		throw "Error connecting to ROUTE protocol";
+		throw std::runtime_error("Error connecting to ROUTE protocol");
 	}
 }
 
