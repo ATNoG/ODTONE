@@ -273,7 +273,7 @@ void global_thresholds_check(boost::asio::io_service &ios, if_80211 &fi)
 		if (rpt_list.size() > 0) {
 			ios.dispatch(boost::bind(&dispatch_link_parameters_report, lid, rpt_list));
 		}
-	} catch (const exception &e) {
+	} catch (const std::exception &e) {
 		log_(0, "(cmd) Unable to get associated POA info: ", e.what());
 		return;
 	}
@@ -317,7 +317,7 @@ void periodic_report_data::_report_value(boost::asio::io_service &ios, if_80211 
 		if (rpt_list.size() > 0) {
 			ios.dispatch(boost::bind(&dispatch_link_parameters_report, lid, rpt_list));
 		}
-	} catch (const exception &e) {
+	} catch (const std::exception &e) {
 		log_(0, "(cmd) Error handling periodic report: ", e.what());
 	}
 }
@@ -327,7 +327,7 @@ void scheduled_scan_trigger(if_80211 &fi)
 	log_(0, "Triggering scheduled scan");
 	try {
 		fi.trigger_scan(false);
-	} catch(const exception &e) {
+	} catch(const std::exception &e) {
 		log_(0, "Error triggering scheduled scan: ", e.what());
 	}
 }
@@ -525,7 +525,7 @@ void handle_link_get_parameters(if_80211 &fi,
 		m.tid(tid);
 
 		ls->async_send(m);
-	} catch (const exception &e) {
+	} catch (const std::exception &e) {
 		log_(0, "(command) Exception: ", e.what());
 		dispatch_status_failure(tid, mih::confirm::link_get_parameters);
 	}
@@ -742,7 +742,7 @@ void handle_link_actions(boost::asio::io_service &ios,
 		m.tid(tid);
 
 		ls->async_send(m);
-	} catch (const exception &e) {
+	} catch (const std::exception &e) {
 		// This status_failure is tricky. For example, the scan operation
 		// may throw an exception, but the oper_mode is still correctly set!
 		log_(0, "(command) Exception: ", e.what());
