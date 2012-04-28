@@ -57,11 +57,18 @@ public:
 	operator ::nl_msg *();
 
 	/**
-	 * Get the command from a parsed message.
+	 * Get the message type of a parsed message.
 	 *
-	 * @return The command from the parsed message.
+	 * @return The message type of the parsed message.
 	 */
-	int cmd();
+	uint16_t type();
+
+	/**
+	 * Get the message payload of a parsed message.
+	 *
+	 * @return The parsed message payload.
+	 */
+	void *payload();
 
 protected:
 	::nl_msg *_msg;

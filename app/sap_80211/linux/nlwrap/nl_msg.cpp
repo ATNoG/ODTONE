@@ -48,4 +48,14 @@ nl_msg::operator ::nl_msg *()
 	return _msg;
 }
 
+uint16_t nl_msg::type()
+{
+	return ::nlmsg_hdr(_msg)->nlmsg_type;
+}
+
+void *nl_msg::payload()
+{
+	return ::nlmsg_data(::nlmsg_hdr(_msg));
+}
+
 }
