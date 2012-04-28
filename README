@@ -9,4 +9,5 @@ the following sections:
 - "ODTONE MIHF internals" : specific ODTONE implementation details.
 - "Applications"          : usage and demo instructions for the ODTONE applications.
 - "ODTONE extensions"     : extensions proposed by the ODTONE project
+- "Changelog"             : changes in this release
 - "Libraries"             : documentation for developers.

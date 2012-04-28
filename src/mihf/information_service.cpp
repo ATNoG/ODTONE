@@ -1,6 +1,7 @@
 //==============================================================================
 // Brief   : Information Service
 // Authors : Simao Reis <sreis@av.it.pt>
+//           Carlos Guimarães <cguimaraes@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
@@ -67,10 +68,17 @@ bool information_service::get_information_request(meta_message_ptr &in,
 			user_entry user = _user_abook.get(id);
 			if(user.supp_iq.is_initialized()) {
 				in->destination(mih::id(id));
-				utils::forward_request(in, _lpool, _transmit);
+				_lpool.add(in);
+
+				if(in->is_local())
+					in->source(mihfid);
+
+				_transmit(in);
 			}
 		}
 
+		// Restore the original opcode after sending the indication message
+		in->opcode(mih::operation::request);
 		return false;
 	} else {
 		utils::forward_request(in, _lpool, _transmit);
@@ -93,19 +101,29 @@ bool information_service::get_information_response(meta_message_ptr &in,
 	ODTONE_LOG(1, "(miis) received Get_Information.response from ",
 	    in->source().to_string());
 
-	if(!_lpool.set_user_tid(in)) {
-		ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
-		    "discarding it");
-		return false;
-	}
+	if(utils::this_mihf_is_destination(in)) {
+		if(!_lpool.set_user_tid(in)) {
+			ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
+				"discarding it");
+			return false;
+		}
 
-	in->source(mihfid);
-	in->opcode(mih::operation::confirm);
-
-	ODTONE_LOG(1, "(miis) forwarding Get_Information.response to ",
+		ODTONE_LOG(1, "(miis) forwarding Get_Information.response to ",
 	    in->destination().to_string());
+		in->opcode(mih::operation::confirm);
+		_transmit(in);
+	} else {
+		if(!_lpool.set_user_tid(in)) {
+			ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
+				"discarding it");
+			return false;
+		}
 
-	_transmit(in);
+		ODTONE_LOG(1, "(miis) forwarding Get_Information.response to ",
+	    in->destination().to_string());
+		in->source(mihfid);
+		_transmit(in);
+	}
 
 	return false;
 }
@@ -120,20 +138,32 @@ bool information_service::get_information_response(meta_message_ptr &in,
 bool information_service::push_information_request(meta_message_ptr &in,
 						   meta_message_ptr &out)
 {
-	ODTONE_LOG(1, "(miis) received a Get_Information.request from ",
+	ODTONE_LOG(1, "(miis) received a MIH_Push_information.request from ",
 	    in->source().to_string());
 
 	if(utils::this_mihf_is_destination(in)) {
-		//
-		// Kick this message to Information Service.
-		//
-		in->destination(mih::id("miis"));
-		_lpool.add(in);
-		in->source(mihfid);
-		_transmit(in);
+		// Forward this message to MIH-User for handover as an indication
+		in->opcode(mih::operation::indication);
+		std::vector<mih::octet_string> user_list = _user_abook.get_ids();
+		BOOST_FOREACH(mih::octet_string id, user_list) {
+			user_entry user = _user_abook.get(id);
+			if(user.supp_iq.is_initialized()) {
+				in->destination(mih::id(id));
+
+				if(in->is_local())
+					in->source(mihfid);
+
+				_transmit(in);
+			}
+		}
+
+		// Restore the original opcode after sending the indication message
+		in->opcode(mih::operation::request);
+		return false;
 
 		return false;
 	} else {
+		in->opcode(mih::operation::indication);
 		utils::forward_request(in, _lpool, _transmit);
 		return false;
 	}
@@ -142,31 +172,30 @@ bool information_service::push_information_request(meta_message_ptr &in,
 }
 
 /**
- * MIH Push Information Indication message handler.
+ * MIH Push Information Request message handler.
  *
  * @param in The input message.
  * @param out The output message.
  * @return True if the response is sent immediately or false otherwise.
  */
 bool information_service::push_information_indication(meta_message_ptr &in,
-						      meta_message_ptr &out)
+						   meta_message_ptr &out)
 {
-	ODTONE_LOG(1, "(miis) received Push_Information.indication from ",
+	ODTONE_LOG(1, "(miis) received a MIH_Push_information.indication from ",
 	    in->source().to_string());
 
-	if(!_lpool.set_user_tid(in)) {
-		ODTONE_LOG(1, "(miis) warning: no local transaction for this msg ",
-		    "discarding it");
+	if(utils::this_mihf_is_destination(in)) {
+		// Forward this message to MIH-User for handover as an indication
+		in->opcode(mih::operation::indication);
+		std::vector<mih::octet_string> user_list = _user_abook.get_ids();
+		BOOST_FOREACH(mih::octet_string id, user_list) {
+			user_entry user = _user_abook.get(id);
+			in->destination(mih::id(id));
+			_transmit(in);
+		}
 
 		return false;
 	}
-
-	in->source(mihfid);
-
-	ODTONE_LOG(1, "(miis) forwarding Push_Information.indication to ",
-	    in->destination().to_string());
-
-	_transmit(in);
 
 	return false;
 }

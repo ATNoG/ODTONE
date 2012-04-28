@@ -38,6 +38,14 @@ forwarded to the MIHF through a "MIH_Capability_Discover.response" message.
 [note ODTONE also provides the DHCP server application, which is an modified version of the
 "dhcpd" supporting the IEEE 802.21 DHCP options.]
 
+[section:dhcp_usr_getStart Compilation dependencies]
+
+* Bind9 library
+
+* libisc library
+
+[endsect]
+
 [section:dhcp_usr_getStart Getting Started]
 
 [section Registering with the MIHF]

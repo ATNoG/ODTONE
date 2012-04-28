@@ -24,6 +24,7 @@
 #include <odtone/mih/message.hpp>
 #include <odtone/mih/types/capabilities.hpp>
 
+#include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <boost/optional.hpp>
@@ -48,6 +49,10 @@ struct address_entry
 	boost::optional<mih::iq_type_list>       capabilities_query_type;
 	boost::optional<mih::transport_list>     capabilities_trans_list;
 	boost::optional<mih::mbb_ho_supp_list>   capabilities_mbb_ho_supp;
+
+	// MIHF Registration information
+	boost::optional<mih::link_id_list> reg_link_list;
+	boost::optional<uint16>            reg_interval;
 };
 
 /**
@@ -59,6 +64,15 @@ class address_book
 {
 public:
 	/**
+	 * Construct an address book.
+	 *
+	 * @param io The io_service object that address book module will
+	 * use to dispatch handlers for any asynchronous operations performed on
+	 * the socket.
+	 */
+	address_book(boost::asio::io_service &io);
+
+	/**
 	 * Add a new MIHF entry in the address book.
 	 *
 	 * @param id MIHF MIH Identifier.
@@ -66,6 +80,22 @@ public:
 	 */
 	void add(const mih::octet_string &id,
 			 address_entry entry_info);
+
+	/**
+	 * Change the registration status of an existing MIHF entry.
+	 *
+	 * @param id MIHF MIH Identifier.
+	 * @param reg_link_list The list of registered interfaces.
+	 */
+	void set_registration(const mih::octet_string &id, boost::optional<mih::link_id_list> reg_link_list);
+
+	/**
+	 * Change the registration status of an existing MIHF entry.
+	 *
+	 * @param id MIHF MIH Identifier.
+	 * @param reg_interval The registration valid time interval.
+	 */
+	void set_registration(const mih::octet_string &id, boost::optional<uint16> reg_interval);
 
 	/**
 	 * Set the IP address of an existing MIHF entry.
@@ -153,8 +183,15 @@ public:
 	const address_entry& get(const mih::octet_string &id);
 
 private:
+	/**
+	 * Decrements each registration timer.
+	 */
+	void tick();
+
+private:
 	std::map<mih::octet_string, address_entry> _abook;	/**< Address book map.	*/
 	boost::mutex _mutex;								/**< Mutex.				*/
+	boost::asio::deadline_timer _timer;					/**< Registration timer.*/
 };
 
 } /* namespace mihf */ } /* namespace odtone */

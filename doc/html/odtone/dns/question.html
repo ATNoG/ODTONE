@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
-<link rel="up" href="../../odtone_net_library.html#header..home.carlos.Desktop.release.inc.odtone.net.dns.types_hpp" title="Header &lt;/home/carlos/Desktop/release/inc/odtone/net/dns/types.hpp&gt;">
+<link rel="up" href="../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.dns.types_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/dns/types.hpp&gt;">
 <link rel="prev" href="../../DNS_QUERY_TIMEOUT.html" title="Macro DNS_QUERY_TIMEOUT">
 <link rel="next" href="resource_record.html" title="Struct resource_record">
 </head>
@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../../DNS_QUERY_TIMEOUT.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_net_library.html#header..home.carlos.Desktop.release.inc.odtone.net.dns.types_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="resource_record.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../../DNS_QUERY_TIMEOUT.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.dns.types_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="resource_record.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.dns.question"></a><div class="titlepage"></div>
@@ -22,12 +22,12 @@
 <p>odtone::dns::question</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_net_library.html#header..home.carlos.Desktop.release.inc.odtone.net.dns.types_hpp" title="Header &lt;/home/carlos/Desktop/release/inc/odtone/net/dns/types.hpp&gt;">/home/carlos/Desktop/release/inc/odtone/net/dns/types.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.dns.types_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/dns/types.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/net/dns/types.hpp</a>&gt;
 
 </span>
 <span class="keyword">struct</span> <a class="link" href="question.html" title="Struct question">question</a> <span class="special">{</span>
   <span class="comment">// <a class="link" href="question.html#odtone.dns.questionconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="question.html#id2399500-bb"><span class="identifier">question</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">uint16</span><span class="special">,</span> <span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="question.html#idp4603936-bb"><span class="identifier">question</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">uint16</span><span class="special">,</span> <span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// public data members</span>
   <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">_domain</span><span class="special">;</span>
@@ -35,13 +35,13 @@
   <span class="identifier">uint16</span> <span class="identifier">_class</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id3572517"></a><h2>Description</h2>
+<a name="idp19826632"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="id3572520"></a><h3>
+<a name="idp19826840"></a><h3>
 <a name="odtone.dns.questionconstruct-copy-destruct"></a><code class="computeroutput">question</code> 
         public
        construct/copy/destruct</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="id2399500-bb"></a><span class="identifier">question</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> domain<span class="special">,</span> <span class="identifier">uint16</span> qtype<span class="special">,</span> <span class="identifier">uint16</span> qclass<span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="idp4603936-bb"></a><span class="identifier">question</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> domain<span class="special">,</span> <span class="identifier">uint16</span> qtype<span class="special">,</span> <span class="identifier">uint16</span> qclass<span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
 </div>
 </div>
@@ -59,7 +59,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../../DNS_QUERY_TIMEOUT.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_net_library.html#header..home.carlos.Desktop.release.inc.odtone.net.dns.types_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="resource_record.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../../DNS_QUERY_TIMEOUT.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.dns.types_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="resource_record.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

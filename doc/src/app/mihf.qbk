@@ -44,23 +44,23 @@ next:
 
 ``
 	MIHF Configuration Options:
-	   --help                               Display configuration options
-	   --conf.file arg (=odtone.conf)       Configuration file
-	   --conf.recv_buff_len arg (=4096)     Receive buffer length
-	   --mihf.id arg (=mihf)                MIHF ID
-	   --mihf.ip arg (=127.0.0.1)           MIHF IP
-	   --mihf.remote_port arg (=4551)       Remote MIHF communication port
-	   --mihf.local_port arg (=1025)        Local SAPs communication port
-	   --mihf.peers arg                     List of peer MIHFs
-	   --mihf.users arg                     List of local MIH-Users
-	   --mihf.links arg                     List of local Links SAPs
-	   --mihf.transport arg (=udp, tcp)     List of supported transport protocols
-	   --mihf.link_response_time arg (=300) Link SAP response time (milliseconds)
-	   --mihf.link_delete arg (=2)          Link SAP response fails to forget
-	   --mihf.discover arg                  MIHF Discovery Mechanisms Order
-	   --enable_broadcast                   Allows broadcast messages
-	   --enable_unsolicited                 Allows unsolicited discovery
-	   --log arg (=1)                       Log level [0-4]
+	   --help                                Display configuration options
+	   --conf.file arg (=odtone.conf)        Configuration file
+	   --conf.recv_buff_len arg (=4096)      Receive buffer length
+	   --mihf.id arg (=mihf)                 MIHF ID
+	   --mihf.ip arg (=127.0.0.1)            MIHF IP
+	   --mihf.remote_port arg (=4551)        Remote MIHF communication port
+	   --mihf.local_port arg (=1025)         Local SAPs communication port
+	   --mihf.peers arg                      List of peer MIHFs
+	   --mihf.users arg                      List of local MIH-Users
+	   --mihf.links arg                      List of local Links SAPs
+	   --mihf.transport arg (=udp, tcp)      List of supported transport protocols
+	   --mihf.link_response_time arg (=3000) Link SAP response time (milliseconds)
+	   --mihf.link_delete arg (=2)           Link SAP response fails to forget
+	   --mihf.discover arg                   MIHF Discovery Mechanisms Order
+	   --enable_broadcast                    Allows broadcast messages
+	   --enable_unsolicited                  Allows unsolicited discovery
+	   --log arg (=1)                        Log level [0-4]
 ``
 
 [note
@@ -73,7 +73,7 @@ Usage: mihf.peers = <mihf id> <ip> <port> <list of supported transport protocols
 
 [*List of local MIH-Users:] Comma separated list of local MIH User SAP.
 
-Usage: mihf.users = <user sap id> <port> <supported commands> <supported queries>, ...
+Usage: mihf.users = <user sap id> <port> [<supported commands> <supported queries>\], ...
 
 [*List of local Link SAPs:] Comma separated list of local MIH Link SAPs.
 

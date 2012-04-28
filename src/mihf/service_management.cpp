@@ -394,6 +394,229 @@ bool service_management::capability_discover_confirm(meta_message_ptr &in,
 }
 
 /**
+ * Register Request message handler.
+ *
+ * @param in The input message.
+ * @param out The output message.
+ * @return True if the response is sent immediately or false otherwise.
+ */
+bool service_management::register_request(meta_message_ptr &in,
+                                          meta_message_ptr &out)
+{
+	ODTONE_LOG(1, "(mism) received MIH_Register.request from ", in->source().to_string());
+
+	if(utils::this_mihf_is_destination(in)) {
+		if(in->is_local()) {
+			in->source(mihfid);
+		} else {
+			// Set registration
+			mih::link_id_list lil;
+			*in >> mih::request(mih::request::mih_register)
+				& mih::tlv_link_id_list(lil);
+			_abook.set_registration(in->source().to_string(), lil);
+			//
+		}
+
+		// Forward this message to MIH-User for handover as an indication
+		in->opcode(mih::operation::indication);
+		std::vector<mih::octet_string> user_list = _user_abook.get_ids();
+		BOOST_FOREACH(mih::octet_string id, user_list) {
+			in->destination(mih::id(id));
+			_lpool.add(in);
+			_transmit(in);
+
+			ODTONE_LOG(1, "(mism) forwarding MIH_Register.indication to " , in->destination().to_string());
+		}
+
+		// Restore the original opcode after sending the indication message
+		in->opcode(mih::operation::request);
+		return false;
+	} else {
+		// Set registration
+		mih::link_id_list lil;
+		*in >> mih::request(mih::request::mih_register)
+			& mih::tlv_link_id_list(lil);
+		_abook.set_registration(in->destination().to_string(), lil);
+		//
+
+		// try to forward the message, this is to handle the
+		// special case of the user handling MIH commands
+		// sending some MIH command request to a peer mihf
+		utils::forward_request(in, _lpool, _transmit);
+		return false;
+	}
+
+	return false;
+}
+
+/**
+ * Register Response message handler.
+ *
+ * @param in The input message.
+ * @param out The output message.
+ * @return True if the response is sent immediately or false otherwise.
+ */
+bool service_management::register_response(meta_message_ptr&in,
+                                           meta_message_ptr &out)
+{
+	ODTONE_LOG(1, "(mism) received MIH_Register.response from ", in->source().to_string());
+
+	if(utils::this_mihf_is_destination(in)) {
+		if(!_lpool.set_user_tid(in)) {
+			ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
+				"discarding it");
+			return false;
+		}
+
+		// Set registration time interval
+		mih::status st;
+		uint16 interval;
+		*in >> mih::confirm(mih::confirm::mih_register)
+	       & mih::tlv_status(st)
+		   & mih::tlv_time_interval(interval);
+
+		if(st == mih::status_success) {
+			_abook.set_registration(in->source().to_string(), interval);
+		}
+		//
+
+		ODTONE_LOG(1, "(mism) forwarding MIH_Register.confirm to " , in->destination().to_string());
+		in->opcode(mih::operation::confirm);
+		_transmit(in);
+	} else {
+		if(!_lpool.set_user_tid(in)) {
+			ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
+				"discarding it");
+			return false;
+		}
+
+		// Set registration time interval
+		mih::status st;
+		uint16 interval;
+		*in >> mih::confirm(mih::confirm::mih_register)
+	       & mih::tlv_status(st)
+		   & mih::tlv_time_interval(interval);
+
+		if(st == mih::status_success) {
+			_abook.set_registration(in->destination().to_string(), interval);
+		}
+		//
+
+		in->source(mihfid);
+		_transmit(in);
+	}
+
+	return false;
+}
+
+/**
+ * DeRegister Request message handler.
+ *
+ * @param in The input message.
+ * @param out The output message.
+ * @return True if the response is sent immediately or false otherwise.
+ */
+bool service_management::deregister_request(meta_message_ptr &in,
+                                             meta_message_ptr &out)
+{
+	ODTONE_LOG(1, "(mism) received MIH_DeRegister.request from ",
+	               in->source().to_string());
+
+	if(utils::this_mihf_is_destination(in)) {
+		if(in->is_local())
+			in->source(mihfid);
+
+		// Forward this message to MIH-User for handover as an indication
+		in->opcode(mih::operation::indication);
+		std::vector<mih::octet_string> user_list = _user_abook.get_ids();
+		BOOST_FOREACH(mih::octet_string id, user_list) {
+			in->destination(mih::id(id));
+			_lpool.add(in);
+			_transmit(in);
+
+			ODTONE_LOG(1, "(mism) forwarding MIH_DeRegister.indication to ",
+			              in->destination().to_string());
+		}
+
+		// Restore the original opcode after sending the indication message
+		in->opcode(mih::operation::request);
+		return false;
+	} else {
+		// try to forward the message, this is to handle the
+		// special case of the user handling MIH commands
+		// sending some MIH command request to a peer mihf
+		utils::forward_request(in, _lpool, _transmit);
+		return false;
+	}
+
+	return false;
+}
+
+/**
+ * DeRegister Response message handler.
+ *
+ * @param in The input message.
+ * @param out The output message.
+ * @return True if the response is sent immediately or false otherwise.
+ */
+bool service_management::deregister_response(meta_message_ptr&in,
+                                             meta_message_ptr &out)
+{
+	ODTONE_LOG(1, "(mism) received MIH_DeRegister.response from ", in->source().to_string());
+
+	if(utils::this_mihf_is_destination(in)) {
+		if(!_lpool.set_user_tid(in)) {
+			ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
+				"discarding it");
+			return false;
+		}
+
+		// Set registration
+		mih::status st;
+		*in >> mih::confirm(mih::confirm::mih_deregister)
+	       & mih::tlv_status(st);
+
+		if(st == mih::status_success) {
+			// Set empty registered link id list
+			boost::optional<mih::link_id_list> lil;
+			boost::optional<uint16> interval;
+			_abook.set_registration(in->source().to_string(), lil);
+			_abook.set_registration(in->source().to_string(), interval);
+		}
+		//
+
+		ODTONE_LOG(1, "(mism) forwarding MIH_DeRegister.confirm to " , in->destination().to_string());
+		in->opcode(mih::operation::confirm);
+		_transmit(in);
+	} else {
+		if(!_lpool.set_user_tid(in)) {
+			ODTONE_LOG(1, "(mics) warning: no local transaction for this msg ",
+				"discarding it");
+			return false;
+		}
+
+		// Set registration
+		mih::status st;
+		*in >> mih::confirm(mih::confirm::mih_deregister)
+	       & mih::tlv_status(st);
+
+		if(st == mih::status_success) {
+			// Set empty registered link id list
+			boost::optional<mih::link_id_list> lil;
+			boost::optional<uint16> interval;
+			_abook.set_registration(in->destination().to_string(), lil);
+			_abook.set_registration(in->destination().to_string(), interval);
+		}
+		//
+
+		in->source(mihfid);
+		_transmit(in);
+	}
+
+	return false;
+}
+
+/**
  * Link Register Indication message handler.
  *
  * @param in The input message.

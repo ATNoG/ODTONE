@@ -413,6 +413,22 @@ void sm_register_callbacks(service_management &sm)
 			      boost::bind(&service_management::capability_discover_confirm,
 					  boost::ref(sm), _1, _2));
 
+	sac_register_callback(mih::request::mih_register,
+			      boost::bind(&service_management::register_request,
+					  boost::ref(sm), _1, _2));
+
+	sac_register_callback(mih::response::mih_register,
+			      boost::bind(&service_management::register_response,
+					  boost::ref(sm), _1, _2));
+
+	sac_register_callback(mih::request::mih_deregister,
+			      boost::bind(&service_management::deregister_request,
+					  boost::ref(sm), _1, _2));
+
+	sac_register_callback(mih::response::mih_deregister,
+			      boost::bind(&service_management::deregister_response,
+					  boost::ref(sm), _1, _2));
+
 	sac_register_callback(mih::indication::link_register,
 			      boost::bind(&service_management::link_register_indication,
 					  boost::ref(sm), _1, _2));
@@ -520,6 +536,12 @@ void mics_register_callbacks(command_service &mics)
 	sac_register_callback(mih::response::mn_ho_commit,
 			      boost::bind(&command_service::mn_ho_commit_response,
 					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::request::net_ho_commit,
+			      boost::bind(&command_service::net_ho_commit_request,
+					  boost::ref(mics), _1, _2));
+	sac_register_callback(mih::response::net_ho_commit,
+			      boost::bind(&command_service::net_ho_commit_response,
+					  boost::ref(mics), _1, _2));
 	sac_register_callback(mih::request::n2n_ho_commit,
 			      boost::bind(&command_service::n2n_ho_commit_request,
 					  boost::ref(mics), _1, _2));
@@ -582,8 +604,8 @@ int main(int argc, char **argv)
 		(kConf_MIHF_Peer_List, po::value<std::string>()->default_value(""), "List of peer MIHFs")
 		(kConf_MIHF_Users_List, po::value<std::string>()->default_value(""), "List of local MIH-Users")
 		(kConf_MIHF_Links_List, po::value<std::string>()->default_value(""), "List of local Links SAPs")
-		(kConf_MIHF_Transport_List, po::value<std::string>()->default_value("udp, tcp"), "List of supported transport protocols")		
-		(kConf_MIHF_Link_Response_Time, po::value<uint16>()->default_value(300), "Link SAP response time (milliseconds)")
+		(kConf_MIHF_Transport_List, po::value<std::string>()->default_value("udp"), "List of supported transport protocols")		
+		(kConf_MIHF_Link_Response_Time, po::value<uint16>()->default_value(3000), "Link SAP response time (milliseconds)")
 		(kConf_MIHF_Link_Delete, po::value<uint16>()->default_value(2), "Link SAP response fails to forget")
 		(kConf_MIHF_Discover, po::value<std::string>()->default_value(""), "MIHF Discovery Mechanisms Order")
 		(kConf_MIHF_Multicast,  "Allows multicast messages")
@@ -623,7 +645,7 @@ int main(int argc, char **argv)
 
 	// create address books that stores info on how to contact mih
 	// saps and peer mihfs
-	address_book mihf_abook;
+	address_book mihf_abook(io);
 	user_book user_abook;
 	link_book link_abook;
 	parse_mihf_information(cfg, mihf_abook);

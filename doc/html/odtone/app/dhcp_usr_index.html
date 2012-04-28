@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>DHCP-User</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../app.html" title="Applications">
 <link rel="prev" href="miis_index.html" title="MIIS Server">
@@ -19,8 +19,12 @@
 <div class="titlepage"><div><div><h3 class="title">
 <a name="odtone.app.dhcp_usr_index"></a><a class="link" href="dhcp_usr_index.html" title="DHCP-User">DHCP-User</a>
 </h3></div></div></div>
-<div class="toc"><dl><dt><span class="section"><a href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart">Getting
-        Started</a></span></dt></dl></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart">Compilation
+        dependencies</a></span></dt>
+<dt><span class="section"><a href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart">Getting
+        Started</a></span></dt>
+</dl></div>
 <p>
         The DHCP-User was implemented in order to enable the discovery of PoS entities
         according to the guidelines depicted in the RFC5678. It is a modification
@@ -62,7 +66,21 @@
 </table></div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart"></a><a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart" title="Getting Started">Getting
+<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart"></a><a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart" title="Compilation dependencies">Compilation
+        dependencies</a>
+</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              Bind9 library
+            </li>
+<li class="listitem">
+              libisc library
+            </li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart"></a><a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart" title="Compilation dependencies">Getting
         Started</a>
 </h4></div></div></div>
 <div class="toc"><dl>
@@ -79,7 +97,7 @@
 <p>
             The DHCP-User does not need provide any information during the registration
             process. To give this entity the discovery role, it must be configured
-            in the MIHF using the following option: 
+            in the MIHF using the following option:
 </p>
 <pre class="programlisting">[mihf]
 discovery = DHCP
@@ -114,9 +132,9 @@ discovery = DHCP
             two instances of the DHCP-User are required, one with the <span class="emphasis"><em>user.ip_version</em></span>
             option set to 6 and other to 4.
           </p>
-<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhclient_configuration"></a><h4>
-<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhclient_configuration-heading"></a>
-            <a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhclient_configuration">dhclient
+<h4>
+<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.h0"></a>
+            <span><a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhclient_configuration"></a></span><a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhclient_configuration">dhclient
             configuration</a>
           </h4>
 <p>
@@ -146,7 +164,6 @@ discovery = DHCP
             <span class="bold"><strong>dhclient.conf</strong></span> example:
           </p>
 <p>
-            
 </p>
 <pre class="programlisting"># IPv4
 
@@ -172,9 +189,9 @@ also request dhcp6.option-ipv6-address-mos_fqdn;
               For more information check the dhclient.conf man pages
             </p></td></tr>
 </table></div>
-<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhcpd_configuration"></a><h4>
-<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhcpd_configuration-heading"></a>
-            <a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhcpd_configuration">dhcpd
+<h4>
+<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.h1"></a>
+            <span><a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhcpd_configuration"></a></span><a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart.configuration.dhcpd_configuration">dhcpd
             configuration</a>
           </h4>
 <p>
@@ -193,7 +210,6 @@ also request dhcp6.option-ipv6-address-mos_fqdn;
             <span class="bold"><strong>dhcpd.conf</strong></span> example:
           </p>
 <p>
-            
 </p>
 <pre class="programlisting"># IPv4
 

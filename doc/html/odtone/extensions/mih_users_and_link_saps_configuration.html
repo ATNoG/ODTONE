@@ -1,0 +1,219 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>MIH-Users and Link SAPs configuration</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="up" href="../extensions.html" title="ODTONE Extensions">
+<link rel="prev" href="remote_discovery.html" title="Remote discovery">
+<link rel="next" href="mih_protocol_c_interface.html" title="MIH Protocol C interface">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="remote_discovery.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../extensions.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="mih_protocol_c_interface.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="odtone.extensions.mih_users_and_link_saps_configuration"></a><a class="link" href="mih_users_and_link_saps_configuration.html" title="MIH-Users and Link SAPs configuration">MIH-Users
+      and Link SAPs configuration</a>
+</h3></div></div></div>
+<p>
+        One of the extensions provided by the ODTONE is a mechanism which allows
+        the MIH-Users or the Link SAPs to dynamically register with the MIHF, named
+        <a class="link" href="local_discovery.html" title="Local discovery">local discovery</a>.
+      </p>
+<p>
+        However this mechanism is optional and, therefore, the statically configuration
+        of the MIH-Users and Link SAPs is still possible. In this section we will
+        depict the many ways to configure the MIH-Users and Link SAPs.
+      </p>
+<h5>
+<a name="odtone.extensions.mih_users_and_link_saps_configuration.h0"></a>
+        <span><a name="odtone.extensions.mih_users_and_link_saps_configuration.mih_users_configuration"></a></span><a class="link" href="mih_users_and_link_saps_configuration.html#odtone.extensions.mih_users_and_link_saps_configuration.mih_users_configuration">MIH-Users
+        configuration</a>
+      </h5>
+<p>
+        <span class="bold"><strong>Using the local discovery mechanism</strong></span>
+      </p>
+<p>
+        You just need to configure in the MIH-User configuration file the following
+        options:
+</p>
+<pre class="programlisting">##
+## Commands supported by the MIH-User
+## e.g.: commands = mih_link_get_parameters, mih_link_configure_thresholds
+##
+commands = &lt;comma separated list of supported commands&gt;
+
+##
+## Queries supported by the MIH-User
+## e.g: queries = iq_type_binary_data, iq_type_rdf_data
+##
+queries = &lt;comma separated list of supported queries&gt;
+</pre>
+<p>
+      </p>
+<p>
+        <span class="bold"><strong>Statically configuration on the MIHF</strong></span>
+      </p>
+<p>
+        You need to configure in the ODTONE-MIHF configuration file the following
+        options:
+</p>
+<pre class="programlisting">##
+## Comma separated list of local MIH User SAPs id's and ports
+## e.g.1: users = user 1234
+## e.g.2: users = user 1234 mih_net_ho_candidate_query iq_type_binary_data
+## e.g.3: users = user 1234 iq_type_binary_data
+##
+users = &lt;user sap id&gt; &lt;port&gt; [&lt;supported commands&gt; &lt;supported queries&gt;], ...
+</pre>
+<p>
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+          As presented on the previous example, the MIH-User can be configured in
+          many ways. If the supported commands are not configured (e.g.1 and e.g.3)
+          the MIHF will assume that the MIH-User supports all commands. However,
+          this behaviour does not work for the supported queries, since its MIIS
+          specific. In this way, if the supported queries are not configured (e.g.1)
+          the MIHF will assume that the MIH-User does not support any query.
+        </p>
+<p>
+          Also, the configuration of the supported commands and supported queries
+          can be specified (e.g.2) and, therefore, the MIHF will assume that the
+          MIH-User only supports the configured commands and queries.
+        </p>
+</td></tr>
+</table></div>
+<h5>
+<a name="odtone.extensions.mih_users_and_link_saps_configuration.h1"></a>
+        <span><a name="odtone.extensions.mih_users_and_link_saps_configuration.link_saps_configuration"></a></span><a class="link" href="mih_users_and_link_saps_configuration.html#odtone.extensions.mih_users_and_link_saps_configuration.link_saps_configuration">Link
+        SAPs configuration</a>
+      </h5>
+<p>
+        <span class="bold"><strong>Using the local discovery mechanism</strong></span>
+      </p>
+<p>
+        You just need to configure in the Link SAP configuration file the following
+        options:
+</p>
+<pre class="programlisting">##
+## Link SAP interface technology
+## e.g.: tec = 802_11
+##
+tec = &lt;interface&gt;
+
+##
+## Link SAP interface address
+## e.g.: link_addr = 00:11:22:33:44:55
+##
+link_addr = &lt;interface address&gt;
+</pre>
+<p>
+      </p>
+<p>
+        <span class="bold"><strong>Statically configuration on the MIHF</strong></span>
+      </p>
+<p>
+        You need to configure in the ODTONE-MIHF configuration file the following
+        options:
+</p>
+<pre class="programlisting">##
+## Comma separated list of local MIH Link SAPs id's and ports.
+## e.g.: links = link 1235 802_11 00:11:22:33:44:55
+##
+links = &lt;link sap id&gt; &lt;port&gt; &lt;technology type&gt; &lt;interface&gt;, ...
+</pre>
+<p>
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          In what concerns technology type, the MIHF only supports Ethernet, IEEE
+          802.11, IEEE 802.16, IEEE 802.20, IEEE 802.22 configuration.
+        </p></td></tr>
+</table></div>
+<h5>
+<a name="odtone.extensions.mih_users_and_link_saps_configuration.h2"></a>
+        <span><a name="odtone.extensions.mih_users_and_link_saps_configuration.deactivate_local_discovery"></a></span><a class="link" href="mih_users_and_link_saps_configuration.html#odtone.extensions.mih_users_and_link_saps_configuration.deactivate_local_discovery">Deactivate
+        local discovery</a>
+      </h5>
+<p>
+        By default the MIH-Users and Link SAPs provided by ODTONE have the local
+        discovery enabled, i.e., at the bootstrap they send a registration message
+        to their local MIHF. If you want to deactivate this behaviour you need to
+        comment the following lines in the correspondent constructor:
+      </p>
+<p>
+        <span class="bold"><strong>MIH-User</strong></span>
+</p>
+<pre class="programlisting">odtone::mih::message m;
+boost::optional&lt;odtone::mih::mih_cmd_list&gt; supp_cmd = parse_supported_commands(cfg);
+
+m &lt;&lt; odtone::mih::indication(odtone::mih::indication::user_register)
+	&amp; odtone::mih::tlv_command_list(supp_cmd);
+m.destination(odtone::mih::id("local-mihf"));
+
+_mihf.async_send(m, boost::bind(&amp;mih_user::user_reg_handler, this, boost::cref(cfg), _2));
+</pre>
+<p>
+      </p>
+<p>
+        <span class="bold"><strong>MIIS RDF Server</strong></span>
+</p>
+<pre class="programlisting">odtone::mih::message m;
+boost::optional&lt;odtone::mih::iq_type_list&gt; supp_iq = parse_supported_queries(cfg);
+
+m &lt;&lt; odtone::mih::indication(odtone::mih::indication::user_register)
+    &amp; odtone::mih::tlv_query_type_list(supp_iq);
+m.destination(odtone::mih::id("local-mihf"));
+
+_mihf.async_send(m, boost::bind(&amp;miis_rdf_server::user_reg_handler, this, boost::cref(cfg), _2));
+</pre>
+<p>
+      </p>
+<p>
+        <span class="bold"><strong>Link SAP</strong></span>
+</p>
+<pre class="programlisting">init();
+</pre>
+<p>
+      </p>
+<p>
+        <span class="bold"><strong>Link SAP ICMP</strong></span>
+</p>
+<pre class="programlisting">register_local_mihf();
+</pre>
+<p>
+      </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="remote_discovery.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../extensions.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="mih_protocol_c_interface.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

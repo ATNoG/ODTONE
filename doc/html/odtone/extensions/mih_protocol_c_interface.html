@@ -1,0 +1,146 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>MIH Protocol C interface</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="up" href="../extensions.html" title="ODTONE Extensions">
+<link rel="prev" href="mih_users_and_link_saps_configuration.html" title="MIH-Users and Link SAPs configuration">
+<link rel="next" href="sensor_saps_support.html" title="Sensor SAPs Support">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="mih_users_and_link_saps_configuration.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../extensions.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="sensor_saps_support.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="odtone.extensions.mih_protocol_c_interface"></a><a class="link" href="mih_protocol_c_interface.html" title="MIH Protocol C interface">MIH Protocol
+      C interface</a>
+</h3></div></div></div>
+<p>
+        The MIH Protocol C interface was developed and provided to us by <a href="http://www.eurecom.fr/en" target="_top">Eurecom</a>,
+        in Sophia-Antipolis, France. These libraries provide the necessary definitions
+        of the messages and datatypes used to communicate with ODTONE's MIHF (using
+        a local version of the MIH Protocol). As such, with this valuable contribution
+        from Eurecom, users of the ODTONE implementation are able to create their
+        MIH-Users and Link SAP modules using the C language.
+      </p>
+<p>
+        You can find it on "extensions/MIH_C_Protocol/" folder.
+      </p>
+<p>
+        For more information please contact: davide.brizzolara@eurecom.fr or michelle.wetterwald@eurecom.fr
+      </p>
+<p>
+        Together with the MIH Protocol C interface, some software that can be used
+        to test the MIH Protocol C interface was provided. It consists in two entities:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            a MIH-User Test (you can find it on "extensions/MIH_C_Protocol/mih_usr"
+            folder);
+          </li>
+<li class="listitem">
+            a LTE Link SAP Test, named mRALlteInt (you can find it on "extensions/MIH_C_Protocol/LTE_link_Test"
+            folder).
+          </li>
+</ul></div>
+<h5>
+<a name="odtone.extensions.mih_protocol_c_interface.h0"></a>
+        <span><a name="odtone.extensions.mih_protocol_c_interface.installation"></a></span><a class="link" href="mih_protocol_c_interface.html#odtone.extensions.mih_protocol_c_interface.installation">Installation</a>
+      </h5>
+<p>
+        The mRALlteInt is compiled and installed in the mRALlteInt folder ("extensions/MIH_C_Protocol/LTE_link_Test/mRALlteInt").
+        To compile it you just need to run the following command:
+</p>
+<pre class="programlisting">make
+</pre>
+<p>
+      </p>
+<p>
+        The mih_usr and odtone-mihf executables will be available by compiling ODTONE.
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          The mih-usr.cpp file provided must replace the default mih-usr.cpp provided
+          by ODTONE in order to run the LTE Link SAP test Interface Scenario (<a class="link" href="mih_protocol_c_interface.html#odtone.extensions.mih_protocol_c_interface.test_scenario">depicted
+          here</a>).
+        </p></td></tr>
+</table></div>
+<h5>
+<a name="odtone.extensions.mih_protocol_c_interface.h1"></a>
+        <span><a name="odtone.extensions.mih_protocol_c_interface.test_scenario"></a></span><a class="link" href="mih_protocol_c_interface.html#odtone.extensions.mih_protocol_c_interface.test_scenario">Test scenario</a>
+      </h5>
+<p>
+        Messages are exchanged between the following entities:
+</p>
+<pre class="programlisting">mih_usr &lt;-&gt; ODTONE &lt;-&gt; mRALlteInt
+</pre>
+<p>
+      </p>
+<p>
+        The test scenario is depicted in the following figure:
+      </p>
+<p>
+        <span class="inlinemediaobject"><img src="../.././images/MIH_C_test_scenario.jpg" alt="MIH_C_test_scenario"></span>
+      </p>
+<p>
+        To test the validation scenario, execute the following programs, each in
+        its own terminal, and in the following order:
+</p>
+<pre class="programlisting">./odtone-mihf
+./mRALlteInt &lt;LOG_location&gt; &lt;LOG_level&gt;
+./mih_usr --dest=mihf1
+</pre>
+<p>
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+          mRALlteInt usage :
+        </p>
+<p>
+          ./mRALlteInt &lt;LOG_location&gt; &lt;LOG_level&gt;
+        </p>
+<p>
+          LOG_location can take the following values 0 : Log to screen 1 : Log to
+          file (default is /tmp/log_MT_LTE.txt) 2 : Log to system (syslog) -- FFS
+        </p>
+<p>
+          If no value is entered, default value as log to file is assumed.
+        </p>
+<p>
+          LOG_level can take the following values 0 : DEBUG + ERROR 1 : ERROR only
+        </p>
+</td></tr>
+</table></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="mih_users_and_link_saps_configuration.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../extensions.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="sensor_saps_support.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

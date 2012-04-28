@@ -1,0 +1,419 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Changelog</title>
+<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="ODTONE 0.4">
+<link rel="up" href="../index.html" title="ODTONE 0.4">
+<link rel="prev" href="net/link/address_mac.html" title="Class address_mac">
+<link rel="next" href="license.html" title="License">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src=".././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="net/link/address_mac.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="license.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="odtone.changelog"></a><a class="link" href="changelog.html" title="Changelog">Changelog</a>
+</h2></div></div></div>
+<p>
+      <span class="bold"><strong>ODTONE 0.4 - Open Dot Twenty ONE.</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          Fixed wrong LINK_CMD_LIST, LINK_EVENT_LIST, MIH_CMD_LIST and MIH_EVENT_LIST
+          data type definition.
+          <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+                If your SAPs make use of any of these data types you should have
+                to update them (<a class="link" href="changelog.html#odtone.changelog.data_types_changes">see
+                more info below</a>).
+              </li></ul></div>
+        </li>
+<li class="listitem">
+          Redefinition of the interface used by MIH-Users to register themselves
+          with the local MIHF (<a class="link" href="changelog.html#odtone.changelog.mih_users_registration_changes">see
+          more info below</a>).
+        </li>
+<li class="listitem">
+          Implementation of mechanisms for discovering remote peer MIHFs:
+          <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+                DNS-User: discovery mechanim which uses DNS services;
+              </li>
+<li class="listitem">
+                DHCP-User: discovery mechanim which uses DHCP services.
+              </li>
+</ul></div>
+        </li>
+<li class="listitem">
+          Response timers: all messages are associated with a timer, which replies
+          with a failure message in case of timeout.
+        </li>
+<li class="listitem">
+          Provision of a new Link SAP example: this new Link SAP uses the ICMP protocol
+          to detect the attachment of another node.
+        </li>
+<li class="listitem">
+          Definition of new messages in the client application.
+        </li>
+<li class="listitem">
+          Provision of a new library named NET library: it defines a set of classes
+          which offer several network protocols and terminology support.
+        </li>
+<li class="listitem">
+          Several bug-fixes.
+        </li>
+<li class="listitem">
+          Fix compilation with more recent gcc version.
+        </li>
+<li class="listitem">
+          ODTONE documentation revision.
+        </li>
+</ul></div>
+<h5>
+<a name="odtone.changelog.h0"></a>
+      <span><a name="odtone.changelog.data_types_changes"></a></span><a class="link" href="changelog.html#odtone.changelog.data_types_changes">Data
+      types changes</a>
+    </h5>
+<p>
+      In the ODTONE 0.4 release was redefined the LINK_CMD_LIST, LINK_EVENT_LIST,
+      MIH_CMD_LIST and MIH_EVENT_LIST that were not in accordance with the standard.
+    </p>
+<div class="important"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Implementations of MIH-Users and Link_SAP modules using the LINK_CMD_LIST,
+        LINK_EVENT_LIST, MIH_CMD_LIST and/or MIH_EVENT_LIST datatypes need to change
+        their code, in order for it to work with the new changes. Take into consideration
+        that this is necessary for absolute interoperability with the standard.
+      </p></td></tr>
+</table></div>
+<p>
+      <span class="bold"><strong>Data type definitions on ODTONE 0.3 and earlier</strong></span>
+</p>
+<pre class="programlisting">/**
+ * The enumeration of MIH_EVENT_LIST and LINK_EVENT_LIST data type.
+ */
+enum event_list_enum {
+        link_detected = 0,             /**&lt; Link detected.             */
+        link_up = 1,                   /**&lt; Link up.                   */
+        link_down = 2,                 /**&lt; Link down.                 */
+        link_parameters_report = 3,    /**&lt; Link parameters report.    */
+        link_going_down = 4,           /**&lt; Link doing down.           */
+        link_handover_imminent = 5,    /**&lt; Link handover imminent.    */
+        link_handover_complete = 6,    /**&lt; Link handover complete.    */
+        link_pdu_transmit_status = 7,  /**&lt; Link PDU transmit status.  */
+};
+
+/**
+ * MIH_EVENT_LIST and LINK_EVENT_LIST data type.
+ */
+typedef bitmap&lt;32, event_list_enum&gt; event_list;
+
+///////////////////////////////////////////////////////////////////////////////
+/**
+ * The enumeration of MIH_CMD_LIST and LINK_CMD_LIST data type.
+ */
+enum command_list_enum {
+        link_get_parameters = 0,       /**&lt; Link get parameters.           */
+        link_configure_thresholds = 1, /**&lt; Link configure thresholds.     */
+        link_actions = 2,              /**&lt; Link actions.                  */
+        net_ho_candidate_query = 3,    /**&lt; NET handover candidate query.  */
+        net_ho_commit = 3,             /**&lt; NET handover commit.           */
+        n2n_ho_query_resources = 3,    /**&lt; N2N handover query resources.  */
+        n2n_ho_commit = 3,             /**&lt; N2N handover commit.           */
+        n2n_ho_Complete = 3,           /**&lt; N2N handover complete.         */
+        mn_ho_candidate_query = 4,     /**&lt; MN handover candidate query.   */
+        mn_ho_commit = 4,              /**&lt; MN handover commit.            */
+        mn_ho_complete = 4,            /**&lt; MN handover complete.          */
+};
+
+/**
+ * MIH_CMD_LIST and LINK_CMD_LIST data type.
+ */
+typedef bitmap&lt;32, command_list_enum&gt; command_list;
+
+</pre>
+<p>
+    </p>
+<p>
+      <span class="bold"><strong>Data type definitions on ODTONE 0.4</strong></span>
+</p>
+<pre class="programlisting">/**
+ * MIH_CMD_LIST data type enumeration.
+ */
+enum mih_cmd_list_enum {
+	mih_cmd_link_get_parameters = 0,        /**&lt; Link get parameters.           */
+	mih_cmd_link_configure_thresholds = 1,  /**&lt; Link configure thresholds.     */
+	mih_cmd_link_actions = 2,               /**&lt; Link actions.                  */
+	mih_cmd_net_ho_candidate_query = 3,     /**&lt; NET handover candidate query.  */
+	mih_cmd_net_ho_commit = 3,              /**&lt; NET handover commit.           */
+	mih_cmd_n2n_ho_query_resources = 3,     /**&lt; N2N handover query resources.  */
+	mih_cmd_n2n_ho_commit = 3,              /**&lt; N2N handover commit.           */
+	mih_cmd_n2n_ho_complete = 3,            /**&lt; N2N handover complete.         */
+	mih_cmd_mn_ho_candidate_query = 4,      /**&lt; MN handover candidate query.   */
+	mih_cmd_mn_ho_commit = 4,               /**&lt; MN handover commit.            */
+	mih_cmd_mn_ho_complete = 4,             /**&lt; MN handover complete.          */
+};
+
+/**
+ * MIH_CMD_LIST data type.
+ */
+typedef bitmap&lt;32, mih_cmd_list_enum&gt; mih_cmd_list;
+
+/**
+ * MIH_EVT_LIST data type enumeration.
+ */
+enum mih_evt_list_enum {
+	mih_evt_link_detected = 0,              /**&lt; Link detected.             */
+	mih_evt_link_up = 1,                    /**&lt; Link up.                   */
+	mih_evt_link_down = 2,                  /**&lt; Link down.                 */
+	mih_evt_link_parameters_report = 3,     /**&lt; Link parameters report.    */
+	mih_evt_link_going_down = 4,            /**&lt; Link doing down.           */
+	mih_evt_link_handover_imminent = 5,     /**&lt; Link handover imminent.    */
+	mih_evt_link_handover_complete = 6,     /**&lt; Link handover complete.    */
+	mih_evt_link_pdu_transmit_status = 7,   /**&lt; Link PDU transmit status.  */
+};
+
+/**
+ * MIH_EVT_LIST data type.
+ */
+typedef bitmap&lt;32, mih_evt_list_enum&gt; mih_evt_list;
+
+/**
+ * LINK_CMD_LIST data type enumeration.
+ */
+enum link_cmd_list_enum {
+	cmd_link_event_subscribe      = 1,  /**&lt; Event subscribe.       */
+	cmd_link_event_unsubscribe    = 2,  /**&lt; Event unsubscribe.     */
+	cmd_link_get_parameters       = 3,  /**&lt; Get parameters.        */
+	cmd_link_configure_thresholds = 4,  /**&lt; Configure thresholds.  */
+	cmd_link_action               = 5,  /**&lt; Action.                */
+};
+
+/**
+ * LINK_CMD_LIST data type.
+ */
+typedef bitmap&lt;32, link_cmd_list_enum&gt; link_cmd_list;
+
+/**
+ * LINK_EVT_LIST data type enumeration.
+ */
+enum link_evt_list_enum {
+	evt_link_detected = 0,              /**&lt; Link detected.             */
+	evt_link_up = 1,                    /**&lt; Link up.                   */
+	evt_link_down = 2,                  /**&lt; Link down.                 */
+	evt_link_parameters_report = 3,     /**&lt; Link parameters report.    */
+	evt_link_going_down = 4,            /**&lt; Link doing down.           */
+	evt_link_handover_imminent = 5,     /**&lt; Link handover imminent.    */
+	evt_link_handover_complete = 6,     /**&lt; Link handover complete.    */
+	evt_link_pdu_transmit_status = 7,   /**&lt; Link PDU transmit status.  */
+};
+
+/**
+ * LINK_EVT_LIST data type.
+ */
+typedef bitmap&lt;32, link_evt_list_enum&gt; link_evt_list;
+</pre>
+<p>
+    </p>
+<p>
+      Due to this changes the definition of two new TLVs were necessary, in order
+      to exchanges of LINK_CMD_LIST and LINK_EVENT_LIST data types between the MIHF
+      and the Link SAPs.
+    </p>
+<div class="table">
+<a name="odtone.changelog.tlvs_for_link_cmd_list_and_link_event_list"></a><p class="title"><b>Table&#160;4.&#160;TLVs for LINK_CMD_LIST and LINK_EVENT_LIST</b></p>
+<div class="table-contents"><table class="table" summary="TLVs for LINK_CMD_LIST and LINK_EVENT_LIST">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                MIH_LINK_SAP Primitive
+              </p>
+            </th>
+<th>
+              <p>
+                TLV Type Name
+              </p>
+            </th>
+<th>
+              <p>
+                TLV Type Value
+              </p>
+            </th>
+<th>
+              <p>
+                Data type
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                SupportedLinkEventList
+              </p>
+            </td>
+<td>
+              <p>
+                tlv_link_evt_list
+              </p>
+            </td>
+<td>
+              <p>
+                101
+              </p>
+            </td>
+<td>
+              <p>
+                LINK_EVT_LIST
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                SupportedLinkCommandList
+              </p>
+            </td>
+<td>
+              <p>
+                tlv_link_cmd_list
+              </p>
+            </td>
+<td>
+              <p>
+                102
+              </p>
+            </td>
+<td>
+              <p>
+                LINK_CMD_LIST
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><h5>
+<a name="odtone.changelog.h1"></a>
+      <span><a name="odtone.changelog.mih_users_registration_changes"></a></span><a class="link" href="changelog.html#odtone.changelog.mih_users_registration_changes">MIH-Users
+      registration changes</a>
+    </h5>
+<p>
+      The message used by the MIH-Users to register with the MIHF has been modified
+      in order to specifically define which commands and queries it supports. In
+      this way, the MIHF can properly forward the messages to the MIH-Users. Check
+      <a class="link" href="extensions/local_discovery.html" title="Local discovery">this</a> for more info
+      about the local discovery.
+    </p>
+<p>
+      <span class="bold"><strong>MIH_User_Register.indication definition on ODTONE 0.3</strong></span>
+    </p>
+<p>
+      <span class="inlinemediaobject"><img src=".././images/user_register_indication_message_old.png" alt="user_register_indication_message_old"></span>
+    </p>
+<p>
+      <span class="bold"><strong>MIH_User_Register.indication definition on ODTONE 0.4</strong></span>
+    </p>
+<p>
+      <span class="inlinemediaobject"><img src=".././images/user_register_indication_message.png" alt="user_register_indication_message"></span>
+    </p>
+<p>
+      <span class="bold"><strong>Changes in the code</strong></span>
+    </p>
+<p>
+      ODTONE 0.3:
+    </p>
+<p>
+</p>
+<pre class="programlisting">// For the MIH-User
+odtone::mih::message m;
+
+m &lt;&lt; odtone::mih::indication(odtone::mih::indication::user_register)
+    &amp; odtone::mih::tlv_mbb_handover_support(true);
+
+// ----- || -------
+// For the MIIS
+odtone::mih::message m;
+
+m &lt;&lt; odtone::mih::indication(odtone::mih::indication::user_register)
+    &amp; odtone::mih::tlv_mbb_handover_support(false);
+</pre>
+<p>
+    </p>
+<p>
+      ODTONE 0.4:
+    </p>
+<p>
+</p>
+<pre class="programlisting">// For the MIH-User
+odtone::mih::message m;
+boost::optional&lt;odtone::mih::mih_cmd_list&gt; supp_cmd = parse_supported_commands(cfg);
+
+m &lt;&lt; odtone::mih::indication(odtone::mih::indication::user_register)
+    &amp; odtone::mih::tlv_command_list(supp_cmd);
+
+// ----- || -------
+// For the MIIS
+odtone::mih::message m;
+boost::optional&lt;odtone::mih::iq_type_list&gt; supp_iq = parse_supported_queries(cfg);
+
+m &lt;&lt; odtone::mih::indication(odtone::mih::indication::user_register)
+    &amp; odtone::mih::tlv_query_type_list(supp_iq);
+</pre>
+<p>
+    </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        The MIH-User provided by ODTONE was modified in order to parse the supported
+        commands from the configuration file. The MIIS provided by ODTONE was modified
+        in order to parse the supported queries from the configuration file.
+      </p></td></tr>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        In the MIHF configuration file you can configure which commands and queries
+        a given MIH-User supports. If nothing is specified it assume that the MIH-User
+        supports all commands but it does not support any query.
+      </p></td></tr>
+</table></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
+      Aveiro<br>Copyright &#169; 2009-2012 Instituto
+      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="net/link/address_mac.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="license.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

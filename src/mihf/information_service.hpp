@@ -1,6 +1,7 @@
 //==============================================================================
 // Brief   : Information Service
 // Authors : Simao Reis <sreis@av.it.pt>
+//           Carlos Guimarães <cguimaraes@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
