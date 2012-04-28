@@ -25,27 +25,9 @@ namespace nlwrap {
 
 rtnl_socket::rtnl_socket()
 {
-	_sock = ::nl_socket_alloc();
-	if (!_sock) {
-		throw std::runtime_error("Error allocating netlink socket");
-	}
-
 	if (::nl_connect(_sock, NETLINK_ROUTE)) {
 		throw std::runtime_error("Error connecting to ROUTE protocol");
 	}
-}
-
-rtnl_socket::~rtnl_socket()
-{
-	if (_sock) {
-		::nl_close(_sock);
-		::nl_socket_free(_sock);
-	}
-}
-
-rtnl_socket::operator ::nl_sock *()
-{
-	return _sock;
 }
 
 }

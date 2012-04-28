@@ -1,5 +1,5 @@
 //=============================================================================
-// Brief   : GENetlink callback RAI wrapper
+// Brief   : Netlink callback RAI wrapper
 // Authors : André Prata <andreprata@av.it.pt>
 //-----------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
@@ -15,8 +15,8 @@
 // This software is distributed without any warranty.
 //==============================================================================
 
-#ifndef __NLWRAP_GENL_CB_
-#define __NLWRAP_GENL_CB_
+#ifndef __NLWRAP_NL_CB_
+#define __NLWRAP_NL_CB_
 
 #include <boost/noncopyable.hpp>
 
@@ -27,14 +27,14 @@ namespace nlwrap {
 /**
  * This class provides a RAI wrapper for the nl_cb datatype
  */
-class genl_cb : boost::noncopyable {
+class nl_cb : boost::noncopyable {
 
 public:
 	/**
 	 * Construct a genl_cb object.
 	 * Allocs memory for a new nl_cb and locally defines standard callbacks.
 	 */
-	genl_cb();
+	nl_cb();
 
 	/**
 	 * Construct a genl_cb object.
@@ -44,12 +44,12 @@ public:
 	 * @param func The handler for valid messages.
 	 * @param arg Parameter to pass do the handler.
 	 */
-	genl_cb(::nl_recvmsg_msg_cb_t func, void *arg);
+	nl_cb(::nl_recvmsg_msg_cb_t func, void *arg);
 
 	/**
 	 * Destroy the genl_cb object. Deallocates the nl_cb counterpart.
 	 */
-	~genl_cb();
+	~nl_cb();
 
 	/**
 	 * Allow direct usage of nl_cb pointer when needed.
@@ -95,4 +95,4 @@ private:
 
 // EOF ////////////////////////////////////////////////////////////////////////
 
-#endif /* __NLWRAP_GENL_CB_ */
+#endif /* __NLWRAP_NL_CB_ */

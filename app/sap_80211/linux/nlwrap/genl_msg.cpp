@@ -59,31 +59,18 @@ int mac_addr_a2n(unsigned char *mac_addr, char *arg);
 
 ////////////////////////////////////////////////////////////////////////
 
-genl_msg::genl_msg()
+genl_msg::genl_msg() : nl_msg()
 {
-	_msg = ::nlmsg_alloc();
-	if (!_msg) {
-		throw std::runtime_error("Error allocating netlink message");
-	}
-	_own = true;
 }
 
-genl_msg::genl_msg(int family, int type, int flags)
+genl_msg::genl_msg(int family, int type, int flags) : nl_msg()
 {
-	_msg = ::nlmsg_alloc();
-	if (!_msg) {
-		throw std::runtime_error("Error allocating netlink message");
-	}
-	_own = true;
-
 	::genlmsg_put(_msg, 0, 0, family, 0, flags, type, 0);
 }
 
-genl_msg::genl_msg(::nl_msg *msg)
+genl_msg::genl_msg(::nl_msg *msg) : nl_msg(msg)
 {
-	_own = false;
-
-	::nlmsghdr    *nlh = ::nlmsg_hdr(msg);
+	::nlmsghdr    *nlh = ::nlmsg_hdr(_msg);
 	::genlmsghdr *gnlh = static_cast< ::genlmsghdr * >(::nlmsg_data(nlh));
 	_cmd = gnlh->cmd;
 
@@ -122,18 +109,6 @@ genl_msg::genl_msg(::nl_msg *msg)
 	unsigned char *ie = static_cast<unsigned char *>(::nla_data(bss[NL80211_BSS_INFORMATION_ELEMENTS]));
 	int ielen = ::nla_len(bss[NL80211_BSS_INFORMATION_ELEMENTS]);
 	parse_information_elements(ie, ielen);
-}
-
-genl_msg::~genl_msg()
-{
-	if (_own && _msg) {
-		::nlmsg_free(_msg);
-	}
-}
-
-genl_msg::operator ::nl_msg *()
-{
-	return _msg;
 }
 
 void genl_msg::put_ifindex(int ifindex)

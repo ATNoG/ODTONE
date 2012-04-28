@@ -1,5 +1,5 @@
 //=============================================================================
-// Brief   : Include files for nlwrap namespace
+// Brief   : Netlink socket RAI wrapper
 // Authors : André Prata <andreprata@av.it.pt>
 //-----------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
@@ -15,15 +15,54 @@
 // This software is distributed without any warranty.
 //==============================================================================
 
-#include "nl_cb.hpp"
 #include "nl_socket.hpp"
-#include "nl_msg.hpp"
 
-#include "genl_socket.hpp"
-#include "genl_msg.hpp"
+#include <netlink/route/link.h>
 
-#include "rtnl_socket.hpp"
-#include "rtnl_link.hpp"
-#include "rtnl_link_cache.hpp"
+#include <stdexcept>
+
+namespace nlwrap {
+
+nl_socket::nl_socket()
+{
+	_sock = ::nl_socket_alloc();
+	if (!_sock) {
+		throw std::runtime_error("Error allocating netlink socket");
+	}
+}
+
+nl_socket::~nl_socket()
+{
+	if (_sock) {
+		::nl_close(_sock);
+		::nl_socket_free(_sock);
+	}
+}
+
+nl_socket::operator ::nl_sock *()
+{
+	return _sock;
+}
+
+void nl_socket::join_multicast_group(int group)
+{
+	if (::nl_socket_add_membership(_sock, group)) {
+		throw std::runtime_error("Error joining multicast group");
+	}
+}
+
+void nl_socket::send(nl_msg &msg)
+{
+	if (::nl_send_auto_complete(_sock, msg) < 0) {
+		throw std::runtime_error("Error sending netlink message");
+	}
+}
+
+void nl_socket::receive(nl_cb &cb)
+{
+	::nl_recvmsgs(_sock, cb);
+}
+
+}
 
 // EOF ////////////////////////////////////////////////////////////////////////

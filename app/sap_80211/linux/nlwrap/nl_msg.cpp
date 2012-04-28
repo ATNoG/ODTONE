@@ -1,5 +1,5 @@
 //=============================================================================
-// Brief   : Include files for nlwrap namespace
+// Brief   : Netlink message RAI wrapper
 // Authors : André Prata <andreprata@av.it.pt>
 //-----------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
@@ -15,15 +15,37 @@
 // This software is distributed without any warranty.
 //==============================================================================
 
-#include "nl_cb.hpp"
-#include "nl_socket.hpp"
 #include "nl_msg.hpp"
 
-#include "genl_socket.hpp"
-#include "genl_msg.hpp"
+#include <stdexcept>
 
-#include "rtnl_socket.hpp"
-#include "rtnl_link.hpp"
-#include "rtnl_link_cache.hpp"
+namespace nlwrap {
 
-// EOF ////////////////////////////////////////////////////////////////////////
+nl_msg::nl_msg()
+{
+	_msg = ::nlmsg_alloc();
+	if (!_msg) {
+		throw std::runtime_error("Error allocating netlink message");
+	}
+	_own = true;
+}
+
+nl_msg::nl_msg(::nl_msg *msg)
+{
+	_own = false;
+	_msg = msg;
+}
+
+nl_msg::~nl_msg()
+{
+	if (_own && _msg) {
+		::nlmsg_free(_msg);
+	}
+}
+
+nl_msg::operator ::nl_msg *()
+{
+	return _msg;
+}
+
+}

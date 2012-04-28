@@ -1,5 +1,5 @@
 //=============================================================================
-// Brief   : GENetlink callback RAI wrapper
+// Brief   : Netlink callback RAI wrapper
 // Authors : André Prata <andreprata@av.it.pt>
 //-----------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
@@ -15,7 +15,7 @@
 // This software is distributed without any warranty.
 //==============================================================================
 
-#include "genl_cb.hpp"
+#include "nl_cb.hpp"
 #include <stdexcept>
 
 namespace nlwrap {
@@ -46,7 +46,7 @@ int ack_handler(::nl_msg *msg, void *arg)
 	return NL_STOP;
 }
 
-genl_cb::genl_cb() : _err(1)
+nl_cb::nl_cb() : _err(1)
 {
 	_cb = ::nl_cb_alloc(NL_CB_DEFAULT);
 	if (!_cb) {
@@ -70,7 +70,7 @@ genl_cb::genl_cb() : _err(1)
 	}
 }
 
-genl_cb::genl_cb(::nl_recvmsg_msg_cb_t func, void *arg) : _err(1)
+nl_cb::nl_cb(::nl_recvmsg_msg_cb_t func, void *arg) : _err(1)
 {
 	_cb = ::nl_cb_alloc(NL_CB_DEFAULT);
 	if (!_cb) {
@@ -98,36 +98,36 @@ genl_cb::genl_cb(::nl_recvmsg_msg_cb_t func, void *arg) : _err(1)
 	}
 }
 
-genl_cb::~genl_cb()
+nl_cb::~nl_cb()
 {
 	if (_cb) {
 		::nl_cb_put(_cb);
 	}
 }
 
-void genl_cb::custom(::nl_recvmsg_msg_cb_t func, void *arg)
+void nl_cb::custom(::nl_recvmsg_msg_cb_t func, void *arg)
 {
 	if (::nl_cb_set(_cb, NL_CB_VALID, NL_CB_CUSTOM, func, arg)) {
 		throw std::runtime_error("Error setting custom callback");
 	}
 }
 
-bool genl_cb::finish()
+bool nl_cb::finish()
 {
 	return _err <= 0;
 }
 
-bool genl_cb::error()
+bool nl_cb::error()
 {
 	return _err < 0;
 }
 
-int genl_cb::error_code()
+int nl_cb::error_code()
 {
 	return _err;
 }
 
-genl_cb::operator ::nl_cb *()
+nl_cb::operator ::nl_cb *()
 {
 	return _cb;
 }

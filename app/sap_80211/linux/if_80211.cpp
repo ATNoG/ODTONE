@@ -220,7 +220,7 @@ void fetch_scan_results(scan_results_data &data)
 	nlwrap::genl_msg m(s.family_id("nl80211"), NL80211_CMD_GET_SCAN, NLM_F_DUMP);
 	m.put_ifindex(data._ctx._ifindex);
 
-	nlwrap::genl_cb cb(handle_scan_results, static_cast<void *>(&data));
+	nlwrap::nl_cb cb(handle_scan_results, static_cast<void *>(&data));
 
 	s.send(m);
 
@@ -367,7 +367,7 @@ int handle_nl_event(nl_msg *msg, void *arg)
 	return NL_SKIP;
 }
 
-void recv_forever(nlwrap::genl_socket &sock, nlwrap::genl_cb &cb)
+void recv_forever(nlwrap::genl_socket &sock, nlwrap::nl_cb &cb)
 {
 	while (!cb.finish()) {
 		sock.receive(cb);
@@ -440,7 +440,7 @@ sint8 if_80211::get_current_rssi(const mih::mac_addr &addr)
 	m.put_mac(addr.address());
 
 	sint8 rssi = 0;
-	nlwrap::genl_cb cb(handle_station_results, static_cast<void *>(&rssi));
+	nlwrap::nl_cb cb(handle_station_results, static_cast<void *>(&rssi));
 
 	s.send(m);
 
@@ -477,7 +477,7 @@ void if_80211::trigger_scan(bool wait)
 
 	int command = -1;
 	nlwrap::genl_socket s;
-	nlwrap::genl_cb cb;
+	nlwrap::nl_cb cb;
 
 	if (wait) {
 		cb.custom(signal_scan_finish_handler, &command);
@@ -534,7 +534,7 @@ mih::op_mode_enum if_80211::get_op_mode()
 	m.put_ifindex(_ctx._ifindex);
 
 	int operstate = -1;
-	nlwrap::genl_cb cb(handle_operstate, &operstate);
+	nlwrap::nl_cb cb(handle_operstate, &operstate);
 
 	s.send(m);
 	while (!cb.finish()) {
@@ -583,7 +583,7 @@ void if_80211::set_op_mode(const mih::link_ac_type_enum &mode)
 			nlwrap::genl_msg m(_ctx._family_id, NL80211_CMD_DISCONNECT, 0);
 			m.put_ifindex(_ctx._ifindex);
 
-			nlwrap::genl_cb cb;
+			nlwrap::nl_cb cb;
 
 			s.send(m);
 			while (!cb.finish()) {
@@ -602,7 +602,7 @@ void if_80211::set_op_mode(const mih::link_ac_type_enum &mode)
 			m.put_ifindex(_ctx._ifindex);
 			m.put_ps_state(NL80211_PS_ENABLED);
 
-			nlwrap::genl_cb cb;
+			nlwrap::nl_cb cb;
 
 			s.send(m);
 			while (!cb.finish()) {

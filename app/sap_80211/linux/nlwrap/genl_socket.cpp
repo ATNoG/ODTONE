@@ -25,6 +25,8 @@
 
 #include <stdexcept>
 
+#include "genl_msg.hpp"
+
 namespace nlwrap {
 
 struct handler_args {
@@ -36,39 +38,9 @@ int family_handler(::nl_msg *msg, void *arg);
 
 genl_socket::genl_socket()
 {
-	_sock = ::nl_socket_alloc();
-	if (!_sock) {
-		throw std::runtime_error("Error allocating socket");
-	}
-
 	if (::genl_connect(_sock)) {
 		throw std::runtime_error("Error connecting to GENERIC protocol");
 	}
-}
-
-genl_socket::~genl_socket()
-{
-	if (_sock) {
-		::nl_close(_sock);
-		::nl_socket_free(_sock);
-	}
-}
-
-genl_socket::operator nl_sock *()
-{
-	return _sock;
-}
-
-void genl_socket::send(genl_msg &msg)
-{
-	if (::nl_send_auto_complete(_sock, msg) < 0) {
-		throw std::runtime_error("Error sending netlink message");
-	}
-}
-
-void genl_socket::receive(genl_cb &cb)
-{
-	::nl_recvmsgs(_sock, cb);
 }
 
 int genl_socket::family_id(std::string family)
@@ -82,7 +54,7 @@ int genl_socket::multicast_id(std::string group)
 	genl_msg m(s.family_id("nlctrl"), CTRL_CMD_GETFAMILY, 0);
 	m.put_family_name("nl80211");
 
-	genl_cb cb;
+	nl_cb cb;
 	s.send(m);
 
 	handler_args grp = { group.c_str(), -ENOENT };
@@ -101,12 +73,10 @@ int genl_socket::multicast_id(std::string group)
 
 void genl_socket::join_multicast_group(std::string group)
 {
-	if(::nl_socket_add_membership(_sock, multicast_id(group))) {
-		throw std::runtime_error("Error joining multicast group");
-	}
+	nl_socket::join_multicast_group(multicast_id(group));
 }
 
-int family_handler(nl_msg *msg, void *arg) {
+int family_handler(::nl_msg *msg, void *arg) {
 	handler_args *grp = (handler_args *)arg;
 	::nlattr *tb[CTRL_ATTR_MAX + 1];
 	::genlmsghdr *gnlh = static_cast< ::genlmsghdr * >(::nlmsg_data(::nlmsg_hdr(msg)));

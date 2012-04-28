@@ -18,23 +18,22 @@
 #ifndef __NLWRAP_GENL_MSG_
 #define __NLWRAP_GENL_MSG_
 
-#include <boost/noncopyable.hpp>
 #include <boost/optional.hpp>
 #include <string>
 
-#include <netlink/msg.h>
 #include <linux/nl80211.h>
+#include "nl_msg.hpp"
 
 namespace nlwrap {
 
 /**
  * This class provides a RAI wrapper for the nl_msg datatype
  */
-class genl_msg : boost::noncopyable {
+class genl_msg : public nl_msg {
 
 public:
 	/**
-	 * Construct a new genl_msg object. Allocates a new nl_msg counterpart.
+	 * @see nlwrap::nl_msg::nl_msg()
 	 */
 	genl_msg();
 
@@ -48,25 +47,9 @@ public:
 	genl_msg(int family, int type, int flags);
 
 	/**
-	 * Construct a message from an already allocate nl_msg object
-	 * and automatically attempt parsing TLV elements.
-	 * 
-	 * @warning This does not deallocate the object upon destruction.
-	 *
-	 * @param nl_msg The preallocated nl_msg object.
+	 * @see nlwrap::nl_msg::nl_msg(::nl_msg *msg)
 	 */
 	genl_msg(::nl_msg *msg);
-
-	/**
-	 * Destruct the genl_msg object.
-	 * Frees the nl_msg counterpart, if allocated in the object's context.
-	 */
-	~genl_msg();
-
-	/**
-	 * Allow direct usage of the underlying nl_msg pointer.
-	 */
-	operator ::nl_msg *();
 
 	/**
 	 * Put an IFINDEX element in the message.
@@ -129,9 +112,6 @@ private:
 	void parse_information_elements(unsigned char *ie, int ielen);
 
 private:
-	bool      _own;
-	::nl_msg *_msg;
-
 	int       _cmd;
 };
 

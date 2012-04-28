@@ -1,5 +1,5 @@
 //=============================================================================
-// Brief   : GENetlink socket RAI wrapper
+// Brief   : Netlink message RAI wrapper
 // Authors : André Prata <andreprata@av.it.pt>
 //-----------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
@@ -15,57 +15,63 @@
 // This software is distributed without any warranty.
 //==============================================================================
 
-#ifndef __NLWRAP_GENL_SOCKET_
-#define __NLWRAP_GENL_SOCKET_
+#ifndef __NLWRAP_NL_MSG_
+#define __NLWRAP_NL_MSG_
 
 #include <boost/noncopyable.hpp>
-#include <string>
 
-#include <linux/nl80211.h>
-
-#include <netlink/socket.h>
-
-#include "nl_socket.hpp"
-#include "nl_cb.hpp"
+#include <netlink/msg.h>
 
 namespace nlwrap {
 
 /**
- * This class provides a RAI wrapper for the nl_sock datatype on the GENERIC_NETLINK protocol.
+ * This class provides a RAI wrapper for the nl_msg datatype
  */
-class genl_socket : public nl_socket {
+class nl_msg : boost::noncopyable {
 
 public:
 	/**
-	 * Construct a new genl_socket object.
-	 * Automatically attempts allocation and connection to the GENERIC protocol.
+	 * Construct a new nl_msg object. Allocates a new nl_msg counterpart.
 	 */
-	genl_socket();
+	nl_msg();
 
 	/**
-	 * Get a family_id for a family, on this socket.
+	 * Construct a message from an already allocate nl_msg object
+	 * and automatically attempt parsing TLV elements.
+	 * 
+	 * @warning This does not deallocate the object upon destruction.
 	 *
-	 * @param family The family name.
+	 * @param nl_msg The preallocated nl_msg object.
 	 */
-	int family_id(std::string family);
+	nl_msg(::nl_msg *msg);
 
 	/**
-	 * Get the multicast_id of a group in this socket.
-	 *
-	 * @param group The multicast group name.
+	 * Destruct the nl_msg object.
+	 * Frees the nl_msg counterpart, if allocated in the object's context.
 	 */
-	int multicast_id(std::string group);
+	~nl_msg();
 
 	/**
-	 * Join a multicast group in this socket.
-	 *
-	 * @param group The multicast group to join.
+	 * Allow direct usage of the underlying nl_msg pointer.
 	 */
-	void join_multicast_group(std::string group);
+	operator ::nl_msg *();
+
+	/**
+	 * Get the command from a parsed message.
+	 *
+	 * @return The command from the parsed message.
+	 */
+	int cmd();
+
+protected:
+	::nl_msg *_msg;
+
+private:
+	bool      _own;
 };
 
 }
 
 // EOF ////////////////////////////////////////////////////////////////////////
 
-#endif /* __NLWRAP_GENL_SOCKET_ */
+#endif /* __NLWRAP_NL_MSG_ */

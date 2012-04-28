@@ -839,8 +839,7 @@ void default_handler(boost::asio::io_service &ios,
 		break;
 
 	default:
-		log_(0, "(command) Received unknown message");
-		dispatch_status_failure(msg.tid(), mih::confirm::capability_discover);
+		log_(0, "(command) Received unknown MIH message");
 	}
 }
 

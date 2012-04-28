@@ -17,17 +17,18 @@
 
 project sap_80211
 	: requirements
-	  <linkflags>-lnl-3
-	  <linkflags>-lnl-genl-3
-	  <linkflags>-lnl-route-3
-	  <include>/usr/include/libnl3
+	  <linkflags>-lnl
+	  <linkflags>-lnl-genl
+	  <linkflags>-lnl-route
 	;
 
 odtone.explicit-alias if_80211
 	: linux/if_80211.cpp
+	  linux/nlwrap/nl_cb.cpp
+	  linux/nlwrap/nl_socket.cpp
+	  linux/nlwrap/nl_msg.cpp
 	  linux/nlwrap/genl_msg.cpp
 	  linux/nlwrap/genl_socket.cpp
-	  linux/nlwrap/genl_cb.cpp
 	  linux/nlwrap/rtnl_socket.cpp
 	  linux/nlwrap/rtnl_link.cpp
 	  linux/nlwrap/rtnl_link_cache.cpp

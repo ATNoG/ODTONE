@@ -183,9 +183,10 @@ private:
 	sint8 get_current_rssi(const mih::mac_addr &addr);
 
 private:
-	ctx_data _ctx;
+	ctx_data            _ctx;
+
 	nlwrap::genl_socket _socket;
-	nlwrap::genl_cb     _callback;
+	nlwrap::nl_cb       _callback;
 };
 
 // EOF ////////////////////////////////////////////////////////////////////////
