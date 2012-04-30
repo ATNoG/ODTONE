@@ -136,6 +136,8 @@ public:
 		int                   _ifindex;
 		std::string           _dev;
 		odtone::mih::mac_addr _mac;
+
+		bool                  _active;
 	};
 
 private:

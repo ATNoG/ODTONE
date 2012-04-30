@@ -18,7 +18,6 @@
 #define MAC_ALEN 18
 
 #include "if_8023.hpp"
-
 #include <boost/thread.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/foreach.hpp>
@@ -31,8 +30,6 @@
 #include <stdexcept>
 
 #include "nlwrap/nlwrap.hpp"
-#define _LINUX_IF_H // workaround
-#include <netlink/route/link.h>
 
 using namespace odtone;
 
@@ -40,7 +37,7 @@ static logger log_("if_8023", std::cout);
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <stdio.h>
+#define IF_OPER_UP 6
 int handle_nl_event(nl_msg *msg, void *arg)
 {
 	if_8023::ctx_data *ctx = static_cast<if_8023::ctx_data *>(arg);
@@ -62,18 +59,31 @@ int handle_nl_event(nl_msg *msg, void *arg)
 
 	boost::optional<mih::link_addr> old_router;
 
-	if (ifi->ifi_flags & IFF_UP) {
-		log_(0, "(event) IFF_UP");
+	nlwrap::rtnl_link_cache cache;
+	nlwrap::rtnl_link link(cache.get_by_ifindex(ctx->_ifindex));
 
-		boost::optional<mih::link_addr> new_router;
-		boost::optional<bool> ip_renew;
-		boost::optional<mih::ip_mob_mgmt> mobility_management;
-		ctx->_ios.dispatch(boost::bind(ctx->_up_handler.get(), lid, old_router, new_router, ip_renew, mobility_management));
-	} else {
-		log_(0, "(event) IFF_DOWN");
-		mih::link_dn_reason rs = mih::link_dn_reason(mih::link_dn_reason_explicit_disconnect);;
+	bool active = link.get_operstate() == IF_OPER_UP;
+	if (active != ctx->_active) {
+		ctx->_active = active;
 
-		ctx->_ios.dispatch(boost::bind(ctx->_down_handler.get(), lid, old_router, rs));
+		if (active) {
+			log_(0, "(event) IF_OPER_UP");
+
+			boost::optional<mih::link_addr> new_router;
+			boost::optional<bool> ip_renew;
+			boost::optional<mih::ip_mob_mgmt> mobility_management;
+			ctx->_ios.dispatch(boost::bind(ctx->_up_handler.get(),
+			                               lid,
+			                               old_router,
+			                               new_router,
+			                               ip_renew,
+			                               mobility_management));
+		} else {
+			log_(0, "(event) ~IF_OPER_UP");
+			mih::link_dn_reason rs = mih::link_dn_reason(mih::link_dn_reason_explicit_disconnect);;
+
+			ctx->_ios.dispatch(boost::bind(ctx->_down_handler.get(), lid, old_router, rs));
+		}
 	}
 
 	return NL_SKIP;
@@ -99,6 +109,7 @@ if_8023::if_8023(boost::asio::io_service &ios, mih::mac_addr mac) : _ctx(ios)
 	nlwrap::rtnl_link link(cache.get_by_addr(mac.address()));
 
 	_ctx._ifindex = link.ifindex();
+	_ctx._active = link.get_operstate() == IF_OPER_UP;
 
 	// initalize socket
 	_socket.join_multicast_group(RTMGRP_LINK);

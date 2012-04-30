@@ -120,6 +120,11 @@ void rtnl_link::unset_flags(unsigned int flags)
 	::rtnl_link_unset_flags(_link, flags);
 }
 
+uint8_t rtnl_link::get_operstate()
+{
+	return ::rtnl_link_get_operstate(_link);
+}
+
 }
 
 // EOF ////////////////////////////////////////////////////////////////////////

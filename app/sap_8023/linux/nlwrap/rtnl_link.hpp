@@ -117,6 +117,13 @@ public:
 	 */
 	void unset_flags(unsigned int flags);
 
+	/**
+	 * Get this link's operstate flags.
+	 *
+	 * @return The current operstate flags for this link.
+	 */
+	uint8_t get_operstate();
+
 private:
 	bool         _own;
 	::rtnl_link *_link;
