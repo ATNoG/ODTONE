@@ -174,16 +174,16 @@ void if_8023::set_op_mode(const mih::link_ac_type_enum &mode)
 		return;
 		break;
 
+	case odtone::mih::link_ac_type_disconnect:
+		//change.unset_flags(IFF_UP);
+		//break;
+
 	case odtone::mih::link_ac_type_power_down:
 		change.unset_flags(IFF_UP);
 		break;
 
 	case odtone::mih::link_ac_type_power_up:
 		change.set_flags(IFF_UP);
-		break;
-
-	case odtone::mih::link_ac_type_disconnect:
-		// TODO
 		break;
 
 	case odtone::mih::link_ac_type_low_power:
