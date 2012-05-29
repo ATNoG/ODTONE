@@ -139,6 +139,8 @@ install odtone-dist
 	  app/link_sap/link_sap.conf
 	  app/mih_usr//mih_usr
 	  app/mih_usr/mih_usr.conf
+	  app/sap_80211//sap_80211
+	  app/sap_80211/sap_80211.conf
 #	  app/client//client
 #	  src/dummyserver//dummyserver
 #	  app/miis_rdf_server//miis_rdf_server
