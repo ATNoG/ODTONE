@@ -224,7 +224,7 @@ void global_thresholds_check(boost::asio::io_service &ios, if_80211 &fi)
 		mih::link_tuple_id lid = i.id;
 		mih::link_param_rpt_list rpt_list;
 
-		sint8 *d_signal = boost::get<sint8>(&i.signal);
+		odtone::sint8 *d_signal = boost::get<odtone::sint8>(&i.signal);
 		if (!d_signal) {
 			log_(0, "(cmd) Periodic data did not include RSSI");
 			return;
@@ -237,17 +237,17 @@ void global_thresholds_check(boost::asio::io_service &ios, if_80211 &fi)
 			boost::optional<boost::variant<mih::link_param_val, mih::qos_param_val>> value;
 
 			if (th_it->type == mih::link_param_802_11_rssi) {
-				sint8 t_signal = static_cast<sint8>(th_it->th.threshold_val);
+				odtone::sint8 t_signal = static_cast<odtone::sint8>(th_it->th.threshold_val);
 
 				if (th_it->th.threshold_x_dir == mih::threshold::above_threshold) {
 					if (*d_signal > t_signal) {
 						log_(0, "(link) Current RSSI (", (int)*d_signal, ") above ", (int)t_signal);
-						value = static_cast<uint16>(*d_signal);
+						value = static_cast<odtone::uint16>(*d_signal);
 					}
 				} else /*if (the.threshold_x_dir == mih::threshold::below_threshold) */{
 					if (*d_signal < t_signal) {
 						log_(0, "(link) Current RSSI (", (int)*d_signal, ") below ", (int)t_signal);
-						value = static_cast<uint16>(*d_signal);
+						value = static_cast<odtone::uint16>(*d_signal);
 					}
 				}
 	//		} else {
@@ -304,7 +304,7 @@ void periodic_report_data::_report_value(boost::asio::io_service &ios, if_80211 
 
 			lid = i.id;
 
-			sint8 *d_signal = boost::get<sint8>(&i.signal);
+			odtone::sint8 *d_signal = boost::get<odtone::sint8>(&i.signal);
 			rpt.param.value = *d_signal;
 
 			rpt_list.push_back(rpt);
@@ -337,7 +337,7 @@ void scheduled_scan_trigger(if_80211 &fi)
 ///////////////////////////////////////////////////////////////////////////////
 
 // Dispatch failure message for command errors.
-void dispatch_status_failure(uint16 tid, mih::confirm::mid mid)
+void dispatch_status_failure(odtone::uint16 tid, mih::confirm::mid mid)
 {
 	log_(0, "(command) Dispatching status_failure");
 
@@ -354,7 +354,7 @@ void dispatch_status_failure(uint16 tid, mih::confirm::mid mid)
 
 // Dispatch a capability_discover confirm.
 // Fully supported, but check the supported events and commands lists.
-void handle_capability_discover(uint16 tid)
+void handle_capability_discover(odtone::uint16 tid)
 {
 	log_(0, "(command) Handling capability_discover");
 
@@ -375,7 +375,7 @@ void handle_capability_discover(uint16 tid)
 
 // Dispatch an event_subscribe confirm.
 // Fully supported, but check the supported events list.
-void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
+void handle_event_subscribe(odtone::uint16 tid, mih::link_evt_list &events)
 {
 	log_(0, "(command) Handling event_subscribe");
 
@@ -402,7 +402,7 @@ void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
 
 // Dispatch an event unsubscribe confirm.
 // Fully supported, but check the supported events list.
-void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
+void handle_event_unsubscribe(odtone::uint16 tid, mih::link_evt_list &events)
 {
 	log_(0, "(command) Handling event_unsubscribe");
 
@@ -434,7 +434,7 @@ void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
 // Aditionally, will fail if requesting any parameter outside of this list:
 // - link_param_802_11_rssi, link_states_req_op_mode, link_states_req_channel_id
 void handle_link_get_parameters(if_80211 &fi,
-	uint16 tid,
+	odtone::uint16 tid,
 	mih::link_param_type_list &param_list,
 	mih::link_states_req &states_req,
 	mih::link_desc_req &desc_req)
@@ -460,8 +460,8 @@ void handle_link_get_parameters(if_80211 &fi,
 				poa_info ap_info = fi.get_poa_info();
 
 				if (mih::percentage *v = boost::get<mih::percentage>(&ap_info.signal)) {
-					status_param.value = (uint)*v;
-				} else if (sint8 *v = boost::get<sint8>(&ap_info.signal)) {
+					status_param.value = (odtone::uint)*v;
+				} else if (odtone::sint8 *v = boost::get<odtone::sint8>(&ap_info.signal)) {
 					status_param.value = *v;
 				}
 			} else if (*param == mih::link_param_802_11_no_qos) {
@@ -535,7 +535,7 @@ void handle_link_get_parameters(if_80211 &fi,
 // Partially supported. Only RSSI, for now!
 void handle_link_configure_thresholds(boost::asio::io_service &ios,
 	if_80211 &fi,
-	uint16 tid,
+	odtone::uint16 tid,
 	mih::link_cfg_param_list &param_list)
 {
 	log_(0, "(command) Handling link_configure_thresholds");
@@ -611,7 +611,7 @@ void handle_link_configure_thresholds(boost::asio::io_service &ios,
 				}
 			}
 		} else { // insert it
-			uint16 *period = boost::get<uint16>(&param.timer_interval);
+			odtone::uint16 *period = boost::get<odtone::uint16>(&param.timer_interval);
 			if (period) {
 				// dealing with a periodic configuration
 				log_(0, "(command) Inserting periodic report");
@@ -683,9 +683,9 @@ void handle_link_configure_thresholds(boost::asio::io_service &ios,
 // instead we just enable power saving features on the device.
 void handle_link_actions(boost::asio::io_service &ios,
 	if_80211 &fi,
-	uint16 tid,
+	odtone::uint16 tid,
 	mih::link_action &action,
-	uint16 &delay,
+	odtone::uint16 &delay,
 	boost::optional<mih::link_addr> &poa)
 {
 	log_(0, "(command) Handling link_action");
@@ -826,7 +826,7 @@ void default_handler(boost::asio::io_service &ios,
 		{
 			log_(0, "(command) Received link_actions message");
 			mih::link_action action;
-			uint16 delay;
+			odtone::uint16 delay;
 			boost::optional<mih::link_addr> poa;
 
 			msg >> mih::request()
@@ -900,15 +900,15 @@ int main(int argc, char** argv)
 		po::options_description desc("MIH Link SAP Configuration");
 		desc.add_options()
 			("help", "Display configuration options")
-			(kConf_Sap_Verbosity, po::value<uint>()->default_value(2), "Log level [0-2]")
-			(kConf_Sched_Scan_Period, po::value<uint>()->default_value(0), "Scheduled scan interval (millis)")
-			(kConf_Default_Threshold_Period, po::value<uint>()->default_value(1000), "Default threshold checking interval (millis)")
+			(kConf_Sap_Verbosity, po::value<odtone::uint>()->default_value(2), "Log level [0-2]")
+			(kConf_Sched_Scan_Period, po::value<odtone::uint>()->default_value(0), "Scheduled scan interval (millis)")
+			(kConf_Default_Threshold_Period, po::value<odtone::uint>()->default_value(1000), "Default threshold checking interval (millis)")
 			(sap::kConf_Interface_Addr, po::value<std::string>()->default_value(""), "Interface address")
-			(sap::kConf_Port, po::value<ushort>()->default_value(1235), "Port")
+			(sap::kConf_Port, po::value<odtone::ushort>()->default_value(1235), "Port")
 			(sap::kConf_File, po::value<std::string>()->default_value("sap_80211.conf"), "Configuration File")
-			(sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive Buffer Length")
+			(sap::kConf_Receive_Buffer_Len, po::value<odtone::uint>()->default_value(4096), "Receive Buffer Length")
 			(sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
-			(sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "MIHF Local Communications Port")
+			(sap::kConf_MIHF_Local_Port, po::value<odtone::ushort>()->default_value(1025), "MIHF Local Communications Port")
 			(sap::kConf_MIHF_Id, po::value<std::string>()->default_value("local-mihf"), "Local MIHF Id")
 			(sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("link"), "Link SAP Id");
 
@@ -920,8 +920,8 @@ int main(int argc, char** argv)
 			return EXIT_SUCCESS;
 		}
 
-		uint sched_scan_period = cfg.get<uint>(kConf_Sched_Scan_Period);
-		uint th_period = cfg.get<uint>(kConf_Default_Threshold_Period);
+		odtone::uint sched_scan_period = cfg.get<odtone::uint>(kConf_Sched_Scan_Period);
+		odtone::uint th_period = cfg.get<odtone::uint>(kConf_Default_Threshold_Period);
 		if (th_period == 0) {
 			std::cerr << "default_th_period must be positive!" << std::endl;
 			return EXIT_FAILURE;

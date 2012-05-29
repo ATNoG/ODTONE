@@ -42,7 +42,7 @@ public:
 	 * @param period the time period between task triggers, in milliseconds.
 	 * @param task the task that will be ran at the specified interval.
 	 */
-	timer_task(boost::asio::io_service& ios, uint period, const boost::function<void()>& task);
+	timer_task(boost::asio::io_service& ios, odtone::uint period, const boost::function<void()>& task);
 
 	~timer_task();
 
@@ -68,7 +68,7 @@ public:
 	 *
 	 * @return The period in milliseconds
 	 */
-	uint period();
+	odtone::uint period();
 };
 
 // EOF ////////////////////////////////////////////////////////////////////////

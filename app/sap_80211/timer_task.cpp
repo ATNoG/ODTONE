@@ -28,7 +28,7 @@ void timer_task::task_handler(const boost::system::error_code& e)
 	}
 }
 
-timer_task::timer_task(boost::asio::io_service& ios, uint period, const boost::function<void()>& task)
+timer_task::timer_task(boost::asio::io_service& ios, odtone::uint period, const boost::function<void()>& task)
 	: _running(false), _timer(ios), _period(period), _task(task)
 {
 }
@@ -56,7 +56,7 @@ bool timer_task::running()
 	return _running;
 }
 
-uint timer_task::period()
+odtone::uint timer_task::period()
 {
 	return _period;
 }

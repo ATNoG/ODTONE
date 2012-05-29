@@ -123,7 +123,7 @@ int signal_scan_finish_handler(::nl_msg *msg, void *arg)
 struct scan_results_data {
 	std::vector<poa_info> l;
 
-	boost::optional<uint> associated_index;
+	boost::optional<odtone::uint> associated_index;
 	if_80211::ctx_data &_ctx;
 
 	scan_results_data(if_80211::ctx_data &ctx) : _ctx(ctx) {}
@@ -248,8 +248,8 @@ void dispatch_strongest_scan_results(scan_results_data &d)
 				const mih::percentage *a_pct = boost::get<mih::percentage>(&a.signal);
 				const mih::percentage *b_pct = boost::get<mih::percentage>(&b.signal);
 				if (a_pct && b_pct) {
-					uint _a = *((const uint *)a_pct);
-					uint _b = *((const uint *)b_pct);
+					odtone::uint _a = *((const odtone::uint *)a_pct);
+					odtone::uint _b = *((const odtone::uint *)b_pct);
 					return _a > _b;
 				}
 			}

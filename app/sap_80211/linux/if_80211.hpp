@@ -33,7 +33,7 @@
 using namespace odtone;
 
 struct poa_info : mih::link_det_info {
-	uint channel_id;
+	odtone::uint channel_id;
 };
 
 class if_80211 : boost::noncopyable {
