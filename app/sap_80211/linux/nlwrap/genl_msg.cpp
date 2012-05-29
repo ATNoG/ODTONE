@@ -317,8 +317,12 @@ bss_parse_policy::bss_parse_policy() {
 	pol[NL80211_BSS_SIGNAL_MBM].type = NLA_U32;
 	pol[NL80211_BSS_SIGNAL_UNSPEC].type = NLA_U8;
 	pol[NL80211_BSS_STATUS].type = NLA_U32;
+#ifdef NL80211_BSS_SEEN_MS_AGO
 	pol[NL80211_BSS_SEEN_MS_AGO].type = NLA_U32;
+#endif /* NL80211_BSS_SEEN_MS_AGO */
+#ifdef NL80211_BSS_BEACON_IES
 	pol[NL80211_BSS_BEACON_IES] = { };
+#endif /* NL80211_BSS_BEACON_IES */
 }
 
 stats_parse_policy::stats_parse_policy() {
@@ -332,9 +336,15 @@ stats_parse_policy::stats_parse_policy() {
 	pol[NL80211_STA_INFO_LLID].type = NLA_U16;
 	pol[NL80211_STA_INFO_PLID].type = NLA_U16;
 	pol[NL80211_STA_INFO_PLINK_STATE].type = NLA_U8;
+#ifdef NL80211_STA_INFO_TX_RETRIES
 	pol[NL80211_STA_INFO_TX_RETRIES].type = NLA_U32;
+#endif /* NL80211_STA_INFO_TX_RETRIES */
+#ifdef NL80211_STA_INFO_TX_FAILED
 	pol[NL80211_STA_INFO_TX_FAILED].type = NLA_U32;
+#endif /* NL80211_STA_INFO_TX_FAILED */
+#ifdef NL80211_STA_INFO_STA_FLAGS
 	pol[NL80211_STA_INFO_STA_FLAGS].minlen = sizeof(nl80211_sta_flag_update);
+#endif /* NL80211_STA_INFO_STA_FLAGS */
 }
 
 }
