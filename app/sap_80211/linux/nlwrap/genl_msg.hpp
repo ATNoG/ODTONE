@@ -65,12 +65,14 @@ public:
 	 */
 	void put_family_name(std::string name);
 
+#ifdef NL80211_ATTR_PS_STATE
 	/**
 	 * Put a PS_STATE value in the message.
 	 *
 	 * @param state The desired PS_STATE.
 	 */
 	void put_ps_state(int state);
+#endif /* NL80211_ATTR_PS_STATE */
 
 	/**
 	 * Put a MAC attribute in the message.

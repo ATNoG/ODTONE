@@ -533,6 +533,7 @@ mih::op_mode_enum if_80211::get_op_mode()
 		return mih::op_mode_powered_down;
 	}
 
+#ifdef NL80211_CMD_GET_POWER_SAVE
 	nlwrap::genl_socket s;
 	nlwrap::genl_msg m(_ctx._family_id, NL80211_CMD_GET_POWER_SAVE, 0);
 	m.put_ifindex(_ctx._ifindex);
@@ -552,6 +553,7 @@ mih::op_mode_enum if_80211::get_op_mode()
 	if (operstate == NL80211_PS_ENABLED) {
 		return odtone::mih::op_mode_power_saving;
 	}
+#endif /* NL80211_CMD_GET_POWER_SAVE */
 
 	return mih::op_mode_normal;
 }
@@ -600,6 +602,7 @@ void if_80211::set_op_mode(const mih::link_ac_type_enum &mode)
 		}
 		break;
 	case odtone::mih::link_ac_type_low_power:
+#ifdef NL80211_CMD_SET_POWER_SAVE
 		{
 			nlwrap::genl_socket s;
 			nlwrap::genl_msg m(_ctx._family_id, NL80211_CMD_SET_POWER_SAVE, 0);
@@ -618,6 +621,7 @@ void if_80211::set_op_mode(const mih::link_ac_type_enum &mode)
 			}
 		}
 		break;
+#endif /* NL80211_CMD_SET_POWER_SAVE */
 	default:
 		throw std::runtime_error("Mode not supported");
 		break;

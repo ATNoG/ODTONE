@@ -18,7 +18,6 @@
 #include "genl_msg.hpp"
 
 #include <netlink/genl/genl.h>
-#include <linux/nl80211.h>
 
 #include <stdexcept>
 
@@ -125,12 +124,14 @@ void genl_msg::put_family_name(std::string name)
 	}
 }
 
+#ifdef NL80211_ATTR_PS_STATE
 void genl_msg::put_ps_state(int state)
 {
 	if (::nla_put_u32(_msg, NL80211_ATTR_PS_STATE, state)) {
 		throw std::runtime_error("Error putting PS_STATE in nl_msg");
 	}
 }
+#endif /* NL80211_ATTR_PS_STATE */
 
 void genl_msg::put_mac(const std::string &mac)
 {
@@ -169,9 +170,11 @@ void genl_msg::parse_attr(::nlattr *tb[NL80211_ATTR_MAX + 1])
 		attr_reason_code = ::nla_get_u16(tb[NL80211_ATTR_REASON_CODE]);
 	}
 
+#ifdef NL80211_ATTR_PS_STATE
 	if (tb[NL80211_ATTR_PS_STATE]) {
 		attr_ps_state = ::nla_get_u32(tb[NL80211_ATTR_PS_STATE]);
 	}
+#endif /* NL80211_ATTR_PS_STATE */
 
 	if (tb[NL80211_ATTR_BSS]) {
 		attr_bss = true;
