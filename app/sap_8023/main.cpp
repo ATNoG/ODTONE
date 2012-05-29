@@ -111,7 +111,7 @@ void dispatch_link_down(mih::link_tuple_id &lid,
 ///////////////////////////////////////////////////////////////////////////////
 
 // Dispatch failure message for command errors.
-void dispatch_status_failure(uint16 tid, mih::confirm::mid mid)
+void dispatch_status_failure(odtone::uint16 tid, mih::confirm::mid mid)
 {
 	log_(0, "(command) Dispatching status_failure");
 
@@ -128,7 +128,7 @@ void dispatch_status_failure(uint16 tid, mih::confirm::mid mid)
 
 // Dispatch a capability_discover confirm.
 // Fully supported, but check the supported events and commands lists.
-void handle_capability_discover(uint16 tid)
+void handle_capability_discover(odtone::uint16 tid)
 {
 	log_(0, "(command) Handling capability_discover");
 
@@ -149,7 +149,7 @@ void handle_capability_discover(uint16 tid)
 
 // Dispatch an event_subscribe confirm.
 // Fully supported, but check the supported events list.
-void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
+void handle_event_subscribe(odtone::uint16 tid, mih::link_evt_list &events)
 {
 	log_(0, "(command) Handling event_subscribe");
 
@@ -176,7 +176,7 @@ void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
 
 // Dispatch an event unsubscribe confirm.
 // Fully supported, but check the supported events list.
-void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
+void handle_event_unsubscribe(odtone::uint16 tid, mih::link_evt_list &events)
 {
 	log_(0, "(command) Handling event_unsubscribe");
 
@@ -204,7 +204,7 @@ void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
 // Dispatch a link_get_parameters confirm.
 // Partially supported.
 void handle_link_get_parameters(if_8023 &fi,
-	uint16 tid,
+	odtone::uint16 tid,
 	mih::link_param_type_list &param_list,
 	mih::link_states_req &states_req,
 	mih::link_desc_req &desc_req)
@@ -300,9 +300,9 @@ void handle_link_get_parameters(if_8023 &fi,
 // Partially supported.
 void handle_link_actions(boost::asio::io_service &ios,
 	if_8023 &fi,
-	uint16 tid,
+	odtone::uint16 tid,
 	mih::link_action &action,
-	uint16 &delay,
+	odtone::uint16 &delay,
 	boost::optional<mih::link_addr> &poa)
 {
 	log_(0, "(command) Handling link_action");
@@ -430,7 +430,7 @@ void default_handler(boost::asio::io_service &ios,
 		{
 			log_(0, "(command) Received link_actions message");
 			mih::link_action action;
-			uint16 delay;
+			odtone::uint16 delay;
 			boost::optional<mih::link_addr> poa;
 
 			msg >> mih::request()
@@ -508,11 +508,11 @@ int main(int argc, char** argv)
 		po::options_description desc("MIH Link SAP Configuration");
 		desc.add_options()
 			("help", "Display configuration options")
-			(kConf_Sap_Verbosity, po::value<uint>()->default_value(2), "Log level [0-2]")
+			(kConf_Sap_Verbosity, po::value<odtone::uint>()->default_value(2), "Log level [0-2]")
 			(sap::kConf_Interface_Addr, po::value<std::string>()->default_value(""), "Interface address")
 			(sap::kConf_Port, po::value<ushort>()->default_value(1235), "Port")
 			(sap::kConf_File, po::value<std::string>()->default_value("sap_8023.conf"), "Configuration File")
-			(sap::kConf_Receive_Buffer_Len, po::value<uint>()->default_value(4096), "Receive Buffer Length")
+			(sap::kConf_Receive_Buffer_Len, po::value<odtone::uint>()->default_value(4096), "Receive Buffer Length")
 			(sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
 			(sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "MIHF Local Communications Port")
 			(sap::kConf_MIHF_Id, po::value<std::string>()->default_value("local-mihf"), "Local MIHF Id")
