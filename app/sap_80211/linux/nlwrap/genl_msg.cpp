@@ -53,6 +53,11 @@ struct stats_parse_policy {
 	stats_parse_policy();
 } stats_policy;
 
+struct rate_parse_policy {
+	::nla_policy pol[NL80211_RATE_INFO_MAX + 1];
+	rate_parse_policy();
+} rate_policy;
+
 void mac_addr_n2a(char *mac_addr, unsigned char *arg);
 int mac_addr_a2n(unsigned char *mac_addr, char *arg);
 
@@ -211,6 +216,17 @@ void genl_msg::parse_sta(::nlattr *sta[NL80211_STA_INFO_MAX + 1])
 	if (sta[NL80211_STA_INFO_SIGNAL]) {
 		sta_info_signal = nla_get_u8(sta[NL80211_STA_INFO_SIGNAL]);
 	}
+
+	if (sta[NL80211_STA_INFO_TX_BITRATE]) {
+		::nlattr *rate[NL80211_RATE_INFO_MAX + 1];
+		if (::nla_parse_nested(rate, NL80211_RATE_INFO_MAX, sta[NL80211_STA_INFO_TX_BITRATE], rate_policy.pol)) {
+			throw std::runtime_error("Error parsing nl_msg rate attributes");
+		}
+
+		if (rate[NL80211_RATE_INFO_BITRATE]) {
+			sta_rate_info_bitrate = nla_get_u16(rate[NL80211_RATE_INFO_BITRATE]);
+		}
+	}
 }
 
 void genl_msg::parse_information_elements(unsigned char *ie, int ielen)
@@ -347,4 +363,11 @@ stats_parse_policy::stats_parse_policy() {
 #endif /* NL80211_STA_INFO_STA_FLAGS */
 }
 
+rate_parse_policy::rate_parse_policy() {
+	pol[NL80211_RATE_INFO_BITRATE].type = NLA_U16;
+	pol[NL80211_RATE_INFO_MCS].type = NLA_U8;
+	pol[NL80211_RATE_INFO_40_MHZ_WIDTH].type = NLA_FLAG;
+	pol[NL80211_RATE_INFO_SHORT_GI].type = NLA_FLAG;
 }
+
+}; // nlwrap

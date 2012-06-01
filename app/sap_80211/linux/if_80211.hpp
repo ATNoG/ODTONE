@@ -135,6 +135,22 @@ public:
 	void set_op_mode(const mih::link_ac_type_enum &mode);
 
 	/**
+	 * Get the link packet error rate
+	 * (number of errors over total packets sent)
+	 *
+	 * @return the referred percentage.
+	 */
+	odtone::uint get_packet_error_rate();
+
+	/**
+	 * Get the current link tx data rate in kb/s to a station (AP)
+	 *
+	 * @param addr Address of the AP
+	 * @return the current data rate.
+	 */
+	odtone::uint get_current_data_rate(mih::mac_addr &addr);
+
+	/**
 	 * Set the callback for LINK_UP events.
 	 *
 	 * @param h The callback.

@@ -106,6 +106,7 @@ public:
 	boost::optional<bool> ie_has_security_features;
 
 	boost::optional<int> sta_info_signal;
+	boost::optional<int> sta_rate_info_bitrate; // 54MBit = 540
 
 private:
 	void parse_attr(::nlattr *tb[NL80211_ATTR_MAX + 1]);

@@ -161,7 +161,7 @@ int handle_scan_results(::nl_msg *msg, void *arg)
 		}
 
 		if (m.bss_status && m.bss_status.get() == NL80211_BSS_STATUS_ASSOCIATED) {
-			d->associated_index = d->l.size(); 
+			d->associated_index = d->l.size();
 		}
 
 		mih::net_caps caps;
@@ -195,7 +195,7 @@ int handle_scan_results(::nl_msg *msg, void *arg)
 	return NL_SKIP;
 }
 
-int handle_station_results(::nl_msg *msg, void *arg)
+int handle_station_results_signal(::nl_msg *msg, void *arg)
 {
 	try {
 		nlwrap::genl_msg m(msg);
@@ -203,6 +203,22 @@ int handle_station_results(::nl_msg *msg, void *arg)
 
 		if (m.sta_info_signal) {
 			*d = m.sta_info_signal.get();
+		}
+	} catch(...) {
+		log_(0, "(command) Error parsing station dump message");
+	}
+
+	return NL_SKIP;
+}
+
+int handle_station_results_rate(::nl_msg *msg, void *arg)
+{
+	try {
+		nlwrap::genl_msg m(msg);
+		odtone::uint *d = static_cast<odtone::uint *>(arg);
+
+		if (m.sta_rate_info_bitrate) {
+			*d = m.sta_rate_info_bitrate.get();
 		}
 	} catch(...) {
 		log_(0, "(command) Error parsing station dump message");
@@ -444,7 +460,7 @@ sint8 if_80211::get_current_rssi(const mih::mac_addr &addr)
 	m.put_mac(addr.address());
 
 	sint8 rssi = 0;
-	nlwrap::nl_cb cb(handle_station_results, static_cast<void *>(&rssi));
+	nlwrap::nl_cb cb(handle_station_results_signal, static_cast<void *>(&rssi));
 
 	s.send(m);
 
@@ -626,6 +642,40 @@ void if_80211::set_op_mode(const mih::link_ac_type_enum &mode)
 		throw std::runtime_error("Mode not supported");
 		break;
 	}
+}
+
+odtone::uint if_80211::get_packet_error_rate()
+{
+	nlwrap::rtnl_link_cache cache;
+	nlwrap::rtnl_link link(cache.get_by_ifindex(_ctx._ifindex));
+
+	return link.tx_errors() / link.tx_packets();
+}
+
+odtone::uint if_80211::get_current_data_rate(mih::mac_addr &addr)
+{
+	log_(0, "(command) Getting current data rate");
+
+	nlwrap::genl_socket s;
+
+	nlwrap::genl_msg m(s.family_id("nl80211"), NL80211_CMD_GET_STATION, NLM_F_DUMP);
+	m.put_ifindex(_ctx._ifindex);
+	m.put_mac(addr.address());
+
+	odtone::uint rate = 0;
+	nlwrap::nl_cb cb(handle_station_results_rate, static_cast<void *>(&rate));
+
+	s.send(m);
+
+	while (!cb.finish()) {
+		s.receive(cb);
+	}
+
+	if (cb.error()) {
+		throw std::runtime_error("Error getting data rate, code: " + boost::lexical_cast<std::string>(cb.error_code()));
+	}
+
+	return rate * 100;
 }
 
 void if_80211::link_up_callback(link_up_handler h)
