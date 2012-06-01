@@ -15,12 +15,26 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-project sap_8023
-	: requirements
-	  <linkflags>-lnl-3
-	  <linkflags>-lnl-route-3
-	  <include>/usr/include/libnl3
+actions run_make
+{
+	current_dir="`pwd`"
+
+	cd "$current_dir/$(>:D)"
+	./configure
+
+	cd "$current_dir"
+	make -C $(>:D)/lib
+
+	ar rcs $(<) `find $(>:D)/lib -type f -name \*.o`
+}
+
+make libnl.a
+	: libnl/configure
+	: @run_make
+	  <dependency>sap_80211
 	;
+
+lib libnl : : <file>libnl.a : : <include>libnl/include/ ;
 
 odtone.explicit-alias if_8023
 	: linux/if_8023.cpp
@@ -36,6 +50,7 @@ exe sap_8023
 	: main.cpp
 	  timer_task.cpp
 	  if_8023
+	  libnl
 	  ../../lib/odtone//odtone_base
 	  ../../lib/odtone/mih//odtone_mih
 	  ../../lib/odtone/sap//odtone_sap
