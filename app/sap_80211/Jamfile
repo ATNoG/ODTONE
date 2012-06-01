@@ -31,7 +31,6 @@ actions run_make
 make libnl.a
 	: libnl/configure
 	: @run_make
-	  <dependency>sap_80211
 	;
 
 lib libnl : : <file>libnl.a : : <include>libnl/include/ ;
