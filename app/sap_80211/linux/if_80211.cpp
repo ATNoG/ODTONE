@@ -508,6 +508,7 @@ void if_80211::trigger_scan(bool wait)
 
 	nlwrap::genl_msg m(_ctx._family_id, NL80211_CMD_TRIGGER_SCAN, 0);
 	m.put_ifindex(_ctx._ifindex);
+	m.put_active_scanning();
 
 	s.send(m);
 

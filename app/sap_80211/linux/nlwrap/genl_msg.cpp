@@ -138,6 +138,20 @@ void genl_msg::put_ps_state(int state)
 }
 #endif /* NL80211_ATTR_PS_STATE */
 
+void genl_msg::put_active_scanning()
+{
+	// set empty ssid list with "" wildcard for active scanning
+	std::vector<std::string> ssids;
+	ssids.push_back("");
+
+	nl_msg nested;
+	nested.put_ssids(ssids);
+
+	if (::nla_put_nested(_msg, NL80211_ATTR_SCAN_SSIDS, nested)) {
+		throw std::runtime_error("Error putting nested SSID list");
+	}
+}
+
 void genl_msg::put_mac(const std::string &mac)
 {
 	unsigned char nmac[ETH_NLEN];

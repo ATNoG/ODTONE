@@ -75,6 +75,11 @@ public:
 #endif /* NL80211_ATTR_PS_STATE */
 
 	/**
+	 * Set the NL80211_ATTR_SCAN_SSIDS to active scanning.
+	 */
+	void put_active_scanning();
+
+	/**
 	 * Put a MAC attribute in the message.
 	 *
 	 * @param mac The mac address to put.

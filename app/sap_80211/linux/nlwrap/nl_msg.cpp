@@ -58,4 +58,15 @@ void *nl_msg::payload()
 	return ::nlmsg_data(::nlmsg_hdr(_msg));
 }
 
+void nl_msg::put_ssids(std::vector<std::string> ssids)
+{
+	auto it = ssids.begin();
+	while (it != ssids.end()) {
+		if (::nla_put(_msg, 1, it->size(), it->c_str())) {
+			throw std::runtime_error("Error putting SSID list in message.");
+		}
+		it ++;
+	}
+}
+
 }
