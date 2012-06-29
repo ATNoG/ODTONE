@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Getting Started</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="ODTONE 0.4">
 <link rel="up" href="../index.html" title="ODTONE 0.4">
 <link rel="prev" href="intro.html" title="Introduction">
@@ -66,48 +66,7 @@
 </pre>
 <p>
     </p>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-          Install Boost.Build (if your already have it, skip this step). To compile
-          the Boost.Build engine, you can use the bootstrap script from the Boost
-          library sources and then you can copy the resulting binary (b2) to a proper
-          place (within your $PATH). To finish the Boost.Build installation, you
-          must tell Boost.Build engine where to find the remaining of Boost.Build.
-          To do it, you can setup a boost-build.jam file in a parent directory relative
-          to the odtone root. Example:
-        </li></ol></div>
-<div class="table">
-<a name="odtone.getStart.setup_boost_build_jam"></a><p class="title"><b>Table&#160;1.&#160;Setup boost-build.jam</b></p>
-<div class="table-contents"><table class="table" summary="Setup boost-build.jam">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody><tr>
-<td>
-              <p>
-                boost-build.jam
-              </p>
-            </td>
-<td>
-              <p>
-</p>
-<pre class="programlisting">#==============================================================================
-# Put this file at the root directory of your project or in any of its parent
-# directories. Replace 'path-to-boost' with the path to the boost libraries
-# sources.
-#
-# See the Boost.Build documentation for more details!
-#==============================================================================
-
-boost-build path-to-boost/tools/build/v2 ;
-        </pre>
-<p>
-              </p>
-            </td>
-</tr></tbody>
-</table></div>
-</div>
-<br class="table-break"><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
           To install Boost.Build got to 'boost_1_48_0/tools/build/v2/'. On unix like
           systems run './bootstrap.sh' and then 'sudo ./b2 install'. On windows like
           systems run 'bootstrap.bat' and then 'b2 install'.
@@ -171,7 +130,7 @@ boost-build path-to-boost/tools/build/v2 ;
       procedures or layout for installation.
     </p>
 <div class="table">
-<a name="odtone.getStart.platform_support"></a><p class="title"><b>Table&#160;2.&#160;Platform Support</b></p>
+<a name="odtone.getStart.platform_support"></a><p class="title"><b>Table&#160;1.&#160;Platform Support</b></p>
 <div class="table-contents"><table class="table" summary="Platform Support">
 <colgroup>
 <col>
