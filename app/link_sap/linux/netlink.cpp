@@ -83,7 +83,7 @@ netlink::netlink(family fm, uint subscriptions)
 
 	_fd = ::socket(PF_NETLINK, SOCK_RAW, fm);
 	if (_fd < 0)
-		throw_error(boost::system::error_code(errno, boost::system::get_system_category()));
+		throw_error(boost::system::error_code(errno, boost::system::system_category()));
 
 	addr.nl_family = AF_NETLINK;
 	addr.nl_pid = 0;
@@ -91,7 +91,7 @@ netlink::netlink(family fm, uint subscriptions)
 
 	res = ::bind(_fd, reinterpret_cast<sockaddr*>(&addr), sizeof(addr));
 	if (res < 0)
-		throw_error(boost::system::error_code(errno, boost::system::get_system_category()));
+		throw_error(boost::system::error_code(errno, boost::system::system_category()));
 }
 
 netlink::~netlink()
@@ -105,7 +105,7 @@ void netlink::send(const message& msg)
 
 	res = ::send(_fd, msg._buf.get(), msg._buf.size(), 0);
 	if (res < 0)
-		throw_error(boost::system::error_code(errno, boost::system::get_system_category()));
+		throw_error(boost::system::error_code(errno, boost::system::system_category()));
 }
 
 void netlink::recv(message& msg)
@@ -114,7 +114,7 @@ void netlink::recv(message& msg)
 
 	res = ::recv(_fd, msg._buf.get(), msg._buf.size(), 0);
 	if (res < 0)
-		throw_error(boost::system::error_code(errno, boost::system::get_system_category()));
+		throw_error(boost::system::error_code(errno, boost::system::system_category()));
 
 	msg._pos = msg._buf.get();
 	msg._len = res;
