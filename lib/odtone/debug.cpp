@@ -127,4 +127,18 @@ void boost::assertion_failed(char const* expr, char const* function, char const*
 	crash(ctx);
 }
 
+void boost::assertion_failed_msg(char const * expr, char const * msg, char const * function, char const * file, long line)
+{
+	odtone::crash_ctx ctx;
+
+	std::memset(&ctx, 0, sizeof(ctx));
+	ctx.code = odtone::bug_assert;
+	ctx.address = ODTONE_RETURN_ADDRESS;
+	ctx.function = function;
+	ctx.file = file;
+	ctx.line = line;
+	ctx.expression = expr;
+	crash(ctx);
+}
+
 // EOF ////////////////////////////////////////////////////////////////////////
