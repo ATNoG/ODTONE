@@ -29,8 +29,6 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "nlwrap/nlwrap.hpp"
-
 using namespace odtone;
 
 static logger log_("if_8023", std::cout);

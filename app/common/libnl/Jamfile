@@ -1,5 +1,5 @@
 #==============================================================================
-# Brief   : netlink-based 802.3 Link SAP Implementation
+# Brief   : libnl library
 # Authors : André Prata <andreprata@av.it.pt>
 #-----------------------------------------------------------------------------
 # ODTONE - Open Dot Twenty One
@@ -15,19 +15,41 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-exe sap_8023
-	: main.cpp
-	  timer_task.cpp
-	  linux/if_8023.cpp
-	  ../common/libnl//nlwrap
-	  ../common/libnl//libnl
-	  ../../lib/odtone//odtone_base
-	  ../../lib/odtone/mih//odtone_mih
-	  ../../lib/odtone/sap//odtone_sap
+actions run_make
+{
+	current_dir="`pwd`"
+
+	cd "$current_dir/$(>:D)"
+	./configure
+
+	cd "$current_dir"
+	make -C $(>:D)/lib
+
+	ar rcs $(<) `find $(>:D)/lib -type f -name \*.o`
+}
+
+make libnl.a
+	: libnl/configure
+	: @run_make
 	;
 
-install install
-	: sap_8023
-	  sap_8023.conf
-	: <location>../../dist
+lib libnl
+	:
+	: <file>libnl.a
+	:
+	: <include>libnl/include/
+	;
+
+lib nlwrap
+	: nlwrap/nl_cb.cpp
+	  nlwrap/nl_socket.cpp
+	  nlwrap/nl_msg.cpp
+	  nlwrap/rtnl_socket.cpp
+	  nlwrap/rtnl_link.cpp
+	  nlwrap/rtnl_link_cache.cpp
+	  libnl
+	  ../../../lib/odtone//odtone_base
+	:
+	:
+	: <include>nlwrap
 	;
