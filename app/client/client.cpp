@@ -55,6 +55,7 @@ static const char* const kConf_MIH_LinkConfigureThresholds_request = "request.li
 static const char* const kConf_MIH_LinkGetParameters_request = "request.link_get_parameters";
 static const char* const kConf_MIH_LinkActions_request = "request.link_actions";
 static const char* const kConf_MIH_EventUnsubscribe_request = "request.event_unsubscribe";
+static const char* const kConf_MIH_EventSubscribe_request = "request.event_subscribe";
 
 /**
  * Dummy synchronous MIH SAP handler.
@@ -297,7 +298,8 @@ void send_link_configure_thresholds_request(handler &sap, const char *dst)
 
 	std::vector<mih::threshold> th_list;
 
-	lcp.type = mih::link_type_802_11;
+	mih::link_param_802_11 lp = mih::link_param_802_11_rssi;
+	lcp.type = lp;
 	lcp.timer_interval = 1234;
 	lcp.action = mih::th_action_normal;
 	lcp.threshold_list = th_list;
@@ -404,6 +406,37 @@ void send_event_unsubscribe_request(handler &sap, const char *dst)
 	evt.set(odtone::mih::mih_evt_link_up);
 
 	p << mih::request(mih::request::event_unsubscribe)
+		& odtone::mih::tlv_link_identifier(li)
+		& odtone::mih::tlv_event_list(evt);
+
+	p.source(mih::id("user"));
+	p.destination(mih::id(dst));
+
+	sap.send(p);
+}
+
+/**
+ * Create and send a MIH_Link_Event_Subscribe.request message.
+ *
+ * @param sap The SAP helper.
+ * @param dst The destination MIH ID.
+ */
+void send_event_subscribe_request(handler &sap, const char *dst)
+{
+	mih::message p;
+
+	mih::link_tuple_id 	li;
+	mih::mac_addr      	mac;
+
+	mac.address("00:11:22:33:44:55");
+	li.type = mih::link_type_802_11;
+	li.addr = mac;
+	odtone::mih::mih_evt_list evt;
+	evt.set(odtone::mih::mih_evt_link_up);
+	evt.set(odtone::mih::mih_evt_link_detected);
+	evt.set(odtone::mih::mih_evt_link_down);
+
+	p << mih::request(mih::request::event_subscribe)
 		& odtone::mih::tlv_link_identifier(li)
 		& odtone::mih::tlv_event_list(evt);
 
@@ -559,6 +592,7 @@ int main(int argc, char **argv)
 		(kConf_MIH_LinkGetParameters_request, "Send a MIH_LinkGetParameters.request to MIHF")
 		(kConf_MIH_LinkActions_request, "Send a MIH_LinkActions.request to MIHF")
 		(kConf_MIH_EventUnsubscribe_request, "Send a MIH_EventUnsubscribe.request to MIHF")
+		(kConf_MIH_EventSubscribe_request, "Send a MIH_EventSubscribe.request to MIHF")
 		 ;
 	mih::config cfg(desc);
 
@@ -625,5 +659,9 @@ int main(int argc, char **argv)
 		send_event_unsubscribe_request(sap, dest.c_str());
 	}
 
+	if (cfg.count(kConf_MIH_EventSubscribe_request)) {
+		std::cout << "sent event subscribe request to " << dest.c_str() << std::endl;
+		send_event_subscribe_request(sap, dest.c_str());
+	}
 	return 0;
 }

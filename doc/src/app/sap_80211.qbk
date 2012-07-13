@@ -1,0 +1,384 @@
+[/==============================================================================
+ / Brief   : sap_80211 Link SAP Documentation
+ / Authors : André Prata <aprata@av.it.pt>
+ /------------------------------------------------------------------------------
+ / ODTONE - Open Dot Twenty One
+ /
+ / Copyright (C) 2009-2012 Universidade Aveiro
+ / Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
+ /
+ / This software is distributed under a license. The full license
+ / agreement can be found in the file LICENSE in this distribution.
+ / This software may not be copied, modified, sold or distributed
+ / other than expressed in the named license agreement.
+ /
+ / This software is distributed without any warranty.
+ /=============================================================================]
+
+[section:sap_80211_index sap_80211 Link SAP]
+
+The sap_80211 Link SAP is a Linux implementation of a Link SAP for 802.11 interfaces.
+
+[section Requirements]
+
+Apart from the boost libraries, which ODTONE globally needs, this specific Link
+SAP requires the installation of libnl-3 in your GNU/Linux system.
+
+This module has been tested in a Linux-3.2 setup, with libnl-3.2.7.
+Both an Intel 6200-agn and a Ubiquiti SRX abg express card were tested.
+
+For implementation details and considerations, please check the Support section.
+
+[endsect]
+
+[section Getting Started]
+
+[section Configuration]
+
+The Link SAP can be configured based on a set of parameters, which can be
+configured either using an configuration file or passing them directly
+in the command line.
+
+``
+	MIH Link SAP Configuration:
+	     --help                               Display configuration options
+	     --link.verbosity                     Log level [0-3]
+	     --link.sched_scan_period arg (=0)    Scheduled scan interval (millis)
+	     --link.default_th_period arg (=1000) Default threshold checking interval (millis)
+	     --link.port arg (=1235)              Port
+	     --conf.file arg (=sap_80211.conf)  Configuration File
+	     --conf.recv_buff_len arg (=4096)     Receive Buffer Length
+	     --mihf.ip arg (=127.0.0.1)           Local MIHF Ip
+	     --mihf.local_port arg (=1025)        MIHF Local Communications Port
+	     --mihf.id arg (=local-mihf)          Local MIHF Id
+	     --link.id arg (=link)                Link SAP Id
+``
+
+[note
+
+All configurable parameters are self-explained,
+but here's a further clarification for two of them:
+
+[*Scheduled scan interval:] Link_Detected.indication events will only
+be generated after scans are triggered. Usually it is a user
+application that is required to ask the kernel for scan triggers. This
+parameter allows this Link SAP to periodically request scan triggers.
+The interval is specified in milliseconds.
+
+Usage: sched_scan_period = <time in ms>
+
+[*Default threshold checking interval:] The kernel allows the configuration of
+one RSSI threshold value to receive alerts when crossed. To configure multiple
+thresholds (to different user subscriptions) we must poll the RSSI values
+ourselves. The frequency of polling is defined by this parameter, in
+milliseconds.
+
+Usage: default_th_period = <time in ms>
+
+]
+
+[endsect]
+
+[section Running]
+
+The Link SAP is launched normally, provided that the MIHF is already running.
+``
+	$ ./sap_80211
+``
+
+[note
+Some funcionalities, like triggering scans and changing the device operating
+mode, require super user permissions. The Link SAP will run normally if
+launched by a regular user, but a warning message will be shown, and such
+functionalities will generate a failure when invoked.
+]
+
+[endsect]
+
+[endsect]
+
+[section:sap_80211_support Support]
+
+This section is a reading on special considerations for each Event and Command
+of the standard, and how they are handled here.
+
+[section Events]
+
+[section Link_Going_Down.indication:]
+
+Not implemented.
+
+[endsect]
+
+
+[section Link_Handover_Imminent.indication:]
+
+Not supported.
+
+[endsect]
+
+
+[section Link_Handover_Complete.indication:]
+
+Not supported.
+
+
+[endsect]
+
+
+[section Link_PDU_Transmit_Status.indication:]
+
+Not supported.
+
+
+[endsect]
+
+
+[section Link_Detected.indication:]
+
+Every time a scan is finished, the kernel sends either a
+NL80211_CMD_NEW_SCAN_RESULTS or a NL80211_CMD_SCAN_ABORTED message.
+Upon this indication, the scan results are obtained with a NL80211_CMD_GET_SCAN_RESULTS,
+and the details of each scan result are parsed. For each new access network to
+which we are not attached, a new Link_Detected.indication is generated.
+
+[note
+A group of POAs are considered of the same access network if they announce the same SSID.
+When more than one scan result is detected with the same SSID, only the one with the strongest RSSI is indicated.
+]
+
+[note
+Scan results are only retrieved on NEW_SCAN_RESULTS. To fetch the scan results also for the SCAN_ABORTED message, just allow
+the SCAN_ABORTED case to fall into the SCAN_RESULTS by commenting the "break" keyword.
+``
+	# linux/if_80211.cpp:
+	case NL80211_CMD_SCAN_ABORTED: // LINK_DETECTED?
+	    {
+	        _scanning = false;
+	        log_(0, "(nl mc) Scan aborted");
+	    }
+	    break;
+	case NL80211_CMD_NEW_SCAN_RESULTS: // LINK DETECTED
+	    {
+``
+]
+
+[note
+When parsing the scan results, there's no indication of SINR, since no driver informs of the "Interference" component of the formula,
+and only a few drivers return "Noise" information, through the NL80211_CMD_GET_SURVEY command.
+]
+
+[note
+See:
+``
+	# linux/if_80211.cpp:
+	int handle_nl_event(nl_msg *msg, void *arg)
+	void fetch_scan_results(scan_results_data &data)
+
+	# main.cpp:
+	void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
+	void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
+``
+]
+
+
+[endsect]
+
+
+[section Link_Up.indication:]
+
+This event is generated for every successful NL80211_CMD_CONNECT event.
+
+[note
+See:
+``
+	# linux/if_80211.cpp:
+	int handle_nl_event(nl_msg *msg, void *arg)
+
+	# main.cpp:
+	void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
+	void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
+``
+]
+
+
+[endsect]
+
+
+[section Link_Down.indication:]
+
+This event is generated for every NL80211_CMD_DISCONNECT event.
+
+[note
+See:
+``
+	# linux/if_80211.cpp:
+	int handle_nl_event(nl_msg *msg, void *arg)
+
+	# main.cpp:
+	void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
+	void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
+``
+]
+
+
+[endsect]
+
+
+[section Link_Parameters_Report.indication:]
+
+For each configred periodic report there's
+a timer that triggers a message of this type at the specified interval.
+
+For configured thresholds, a threshold check is performed periodically, according
+to the [*default_th_period] launching parameter. The message is sent everytime
+one of these checks detects a crossing of the subscribed nature.
+
+[note
+See:
+``
+	# main.cpp:
+	void periodic_report_data::_report_value(boost::asio::io_service &ios, if_80211 &fi)
+	void global_thresholds_check(boost::asio::io_service &ios, if_80211 &fi)
+
+	void handle_link_configure_thresholds(
+	    boost::asio::io_service &ios,
+	    if_80211 &fi,
+	    uint16 tid,
+	    mih::link_cfg_param_list &param_list)
+
+	void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
+	void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
+``
+]
+
+[endsect]
+
+[endsect]
+
+
+[section Commands]
+
+
+[section Capability_Discover.request:]
+
+This command is immediatly responded with the list of supported Events and Commands.
+This list of supported Events and Commands is statically configured in the code.
+``
+	# main.cpp:
+	void set_supported_event_list()
+	void set_supported_command_list()
+``
+
+
+[endsect]
+
+
+[section Event_Subscribe.request:]
+
+All supported events are always successfully subscribed, even ones already
+subscribed.
+
+[note
+See:
+``
+	# main.cpp:
+	void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
+	void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
+``
+]
+
+
+[endsect]
+
+
+[section Event_Unsubscribe.request:]
+
+All supported events are always successfully unsubscribed, even ones never
+subscribed.
+
+[note
+See:
+``
+	# main.cpp:
+	void handle_event_subscribe(uint16 tid, mih::link_evt_list &events)
+	void handle_event_unsubscribe(uint16 tid, mih::link_evt_list &events)
+``
+]
+
+
+[endsect]
+
+
+[section Link_Get_Parameters.request:]
+
+This command may fail if any netlink error occurrs.
+It will also fail if a non-supported parameter is requested.
+Currently only link_param_802_11_rssi, link_states_req_op_mode and
+link_states_req_channel_id are supported.
+
+[note
+See:
+``
+	# main.cpp:
+	void handle_link_get_parameters(
+	    if_80211 &fi,
+	    uint16 tid,
+	    mih::link_param_type_list &param_list,
+	    mih::link_states_req &states_req,
+	    mih::link_desc_req &desc_req)
+``
+]
+
+[endsect]
+
+
+[section Link_Configure_Thresholds.request:]
+
+This command may fail if any netlink error occurrs.
+It will also fail on any attempt to configure an unsupported threshold type.
+Currently only link_param_802_11_rssi thresholds are supported.
+
+[note
+See:
+``
+	# main.cpp:
+	void handle_link_configure_thresholds(
+	    boost::asio::io_service &ios,
+	    if_80211 &fi,
+	    uint16 tid,
+	    mih::link_cfg_param_list &param_list)
+``
+]
+
+[endsect]
+
+
+[section Link_Actions.request:]
+
+This command may fail if any netlink error occurrs.
+It will also fail if any unsupported action is requested.
+Currently every link_ac_type and link_ac_attr_scan are the supported link
+actions.
+
+[note
+See:
+``
+	# main.cpp:
+	void handle_link_actions(
+	    boost::asio::io_service &ios,
+	    if_80211 &fi,
+	    uint16 tid,
+	    mih::link_action &action,
+	    uint16 &delay,
+	    boost::optional<mih::link_addr> &poa)
+``
+]
+
+[endsect]
+
+[endsect]
+
+[endsect]
+
+[endsect]

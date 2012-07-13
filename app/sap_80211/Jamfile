@@ -1,5 +1,5 @@
 #==============================================================================
-# Brief   : libnl library
+# Brief   : nl80211-based Link SAP Implementation
 # Authors : André Prata <andreprata@av.it.pt>
 #-----------------------------------------------------------------------------
 # ODTONE - Open Dot Twenty One
@@ -15,43 +15,32 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-actions run_make
-{
-	current_dir="`pwd`"
+#odtone.explicit-alias if_80211
+#	: linux/if_80211.cpp
+#	  linux/nlwrap/nl_cb.cpp
+#	  linux/nlwrap/nl_socket.cpp
+#	  linux/nlwrap/nl_msg.cpp
+#	  linux/nlwrap/genl_msg.cpp
+#	  linux/nlwrap/genl_socket.cpp
+#	  linux/nlwrap/rtnl_socket.cpp
+#	  linux/nlwrap/rtnl_link.cpp
+#	  linux/nlwrap/rtnl_link_cache.cpp
+#	;
 
-	cd "$current_dir/$(>:D)"
-	./configure
-
-	cd "$current_dir"
-	make -C $(>:D)/lib
-
-	ar rcs $(<) `find $(>:D)/lib -type f -name \*.o`
-}
-
-make libnl.a
-	: libnl/configure
-	: @run_make
+exe sap_80211
+	: main.cpp
+	  timer_task.cpp
+	  linux/if_80211.cpp
+	  ../common/libnl//nlwrap
+#	  ../common/libnl//libnl
+	  ../../lib/odtone//odtone_base
+	  ../../lib/odtone/mih//odtone_mih
+	  ../../lib/odtone/sap//odtone_sap
 	;
 
-lib libnl
-	:
-	: <file>libnl.a
-	:
-	: <include>libnl/include/
+install install
+	: sap_80211
+	  sap_80211.conf
+	: <location>../../dist
 	;
 
-lib nlwrap
-	: nlwrap/nl_cb.cpp
-	  nlwrap/nl_socket.cpp
-	  nlwrap/nl_msg.cpp
-	  nlwrap/genl_msg.cpp
-	  nlwrap/genl_socket.cpp
-	  nlwrap/rtnl_socket.cpp
-	  nlwrap/rtnl_link.cpp
-	  nlwrap/rtnl_link_cache.cpp
-	  libnl
-	  ../../../lib/odtone//odtone_base
-	:
-	:
-	: <include>nlwrap
-	;

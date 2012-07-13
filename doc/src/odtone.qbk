@@ -719,6 +719,11 @@ the new TLVs and its data type:
     [The ['dummyserver] is a simple application that, as the name implies, works like
      a dummy server. It is always listening (at port 4000) for incoming messages and
      it outputs them in the console.]]
+
+    [[[link odtone.app.sap_80211_index sap_80211 Link SAP]]
+    [The NL80211 SAP is a Linux implementation of a basic Link SAP. It supports
+     the most important events and commands for 802.11 devices. It is based on the nl80211
+     generic protocol, and depends on the netlink library version 3.]]
 ]
 
 [include app/mihf.qbk]
@@ -730,6 +735,7 @@ the new TLVs and its data type:
 [include app/link_sap_icmp.qbk]
 [include app/client.qbk]
 [include app/dummyserver.qbk]
+[include app/sap_80211.qbk]
 
 [endsect]
 
