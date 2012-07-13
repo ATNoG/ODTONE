@@ -15,23 +15,24 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-odtone.explicit-alias if_80211
-	: linux/if_80211.cpp
-	  linux/nlwrap/nl_cb.cpp
-	  linux/nlwrap/nl_socket.cpp
-	  linux/nlwrap/nl_msg.cpp
-	  linux/nlwrap/genl_msg.cpp
-	  linux/nlwrap/genl_socket.cpp
-	  linux/nlwrap/rtnl_socket.cpp
-	  linux/nlwrap/rtnl_link.cpp
-	  linux/nlwrap/rtnl_link_cache.cpp
-	;
+#odtone.explicit-alias if_80211
+#	: linux/if_80211.cpp
+#	  linux/nlwrap/nl_cb.cpp
+#	  linux/nlwrap/nl_socket.cpp
+#	  linux/nlwrap/nl_msg.cpp
+#	  linux/nlwrap/genl_msg.cpp
+#	  linux/nlwrap/genl_socket.cpp
+#	  linux/nlwrap/rtnl_socket.cpp
+#	  linux/nlwrap/rtnl_link.cpp
+#	  linux/nlwrap/rtnl_link_cache.cpp
+#	;
 
 exe sap_80211
 	: main.cpp
 	  timer_task.cpp
-	  if_80211
-	  ../common/libnl//libnl
+	  linux/if_80211.cpp
+	  ../common/libnl//nlwrap
+#	  ../common/libnl//libnl
 	  ../../lib/odtone//odtone_base
 	  ../../lib/odtone/mih//odtone_mih
 	  ../../lib/odtone/sap//odtone_sap

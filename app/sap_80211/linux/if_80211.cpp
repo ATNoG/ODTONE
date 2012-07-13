@@ -30,7 +30,6 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "nlwrap/nlwrap.hpp"
 #define _LINUX_IF_H // workaround
 #include <netlink/route/link.h>
 

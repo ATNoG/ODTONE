@@ -26,7 +26,7 @@
 
 #include <odtone/mih/tlv_types.hpp>
 
-#include "../linux/nlwrap/nlwrap.hpp"
+#include <nlwrap.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 
