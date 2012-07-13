@@ -40,7 +40,7 @@ public:
 
 	/**
 	 * Construct an rtnl_link object from a preallocated rtnl_link struct.
-	 * 
+	 *
 	 * @warning This does not deallocate the object upon destruction.
 	 *
 	 * @param link The preallocated rtnl_link struct.
@@ -123,6 +123,20 @@ public:
 	 * @return The current operstate flags for this link.
 	 */
 	uint8_t get_operstate();
+
+	/**
+	 * Get this link's total sent packet count.
+	 *
+	 * @return The packet count.
+	 */
+	uint64_t tx_packets();
+
+	/**
+	 * Get this link's count sending packet errors.
+	 *
+	 * @return The tx errors.
+	 */
+	uint64_t tx_errors();
 
 private:
 	bool         _own;

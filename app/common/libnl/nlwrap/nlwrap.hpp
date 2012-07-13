@@ -19,6 +19,9 @@
 #include "nl_socket.hpp"
 #include "nl_msg.hpp"
 
+#include "genl_socket.hpp"
+#include "genl_msg.hpp"
+
 #include "rtnl_socket.hpp"
 #include "rtnl_link.hpp"
 #include "rtnl_link_cache.hpp"

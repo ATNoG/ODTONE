@@ -19,6 +19,8 @@
 #define __NLWRAP_NL_MSG_
 
 #include <boost/noncopyable.hpp>
+#include <vector>
+#include <string>
 
 #include <netlink/msg.h>
 
@@ -38,7 +40,7 @@ public:
 	/**
 	 * Construct a message from an already allocate nl_msg object
 	 * and automatically attempt parsing TLV elements.
-	 * 
+	 *
 	 * @warning This does not deallocate the object upon destruction.
 	 *
 	 * @param nl_msg The preallocated nl_msg object.
@@ -69,6 +71,13 @@ public:
 	 * @return The parsed message payload.
 	 */
 	void *payload();
+
+	/**
+	 * Put a list of SSIDs in this message.
+	 *
+	 * @param ssids The list of ssids.
+	 */
+	void put_ssids(std::vector<std::string> ssids);
 
 protected:
 	::nl_msg *_msg;

@@ -125,6 +125,16 @@ uint8_t rtnl_link::get_operstate()
 	return ::rtnl_link_get_operstate(_link);
 }
 
+uint64_t rtnl_link::tx_packets()
+{
+	return ::rtnl_link_get_stat(_link, RTNL_LINK_TX_PACKETS);
+}
+
+uint64_t rtnl_link::tx_errors()
+{
+	return ::rtnl_link_get_stat(_link, RTNL_LINK_TX_ERRORS);
+}
+
 }
 
 // EOF ////////////////////////////////////////////////////////////////////////
