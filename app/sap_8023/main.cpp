@@ -510,11 +510,11 @@ int main(int argc, char** argv)
 			("help", "Display configuration options")
 			(kConf_Sap_Verbosity, po::value<odtone::uint>()->default_value(2), "Log level [0-2]")
 			(sap::kConf_Interface_Addr, po::value<std::string>()->default_value(""), "Interface address")
-			(sap::kConf_Port, po::value<ushort>()->default_value(1235), "Port")
+			(sap::kConf_Port, po::value<odtone::ushort>()->default_value(1235), "Port")
 			(sap::kConf_File, po::value<std::string>()->default_value("sap_8023.conf"), "Configuration File")
 			(sap::kConf_Receive_Buffer_Len, po::value<odtone::uint>()->default_value(4096), "Receive Buffer Length")
 			(sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
-			(sap::kConf_MIHF_Local_Port, po::value<ushort>()->default_value(1025), "MIHF Local Communications Port")
+			(sap::kConf_MIHF_Local_Port, po::value<odtone::ushort>()->default_value(1025), "MIHF Local Communications Port")
 			(sap::kConf_MIHF_Id, po::value<std::string>()->default_value("local-mihf"), "Local MIHF Id")
 			(sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("link"), "Link SAP Id");
 
