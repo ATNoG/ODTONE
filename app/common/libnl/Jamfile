@@ -20,10 +20,10 @@ actions run_make
 	current_dir="`pwd`"
 
 	cd "$current_dir/$(>:D)"
-	./configure
+	./configure || exit
 
 	cd "$current_dir"
-	make -C $(>:D)/lib
+	make -C $(>:D)/lib || exit
 
 	ar rcs $(<) `find $(>:D)/lib -type f -name \*.o`
 }
