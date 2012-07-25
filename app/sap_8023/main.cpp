@@ -382,7 +382,7 @@ void default_handler(boost::asio::io_service &ios,
 	case mih::request::capability_discover:
 		{
 			log_(0, "(command) Received capability_discover message");
-			handle_capability_discover(msg.tid());
+			ios.dispatch(boost::bind(&handle_capability_discover, msg.tid()));
 		}
 		break;
 
@@ -393,7 +393,7 @@ void default_handler(boost::asio::io_service &ios,
 				msg >> mih::request()
 				& mih::tlv_link_evt_list(events);
 
-			handle_event_subscribe(msg.tid(), events);
+			ios.dispatch(boost::bind(&handle_event_subscribe, msg.tid(), events));
 		}
 		break;
 
@@ -404,7 +404,7 @@ void default_handler(boost::asio::io_service &ios,
 			msg >> mih::request()
 				& mih::tlv_link_evt_list(events);
 
-			handle_event_unsubscribe(msg.tid(), events);
+			ios.dispatch(boost::bind(&handle_event_unsubscribe, msg.tid(), events));
 		}
 		break;
 
@@ -422,7 +422,8 @@ void default_handler(boost::asio::io_service &ios,
 				& mih::tlv_link_states_req(states_req)
 				& mih::tlv_link_descriptor_req(desc_req);
 
-			handle_link_get_parameters(fi, msg.tid(), param_list, states_req, desc_req);
+			ios.dispatch(boost::bind(&handle_link_get_parameters, boost::ref(fi), msg.tid(),
+			                                                      param_list, states_req, desc_req));
 		}
 		break;
 
@@ -438,7 +439,8 @@ void default_handler(boost::asio::io_service &ios,
 				& mih::tlv_time_interval(delay)
 				& mih::tlv_poa(poa);
 
-			handle_link_actions(ios, fi, msg.tid(), action, delay, poa);
+			ios.dispatch(boost::bind(&handle_link_actions, boost::ref(ios), boost::ref(fi), msg.tid(),
+			                                               action, delay, poa));
 		}
 		break;
 
@@ -534,9 +536,7 @@ int main(int argc, char** argv)
 		if_8023 fi(ios, mih::mac_addr(cfg.get<std::string>(sap::kConf_Interface_Addr)));
 		mih::link_id id = fi.link_id();
 
-		std::unique_ptr<sap::link> _ls(new sap::link(cfg, ios,
-			boost::bind(&default_handler, boost::ref(ios), boost::ref(fi), _1, _2)));
-		ls = std::move(_ls);
+		ls.reset(new sap::link(cfg, ios, boost::bind(&default_handler, boost::ref(ios), boost::ref(fi), _1, _2)));
 		mihf_sap_init(id);
 
 		fi.link_up_callback(boost::bind(&dispatch_link_up, _1, _2, _3, _4, _5));

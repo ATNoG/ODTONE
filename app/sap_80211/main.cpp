@@ -675,9 +675,8 @@ void handle_link_configure_thresholds(boost::asio::io_service &ios,
 
 				std::unique_ptr<periodic_report_data> p(new periodic_report_data);
 				p->type = *type;
-				std::unique_ptr<timer_task> timer(new timer_task(ios, *period,
+				p->task.reset(new timer_task(ios, *period,
 					boost::bind(&periodic_report_data::_report_value, p.get(), boost::ref(ios), boost::ref(fi))));
-				p->task = std::move(timer);
 
 				p->task->start();
 				period_rpt_list.push_back(std::move(p));
@@ -823,7 +822,7 @@ void default_handler(boost::asio::io_service &ios,
 	case mih::request::capability_discover:
 		{
 			log_(0, "(command) Received capability_discover message");
-			handle_capability_discover(msg.tid());
+			ios.dispatch(boost::bind(&handle_capability_discover, msg.tid()));
 		}
 		break;
 
@@ -834,7 +833,7 @@ void default_handler(boost::asio::io_service &ios,
 				msg >> mih::request()
 				& mih::tlv_link_evt_list(events);
 
-			handle_event_subscribe(msg.tid(), events);
+			ios.dispatch(boost::bind(&handle_event_subscribe, msg.tid(), events));
 		}
 		break;
 
@@ -845,7 +844,7 @@ void default_handler(boost::asio::io_service &ios,
 			msg >> mih::request()
 				& mih::tlv_link_evt_list(events);
 
-			handle_event_unsubscribe(msg.tid(), events);
+			ios.dispatch(boost::bind(&handle_event_unsubscribe, msg.tid(), events));
 		}
 		break;
 
@@ -863,7 +862,8 @@ void default_handler(boost::asio::io_service &ios,
 				& mih::tlv_link_states_req(states_req)
 				& mih::tlv_link_descriptor_req(desc_req);
 
-			handle_link_get_parameters(fi, msg.tid(), param_list, states_req, desc_req);
+			ios.dispatch(boost::bind(&handle_link_get_parameters, boost::ref(fi), msg.tid(),
+			                                                      param_list, states_req, desc_req));
 		}
 		break;
 
@@ -875,7 +875,8 @@ void default_handler(boost::asio::io_service &ios,
 			msg >> mih::request()
 				& mih::tlv_link_cfg_param_list(param_list);
 
-			handle_link_configure_thresholds(ios, fi, msg.tid(), param_list);
+			ios.dispatch(boost::bind(&handle_link_configure_thresholds, boost::ref(ios), boost::ref(fi), msg.tid(),
+			                                                            param_list));
 		}
 		break;
 
@@ -891,7 +892,8 @@ void default_handler(boost::asio::io_service &ios,
 				& mih::tlv_time_interval(delay)
 				& mih::tlv_poa(poa);
 
-			handle_link_actions(ios, fi, msg.tid(), action, delay, poa);
+			ios.dispatch(boost::bind(&handle_link_actions, boost::ref(ios), boost::ref(fi), msg.tid(),
+			                                               action, delay, poa));
 		}
 		break;
 
@@ -992,19 +994,15 @@ int main(int argc, char** argv)
 		if_80211 fi(ios, mih::mac_addr(cfg.get<std::string>(sap::kConf_Interface_Addr)));
 		mih::link_id id = fi.link_id();
 
-		std::unique_ptr<sap::link> _ls(new sap::link(cfg, ios,
-			boost::bind(&default_handler, boost::ref(ios), boost::ref(fi), _1, _2)));
-		ls = std::move(_ls);
+		ls.reset(new sap::link(cfg, ios, boost::bind(&default_handler, boost::ref(ios), boost::ref(fi), _1, _2)));
 		mihf_sap_init(id);
 
-		std::unique_ptr<timer_task> _threshold_check_task(new timer_task(ios, th_period,
+		threshold_check_task.reset(new timer_task(ios, th_period,
 			boost::bind(&global_thresholds_check, boost::ref(ios), boost::ref(fi))));
-		threshold_check_task = std::move(_threshold_check_task);
 
 		if (sched_scan_period > 0) {
-			std::unique_ptr<timer_task> _scheduled_scan_task(new timer_task(ios, sched_scan_period,
+			scheduled_scan_task.reset(new timer_task(ios, sched_scan_period,
 				boost::bind(&scheduled_scan_trigger, boost::ref(fi))));
-			scheduled_scan_task = std::move(_scheduled_scan_task);
 #ifndef STOP_SCHED_SCAN_ON_L2_UP
 			scheduled_scan_task->start();
 #else
