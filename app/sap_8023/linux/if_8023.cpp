@@ -144,7 +144,7 @@ bool if_8023::link_up()
 	nlwrap::rtnl_link_cache cache;
 	nlwrap::rtnl_link link(cache.get_by_ifindex(_ctx._ifindex));
 
-	return link.get_flags() & IFF_RUNNING;
+	return link.get_operstate() == IF_OPER_UP;
 }
 
 mih::op_mode_enum if_8023::get_op_mode()
