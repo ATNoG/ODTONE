@@ -127,6 +127,7 @@ void boost::assertion_failed(char const* expr, char const* function, char const*
 	crash(ctx);
 }
 
+#ifndef NDEBUG
 void boost::assertion_failed_msg(char const * expr, char const * msg, char const * function, char const * file, long line)
 {
 	odtone::crash_ctx ctx;
@@ -140,5 +141,6 @@ void boost::assertion_failed_msg(char const * expr, char const * msg, char const
 	ctx.expression = expr;
 	crash(ctx);
 }
+#endif
 
 // EOF ////////////////////////////////////////////////////////////////////////
