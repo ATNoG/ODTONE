@@ -20,6 +20,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
+#include <odtone/exception.hpp>
 #include <odtone/mih/types/capabilities.hpp>
 
 #include <boost/bind.hpp>
@@ -28,6 +29,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace odtone { namespace mihf {
+
+/**
+ * Unknown Link SAP exception.
+ */
+struct unknown_link_sap : virtual public exception {
+	/**
+	 * Construct a Unknown Link SAP exception.
+	 */
+	unknown_link_sap() : exception("Unknown Link SAP")
+	{ }
+};
 
 /**
  * Struct to store Link SAP information such as IP Address, listening port,

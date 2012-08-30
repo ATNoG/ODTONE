@@ -110,7 +110,7 @@ const user_entry& user_book::get(const mih::octet_string &id)
 	it = _ubook.find(id);
 
 	if (it == _ubook.end())
-		throw ("no entry in user_book for this id");
+		boost::throw_exception(unknown_mih_user());
 
 	return it->second;
 }

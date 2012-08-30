@@ -83,11 +83,21 @@ void sac_dispatch::operator()(meta_message_ptr& in)
 
 		out->tid(in->tid());
 		// send response if it was generated
-		if (process_message(in, out))
-		 	_transmit(out);
-        } else {
-		ODTONE_LOG(1, "(sac) (warning) message with mid: ", mid,
-		    " unknown, discarding.");
+		try {
+
+			if (process_message(in, out))
+				_transmit(out);
+
+		} catch(mih::bad_tlv) {
+			ODTONE_LOG(1, "Discarding malformed message.");
+		} catch(unknown_link_sap) {
+			ODTONE_LOG(1, "Received message from an unknown Link SAP. Discarding message.");
+		} catch(unknown_mih_user) {
+			ODTONE_LOG(1, "Received message from an unknown MIH-User. Discarding message.");
+		}
+	} else {
+			ODTONE_LOG(1, "(sac) (warning) message with mid: ", mid,
+						  " unknown, discarding.");
 	}
 }
 
@@ -129,7 +139,16 @@ bool sac_process_message(meta_message_ptr& in, meta_message_ptr& out)
 	if(it != _callbacks.end()) {
 		handler_t process_message = it->second;
 
-		bool rsp = process_message(in, out);
+		bool rsp;
+
+		try {
+
+			rsp = process_message(in, out);
+
+		} catch(mih::bad_tlv) {
+			ODTONE_LOG(1, "Discarding malformed message.");
+			return false;
+		}
 
 		// set ip and port of response message
 		out->ip(in->ip());

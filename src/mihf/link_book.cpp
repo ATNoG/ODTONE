@@ -149,7 +149,7 @@ const link_entry& link_book::get(const mih::octet_string &id)
 	it = _lbook.find(id);
 
 	if (it == _lbook.end())
-		throw ("no entry in link_book for this id");
+		boost::throw_exception(unknown_link_sap());
 
 	return it->second;
 }
@@ -211,7 +211,7 @@ uint16 link_book::fail(const mih::octet_string &id)
 	it = _lbook.find(id);
 
 	if (it == _lbook.end())
-		throw ("no entry in link_book for this id");
+		boost::throw_exception(unknown_link_sap());
 
 	(it->second.fail)++;
 	return it->second.fail;
@@ -230,7 +230,7 @@ void link_book::reset(const mih::octet_string &id)
 	it = _lbook.find(id);
 
 	if (it == _lbook.end())
-		throw ("no entry in link_book for this id");
+		boost::throw_exception(unknown_link_sap());
 
 	it->second.fail = 0;
 	it->second.status = true;

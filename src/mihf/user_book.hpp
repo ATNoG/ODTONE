@@ -32,6 +32,17 @@
 namespace odtone { namespace mihf {
 
 /**
+ * Unknown MIH-User exception.
+ */
+struct unknown_mih_user : virtual public exception {
+	/**
+	 * Construct a Unknown MIH-User exception.
+	 */
+	unknown_mih_user() : exception("Unknown MIH-User")
+	{ }
+};
+
+/**
  * Struct to store MIH-User information such as IP Address, listening port and
  * handover support.
  */
