@@ -163,25 +163,56 @@ int handle_scan_results(::nl_msg *msg, void *arg)
 			d->associated_index = d->l.size();
 		}
 
-		mih::net_caps caps;
-		if (m.ie_has_security_features) {
-			caps.set(mih::net_caps_security);
+		mih::net_caps netcaps;
+		if (m.ie_has_security_features && m.ie_has_security_features.get()) {
+			netcaps.set(mih::net_caps_security);
 		}
-		if (m.bss_qos_capable) {
-			caps.set(mih::net_caps_qos_0); // can't assume classes!
+		if (m.bss_qos_capable && m.bss_qos_capable.get()) {
+			netcaps.set(mih::net_caps_qos_0);
+			netcaps.set(mih::net_caps_qos_1);
+			netcaps.set(mih::net_caps_qos_2);
+			netcaps.set(mih::net_caps_qos_3);
+			netcaps.set(mih::net_caps_qos_4);
+			netcaps.set(mih::net_caps_qos_5);
+		}
+		if (m.ie_has_mih_capabilities && m.ie_has_mih_capabilities.get()) {
+			netcaps.set(mih::net_caps_mih);
+		}
+		if (m.ie_has_internet_access && m.ie_has_internet_access.get()) {
+			netcaps.set(mih::net_caps_internet);
+		}
+		if (m.ie_has_emergency_services && m.ie_has_emergency_services.get()) {
+			netcaps.set(mih::net_caps_emergency_services);
+		}
+
+		mih::link_mihcap_flag mihcaps;
+		if (m.ie_has_mih_command_service && m.ie_has_mih_command_service.get()) {
+			mihcaps.set(mih::link_mihcap_command_service);
+		}
+		if (m.ie_has_mih_event_service && m.ie_has_mih_event_service.get()) {
+			mihcaps.set(mih::link_mihcap_event_service);
+		}
+		if (m.ie_has_mih_information_service && m.ie_has_mih_information_service.get()) {
+			mihcaps.set(mih::link_mihcap_information_service);
 		}
 
 		poa_info i;
+
+		mih::mac_addr poa_addr = mih::mac_addr(m.bss_bssid.get().c_str());
+
+		if (m.ie_hessid) {
+			i.net_aux_id = m.ie_hessid.get().address();
+		}
 
 		i.network_id = m.ie_ssid.get();
 		i.channel_id = frequency_to_channel_id(m.bss_frequency.get());
 		i.id.type = mih::link_type_802_11;
 		i.id.addr = d->_ctx._mac;
-		i.id.poa_addr = mih::mac_addr(m.bss_bssid.get().c_str());
+		i.id.poa_addr = poa_addr;
 		i.signal = m.bss_signal_mbm.get();
 		i.data_rate = m.ie_max_data_rate.get() * 1000;
-		i.mih_capabilities = mih::link_mihcap_flag();
-		i.net_capabilities = caps;
+		i.mih_capabilities = mihcaps;
+		i.net_capabilities = netcaps;
 		//i.sinr = 0;
 		// SINR cannot be obtained, since we can only get the signal strength
 		// and the noise value (through NL80211_CMD_GET_SURVEY). (missing "interference")

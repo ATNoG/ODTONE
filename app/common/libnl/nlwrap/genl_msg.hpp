@@ -21,6 +21,7 @@
 #include <boost/optional.hpp>
 #include <string>
 
+#include <odtone/mih/types/address.hpp>
 #include <linux/nl80211.h>
 #include "nl_msg.hpp"
 
@@ -109,6 +110,13 @@ public:
 	boost::optional<std::string> ie_ssid;
 	boost::optional<unsigned int> ie_max_data_rate;
 	boost::optional<bool> ie_has_security_features;
+	boost::optional<bool> ie_has_mih_capabilities;
+	boost::optional<bool> ie_has_internet_access;
+	boost::optional<bool> ie_has_emergency_services;
+	boost::optional<odtone::mih::mac_addr> ie_hessid;
+	boost::optional<bool> ie_has_mih_event_service;
+	boost::optional<bool> ie_has_mih_command_service;
+	boost::optional<bool> ie_has_mih_information_service;
 
 	boost::optional<int> sta_info_signal;
 	boost::optional<int> sta_rate_info_bitrate; // 54MBit = 540

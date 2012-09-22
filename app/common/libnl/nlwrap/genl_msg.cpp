@@ -26,20 +26,17 @@ namespace nlwrap {
 #define ETH_NLEN 6
 #define ETH_ALEN 18
 
-#define IE_ARRAY_SIZE 128
-#define IE_WIFI_SIZE 4
+// Information elements
+#define IE_SSID              0
+#define IE_SUPP_RATES        1
+#define IE_RSN              48
+#define IE_EXT_SUPP_RATES   50
+#define IE_INTERWORKING    107
+#define IE_ADVERT_PROTO    108
+#define IE_VENDOR          221
 
-// for ESSID
-#define IE_SSID_INDEX 0
-
-// for data rates
-#define IE_SUPP_RATES_INDEX 1
-#define IE_EXTENDED_SUPP_RATES_INDEX 50
-
-// for security features
-#define IE_RNS_INDEX 48
-#define IE_VENDOR 221 // doesn't count for ARRAY_SIZE
-#define IE_WPA_INDEX 1
+#define IE_VENDOR_MS_CIPHER_MAX   6
+#define IE_VENDOR_IEEE_CIPHER_MAX 7
 
 #define WLAN_CAPABILITY_QOS (1<<9)
 
@@ -246,22 +243,23 @@ void genl_msg::parse_sta(::nlattr *sta[NL80211_STA_INFO_MAX + 1])
 void genl_msg::parse_information_elements(unsigned char *ie, int ielen)
 {
 	static unsigned char ms_oui[3] = { 0x00, 0x50, 0xf2 };
+	static unsigned char ieee80211_oui[3] = { 0x00, 0x0f, 0xac };
 
 	unsigned int max_rate = 0;
 	unsigned int rate;
 
-	unsigned char* data;
+	unsigned char *data;
 
 	while (ielen >= 2 && ielen >= ie[1]) {
 		data = ie + 2;
 
 		switch (ie[0]) {
-		case IE_SSID_INDEX:
+		case IE_SSID:           // 802.11-2012 8.4.2.2
 		    ie_ssid = std::string(reinterpret_cast<const char *>(data), ie[1]);
 		    break;
 
-		case IE_SUPP_RATES_INDEX:
-		case IE_EXTENDED_SUPP_RATES_INDEX:
+		case IE_SUPP_RATES:     // 802.11-2012 8.4.2.3
+		case IE_EXT_SUPP_RATES: // 802.11-2012 8.4.2.15
 			for (unsigned int r = 0; r < ie[1]; r++) {
 				rate = (data[r] & 0x7f) / 2;
 				if (rate > max_rate) {
@@ -271,17 +269,63 @@ void genl_msg::parse_information_elements(unsigned char *ie, int ielen)
 			}
 			break;
 
-		case IE_RNS_INDEX:
+		case IE_RSN:            // 802.11-2012 8.4.2.27
 			ie_has_security_features = true;
 			break;
 
-		case IE_VENDOR:
-			if (ie[1] >= 4 && ::memcmp(data, ms_oui, 3) == 0) {
-				if (data[3] == IE_WPA_INDEX) {
+		case IE_VENDOR:         // 802.11-2012 8.4.2.28
+			if (ie[1] >= 4) {
+				if (   (::memcmp(data, ms_oui, 3)        == 0 && data[3] < IE_VENDOR_MS_CIPHER_MAX)
+				    || (::memcmp(data, ieee80211_oui, 3) == 0 && data[3] < IE_VENDOR_IEEE_CIPHER_MAX)) {
 					ie_has_security_features = true;
 				}
 			}
 			break;
+
+		case IE_INTERWORKING:   // 802.11-2012 8.4.2.94
+			ie_has_mih_capabilities = true;
+
+			if ((data[0] & 0x10) != 0) {
+				ie_has_internet_access = true;
+			}
+
+			if ((data[0] & 0xc0) != 0) {
+				ie_has_emergency_services = true;
+			}
+
+			if (ie[1] == 7) {
+				ie_hessid = odtone::mih::mac_addr(&data[1], ETH_NLEN);
+			} else if (ie[1] == 9) {
+				ie_hessid = odtone::mih::mac_addr(&data[3], ETH_NLEN);
+			}
+
+		case IE_ADVERT_PROTO:   // 802.11-2012 8.4.2.95
+		{
+			unsigned char *tuple;
+			unsigned char jump;
+			bool complete;
+			for (tuple = data, complete = false;
+			     tuple < data + ie[1] && !complete;
+			     tuple += jump) {
+				jump = 1;
+				switch (tuple[1]) {
+					case 1:
+						ie_has_mih_information_service = true;
+						break;
+					case 2:
+						ie_has_mih_command_service = true;
+						ie_has_mih_event_service = true;
+						break;
+					case 221:   // 802.11-2012 8.4.2.28
+						jump = tuple[3];
+						break;
+				}
+
+				complete =    ie_has_mih_information_service
+				           && ie_has_mih_command_service
+				           && ie_has_mih_event_service;
+			}
+		}
 
 		default:
 			break;
