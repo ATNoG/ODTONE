@@ -110,6 +110,14 @@ public:
 	void set_op_mode(const mih::link_ac_type_enum &mode);
 
 	/**
+	 * Get the link packet error rate
+	 * (number of errors over total packets sent)
+	 *
+	 * @return the referred percentage.
+	 */
+	odtone::uint get_packet_error_rate();
+
+	/**
 	 * Set the callback for LINK_UP events.
 	 *
 	 * @param h The callback.

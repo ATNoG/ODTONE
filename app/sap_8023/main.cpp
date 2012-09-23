@@ -216,64 +216,65 @@ void handle_link_get_parameters(if_8023 &fi,
 		mih::link_param status_param;
 
 		BOOST_FOREACH (mih::link_param_type &pt, param_list) {
-			mih::link_param_802_11 *param = boost::get<mih::link_param_802_11>(&pt);
-			if (!param) {
-				log_(0, "(command) No link_param_802_11 link_param_type specified");
-				dispatch_status_failure(tid, mih::confirm::link_get_parameters);
-				return;
+			//mih::link_param_eth *param_eth = boost::get<mih::link_param_eth>(&pt);
+			//if (param_eth) {
+			//	status_param.type = *param_eth;
+			//	// ...
+			//	status_list.push_back(status_param);
+			//	continue;
+			//}
+
+			mih::link_param_gen *param_gen = boost::get<mih::link_param_gen>(&pt);
+			if (param_gen) {
+				status_param.type = *param_gen;
+
+
+				if (*param_gen == mih::link_param_gen_packet_error_rate) {
+					status_param.value = fi.get_packet_error_rate();
+				//} else if (*param_gen == mih::link_param_gen_data_rate) {
+				// this is only available via ioctl/ethtool
+				//} else if (*param_gen == mih::link_param_gen_signal_strength) {
+				//} else if (*param_gen == mih::link_param_gen_sinr) {
+				//} else if (*param_gen == mih::link_param_gen_throughput) {
+				} else {
+					log_(0, "(command) No support for specified link_param");
+					continue;
+					//dispatch_status_failure(tid, mih::confirm::link_get_parameters);
+					//return;
+				}
+
+				status_list.push_back(status_param);
+				continue;
 			}
 
-			mih::link_param status_param;
-			status_param.type = *param;
-
-			if (*param == mih::link_param_802_11_no_qos) {
-				// TODO
-			} else if (*param == mih::link_param_802_11_rssi) {
-				// not supported
-				log_(0, "(command) No support for specified link_param_802_11");
-				dispatch_status_failure(tid, mih::confirm::link_get_parameters);
-				return;
-			} else if (*param == mih::link_param_802_11_multicast_packet_loss_rate) {
-				// not supported
-				log_(0, "(command) No support for specified link_param_802_11");
-				dispatch_status_failure(tid, mih::confirm::link_get_parameters);
-				return;
-			} else {
-				// huh??
-				log_(0, "(command) No support for specified link_param_802_11");
-				dispatch_status_failure(tid, mih::confirm::link_get_parameters);
-				return;
-			}
-
-			status_list.push_back(status_param);
+			log_(0, "(command) No support for specified link_param");
+			//dispatch_status_failure(tid, mih::confirm::link_get_parameters);
+			//return;
 		}
 
 		mih::link_states_rsp_list states_list;
 		mih::link_states_rsp states_param;
 
+		if (states_req.get(mih::link_states_req_channel_id)) {
+			log_(0, "(command) No support for specified link_desc_req");
+			//dispatch_status_failure(tid, mih::confirm::link_get_parameters);
+			//return;
+		}
 		if (states_req.get(mih::link_states_req_op_mode)) {
 			states_param = fi.get_op_mode();
 			states_list.push_back(states_param);
 		}
-		if (states_req.get(mih::link_states_req_channel_id)) {
-			// not supported
-			log_(0, "(command) No support for specified link_desc_req");
-			dispatch_status_failure(tid, mih::confirm::link_get_parameters);
-			return;
-		}
 
 		mih::link_desc_rsp_list desc_list;
 		if (desc_req.get(mih::link_desc_req_classes_of_service_supported)) {
-			// not supported
 			log_(0, "(command) No support for specified link_desc_req");
-			dispatch_status_failure(tid, mih::confirm::link_get_parameters);
-			return;
+			//dispatch_status_failure(tid, mih::confirm::link_get_parameters);
+			//return;
 		}
 		if (desc_req.get(mih::link_desc_req_queues_supported)) {
-			// not supported
-			log_(0, "(command) No support for specified link_desc_req");
-			dispatch_status_failure(tid, mih::confirm::link_get_parameters);
-			return;
+			//log_(0, "(command) No support for specified link_desc_req");
+			//dispatch_status_failure(tid, mih::confirm::link_get_parameters);
+			//return;
 		}
 
 		log_(0, "(command) Dispatching status success");

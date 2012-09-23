@@ -445,36 +445,24 @@ void handle_link_get_parameters(if_80211 &fi,
 		mih::link_param_list status_list;
 		mih::link_param status_param;
 
+		poa_info ap_info = fi.get_poa_info();
+
 		BOOST_FOREACH (mih::link_param_type &pt, param_list) {
 			mih::link_param_802_11 *param_802_11 = boost::get<mih::link_param_802_11>(&pt);
 			if (param_802_11) {
 				status_param.type = *param_802_11;
 
 				if (*param_802_11 == mih::link_param_802_11_rssi) {
-					poa_info ap_info = fi.get_poa_info();
-
 					if (mih::percentage *v = boost::get<mih::percentage>(&ap_info.signal)) {
 						status_param.value = (odtone::uint)*v;
 					} else if (odtone::sint8 *v = boost::get<odtone::sint8>(&ap_info.signal)) {
 						status_param.value = *v;
 					}
 				} else if (*param_802_11 == mih::link_param_802_11_no_qos) {
-					poa_info ap_info = fi.get_poa_info();
-
 					status_param.value = !ap_info.net_capabilities.get(mih::net_caps_qos_0);
-				} else if (*param_802_11 == mih::link_param_802_11_multicast_packet_loss_rate) {
-					// not supported
-					log_(0, "(command) No support for specified link_param_802_11_multicast_packet_loss_rate");
-
-					// toggle comments to fail
-					continue;
-					//dispatch_status_failure(tid, mih::confirm::link_get_parameters);
-					//return;
+				//} else if (*param_802_11 == mih::link_param_802_11_multicast_packet_loss_rate) {
 				} else {
-					// huh??
-					log_(0, "(command) Unknown link_param_802_11");
-
-					// toggle comments to fail
+					log_(0, "(command) No support for specified link_param");
 					continue;
 					//dispatch_status_failure(tid, mih::confirm::link_get_parameters);
 					//return;
@@ -489,39 +477,20 @@ void handle_link_get_parameters(if_80211 &fi,
 				status_param.type = *param_gen;
 
 				if (*param_gen == mih::link_param_gen_data_rate) {
-					poa_info i = fi.get_poa_info();
-					mih::mac_addr addr = boost::get<mih::mac_addr>(boost::get<mih::link_addr>(i.id.poa_addr));
+					mih::mac_addr addr = boost::get<mih::mac_addr>(boost::get<mih::link_addr>(ap_info.id.poa_addr));
 					status_param.value = fi.get_current_data_rate(addr);
 				} else if (*param_gen == mih::link_param_gen_signal_strength) {
-					poa_info ap_info = fi.get_poa_info();
-
 					if (mih::percentage *v = boost::get<mih::percentage>(&ap_info.signal)) {
 						status_param.value = (odtone::uint)*v;
 					} else if (odtone::sint8 *v = boost::get<odtone::sint8>(&ap_info.signal)) {
 						status_param.value = *v;
 					}
-				} else if (*param_gen == mih::link_param_gen_sinr) {
-					// not supported
-					log_(0, "(command) No support for specified link_param_gen_sinr");
-
-					// toggle comments to fail
-					continue;
-					//dispatch_status_failure(tid, mih::confirm::link_get_parameters);
-					//return;
-				} else if (*param_gen == mih::link_param_gen_throughput) {
-					// not supported
-					log_(0, "(command) No support for specified link_param_gen_throughput");
-
-					// toggle comments to fail
-					continue;
-					//dispatch_status_failure(tid, mih::confirm::link_get_parameters);
-					//return;
 				} else if (*param_gen == mih::link_param_gen_packet_error_rate) {
 					status_param.value = fi.get_packet_error_rate();
+				//} else if (*param_gen == mih::link_param_gen_sinr) {
+				//} else if (*param_gen == mih::link_param_gen_throughput) {
 				} else {
-					// huh??
-					log_(0, "(command) Unknown link_param_gen");
-					// toggle comments to fail
+					log_(0, "(command) No support for specified link_param");
 					continue;
 					//dispatch_status_failure(tid, mih::confirm::link_get_parameters);
 					//return;
@@ -531,9 +500,7 @@ void handle_link_get_parameters(if_80211 &fi,
 				continue;
 			}
 
-			// huh??
 			log_(0, "(command) No support for specified link_param");
-			// leave commented to keep parsing
 			//dispatch_status_failure(tid, mih::confirm::link_get_parameters);
 			//return;
 		}
@@ -542,8 +509,6 @@ void handle_link_get_parameters(if_80211 &fi,
 		mih::link_states_rsp states_param;
 
 		if (states_req.get(mih::link_states_req_channel_id)) {
-			poa_info ap_info = fi.get_poa_info();
-
 			states_param = ap_info.channel_id;
 			states_list.push_back(states_param);
 		}
@@ -554,16 +519,12 @@ void handle_link_get_parameters(if_80211 &fi,
 
 		mih::link_desc_rsp_list desc_list;
 		if (desc_req.get(mih::link_desc_req_classes_of_service_supported)) {
-			// not supported
 			log_(0, "(command) No support for specified link_desc_req");
-			// toggle comments to fail
 			//dispatch_status_failure(tid, mih::confirm::link_get_parameters);
 			//return;
 		}
 		if (desc_req.get(mih::link_desc_req_queues_supported)) {
-			// not supported
 			log_(0, "(command) No support for specified link_desc_req");
-			// toggle comments to fail
 			//dispatch_status_failure(tid, mih::confirm::link_get_parameters);
 			//return;
 		}
