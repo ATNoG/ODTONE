@@ -88,9 +88,9 @@ public:
 	/**
 	 * Get the link id of this device.
 	 *
-	 * @return The link_id of the device.
+	 * @return The link_tuple_id of the device.
 	 */
-	mih::link_id link_id();
+	mih::link_tuple_id link_tuple_id();
 
 	/**
 	 * Check if the link has an active L2 connection.

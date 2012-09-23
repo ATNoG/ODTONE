@@ -201,6 +201,36 @@ void handle_event_unsubscribe(odtone::uint16 tid, mih::link_evt_list &events)
 	ls->async_send(m);
 }
 
+boost::optional<mih::link_param> link_get_parameter(if_8023 &fi, mih::link_param_type &pt) {
+	boost::optional<mih::link_param> r;
+	mih::link_param status_param;
+
+	//mih::link_param_eth *param_eth = boost::get<mih::link_param_eth>(&pt);
+	//if (param_eth) {
+	//	status_param.type = *param_eth;
+	//	// ...
+	//	status_list.push_back(status_param);
+	//	continue;
+	//}
+
+	mih::link_param_gen *param_gen = boost::get<mih::link_param_gen>(&pt);
+	if (param_gen) {
+		status_param.type = *param_gen;
+
+		if (*param_gen == mih::link_param_gen_packet_error_rate) {
+			status_param.value = fi.get_packet_error_rate();
+			r.reset(status_param);
+		//} else if (*param_gen == mih::link_param_gen_data_rate) {
+		// this is only available via ioctl/ethtool
+		//} else if (*param_gen == mih::link_param_gen_signal_strength) {
+		//} else if (*param_gen == mih::link_param_gen_sinr) {
+		//} else if (*param_gen == mih::link_param_gen_throughput) {
+		}
+	}
+
+	return r;
+}
+
 // Dispatch a link_get_parameters confirm.
 // Partially supported.
 void handle_link_get_parameters(if_8023 &fi,
@@ -213,43 +243,14 @@ void handle_link_get_parameters(if_8023 &fi,
 
 	try {
 		mih::link_param_list status_list;
-		mih::link_param status_param;
 
 		BOOST_FOREACH (mih::link_param_type &pt, param_list) {
-			//mih::link_param_eth *param_eth = boost::get<mih::link_param_eth>(&pt);
-			//if (param_eth) {
-			//	status_param.type = *param_eth;
-			//	// ...
-			//	status_list.push_back(status_param);
-			//	continue;
-			//}
-
-			mih::link_param_gen *param_gen = boost::get<mih::link_param_gen>(&pt);
-			if (param_gen) {
-				status_param.type = *param_gen;
-
-
-				if (*param_gen == mih::link_param_gen_packet_error_rate) {
-					status_param.value = fi.get_packet_error_rate();
-				//} else if (*param_gen == mih::link_param_gen_data_rate) {
-				// this is only available via ioctl/ethtool
-				//} else if (*param_gen == mih::link_param_gen_signal_strength) {
-				//} else if (*param_gen == mih::link_param_gen_sinr) {
-				//} else if (*param_gen == mih::link_param_gen_throughput) {
-				} else {
-					log_(0, "(command) No support for specified link_param");
-					continue;
-					//dispatch_status_failure(tid, mih::confirm::link_get_parameters);
-					//return;
-				}
-
-				status_list.push_back(status_param);
-				continue;
+			boost::optional<mih::link_param> status_param = link_get_parameter(fi, pt);
+			if (status_param) {
+				status_list.push_back(status_param.get());
+			} else {
+				log_(0, "(command) No support for specified link_param");
 			}
-
-			log_(0, "(command) No support for specified link_param");
-			//dispatch_status_failure(tid, mih::confirm::link_get_parameters);
-			//return;
 		}
 
 		mih::link_states_rsp_list states_list;

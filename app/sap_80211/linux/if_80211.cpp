@@ -462,9 +462,9 @@ mih::mac_addr if_80211::mac_address()
 	return _ctx._mac;
 }
 
-mih::link_id if_80211::link_id()
+mih::link_tuple_id if_80211::link_tuple_id()
 {
-	mih::link_id id;
+	mih::link_tuple_id id;
 	id.type = mih::link_type_802_11;
 	id.addr = _ctx._mac;
 
