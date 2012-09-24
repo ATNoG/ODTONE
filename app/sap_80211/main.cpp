@@ -908,76 +908,68 @@ int main(int argc, char** argv)
 		std::cerr << "###########" << std::endl;
 	}
 
-	try {
-		// Declare Link SAP available options
-		po::options_description desc("MIH Link SAP Configuration");
-		desc.add_options()
-			("help", "Display configuration options")
-			(kConf_Sap_Verbosity, po::value<odtone::uint>()->default_value(2), "Log level [0-2]")
-			(kConf_Sched_Scan_Period, po::value<odtone::uint>()->default_value(0), "Scheduled scan interval (millis)")
-			(kConf_Default_Threshold_Period, po::value<odtone::uint>()->default_value(1000), "Default threshold checking interval (millis)")
-			(sap::kConf_Interface_Addr, po::value<std::string>()->default_value(""), "Interface address")
-			(sap::kConf_Port, po::value<odtone::ushort>()->default_value(1235), "Port")
-			(sap::kConf_File, po::value<std::string>()->default_value("sap_80211.conf"), "Configuration File")
-			(sap::kConf_Receive_Buffer_Len, po::value<odtone::uint>()->default_value(4096), "Receive Buffer Length")
-			(sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
-			(sap::kConf_MIHF_Local_Port, po::value<odtone::ushort>()->default_value(1025), "MIHF Local Communications Port")
-			(sap::kConf_MIHF_Id, po::value<std::string>()->default_value("local-mihf"), "Local MIHF Id")
-			(sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("link"), "Link SAP Id");
+	// Declare Link SAP available options
+	po::options_description desc("MIH Link SAP Configuration");
+	desc.add_options()
+		("help", "Display configuration options")
+		(kConf_Sap_Verbosity, po::value<odtone::uint>()->default_value(2), "Log level [0-2]")
+		(kConf_Sched_Scan_Period, po::value<odtone::uint>()->default_value(0), "Scheduled scan interval (millis)")
+		(kConf_Default_Threshold_Period, po::value<odtone::uint>()->default_value(1000), "Default threshold checking interval (millis)")
+		(sap::kConf_Interface_Addr, po::value<std::string>()->default_value(""), "Interface address")
+		(sap::kConf_Port, po::value<odtone::ushort>()->default_value(1235), "Port")
+		(sap::kConf_File, po::value<std::string>()->default_value("sap_80211.conf"), "Configuration File")
+		(sap::kConf_Receive_Buffer_Len, po::value<odtone::uint>()->default_value(4096), "Receive Buffer Length")
+		(sap::kConf_MIHF_Ip, po::value<std::string>()->default_value("127.0.0.1"), "Local MIHF Ip")
+		(sap::kConf_MIHF_Local_Port, po::value<odtone::ushort>()->default_value(1025), "MIHF Local Communications Port")
+		(sap::kConf_MIHF_Id, po::value<std::string>()->default_value("local-mihf"), "Local MIHF Id")
+		(sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("link"), "Link SAP Id");
 
-		mih::config cfg(desc);
-		cfg.parse(argc, argv, sap::kConf_File);
+	mih::config cfg(desc);
+	cfg.parse(argc, argv, sap::kConf_File);
 
-		if (cfg.help()) {
-			std::cerr << desc << std::endl;
-			return EXIT_SUCCESS;
-		}
-
-		odtone::uint sched_scan_period = cfg.get<odtone::uint>(kConf_Sched_Scan_Period);
-		odtone::uint th_period = cfg.get<odtone::uint>(kConf_Default_Threshold_Period);
-		if (th_period == 0) {
-			std::cerr << "default_th_period must be positive!" << std::endl;
-			return EXIT_FAILURE;
-		}
-
-		set_supported_event_list();
-		set_supported_command_list();
-
-		boost::asio::io_service ios;
-
-		if_80211 fi(ios, mih::mac_addr(cfg.get<std::string>(sap::kConf_Interface_Addr)));
-		mih::link_id id = fi.link_tuple_id();
-
-		ls.reset(new sap::link(cfg, ios, boost::bind(&default_handler, boost::ref(ios), boost::ref(fi), _1, _2)));
-		mihf_sap_init(id);
-
-		threshold_check_task.reset(new timer_task(ios, th_period,
-			boost::bind(&global_thresholds_check, boost::ref(ios), boost::ref(fi))));
-
-		if (sched_scan_period > 0) {
-			scheduled_scan_task.reset(new timer_task(ios, sched_scan_period,
-				boost::bind(&scheduled_scan_trigger, boost::ref(fi))));
-#ifndef STOP_SCHED_SCAN_ON_L2_UP
-			scheduled_scan_task->start();
-#else
-			if (!fi.link_up()) {
-				scheduled_scan_task->start();
-			}
-#endif /* STOP_SCHED_SCAN_ON_L2_UP */
-		}
-
-		fi.link_up_callback(boost::bind(&dispatch_link_up, _1, _2, _3, _4, _5));
-		fi.link_down_callback(boost::bind(&dispatch_link_down, _1, _2, _3));
-		fi.link_detected_callback(boost::bind(&dispatch_link_detected, _1));
-
-		ios.run();
-	} catch(std::exception &e) {
-		std::cerr << "Exception: " << e.what() << std::endl;
-	} catch(std::string &str) {
-		std::cerr << "Exception: " << str << std::endl;
-	} catch(const char *str) {
-		std::cerr << "Exception: " << str << std::endl;
+	if (cfg.help()) {
+		std::cerr << desc << std::endl;
+		return EXIT_SUCCESS;
 	}
+
+	odtone::uint sched_scan_period = cfg.get<odtone::uint>(kConf_Sched_Scan_Period);
+	odtone::uint th_period = cfg.get<odtone::uint>(kConf_Default_Threshold_Period);
+	if (th_period == 0) {
+		std::cerr << "default_th_period must be positive!" << std::endl;
+		return EXIT_FAILURE;
+	}
+
+	set_supported_event_list();
+	set_supported_command_list();
+
+	boost::asio::io_service ios;
+
+	if_80211 fi(ios, mih::mac_addr(cfg.get<std::string>(sap::kConf_Interface_Addr)));
+	mih::link_id id = fi.link_tuple_id();
+
+	ls.reset(new sap::link(cfg, ios, boost::bind(&default_handler, boost::ref(ios), boost::ref(fi), _1, _2)));
+	mihf_sap_init(id);
+
+	threshold_check_task.reset(new timer_task(ios, th_period,
+		boost::bind(&global_thresholds_check, boost::ref(ios), boost::ref(fi))));
+
+	if (sched_scan_period > 0) {
+		scheduled_scan_task.reset(new timer_task(ios, sched_scan_period,
+			boost::bind(&scheduled_scan_trigger, boost::ref(fi))));
+#ifndef STOP_SCHED_SCAN_ON_L2_UP
+		scheduled_scan_task->start();
+#else
+		if (!fi.link_up()) {
+			scheduled_scan_task->start();
+		}
+#endif /* STOP_SCHED_SCAN_ON_L2_UP */
+	}
+
+	fi.link_up_callback(boost::bind(&dispatch_link_up, _1, _2, _3, _4, _5));
+	fi.link_down_callback(boost::bind(&dispatch_link_down, _1, _2, _3));
+	fi.link_detected_callback(boost::bind(&dispatch_link_detected, _1));
+
+	ios.run();
 }
 
 // EOF ////////////////////////////////////////////////////////////////////////
