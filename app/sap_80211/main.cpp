@@ -549,7 +549,6 @@ void handle_link_get_parameters(if_80211 &fi,
 }
 
 // Dispatch a link_configure_thresholds confirm
-// Partially supported. Only RSSI, for now!
 void handle_link_configure_thresholds(boost::asio::io_service &ios,
 	if_80211 &fi,
 	odtone::uint16 tid,

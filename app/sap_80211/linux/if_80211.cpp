@@ -395,6 +395,7 @@ int handle_nl_event(nl_msg *msg, void *arg)
 			log_(0, "(event) Scan aborted");
 		}
 		break;
+
 	case NL80211_CMD_NEW_SCAN_RESULTS: // LINK DETECTED
 		{
 			ctx->_scanning = false;
