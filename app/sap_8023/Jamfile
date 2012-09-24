@@ -19,6 +19,7 @@ exe sap_8023
 	: main.cpp
 	  timer_task.cpp
 	  linux/if_8023.cpp
+	  linux/ethtool.cpp
 	  ../common/libnl//nlwrap
 	  ../common/libnl//libnl
 	  ../../lib/odtone//odtone_base

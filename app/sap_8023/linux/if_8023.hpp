@@ -26,6 +26,7 @@
 
 #include <odtone/mih/tlv_types.hpp>
 
+#include "ethtool.hpp"
 #include <nlwrap.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -82,11 +83,11 @@ public:
 	mih::mac_addr mac_address();
 
 	/**
-	 * Get the link id of this device.
+	 * Get the link tuple id of this device.
 	 *
-	 * @return The link_id of the device.
+	 * @return The link_tuple_id of the device.
 	 */
-	mih::link_id link_id();
+	mih::link_tuple_id link_tuple_id();
 
 	/**
 	 * Check if the link has an active L2 connection.
@@ -116,6 +117,13 @@ public:
 	 * @return the referred percentage.
 	 */
 	odtone::uint get_packet_error_rate();
+
+	/**
+	 * Get the current link tx data rate in kb/s.
+	 *
+	 * @return the current data rate.
+	 */
+	odtone::uint get_current_data_rate();
 
 	/**
 	 * Set the callback for LINK_UP events.

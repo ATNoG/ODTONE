@@ -41,10 +41,28 @@ namespace po = boost::program_options;
 using namespace odtone;
 
 ///////////////////////////////////////////////////////////////////////////////
+//// Auxiliary Variables and Types
+///////////////////////////////////////////////////////////////////////////////
+
+struct periodic_report_data {
+	std::unique_ptr<timer_task> task;
+	void _report_value(boost::asio::io_service &ios, if_8023 &fi);
+
+	mih::link_param_type type;
+};
+
+struct threshold_cross_data {
+	bool one_shot;
+	mih::link_param_type type;
+	mih::threshold th;
+};
+
+///////////////////////////////////////////////////////////////////////////////
 //// Configuration variables
 ///////////////////////////////////////////////////////////////////////////////
 
 static const char* const kConf_Sap_Verbosity = "link.verbosity";
+static const char* const kConf_Default_Threshold_Period = "link.default_th_period";
 
 static logger log_("sap_8023", std::cout);
 
@@ -53,10 +71,16 @@ static logger log_("sap_8023", std::cout);
 ///////////////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<sap::link>  ls;
+std::unique_ptr<timer_task> threshold_check_task;
+std::unique_ptr<timer_task> scheduled_scan_task;
 
 mih::link_evt_list capabilities_event_list;
 mih::link_cmd_list capabilities_command_list;
 mih::link_evt_list subscribed_event_list;
+
+boost::shared_mutex _th_list_mutex;
+std::vector<threshold_cross_data> th_cross_list;
+std::vector<std::unique_ptr<periodic_report_data>> period_rpt_list;
 
 ///////////////////////////////////////////////////////////////////////////////
 //// Event dispatchers
@@ -68,6 +92,20 @@ void dispatch_link_up(mih::link_tuple_id &lid,
 	boost::optional<bool> &ip_renew,
 	boost::optional<mih::ip_mob_mgmt> &mobility_management)
 {
+	// restart checking the thresholds
+	if (th_cross_list.size() > 0 && !threshold_check_task->running()) {
+		log_(0, "(cmd) Starting global threshold check task");
+		threshold_check_task->start();
+	}
+	if (period_rpt_list.size() > 0) {
+		log_(0, "(cmd) Starting the periodic reports");
+		auto it = period_rpt_list.begin();
+		while (it != period_rpt_list.end()) {
+			it->get()->task->start();
+			it++;
+		}
+	}
+
 	// propagate the event
 	if (!subscribed_event_list.get(mih::evt_link_up)) {
 		return;
@@ -90,6 +128,20 @@ void dispatch_link_down(mih::link_tuple_id &lid,
 	boost::optional<mih::link_addr> &old_router,
 	mih::link_dn_reason &rs)
 {
+	// stop parameters report
+	if (th_cross_list.size() > 0 && threshold_check_task->running()) {
+		log_(0, "(cmd) Stopping global threshold check task");
+		threshold_check_task->stop();
+	}
+	if (period_rpt_list.size() > 0) {
+		log_(0, "(cmd) Stopping the periodic reports");
+		auto it = period_rpt_list.begin();
+		while (it != period_rpt_list.end()) {
+			it->get()->task->stop();
+			it++;
+		}
+	}
+
 	// propagate the event
 	if (!subscribed_event_list.get(mih::evt_link_down)) {
 		return;
@@ -104,6 +156,163 @@ void dispatch_link_down(mih::link_tuple_id &lid,
 		& mih::tlv_link_dn_reason(rs);
 
 	ls->async_send(m);
+}
+
+void dispatch_link_parameters_report(mih::link_tuple_id lid,
+	mih::link_param_rpt_list &rpt_list)
+{
+	if (!subscribed_event_list.get(mih::evt_link_parameters_report)) {
+		return;
+	}
+
+	log_(0, "(event) Dispatching link_parameters_report message.");
+
+	mih::message m;
+	m << mih::indication(mih::indication::link_parameters_report)
+		& mih::tlv_link_identifier(lid)
+		& mih::tlv_link_param_rpt_list(rpt_list);
+
+	ls->async_send(m);
+}
+
+bool link_parameter_supported(mih::link_param_type &pt) {
+	bool r = false;
+
+	//mih::link_param_eth *param_eth = boost::get<mih::link_param_eth>(&pt);
+	//if (param_eth) {
+	//	// ...
+	//}
+
+	mih::link_param_gen *param_gen = boost::get<mih::link_param_gen>(&pt);
+	if (param_gen) {
+		if (   *param_gen == mih::link_param_gen_data_rate
+		    || *param_gen == mih::link_param_gen_packet_error_rate) {
+			r = true;
+		}
+	}
+
+	return r;
+}
+
+boost::optional<mih::link_param> link_get_parameter(if_8023 &fi, mih::link_param_type &pt) {
+	boost::optional<mih::link_param> r;
+	mih::link_param status_param;
+
+	//mih::link_param_eth *param_eth = boost::get<mih::link_param_eth>(&pt);
+	//if (param_eth) {
+	//	status_param.type = *param_eth;
+	//	// ...
+	//	status_list.push_back(status_param);
+	//	continue;
+	//}
+
+	mih::link_param_gen *param_gen = boost::get<mih::link_param_gen>(&pt);
+	if (param_gen) {
+		status_param.type = *param_gen;
+
+		if (*param_gen == mih::link_param_gen_packet_error_rate) {
+			status_param.value = fi.get_packet_error_rate();
+			r.reset(status_param);
+		} else if (*param_gen == mih::link_param_gen_data_rate) {
+			status_param.value = fi.get_current_data_rate();
+			r.reset(status_param);
+		//} else if (*param_gen == mih::link_param_gen_signal_strength) {
+		//} else if (*param_gen == mih::link_param_gen_sinr) {
+		//} else if (*param_gen == mih::link_param_gen_throughput) {
+		}
+	}
+
+	return r;
+}
+
+// For cross-value-alert threshold types
+void global_thresholds_check(boost::asio::io_service &ios, if_8023 &fi)
+{
+	if (!subscribed_event_list.get(mih::evt_link_parameters_report)) {
+		return;
+	}
+
+	log_(0, "(cmd) Performing periodic threshold check");
+
+	try {
+		mih::link_tuple_id lid = fi.link_tuple_id();
+		mih::link_param_rpt_list rpt_list;
+
+		boost::unique_lock<boost::shared_mutex> lock(_th_list_mutex);
+
+		std::vector<threshold_cross_data>::iterator th_it = th_cross_list.begin();
+		while (th_it != th_cross_list.end()) {
+			boost::optional<boost::variant<mih::link_param_val, mih::qos_param_val>> value;
+
+			boost::optional<mih::link_param> status_param = link_get_parameter(fi, th_it->type);
+
+			if (!status_param) {
+				continue;
+			}
+
+			uint16 uintval = boost::get<mih::link_param_val>(status_param.get().value);
+
+			if (th_it->th.threshold_x_dir == mih::threshold::above_threshold) {
+				if (static_cast<int>(uintval) > static_cast<int>(th_it->th.threshold_val)) {
+					value = status_param.get().value;
+				}
+			} else if (th_it->th.threshold_x_dir == mih::threshold::below_threshold) {
+				if (static_cast<int>(uintval) < static_cast<int>(th_it->th.threshold_val)) {
+					value = status_param.get().value;
+				}
+			}
+
+			if (value) {
+				mih::link_param_report rpt;
+				rpt.param.type = th_it->type;
+				rpt.param.value = value.get();
+				rpt.thold = th_it->th;
+				rpt_list.push_back(rpt);
+			}
+
+			if (value && th_it->one_shot) {
+				log_(0, "(link) Removing one-shot type threshold from list");
+				th_it = th_cross_list.erase(th_it);
+			} else {
+				++th_it;
+			}
+		}
+
+		if (rpt_list.size() > 0) {
+			ios.dispatch(boost::bind(&dispatch_link_parameters_report, lid, rpt_list));
+		}
+	} catch (const std::exception &e) {
+		log_(0, "(cmd) Unable to get associated POA info: ", e.what());
+		return;
+	}
+}
+
+// For periodic metric reporting
+void periodic_report_data::_report_value(boost::asio::io_service &ios, if_8023 &fi)
+{
+	// Periodic reports don't need to be subscribed?
+//	if (!subscribed_event_list.get(mih::evt_link_parameters_report)) {
+//		return;
+//	}
+
+	log_(0, "(cmd) Handling periodic report");
+
+	try {
+		boost::shared_lock<boost::shared_mutex> lock(_th_list_mutex);
+
+		boost::optional<mih::link_param> status_param = link_get_parameter(fi, type);
+		if (status_param) {
+			mih::link_param_report rpt;
+			rpt.param = status_param.get();
+
+			mih::link_param_rpt_list rpt_list;
+			rpt_list.push_back(rpt);
+
+			ios.dispatch(boost::bind(&dispatch_link_parameters_report, fi.link_tuple_id(), rpt_list));
+		}
+	} catch (const std::exception &e) {
+		log_(0, "(cmd) Error handling periodic report: ", e.what());
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -201,36 +410,6 @@ void handle_event_unsubscribe(odtone::uint16 tid, mih::link_evt_list &events)
 	ls->async_send(m);
 }
 
-boost::optional<mih::link_param> link_get_parameter(if_8023 &fi, mih::link_param_type &pt) {
-	boost::optional<mih::link_param> r;
-	mih::link_param status_param;
-
-	//mih::link_param_eth *param_eth = boost::get<mih::link_param_eth>(&pt);
-	//if (param_eth) {
-	//	status_param.type = *param_eth;
-	//	// ...
-	//	status_list.push_back(status_param);
-	//	continue;
-	//}
-
-	mih::link_param_gen *param_gen = boost::get<mih::link_param_gen>(&pt);
-	if (param_gen) {
-		status_param.type = *param_gen;
-
-		if (*param_gen == mih::link_param_gen_packet_error_rate) {
-			status_param.value = fi.get_packet_error_rate();
-			r.reset(status_param);
-		//} else if (*param_gen == mih::link_param_gen_data_rate) {
-		// this is only available via ioctl/ethtool
-		//} else if (*param_gen == mih::link_param_gen_signal_strength) {
-		//} else if (*param_gen == mih::link_param_gen_sinr) {
-		//} else if (*param_gen == mih::link_param_gen_throughput) {
-		}
-	}
-
-	return r;
-}
-
 // Dispatch a link_get_parameters confirm.
 // Partially supported.
 void handle_link_get_parameters(if_8023 &fi,
@@ -296,6 +475,136 @@ void handle_link_get_parameters(if_8023 &fi,
 		log_(0, "(command) Exception: ", e.what());
 		dispatch_status_failure(tid, mih::confirm::link_get_parameters);
 	}
+}
+
+// Dispatch a link_configure_thresholds confirm
+void handle_link_configure_thresholds(boost::asio::io_service &ios,
+	if_8023 &fi,
+	odtone::uint16 tid,
+	mih::link_cfg_param_list &param_list)
+{
+	log_(0, "(command) Handling link_configure_thresholds");
+
+	mih::link_cfg_status_list status_list;
+
+	std::vector<threshold_cross_data>::iterator cross_it;
+	std::vector<std::unique_ptr<periodic_report_data>>::iterator rpt_it;
+
+	BOOST_FOREACH (mih::link_cfg_param &param, param_list) {
+		// check for support
+		if (!link_parameter_supported(param.type)) {
+			log_(0, "(command) No support for specified link_param_type");
+			mih::link_cfg_status status;
+			status.type = param.type;
+			status.status = false;
+			status_list.push_back(status);
+			continue;
+		}
+
+		boost::unique_lock<boost::shared_mutex> lock(_th_list_mutex);
+		if (param.action == mih::th_action_cancel) { // cancel thresholds
+			if (param.threshold_list.size() == 0) { // cancel all of type 'type'
+				log_(0, "(command) Cancelling all configured thresholds of type ", param.type);
+
+				cross_it = th_cross_list.begin();
+				while (cross_it != th_cross_list.end()) {
+					if (cross_it->type == param.type) {
+						cross_it = th_cross_list.erase(cross_it);
+					} else {
+						++cross_it;
+					}
+				}
+
+				rpt_it = period_rpt_list.begin();
+				while (rpt_it != period_rpt_list.end()) {
+					if (rpt_it->get()->type == param.type) {
+						rpt_it = period_rpt_list.erase(rpt_it);
+					} else {
+						++rpt_it;
+					}
+				}
+
+				mih::link_cfg_status status;
+				status.type = param.type;
+				status.status = true;
+				status_list.push_back(status);
+			} else { // cancel specific only.
+				log_(0, "(command) Cancelling some thresholds of type ", param.type);
+
+				BOOST_FOREACH (mih::threshold &th, param.threshold_list) {
+					cross_it = th_cross_list.begin();
+					while (cross_it != th_cross_list.end()) {
+						if (cross_it->type == param.type
+							&& cross_it->th.threshold_val == th.threshold_val
+							&& cross_it->th.threshold_x_dir == th.threshold_x_dir) {
+							cross_it = th_cross_list.erase(cross_it);
+						} else {
+							++cross_it;
+						}
+					}
+
+					mih::link_cfg_status status;
+					status.type = param.type;
+					status.thold = th;
+					status.status = true;
+					status_list.push_back(status);
+				}
+			}
+		} else { // insert it
+			odtone::uint16 *period = boost::get<odtone::uint16>(&param.timer_interval);
+			if (period) {
+				// dealing with a periodic configuration
+				log_(0, "(command) Inserting periodic report");
+
+				std::unique_ptr<periodic_report_data> p(new periodic_report_data);
+				p->type = param.type;
+				p->task.reset(new timer_task(ios, *period,
+					boost::bind(&periodic_report_data::_report_value, p.get(), boost::ref(ios), boost::ref(fi))));
+
+				p->task->start();
+				period_rpt_list.push_back(std::move(p));
+			}
+
+			// not just "else", but aditionally, if there are thresholds, add them
+			BOOST_FOREACH (mih::threshold &th, param.threshold_list) {
+				log_(0, "(command) Inserting value-cross-alert threshold");
+
+				threshold_cross_data t;
+				t.one_shot = (param.action == mih::th_action_one_shot);
+				t.type = param.type;
+				t.th = th;
+				th_cross_list.push_back(t);
+
+				mih::link_cfg_status status;
+				status.type = param.type;
+				status.thold = th;
+				status.status = true;
+				status_list.push_back(status);
+			}
+		}
+	}
+
+	// Start/stop periodic threshold check based on threshold configuration existence
+	if (th_cross_list.size() > 0 && !threshold_check_task->running()) {
+		log_(0, "(cmd) New thresholds configured, starting global check task");
+		threshold_check_task->start();
+	} else if (th_cross_list.size() == 0 && threshold_check_task->running()) {
+		log_(0, "(cmd) All thresholds removed, stopping global check task");
+		threshold_check_task->stop();
+	}
+
+	log_(0, "(cmd) Dispatching status success");
+
+	mih::message m;
+	mih::status st = mih::status_success;
+
+	m << mih::confirm(mih::confirm::link_configure_thresholds)
+		& mih::tlv_status(st)
+		& mih::tlv_link_cfg_status_list(status_list);
+
+	m.tid(tid);
+
+	ls->async_send(m);
 }
 
 // Dispatch a link actions confirm.
@@ -447,9 +756,18 @@ void default_handler(boost::asio::io_service &ios,
 		break;
 
 	case mih::request::link_configure_thresholds:
-		log_(0, "(command) Received link_configure_thresholds message");
-		dispatch_status_failure(msg.tid(), mih::confirm::link_configure_thresholds);
+		{
+			log_(0, "(command) Received link_configure_thresholds message");
+			mih::link_cfg_param_list param_list;
+
+			msg >> mih::request()
+				& mih::tlv_link_cfg_param_list(param_list);
+
+			ios.dispatch(boost::bind(&handle_link_configure_thresholds, boost::ref(ios), boost::ref(fi), msg.tid(),
+			                                                            param_list));
+		}
 		break;
+
 	default:
 		log_(0, "(command) Unsupported MIH message");
 	}
@@ -476,7 +794,7 @@ void set_supported_event_list()
 	//capabilities_event_list.set(mih::evt_link_detected);
 	capabilities_event_list.set(mih::evt_link_up);
 	capabilities_event_list.set(mih::evt_link_down);
-	//capabilities_event_list.set(mih::evt_link_parameters_report);
+	capabilities_event_list.set(mih::evt_link_parameters_report);
 	//capabilities_event_list.set(mih::evt_link_going_down);
 	//capabilities_event_list.set(mih::evt_link_handover_imminent);
 	//capabilities_event_list.set(mih::evt_link_handover_complete);
@@ -489,7 +807,7 @@ void set_supported_command_list()
 	capabilities_command_list.set(mih::cmd_link_event_subscribe);
 	capabilities_command_list.set(mih::cmd_link_event_unsubscribe);
 	capabilities_command_list.set(mih::cmd_link_get_parameters);
-	//capabilities_command_list.set(mih::cmd_link_configure_thresholds);
+	capabilities_command_list.set(mih::cmd_link_configure_thresholds);
 	capabilities_command_list.set(mih::cmd_link_action);
 }
 
@@ -513,6 +831,7 @@ int main(int argc, char** argv)
 		desc.add_options()
 			("help", "Display configuration options")
 			(kConf_Sap_Verbosity, po::value<odtone::uint>()->default_value(2), "Log level [0-2]")
+			(kConf_Default_Threshold_Period, po::value<odtone::uint>()->default_value(1000), "Default threshold checking interval (millis)")
 			(sap::kConf_Interface_Addr, po::value<std::string>()->default_value(""), "Interface address")
 			(sap::kConf_Port, po::value<odtone::ushort>()->default_value(1235), "Port")
 			(sap::kConf_File, po::value<std::string>()->default_value("sap_8023.conf"), "Configuration File")
@@ -530,16 +849,25 @@ int main(int argc, char** argv)
 			return EXIT_SUCCESS;
 		}
 
+		odtone::uint th_period = cfg.get<odtone::uint>(kConf_Default_Threshold_Period);
+		if (th_period == 0) {
+			std::cerr << "default_th_period must be positive!" << std::endl;
+			return EXIT_FAILURE;
+		}
+
 		set_supported_event_list();
 		set_supported_command_list();
 
 		boost::asio::io_service ios;
 
 		if_8023 fi(ios, mih::mac_addr(cfg.get<std::string>(sap::kConf_Interface_Addr)));
-		mih::link_id id = fi.link_id();
+		mih::link_id id = fi.link_tuple_id();
 
 		ls.reset(new sap::link(cfg, ios, boost::bind(&default_handler, boost::ref(ios), boost::ref(fi), _1, _2)));
 		mihf_sap_init(id);
+
+		threshold_check_task.reset(new timer_task(ios, th_period,
+			boost::bind(&global_thresholds_check, boost::ref(ios), boost::ref(fi))));
 
 		fi.link_up_callback(boost::bind(&dispatch_link_up, _1, _2, _3, _4, _5));
 		fi.link_down_callback(boost::bind(&dispatch_link_down, _1, _2, _3));

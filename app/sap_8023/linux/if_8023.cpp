@@ -108,6 +108,7 @@ if_8023::if_8023(boost::asio::io_service &ios, mih::mac_addr mac) : _ctx(ios)
 
 	_ctx._ifindex = link.ifindex();
 	_ctx._active = link.get_operstate() == IF_OPER_UP;
+	_ctx._dev = link.name();
 
 	// initalize socket
 	_socket.join_multicast_group(RTMGRP_LINK);
@@ -130,9 +131,9 @@ mih::mac_addr if_8023::mac_address()
 	return _ctx._mac;
 }
 
-mih::link_id if_8023::link_id()
+mih::link_tuple_id if_8023::link_tuple_id()
 {
-	mih::link_id id;
+	mih::link_tuple_id id;
 	id.type = mih::link_type_ethernet;
 	id.addr = _ctx._mac;
 
@@ -201,6 +202,11 @@ odtone::uint if_8023::get_packet_error_rate()
 	nlwrap::rtnl_link link(cache.get_by_ifindex(_ctx._ifindex));
 
 	return link.tx_errors() / link.tx_packets();
+}
+
+odtone::uint if_8023::get_current_data_rate()
+{
+	return 1000 * odtone::get_interface_speed(_ctx._dev);
 }
 
 void if_8023::link_up_callback(const link_up_handler &h)
