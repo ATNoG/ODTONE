@@ -309,11 +309,11 @@ void global_thresholds_check(boost::asio::io_service &ios, if_80211 &fi)
 			uint16 uintval = boost::get<mih::link_param_val>(status_param.get().value);
 
 			if (th_it->th.threshold_x_dir == mih::threshold::above_threshold) {
-				if (uintval > th_it->th.threshold_val) {
+				if (static_cast<int>(uintval) > static_cast<int>(th_it->th.threshold_val)) {
 					value = status_param.get().value;
 				}
 			} else if (th_it->th.threshold_x_dir == mih::threshold::below_threshold) {
-				if (uintval < th_it->th.threshold_val) {
+				if (static_cast<int>(uintval) < static_cast<int>(th_it->th.threshold_val)) {
 					value = status_param.get().value;
 				}
 			}
