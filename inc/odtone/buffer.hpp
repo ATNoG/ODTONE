@@ -41,7 +41,6 @@ template<class T>
 class buffer {
 	ODTONE_STATIC_ASSERT(boost::is_pod<T>::value, "T must be POD type");
 
-	buffer(const buffer&)/* = delete*/;
 	buffer& operator=(const buffer&)/* = delete*/;
 
 public:
@@ -52,6 +51,19 @@ public:
 	buffer()
 		: _ptr(nullptr), _len(0)
 	{ }
+
+	/**
+	 * Construct a buffer. The new created buffer will be a copy of another
+	 * buffer.
+	 *
+	 * @param buff Buffer to copy.
+	 */
+	buffer(buffer& buff)
+		: _ptr(nullptr), _len(0)
+	{
+		std::swap(_ptr, buff._ptr);
+		std::swap(_len, buff._len);
+	}
 
 	/**
 	 * Construct a buffer. The new created buffer will be a copy of another

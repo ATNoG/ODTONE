@@ -96,6 +96,38 @@ public:
 	}
 
 	/**
+	 * Get the Vendor_IE data.
+	 *
+	 * @return The Vendor_IE data.
+	 */
+	buffer<uint8> data()
+	{
+		return _data;
+	}
+
+	/**
+	 * Set the Vendor_IE type.
+	 *
+	 * @param The Vendor_IE type.
+	 */
+	void id(uint32 id)
+	{
+		_id = id;
+	}
+
+	/**
+	 * Set the Vendor_IE data.
+	 *
+	 * @param The Vendor_IE data.
+	 */
+	void data(const void* raw, size_t len)
+	{
+		_data.size(len);
+		const char* data = reinterpret_cast<const char*>(raw);
+		std::copy(data, data + len, _data.get());
+	}
+
+	/**
 	 * Deserialize the Vendor_IE data type.
 	 *
 	 * @param ar The archive from where deserialize the data type.
