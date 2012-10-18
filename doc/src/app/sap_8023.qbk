@@ -1,0 +1,240 @@
+[/==============================================================================
+ / Brief   : sap_8023 Link SAP Documentation
+ / Authors : André Prata <andreprata@av.it.pt>
+ /------------------------------------------------------------------------------
+ / ODTONE - Open Dot Twenty One
+ /
+ / Copyright (C) 2009-2012 Universidade Aveiro
+ / Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
+ /
+ / This software is distributed under a license. The full license
+ / agreement can be found in the file LICENSE in this distribution.
+ / This software may not be copied, modified, sold or distributed
+ / other than expressed in the named license agreement.
+ /
+ / This software is distributed without any warranty.
+ /=============================================================================]
+
+[section:sap_8023_index sap_8023 Link SAP]
+
+The sap_8023 Link SAP is a Linux implementation of a Link SAP for 802.3 interfaces.
+
+[section Requirements]
+
+This module has been tested with Linux versions 2.6.38-3.6.2 setup.
+
+The following adapter has been tested:
+
+* Intel PRO/1000 CT
+
+For implementation details and considerations, please check the Support section.
+
+[endsect]
+
+[section Getting Started]
+
+[section Configuration]
+
+The Link SAP can be configured based on a set of parameters, which can be
+configured either using an configuration file or passing them directly
+in the command line.
+
+``
+	MIH Link SAP Configuration:
+		--help                                Display configuration options
+		--conf.file arg (=sap_8023.conf)      Configuration File
+		--conf.recv_buff_len arg (=4096)      Receive Buffer Length
+
+		--mihf.ip arg (=127.0.0.1)            Local MIHF Ip
+		--mihf.local_port arg (=1025)         MIHF Local Communications Port
+		--mihf.id arg (=local-mihf)           Local MIHF Id
+
+		--link.verbosity arg (=2)             Log level [0-2]
+		--link.default_th_period arg (=1000)  Default threshold checking interval (millis)
+		--link.link_addr arg                  Interface address
+		--link.port arg (=1235)               Port
+		--link.id arg (=link)                 Link SAP Id
+``
+
+Some parameters are mostly self-explanatory.
+The configuration should usually hold the same parameters of the example configuration file,
+except that the MAC address of the interface to be controlled needs to be indicated for each link/system.
+
+The default_th_period is implemented because of the following.
+
+[*default_th_period:]
+
+When an MIH User configures a threshold on the device, indicating a value and crossing direction,
+the Link SAP is expected to trigger  a [*Link_Parameters_Report] message notifying the situation.
+Checking whether a certain parameter has crossed a threshold requires periodic polling of the attribute.
+This parameter sets the interval of that poll operation, in milliseconds.
+
+Usage: default_th_period = <time in ms>
+
+[endsect]
+
+[section Running]
+
+The Link SAP should usually be launched after the MIHF is running.
+The running parameters can be configured via command line or a configuration file.
+
+The Link SAP will bind commands and events to the network device with the given MAC Address.
+
+``
+	$ ./sap_8023
+``
+
+[note
+The Link SAP will run normally if launched by a regular user.
+However, some commands such as Link Actions require super user permissions on the system.
+The Link SAP should be launched with root permissions if such features are required.
+]
+
+[endsect]
+
+[endsect]
+
+[section:sap_8023_support Support]
+
+This section is a reading on special considerations for the structuring of the code, and how to hack specific features.
+
+The code comprises the following components:
+
+* [*main]: Handles the Link SAP startup and communication with the MIHF.
+
+* [*if_8023]: Implements an abstraction for the network interface in the kernel.
+
+	* [*nlwrap]: Provides some RAI wrappers for the libnl library.
+
+
+Upon start, the [*main] component registers several callbacks for [*if_8023] to generate events,
+and a default_handler callback for commands received from the MIHF.
+
+[*if_8023] uses [*nlwrap] to send commands to the kernel, as well as subscribing to events.
+
+
+[section Events]
+
+[section Link_Going_Down.indication:]
+Not supported.
+[endsect]
+
+[section Link_Handover_Imminent.indication:]
+Not supported.
+[endsect]
+
+[section Link_Handover_Complete.indication:]
+Not supported.
+[endsect]
+
+[section Link_PDU_Transmit_Status.indication:]
+Not supported.
+[endsect]
+
+[section Link_Detected.indication:]
+Not supported.
+[endsect]
+
+[section Link_Up.indication:]
+This event is generated whenever the [c++] `IF_OPER_UP` `LINK` flag gets set, and received by if_8023.
+It will automatically call the [c++] `dispatch_link_up()` callback from [*main] with the appropriate attributes.
+[endsect]
+
+
+[section Link_Down.indication:]
+This event is generated when the [c++] `IF_OPER_UP` `LINK` flag is unset.
+The [c++] `dispatch_link_down()` calback from [*main] is called automatically.
+[endsect]
+
+
+[section Link_Parameters_Report.indication:]
+For each configred periodic report there's a timer that triggers a message of this type at the specified interval.
+
+For configured thresholds, a threshold check is performed periodically, according
+to the [*default_th_period] launching parameter. A [c++] `Link_Parameters_Report` message is sent everytime
+one of these checks detects a crossing of the subscribed nature.
+
+Statistical counts for packets and bytes are obtained via the [c++] `RTNL_GET_LINK` Netlink command.
+
+Currently, not all parameters types are supported. Only the following:
+
+* ['LINK_PARAM_ETH]
+
+	* there is none defined yet, actually.
+
+
+* ['LINK_PARAM_GEN]
+
+	* ['DATA_RATE]
+
+	* ['PACKET_ERROR_RATE]: note, this is an all-time statistic
+	(i.e., calculated from overall packet transmission and error counts)!
+
+[endsect]
+[endsect]
+
+
+[section Commands]
+
+Each command is received in the [c++] `default_handler()` callback from [*main].
+From that point, the appropriate function is called to handle the specific command.
+
+
+[section Capability_Discover.request:]
+This command is immediatly responded with the list of supported Events and Commands.
+This list of supported Events and Commands is statically configured in the code,
+inside functions [c++] `set_supported_event_list` and [c++] `set_supported_command_list` of [*main].
+[endsect]
+
+
+[section Event_Subscribe.request:]
+The event subcription is set based on the supported Events and Commands list.
+The resulting list is always considered at the event dispatch callbacks, such that
+only subscribed events are transmitted.
+All supported events are always successfully subscribed, even ones already
+subscribed.
+[endsect]
+
+
+[section Event_Unsubscribe.request:]
+This is similar to the Event_Subscribe command, except reversed.
+[endsect]
+
+
+[section Link_Get_Parameters.request:]
+The supported parameters for this command is similar to that of the Link_Parameters_Report event.
+[endsect]
+
+
+[section Link_Configure_Thresholds.request:]
+New thresholds are added to one of two lists:
+
+* If the threshold configuration request indicates a [c++] `period`, it is considered a periodic report parameter,
+  and a new thread is started, polling for that parameter with the indicated [c++] `period`.
+
+* If no period is indicated, and a threshold value is set, the parameter will be added to a global list of thresholds
+  that is checked periodically, according to the [*defaul_th_period] command line option.
+  * one-shot thresholds are automatically removed by the periodic verification code.
+
+If the request is used to remove thresholds, the indicated ones are removed from the respective lists.
+[endsect]
+
+
+[section Link_Action.request:]
+This command is translated to kernel invocations, via the [*if_8023] module.
+
+Only the following ['LINK_AC_TYPE] actions are supported:
+
+* ['LINK_DISCONNECT]
+
+* ['LINK_POWER_DOWN]
+
+* ['LINK_POWER_UP]
+
+No ['LINK_AC_ATTR] is supported:
+
+[endsect]
+
+[endsect]
+
+[endsect]
