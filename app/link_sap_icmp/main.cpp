@@ -219,7 +219,7 @@ int main(int argc, char** argv)
 		po::options_description desc("MIH Link SAP Configuration");
 		desc.add_options()
 			("help", "Display configuration options")
-			(odtone::sap::kConf_File, po::value<std::string>()->default_value("link_sap.conf"), "Configuration file")
+			(odtone::sap::kConf_File, po::value<std::string>()->default_value("link_sap_icmp.conf"), "Configuration file")
 			(odtone::sap::kConf_Receive_Buffer_Len, po::value<odtone::uint>()->default_value(4096), "Receive buffer length")
 			(odtone::sap::kConf_MIH_SAP_id, po::value<std::string>()->default_value("link"), "Link SAP ID")
 			(odtone::sap::kConf_Port, po::value<odtone::ushort>()->default_value(1235), "Listening port")
