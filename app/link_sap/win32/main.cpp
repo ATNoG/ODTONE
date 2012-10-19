@@ -117,38 +117,40 @@ void set_supported_link_tec(odtone::mih::octet_string &tec)
 		link_id.type = odtone::mih::link_type(enum_map[tec]);
 }
 
-//
-// The following code is to extract from the config file the type of technology
-// supported by the Link SAP and interface address that it manages
-//
-//
-enum StringValue { iMAC_ADDR,
-	               i3GPP_2G_CELL_ID,
-	               i3GPP_3G_CELL_ID,
-	               i3GPP_ADDR,
-	               i3GPP2_ADDR,
-	               iOTHER };
-
 void set_supported_link_addr(odtone::mih::octet_string &addr)
 {
 	__trim(addr, ' ');
-	using namespace boost;
 
-	char_separator<char> sep(",");
-	tokenizer< char_separator<char> > tokens(addr, sep);
+	// TODO: Parse the link address for all link types.
+	switch(link_id.type.get()) {
+		case 1:
+		case 2:
+		case 3: {
+			throw "technology not supported yet";
+		}
+		break;
 
-	std::map<std::string, StringValue> enum_map;
+		case 15:
+		case 19:
+		case 27:
+		case 28:
+		case 29: {
+			odtone::mih::mac_addr mac;
+			mac.address(addr);
+			link_id.addr = mac;
+		} break;
 
-	enum_map["MAC_ADDR"]         = iMAC_ADDR;
-	enum_map["3GPP_2G_CELL_ID"]  = i3GPP_2G_CELL_ID;
-	enum_map["3GPP_3G_CELL_ID"]  = i3GPP_3G_CELL_ID;
-	enum_map["3GPP_ADDR"]        = i3GPP_ADDR;
-	enum_map["3GPP2_ADDR"]       = i3GPP2_ADDR;
-	enum_map["OTHER"]            = iOTHER;
+		case 18:
+		case 22:
+		case 23:
+		case 24:
+			throw "technology not supported yet";
+		break;
 
-	odtone::mih::mac_addr      mac1;
-	mac1.address(addr);
-	link_id.addr = mac1;
+		default: {
+			throw "invalid technology";
+		} break;
+	}
 }
 
 //

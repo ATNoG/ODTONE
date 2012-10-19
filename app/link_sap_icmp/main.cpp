@@ -77,16 +77,6 @@ void set_supported_link_tec(odtone::mih::octet_string &tec)
 }
 
 /**
- * Type of techonology enumeration.
- */
-enum StringValue { iMAC_ADDR,
-	               i3GPP_2G_CELL_ID,
-	               i3GPP_3G_CELL_ID,
-	               i3GPP_ADDR,
-	               i3GPP2_ADDR,
-	               iOTHER };
-
-/**
  * Extract (from the configuration file) the interface name and address
  * that it will manage.
  *
@@ -100,23 +90,41 @@ void set_supported_link_addr(odtone::mih::octet_string &addr)
 	tokenizer< char_separator<char> > tokens(addr, sep);
 	std::vector<odtone::mih::octet_string> it(tokens.begin(), tokens.end());
 
-	std::map<std::string, StringValue> enum_map;
+        if(it.size() != 2)
+		throw "link addr parameter is invalid";
 
-	enum_map["MAC_ADDR"]         = iMAC_ADDR;
-	enum_map["3GPP_2G_CELL_ID"]  = i3GPP_2G_CELL_ID;
-	enum_map["3GPP_3G_CELL_ID"]  = i3GPP_3G_CELL_ID;
-	enum_map["3GPP_ADDR"]        = i3GPP_ADDR;
-	enum_map["3GPP2_ADDR"]       = i3GPP2_ADDR;
-	enum_map["OTHER"]            = iOTHER;
+	// Link interface name
+	ifname = it[0];
 
-	if(it.size() >= 2) {
-		// Parse interface name
-		ifname = it[0];
+	// TODO: Parse the link address for all link types.
+	switch(link_id.type.get()) {
+		case 1:
+		case 2:
+		case 3: {
+			throw "technology not supported yet";
+		}
+		break;
 
-		// Parse interface address
-		odtone::mih::mac_addr mac;
-		mac.address(it[1]);
-		link_id.addr = mac;
+		case 15:
+		case 19:
+		case 27:
+		case 28:
+		case 29: {
+			odtone::mih::mac_addr mac;
+			mac.address(it[1]);
+			link_id.addr = mac;
+		} break;
+
+		case 18:
+		case 22:
+		case 23:
+		case 24:
+			throw "technology not supported yet";
+		break;
+
+		default: {
+			throw "invalid technology";
+		} break;
 	}
 }
 
