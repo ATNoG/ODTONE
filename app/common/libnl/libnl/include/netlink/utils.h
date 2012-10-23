@@ -6,7 +6,7 @@
  *	License as published by the Free Software Foundation version 2.1
  *	of the License.
  *
- * Copyright (c) 2003-2008 Thomas Graf <tgraf@suug.ch>
+ * Copyright (c) 2003-2012 Thomas Graf <tgraf@suug.ch>
  */
 
 #ifndef NETLINK_UTILS_H_
@@ -31,7 +31,7 @@ extern "C" {
 #define NL_PROB_MIN 0x0
 
 /**
- * Upper probability limit
+ * Upper probability limit nl_dump_type
  * @ingroup utils
  */
 #define NL_PROB_MAX 0xffffffff
@@ -56,6 +56,7 @@ extern long	nl_prob2int(const char *);
 
 /* time translations */
 extern int	nl_get_user_hz(void);
+extern int	nl_get_psched_hz(void);
 extern uint32_t	nl_us2ticks(uint32_t);
 extern uint32_t	nl_ticks2us(uint32_t);
 extern int	nl_str2msec(const char *, uint64_t *);

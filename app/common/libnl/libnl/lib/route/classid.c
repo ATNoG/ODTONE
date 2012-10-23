@@ -154,7 +154,8 @@ char *rtnl_tc_handle2str(uint32_t handle, char *buf, size_t len)
 int rtnl_tc_str2handle(const char *str, uint32_t *res)
 {
 	char *colon, *end;
-	uint32_t h, err;
+	uint32_t h;
+	int err;
 
 	if (!strcasecmp(str, "root")) {
 		*res = TC_H_ROOT;
@@ -163,6 +164,11 @@ int rtnl_tc_str2handle(const char *str, uint32_t *res)
 
 	if (!strcasecmp(str, "none")) {
 		*res = TC_H_UNSPEC;
+		return 0;
+	}
+
+	if (!strcasecmp(str, "ingress")) {
+		*res = TC_H_INGRESS;
 		return 0;
 	}
 
@@ -438,12 +444,13 @@ static void __init classid_init(void)
 		fprintf(stderr, "Failed to read classid file: %s\n", nl_geterror(err));
 }
 
+static void free_map(void *map) {
+	free(((struct classid_map *)map)->name);
+	free(map);
+};
+
 static void __exit classid_exit(void)
 {
-	void free_map(void *map) {
-		free(((struct classid_map *)map)->name);
-		free(map);
-	};
 	tdestroy(id_root, free_map);
 }
 /** @} */

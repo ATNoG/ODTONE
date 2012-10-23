@@ -116,7 +116,7 @@ static int u32_msg_parser(struct rtnl_tc *tc, void *data)
 
 	if (tb[TCA_U32_PCNT]) {
 		struct tc_u32_sel *sel;
-		int pcnt_size;
+		size_t pcnt_size;
 
 		if (!tb[TCA_U32_SEL]) {
 			err = -NLE_MISSING_ATTR;
@@ -306,7 +306,7 @@ static void u32_dump_stats(struct rtnl_tc *tc, void *data,
 	if (u->cu_mask & U32_ATTR_PCNT) {
 		struct tc_u32_pcnt *pc = u->cu_pcnt->d_data;
 		nl_dump(p, "\n");
-		nl_dump_line(p, "    hit %8llu count %8llu\n",
+		nl_dump_line(p, "    hit %8" PRIu64 " count %8" PRIu64 "\n",
 			     pc->rhit, pc->rcnt);
 	}
 }
@@ -371,6 +371,91 @@ int rtnl_u32_set_classid(struct rtnl_cls *cls, uint32_t classid)
 	u->cu_classid = classid;
 	u->cu_mask |= U32_ATTR_CLASSID;
 
+	return 0;
+}
+
+int rtnl_u32_set_divisor(struct rtnl_cls *cls, uint32_t divisor)
+{
+	struct rtnl_u32 *u;
+
+	if (!(u = (struct rtnl_u32 *) rtnl_tc_data(TC_CAST(cls))))
+		return -NLE_NOMEM;
+
+	u->cu_divisor = divisor;
+	u->cu_mask |= U32_ATTR_DIVISOR;
+	return 0;
+}
+
+int rtnl_u32_set_link(struct rtnl_cls *cls, uint32_t link)
+{
+	struct rtnl_u32 *u;
+
+	if (!(u = (struct rtnl_u32 *) rtnl_tc_data(TC_CAST(cls))))
+		return -NLE_NOMEM;
+
+	u->cu_link = link;
+	u->cu_mask |= U32_ATTR_LINK;
+	return 0;
+}
+
+int rtnl_u32_set_hashtable(struct rtnl_cls *cls, uint32_t ht)
+{
+	struct rtnl_u32 *u;
+
+	if (!(u = (struct rtnl_u32 *) rtnl_tc_data(TC_CAST(cls))))
+		return -NLE_NOMEM;
+
+	u->cu_hash = ht;
+	u->cu_mask |= U32_ATTR_HASH;
+	return 0;
+}
+
+int rtnl_u32_set_hashmask(struct rtnl_cls *cls, uint32_t hashmask, uint32_t offset)
+{
+	struct rtnl_u32 *u;
+	struct tc_u32_sel *sel;
+	int err;
+
+	hashmask = htonl(hashmask);
+
+	if (!(u = (struct rtnl_u32 *) rtnl_tc_data(TC_CAST(cls))))
+		return -NLE_NOMEM;
+
+	sel = u32_selector_alloc(u);
+	if (!sel)
+		return -NLE_NOMEM;
+
+	err = nl_data_append(u->cu_selector, NULL, sizeof(struct tc_u32_key));
+	if(err < 0)
+		return err;
+
+	sel = u32_selector(u);
+
+	sel->hmask = hashmask;
+	sel->hoff = offset;
+	return 0;
+}
+
+int rtnl_u32_set_cls_terminal(struct rtnl_cls *cls)
+{
+	struct rtnl_u32 *u;
+	struct tc_u32_sel *sel;
+	int err;
+
+	if (!(u = (struct rtnl_u32 *) rtnl_tc_data(TC_CAST(cls))))
+		return -NLE_NOMEM;
+
+	sel = u32_selector_alloc(u);
+	if (!sel)
+		return -NLE_NOMEM;
+
+	err = nl_data_append(u->cu_selector, NULL, sizeof(struct tc_u32_key));
+	if(err < 0)
+		return err;
+
+	sel = u32_selector(u);
+
+	sel->flags |= TC_U32_TERMINAL;
 	return 0;
 }
 

@@ -6,13 +6,25 @@
  *	License as published by the Free Software Foundation version 2.1
  *	of the License.
  *
- * Copyright (c) 2003-2008 Thomas Graf <tgraf@suug.ch>
+ * Copyright (c) 2003-2012 Thomas Graf <tgraf@suug.ch>
  */
 
 /**
- * @ingroup core
+ * @ingroup core_types
  * @defgroup socket Socket
+ *
+ * Representation of a netlink socket
+ *
+ * Related sections in the development guide:
+ * - @core_doc{core_sockets, Netlink Sockets}
+ *
  * @{
+ *
+ * Header
+ * ------
+ * ~~~~{.c}
+ * #include <netlink/socket.h>
+ * ~~~~
  */
 
 #include <pthread.h>
@@ -572,6 +584,36 @@ int nl_socket_set_buffer_size(struct nl_sock *sk, int rxbuf, int txbuf)
 	sk->s_flags |= NL_SOCK_BUFSIZE_SET;
 
 	return 0;
+}
+
+/**
+ * Set default message buffer size of netlink socket.
+ * @arg sk		Netlink socket.
+ * @arg bufsize		Default message buffer size in bytes.
+ *
+ * Sets the default message buffer size to the specified length in bytes.
+ * The default message buffer size limits the maximum message size the
+ * socket will be able to receive. It is generally recommneded to specify
+ * a buffer size no less than the size of a memory page.
+ *
+ * @return 0 on success or a negative error code.
+ */
+int nl_socket_set_msg_buf_size(struct nl_sock *sk, size_t bufsize)
+{
+	sk->s_bufsize = bufsize;
+
+	return 0;
+}
+
+/**
+ * Get default message buffer size of netlink socket.
+ * @arg sk		Netlink socket.
+ *
+ * @return Size of default message buffer.
+ */
+size_t nl_socket_get_msg_buf_size(struct nl_sock *sk)
+{
+	return sk->s_bufsize;
 }
 
 /**

@@ -37,7 +37,16 @@
  *                                |      |                 Core Netlink
  * @endcode
  * 
+ * Related sections in the development guide:
+ * - @core_doc{core_cache, Caching System}
+ *
  * @{
+ *
+ * Header
+ * ------
+ * ~~~~{.c}
+ * #include <netlink/cache.h>
+ * ~~~~
  */
 
 #include <netlink-local.h>
@@ -919,6 +928,9 @@ void nl_cache_dump_filter(struct nl_cache *cache,
 	ops = cache->c_ops->co_obj_ops;
 	if (!ops->oo_dump[type])
 		return;
+
+	if (params->dp_buf)
+		memset(params->dp_buf, 0, params->dp_buflen);
 
 	nl_list_for_each_entry(obj, &cache->c_items, ce_list) {
 		if (filter && !nl_object_match_filter(obj, filter))

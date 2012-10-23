@@ -1,28 +1,30 @@
 /*
- * lib/addr.c		Abstract Address
+ * lib/addr.c		Network Address
  *
  *	This library is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU Lesser General Public
  *	License as published by the Free Software Foundation version 2.1
  *	of the License.
  *
- * Copyright (c) 2003-2010 Thomas Graf <tgraf@suug.ch>
+ * Copyright (c) 2003-2012 Thomas Graf <tgraf@suug.ch>
  */
 
 /**
- * @ingroup core
- * @defgroup addr Abstract Address
+ * @ingroup core_types
+ * @defgroup addr Network Address
  *
- * @par 1) Transform character string to abstract address
- * @code
- * struct nl_addr *a = nl_addr_parse("::1", AF_UNSPEC);
- * printf("Address family: %s\n", nl_af2str(nl_addr_get_family(a)));
- * nl_addr_put(a);
- * a = nl_addr_parse("11:22:33:44:55:66", AF_UNSPEC);
- * printf("Address family: %s\n", nl_af2str(nl_addr_get_family(a)));
- * nl_addr_put(a);
- * @endcode
+ * Abstract data type representing any kind of network address
+ *
+ * Related sections in the development guide:
+ * - @core_doc{_abstract_address, Network Addresses}
+ *
  * @{
+ *
+ * Header
+ * ------
+ * ~~~~{.c}
+ * #include <netlink/addr.h>
+ * ~~~~
  */
 
 #include <netlink-local.h>
@@ -163,7 +165,7 @@ static void addr_destroy(struct nl_addr *addr)
 }
 
 /**
- * @name Creating Abstract Addresses
+ * @name Creating Abstract Network Addresses
  * @{
  */
 
@@ -277,7 +279,9 @@ int nl_addr_parse(const char *addrstr, int hint, struct nl_addr **result)
 	if (!strcasecmp(str, "default") ||
 	    !strcasecmp(str, "all") ||
 	    !strcasecmp(str, "any")) {
-			
+
+		len = 0;
+
 		switch (hint) {
 			case AF_INET:
 			case AF_UNSPEC:
@@ -285,17 +289,14 @@ int nl_addr_parse(const char *addrstr, int hint, struct nl_addr **result)
 				 * no hint given the user wants to have a IPv4
 				 * address given back. */
 				family = AF_INET;
-				len = 4;
 				goto prefix;
 
 			case AF_INET6:
 				family = AF_INET6;
-				len = 16;
 				goto prefix;
 
 			case AF_LLC:
 				family = AF_LLC;
-				len = 6;
 				goto prefix;
 
 			default:
@@ -366,7 +367,7 @@ int nl_addr_parse(const char *addrstr, int hint, struct nl_addr **result)
 	}
 
 	if (hint == AF_UNSPEC && strchr(str, ':')) {
-		int i = 0;
+		size_t i = 0;
 		char *s = str, *p;
 		for (;;) {
 			long l = strtol(s, &p, 16);
@@ -496,11 +497,12 @@ int nl_addr_cmp(struct nl_addr *a, struct nl_addr *b)
 	if (d == 0) {
 		d = a->a_len - b->a_len;
 
-		if (a->a_len && d == 0)
+		if (a->a_len && d == 0) {
 			d = memcmp(a->a_addr, b->a_addr, a->a_len);
 
 			if (d == 0)
 				return (a->a_prefixlen - b->a_prefixlen);
+		}
 	}
 
 	return d;
@@ -540,7 +542,7 @@ int nl_addr_cmp_prefix(struct nl_addr *a, struct nl_addr *b)
  */
 int nl_addr_iszero(struct nl_addr *addr)
 {
-	int i;
+	unsigned int i;
 
 	for (i = 0; i < addr->a_len; i++)
 		if (addr->a_addr[i])
@@ -821,7 +823,7 @@ unsigned int nl_addr_get_prefixlen(struct nl_addr *addr)
  */
 char *nl_addr2str(struct nl_addr *addr, char *buf, size_t size)
 {
-	int i;
+	unsigned int i;
 	char tmp[16];
 
 	if (!addr || !addr->a_len) {

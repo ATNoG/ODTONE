@@ -6,25 +6,49 @@
  *	License as published by the Free Software Foundation version 2.1
  *	of the License.
  *
- * Copyright (c) 2003-2008 Thomas Graf <tgraf@suug.ch>
+ * Copyright (c) 2003-2012 Thomas Graf <tgraf@suug.ch>
  */
 
 /**
  * @ingroup core
  * @defgroup utils Utilities
+ *
+ * Collection of helper functions
+ *
  * @{
+ *
+ * Header
+ * ------
+ * ~~~~{.c}
+ * #include <netlink/utils.h>
+ * ~~~~
  */
 
 #include <netlink-local.h>
 #include <netlink/netlink.h>
 #include <netlink/utils.h>
 #include <linux/socket.h>
+#include <stdlib.h> /* exit() */
 
 /**
- * Debug level
+ * Global variable indicating the desired level of debugging output.
+ *
+ * Level | Messages Printed
+ * ----- | ---------------------------------------------------------
+ *     0 | Debugging output disabled
+ *     1 | Warnings, important events and notifications
+ *     2 | More or less important debugging messages
+ *     3 | Repetitive events causing a flood of debugging messages
+ *     4 | Even less important messages
+ *
+ * If available, the variable will be initialized to the value of the
+ * environment variable `NLDBG`. The default value is 0 (disabled).
+ *
+ * For more information, see section @core_doc{_debugging, Debugging}.
  */
 int nl_debug = 0;
 
+/** @cond SKIP */
 struct nl_dump_params nl_debug_dp = {
 	.dp_type = NL_DUMP_DETAILS,
 };
@@ -84,9 +108,10 @@ int __nl_read_num_str_file(const char *path, int (*cb)(long, const char *))
 
 	return 0;
 }
+/** @endcond */
 
 /**
- * @name Unit Pretty-Printing
+ * @name Pretty Printing of Numbers
  * @{
  */
 
@@ -97,6 +122,7 @@ int __nl_read_num_str_file(const char *path, int (*cb)(long, const char *))
  *
  * Cancels down a byte counter until it reaches a reasonable
  * unit. The chosen unit is assigned to \a unit.
+ * This function assume 1024 bytes in one kilobyte
  * 
  * @return The cancelled down byte counter in the new unit.
  */
@@ -125,30 +151,36 @@ double nl_cancel_down_bytes(unsigned long long l, char **unit)
  * @arg	l		bit counter
  * @arg unit		destination unit pointer
  *
- * Cancels downa bit counter until it reaches a reasonable
+ * Cancels down bit counter until it reaches a reasonable
  * unit. The chosen unit is assigned to \a unit.
+ * This function assume 1000 bits in one kilobit
  *
  * @return The cancelled down bit counter in the new unit.
  */
 double nl_cancel_down_bits(unsigned long long l, char **unit)
 {
-	if (l >= 1099511627776ULL) {
+	if (l >= 1000000000000ULL) {
 		*unit = "Tbit";
-		return ((double) l) / 1099511627776ULL;
-	} else if (l >= 1073741824) {
-		*unit = "Gbit";
-		return ((double) l) / 1073741824;
-	} else if (l >= 1048576) {
-		*unit = "Mbit";
-		return ((double) l) / 1048576;
-	} else if (l >= 1024) {
-		*unit = "Kbit";
-		return ((double) l) / 1024;
-	} else {
-		*unit = "bit";
-		return (double) l;
+		return ((double) l) / 1000000000000ULL;
 	}
-		
+
+	if (l >= 1000000000) {
+		*unit = "Gbit";
+		return ((double) l) / 1000000000;
+	}
+
+	if (l >= 1000000) {
+		*unit = "Mbit";
+		return ((double) l) / 1000000;
+	}
+
+	if (l >= 1000) {
+		*unit = "Kbit";
+		return ((double) l) / 1000;
+	}
+
+	*unit = "bit";
+	return (double) l;
 }
 
 int nl_rate2str(unsigned long long rate, int type, char *buf, size_t len)
@@ -214,6 +246,9 @@ double nl_cancel_down_us(uint32_t l, char **unit)
  *  - b,kb/k,m/mb,gb/g for bytes
  *  - bit,kbit/mbit/gbit
  *
+ * This function assume 1000 bits in one kilobit and
+ * 1024 bytes in one kilobyte
+ *
  * @return The number of bytes or -1 if the string is unparseable
  */
 long nl_size2int(const char *str)
@@ -229,13 +264,13 @@ long nl_size2int(const char *str)
 		else if (!strcasecmp(p, "gb") || !strcasecmp(p, "g"))
 			l *= 1024*1024*1024;
 		else if (!strcasecmp(p, "gbit"))
-			l *= 1024*1024*1024/8;
+			l *= 1000000000L/8;
 		else if (!strcasecmp(p, "mb") || !strcasecmp(p, "m"))
 			l *= 1024*1024;
 		else if (!strcasecmp(p, "mbit"))
-			l *= 1024*1024/8;
+			l *= 1000000/8;
 		else if (!strcasecmp(p, "kbit"))
-			l *= 1024/8;
+			l *= 1000/8;
 		else if (!strcasecmp(p, "bit"))
 			l /= 8;
 		else if (strcasecmp(p, "b") != 0)
@@ -281,7 +316,7 @@ static const struct {
  */
 char *nl_size2str(const size_t size, char *buf, const size_t len)
 {
-	int i;
+	size_t i;
 
 	for (i = 0; i < ARRAY_SIZE(size_units); i++) {
 		if (size >= size_units[i].limit) {
@@ -335,11 +370,12 @@ long nl_prob2int(const char *str)
  * @{
  */
 
-#ifdef USER_HZ
-static uint32_t user_hz = USER_HZ;
-#else
-static uint32_t user_hz = 100;
+#ifndef USER_HZ
+#define USER_HZ 100
 #endif
+
+static uint32_t user_hz = USER_HZ;
+static uint32_t psched_hz = USER_HZ;
 
 static double ticks_per_usec = 1.0f;
 
@@ -370,6 +406,8 @@ static void __init get_psched_settings(void)
 	if (!got_hz)
 		user_hz = sysconf(_SC_CLK_TCK);
 
+	psched_hz = user_hz;
+
 	if (getenv("TICKS_PER_USEC")) {
 		double t = strtod(getenv("TICKS_PER_USEC"), NULL);
 		ticks_per_usec = t;
@@ -384,14 +422,21 @@ static void __init get_psched_settings(void)
 			strncpy(name, "/proc/net/psched", sizeof(name) - 1);
 		
 		if ((fd = fopen(name, "r"))) {
-			uint32_t ns_per_usec, ns_per_tick;
-			/* the file contains 4 hexadecimals, but we just use
-			   the first two of them */
-			fscanf(fd, "%08x %08x", &ns_per_usec, &ns_per_tick);
+			unsigned int ns_per_usec, ns_per_tick, nom, denom;
+
+			if (fscanf(fd, "%08x %08x %08x %08x",
+			       &ns_per_usec, &ns_per_tick, &nom, &denom) != 4) {
+                            fprintf(stderr, "Fatal error: can not read psched settings from \"%s\". " \
+                                    "Try to set TICKS_PER_USEC, PROC_NET_PSCHED or PROC_ROOT " \
+                                    "environment variables\n", name);
+                            exit(1);
+                        }
 
 			ticks_per_usec = (double) ns_per_usec / 
 					 (double) ns_per_tick;
 
+			if (nom == 1000000)
+				psched_hz = denom;
 
 			fclose(fd);
 		}
@@ -407,6 +452,13 @@ int nl_get_user_hz(void)
 	return user_hz;
 }
 
+/**
+ * Return the value of packet scheduler HZ
+ */
+int nl_get_psched_hz(void)
+{
+	return psched_hz;
+}
 
 /**
  * Convert micro seconds to ticks
@@ -479,10 +531,12 @@ int nl_str2msec(const char *str, uint64_t *result)
  */
 char * nl_msec2str(uint64_t msec, char *buf, size_t len)
 {
-	int i, split[5];
-	char *units[] = {"d", "h", "m", "s", "msec"};
+	uint64_t split[5];
+	size_t i;
+	static const char *units[5] = {"d", "h", "m", "s", "msec"};
+	char * const buf_orig = buf;
 
-#define _SPLIT(idx, unit) if ((split[idx] = msec / unit) > 0) msec %= unit
+#define _SPLIT(idx, unit) if ((split[idx] = msec / unit)) msec %= unit
 	_SPLIT(0, 86400000);	/* days */
 	_SPLIT(1, 3600000);	/* hours */
 	_SPLIT(2, 60000);	/* minutes */
@@ -490,18 +544,17 @@ char * nl_msec2str(uint64_t msec, char *buf, size_t len)
 #undef  _SPLIT
 	split[4] = msec;
 
-	memset(buf, 0, len);
-
-	for (i = 0; i < ARRAY_SIZE(split); i++) {
-		if (split[i] > 0) {
-			char t[64];
-			snprintf(t, sizeof(t), "%s%d%s",
-				 strlen(buf) ? " " : "", split[i], units[i]);
-			strncat(buf, t, len - strlen(buf) - 1);
-		}
+	for (i = 0; i < ARRAY_SIZE(split) && len; i++) {
+		int l;
+		if (split[i] == 0)
+			continue;
+		l = snprintf(buf, len, "%s%" PRIu64 "%s",
+			(buf==buf_orig) ? "" : " ", split[i], units[i]);
+		buf += l;
+		len -= l;
 	}
 
-	return buf;
+	return buf_orig;
 }
 
 /** @} */
@@ -800,7 +853,7 @@ void nl_new_line(struct nl_dump_params *params)
 			else if (params->dp_buf)
 				strncat(params->dp_buf, " ",
 					params->dp_buflen -
-					sizeof(params->dp_buf) - 1);
+					strlen(params->dp_buf) - 1);
 		}
 	}
 
@@ -820,7 +873,8 @@ static void dump_one(struct nl_dump_params *parms, const char *fmt,
 				parms->dp_cb(parms, buf);
 			else
 				strncat(parms->dp_buf, buf,
-					parms->dp_buflen - strlen(parms->dp_buf) - 1);
+					parms->dp_buflen -
+					strlen(parms->dp_buf) - 1);
 			free(buf);
 		}
 	}
@@ -892,7 +946,7 @@ void __trans_list_clear(struct nl_list_head *head)
 char *__type2str(int type, char *buf, size_t len,
 		 const struct trans_tbl *tbl, size_t tbl_len)
 {
-	int i;
+	size_t i;
 	for (i = 0; i < tbl_len; i++) {
 		if (tbl[i].i == type) {
 			snprintf(buf, len, "%s", tbl[i].a);
@@ -923,7 +977,7 @@ char *__list_type2str(int type, char *buf, size_t len,
 char *__flags2str(int flags, char *buf, size_t len,
 		  const struct trans_tbl *tbl, size_t tbl_len)
 {
-	int i;
+	size_t i;
 	int tmp = flags;
 
 	memset(buf, 0, len);
@@ -944,7 +998,7 @@ int __str2type(const char *buf, const struct trans_tbl *tbl, size_t tbl_len)
 {
 	unsigned long l;
 	char *end;
-	int i;
+	size_t i;
 
 	if (*buf == '\0')
 		return -NLE_INVAL;
@@ -983,7 +1037,9 @@ int __list_str2type(const char *buf, struct nl_list_head *head)
 
 int __str2flags(const char *buf, const struct trans_tbl *tbl, size_t tbl_len)
 {
-	int i, flags = 0, len;
+	int flags = 0;
+	size_t i;
+	size_t len; /* ptrdiff_t ? */
 	char *p = (char *) buf, *t;
 
 	for (;;) {
@@ -993,7 +1049,8 @@ int __str2flags(const char *buf, const struct trans_tbl *tbl, size_t tbl_len)
 		t = strchr(p, ',');
 		len = t ? t - p : strlen(p);
 		for (i = 0; i < tbl_len; i++)
-			if (!strncasecmp(tbl[i].a, p, len))
+			if (len == strlen(tbl[i].a) &&
+			    !strncasecmp(tbl[i].a, p, len))
 				flags |= tbl[i].i;
 
 		if (!t)
@@ -1027,9 +1084,6 @@ void dump_from_ops(struct nl_object *obj, struct nl_dump_params *params)
 #endif
 		params->dp_pre_dump = 1;
 	}
-
-	if (params->dp_buf)
-                memset(params->dp_buf, 0, params->dp_buflen);
 
 	if (obj->ce_ops->oo_dump[type])
 		obj->ce_ops->oo_dump[type](obj, params);

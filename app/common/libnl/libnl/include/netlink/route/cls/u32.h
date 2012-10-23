@@ -14,6 +14,7 @@
 
 #include <netlink/netlink.h>
 #include <netlink/cache.h>
+#include <netlink/route/classifier.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,6 +22,11 @@ extern "C" {
 
 extern void	rtnl_u32_set_handle(struct rtnl_cls *, int, int, int);
 extern int	rtnl_u32_set_classid(struct rtnl_cls *, uint32_t);
+extern int	rtnl_u32_set_divisor(struct rtnl_cls *, uint32_t);
+extern int	rtnl_u32_set_link(struct rtnl_cls *, uint32_t);
+extern int	rtnl_u32_set_hashtable(struct rtnl_cls *, uint32_t);
+extern int	rtnl_u32_set_hashmask(struct rtnl_cls *, uint32_t, uint32_t);
+extern int	rtnl_u32_set_cls_terminal(struct rtnl_cls *);
 
 extern int	rtnl_u32_set_flags(struct rtnl_cls *, int);
 extern int	rtnl_u32_add_key(struct rtnl_cls *, uint32_t, uint32_t,

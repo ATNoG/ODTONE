@@ -69,6 +69,7 @@ struct nl_sock
 	unsigned int		s_seq_expect;
 	int			s_flags;
 	struct nl_cb *		s_cb;
+	size_t			s_bufsize;
 };
 
 struct nl_cache
@@ -172,6 +173,10 @@ struct rtnl_link
 	void *				l_af_data[AF_MAX];
 	void *				l_info;
 	char *				l_ifalias;
+	uint32_t			l_promiscuity;
+	uint32_t			l_num_tx_queues;
+	uint32_t			l_num_rx_queues;
+	uint32_t			l_group;
 };
 
 struct rtnl_ncacheinfo
@@ -512,6 +517,7 @@ struct rtnl_fw
 	struct nl_data *	cf_act;
 	struct nl_data *	cf_police;
 	char			cf_indev[IFNAMSIZ];
+	uint32_t		cf_fwmask;
 	int			cf_mask;
 };
 

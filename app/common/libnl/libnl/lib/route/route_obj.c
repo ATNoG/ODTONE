@@ -110,6 +110,9 @@ static int route_clone(struct nl_object *_dst, struct nl_object *_src)
 		if (!(dst->rt_pref_src = nl_addr_clone(src->rt_pref_src)))
 			return -NLE_NOMEM;
 
+	/* Will be inc'ed again while adding the nexthops of the source */
+	dst->rt_nr_nh = 0;
+
 	nl_init_list_head(&dst->rt_nexthops);
 	nl_list_for_each_entry(nh, &src->rt_nexthops, rtnh_list) {
 		new = rtnl_route_nh_clone(nh);
@@ -335,7 +338,7 @@ static int route_compare(struct nl_object *_a, struct nl_object *_b,
 		diff |= ROUTE_DIFF(FLAGS,
 			  (a->rt_flags ^ b->rt_flags) & b->rt_flag_mask);
 	} else {
-		if (a->rt_nr_nh != a->rt_nr_nh)
+		if (a->rt_nr_nh != b->rt_nr_nh)
 			goto nh_mismatch;
 
 		/* search for a dup in each nh of a */
@@ -724,7 +727,7 @@ void rtnl_route_foreach_nexthop(struct rtnl_route *r,
 struct rtnl_nexthop *rtnl_route_nexthop_n(struct rtnl_route *r, int n)
 {
 	struct rtnl_nexthop *nh;
-	int i;
+	uint32_t i;
     
 	if (r->ce_mask & ROUTE_ATTR_MULTIPATH && r->rt_nr_nh > n) {
 		i = 0;
@@ -983,6 +986,7 @@ int rtnl_route_parse(struct nlmsghdr *nlh, struct rtnl_route **result)
 	}
 
 	if (old_nh) {
+		rtnl_route_nh_set_flags(old_nh, rtm->rtm_flags & 0xff);
 		if (route->rt_nr_nh == 0) {
 			/* If no nexthops have been provided via RTA_MULTIPATH
 			 * we add it as regular nexthop to maintain backwards
@@ -1042,9 +1046,14 @@ int rtnl_route_build_msg(struct nl_msg *msg, struct rtnl_route *route)
 	if (route->rt_src)
 		rtmsg.rtm_src_len = nl_addr_get_prefixlen(route->rt_src);
 
-
 	if (rtmsg.rtm_scope == RT_SCOPE_NOWHERE)
 		rtmsg.rtm_scope = rtnl_route_guess_scope(route);
+
+	if (rtnl_route_get_nnexthops(route) == 1) {
+		struct rtnl_nexthop *nh;
+		nh = rtnl_route_nexthop_n(route, 0);
+		rtmsg.rtm_flags |= nh->rtnh_flags;
+	}
 
 	if (nlmsg_append(msg, &rtmsg, sizeof(rtmsg), NLMSG_ALIGNTO) < 0)
 		goto nla_put_failure;

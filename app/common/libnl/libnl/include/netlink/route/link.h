@@ -6,7 +6,7 @@
  *	License as published by the Free Software Foundation version 2.1
  *	of the License.
  *
- * Copyright (c) 2003-2011 Thomas Graf <tgraf@suug.ch>
+ * Copyright (c) 2003-2012 Thomas Graf <tgraf@suug.ch>
  */
 
 #ifndef NETLINK_LINK_H_
@@ -148,6 +148,9 @@ extern char *	rtnl_link_get_qdisc(struct rtnl_link *);
 extern void	rtnl_link_set_name(struct rtnl_link *, const char *);
 extern char *	rtnl_link_get_name(struct rtnl_link *);
 
+extern void	rtnl_link_set_group(struct rtnl_link *, uint32_t);
+extern uint32_t	rtnl_link_get_group(struct rtnl_link *);
+
 extern void	rtnl_link_set_flags(struct rtnl_link *, unsigned int);
 extern void	rtnl_link_unset_flags(struct rtnl_link *, unsigned int);
 extern unsigned int rtnl_link_get_flags(struct rtnl_link *);
@@ -196,6 +199,15 @@ extern int	rtnl_link_set_stat(struct rtnl_link *, rtnl_link_stat_id_t,
 
 extern int	rtnl_link_set_type(struct rtnl_link *, const char *);
 extern char *	rtnl_link_get_type(struct rtnl_link *);
+
+extern void	rtnl_link_set_promiscuity(struct rtnl_link *, uint32_t);
+extern uint32_t	rtnl_link_get_promiscuity(struct rtnl_link *);
+
+extern void	rtnl_link_set_num_tx_queues(struct rtnl_link *, uint32_t);
+extern uint32_t	rtnl_link_get_num_tx_queues(struct rtnl_link *);
+
+extern void	rtnl_link_set_num_rx_queues(struct rtnl_link *, uint32_t);
+extern uint32_t	rtnl_link_get_num_rx_queues(struct rtnl_link *);
 
 extern int	rtnl_link_enslave_ifindex(struct nl_sock *, int, int);
 extern int	rtnl_link_enslave(struct nl_sock *, struct rtnl_link *,
