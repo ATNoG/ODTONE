@@ -19,6 +19,16 @@
 
 The sap_80211 Link SAP is a Linux implementation of a Link SAP for 802.11 interfaces.
 
+[section Conceptual view]
+
+The following Figure shows a conceptual view of the Link SAP for Linux-based devices:
+
+[$./images/link_sap_conceptual_view.png]
+
+Each component is further described in the Support section.
+
+[endsect]
+
 [section Requirements]
 
 This module has been tested with Linux versions 2.6.38-3.6.2 setup.
@@ -106,23 +116,25 @@ The Link SAP should be launched with root permissions if such features are requi
 [endsect]
 
 [section:sap_80211_support Support]
-
 This section is a reading on special considerations for the structuring of the code, and how to hack specific features.
 
 The code comprises the following components:
 
-* [*main]: Handles the Link SAP startup and communication with the MIHF.
+* [*main]
 
-* [*if_80211]: Implements an abstraction for the network interface in the kernel.
+This component handles the Link SAP startup and communication with the MIHF.
+Messages received from the MIHF are handled in the [*default_handler] function which,
+in turn, calls other methods for each specific action.
 
-	* [*nlwrap]: Provides some RAI wrappers for the libnl library.
+* [*if_80211]
 
+This component implements an abstraction for the network interface in the kernel.
+The [*main] component registers callbacks with this component for receiving
+notifications for certain events such as link up, etc.
 
-Upon start, the [*main] component registers several callbacks for [*if_80211] to generate events,
-and a default_handler callback for commands received from the MIHF.
+* [* nlwrap]
 
-[*if_80211] uses [*nlwrap] to send commands to the kernel, as well as subscribing to events.
-
+This component provides some RAI wrappers for the libnl library.
 
 [section Events]
 
