@@ -19,32 +19,42 @@
 
 The sap_8023 Link SAP is a Linux implementation of a Link SAP for 802.3 interfaces.
 
-[section Conceptual view]
-
+[section Architecture]
 The following Figure shows a conceptual view of the Link SAP for Linux-based devices:
 
 [$./images/link_8023_conceptual_view.png]
 
-Each component is further described in the Support section.
+The code comprises the following components:
 
-[endsect]
+* [*main]:
+This component handles the Link SAP startup and communication with the MIHF.
+Messages received from the MIHF are handled in the [*default_handler] function which,
+in turn, calls other methods for each specific action.
+
+* [*if_8023]:
+This component implements an abstraction for the network interface in the kernel.
+The [*main] component registers callbacks with this component for receiving
+notifications for certain events such as link up, etc.
+
+* [* nlwrap]:
+This component provides some RAI wrappers for the libnl library.
+
+[endsect][/Architecture]
+
 
 [section Requirements]
-
 This module has been tested with Linux versions 2.6.38-3.6.2 setup.
 
 The following adapter has been tested:
 
 * Intel PRO/1000 CT
 
-For implementation details and considerations, please check the Support section.
+[endsect][/Requirements]
 
-[endsect]
 
 [section Getting Started]
 
 [section Configuration]
-
 The Link SAP can be configured based on a set of parameters, which can be
 configured either using an configuration file or passing them directly
 in the command line.
@@ -70,21 +80,19 @@ Some parameters are mostly self-explanatory.
 The configuration should usually hold the same parameters of the example configuration file,
 except that the MAC address of the interface to be controlled needs to be indicated for each link/system.
 
-The default_th_period is implemented because of the following.
-
+[note
 [*default_th_period:]
-
 When an MIH User configures a threshold on the device, indicating a value and crossing direction,
 the Link SAP is expected to trigger  a [*Link_Parameters_Report] message notifying the situation.
 Checking whether a certain parameter has crossed a threshold requires periodic polling of the attribute.
 This parameter sets the interval of that poll operation, in milliseconds.
 
 Usage: default_th_period = <time in ms>
+]
+[endsect][/Configuration]
 
-[endsect]
 
 [section Running]
-
 The Link SAP should usually be launched after the MIHF is running.
 The running parameters can be configured via command line or a configuration file.
 
@@ -94,79 +102,59 @@ The Link SAP will bind commands and events to the network device with the given 
 	$ ./sap_8023
 ``
 
-[note
+[warning
 The Link SAP will run normally if launched by a regular user.
 However, some commands such as Link Actions require super user permissions on the system.
 The Link SAP should be launched with root permissions if such features are required.
 ]
+[endsect][/Running]
 
-[endsect]
+[endsect][/Getting Started]
 
-[endsect]
 
 [section:sap_8023_support Support]
 This section is a reading on special considerations for the structuring of the code, and how to hack specific features.
 
-The code comprises the following components:
-
-* [*main]
-
-This component handles the Link SAP startup and communication with the MIHF.
-Messages received from the MIHF are handled in the [*default_handler] function which,
-in turn, calls other methods for each specific action.
-
-* [*if_80211]
-
-This component implements an abstraction for the network interface in the kernel.
-The [*main] component registers callbacks with this component for receiving
-notifications for certain events such as link up, etc.
-
-* [* nlwrap]
-
-This component provides some RAI wrappers for the libnl library.
-
 [section Events]
 
-[section Link_Going_Down.indication:]
+[section Link_Going_Down]
 Not supported.
-[endsect]
+[endsect][/Link_Going_Down]
 
-[section Link_Handover_Imminent.indication:]
+[section Link_Handover_Imminent]
 Not supported.
-[endsect]
+[endsect][/Link_Handover_Imminent]
 
-[section Link_Handover_Complete.indication:]
+[section Link_Handover_Complete]
 Not supported.
-[endsect]
+[endsect][/Link_Handover_Complete]
 
-[section Link_PDU_Transmit_Status.indication:]
+[section Link_PDU_Transmit_Status]
 Not supported.
-[endsect]
+[endsect][/Link_PDU_Transmit_Status]
 
-[section Link_Detected.indication:]
+[section Link_Detected]
 Not supported.
-[endsect]
+[endsect][/Link_Detected]
 
-[section Link_Up.indication:]
-This event is generated whenever the [c++] `IF_OPER_UP` `LINK` flag gets set, and received by if_8023.
-It will automatically call the [c++] `dispatch_link_up()` callback from [*main] with the appropriate attributes.
-[endsect]
+[section Link_Up]
+This event is generated whenever the ['IF_OPER_UP] ['LINK] flag gets set, and received by if_8023.
+It will automatically call the ['dispatch_link_up()] callback from [*main] with the appropriate attributes.
+[endsect][/Link_Up]
 
+[section Link_Down]
+This event is generated when the ['IF_OPER_UP] ['LINK] flag is unset.
+The ['dispatch_link_down()] calback from [*main] is called automatically.
+[endsect][/Link_Down]
 
-[section Link_Down.indication:]
-This event is generated when the [c++] `IF_OPER_UP` `LINK` flag is unset.
-The [c++] `dispatch_link_down()` calback from [*main] is called automatically.
-[endsect]
-
-
-[section Link_Parameters_Report.indication:]
+[section Link_Parameters_Report]
 For each configred periodic report there's a timer that triggers a message of this type at the specified interval.
 
 For configured thresholds, a threshold check is performed periodically, according
-to the [*default_th_period] launching parameter. A [c++] `Link_Parameters_Report` message is sent everytime
+to the [*default_th_period] launching parameter. A ['Link_Parameters_Report] message is sent everytime
 one of these checks detects a crossing of the subscribed nature.
 
-Statistical counts for packets and bytes are obtained via the [c++] `RTNL_GET_LINK` Netlink command.
+Statistical counts for packets and bytes are obtained via the ['RTNL_GET_LINK] Netlink command.
 
 Currently, not all parameters types are supported. Only the following:
 
@@ -180,59 +168,67 @@ Currently, not all parameters types are supported. Only the following:
 	* ['DATA_RATE]
 
 	* ['PACKET_ERROR_RATE]: note, this is an all-time statistic
-	(i.e., calculated from overall packet transmission and error counts)!
+	(i.e., calculated from overall packet transmission and error counts!)
 
-[endsect]
-[endsect]
+[endsect][/Link_Parameters_Report]
+
+[endsect][/Events]
 
 
 [section Commands]
 
-Each command is received in the [c++] `default_handler()` callback from [*main].
-From that point, the appropriate function is called to handle the specific command.
-
-
-[section Capability_Discover.request:]
+[section Capability_Discover]
 This command is immediatly responded with the list of supported Events and Commands.
 This list of supported Events and Commands is statically configured in the code,
-inside functions [c++] `set_supported_event_list` and [c++] `set_supported_command_list` of [*main].
-[endsect]
+inside functions ['set_supported_event_list] and ['set_supported_command_list] of [*main].
+[endsect][/Capability_Discover]
 
-
-[section Event_Subscribe.request:]
+[section Event_Subscribe]
 The event subcription is set based on the supported Events and Commands list.
 The resulting list is always considered at the event dispatch callbacks, such that
 only subscribed events are transmitted.
 All supported events are always successfully subscribed, even ones already
 subscribed.
-[endsect]
+[endsect][/Event_Subscribe]
 
+[section Event_Unsubscribe]
+The event unsubcription is set based on the subscribed Events and Commands list.
+All supported events are always successfully unsubscribed, even ones already unsubscribed.
+[endsect][/Event_Unsubscribe]
 
-[section Event_Unsubscribe.request:]
-This is similar to the Event_Subscribe command, except reversed.
-[endsect]
+[section Link_Get_Parameters]
+The support parameters for this command include only some statistical counts,
+ obtained via the ['RTNL_GET_LINK] Netlink command.
 
+Currently, not all parameters types are supported. Only the following:
 
-[section Link_Get_Parameters.request:]
-The supported parameters for this command is similar to that of the Link_Parameters_Report event.
-[endsect]
+* ['LINK_PARAM_ETH]
 
+	* there is none defined yet, actually.
 
-[section Link_Configure_Thresholds.request:]
+* ['LINK_PARAM_GEN]
+
+	* ['DATA_RATE]
+
+	* ['PACKET_ERROR_RATE]: note, this is an all-time statistic
+	(i.e., calculated from overall packet transmission and error counts!)
+
+[endsect][/Link_Get_Parameters]
+
+[section Link_Configure_Thresholds]
 New thresholds are added to one of two lists:
 
-* If the threshold configuration request indicates a [c++] `period`, it is considered a periodic report parameter,
-  and a new thread is started, polling for that parameter with the indicated [c++] `period`.
+* If the threshold configuration request indicates a ['period], it is considered a periodic report parameter,
+  and a new thread is started, polling for that parameter with the indicated ['period].
 
 * If no period is indicated, and a threshold value is set, the parameter will be added to a global list of thresholds
   that is checked periodically, according to the [*defaul_th_period] command line option.
   * one-shot thresholds are automatically removed by the periodic verification code.
 
 If the request is used to remove thresholds, the indicated ones are removed from the respective lists.
-[endsect]
+[endsect][/Link_Configure_Thresholds]
 
-
-[section Link_Action.request:]
+[section Link_Action]
 This command is translated to kernel invocations, via the [*if_8023] module.
 
 Only the following ['LINK_AC_TYPE] actions are supported:
@@ -243,12 +239,257 @@ Only the following ['LINK_AC_TYPE] actions are supported:
 
 * ['LINK_POWER_UP]
 
-No ['LINK_AC_ATTR] is supported:
+No ['LINK_AC_ATTR] is supported.
+[endsect][/Link_Action]
 
-[endsect]
+[endsect][/Commands]
 
-[endsect]
+[endsect][/Support]
 
-[endsect]
 
-[endsect]
+[section Extending]
+
+This section explains some extending procedures with coding examples.
+In the code sections, the comments will help look at the right content.
+
+[section Supporting new commands]
+First of all, in order to add support for a new command in the Link SAP,
+it needs to be set in the supported command list, so the capability discovery from the MIHF
+receives this information correctly (it migh filter commands if the Link does not support them).
+
+This is done in the ['set_supported_command_list()] method of the [*main] component. For example:
+``
+	void set_supported_command_list()
+	{
+		capabilities_command_list.set(mih::cmd_link_event_subscribe);
+		capabilities_command_list.set(mih::cmd_link_event_unsubscribe);
+		// ...
+		// add new commands here:
+		capabilities_command_list.set(mih::cmd_link_new_command);
+	}
+``
+
+The ['capabilities_command_list] then contains the set of all the supported commands,
+and will be kept unmodified throughout the running instance. This set is used in the
+response to the Link_Capability_Discover message from the MIHF.
+
+
+In order to support the newly defined command, there must be code to handle the
+respective funcionality, and produce the desired response. The command requests are received in the
+['default_handler()] method of the main component. There, depending on the command, another handler
+is dispatched. For example:
+
+``
+	void default_handler(boost::asio::io_service &ios, if_80211 &fi,
+	                     mih::message& msg, const boost::system::error_code& ec)
+	{
+		switch (msg.mid()) {
+			case mih::request::event_subscribe:
+			{
+				log_(0, "(command) Received event_subscribe message");
+				mih::link_evt_list events;
+				msg >> mih::request()
+					& mih::tlv_link_evt_list(events);
+
+				ios.dispatch(boost::bind(&handle_event_subscribe, msg.tid(), events));
+			}
+			break;
+
+			// ...
+			// add new commands here
+			case mih::request::new_command:
+			{
+				log_(0, "(command) Received new_command message");
+
+				// unmarshall message, if required
+				mih::new_parameter param;
+				msg >> mih::request()
+					& mih::tlv_new_parameter(param);
+
+				ios.dispatch(boost::bind(&handle_new_command, msg.tid(), param));
+			}
+			break;
+
+			default:
+				log_(0, "(command) Received unknown MIH message");
+		}
+	}
+``
+
+The dispatched handler is responsible for producing the message response. This is the reason why the
+TID from the request message is always passed to the handler code.
+
+[note
+The unmarshalling does not need to occur in the ['default_handler] message.
+The message can be passed to the dispatch method, which will then have to read the TID and the parameters
+for setting the response.
+]
+
+To respond to a command, the dispatch method must marshall the response and send it to the MIHF
+using the correct TID, which will help the MIHF deliver it to the right MIH User, as demonstrated
+by the following code:
+
+``
+	void handle_new_command(odtone::uint16 tid, mih::new_param &param)
+	{
+		log_(0, "(command) Handling new_command");
+
+		// prepare the response parameters
+		mih::new_param param;
+
+		mih::message m;
+		mih::status st = mih::status_success;
+
+		m << mih::confirm(mih::confirm::new_command)
+			& mih::tlv_status(st)
+			& mih::tlv_new_param(param);
+
+		m.tid(tid);
+
+		ls->async_send(m);
+		// `ls' is a global variable that provides communication with the MIHF.
+	}
+``
+
+[note
+It is also possible to have the response be sent by a callback, other than the handler method,
+as long as the correct TID is used and the callback does not exceed the MIHF response timeout.
+]
+[endsect][/Supporting new commands]
+
+
+[section Supporting new events]
+In order to add support for a new event, it needs to be set in the supported event list,
+so the capability discovery from the MIHF receives this information correctly.
+
+This is done in the ['set_supported_event_list()] method of the [*main] component. For example:
+``
+	void set_supported_event_list()
+	{
+		capabilities_event_list.set(mih::evt_link_detected);
+		capabilities_event_list.set(mih::evt_link_up);
+		// ...
+		// add new events here:
+		capabilities_event_list.set(mih::evt_new_event);
+	}
+``
+
+Events can be generated at various levels. Most of the currently supported events
+are generated at the kernel, and merely translated/handed to the MIHF (e.g. Link_Up, Link_Down).
+Other events, however, such as Link_Parameters_Report, are generated by the Link SAP code,
+via periodic verification of certain parameters.
+
+[section OS-level events]
+Events from the kernel are received via Netlink sockets. Depending on the desired events,
+it migh be necessary to subscribe to the according multicast groups. The [*if_80211] module
+automatically subscribes to the ['RTMGRP_LINK] multicast group:
+
+``
+	if_8023::if_8023(boost::asio::io_service &ios, mih::mac_addr mac) : _ctx(ios)
+	{
+		// ...
+		_socket.join_multicast_group(RTMGRP_LINK);
+		// ...
+	}
+``
+
+The ['handle_nl_event()] method from the [*if_8023] component is the handler for events
+received from the subcribed Netlink multicast groups. In order to generate events from this
+handler, the [*if_8023] module accepts callback registrations that are to be invoked
+after specific events occur. For example, a ['link_up_handler] callback is defined as follows:
+
+``
+	typedef boost::function<void(mih::link_tuple_id &tuple_id,
+	                             boost::optional<mih::link_addr> &old_router,
+	                             boost::optional<mih::link_addr> &new_router,
+	                             boost::optional<bool> &ip_renew,
+	                             boost::optional<mih::ip_mob_mgmt> &mobility_management)> link_up_handler;
+
+	// new callback
+	typedef boost::function<void(mih::link_tuple_id &tuple_id)> new_event_handler;
+``
+
+Once registered in the [*if_8023] object, the callback may then used in this manner:
+
+``
+	int handle_nl_event(nl_msg *msg, void *arg)
+	{
+		nlwrap::nl_msg m(msg);
+
+		// ...
+		if (link_is_up) {
+			// parse message attributes into...
+			mih::link_tuple_id lid;
+			boost::optional<mih::link_addr> old_router;
+			boost::optional<mih::link_addr> new_router;
+			boost::optional<bool> ip_renew;
+			boost::optional<mih::ip_mob_mgmt> mobility_management;
+
+			// dispatch callback
+			ios.dispatch(boost::bind(_link_up_handler, lid, old_router, new_router, ip_renew, mobility_management));
+		}
+
+		// new event
+		else if (new_event_occurred) {
+			// parse message attributes into...
+			mih::link_tuple_id lid;
+
+			// dispatch callback
+			ios.dispatch(boost::bind(_new_event_handler, lid));
+		}
+	}
+``
+
+An event received at the callback must then be delivered to the MIHF,
+similarly to command responses (although the TID is not set as in that case).
+
+``
+	void dispatch_new_event(mih::link_tuple_id &lid)
+	{
+		if (!subscribed_event_list.get(mih::evt_new_event)) {
+			return;
+		}
+
+		mih::message m;
+		m << mih::indication(mih::indication::new_event);
+
+		ls->async_send(m);
+	}
+``
+[endsect][/OS-level events]
+
+[section Locally triggered events]
+The ['Link_Parameters_Report] event is an example of a "manually" triggered event.
+These type of events are dispatched in the same way of regular events:
+
+``
+	void dispatch_new_event(mih::link_tuple_id &lid)
+	{
+		if (!subscribed_event_list.get(mih::evt_new_event)) {
+			return;
+		}
+
+		mih::message m;
+		m << mih::indication(mih::indication::new_event);
+
+		ls->async_send(m);
+	}
+``
+
+They can be generated in any way the programmer desires.
+The implementation of the ['Link_Parameters_Report] is done via independent threads
+which poll for information at regular intervals and, if the conditions designate the generation
+of an event, the ['dispath_event()] method is called with the appropriate parameters.
+
+The periodic execution of the thread should be handled with the boost::io_service mechanisms,
+in order to prevent concurrent operation with other Link SAP services. the [*timer_task] class
+assists in the creation of periodic code snippets, and is used for the management of configured
+thresholds and consequent generation of ['Link_Parameters_Report] events.
+
+[endsect][/Locally triggered events]
+
+[endsect][/Supporting new events]
+
+[endsect][/Extending]
+
+[endsect][sap_8023 Link SAP]
