@@ -623,8 +623,7 @@ void handle_link_configure_thresholds(boost::asio::io_service &ios,
 			}
 		} else { // insert it
 			odtone::uint16 *period = boost::get<odtone::uint16>(&param.timer_interval);
-			if (period) {
-				// dealing with a periodic configuration
+			if (period) { // insert periodic report
 				log_(0, "(command) Inserting periodic report");
 
 				std::unique_ptr<periodic_report_data> p(new periodic_report_data);
@@ -634,23 +633,22 @@ void handle_link_configure_thresholds(boost::asio::io_service &ios,
 
 				p->task->start();
 				period_rpt_list.push_back(std::move(p));
-			}
+			} else { // insert "value-cross" alerts
+				BOOST_FOREACH (mih::threshold &th, param.threshold_list) {
+					log_(0, "(command) Inserting value-cross-alert threshold");
 
-			// not just "else", but aditionally, if there are thresholds, add them
-			BOOST_FOREACH (mih::threshold &th, param.threshold_list) {
-				log_(0, "(command) Inserting value-cross-alert threshold");
+					threshold_cross_data t;
+					t.one_shot = (param.action == mih::th_action_one_shot);
+					t.type = param.type;
+					t.th = th;
+					th_cross_list.push_back(t);
 
-				threshold_cross_data t;
-				t.one_shot = (param.action == mih::th_action_one_shot);
-				t.type = param.type;
-				t.th = th;
-				th_cross_list.push_back(t);
-
-				mih::link_cfg_status status;
-				status.type = param.type;
-				status.thold = th;
-				status.status = true;
-				status_list.push_back(status);
+					mih::link_cfg_status status;
+					status.type = param.type;
+					status.thold = th;
+					status.status = true;
+					status_list.push_back(status);
+				}
 			}
 		}
 	}
