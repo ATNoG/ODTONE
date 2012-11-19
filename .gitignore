@@ -1,5 +1,2 @@
 bin.v2
 dist
-doc/html
-doc/*.xml
-doc/output.log
