@@ -185,6 +185,10 @@ void genl_msg::parse_attr(::nlattr *tb[NL80211_ATTR_MAX + 1])
 	if (tb[NL80211_ATTR_REASON_CODE]) {
 		attr_reason_code = ::nla_get_u16(tb[NL80211_ATTR_REASON_CODE]);
 	}
+	
+	if (tb[NL80211_ATTR_IFTYPE]) {
+		attr_iftype = ::nla_get_u32(tb[NL80211_ATTR_IFTYPE]);
+	}
 
 #ifdef NL80211_ATTR_PS_STATE
 	if (tb[NL80211_ATTR_PS_STATE]) {

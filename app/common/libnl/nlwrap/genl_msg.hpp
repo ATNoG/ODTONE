@@ -95,6 +95,7 @@ public:
 	int cmd();
 
 	boost::optional<int> attr_ifindex;
+	boost::optional<int> attr_iftype;
 	boost::optional<int> attr_status_code;
 	boost::optional<std::string> attr_mac;
 	boost::optional<int> attr_reason_code;

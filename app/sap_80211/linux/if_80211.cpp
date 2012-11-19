@@ -128,6 +128,22 @@ struct scan_results_data {
 	scan_results_data(if_80211::ctx_data &ctx) : _ctx(ctx) {}
 };
 
+int handle_iftype(nl_msg *msg, void *arg)
+{
+	try {
+		nlwrap::genl_msg m(msg);
+		unsigned int *d = static_cast<unsigned int *>(arg);
+
+		if (m.attr_iftype) {
+			*d = m.attr_iftype.get();
+		}
+	} catch(...) {
+		log_(0, "(command) Error parsing interface dump message");
+	}
+
+	return NL_SKIP;
+}
+
 int handle_operstate(nl_msg *msg, void *arg)
 {
 	try {
@@ -338,8 +354,14 @@ int handle_nl_event(nl_msg *msg, void *arg)
 			ctx->_scanning = true;
 		}
 		break;
+
 	case NL80211_CMD_CONNECT: // LINK_UP
 		{
+			if (!ctx->_is_sta) {
+				log_(0, "(event) Ignoring CONNECT event for non-STA interface");
+				break;
+			}
+
 			log_(0, "(event) Connect");
 			if (!ctx->_up_handler) { break; }
 
@@ -370,6 +392,11 @@ int handle_nl_event(nl_msg *msg, void *arg)
 //	case NL80211_CMD_DISASSOCIATE:
 	case NL80211_CMD_DISCONNECT: // LINK_DOWN
 		{
+			if (!ctx->_is_sta) {
+				log_(0, "(event) Ignoring DISCONNECT event for non-STA interface");
+				break;
+			}
+
 			log_(0, "(event) Disconnect");
 			if (!ctx->_down_handler) { break; }
 
@@ -382,10 +409,67 @@ int handle_nl_event(nl_msg *msg, void *arg)
 			lid.type = mih::link_type_802_11;
 			lid.addr = ctx->_mac;
 
+			
 			mih::link_dn_reason rs = reason_code_2_dn_reason(reason_code);
 
 			boost::optional<mih::link_addr> old_router;
 			ctx->_ios.dispatch(boost::bind(ctx->_down_handler.get(), lid, old_router, rs));
+		}
+		break;
+
+	case NL80211_CMD_NEW_STATION: // AP LINK_UP
+		{
+			if (ctx->_is_sta) {
+				log_(0, "(event) Ignoring NEW_STATION event for STA interface");
+				break;
+			}
+
+			log_(0, "(event) new station");
+			if (!ctx->_up_handler) { break; }
+
+			if (m.attr_mac) {
+				log_(0, "(event) Detected the attachment of a new MN: ", m.attr_mac.get().c_str());
+
+				mih::link_tuple_id lid;
+				lid.type = mih::link_type_802_11;
+				lid.addr = mih::mac_addr(m.attr_mac.get().c_str());
+
+				boost::optional<mih::link_addr> old_router;
+				boost::optional<mih::link_addr> new_router;
+				boost::optional<bool> ip_renew;
+				boost::optional<mih::ip_mob_mgmt> mobility_management;
+
+				new_router = ctx->_mac;
+				ctx->_ios.dispatch(boost::bind(ctx->_up_handler.get(), lid, old_router, new_router, ip_renew, mobility_management));
+			}
+		}
+		break;
+	
+	case NL80211_CMD_DEL_STATION: // AP LINK_DOWN
+		{
+			if (ctx->_is_sta) {
+				log_(0, "(event) Ignoring DEL_STATION event for STA interface");
+				break;
+			}
+
+			log_(0, "(event) del station");
+			if (!ctx->_down_handler) { break; }
+
+			if (m.attr_mac) {
+				log_(0, "(event) Detected the detachment of an MN: ", m.attr_mac.get().c_str());
+				
+				mih::link_tuple_id lid;
+				lid.type = mih::link_type_802_11;
+				lid.addr = mih::mac_addr(m.attr_mac.get().c_str());
+
+				mih::link_dn_reason rs = mih::link_dn_reason(mih::link_dn_reason_explicit_disconnect);
+				// we have no idea...
+
+				boost::optional<mih::link_addr> old_router;
+				old_router = ctx->_mac;
+
+				ctx->_ios.dispatch(boost::bind(ctx->_down_handler.get(), lid, old_router, rs));
+			}
 		}
 		break;
 
@@ -439,7 +523,17 @@ if_80211::if_80211(boost::asio::io_service &ios, mih::mac_addr mac) : _ctx(ios)
 
 	_ctx._ifindex = link.ifindex();
 
-	// initalize socket
+	// get the interface type
+	unsigned int _iftype = iftype();
+	if (_iftype == NL80211_IFTYPE_STATION) {
+		_ctx._is_sta = true;
+	} else if (_iftype == NL80211_IFTYPE_AP || _iftype == NL80211_IFTYPE_AP_VLAN) {
+		_ctx._is_sta = false;
+	} else {
+		throw std::runtime_error("Unsupported interface type, " + boost::lexical_cast<std::string>(_iftype));
+	}
+
+	// initalize event socket
 	_ctx._family_id = _socket.family_id("nl80211");
 	_socket.join_multicast_group("scan");
 	_socket.join_multicast_group("mlme");
@@ -456,6 +550,29 @@ if_80211::~if_80211()
 unsigned int if_80211::ifindex()
 {
 	return _ctx._ifindex;
+}
+
+unsigned int if_80211::iftype()
+{
+	nlwrap::genl_socket s;
+
+	nlwrap::genl_msg m(s.family_id("nl80211"), NL80211_CMD_GET_INTERFACE, NLM_F_DUMP);
+	m.put_ifindex(_ctx._ifindex);
+
+	unsigned int iftype = 0;
+	nlwrap::nl_cb cb(handle_iftype, static_cast<void *>(&iftype));
+
+	s.send(m);
+
+	while (!cb.finish()) {
+		s.receive(cb);
+	}
+
+	if (cb.error()) {
+		throw std::runtime_error("Error getting interface type, code: " + boost::lexical_cast<std::string>(cb.error_code()));
+	}
+
+	return iftype;
 }
 
 mih::mac_addr if_80211::mac_address()

@@ -79,6 +79,13 @@ public:
 	unsigned int ifindex();
 
 	/**
+	 * Get the interface type for this specific device.
+	 * 
+	 * @return the nl80211_iftype;
+	 */
+	unsigned int iftype();
+
+	/**
 	 * Get the MAC address of this device.
 	 *
 	 * @return the MAC address of the device.
@@ -181,6 +188,7 @@ public:
 		boost::optional<link_detected_handler> _detected_handler;
 
 		bool				  _scanning;
+		bool                  _is_sta;
 		int                   _family_id;
 
 		int                   _ifindex;
