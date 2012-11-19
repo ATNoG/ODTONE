@@ -55,6 +55,11 @@ struct rate_parse_policy {
 	rate_parse_policy();
 } rate_policy;
 
+struct cqm_parse_policy {
+	::nla_policy pol[NL80211_ATTR_CQM_MAX + 1];
+	cqm_parse_policy();
+} cqm_policy;
+
 void mac_addr_n2a(char *mac_addr, unsigned char *arg);
 int mac_addr_a2n(unsigned char *mac_addr, char *arg);
 
@@ -89,6 +94,15 @@ genl_msg::genl_msg(::nl_msg *msg) : nl_msg(msg)
 			throw std::runtime_error("Error parsing nl_msg station attributes");
 		}
 		parse_sta(sta);
+	}
+	
+	// parse cqm event
+	if (tb[NL80211_ATTR_CQM]) {
+		::nlattr *cqm[NL80211_ATTR_CQM_MAX + 1];
+		if (::nla_parse_nested(cqm, NL80211_ATTR_CQM_MAX, tb[NL80211_ATTR_CQM], cqm_policy.pol)) {
+			throw std::runtime_error("Error parsing nl_msg cqm attributes");
+		}
+		parse_cqm(cqm);
 	}
 
 	// parse bss
@@ -166,6 +180,16 @@ int genl_msg::cmd()
 	return _cmd;
 }
 
+void genl_msg::put_cqm(int rssi_threshold, int hysteresis)
+{
+	nl_msg nested;
+	nested.put_cqm(rssi_threshold, hysteresis);
+
+	if (::nla_put_nested(_msg, NL80211_ATTR_CQM, nested)) {
+		throw std::runtime_error("Error putting nested CQM parameters");
+	}
+}
+
 void genl_msg::parse_attr(::nlattr *tb[NL80211_ATTR_MAX + 1])
 {
 	if (tb[NL80211_ATTR_IFINDEX]) {
@@ -198,6 +222,14 @@ void genl_msg::parse_attr(::nlattr *tb[NL80211_ATTR_MAX + 1])
 
 	if (tb[NL80211_ATTR_BSS]) {
 		attr_bss = true;
+	}
+}
+
+void genl_msg::parse_cqm(::nlattr *cqm[NL80211_ATTR_CQM_MAX + 1])
+{
+	if (cqm[NL80211_ATTR_CQM_RSSI_THRESHOLD_EVENT]) {
+		cqm_threshold_below =  ::nla_get_u32(cqm[NL80211_ATTR_CQM_RSSI_THRESHOLD_EVENT])
+		                      == NL80211_CQM_RSSI_THRESHOLD_EVENT_LOW;
 	}
 }
 
@@ -430,6 +462,12 @@ rate_parse_policy::rate_parse_policy() {
 	pol[NL80211_RATE_INFO_MCS].type = NLA_U8;
 	pol[NL80211_RATE_INFO_40_MHZ_WIDTH].type = NLA_FLAG;
 	pol[NL80211_RATE_INFO_SHORT_GI].type = NLA_FLAG;
+}
+
+cqm_parse_policy::cqm_parse_policy() {
+	pol[NL80211_ATTR_CQM_RSSI_THOLD].type = NLA_U32;
+	pol[NL80211_ATTR_CQM_RSSI_HYST].type = NLA_U32;
+	pol[NL80211_ATTR_CQM_RSSI_THRESHOLD_EVENT].type = NLA_U32;
 }
 
 }; // nlwrap

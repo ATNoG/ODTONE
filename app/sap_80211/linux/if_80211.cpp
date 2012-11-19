@@ -473,6 +473,23 @@ int handle_nl_event(nl_msg *msg, void *arg)
 		}
 		break;
 
+	case NL80211_CMD_NOTIFY_CQM: // LINK_GOING_DOWN
+		{
+			log_(0, "(event) CQM notification");
+			if (!ctx->_going_down_handler) { break; }
+
+			if (m.cqm_threshold_below && m.cqm_threshold_below.get()) {
+				mih::link_tuple_id lid;
+				lid.type = mih::link_type_802_11;
+				lid.addr = ctx->_mac;
+
+				odtone::uint interval = 0; // no idea!
+				mih::link_gd_reason rs = mih::link_gd_reason(mih::link_gd_reason_link_parameter_degrading);
+				ctx->_ios.dispatch(boost::bind(ctx->_going_down_handler.get(), lid, interval, rs));
+			}
+		}
+		break;
+
 	case NL80211_CMD_SCAN_ABORTED: // LINK_DETECTED?
 		{
 			ctx->_scanning = false;
@@ -827,6 +844,26 @@ odtone::uint if_80211::get_current_data_rate(mih::mac_addr &addr)
 	return rate * 100;
 }
 
+
+void if_80211::set_link_going_down_threshold(int threshold, int hysteresis)
+{
+	nlwrap::genl_socket s;
+	nlwrap::genl_msg m(_ctx._family_id, NL80211_CMD_SET_CQM, 0);
+	m.put_ifindex(_ctx._ifindex);
+	m.put_cqm(threshold, hysteresis);
+
+	nlwrap::nl_cb cb;
+
+	s.send(m);
+	while (!cb.finish()) {
+		s.receive(cb);
+	}
+
+	if (cb.error()) {
+		throw std::runtime_error("Error setting CQM parameters, code: " + boost::lexical_cast<std::string>(cb.error_code()));
+	}
+}
+
 void if_80211::link_up_callback(link_up_handler h)
 {
 	_ctx._up_handler = h;
@@ -840,6 +877,11 @@ void if_80211::link_down_callback(link_down_handler h)
 void if_80211::link_detected_callback(link_detected_handler h)
 {
 	_ctx._detected_handler = h;
+}
+
+void if_80211::link_going_down_callback(link_going_down_handler h)
+{
+	_ctx._going_down_handler = h;
 }
 
 // EOF ////////////////////////////////////////////////////////////////////////

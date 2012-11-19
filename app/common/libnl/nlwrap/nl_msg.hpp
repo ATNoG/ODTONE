@@ -79,6 +79,14 @@ public:
 	 */
 	void put_ssids(std::vector<std::string> ssids);
 
+	/**
+	 * Put a CQM threshold configuration in the message.
+	 * 
+	 * @param rssi_threshold The RSSI threshold for the configuration.
+	 * @param hysteresis the hysteresis value.
+	 */
+	void put_cqm(int rssi_threshold, int hysteresis);
+
 protected:
 	::nl_msg *_msg;
 

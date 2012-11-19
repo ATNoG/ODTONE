@@ -66,6 +66,8 @@ struct threshold_cross_data {
 static const char* const kConf_Sap_Verbosity = "link.verbosity";
 static const char* const kConf_Sched_Scan_Period = "link.sched_scan_period";
 static const char* const kConf_Default_Threshold_Period = "link.default_th_period";
+static const char* const kConf_Link_Going_Down_dBm = "link.link_going_down_dbm";
+static const char* const kConf_Link_Going_Down_hyst = "link.link_going_down_hyst";
 
 static logger log_("sap_80211", std::cout);
 
@@ -173,6 +175,25 @@ void dispatch_link_down(mih::link_tuple_id &lid,
 		& mih::tlv_link_identifier(lid)
 		& mih::tlv_old_access_router(old_router)
 		& mih::tlv_link_dn_reason(rs);
+
+	ls->async_send(m);
+}
+
+void dispatch_link_going_down(mih::link_tuple_id &lid,
+	odtone::uint16 interval,
+	mih::link_gd_reason &rs)
+{
+	if (!subscribed_event_list.get(mih::evt_link_going_down)) {
+		return;
+	}
+
+	log_(0, "(event) Dispatching link_going_down message");
+
+	mih::message m;
+	m << mih::indication(mih::indication::link_going_down)
+		& mih::tlv_link_identifier(lid)
+		& mih::tlv_time_interval(interval)
+		& mih::tlv_link_gd_reason(rs);
 
 	ls->async_send(m);
 }
@@ -876,7 +897,7 @@ void set_supported_event_list()
 	capabilities_event_list.set(mih::evt_link_up);
 	capabilities_event_list.set(mih::evt_link_down);
 	capabilities_event_list.set(mih::evt_link_parameters_report);
-	//capabilities_event_list.set(mih::evt_link_going_down);
+	capabilities_event_list.set(mih::evt_link_going_down);
 	//capabilities_event_list.set(mih::evt_link_handover_imminent);
 	//capabilities_event_list.set(mih::evt_link_handover_complete);
 	//capabilities_event_list.set(mih::evt_link_pdu_transmit_status);
@@ -913,6 +934,8 @@ int main(int argc, char** argv)
 		(kConf_Sap_Verbosity, po::value<odtone::uint>()->default_value(2), "Log level [0-2]")
 		(kConf_Sched_Scan_Period, po::value<odtone::uint>()->default_value(0), "Scheduled scan interval (millis)")
 		(kConf_Default_Threshold_Period, po::value<odtone::uint>()->default_value(1000), "Default threshold checking interval (millis)")
+		(kConf_Link_Going_Down_dBm, po::value<int>()->default_value(-90), "Link_Going_Down RSSI threshold (0 disables)")
+		(kConf_Link_Going_Down_hyst, po::value<int>()->default_value(5), "Link_Going_Down RSSI hysteresis")
 		(sap::kConf_Interface_Addr, po::value<std::string>()->default_value(""), "Interface address")
 		(sap::kConf_Port, po::value<odtone::ushort>()->default_value(1235), "Port")
 		(sap::kConf_File, po::value<std::string>()->default_value("sap_80211.conf"), "Configuration File")
@@ -966,6 +989,14 @@ int main(int argc, char** argv)
 	fi.link_up_callback(boost::bind(&dispatch_link_up, _1, _2, _3, _4, _5));
 	fi.link_down_callback(boost::bind(&dispatch_link_down, _1, _2, _3));
 	fi.link_detected_callback(boost::bind(&dispatch_link_detected, _1));
+
+	// set going down parameters
+	int link_gd_threshold = cfg.get<int>(kConf_Link_Going_Down_dBm);
+	int link_gd_hysteresis = cfg.get<int>(kConf_Link_Going_Down_hyst);
+	if (link_gd_threshold != 0) {
+		fi.link_going_down_callback(boost::bind(&dispatch_link_going_down, _1, _2, _3));
+		fi.set_link_going_down_threshold(link_gd_threshold, link_gd_hysteresis);
+	}
 
 	ios.run();
 }

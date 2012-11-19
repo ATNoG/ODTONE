@@ -88,6 +88,14 @@ public:
 	void put_mac(const std::string &mac);
 
 	/**
+	 * Put a CQM threshold configuration in the message.
+	 * 
+	 * @param rssi_threshold The RSSI threshold for the configuration.
+	 * @param hysteresis the hysteresis value.
+	 */
+	void put_cqm(int rssi_threshold, int hysteresis);
+
+	/**
 	 * Get the command from a parsed message.
 	 *
 	 * @return The command from the parsed message.
@@ -101,6 +109,7 @@ public:
 	boost::optional<int> attr_reason_code;
 	boost::optional<int> attr_ps_state;
 	boost::optional<bool> attr_bss;
+	boost::optional<bool> cqm_threshold_below;
 
 	boost::optional<int> bss_status;
 	boost::optional<int> bss_frequency;
@@ -124,6 +133,7 @@ public:
 
 private:
 	void parse_attr(::nlattr *tb[NL80211_ATTR_MAX + 1]);
+	void parse_cqm(::nlattr *cqm[NL80211_ATTR_CQM_MAX + 1]);
 	void parse_bss(::nlattr *bss[NL80211_BSS_MAX + 1]);
 	void parse_sta(::nlattr *bss[NL80211_STA_INFO_MAX + 1]);
 	void parse_information_elements(unsigned char *ie, int ielen);

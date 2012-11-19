@@ -49,10 +49,14 @@ class if_80211 : boost::noncopyable {
 	                             mih::link_dn_reason &dn_reason)> link_down_handler;
 
 	typedef boost::function<void(mih::link_det_info &det_info)> link_detected_handler;
+
+	typedef boost::function<void(mih::link_tuple_id &lid,
+	                             odtone::uint16 interval,
+	                             mih::link_gd_reason &rs)> link_going_down_handler;
+
 //
 //	typedef boost::function<void(mih::link_tuple_id &tuple_id,
 //	                             mih::link_param_rpt_list &rpt_list)> link_parameters_report_handler;
-//	typedef boost::function<void()> link_going_down_handler;
 //	typedef boost::function<void()> link_handover_imminent_handler;
 //	typedef boost::function<void()> link_pdu_transmit_status_handler;
 
@@ -178,14 +182,31 @@ public:
 	 */
 	void link_detected_callback(link_detected_handler h);
 
+	/**
+	 * Set the callback for LINK_GOING_DOWN events.
+	 *
+	 * @param h The callback.
+	 */
+	void link_going_down_callback(link_going_down_handler h);
+
+	/**
+	 * Configure the RSSI below which a Link_Going_Down event is to be triggered.
+	 * The hysteresis specifies how much the signal must change such that the event is repeated.
+	 * 
+	 * @param threshold The RSSI threshold.
+	 * @param hysteresis The RSSI hysteresis.
+	 */
+	void set_link_going_down_threshold(int threshold, int hysteresis);
+
 	struct ctx_data {
 		ctx_data (boost::asio::io_service &ios) : _ios(ios) {}
 
 		boost::asio::io_service &_ios;
 
-		boost::optional<link_up_handler>       _up_handler;
-		boost::optional<link_down_handler>     _down_handler;
-		boost::optional<link_detected_handler> _detected_handler;
+		boost::optional<link_up_handler>         _up_handler;
+		boost::optional<link_down_handler>       _down_handler;
+		boost::optional<link_detected_handler>   _detected_handler;
+		boost::optional<link_going_down_handler> _going_down_handler;
 
 		bool				  _scanning;
 		bool                  _is_sta;

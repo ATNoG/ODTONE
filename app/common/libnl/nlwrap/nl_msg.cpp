@@ -16,6 +16,7 @@
 //==============================================================================
 
 #include "nl_msg.hpp"
+#include <linux/nl80211.h> // cqm thresholds
 
 #include <stdexcept>
 
@@ -67,6 +68,12 @@ void nl_msg::put_ssids(std::vector<std::string> ssids)
 		}
 		it ++;
 	}
+}
+
+void nl_msg::put_cqm(int rssi_threshold, int hysteresis)
+{
+	::nla_put_u32(_msg, NL80211_ATTR_CQM_RSSI_THOLD, rssi_threshold);
+	::nla_put_u32(_msg, NL80211_ATTR_CQM_RSSI_HYST, hysteresis);
 }
 
 }
