@@ -573,7 +573,7 @@ unsigned int if_80211::iftype()
 {
 	nlwrap::genl_socket s;
 
-	nlwrap::genl_msg m(s.family_id("nl80211"), NL80211_CMD_GET_INTERFACE, NLM_F_DUMP);
+	nlwrap::genl_msg m(s.family_id("nl80211"), NL80211_CMD_GET_INTERFACE, 0);
 	m.put_ifindex(_ctx._ifindex);
 
 	unsigned int iftype = 0;
