@@ -569,29 +569,6 @@ unsigned int if_80211::ifindex()
 	return _ctx._ifindex;
 }
 
-unsigned int if_80211::iftype()
-{
-	nlwrap::genl_socket s;
-
-	nlwrap::genl_msg m(s.family_id("nl80211"), NL80211_CMD_GET_INTERFACE, 0);
-	m.put_ifindex(_ctx._ifindex);
-
-	unsigned int iftype = 0;
-	nlwrap::nl_cb cb(handle_iftype, static_cast<void *>(&iftype));
-
-	s.send(m);
-
-	while (!cb.finish()) {
-		s.receive(cb);
-	}
-
-	if (cb.error()) {
-		throw std::runtime_error("Error getting interface type, code: " + boost::lexical_cast<std::string>(cb.error_code()));
-	}
-
-	return iftype;
-}
-
 mih::mac_addr if_80211::mac_address()
 {
 	return _ctx._mac;
@@ -638,6 +615,29 @@ sint8 if_80211::get_current_rssi(const mih::mac_addr &addr)
 	}
 
 	return rssi;
+}
+
+unsigned int if_80211::iftype()
+{
+	nlwrap::genl_socket s;
+
+	nlwrap::genl_msg m(s.family_id("nl80211"), NL80211_CMD_GET_INTERFACE, 0);
+	m.put_ifindex(_ctx._ifindex);
+
+	unsigned int iftype = 0;
+	nlwrap::nl_cb cb(handle_iftype, static_cast<void *>(&iftype));
+
+	s.send(m);
+
+	while (!cb.finish()) {
+		s.receive(cb);
+	}
+
+	if (cb.error()) {
+		throw std::runtime_error("Error getting interface type, code: " + boost::lexical_cast<std::string>(cb.error_code()));
+	}
+
+	return iftype;
 }
 
 poa_info if_80211::get_poa_info()

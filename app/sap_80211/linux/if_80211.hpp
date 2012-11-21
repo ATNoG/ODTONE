@@ -83,13 +83,6 @@ public:
 	unsigned int ifindex();
 
 	/**
-	 * Get the interface type for this specific device.
-	 * 
-	 * @return the nl80211_iftype;
-	 */
-	unsigned int iftype();
-
-	/**
 	 * Get the MAC address of this device.
 	 *
 	 * @return the MAC address of the device.
@@ -226,6 +219,14 @@ private:
 	 * @return The current RSSI.
 	 */
 	sint8 get_current_rssi(const mih::mac_addr &addr);
+
+
+	/**
+	 * Get the interface type for this specific device.
+	 * 
+	 * @return the nl80211_iftype;
+	 */
+	unsigned int iftype();
 
 private:
 	ctx_data            _ctx;
