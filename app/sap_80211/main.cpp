@@ -993,7 +993,8 @@ int main(int argc, char** argv)
 	// set going down parameters
 	int link_gd_threshold = cfg.get<int>(kConf_Link_Going_Down_dBm);
 	int link_gd_hysteresis = cfg.get<int>(kConf_Link_Going_Down_hyst);
-	if (link_gd_threshold != 0) {
+	// but only if requested, if root, and if device is in STATION mode
+	if (link_gd_threshold != 0 && !geteuid() && fi.is_sta()) {
 		fi.link_going_down_callback(boost::bind(&dispatch_link_going_down, _1, _2, _3));
 		fi.set_link_going_down_threshold(link_gd_threshold, link_gd_hysteresis);
 	}

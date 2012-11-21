@@ -83,6 +83,13 @@ public:
 	unsigned int ifindex();
 
 	/**
+	 * Check whether this device is a STATION.
+	 * 
+	 * @return whether this device is a STATION.
+	 */
+	bool is_sta();
+
+	/**
 	 * Get the MAC address of this device.
 	 *
 	 * @return the MAC address of the device.

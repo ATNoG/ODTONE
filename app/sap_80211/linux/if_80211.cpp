@@ -569,6 +569,11 @@ unsigned int if_80211::ifindex()
 	return _ctx._ifindex;
 }
 
+bool if_80211::is_sta()
+{
+	return _ctx._is_sta;
+}
+
 mih::mac_addr if_80211::mac_address()
 {
 	return _ctx._mac;
