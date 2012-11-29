@@ -329,7 +329,7 @@ Usage: command = <command 1>, <command 2>, (...), <command N>
 	     --link.id arg (=link)            Link SAP ID
 	     --link.port arg (=1235)          Listening Port
 	     --link.tec arg                   Technology type
-	     --link.link_addr_list arg        Interface address
+	     --link.link_addr arg             Interface address
 	     --link.event_list arg            List of supported events
 	     --link.command_list arg          List of supported commands
 	     --mihf.ip arg (=127.0.0.1)       Local MIHF IP
