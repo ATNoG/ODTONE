@@ -1,22 +1,9 @@
-//==============================================================================
-// Brief   : Parser for dhclient config and lease files
-// Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-//------------------------------------------------------------------------------
-// ODTONE - Open Dot Twenty One
-//
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
-//
-// This software is distributed under a license. The full license
-// agreement can be found in the file LICENSE in this distribution.
-// This software may not be copied, modified, sold or distributed
-// other than expressed in the named license agreement.
-//
-// This software is distributed without any warranty.
-//==============================================================================
+/* clparse.c
+
+   Parser for dhclient config and lease files... */
 
 /*
- * Copyright (c) 2004-2010 by Internet Systems Consortium, Inc. ("ISC")
+ * Copyright (c) 2004-2012 by Internet Systems Consortium, Inc. ("ISC")
  * Copyright (c) 1996-2003 by Internet Software Consortium
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -55,11 +42,13 @@ struct option *default_requested_options[NUM_DEFAULT_REQUESTED_OPTS + 1];
 
 static void parse_client_default_duid(struct parse *cfile);
 static void parse_client6_lease_statement(struct parse *cfile);
+
 static struct dhc6_ia *parse_client6_ia_na_statement(struct parse *cfile);
 static struct dhc6_ia *parse_client6_ia_ta_statement(struct parse *cfile);
 static struct dhc6_ia *parse_client6_ia_pd_statement(struct parse *cfile);
 static struct dhc6_addr *parse_client6_iaaddr_statement(struct parse *cfile);
 static struct dhc6_addr *parse_client6_iaprefix_statement(struct parse *cfile);
+
 
 /* client-conf-file :== client-declarations END_OF_FILE
    client-declarations :== <nil>
@@ -70,9 +59,17 @@ isc_result_t read_client_conf ()
 {
 	struct client_config *config;
 	struct interface_info *ip;
-	struct parse *parse;
 	isc_result_t status;
 	unsigned code;
+
+        /*
+         * TODO: LATER constant is very undescriptive. We should review it and
+         * change it to something more descriptive or even better remove it
+         * completely as it is currently not used.
+         */
+#ifdef LATER
+        struct parse *parse = NULL;
+#endif
 
 	/* Initialize the default request list. */
 	memset(default_requested_options, 0, sizeof(default_requested_options));
@@ -139,6 +136,16 @@ isc_result_t read_client_conf ()
 	top_level_config.retry_interval = 300;
 	top_level_config.backoff_cutoff = 15;
 	top_level_config.initial_interval = 3;
+
+	/*
+	 * RFC 2131, section 4.4.1 specifies that the client SHOULD wait a
+	 * random time between 1 and 10 seconds. However, we choose to not
+	 * implement this default. If user is inclined to really have that
+	 * delay, he is welcome to do so, using 'initial-delay X;' parameter
+	 * in config file.
+	 */
+	top_level_config.initial_delay = 0;
+
 	top_level_config.bootp_policy = P_ACCEPT;
 	top_level_config.script_name = path_dhclient_script;
 	top_level_config.requested_options = default_requested_options;
@@ -160,7 +167,6 @@ isc_result_t read_client_conf ()
 					(struct interface_info *)0,
 					&top_level_config);
 
-	parse = NULL;
 	if (status != ISC_R_SUCCESS) {
 		;
 #ifdef LATER
@@ -654,6 +660,11 @@ void parse_client_statement (cfile, ip, config)
 	      case INITIAL_INTERVAL:
 		token = next_token (&val, (unsigned *)0, cfile);
 		parse_lease_time (cfile, &config -> initial_interval);
+		return;
+
+	      case INITIAL_DELAY:
+		token = next_token (&val, (unsigned *)0, cfile);
+		parse_lease_time (cfile, &config -> initial_delay);
 		return;
 
 	      case SCRIPT:
@@ -1879,7 +1890,6 @@ parse_client6_ia_pd_statement(struct parse *cfile)
 	return ia;
 }
 
-
 /* Parse an iaaddr {} structure. */
 static struct dhc6_addr *
 parse_client6_iaaddr_statement(struct parse *cfile)
@@ -2215,4 +2225,3 @@ int parse_allow_deny (oc, cfile, flag)
 	skip_to_semi (cfile);
 	return 0;
 }
-

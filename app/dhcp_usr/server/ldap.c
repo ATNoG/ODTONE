@@ -1,19 +1,6 @@
-//==============================================================================
-// Brief   : Routines for reading the configuration from LDAP
-// Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-//------------------------------------------------------------------------------
-// ODTONE - Open Dot Twenty One
-//
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
-//
-// This software is distributed under a license. The full license
-// agreement can be found in the file LICENSE in this distribution.
-// This software may not be copied, modified, sold or distributed
-// other than expressed in the named license agreement.
-//
-// This software is distributed without any warranty.
-//==============================================================================
+/* ldap.c
+
+   Routines for reading the configuration from LDAP */
 
 /*
  * Copyright (c) 2003-2006 Ntelos, Inc.
@@ -61,8 +48,8 @@
 #endif
 
 static LDAP * ld = NULL;
-static char *ldap_server = NULL,
-            *ldap_username = NULL,
+static char *ldap_server = NULL, 
+            *ldap_username = NULL, 
             *ldap_password = NULL,
             *ldap_base_dn = NULL,
             *ldap_dhcp_server_cn = NULL,
@@ -138,8 +125,8 @@ ldap_parse_subclass (struct ldap_config_stack *item, struct parse *cfile)
       return;
     }
 
-  if ((classdata = ldap_get_values_len (ld, item->ldent,
-                                  "dhcpClassData")) == NULL ||
+  if ((classdata = ldap_get_values_len (ld, item->ldent, 
+                                  "dhcpClassData")) == NULL || 
       classdata[0] == NULL)
     {
       if (classdata != NULL)
@@ -228,9 +215,9 @@ parse_netmask (int netmask, char *netmaskbuf)
       nm |= 1 << (32 - i);
     }
 
-  sprintf (netmaskbuf, "%d.%d.%d.%d", (int) (nm >> 24) & 0xff,
-                                      (int) (nm >> 16) & 0xff,
-                                      (int) (nm >> 8) & 0xff,
+  sprintf (netmaskbuf, "%d.%d.%d.%d", (int) (nm >> 24) & 0xff, 
+                                      (int) (nm >> 16) & 0xff, 
+                                      (int) (nm >> 8) & 0xff, 
                                       (int) nm & 0xff);
 }
 
@@ -251,8 +238,8 @@ ldap_parse_subnet (struct ldap_config_stack *item, struct parse *cfile)
       return;
     }
 
-  if ((netmaskstr = ldap_get_values_len (ld, item->ldent,
-                                     "dhcpNetmask")) == NULL ||
+  if ((netmaskstr = ldap_get_values_len (ld, item->ldent, 
+                                     "dhcpNetmask")) == NULL || 
       netmaskstr[0] == NULL)
     {
       if (netmaskstr != NULL)
@@ -545,7 +532,7 @@ _do_lookup_dhcp_enum_option (struct option_state *options, int option_name)
                              &global_scope, oc, MDL) &&
       db.data != NULL && *db.data != '\0')
     {
-      if (db.len == 1)
+      if (db.len == 1) 
         ret = db.data [0];
       else
         log_fatal ("invalid option name %d", option_name);
@@ -946,7 +933,7 @@ parse_external_dns (LDAPMessage * ent)
               ldap_stop();
               return;
             }
-
+    
 #if defined (DEBUG_LDAP)
           log_info ("Adding contents of subtree '%s' to config stack from '%s' reference", tempbv[j], search[i]);
 #endif
@@ -989,7 +976,7 @@ free_stack_entry (struct ldap_config_stack *item)
         }
     }
 
-  if (may_free_msg)
+  if (may_free_msg) 
     ldap_msgfree (item->res);
 
   dfree (item, MDL);
@@ -1007,7 +994,7 @@ next_ldap_entry (struct parse *cfile)
       ldap_stack->close_brace = 0;
     }
 
-  while (ldap_stack != NULL &&
+  while (ldap_stack != NULL && 
          (ldap_stack->ldent == NULL ||
           (ldap_stack->ldent = ldap_next_entry (ld, ldap_stack->ldent)) == NULL))
     {
@@ -1155,10 +1142,10 @@ ldap_generate_config_string (struct parse *cfile)
     return;
 
   entry = ldap_stack;
-  if ((objectClass = ldap_get_values_len (ld, entry->ldent,
+  if ((objectClass = ldap_get_values_len (ld, entry->ldent, 
                                       "objectClass")) == NULL)
     return;
-
+    
   ignore = 0;
   found = 1;
   for (i=0; objectClass[i] != NULL; i++)
@@ -1284,7 +1271,7 @@ ldap_read_function (struct parse *cfile)
 {
   cfile->inbuf[0] = '\0';
   cfile->buflen = 0;
-
+ 
   while (ldap_stack != NULL && *cfile->inbuf == '\0')
     ldap_generate_config_string (cfile);
 
@@ -1379,7 +1366,7 @@ ldap_read_config (void)
     ldap_start ();
   if (ld == NULL)
     return (ldap_server == NULL ? ISC_R_SUCCESS : ISC_R_FAILURE);
-
+ 
   buffer = dmalloc (LDAP_BUFFER_SIZE+1, MDL);
   if (buffer == NULL)
     return (ISC_R_FAILURE);
@@ -1388,7 +1375,7 @@ ldap_read_config (void)
   res = new_parse (&cfile, -1, buffer, LDAP_BUFFER_SIZE, "LDAP", 0);
   if (res != ISC_R_SUCCESS)
     return (res);
-
+ 
   uname (&unme);
   if (ldap_dhcp_server_cn != NULL)
     {
@@ -1400,7 +1387,7 @@ ldap_read_config (void)
   if(0 == getfqhostname(fqdn, sizeof(fqdn)))
     {
       snprintf (hfilter, sizeof (hfilter),
-                "(&(objectClass=dhcpServer)(|(cn=%s)(cn=%s)))",
+                "(&(objectClass=dhcpServer)(|(cn=%s)(cn=%s)))", 
                 unme.nodename, fqdn);
     }
   else
@@ -1596,7 +1583,7 @@ ldap_read_config (void)
 
 /* This function will parse the dhcpOption and dhcpStatements field in the LDAP
    entry if it exists. Right now, type will be either HOST_DECL or CLASS_DECL.
-   If we are parsing a HOST_DECL, this always returns 0. If we are parsing a
+   If we are parsing a HOST_DECL, this always returns 0. If we are parsing a 
    CLASS_DECL, this will return what the current lease limit is in LDAP. If
    there is no lease limit specified, we return 0 */
 
@@ -1614,10 +1601,10 @@ ldap_parse_options (LDAPMessage * ent, struct group *group,
 
   lease_limit = 0;
   *option_buffer = '\0';
-
+ 
  /* This block of code will try to find the parent of the host, and
     if it is a group object, fetch the options and apply to the host. */
-  if (type == HOST_DECL)
+  if (type == HOST_DECL) 
     {
       char *hostdn, *basedn, *temp1, *temp2, filter[1024];
       LDAPMessage *groupdn, *entry;
@@ -1682,7 +1669,7 @@ ldap_parse_options (LDAPMessage * ent, struct group *group,
     return (lease_limit);
 
   cfile = (struct parse *) NULL;
-  res = new_parse (&cfile, -1, option_buffer, strlen (option_buffer),
+  res = new_parse (&cfile, -1, option_buffer, strlen (option_buffer), 
                    type == HOST_DECL ? "LDAP-HOST" : "LDAP-SUBCLASS", 0);
   if (res != ISC_R_SUCCESS)
     return (lease_limit);
@@ -1802,7 +1789,7 @@ find_haddr_in_ldap (struct host_decl **hp, int htype, unsigned hlen,
 
           if (ret != LDAP_NO_SUCH_OBJECT && ret != LDAP_SUCCESS)
             {
-              log_error ("Cannot search for %s in LDAP tree %s: %s", buf,
+              log_error ("Cannot search for %s in LDAP tree %s: %s", buf, 
                          curr->dn, ldap_err2string (ret));
               ldap_stop();
               return (0);
@@ -1832,8 +1819,8 @@ find_haddr_in_ldap (struct host_decl **hp, int htype, unsigned hlen,
       status = host_allocate (&host, MDL);
       if (status != ISC_R_SUCCESS)
         {
-          log_fatal ("can't allocate host decl struct: %s",
-                     isc_result_totext (status));
+          log_fatal ("can't allocate host decl struct: %s", 
+                     isc_result_totext (status)); 
           ldap_msgfree (res);
           return (0);
         }
@@ -1868,7 +1855,7 @@ find_haddr_in_ldap (struct host_decl **hp, int htype, unsigned hlen,
 
 
 int
-find_subclass_in_ldap (struct class *class, struct class **newclass,
+find_subclass_in_ldap (struct class *class, struct class **newclass, 
                        struct data_string *data)
 {
   LDAPMessage * res, * ent;
@@ -1946,7 +1933,7 @@ find_subclass_in_ldap (struct class *class, struct class **newclass,
 
           if (ret != LDAP_NO_SUCH_OBJECT && ret != LDAP_SUCCESS)
             {
-              log_error ("Cannot search for %s in LDAP tree %s: %s", buf,
+              log_error ("Cannot search for %s in LDAP tree %s: %s", buf, 
                          curr->dn, ldap_err2string (ret));
               ldap_stop();
               return (0);
@@ -1982,26 +1969,26 @@ find_subclass_in_ldap (struct class *class, struct class **newclass,
 
       group_reference (&(*newclass)->group, class->group, MDL);
       class_reference (&(*newclass)->superclass, class, MDL);
-      lease_limit = ldap_parse_options (ent, (*newclass)->group,
+      lease_limit = ldap_parse_options (ent, (*newclass)->group, 
                                         CLASS_DECL, NULL, newclass);
       if (lease_limit == 0)
-        (*newclass)->lease_limit = class->lease_limit;
+        (*newclass)->lease_limit = class->lease_limit; 
       else
         class->lease_limit = lease_limit;
 
-      if ((*newclass)->lease_limit)
+      if ((*newclass)->lease_limit) 
         {
-          (*newclass)->billed_leases =
+          (*newclass)->billed_leases = 
               dmalloc ((*newclass)->lease_limit * sizeof (struct lease *), MDL);
-          if (!(*newclass)->billed_leases)
+          if (!(*newclass)->billed_leases) 
             {
               log_error ("no memory for billing");
               class_dereference (newclass, MDL);
               ldap_msgfree (res);
               return (0);
             }
-          memset ((*newclass)->billed_leases, 0,
-                ((*newclass)->lease_limit * sizeof (*newclass)->billed_leases));
+          memset ((*newclass)->billed_leases, 0, 
+		  ((*newclass)->lease_limit * sizeof (struct lease *)));
         }
 
       data_string_copy (&(*newclass)->hash_string, data, MDL);

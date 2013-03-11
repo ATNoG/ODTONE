@@ -1,0 +1,41 @@
+#==============================================================================
+# Brief   : ISC's DHCP libraries
+# Authors : Carlos Guimarães <cguimaraes@av.it.pt>
+#-----------------------------------------------------------------------------
+# ODTONE - Open Dot Twenty One
+#
+# Copyright (C) 2009-2013 Universidade Aveiro
+# Copyright (C) 2009-2013 Instituto de Telecomunicações - Pólo Aveiro
+#
+# This software is distributed under a license. The full license
+# agreement can be found in the file LICENSE in this distribution.
+# This software may not be copied, modified, sold or distributed
+# other than expressed in the named license agreement.
+#
+# This software is distributed without any warranty.
+#==============================================================================
+
+actions run_make
+{
+	current_dir="`pwd`"
+
+	cd "$current_dir/$(>:D)"
+	./configure || exit
+
+	cd "$current_dir"
+	make -C $(>:D)/ || exit
+
+	ar rcs $(<) `find $(>:D)/ -type f -name \*.o`
+}
+
+make libdhcp.a
+	: ./configure
+	: @run_make
+	;
+
+lib libdhcp
+	:
+	: <file>libdhcp.a
+	:
+	: <include>includes/
+	;

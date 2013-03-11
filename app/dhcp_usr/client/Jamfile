@@ -4,8 +4,8 @@
 #-------------------------------------------------------------------------------
 # ODTONE - Open Dot Twenty One
 #
-# Copyright (C) 2009-2012 Universidade Aveiro
-# Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
+# Copyright (C) 2009-2013 Universidade Aveiro
+# Copyright (C) 2009-2013 Instituto de Telecomunicações - Pólo Aveiro
 #
 # This software is distributed under a license. The full license
 # agreement can be found in the file LICENSE in this distribution.
@@ -17,7 +17,8 @@
 
 project dhcp_usr/client
 	: requirements
-	  <include>../include
+	  <define>_GNU_SOURCE
+	  <include>../libs/includes
 	  <linkflags>"-lisc"
 	;
 
@@ -36,10 +37,7 @@ exe dhcp_usr
 	  dhcp_control.cpp
 	  log.cpp
 	  main.cpp
-	  libomapip
-	  libcommon
-	  libdns
-	  libisc
+	  libdhcp
 	  ../../../lib/odtone//odtone_base
 	  ../../../lib/odtone/mih//odtone_mih
 	  ../../../lib/odtone/sap//odtone_sap
@@ -51,7 +49,4 @@ install install
 	: <location>../../../dist
 	;
 
-explicit-alias libcommon   : ../libs/libdhcp.a ;
-explicit-alias libomapip   : ../libs/libomapi.a ;
-explicit-alias libdns      : ../libs/libdns.a ;
-explicit-alias libisc      : ../libs/libisc.a ;
+explicit-alias libdhcp   : ../libs//libdhcp.a ;

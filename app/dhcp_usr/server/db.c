@@ -1,22 +1,9 @@
-//==============================================================================
-// Brief   : Persistent database management routines for DHCPD
-// Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-//------------------------------------------------------------------------------
-// ODTONE - Open Dot Twenty One
-//
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
-//
-// This software is distributed under a license. The full license
-// agreement can be found in the file LICENSE in this distribution.
-// This software may not be copied, modified, sold or distributed
-// other than expressed in the named license agreement.
-//
-// This software is distributed without any warranty.
-//==============================================================================
+/* db.c
+
+   Persistent database management routines for DHCPD... */
 
 /*
- * Copyright (c) 2004-2010 by Internet Systems Consortium, Inc. ("ISC")
+ * Copyright (c) 2004-2010,2012 by Internet Systems Consortium, Inc. ("ISC")
  * Copyright (c) 1995-2003 by Internet Software Consortium
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -49,12 +36,12 @@
 #include <ctype.h>
 #include <errno.h>
 
+#define LEASE_REWRITE_PERIOD 3600
+
 static isc_result_t write_binding_scope(FILE *db_file, struct binding *bnd,
 					char *prepend);
 
 FILE *db_file;
-
-struct collection *collections;
 
 static int counting = 0;
 static int count = 0;
@@ -79,10 +66,9 @@ write_binding_scope(FILE *db_file, struct binding *bnd, char *prepend) {
 				errno = 0;
 				fprintf(db_file, "%sset %s = \"%s\";",
 					prepend, bnd->name, s);
+				dfree(s, MDL);
 				if (errno)
 					return ISC_R_FAILURE;
-
-				dfree(s, MDL);
 			} else {
 			    return ISC_R_FAILURE;
 			}
@@ -256,12 +242,12 @@ int write_lease (lease)
 	    for (p = lease -> agent_options -> first; p; p = p -> cdr) {
 	        oc = (struct option_cache *)p -> car;
 	        if (oc -> data.len) {
-			errno = 0;
-			fprintf (db_file, "\n  option agent.%s %s;",
-				 oc -> option -> name,
-				 pretty_print_option (oc -> option, oc -> data.data,
-							oc -> data.len, 1, 1));
-			if (errno)
+	    	errno = 0;
+	    	fprintf (db_file, "\n  option agent.%s %s;",
+	    		 oc -> option -> name,
+	    		 pretty_print_option (oc -> option, oc -> data.data,
+				      		oc -> data.len, 1, 1));
+	    	if (errno)
 		    ++errors;
 	        }
 	    }
@@ -392,7 +378,7 @@ int write_host (host)
 					++errors;
 			}
 		}
-
+		
 		memset (&ip_addrs, 0, sizeof ip_addrs);
 		if (host -> fixed_addr &&
 		    evaluate_option_cache (&ip_addrs, (struct packet *)0,
@@ -402,7 +388,7 @@ int write_host (host)
 					   (struct option_state *)0,
 					   &global_scope,
 					   host -> fixed_addr, MDL)) {
-
+		
 			errno = 0;
 			fprintf (db_file, "\n  fixed-address ");
 			if (errno)
@@ -539,9 +525,9 @@ write_ia(const struct ia_xx *ia) {
 	char *s;
 	int fprintf_ret;
 
-	/*
-	 * If the lease file is corrupt, don't try to write any more
-	 * leases until we've written a good lease file.
+	/* 
+	 * If the lease file is corrupt, don't try to write any more 
+	 * leases until we've written a good lease file. 
 	 */
 	if (lease_file_is_corrupt) {
 		if (!new_lease_file()) {
@@ -553,6 +539,7 @@ write_ia(const struct ia_xx *ia) {
 		++count;
 	}
 
+	
 	s = quotify_buf(ia->iaid_duid.data, ia->iaid_duid.len, MDL);
 	if (s == NULL) {
 		goto error_exit;
@@ -600,11 +587,11 @@ write_ia(const struct ia_xx *ia) {
 			goto error_exit;
 		}
 		if ((iasubopt->state <= 0) || (iasubopt->state > FTS_LAST)) {
-			log_fatal("Unknown iasubopt state %d at %s:%d",
+			log_fatal("Unknown iasubopt state %d at %s:%d", 
 				  iasubopt->state, MDL);
 		}
 		binding_state = binding_state_names[iasubopt->state-1];
-		if (fprintf(db_file, "    binding state %s;\n",
+		if (fprintf(db_file, "    binding state %s;\n", 
 			    binding_state) < 0) {
 			goto error_exit;
 		}
@@ -652,6 +639,7 @@ write_ia(const struct ia_xx *ia) {
 			if (write_binding_scope(db_file, bnd,
 						"\n    ") != ISC_R_SUCCESS)
 				goto error_exit;
+				
 		}
 
 		if (fprintf(db_file, "\n  }\n") < 0)
@@ -686,9 +674,9 @@ write_server_duid(void) {
 		return 1;
 	}
 
-	/*
-	 * If the lease file is corrupt, don't try to write any more
-	 * leases until we've written a good lease file.
+	/* 
+	 * If the lease file is corrupt, don't try to write any more 
+	 * leases until we've written a good lease file. 
 	 */
 	if (lease_file_is_corrupt) {
 		if (!new_lease_file()) {
@@ -768,7 +756,7 @@ int write_failover_state (dhcp_failover_state_t *state)
 			++errors;
 	}
 
-	errno = 0;
+        errno = 0;
 	fprintf (db_file, "\n}\n");
 	if (errno)
 		++errors;
@@ -870,7 +858,7 @@ write_named_billing_class(const void *key, unsigned len, void *object)
 			if (fprintf(db_file, "  dynamic;\n") <= 0)
 				return ISC_R_IOERROR;
 		}
-
+	
 		if (class->lease_limit > 0) {
 			if (fprintf(db_file, "  lease limit %d;\n",
 				    class->lease_limit) <= 0)
@@ -881,7 +869,7 @@ write_named_billing_class(const void *key, unsigned len, void *object)
 			if (fprintf(db_file, "  match if ") <= 0)
 				return ISC_R_IOERROR;
 
-                        errno = 0;
+                        errno = 0;                                       
 			write_expression(db_file, class->expr, 5, 5, 0);
                         if (errno)
                                 return ISC_R_IOERROR;
@@ -907,7 +895,7 @@ write_named_billing_class(const void *key, unsigned len, void *object)
 			if (fprintf(db_file, ";\n") <= 0)
 				return ISC_R_IOERROR;
 		}
-
+	
 		if (class->statements != 0) {
                         errno = 0;
 			write_statements(db_file, class->statements, 8);
@@ -1015,12 +1003,27 @@ int commit_leases ()
 	/* If we haven't rewritten the lease database in over an
 	   hour, rewrite it now.  (The length of time should probably
 	   be configurable. */
-	if (count && cur_time - write_time > 3600) {
+	if (count && cur_time - write_time > LEASE_REWRITE_PERIOD) {
 		count = 0;
 		write_time = cur_time;
 		new_lease_file ();
 	}
 	return 1;
+}
+
+/*
+ * rewrite the lease file about once an hour
+ * This is meant as a quick patch for ticket 24887.  It allows
+ * us to rotate the v6 lease file without adding too many fsync()
+ * calls.  In the future wes should revisit this area and add
+ * something similar to the delayed ack code for v4.
+ */
+int commit_leases_timed()
+{
+	if ((count != 0) && (cur_time - write_time > LEASE_REWRITE_PERIOD)) {
+		return (commit_leases());
+	}
+	return (1);
 }
 
 void db_startup (testp)
@@ -1034,7 +1037,11 @@ void db_startup (testp)
 		/* Read in the existing lease file... */
 		status = read_conf_file (path_dhcpd_db,
 					 (struct group *)0, 0, 1);
-		/* XXX ignore status? */
+		if (status != ISC_R_SUCCESS) {
+			/* XXX ignore status? */
+			;
+		}
+
 #if defined (TRACING)
 	}
 #endif
@@ -1165,7 +1172,7 @@ int new_lease_file ()
 #if defined (TRACING)
 	}
 #endif
-
+	
 	/* Move in the new file... */
 	if (rename (newfname, path_dhcpd_db) < 0) {
 		log_error ("Can't install new lease database %s to %s: %m",

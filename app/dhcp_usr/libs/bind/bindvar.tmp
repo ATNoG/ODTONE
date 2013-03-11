@@ -1,0 +1,2 @@
+binddir=/home/carlos/Projectos/odtone/app/dhcp_usr/libs/bind
+GMAKE=make

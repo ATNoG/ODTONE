@@ -1,22 +1,9 @@
-//==============================================================================
-// Brief   : DHCP Server Daemon
-// Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-//------------------------------------------------------------------------------
-// ODTONE - Open Dot Twenty One
-//
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
-//
-// This software is distributed under a license. The full license
-// agreement can be found in the file LICENSE in this distribution.
-// This software may not be copied, modified, sold or distributed
-// other than expressed in the named license agreement.
-//
-// This software is distributed without any warranty.
-//==============================================================================
+/* dhcpd.c
+
+   DHCP Server Daemon. */
 
 /*
- * Copyright (c) 2004-2011 by Internet Systems Consortium, Inc. ("ISC")
+ * Copyright (c) 2004-2013 by Internet Systems Consortium, Inc. ("ISC")
  * Copyright (c) 1996-2003 by Internet Software Consortium
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -46,7 +33,7 @@
  */
 
 static const char copyright[] =
-"Copyright 2004-2011 Internet Systems Consortium.";
+"Copyright 2004-2013 Internet Systems Consortium.";
 static const char arr [] = "All rights reserved.";
 static const char message [] = "Internet Systems Consortium DHCP Server";
 static const char url [] =
@@ -66,12 +53,14 @@ static const char url [] =
 #  include <unistd.h>
 #  include <pwd.h>
 /* get around the ISC declaration of group */
-#  define group real_group
+#  define group real_group 
 #    include <grp.h>
 #  undef group
 #endif /* PARANOIA */
 
+#ifndef UNIT_TEST
 static void usage(void);
+#endif
 
 struct iaddr server_identifier;
 int server_identifier_matched;
@@ -170,9 +159,11 @@ on commit {								    \n\
 #endif /* NSUPDATE */
 int ddns_update_style;
 
-const char *path_dhcpd_conf = _PATH_DHCPD_CONF;
-const char *path_dhcpd_db = _PATH_DHCPD_DB;
-const char *path_dhcpd_pid = _PATH_DHCPD_PID;
+const char *path_dhcpd_conf = "/etc/dhcpd.conf";
+const char *path_dhcpd_db = "/etc/dhcpd.leases";
+const char *path_dhcpd_pid = "/var/run/dhcpd.pid";
+/* False (default) => we write and use a pid file */
+isc_boolean_t no_pid_file = ISC_FALSE;
 
 int dhcp_max_agent_option_packet_length = DHCP_MTU_MAX;
 
@@ -212,8 +203,8 @@ static void omapi_listener_start (void *foo)
 	if (result != ISC_R_SUCCESS) {
 		log_error ("Can't start OMAPI protocol: %s",
 			   isc_result_totext (result));
-		tv.tv_sec = cur_time + 5;
-		tv.tv_usec = 0;
+		tv.tv_sec = cur_tv.tv_sec + 5;
+		tv.tv_usec = cur_tv.tv_usec;
 		add_timeout (&tv, omapi_listener_start, 0, 0, 0);
 	}
 	omapi_object_dereference (&listener, MDL);
@@ -236,7 +227,7 @@ static void setup_chroot (char *chroot_dir) {
 #endif /* PARANOIA */
 
 #ifndef UNIT_TEST
-int
+int 
 main(int argc, char **argv) {
 	int fd;
 	int i, status;
@@ -364,6 +355,8 @@ main(int argc, char **argv) {
 				usage ();
 			path_dhcpd_pid = argv [i];
 			no_dhcpd_pid = 1;
+		} else if (!strcmp(argv[i], "--no-pid")) {
+			no_pid_file = ISC_TRUE;
                 } else if (!strcmp (argv [i], "-t")) {
 			/* test configurations only */
 #ifndef DEBUG
@@ -448,13 +441,13 @@ main(int argc, char **argv) {
                         if ((s = getenv ("PATH_DHCPD6_DB")))
 		                path_dhcpd_db = s;
                         else
-		                path_dhcpd_db = _PATH_DHCPD6_DB;
+		                path_dhcpd_db = "/var/db/dhcpd6.leases";
 	        }
 	        if (!no_dhcpd_pid) {
                         if ((s = getenv ("PATH_DHCPD6_PID")))
 		                path_dhcpd_pid = s;
                         else
-		                path_dhcpd_pid = _PATH_DHCPD6_PID;
+		                path_dhcpd_pid = "/var/run/dhcpd6.pid";
 	        }
         } else
 #else /* !DHCPv6 */
@@ -574,8 +567,8 @@ main(int argc, char **argv) {
 #endif
 		}
 	}
-
-	if (local_family == AF_INET) {
+  
+  	if (local_family == AF_INET) {
 		remote_port = htons(ntohs(local_port) + 1);
 	} else {
 		/* INSIST(local_family == AF_INET6); */
@@ -666,13 +659,13 @@ main(int argc, char **argv) {
 		    log_error ("** You must specify a lease file with -lf.");
 		    log_error ("   Dhcpd will not overwrite your default");
 		    log_fatal ("   lease file when playing back a trace. **");
-	    }
+	    }		
 	    trace_file_replay (traceinfile);
 
 #if defined (DEBUG_MEMORY_LEAKAGE) && \
                 defined (DEBUG_MEMORY_LEAKAGE_ON_EXIT)
             free_everything ();
-            omapi_print_dmalloc_usage_by_caller ();
+            omapi_print_dmalloc_usage_by_caller (); 
 #endif
 
 	    exit (0);
@@ -697,14 +690,14 @@ main(int argc, char **argv) {
 		log_fatal ("Configuration file errors encountered -- exiting");
 
 	postconf_initialization (quiet);
-
+ 
 #if defined (PARANOIA) && !defined (EARLY_CHROOT)
 	if (set_chroot) setup_chroot (set_chroot);
 #endif /* PARANOIA && !EARLY_CHROOT */
 
         /* test option should cause an early exit */
-	if (cftest && !lftest)
-		exit(0);
+ 	if (cftest && !lftest) 
+ 		exit(0);
 
 	group_write_hook = group_writer;
 
@@ -722,8 +715,8 @@ main(int argc, char **argv) {
 	 * Remove addresses from our pools that we should not issue
 	 * to clients.
 	 *
-	 * We currently have no support for this in IPv4. It is not
-	 * as important in IPv4, as making pools with ranges that
+	 * We currently have no support for this in IPv4. It is not 
+	 * as important in IPv4, as making pools with ranges that 
 	 * leave out interfaces and hosts is fairly straightforward
 	 * using range notation, but not so handy with CIDR notation.
 	 */
@@ -779,7 +772,7 @@ main(int argc, char **argv) {
 		else if (pid)
 			exit (0);
 	}
-
+ 
 #if defined (PARANOIA)
 	/* change uid to the specified one */
 
@@ -788,7 +781,7 @@ main(int argc, char **argv) {
 			log_fatal ("setgroups: %m");
 		if (setgid (set_gid))
 			log_fatal ("setgid(%d): %m", (int) set_gid);
-	}
+	}	
 
 	if (set_uid) {
 		if (setuid (set_uid))
@@ -796,33 +789,41 @@ main(int argc, char **argv) {
 	}
 #endif /* PARANOIA */
 
-	/* Read previous pid file. */
-	if ((i = open (path_dhcpd_pid, O_RDONLY)) >= 0) {
-		status = read(i, pbuf, (sizeof pbuf) - 1);
-		close (i);
-		if (status > 0) {
-			pbuf[status] = 0;
-			pid = atoi(pbuf);
+	/*
+	 * Deal with pid files.  If the user told us
+	 * not to write a file we don't read one either
+	 */
+	if (no_pid_file == ISC_FALSE) {
+		/*Read previous pid file. */
+		if ((i = open (path_dhcpd_pid, O_RDONLY)) >= 0) {
+			status = read(i, pbuf, (sizeof pbuf) - 1);
+			close (i);
+			if (status > 0) {
+				pbuf[status] = 0;
+				pid = atoi(pbuf);
 
-			/*
-                         * If there was a previous server process and it's
-                         * is still running, abort
-                         */
-			if (!pid || (pid != getpid() && kill(pid, 0) == 0))
-				log_fatal("There's already a "
-                                          "DHCP server running.");
+				/*
+				 * If there was a previous server process and
+				 * it is still running, abort
+				 */
+				if (!pid ||
+				    (pid != getpid() && kill(pid, 0) == 0))
+					log_fatal("There's already a "
+						  "DHCP server running.");
+			}
+		}
+
+		/* Write new pid file. */
+		i = open(path_dhcpd_pid, O_WRONLY|O_CREAT|O_TRUNC, 0644);
+		if (i >= 0) {
+			sprintf(pbuf, "%d\n", (int) getpid());
+			IGNORE_RET (write(i, pbuf, strlen(pbuf)));
+			close(i);
+		} else {
+			log_error("Can't create PID file %s: %m.",
+				  path_dhcpd_pid);
 		}
 	}
-
-        /* Write new pid file. */
-        if ((i = open(path_dhcpd_pid, O_WRONLY|O_CREAT|O_TRUNC, 0644)) >= 0) {
-                sprintf(pbuf, "%d\n", (int) getpid());
-                IGNORE_RET (write(i, pbuf, strlen(pbuf)));
-                close(i);
-        } else {
-                log_error("Can't create PID file %s: %m.", path_dhcpd_pid);
-        }
-
 
 	/* If we were requested to log to stdout on the command line,
 	   keep doing so; otherwise, stop. */
@@ -846,7 +847,7 @@ main(int argc, char **argv) {
                 open("/dev/null", O_RDWR);
                 log_perror = 0; /* No sense logging to /dev/null. */
 
-		IGNORE_RET (chdir("/"));
+       		IGNORE_RET (chdir("/"));
 	}
 #endif /* !DEBUG */
 
@@ -915,7 +916,7 @@ void postconf_initialization (int quiet)
 				   &global_scope, oc, MDL)) {
 		s = dmalloc (db.len + 1, MDL);
 		if (!s)
-			log_fatal ("no memory for lease db filename.");
+			log_fatal ("no memory for pid filename.");
 		memcpy (s, db.data, db.len);
 		s [db.len] = 0;
 		data_string_forget (&db, MDL);
@@ -951,7 +952,7 @@ void postconf_initialization (int quiet)
                                           oc, MDL)) {
                         s = dmalloc (db.len + 1, MDL);
                         if (!s)
-                                log_fatal ("no memory for lease db filename.");
+                                log_fatal ("no memory for pid filename.");
                         memcpy (s, db.data, db.len);
                         s [db.len] = 0;
                         data_string_forget (&db, MDL);
@@ -1107,7 +1108,7 @@ void postconf_initialization (int quiet)
 			data_string_forget (&db, MDL);
 		}
 	}
-
+	
 	oc = lookup_option(&server_universe, options, SV_DELAYED_ACK);
 	if (oc &&
 	    evaluate_option_cache(&db, NULL, NULL, NULL, options, NULL,
@@ -1138,7 +1139,7 @@ void postconf_initialization (int quiet)
 
 	/* Don't need the options anymore. */
 	option_state_dereference (&options, MDL);
-
+	
 #if defined (NSUPDATE)
 	/* If old-style ddns updates have been requested, parse the
 	   old-style ddns updater. */
@@ -1202,7 +1203,7 @@ void postdb_startup (void)
 }
 
 /* Print usage message. */
-
+#ifndef UNIT_TEST
 static void
 usage(void) {
 	log_info("%s %s", message, PACKAGE_VERSION);
@@ -1223,8 +1224,10 @@ usage(void) {
 		  "             [-tf trace-output-file]\n"
 		  "             [-play trace-input-file]\n"
 #endif /* TRACING */
-		  "             [-pf pid-file] [-s server] [if0 [...ifN]]");
+		  "             [-pf pid-file] [--no-pid] [-s server]\n"
+		  "             [if0 [...ifN]]");
 }
+#endif
 
 void lease_pinged (from, packet, length)
 	struct iaddr from;
@@ -1327,7 +1330,7 @@ int dhcpd_interface_setup_hook (struct interface_info *ip, struct iaddr *ia)
 			interface_reference (&subnet -> interface, ip, MDL);
 			subnet -> interface_address = *ia;
 		} else if (subnet -> interface != ip) {
-			log_error ("Multiple interfaces match the %s: %s %s",
+			log_error ("Multiple interfaces match the %s: %s %s", 
 				   "same subnet",
 				   subnet -> interface -> name, ip -> name);
 		}
@@ -1341,11 +1344,11 @@ int dhcpd_interface_setup_hook (struct interface_info *ip, struct iaddr *ia)
 				shared_network_reference
 					(&ip -> shared_network, share, MDL);
 		}
-
+		
 		if (!share -> interface) {
 			interface_reference (&share -> interface, ip, MDL);
 		} else if (share -> interface != ip) {
-			log_error ("Multiple interfaces match the %s: %s %s",
+			log_error ("Multiple interfaces match the %s: %s %s", 
 				   "same shared network",
 				   share -> interface -> name, ip -> name);
 		}
@@ -1464,13 +1467,13 @@ static isc_result_t dhcp_io_shutdown_countdown (void *vlp)
 	    omapi_print_dmalloc_usage_by_caller ();
 #endif
 	    exit (0);
-	}
+	}		
 #else
 	if (shutdown_state == shutdown_done) {
 #if defined (DEBUG_MEMORY_LEAKAGE) && \
 		defined (DEBUG_MEMORY_LEAKAGE_ON_EXIT)
 		free_everything ();
-		omapi_print_dmalloc_usage_by_caller ();
+		omapi_print_dmalloc_usage_by_caller (); 
 #endif
 		exit (0);
 	}

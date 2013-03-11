@@ -1,22 +1,9 @@
-//==============================================================================
-// Brief   : Parser for dhcpd config file
-// Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-//------------------------------------------------------------------------------
-// ODTONE - Open Dot Twenty One
-//
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
-//
-// This software is distributed under a license. The full license
-// agreement can be found in the file LICENSE in this distribution.
-// This software may not be copied, modified, sold or distributed
-// other than expressed in the named license agreement.
-//
-// This software is distributed without any warranty.
-//==============================================================================
+/* confpars.c
+
+   Parser for dhcpd config file... */
 
 /*
- * Copyright (c) 2004-2010 by Internet Systems Consortium, Inc. ("ISC")
+ * Copyright (c) 2004-2012 by Internet Systems Consortium, Inc. ("ISC")
  * Copyright (c) 1995-2003 by Internet Software Consortium
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -52,8 +39,6 @@ static unsigned char dhcpv6_class_once = 1;
 
 static int parse_binding_value(struct parse *cfile,
 				struct binding_value *value);
-
-struct collection *collections;
 
 #if defined (TRACING)
 trace_type_t *trace_readconf_type;
@@ -211,7 +196,7 @@ void trace_conf_input (trace_type_t *ttype, unsigned len, char *data)
 	static int postconf_initialized;
 	static int leaseconf_initialized;
 	isc_result_t status;
-
+	
 	/* Do what's done above, except that we don't have to read in the
 	   data, because it's already been read for us. */
 	tflen = strlen (data);
@@ -276,8 +261,8 @@ isc_result_t conf_file_subparse (struct parse *cfile, struct group *group,
 
 /* lease-file :== lease-declarations END_OF_FILE
    lease-statements :== <nil>
-			| lease-declaration
-			| lease-declarations lease-declaration */
+   		     | lease-declaration
+		     | lease-declarations lease-declaration */
 
 isc_result_t lease_file_subparse (struct parse *cfile)
 {
@@ -400,7 +385,7 @@ int parse_statement (cfile, group, type, host_decl, declaration)
 			parse_semi (cfile);
 		}
 		return 1;
-
+		
 	      case HOST:
 		next_token (&val, (unsigned *)0, cfile);
 		if (type != HOST_DECL && type != CLASS_DECL) {
@@ -623,7 +608,7 @@ int parse_statement (cfile, group, type, host_decl, declaration)
 		} else if (type != SUBNET_DECL && type != SHARED_NET_DECL) {
 			parse_warn (cfile, "pool declared outside of network");
 			skip_to_semi(cfile);
-		} else
+		} else 
 			parse_pool_statement (cfile, group, type);
 
 		return declaration;
@@ -649,7 +634,7 @@ int parse_statement (cfile, group, type, host_decl, declaration)
 			skip_to_semi(cfile);
 			return declaration;
 		}
-		parse_address_range6(cfile, group);
+	      	parse_address_range6(cfile, group);
 		return declaration;
 
 	      case PREFIX6:
@@ -660,7 +645,7 @@ int parse_statement (cfile, group, type, host_decl, declaration)
 			skip_to_semi(cfile);
 			return declaration;
 		}
-		parse_prefix6(cfile, group);
+	      	parse_prefix6(cfile, group);
 		return declaration;
 
 	      case FIXED_PREFIX6:
@@ -695,7 +680,7 @@ int parse_statement (cfile, group, type, host_decl, declaration)
 		group -> authoritative = 1;
 	      authoritative:
 		if (type == HOST_DECL)
-			parse_warn (cfile, "authority makes no sense here.");
+			parse_warn (cfile, "authority makes no sense here."); 
 		parse_semi (cfile);
 		break;
 
@@ -798,8 +783,8 @@ int parse_statement (cfile, group, type, host_decl, declaration)
 		skip_to_semi (cfile);
 #endif
 		break;
-
-#ifdef DHCPv6
+			
+#ifdef DHCPv6 
 	      case SERVER_DUID:
 		parse_server_duid_conf(cfile);
 		break;
@@ -1061,7 +1046,6 @@ void parse_failover_peer (cfile, group, type)
 			if (hba_len != 32) {
 				parse_warn (cfile,
 					    "HBA must be exactly 32 bytes.");
-				dfree (hba, MDL);
 				break;
 			}
 		      make_hba:
@@ -1097,7 +1081,7 @@ void parse_failover_peer (cfile, group, type)
 				goto make_hba;
 			}
 			break;
-
+			
 		      case LOAD:
 			token = next_token (&val, (unsigned *)0, cfile);
 			if (token != BALANCE) {
@@ -1123,7 +1107,7 @@ void parse_failover_peer (cfile, group, type)
 			}
 			peer -> load_balance_max_secs = atoi (val);
 			break;
-
+			
 		      default:
 			parse_warn (cfile,
 				    "invalid statement in peer declaration");
@@ -1288,11 +1272,11 @@ void parse_failover_state_declaration (struct parse *cfile,
 			state -> mclt = atoi (val);
 			parse_semi (cfile);
 			break;
-
+			
 		      default:
 			parse_warn (cfile, "expecting state setting.");
 		      bogus:
-			skip_to_rbrace (cfile, 1);
+			skip_to_rbrace (cfile, 1);	
 			dhcp_failover_state_dereference (&state, MDL);
 			return;
 		}
@@ -1343,23 +1327,23 @@ void parse_failover_state (cfile, state, stos)
 	      case RECOVER:
 		state_in = recover;
 		break;
-
+		
 	      case RECOVER_WAIT:
 		state_in = recover_wait;
 		break;
-
+		
 	      case RECOVER_DONE:
 		state_in = recover_done;
 		break;
-
+		
 	      case SHUTDOWN:
 		state_in = shut_down;
 		break;
-
+		
 	      case PAUSED:
 		state_in = paused;
 		break;
-
+		
 	      case STARTUP:
 		state_in = startup;
 		break;
@@ -1379,7 +1363,7 @@ void parse_failover_state (cfile, state, stos)
 			skip_to_semi (cfile);
 			return;
 		}
-
+		
 		stos_in = parse_date (cfile);
 		if (!stos_in)
 			return;
@@ -1468,7 +1452,7 @@ void parse_pool_statement (cfile, group, type)
 	/* Inherit the failover peer from the shared network. */
 	if (pool -> shared_network -> failover_peer)
 	    dhcp_failover_state_reference
-		    (&pool -> failover_peer,
+		    (&pool -> failover_peer, 
 		     pool -> shared_network -> failover_peer, MDL);
 #endif
 
@@ -1497,7 +1481,7 @@ void parse_pool_statement (cfile, group, type)
 					(&pool -> failover_peer, MDL);
 #endif
 			break;
-
+				
 #if defined (FAILOVER_PROTOCOL)
 		      case FAILOVER:
 			next_token (&val, (unsigned *)0, cfile);
@@ -1556,7 +1540,7 @@ void parse_pool_statement (cfile, group, type)
 					continue;
 				}
 				break;
-
+				
 			      case KNOWN_CLIENTS:
 				permit -> type = permit_known_clients;
 				break;
@@ -1568,11 +1552,11 @@ void parse_pool_statement (cfile, group, type)
 			      case KNOWN:
 				permit -> type = permit_known_clients;
 				goto get_clients;
-
+				
 			      case AUTHENTICATED:
 				permit -> type = permit_authenticated_clients;
 				goto get_clients;
-
+				
 			      case UNAUTHENTICATED:
 				permit -> type =
 					permit_unauthenticated_clients;
@@ -1582,7 +1566,7 @@ void parse_pool_statement (cfile, group, type)
 				permit -> type = permit_all_clients;
 				goto get_clients;
 				break;
-
+				
 			      case DYNAMIC:
 				permit -> type = permit_dynamic_bootp_clients;
 				if (next_token (&val, (unsigned *)0,
@@ -1594,7 +1578,7 @@ void parse_pool_statement (cfile, group, type)
 					continue;
 				}
 				goto get_clients;
-
+				
 			      case MEMBERS:
 				if (next_token (&val, (unsigned *)0,
 						cfile) != OF) {
@@ -1651,9 +1635,9 @@ void parse_pool_statement (cfile, group, type)
 		      case DENY:
 			permit_head = &pool -> prohibit_list;
 			/* remember the clause which leads to get_permit */
-			is_allow = 0;
+			is_allow = 0; 
 			goto get_permit;
-
+			
 		      case RBRACE:
 			next_token (&val, (unsigned *)0, cfile);
 			done = 1;
@@ -1734,32 +1718,6 @@ cleanup:
 		}
 	}
 	pool_dereference (&pool, MDL);
-}
-
-/* boolean :== ON SEMI | OFF SEMI | TRUE SEMI | FALSE SEMI */
-
-int parse_boolean (cfile)
-	struct parse *cfile;
-{
-	enum dhcp_token token;
-	const char *val;
-	int rv;
-
-	token = next_token (&val, (unsigned *)0, cfile);
-	if (!strcasecmp (val, "true")
-	    || !strcasecmp (val, "on"))
-		rv = 1;
-	else if (!strcasecmp (val, "false")
-		 || !strcasecmp (val, "off"))
-		rv = 0;
-	else {
-		parse_warn (cfile,
-			    "boolean value (true/false/on/off) expected");
-		skip_to_semi (cfile);
-		return 0;
-	}
-	parse_semi (cfile);
-	return rv;
 }
 
 /* Expect a left brace; if there isn't one, skip over the rest of the
@@ -1939,10 +1897,10 @@ void parse_host_declaration (cfile, group)
 				skip_to_rbrace(cfile, 1);
 				break;
 			}
-			next_token(&val, NULL, cfile);
+	      		next_token(&val, NULL, cfile);
 			token = next_token(&val, NULL, cfile);
 			if (token != OPTION) {
-				parse_warn(cfile,
+				parse_warn(cfile, 
 					   "host-identifier must be an option");
 				skip_to_rbrace(cfile, 1);
 				break;
@@ -1955,18 +1913,18 @@ void parse_host_declaration (cfile, group)
 			}
 			if (!known) {
 				parse_warn(cfile, "unknown option %s.%s",
-					   option->universe->name,
+					   option->universe->name, 
 					   option->name);
 				skip_to_rbrace(cfile, 1);
 				break;
 			}
 
-			if (! parse_option_data(&expr, cfile, 1, option)) {
-				skip_to_rbrace(cfile, 1);
-				option_dereference(&option, MDL);
-			break;
-			}
-
+                        if (! parse_option_data(&expr, cfile, 1, option)) {
+		        	skip_to_rbrace(cfile, 1);
+		        	option_dereference(&option, MDL);
+		        	break;
+                        }
+                        
 			if (!parse_semi(cfile)) {
 				skip_to_rbrace(cfile, 1);
 				expression_dereference(&expr, MDL);
@@ -1976,7 +1934,7 @@ void parse_host_declaration (cfile, group)
 
 			option_reference(&host->host_id_option, option, MDL);
 			option_dereference(&option, MDL);
-			data_string_copy(&host->host_id,
+			data_string_copy(&host->host_id, 
 					 &expr->data.const_data, MDL);
 			expression_dereference(&expr, MDL);
 			continue;
@@ -2012,7 +1970,7 @@ void parse_host_declaration (cfile, group)
 						 MDL);
 			}
 		}
-
+				
 		if (dynamicp)
 			host -> flags |= HOST_DECL_DYNAMIC;
 		else
@@ -2120,7 +2078,7 @@ int parse_class_declaration (cp, cfile, group, type)
 					      data.len + 1, MDL)) {
 				if (pc)
 					class_dereference (&pc, MDL);
-
+				
 				return 0;
 			}
 			data.terminated = 1;
@@ -2164,7 +2122,7 @@ int parse_class_declaration (cp, cfile, group, type)
 					log_fatal ("no memory for billing");
 				memset (class -> billed_leases, 0,
 					(class -> lease_limit *
-					 sizeof class -> billed_leases));
+					 sizeof (struct lease *)));
 			}
 			data_string_copy (&class -> hash_string, &data, MDL);
 			if (!pc -> hash &&
@@ -2360,7 +2318,7 @@ int parse_class_declaration (cp, cfile, group, type)
 				log_fatal ("no memory for billed leases.");
 			memset (class -> billed_leases, 0,
 				(class -> lease_limit *
-				 sizeof class -> billed_leases));
+				 sizeof (struct lease *)));
 			have_billing_classes = 1;
 			parse_semi (cfile);
 		} else {
@@ -2374,7 +2332,7 @@ int parse_class_declaration (cp, cfile, group, type)
 	if (class->flags & CLASS_DECL_DELETED) {
 		if (type == CLASS_TYPE_CLASS) {
 			struct class *theclass = NULL;
-
+		
 			status = find_class(&theclass, class->name, MDL);
 			if (status == ISC_R_SUCCESS) {
 				delete_class(theclass, 0);
@@ -2424,7 +2382,9 @@ void parse_shared_net_declaration (cfile, group)
 	if (status != ISC_R_SUCCESS)
 		log_fatal ("Can't allocate shared subnet: %s",
 			   isc_result_totext (status));
-	clone_group (&share -> group, group, MDL);
+	if (clone_group (&share -> group, group, MDL) == 0) {
+		log_fatal ("Can't clone group for shared net");
+	}
 	shared_network_reference (&share -> group -> shared_network,
 				  share, MDL);
 
@@ -2492,7 +2452,7 @@ void parse_shared_net_declaration (cfile, group)
 
 
 static int
-common_subnet_parsing(struct parse *cfile,
+common_subnet_parsing(struct parse *cfile, 
 		      struct shared_network *share,
 		      struct subnet *subnet) {
 	enum dhcp_token token;
@@ -2656,7 +2616,7 @@ parse_subnet6_declaration(struct parse *cfile, struct shared_network *share) {
 	const char *val;
 	char *endp;
 	int ofs;
-	const static int mask[] = { 0x00, 0x80, 0xC0, 0xE0,
+	const static int mask[] = { 0x00, 0x80, 0xC0, 0xE0, 
 				    0xF0, 0xF8, 0xFC, 0xFE };
 	struct iaddr iaddr;
 
@@ -2712,10 +2672,10 @@ parse_subnet6_declaration(struct parse *cfile, struct shared_network *share) {
 	}
 
 	subnet->prefix_len = strtol(val, &endp, 10);
-	if ((subnet->prefix_len < 0) ||
-	    (subnet->prefix_len > 128) ||
+	if ((subnet->prefix_len < 0) || 
+	    (subnet->prefix_len > 128) || 
 	    (*endp != '\0')) {
-		parse_warn(cfile, "Expecting a number between 0 and 128.");
+	    	parse_warn(cfile, "Expecting a number between 0 and 128.");
 		skip_to_semi(cfile);
 		return;
 	}
@@ -2726,8 +2686,8 @@ parse_subnet6_declaration(struct parse *cfile, struct shared_network *share) {
 		return;
 	}
 
-	/*
-	 * Create a netmask.
+	/* 
+	 * Create a netmask. 
 	 */
 	subnet->netmask.len = 16;
 	ofs = subnet->prefix_len / 8;
@@ -2765,84 +2725,83 @@ void parse_group_declaration (cfile, group)
 	enum dhcp_token token;
 	struct group *g;
 	int declaration = 0;
-	struct group_object *t;
+	struct group_object *t = NULL;
 	isc_result_t status;
 	char *name = NULL;
 	int deletedp = 0;
 	int dynamicp = 0;
 	int staticp = 0;
 
-	g = (struct group *)0;
-	if (!clone_group (&g, group, MDL))
-		log_fatal ("no memory for explicit group.");
+	g = NULL;
+	if (!clone_group(&g, group, MDL))
+		log_fatal("no memory for explicit group.");
 
-	token = peek_token (&val, (unsigned *)0, cfile);
+	token = peek_token(&val, NULL, cfile);
 	if (is_identifier (token) || token == STRING) {
-		next_token (&val, (unsigned *)0, cfile);
-
-		name = dmalloc (strlen (val) + 1, MDL);
+		next_token(&val, NULL, cfile);
+		
+		name = dmalloc(strlen(val) + 1, MDL);
 		if (!name)
-			log_fatal ("no memory for group decl name %s", val);
-		strcpy (name, val);
-	}
+			log_fatal("no memory for group decl name %s", val);
+		strcpy(name, val);
+	}		
 
-	if (!parse_lbrace (cfile)) {
-		group_dereference (&g, MDL);
+	if (!parse_lbrace(cfile)) {
+		group_dereference(&g, MDL);
 		return;
 	}
 
 	do {
-		token = peek_token (&val, (unsigned *)0, cfile);
+		token = peek_token(&val, NULL, cfile);
 		if (token == RBRACE) {
-			token = next_token (&val, (unsigned *)0, cfile);
+			token = next_token(&val, NULL, cfile);
 			break;
 		} else if (token == END_OF_FILE) {
-			token = next_token (&val, (unsigned *)0, cfile);
-			parse_warn (cfile, "unexpected end of file");
+			token = next_token(&val, NULL, cfile);
+			parse_warn(cfile, "unexpected end of file");
 			break;
 		} else if (token == TOKEN_DELETED) {
-			token = next_token (&val, (unsigned *)0, cfile);
-			parse_semi (cfile);
+			token = next_token(&val, NULL, cfile);
+			parse_semi(cfile);
 			deletedp = 1;
 		} else if (token == DYNAMIC) {
-			token = next_token (&val, (unsigned *)0, cfile);
-			parse_semi (cfile);
+			token = next_token(&val, NULL, cfile);
+			parse_semi(cfile);
 			dynamicp = 1;
 		} else if (token == STATIC) {
-			token = next_token (&val, (unsigned *)0, cfile);
-			parse_semi (cfile);
+			token = next_token(&val, NULL, cfile);
+			parse_semi(cfile);
 			staticp = 1;
 		}
-		declaration = parse_statement (cfile, g, GROUP_DECL,
-					       (struct host_decl *)0,
-					       declaration);
+		declaration = parse_statement(cfile, g, GROUP_DECL,
+					      NULL, declaration);
 	} while (1);
 
 	if (name) {
 		if (deletedp) {
 			if (group_name_hash) {
-				t = (struct group_object *)0;
-				if (group_hash_lookup (&t, group_name_hash,
-						       name,
-						       strlen (name), MDL)) {
-					delete_group (t, 0);
+				t = NULL;
+				if (group_hash_lookup(&t, group_name_hash,
+						      name,
+						      strlen(name), MDL)) {
+					delete_group(t, 0);
 				}
 			}
 		} else {
-			t = (struct group_object *)0;
-			status = group_object_allocate (&t, MDL);
+			t = NULL;
+			status = group_object_allocate(&t, MDL);
 			if (status != ISC_R_SUCCESS)
-				log_fatal ("no memory for group decl %s: %s",
-					   val, isc_result_totext (status));
-			group_reference (&t -> group, g, MDL);
-			t -> name = name;
-			t -> flags = ((staticp ? GROUP_OBJECT_STATIC : 0) |
-				      (dynamicp ? GROUP_OBJECT_DYNAMIC : 0) |
-				      (deletedp ? GROUP_OBJECT_DELETED : 0));
-			supersede_group (t, 0);
+				log_fatal("no memory for group decl %s: %s",
+					  val, isc_result_totext(status));
+			group_reference(&t->group, g, MDL);
+			t->name = name;
+			/* no need to include deletedp as it's handled above */
+			t->flags = ((staticp ? GROUP_OBJECT_STATIC : 0) |
+				    (dynamicp ? GROUP_OBJECT_DYNAMIC : 0));
+			supersede_group(t, 0);
 		}
-		if (t)
-			group_object_dereference (&t, MDL);
+		if (t != NULL)
+			group_object_dereference(&t, MDL);
 	}
 }
 
@@ -2851,8 +2810,8 @@ void parse_group_declaration (cfile, group)
 			   | ip-addrs-or-hostnames ip-addr-or-hostname */
 
 int
-parse_fixed_addr_param(struct option_cache **oc,
-		       struct parse *cfile,
+parse_fixed_addr_param(struct option_cache **oc, 
+		       struct parse *cfile, 
 		       enum dhcp_token type) {
 	int parse_ok;
 	const char *val;
@@ -2989,17 +2948,17 @@ int parse_lease_declaration (struct lease **lp, struct parse *cfile)
 				seenbit = 1;
 				lease -> starts = t;
 				break;
-
+			
 			      case ENDS:
 				seenbit = 2;
 				lease -> ends = t;
 				break;
-
+				
 			      case TSTP:
 				seenbit = 65536;
 				lease -> tstp = t;
 				break;
-
+				
 			      case TSFP:
 				seenbit = 131072;
 				lease -> tsfp = t;
@@ -3009,12 +2968,12 @@ int parse_lease_declaration (struct lease **lp, struct parse *cfile)
 				seenbit = 262144;
 				lease->atsfp = t;
 				break;
-
+				
 			      case CLTT:
 				seenbit = 524288;
 				lease -> cltt = t;
 				break;
-
+				
 			      default: /* for gcc, we'll never get here. */
 				log_fatal ("Impossible error at %s:%d.", MDL);
 				return 0;
@@ -3234,7 +3193,7 @@ int parse_lease_declaration (struct lease **lp, struct parse *cfile)
 				}
 			}
 			break;
-
+			
 		      case BILLING:
 			seenbit = 2048;
 			class = (struct class *)0;
@@ -3332,7 +3291,7 @@ int parse_lease_declaration (struct lease **lp, struct parse *cfile)
 
 		      case TOKEN_SET:
 			noequal = 0;
-
+			
 			token = next_token (&val, (unsigned *)0, cfile);
 			if (token != NAME && token != NUMBER_OR_NAME) {
 				parse_warn (cfile,
@@ -3343,7 +3302,7 @@ int parse_lease_declaration (struct lease **lp, struct parse *cfile)
 				lease_dereference (&lease, MDL);
 				return 0;
 			}
-
+			
 			seenbit = 0;
 		      special_set:
 			if (lease -> scope)
@@ -3635,7 +3594,7 @@ void parse_address_range (cfile, group, type, inpool, lpchain)
 		   then look for a pool with an empty prohibit list and
 		   a permit list with one entry that permits all clients. */
 		for (pool = share -> pools; pool; pool = pool -> next) {
-			if ((!dynamic && !pool -> permit_list &&
+			if ((!dynamic && !pool -> permit_list && 
 			     pool -> prohibit_list &&
 			     !pool -> prohibit_list -> next &&
 			     (pool -> prohibit_list -> type ==
@@ -3645,7 +3604,7 @@ void parse_address_range (cfile, group, type, inpool, lpchain)
 			     !pool -> permit_list -> next &&
 			     (pool -> permit_list -> type ==
 			      permit_all_clients))) {
-				break;
+  				break;
 			}
 			last = pool;
 		}
@@ -3762,7 +3721,7 @@ add_ipv6_pool_to_subnet(struct subnet *subnet, u_int16_t type,
 	pool->shared_network = NULL;
 	shared_network_reference(&pool->shared_network, share, MDL);
 
-	/*
+	/* 
 	 * Increase our array size for ipv6_pools in the shared_network.
 	 */
 	if (share->ipv6_pools == NULL) {
@@ -3778,7 +3737,7 @@ add_ipv6_pool_to_subnet(struct subnet *subnet, u_int16_t type,
 		log_fatal("Out of memory");
 	}
 	if (num_pools > 0) {
-		memcpy(tmp, share->ipv6_pools,
+		memcpy(tmp, share->ipv6_pools, 
 		       sizeof(struct ipv6_pool *) * num_pools);
 	}
 	if (share->ipv6_pools != NULL) {
@@ -3786,7 +3745,7 @@ add_ipv6_pool_to_subnet(struct subnet *subnet, u_int16_t type,
 	}
 	share->ipv6_pools = tmp;
 
-	/*
+	/* 
 	 * Record this pool in our array of pools for this shared network.
 	 */
 	ipv6_pool_reference(&share->ipv6_pools[num_pools], pool, MDL);
@@ -3797,7 +3756,7 @@ add_ipv6_pool_to_subnet(struct subnet *subnet, u_int16_t type,
 			       | ip-address6 SLASH number SEMI
 			       | ip-address6 [SLASH number] TEMPORARY SEMI */
 
-void
+void 
 parse_address_range6(struct parse *cfile, struct group *group) {
 	struct iaddr lo, hi;
 	int bits;
@@ -3825,7 +3784,7 @@ parse_address_range6(struct parse *cfile, struct group *group) {
 		return;
 	}
 
-	/*
+	/* 
 	 * See if we we're using range or CIDR notation or TEMPORARY
 	 */
 	token = peek_token(&val, NULL, cfile);
@@ -3835,7 +3794,7 @@ parse_address_range6(struct parse *cfile, struct group *group) {
 		 */
 		next_token(NULL, NULL, cfile);
 		token = next_token(&val, NULL, cfile);
-		if (token != NUMBER) {
+		if (token != NUMBER) { 
 			parse_warn(cfile, "expecting number");
 			skip_to_semi(cfile);
 			return;
@@ -3885,7 +3844,7 @@ parse_address_range6(struct parse *cfile, struct group *group) {
 					bits, 128);
 	} else {
 		/*
-		 * No '/', so we are looking for the end address of
+		 * No '/', so we are looking for the end address of 
 		 * the IPv6 pool.
 		 */
 		if (!parse_ip6_addr(cfile, &hi)) {
@@ -3902,7 +3861,7 @@ parse_address_range6(struct parse *cfile, struct group *group) {
 
 		for (p=nets; p != NULL; p=p->next) {
 			add_ipv6_pool_to_subnet(group->subnet, type,
-						&p->cidrnet.lo_addr,
+						&p->cidrnet.lo_addr, 
 						p->cidrnet.bits, 128);
 		}
 
@@ -3919,7 +3878,7 @@ parse_address_range6(struct parse *cfile, struct group *group) {
 
 /* prefix6-declaration :== ip-address6 ip-address6 SLASH number SEMI */
 
-void
+void 
 parse_prefix6(struct parse *cfile, struct group *group) {
 	struct iaddr lo, hi;
 	int bits;
@@ -4091,7 +4050,7 @@ parse_fixed_prefix6(struct parse *cfile, struct host_decl *host_decl) {
 #endif /* DHCPv6 */
 
 /* allow-deny-keyword :== BOOTP
-			| BOOTING
+   			| BOOTING
 			| DYNAMIC_BOOTP
 			| UNKNOWN_CLIENTS */
 
@@ -4289,7 +4248,7 @@ parse_ia_na_declaration(struct parse *cfile) {
 						parse_warn(cfile,
 							   "corrupt lease "
 							   "file; "
-							   "expecting a "
+					    		   "expecting a "
 							   "binding state.");
 						skip_to_semi(cfile);
 						return;
@@ -4316,7 +4275,7 @@ parse_ia_na_declaration(struct parse *cfile) {
 				prefer = atoi (val);
 
 				/*
-				 * Currently we peek for the semi-colon to
+				 * Currently we peek for the semi-colon to 
 				 * allow processing of older lease files that
 				 * don't have the semi-colon.  Eventually we
 				 * should remove the peeking code.
@@ -4344,7 +4303,7 @@ parse_ia_na_declaration(struct parse *cfile) {
 				valid = atoi (val);
 
 				/*
-				 * Currently we peek for the semi-colon to
+				 * Currently we peek for the semi-colon to 
 				 * allow processing of older lease files that
 				 * don't have the semi-colon.  Eventually we
 				 * should remove the peeking code.
@@ -4482,9 +4441,7 @@ parse_ia_na_declaration(struct parse *cfile) {
 			binding_scope_dereference(&scope, MDL);
 		}
 
-		/* add to our various structures */
-		ia_add_iasubopt(ia, iaaddr, MDL);
-		ia_reference(&iaaddr->ia, ia, MDL);
+		/* find the pool this address is in */
 		pool = NULL;
 		if (find_ipv6_pool(&pool, D6O_IA_NA,
 				   &iaaddr->addr) != ISC_R_SUCCESS) {
@@ -4494,9 +4451,29 @@ parse_ia_na_declaration(struct parse *cfile) {
 				   addr_buf);
 			return;
 		}
-		add_lease6(pool, iaaddr, end_time);
-		ipv6_pool_dereference(&pool, MDL);
+
+		/* remove old information */
+		if (cleanup_lease6(ia_na_active, pool,
+				   iaaddr, ia) != ISC_R_SUCCESS) {
+			inet_ntop(AF_INET6, &iaaddr->addr,
+				  addr_buf, sizeof(addr_buf));
+			parse_warn(cfile, "duplicate na lease for address %s",
+				   addr_buf);
+		}
+
+		/*
+		 * if we like the lease we add it to our various structues
+		 * otherwise we leave it and it will get cleaned when we
+		 * do the iasubopt_dereference.
+		 */
+		if ((state == FTS_ACTIVE) || (state == FTS_ABANDONED)) {
+			ia_add_iasubopt(ia, iaaddr, MDL);
+			ia_reference(&iaaddr->ia, ia, MDL);
+			add_lease6(pool, iaaddr, end_time);
+		}
+
 		iasubopt_dereference(&iaaddr, MDL);
+		ipv6_pool_dereference(&pool, MDL);
 	}
 
 	/*
@@ -4506,7 +4483,7 @@ parse_ia_na_declaration(struct parse *cfile) {
 	if (ia_hash_lookup(&old_ia, ia_na_active,
 			   (unsigned char *)ia->iaid_duid.data,
 			   ia->iaid_duid.len, MDL)) {
-		ia_hash_delete(ia_na_active,
+		ia_hash_delete(ia_na_active, 
 			       (unsigned char *)ia->iaid_duid.data,
 			       ia->iaid_duid.len, MDL);
 		ia_dereference(&old_ia, MDL);
@@ -4516,7 +4493,7 @@ parse_ia_na_declaration(struct parse *cfile) {
 	 * If we have addresses, add this, otherwise don't bother.
 	 */
 	if (ia->num_iasubopt > 0) {
-		ia_hash_add(ia_na_active,
+		ia_hash_add(ia_na_active, 
 			    (unsigned char *)ia->iaid_duid.data,
 			    ia->iaid_duid.len, ia, MDL);
 	}
@@ -4652,7 +4629,7 @@ parse_ia_ta_declaration(struct parse *cfile) {
 						parse_warn(cfile,
 							   "corrupt lease "
 							   "file; "
-							   "expecting a "
+					    		   "expecting a "
 							   "binding state.");
 						skip_to_semi(cfile);
 						return;
@@ -4679,7 +4656,7 @@ parse_ia_ta_declaration(struct parse *cfile) {
 				prefer = atoi (val);
 
 				/*
-				 * Currently we peek for the semi-colon to
+				 * Currently we peek for the semi-colon to 
 				 * allow processing of older lease files that
 				 * don't have the semi-colon.  Eventually we
 				 * should remove the peeking code.
@@ -4707,7 +4684,7 @@ parse_ia_ta_declaration(struct parse *cfile) {
 				valid = atoi (val);
 
 				/*
-				 * Currently we peek for the semi-colon to
+				 * Currently we peek for the semi-colon to 
 				 * allow processing of older lease files that
 				 * don't have the semi-colon.  Eventually we
 				 * should remove the peeking code.
@@ -4845,9 +4822,7 @@ parse_ia_ta_declaration(struct parse *cfile) {
 			binding_scope_dereference(&scope, MDL);
 		}
 
-		/* add to our various structures */
-		ia_add_iasubopt(ia, iaaddr, MDL);
-		ia_reference(&iaaddr->ia, ia, MDL);
+		/* find the pool this address is in */
 		pool = NULL;
 		if (find_ipv6_pool(&pool, D6O_IA_TA,
 				   &iaaddr->addr) != ISC_R_SUCCESS) {
@@ -4857,7 +4832,27 @@ parse_ia_ta_declaration(struct parse *cfile) {
 				   addr_buf);
 			return;
 		}
-		add_lease6(pool, iaaddr, end_time);
+
+		/* remove old information */
+		if (cleanup_lease6(ia_ta_active, pool,
+				   iaaddr, ia) != ISC_R_SUCCESS) {
+			inet_ntop(AF_INET6, &iaaddr->addr,
+				  addr_buf, sizeof(addr_buf));
+			parse_warn(cfile, "duplicate ta lease for address %s",
+				   addr_buf);
+		}
+
+		/*
+		 * if we like the lease we add it to our various structues
+		 * otherwise we leave it and it will get cleaned when we
+		 * do the iasubopt_dereference.
+		 */
+		if ((state == FTS_ACTIVE) || (state == FTS_ABANDONED)) {
+			ia_add_iasubopt(ia, iaaddr, MDL);
+			ia_reference(&iaaddr->ia, ia, MDL);
+			add_lease6(pool, iaaddr, end_time);
+		}
+
 		ipv6_pool_dereference(&pool, MDL);
 		iasubopt_dereference(&iaaddr, MDL);
 	}
@@ -4869,7 +4864,7 @@ parse_ia_ta_declaration(struct parse *cfile) {
 	if (ia_hash_lookup(&old_ia, ia_ta_active,
 			   (unsigned char *)ia->iaid_duid.data,
 			   ia->iaid_duid.len, MDL)) {
-		ia_hash_delete(ia_ta_active,
+		ia_hash_delete(ia_ta_active, 
 			       (unsigned char *)ia->iaid_duid.data,
 			       ia->iaid_duid.len, MDL);
 		ia_dereference(&old_ia, MDL);
@@ -4879,7 +4874,7 @@ parse_ia_ta_declaration(struct parse *cfile) {
 	 * If we have addresses, add this, otherwise don't bother.
 	 */
 	if (ia->num_iasubopt > 0) {
-		ia_hash_add(ia_ta_active,
+		ia_hash_add(ia_ta_active, 
 			    (unsigned char *)ia->iaid_duid.data,
 			    ia->iaid_duid.len, ia, MDL);
 	}
@@ -5016,7 +5011,7 @@ parse_ia_pd_declaration(struct parse *cfile) {
 						parse_warn(cfile,
 							   "corrupt lease "
 							   "file; "
-							   "expecting a "
+					    		   "expecting a "
 							   "binding state.");
 						skip_to_semi(cfile);
 						return;
@@ -5043,7 +5038,7 @@ parse_ia_pd_declaration(struct parse *cfile) {
 				prefer = atoi (val);
 
 				/*
-				 * Currently we peek for the semi-colon to
+				 * Currently we peek for the semi-colon to 
 				 * allow processing of older lease files that
 				 * don't have the semi-colon.  Eventually we
 				 * should remove the peeking code.
@@ -5071,7 +5066,7 @@ parse_ia_pd_declaration(struct parse *cfile) {
 				valid = atoi (val);
 
 				/*
-				 * Currently we peek for the semi-colon to
+				 * Currently we peek for the semi-colon to 
 				 * allow processing of older lease files that
 				 * don't have the semi-colon.  Eventually we
 				 * should remove the peeking code.
@@ -5209,9 +5204,7 @@ parse_ia_pd_declaration(struct parse *cfile) {
 			binding_scope_dereference(&scope, MDL);
 		}
 
-		/* add to our various structures */
-		ia_add_iasubopt(ia, iapref, MDL);
-		ia_reference(&iapref->ia, ia, MDL);
+		/* find the pool this address is in */
 		pool = NULL;
 		if (find_ipv6_pool(&pool, D6O_IA_PD,
 				   &iapref->addr) != ISC_R_SUCCESS) {
@@ -5221,7 +5214,27 @@ parse_ia_pd_declaration(struct parse *cfile) {
 				   addr_buf);
 			return;
 		}
-		add_lease6(pool, iapref, end_time);
+
+		/* remove old information */
+		if (cleanup_lease6(ia_pd_active, pool,
+				   iapref, ia) != ISC_R_SUCCESS) {
+			inet_ntop(AF_INET6, &iapref->addr,
+				  addr_buf, sizeof(addr_buf));
+			parse_warn(cfile, "duplicate pd lease for address %s",
+				   addr_buf);
+		}
+
+		/*
+		 * if we like the lease we add it to our various structues
+		 * otherwise we leave it and it will get cleaned when we
+		 * do the iasubopt_dereference.
+		 */
+		if ((state == FTS_ACTIVE) || (state == FTS_ABANDONED)) {
+			ia_add_iasubopt(ia, iapref, MDL);
+			ia_reference(&iapref->ia, ia, MDL);
+			add_lease6(pool, iapref, end_time);
+		}
+
 		ipv6_pool_dereference(&pool, MDL);
 		iasubopt_dereference(&iapref, MDL);
 	}
@@ -5243,7 +5256,7 @@ parse_ia_pd_declaration(struct parse *cfile) {
 	 * If we have prefixes, add this, otherwise don't bother.
 	 */
 	if (ia->num_iasubopt > 0) {
-		ia_hash_add(ia_pd_active,
+		ia_hash_add(ia_pd_active, 
 			    (unsigned char *)ia->iaid_duid.data,
 			    ia->iaid_duid.len, ia, MDL);
 	}
@@ -5251,16 +5264,16 @@ parse_ia_pd_declaration(struct parse *cfile) {
 #endif /* defined(DHCPv6) */
 }
 
-#ifdef DHCPv6
+#ifdef DHCPv6 
 /*
- * When we parse a server-duid statement in a lease file, we are
+ * When we parse a server-duid statement in a lease file, we are 
  * looking at the saved server DUID from a previous run. In this case
  * we expect it to be followed by the binary representation of the
  * DUID stored in a string:
  *
  * server-duid "\000\001\000\001\015\221\034JRT\000\0224Y";
  */
-void
+void 
 parse_server_duid(struct parse *cfile) {
 	enum dhcp_token token;
 	const char *val;
@@ -5305,7 +5318,7 @@ parse_server_duid(struct parse *cfile) {
  * server-duid ll ethernet|ieee802|fddi 00:16:6F:49:7D:9B;
  * server-duid en 2495 "enterprise-specific-identifier-1234";
  */
-void
+void 
 parse_server_duid_conf(struct parse *cfile) {
 	enum dhcp_token token;
 	const char *val;
@@ -5327,7 +5340,7 @@ parse_server_duid_conf(struct parse *cfile) {
 	 */
 	token = next_token(&val, NULL, cfile);
 
-	/*
+	/* 
 	 * Enterprise is the easiest - enterprise number and raw data
 	 * are required.
 	 */
@@ -5354,20 +5367,20 @@ parse_server_duid_conf(struct parse *cfile) {
 		 * Save the DUID.
 		 */
 		memset(&duid, 0, sizeof(duid));
-		duid.len = 2 + 4 + len;
-		if (!buffer_allocate(&duid.buffer, duid.len, MDL)) {
+        	duid.len = 2 + 4 + len;
+        	if (!buffer_allocate(&duid.buffer, duid.len, MDL)) {
 			log_fatal("Out of memory storing DUID");
 		}
 		duid.data = (unsigned char *)duid.buffer->data;
 		putUShort(duid.buffer->data, DUID_EN);
-		putULong(duid.buffer->data + 2, enterprise_number);
+ 		putULong(duid.buffer->data + 2, enterprise_number);
 		memcpy(duid.buffer->data + 6, val, len);
 
 		set_server_duid(&duid);
 		data_string_forget(&duid, MDL);
 	}
 
-	/*
+	/* 
 	 * Next easiest is the link-layer DUID. It consists only of
 	 * the LL directive, or optionally the specific value to use.
 	 *
@@ -5396,7 +5409,7 @@ parse_server_duid_conf(struct parse *cfile) {
 				parse_warn(cfile, "hardware type expected");
 				skip_to_semi(cfile);
 				return;
-			}
+			} 
 			memset(&ll_addr, 0, sizeof(ll_addr));
 			if (!parse_cshl(&ll_addr, cfile)) {
 				return;
@@ -5407,13 +5420,13 @@ parse_server_duid_conf(struct parse *cfile) {
 			 */
 			memset(&duid, 0, sizeof(duid));
 			duid.len = 2 + 2 + ll_addr.len;
-			if (!buffer_allocate(&duid.buffer, duid.len, MDL)) {
+        		if (!buffer_allocate(&duid.buffer, duid.len, MDL)) {
 				log_fatal("Out of memory storing DUID");
 			}
 			duid.data = (unsigned char *)duid.buffer->data;
 			putUShort(duid.buffer->data, DUID_LL);
-			putULong(duid.buffer->data + 2, ll_type);
-			memcpy(duid.buffer->data + 4,
+ 			putULong(duid.buffer->data + 2, ll_type);
+			memcpy(duid.buffer->data + 4, 
 			       ll_addr.data, ll_addr.len);
 
 			set_server_duid(&duid);
@@ -5422,7 +5435,7 @@ parse_server_duid_conf(struct parse *cfile) {
 		}
 	}
 
-	/*
+	/* 
 	 * Finally the link-layer DUID plus time. It consists only of
 	 * the LLT directive, or optionally the specific value to use.
 	 *
@@ -5451,8 +5464,8 @@ parse_server_duid_conf(struct parse *cfile) {
 				parse_warn(cfile, "hardware type expected");
 				skip_to_semi(cfile);
 				return;
-			}
-
+			} 
+			
 			token = next_token(&val, NULL, cfile);
 			if (token != NUMBER) {
 				parse_warn(cfile, "timestamp expected");
@@ -5471,14 +5484,14 @@ parse_server_duid_conf(struct parse *cfile) {
 			 */
 			memset(&duid, 0, sizeof(duid));
 			duid.len = 2 + 2 + 4 + ll_addr.len;
-			if (!buffer_allocate(&duid.buffer, duid.len, MDL)) {
+        		if (!buffer_allocate(&duid.buffer, duid.len, MDL)) {
 				log_fatal("Out of memory storing DUID");
 			}
 			duid.data = (unsigned char *)duid.buffer->data;
 			putUShort(duid.buffer->data, DUID_LLT);
-			putULong(duid.buffer->data + 2, ll_type);
-			putULong(duid.buffer->data + 4, llt_time);
-			memcpy(duid.buffer->data + 8,
+ 			putULong(duid.buffer->data + 2, ll_type);
+ 			putULong(duid.buffer->data + 4, llt_time);
+			memcpy(duid.buffer->data + 8, 
 			       ll_addr.data, ll_addr.len);
 
 			set_server_duid(&duid);
@@ -5494,7 +5507,7 @@ parse_server_duid_conf(struct parse *cfile) {
 	 *
 	 * In this case, they have to put in the complete value.
 	 *
-	 * This also works for existing DUID types of course.
+	 * This also works for existing DUID types of course. 
 	 */
 	else if (token == NUMBER) {
 		duid_type_num = atoi(val);
@@ -5510,8 +5523,8 @@ parse_server_duid_conf(struct parse *cfile) {
 		 * Save the DUID.
 		 */
 		memset(&duid, 0, sizeof(duid));
-		duid.len = 2 + len;
-		if (!buffer_allocate(&duid.buffer, duid.len, MDL)) {
+        	duid.len = 2 + len;
+        	if (!buffer_allocate(&duid.buffer, duid.len, MDL)) {
 			log_fatal("Out of memory storing DUID");
 		}
 		duid.data = (unsigned char *)duid.buffer->data;

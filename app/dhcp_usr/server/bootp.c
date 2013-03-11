@@ -1,22 +1,10 @@
-//==============================================================================
-// Brief   : BOOTP Protocol support
-// Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-//------------------------------------------------------------------------------
-// ODTONE - Open Dot Twenty One
-//
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
-//
-// This software is distributed under a license. The full license
-// agreement can be found in the file LICENSE in this distribution.
-// This software may not be copied, modified, sold or distributed
-// other than expressed in the named license agreement.
-//
-// This software is distributed without any warranty.
-//==============================================================================
+/* bootp.c
+
+   BOOTP Protocol support. */
 
 /*
- * Copyright (c) 2004,2005,2007,2009 by Internet Systems Consortium, Inc. ("ISC")
+ * Copyright (c) 2009,2012 by Internet Systems Consortium, Inc. ("ISC")
+ * Copyright (c) 2004,2005,2007 by Internet Systems Consortium, Inc. ("ISC")
  * Copyright (c) 1995-2003 by Internet Software Consortium
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -189,12 +177,13 @@ void bootp (packet)
 	}
 
 	/* Execute the host statements. */
-	execute_statements_in_scope ((struct binding_value **)0,
-				     packet, lease, (struct client_state *)0,
-				     packet -> options, options,
-				     &lease -> scope,
-				     hp -> group, lease -> subnet -> group);
-
+	if (hp != NULL) {
+		execute_statements_in_scope (NULL, packet, lease, NULL,
+					     packet->options, options,
+					     &lease->scope,
+					     hp->group, lease->subnet->group);
+	}
+	
 	/* Drop the request if it's not allowed for this client. */
 	if ((oc = lookup_option (&server_universe, options, SV_ALLOW_BOOTP)) &&
 	    !evaluate_boolean_option_cache (&ignorep, packet, lease,
@@ -204,7 +193,7 @@ void bootp (packet)
 		if (!ignorep)
 			log_info ("%s: bootp disallowed", msgbuf);
 		goto out;
-	}
+	} 
 
 	if ((oc = lookup_option (&server_universe,
 				 options, SV_ALLOW_BOOTING)) &&
@@ -374,15 +363,16 @@ void bootp (packet)
 	}
 
 	/* Report what we're doing... */
-	log_info ("%s", msgbuf);
-	log_info ("BOOTREPLY for %s to %s (%s) via %s",
-	      piaddr (lease->ip_addr), hp -> name,
-	      print_hw_addr (packet -> raw -> htype,
-			     packet -> raw -> hlen,
-			     packet -> raw -> chaddr),
-	      packet -> raw -> giaddr.s_addr
-	      ? inet_ntoa (packet -> raw -> giaddr)
-	      : packet -> interface -> name);
+	log_info("%s", msgbuf);
+	log_info("BOOTREPLY for %s to %s (%s) via %s",
+		 piaddr(lease->ip_addr),
+		 ((hp != NULL) && (hp->name != NULL)) ? hp -> name : "unknown",
+		 print_hw_addr (packet->raw->htype,
+				packet->raw->hlen,
+				packet->raw->chaddr),
+		 packet->raw->giaddr.s_addr
+		 ? inet_ntoa (packet->raw->giaddr)
+		 : packet->interface->name);
 
 	/* Set up the parts of the address that are in common. */
 	to.sin_family = AF_INET;
@@ -397,10 +387,16 @@ void bootp (packet)
 		to.sin_port = local_port;
 
 		if (fallback_interface) {
-			result = send_packet (fallback_interface,
-					      (struct packet *)0,
-					      &raw, outgoing.packet_length,
-					      from, &to, &hto);
+			result = send_packet (fallback_interface, NULL, &raw,
+					      outgoing.packet_length, from,
+					      &to, &hto);
+			if (result < 0) {
+				log_error ("%s:%d: Failed to send %d byte long "
+					   "packet over %s interface.", MDL,
+					   outgoing.packet_length,
+					   fallback_interface->name);
+			}
+
 			goto out;
 		}
 
@@ -420,10 +416,16 @@ void bootp (packet)
 	}
 
 	errno = 0;
-	result = send_packet (packet -> interface,
-			      packet, &raw, outgoing.packet_length,
-			      from, &to, &hto);
+	result = send_packet(packet->interface, packet, &raw,
+			     outgoing.packet_length, from, &to, &hto);
+	if (result < 0) {
+		log_error ("%s:%d: Failed to send %d byte long packet over %s"
+			   " interface.", MDL, outgoing.packet_length,
+			   packet->interface->name);
+	}
+
       out:
+
 	if (options)
 		option_state_dereference (&options, MDL);
 	if (lease)

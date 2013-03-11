@@ -1,21 +1,7 @@
-//==============================================================================
-// Brief   : DHCPv6 client routines
-// Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-//------------------------------------------------------------------------------
-// ODTONE - Open Dot Twenty One
-//
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
-//
-// This software is distributed under a license. The full license
-// agreement can be found in the file LICENSE in this distribution.
-// This software may not be copied, modified, sold or distributed
-// other than expressed in the named license agreement.
-//
-// This software is distributed without any warranty.
-//==============================================================================
+/* dhc6.c - DHCPv6 client routines. */
 
 /*
+ * Copyright (c) 2012 by Internet Systems Consortium, Inc. ("ISC")
  * Copyright (c) 2006-2010 by Internet Systems Consortium, Inc. ("ISC")
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -108,11 +94,11 @@ void do_select6(void *input);
 void do_refresh6(void *input);
 static void do_release6(void *input);
 static void start_bound(struct client_state *client);
+static void start_informed(struct client_state *client);
 void informed_handler(struct packet *packet, struct client_state *client);
 void bound_handler(struct packet *packet, struct client_state *client);
 void start_renew6(void *input);
 void start_rebind6(void *input);
-static void start_informed(struct client_state *client);
 void do_depref(void *input);
 void do_expire(void *input);
 static void make_client6_options(struct client_state *client,
@@ -121,6 +107,7 @@ static void make_client6_options(struct client_state *client,
 static void script_write_params6(struct client_state *client,
 				 const char *prefix,
 				 struct option_state *options);
+static void script_write_requested6(struct client_state *client);
 static isc_boolean_t active_prefix(struct client_state *client);
 
 static int check_timing6(struct client_state *client, u_int8_t msg_type,
@@ -129,6 +116,7 @@ static int check_timing6(struct client_state *client, u_int8_t msg_type,
 
 extern int onetry;
 extern int stateless;
+
 /*
  * The "best" default DUID, since we cannot predict any information
  * about the system (such as whether or not the hardware addresses are
@@ -225,8 +213,10 @@ dhcpv6_client_assignments(void)
 	memset(&DHCPv6DestAddr, 0, sizeof(DHCPv6DestAddr));
 	DHCPv6DestAddr.sin6_family = AF_INET6;
 	DHCPv6DestAddr.sin6_port = remote_port;
-	inet_pton(AF_INET6, All_DHCP_Relay_Agents_and_Servers,
-		  &DHCPv6DestAddr.sin6_addr);
+	if (inet_pton(AF_INET6, All_DHCP_Relay_Agents_and_Servers,
+		      &DHCPv6DestAddr.sin6_addr) <= 0) {
+		log_fatal("Bad address %s", All_DHCP_Relay_Agents_and_Servers);
+	}
 
 	code = D6O_CLIENTID;
 	if (!option_code_hash_lookup(&clientid_option,
@@ -436,8 +426,6 @@ dhc6_retrans_advance(struct client_state *client)
 	client->txcount++;
 }
 
-// Created by
-// Author : Carlos Guimaraes <cguimaraes@av.it.pt>
 char* hex_to_ipv6(const unsigned char *data, int len)
 {
 	static char buf[40];
@@ -459,8 +447,6 @@ char* hex_to_ipv6(const unsigned char *data, int len)
 	return buf;
 }
 
-// Created by
-// Author : Carlos Guimaraes <cguimaraes@av.it.pt>
 void decode_mih6_options(struct packet *packet)
 {
 	struct option_cache *oc;
@@ -468,9 +454,10 @@ void decode_mih6_options(struct packet *packet)
 	struct mih_options *head = NULL;
 	int i;
 
-	// Search for Address IPv4 MIH Options
+	printf("\n\n\nVou enviar \n");
+	// Search for Address IPv6 MIH Options
 	for(i = 1; i < MoS_END; ++i) {
-		oc = lookup_option(&mos_ip6_universe, packet->options, i);
+		oc = lookup_option(&mos_ipv6_universe, packet->options, i);
 		if(oc && evaluate_option_cache (&ds, (struct packet *)0,
 						(struct lease *)0, 0,
 						(struct option_state *)0,
@@ -506,17 +493,21 @@ void decode_mih6_options(struct packet *packet)
 		}
 	}
 
-	// Search for FQDN IPv4 MIH Options
+	// Search for FQDN IPv6 MIH Options
 	for(i = 1; i < MoS_END; ++i) {
 		oc = lookup_option(&mos_fqdn6_universe, packet->options, i);
+		printf("lookup? ");
 		if(oc && evaluate_option_cache (&ds, (struct packet *)0,
 						(struct lease *)0, 0,
 						(struct option_state *)0,
 						packet->options,
 						&global_scope, oc, MDL)) {
+			printf("Evaluated? %d ", ds.len);
 			if (ds.len > 0) {
+				printf("Len? ");
 				int j;
 				for(j = 0; j < ds.len; ) {
+					printf("For each len?");
 					struct mih_options *pos;
 					pos = (struct mih_options*)malloc(sizeof(struct mih_options));
 
@@ -566,8 +557,13 @@ void decode_mih6_options(struct packet *packet)
 		}
 	}
 
-	if(head == NULL)
+	printf("Sera que tenho?");
+	if(head == NULL) {
+		printf("NAO");
 		return;
+	}
+
+	printf("SIM");
 
 	// Dispatch message
 	app_callback(app_callback_ctx, head);
@@ -583,6 +579,7 @@ void decode_mih6_options(struct packet *packet)
 
 	free(head);
 }
+
 
 /* Quick validation of DHCPv6 ADVERTISE packet contents. */
 static int
@@ -815,7 +812,8 @@ dhc6_leaseify(struct packet *packet)
 	 * not sure based on what additional keys now).
 	 */
 	oc = lookup_option(&dhcpv6_universe, packet->options, D6O_SERVERID);
-	if (!evaluate_option_cache(&lease->server_id, packet, NULL, NULL,
+	if ((oc == NULL) ||
+	    !evaluate_option_cache(&lease->server_id, packet, NULL, NULL,
 				   lease->options, NULL, &global_scope,
 				   oc, MDL) ||
 	    lease->server_id.len == 0) {
@@ -2231,7 +2229,6 @@ void
 start_release6(struct client_state *client)
 {
 	/* Cancel any pending transmissions */
-	cancel_timeout(do_init6, client);
 	cancel_timeout(do_confirm6, client);
 	cancel_timeout(do_select6, client);
 	cancel_timeout(do_refresh6, client);
@@ -4023,7 +4020,6 @@ reply_handler(struct packet *packet, struct client_state *client)
 		dhc6_lease_destroy(&lease, MDL);
 	}
 
-	/* Decode MIH Options */
 	decode_mih6_options(packet);
 
 	start_bound(client);
@@ -4189,7 +4185,7 @@ dhc6_check_times(struct client_state *client)
 				/* Set rebind to 3/4 expiration interval. */
 				tmp = ia->starts;
 				tmp += use_expire + (use_expire / 2);
-			} else if (ia->renew == 0xffffffff)
+			} else if (ia->rebind == 0xffffffff)
 				tmp = MAX_TIME;
 			else
 				tmp = ia->starts + ia->rebind;
@@ -4501,6 +4497,7 @@ start_bound(struct client_state *client)
 				dhc6_marshall_values("old_", client, old,
 						     oldia, oldaddr);
 			dhc6_marshall_values("new_", client, lease, ia, addr);
+			script_write_requested6(client);
 
 			script_go(client);
 		}
@@ -4517,6 +4514,7 @@ start_bound(struct client_state *client)
 
 			dhc6_marshall_values("new_", client, lease, ia,
 					     NULL);
+			script_write_requested6(client);
 
 			script_go(client);
 		}
@@ -4533,6 +4531,7 @@ start_bound(struct client_state *client)
 						old->bindings->addrs : NULL);
 
 		dhc6_marshall_values("new_", client, lease, NULL, NULL);
+		script_write_requested6(client);
 
 		script_go(client);
 	}
@@ -4811,6 +4810,7 @@ do_depref(void *input)
 				script_init(client, "DEPREF6", NULL);
 				dhc6_marshall_values("cur_", client, lease,
 						     ia, addr);
+				script_write_requested6(client);
 				script_go(client);
 
 				addr->flags |= DHC6_ADDR_DEPREFFED;
@@ -4864,6 +4864,7 @@ do_expire(void *input)
 				script_init(client, "EXPIRE6", NULL);
 				dhc6_marshall_values("old_", client, lease,
 						     ia, addr);
+				script_write_requested6(client);
 				script_go(client);
 
 				addr->flags |= DHC6_ADDR_EXPIRED;
@@ -4928,6 +4929,7 @@ unconfigure6(struct client_state *client, const char *reason)
 		if (client->active_lease != NULL)
 			script_write_params6(client, "old_",
 					     client->active_lease->options);
+		script_write_requested6(client);
 		script_go(client);
 		return;
 	}
@@ -4943,6 +4945,7 @@ unconfigure6(struct client_state *client, const char *reason)
 			script_init(client, reason, NULL);
 			dhc6_marshall_values("old_", client,
 					     client->active_lease, ia, addr);
+			script_write_requested6(client);
 			script_go(client);
 
 #if defined (NSUPDATE)
@@ -4986,7 +4989,7 @@ dhc6_check_irt(struct client_state *client)
 	}
 	/* Simply return gives a endless loop waiting for nothing. */
 	if (!found)
-		return;
+		exit(0);
 
 	oc = lookup_option(&dhcpv6_universe, client->active_lease->options,
 			   D6O_INFORMATION_REFRESH_TIME);
@@ -5036,13 +5039,17 @@ start_informed(struct client_state *client)
 		script_write_params6(client, "old_",
 				     client->old_lease->options);
 	script_write_params6(client, "new_", client->active_lease->options);
+	script_write_requested6(client);
 	script_go(client);
+
+	go_daemon();
 
 	if (client->old_lease != NULL) {
 		dhc6_lease_destroy(&client->old_lease, MDL);
 		client->old_lease = NULL;
 	}
 
+	/* Schedule events. */
 	dhc6_check_irt(client);
 }
 
@@ -5256,6 +5263,32 @@ script_write_params6(struct client_state *client, const char *prefix,
 		option_space_foreach(NULL, NULL, client, NULL, options,
 				     &global_scope, universes[i], &es,
 				     client_option_envadd);
+	}
+}
+
+/*
+ * A clone of the DHCPv4 routine.
+ * Write out the environment variables for the objects that the
+ * client requested.  If the object was requested the variable will be:
+ * requested_<option_name>=1
+ * If it wasn't requested there won't be a variable.
+ */
+static void script_write_requested6(client)
+	struct client_state *client;
+{
+	int i;
+	struct option **req;
+	char name[256];
+	req = client->config->requested_options;
+
+	if (req == NULL)
+		return;
+
+	for (i = 0 ; req[i] != NULL ; i++) {
+		if ((req[i]->universe == &dhcpv6_universe) &&
+		    dhcp_option_ev_name (name, sizeof(name), req[i])) {
+			client_envadd(client, "requested_", name, "%d", 1);
+		}
 	}
 }
 

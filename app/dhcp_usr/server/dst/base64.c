@@ -1,20 +1,3 @@
-//==============================================================================
-// Brief   : Base 64
-// Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-//------------------------------------------------------------------------------
-// ODTONE - Open Dot Twenty One
-//
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
-//
-// This software is distributed under a license. The full license
-// agreement can be found in the file LICENSE in this distribution.
-// This software may not be copied, modified, sold or distributed
-// other than expressed in the named license agreement.
-//
-// This software is distributed without any warranty.
-//==============================================================================
-
 /*
  * Copyright (c) 2004,2009 by Internet Systems Consortium, Inc. ("ISC")
  * Copyright (c) 1996-2003 by Internet Software Consortium
@@ -64,7 +47,7 @@
  */
 
 #if !defined(LINT) && !defined(CODECENTER)
-static const char rcsid[] = "$Id: base64.c,v 1.5.6.1 2009-11-20 01:49:01 sar Exp $";
+static const char rcsid[] = "$Id: base64.c,v 1.5.6.1 2009/11/20 01:49:01 sar Exp $";
 #endif /* not lint */
 
 #include <sys/types.h>
@@ -139,9 +122,9 @@ static const char Pad64 = '=';
    end of the data is performed using the '=' character.
 
    Since all base64 input is an integral number of octets, only the
-         -------------------------------------------------
+         -------------------------------------------------                       
    following cases can arise:
-
+   
        (1) the final quantum of encoding input is an integral
            multiple of 24 bits; here, the final unit of encoded
 	   output will be an integral multiple of 4 characters
@@ -183,14 +166,14 @@ b64_ntop(u_char const *src, size_t srclength, char *target, size_t targsize) {
 		target[datalength++] = Base64[output[2]];
 		target[datalength++] = Base64[output[3]];
 	}
-
+    
 	/* Now we worry about padding. */
 	if (0 != srclength) {
 		/* Get what's left. */
 		input[0] = input[1] = input[2] = '\0';
 		for (i = 0; i < srclength; i++)
 			input[i] = *src++;
-
+	
 		output[0] = input[0] >> 2;
 		output[1] = ((input[0] & 0x03) << 4) + (input[1] >> 4);
 		output[2] = ((input[1] & 0x0f) << 2) + (input[2] >> 6);

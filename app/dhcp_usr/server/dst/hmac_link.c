@@ -1,27 +1,11 @@
-//==============================================================================
-// Brief   : HMAC routines
-// Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-//------------------------------------------------------------------------------
-// ODTONE - Open Dot Twenty One
-//
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
-//
-// This software is distributed under a license. The full license
-// agreement can be found in the file LICENSE in this distribution.
-// This software may not be copied, modified, sold or distributed
-// other than expressed in the named license agreement.
-//
-// This software is distributed without any warranty.
-//==============================================================================
-
 #ifdef HMAC_MD5
 #ifndef LINT
-static const char rcsid[] = "$Header: /proj/cvs/prod/DHCP/dst/hmac_link.c,v 1.5.6.1 2009-11-20 01:49:01 sar Exp $";
+static const char rcsid[] = "$Header: /tmp/cvstest/DHCP/dst/hmac_link.c,v 1.5.6.1 2009/11/20 01:49:01 sar Exp $";
 #endif
 /*
  * Portions Copyright (c) 1995-1998 by Trusted Information Systems, Inc.
  * Portions Copyright (c) 2007,2009 by Internet Systems Consortium, Inc. ("ISC")
+ * Portions Copyright (c) 2012 by Internet Systems Consortium, Inc. ("ISC")
  *
  * Permission to use, copy modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -37,7 +21,7 @@ static const char rcsid[] = "$Header: /proj/cvs/prod/DHCP/dst/hmac_link.c,v 1.5.
  * WITH THE USE OR PERFORMANCE OF THE SOFTWARE.
  */
 
-/*
+/* 
  * This file contains an implementation of the HMAC-MD5 algorithm.
  */
 
@@ -75,10 +59,10 @@ typedef struct hmackey {
 } HMAC_Key;
 
 
-/**************************************************************************
+/************************************************************************** 
  * dst_hmac_md5_sign
  *     Call HMAC signing functions to sign a block of data.
- *     There are three steps to signing, INIT (initialize structures),
+ *     There are three steps to signing, INIT (initialize structures), 
  *     UPDATE (hash (more) data), FINAL (generate a signature).  This
  *     routine performs one or more of these steps.
  * Parameters
@@ -89,31 +73,31 @@ typedef struct hmackey {
  *     len	 length in bytes of data.
  *     signature   location to store signature.
  *     sig_len     size of the signature location
- * returns
+ * returns 
  *	N  Success on SIG_MODE_FINAL = returns signature length in bytes
  *	0  Success on SIG_MODE_INIT  and UPDATE
  *	 <0  Failure
  */
 
 static int
-dst_hmac_md5_sign(const int mode, DST_KEY *d_key, void **context,
-		  const u_char *data, const unsigned len,
+dst_hmac_md5_sign(const int mode, DST_KEY *d_key, void **context, 
+		  const u_char *data, const unsigned len, 
 		  u_char *signature, const unsigned sig_len)
 {
 	HMAC_Key *key;
 	int sign_len = 0;
 	MD5_CTX *ctx = NULL;
 
-	if (mode & SIG_MODE_INIT)
-		ctx = (MD5_CTX *) malloc(sizeof(*ctx));
-	else if (context)
-		ctx = (MD5_CTX *) *context;
-	if (ctx == NULL)
-		return (-1);
-
 	if (d_key == NULL || d_key->dk_KEY_struct == NULL)
 		return (-1);
 	key = (HMAC_Key *) d_key->dk_KEY_struct;
+
+	if (mode & SIG_MODE_INIT) 
+		ctx = (MD5_CTX *) malloc(sizeof(*ctx));
+	else if (context)
+		ctx = (MD5_CTX *) *context;
+	if (ctx == NULL) 
+		return (-1);
 
 	if (mode & SIG_MODE_INIT) {
 		MD5Init(ctx);
@@ -136,20 +120,20 @@ dst_hmac_md5_sign(const int mode, DST_KEY *d_key, void **context,
 		sign_len = MD5_LEN;
 		SAFE_FREE(ctx);
 	}
-	else {
-		if (context == NULL)
+	else { 
+		if (context == NULL) 
 			return (-1);
 		*context = (void *) ctx;
-	}
+	}		
 	return (sign_len);
 }
 
 
-/**************************************************************************
- * dst_hmac_md5_verify()
- *     Calls HMAC verification routines.  There are three steps to
- *     verification, INIT (initialize structures), UPDATE (hash (more) data),
- *     FINAL (generate a signature).  This routine performs one or more of
+/************************************************************************** 
+ * dst_hmac_md5_verify() 
+ *     Calls HMAC verification routines.  There are three steps to 
+ *     verification, INIT (initialize structures), UPDATE (hash (more) data), 
+ *     FINAL (generate a signature).  This routine performs one or more of 
  *     these steps.
  * Parameters
  *     mode	SIG_MODE_INIT, SIG_MODE_UPDATE and/or SIG_MODE_FINAL.
@@ -158,8 +142,8 @@ dst_hmac_md5_sign(const int mode, DST_KEY *d_key, void **context,
  *     len	 length in bytes of data.
  *     signature   signature.
  *     sig_len     length in bytes of signature.
- * returns
- *     0  Success
+ * returns 
+ *     0  Success 
  *    <0  Failure
  */
 
@@ -171,17 +155,17 @@ dst_hmac_md5_verify(const int mode, DST_KEY *d_key, void **context,
 	HMAC_Key *key;
 	MD5_CTX *ctx = NULL;
 
-	if (mode & SIG_MODE_INIT)
+	if (d_key == NULL || d_key->dk_KEY_struct == NULL)
+		return (-1);
+	key = (HMAC_Key *) d_key->dk_KEY_struct;
+
+	if (mode & SIG_MODE_INIT) 
 		ctx = (MD5_CTX *) malloc(sizeof(*ctx));
 	else if (context)
 		ctx = (MD5_CTX *) *context;
-	if (ctx == NULL)
+	if (ctx == NULL) 
 		return (-1);
 
-	if (d_key == NULL || d_key->dk_KEY_struct == NULL)
-		return (-1);
-
-	key = (HMAC_Key *) d_key->dk_KEY_struct;
 	if (mode & SIG_MODE_INIT) {
 		MD5Init(ctx);
 		MD5Update(ctx, key->hk_ipad, HMAC_LEN);
@@ -205,16 +189,16 @@ dst_hmac_md5_verify(const int mode, DST_KEY *d_key, void **context,
 		if (memcmp(digest, signature, MD5_LEN) != 0)
 			return (VERIFY_FINAL_FAILURE);
 	}
-	else {
-		if (context == NULL)
+	else { 
+		if (context == NULL) 
 			return (-1);
 		*context = (void *) ctx;
-	}
+	}		
 	return (0);
 }
 
 
-/**************************************************************************
+/************************************************************************** 
  * dst_buffer_to_hmac_md5
  *     Converts key from raw data to an HMAC Key
  *     This function gets in a pointer to the data
@@ -233,8 +217,11 @@ dst_buffer_to_hmac_md5(DST_KEY *dkey, const u_char *key, const unsigned keylen)
 	HMAC_Key *hkey = NULL;
 	MD5_CTX ctx;
 	unsigned local_keylen = keylen;
+	u_char tk[MD5_LEN];
 
-	if (dkey == NULL || key == NULL || keylen < 0)
+	/* Do we need to check if keylen == 0?  The original
+	 * code didn't, so we don't currently */
+	if (dkey == NULL || key == NULL)
 		return (-1);
 
 	if ((hkey = (HMAC_Key *) malloc(sizeof(HMAC_Key))) == NULL)
@@ -245,7 +232,7 @@ dst_buffer_to_hmac_md5(DST_KEY *dkey, const u_char *key, const unsigned keylen)
 
 	/* if key is longer than HMAC_LEN bytes reset it to key=MD5(key) */
 	if (keylen > HMAC_LEN) {
-		u_char tk[MD5_LEN];
+		memset(tk, 0, sizeof(tk));
 		MD5Init(&ctx);
 		MD5Update(&ctx, (const unsigned char *)key, keylen);
 		MD5Final(tk, &ctx);
@@ -268,13 +255,13 @@ dst_buffer_to_hmac_md5(DST_KEY *dkey, const u_char *key, const unsigned keylen)
 }
 
 
-/**************************************************************************
+/************************************************************************** 
  *  dst_hmac_md5_key_to_file_format
  *	Encodes an HMAC Key into the portable file format.
- *  Parameters
- *	hkey      HMAC KEY structure
+ *  Parameters 
+ *	hkey      HMAC KEY structure 
  *	buff      output buffer
- *	buff_len  size of output buffer
+ *	buff_len  size of output buffer 
  *  Return
  *	0  Failure - null input hkey
  *     -1  Failure - not enough space in output area
@@ -286,12 +273,12 @@ dst_hmac_md5_key_to_file_format(const DST_KEY *dkey, char *buff,
 			    const unsigned buff_len)
 {
 	char *bp;
-	int i;
+	int i, res;
 	unsigned len, b_len, key_len;
 	u_char key[HMAC_LEN];
 	HMAC_Key *hkey;
 
-	if (dkey == NULL || dkey->dk_KEY_struct == NULL)
+	if (dkey == NULL || dkey->dk_KEY_struct == NULL) 
 		return (0);
 	if (buff == NULL || buff_len <= (int) strlen(key_file_fmt_str))
 		return (-1);	/* no OR not enough space in output area */
@@ -316,9 +303,10 @@ dst_hmac_md5_key_to_file_format(const DST_KEY *dkey, char *buff,
 	bp += strlen("Key: ");
 	b_len = buff_len - (bp - buff);
 
-	len = b64_ntop(key, key_len, bp, b_len);
-	if (len < 0)
+	res = b64_ntop(key, key_len, bp, b_len);
+	if (res < 0) 
 		return (-1);
+	len = (unsigned) res;
 	bp += len;
 	*(bp++) = '\n';
 	*bp = '\0';
@@ -328,16 +316,16 @@ dst_hmac_md5_key_to_file_format(const DST_KEY *dkey, char *buff,
 }
 
 
-/**************************************************************************
+/************************************************************************** 
  * dst_hmac_md5_key_from_file_format
- *     Converts contents of a key file into an HMAC key.
- * Parameters
- *     hkey    structure to put key into
- *     buff       buffer containing the encoded key
+ *     Converts contents of a key file into an HMAC key. 
+ * Parameters 
+ *     hkey    structure to put key into 
+ *     buff       buffer containing the encoded key 
  *     buff_len   the length of the buffer
  * Return
- *     n >= 0 Foot print of the key converted
- *     n <  0 Error in conversion
+ *     n >= 0 Foot print of the key converted 
+ *     n <  0 Error in conversion 
  */
 
 static int
@@ -379,15 +367,15 @@ dst_hmac_md5_key_from_file_format(DST_KEY *dkey, const char *buff,
 }
 
 /*
- * dst_hmac_md5_to_dns_key()
- *         function to extract hmac key from DST_KEY structure
- * input:
- *      in_key:  HMAC-MD5 key
- * output:
+ * dst_hmac_md5_to_dns_key() 
+ *         function to extract hmac key from DST_KEY structure 
+ * input: 
+ *      in_key:  HMAC-MD5 key 
+ * output: 
  *	out_str: buffer to write ot
- *      out_len: size of output buffer
+ *      out_len: size of output buffer 
  * returns:
- *      number of bytes written to output buffer
+ *      number of bytes written to output buffer 
  */
 static int
 dst_hmac_md5_to_dns_key(const DST_KEY *in_key, u_char *out_str,
@@ -396,7 +384,7 @@ dst_hmac_md5_to_dns_key(const DST_KEY *in_key, u_char *out_str,
 
 	HMAC_Key *hkey;
 	int i;
-
+	
 	if (in_key == NULL || in_key->dk_KEY_struct == NULL ||
 	    out_len <= in_key->dk_key_size || out_str == NULL)
 		return (-1);
@@ -407,7 +395,7 @@ dst_hmac_md5_to_dns_key(const DST_KEY *in_key, u_char *out_str,
 	return (i);
 }
 
-/**************************************************************************
+/************************************************************************** 
  *  dst_hmac_md5_compare_keys
  *	Compare two keys for equality.
  *  Return
@@ -423,7 +411,7 @@ dst_hmac_md5_compare_keys(const DST_KEY *key1, const DST_KEY *key2)
 	return memcmp(hkey1->hk_ipad, hkey2->hk_ipad, HMAC_LEN);
 }
 
-/**************************************************************************
+/************************************************************************** 
  * dst_hmac_md5_free_key_structure
  *     Frees all (none) dynamically allocated structures in hkey
  */
@@ -437,11 +425,11 @@ dst_hmac_md5_free_key_structure(void *key)
 }
 
 
-/***************************************************************************
+/*************************************************************************** 
  * dst_hmac_md5_generate_key
  *     Creates a HMAC key of size size with a maximum size of 63 bytes
- *     generating a HMAC key larger than 63 bytes makes no sense as that key
- *     is digested before use.
+ *     generating a HMAC key larger than 63 bytes makes no sense as that key 
+ *     is digested before use. 
  */
 
 static int
@@ -456,7 +444,7 @@ dst_hmac_md5_generate_key(DST_KEY *key, const int nothing)
 	size = (key->dk_key_size + 7) / 8; /* convert to bytes */
 	if (size <= 0)
 		return(0);
-
+	
 	len = size > 64 ? 64 : size;
 	buff = malloc(len+8);
 
@@ -475,7 +463,7 @@ dst_hmac_md5_generate_key(DST_KEY *key, const int nothing)
 
 /*
  * dst_hmac_md5_init()  Function to answer set up function pointers for HMAC
- *	   related functions
+ *	   related functions 
  */
 int
 dst_hmac_md5_init()
@@ -498,7 +486,7 @@ dst_hmac_md5_init()
 	return (1);
 }
 
-#else
+#else 
 int
 dst_hmac_md5_init(){
 	return (0);

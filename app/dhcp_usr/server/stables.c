@@ -1,22 +1,9 @@
-//==============================================================================
-// Brief   : Tables of information only used by server
-// Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-//------------------------------------------------------------------------------
-// ODTONE - Open Dot Twenty One
-//
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
-//
-// This software is distributed under a license. The full license
-// agreement can be found in the file LICENSE in this distribution.
-// This software may not be copied, modified, sold or distributed
-// other than expressed in the named license agreement.
-//
-// This software is distributed without any warranty.
-//==============================================================================
+/* stables.c
+
+   Tables of information only used by server... */
 
 /*
- * Copyright (c) 2004-2009 by Internet Systems Consortium, Inc. ("ISC")
+ * Copyright (c) 2004-2011 by Internet Systems Consortium, Inc. ("ISC")
  * Copyright (c) 1995-2003 by Internet Software Consortium
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -85,7 +72,7 @@ struct failover_option_info ft_options [] =
 	  FM_OFFSET(ip_flags), FTB_IP_FLAGS },
 	{ FTO_LEASE_EXPIRY, "lease-expiration-time", FT_UINT32, 1,
 	  FM_OFFSET(expiry), FTB_LEASE_EXPIRY },
-	{ FTO_MAX_UNACKED, "max-unacked-bndupd", FT_UINT32, 1,
+	{ FTO_MAX_UNACKED, "max-unacked-bndupd", FT_UINT32, 1, 
 	  FM_OFFSET(max_unacked), FTB_MAX_UNACKED },
 	{ FTO_MCLT, "MCLT", FT_UINT32, 1, FM_OFFSET(mclt), FTB_MCLT },
 	{ FTO_MESSAGE, "message", FT_TEXT, 0,

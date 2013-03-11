@@ -1,22 +1,10 @@
-//==============================================================================
-// Brief   : Memory allocation for the DHCP server
-// Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-//------------------------------------------------------------------------------
-// ODTONE - Open Dot Twenty One
-//
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
-//
-// This software is distributed under a license. The full license
-// agreement can be found in the file LICENSE in this distribution.
-// This software may not be copied, modified, sold or distributed
-// other than expressed in the named license agreement.
-//
-// This software is distributed without any warranty.
-//==============================================================================
+/* salloc.c
+
+   Memory allocation for the DHCP server... */
 
 /*
- * Copyright (c) 2004-2007,2009 by Internet Systems Consortium, Inc. ("ISC")
+ * Copyright (c) 2009,2012 by Internet Systems Consortium, Inc. ("ISC")
+ * Copyright (c) 2004-2007 by Internet Systems Consortium, Inc. ("ISC")
  * Copyright (c) 1996-2003 by Internet Software Consortium
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -51,48 +39,50 @@
 #if defined (COMPACT_LEASES)
 struct lease *free_leases;
 
-# if defined (DEBUG_MEMORY_LEAKAGE_ON_EXIT)
+#if defined (DEBUG_MEMORY_LEAKAGE_ON_EXIT)
 struct lease *lease_hunks;
 
 void relinquish_lease_hunks ()
 {
-	struct lease *c, *n, **p, *f;
+	struct lease *c, *n, **p;
 	int i;
 
 	/* Account for all the leases on the free list. */
-	for (n = lease_hunks; n; n = n -> next) {
-	    for (i = 1; i < n -> starts + 1; i++) {
+	for (n = lease_hunks; n; n = n->next) {
+	    for (i = 1; i < n->starts + 1; i++) {
 		p = &free_leases;
-		for (c = free_leases; c; c = c -> next) {
-		    if (c == &n [i]) {
-			*p = c -> next;
-			n -> ends++;
+		for (c = free_leases; c; c = c->next) {
+		    if (c == &n[i]) {
+			*p = c->next;
+			n->ends++;
 			break;
 		    }
-		    p = &c -> next;
+		    p = &c->next;
 		}
 		if (!c) {
-		    log_info ("lease %s refcnt %d",
-			      piaddr (n [i].ip_addr), n [i].refcnt);
-		    dump_rc_history (&n [i]);
+		    log_info("lease %s refcnt %d",
+			     piaddr (n[i].ip_addr), n[i].refcnt);
+#if defined (DEBUG_RC_HISTORY)
+		    dump_rc_history(&n[i]);
+#endif
 		}
 	    }
 	}
 
 	for (c = lease_hunks; c; c = n) {
-		n = c -> next;
-		if (c -> ends != c -> starts) {
-			log_info ("lease hunk %lx leases %ld free %ld",
-				  (unsigned long)c, (unsigned long)c -> starts,
-				  (unsigned long)c -> ends);
+		n = c->next;
+		if (c->ends != c->starts) {
+			log_info("lease hunk %lx leases %ld free %ld",
+				 (unsigned long)c, (unsigned long)(c->starts),
+				 (unsigned long)(c->ends));
 		}
-		dfree (c, MDL);
+		dfree(c, MDL);
 	}
 
 	/* Free all the rogue leases. */
 	for (c = free_leases; c; c = n) {
-		n = c -> next;
-		dfree (c, MDL);
+		n = c->next;
+		dfree(c, MDL);
 	}
 }
 #endif
@@ -195,7 +185,7 @@ struct lease_state *new_lease_state (file, line)
 		rval = free_lease_states;
 		free_lease_states =
 			(struct lease_state *)(free_lease_states -> next);
-		dmalloc_reuse (rval, file, line, 0);
+ 		dmalloc_reuse (rval, file, line, 0);
 	} else {
 		rval = dmalloc (sizeof (struct lease_state), file, line);
 		if (!rval)

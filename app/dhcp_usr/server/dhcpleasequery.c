@@ -1,21 +1,5 @@
-//==============================================================================
-// Brief   : DHCP lease query
-// Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-//------------------------------------------------------------------------------
-// ODTONE - Open Dot Twenty One
-//
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
-//
-// This software is distributed under a license. The full license
-// agreement can be found in the file LICENSE in this distribution.
-// This software may not be copied, modified, sold or distributed
-// other than expressed in the named license agreement.
-//
-// This software is distributed without any warranty.
-//==============================================================================
-
 /*
+ * Copyright (C) 2011-2012 by Internet Systems Consortium, Inc. ("ISC")
  * Copyright (C) 2006-2007,2009 by Internet Systems Consortium, Inc. ("ISC")
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -34,9 +18,6 @@
 #include "dhcpd.h"
 
 /*
- * TODO: RFC4388 specifies that the server SHOULD store the
- *       vendor-class-id.
- *
  * TODO: RFC4388 specifies that the server SHOULD return the same
  *       options it would for a DHCREQUEST message, if no Parameter
  *       Request List option (option 55) is passed. We do not do that.
@@ -52,7 +33,7 @@
  *       DoS'ed by DHCPLEASEQUERY message.
  */
 
-/*
+/* 
  * If you query by hardware address or by client ID, then you may have
  * more than one IP address for your query argument. We need to do two
  * things:
@@ -98,8 +79,8 @@ get_newest_lease(struct lease **retval,
 	newest = lease;
 	for (p=next(lease); p != NULL; p=next(p)) {
 		if (newest->binding_state == FTS_ACTIVE) {
-			if ((p->binding_state == FTS_ACTIVE) &&
-				(p->cltt > newest->cltt)) {
+			if ((p->binding_state == FTS_ACTIVE) && 
+		    	(p->cltt > newest->cltt)) {
 				newest = p;
 			}
 		} else {
@@ -114,7 +95,7 @@ get_newest_lease(struct lease **retval,
 
 static int
 get_associated_ips(const struct lease *lease,
-		   struct lease *(*next)(const struct lease *),
+		   struct lease *(*next)(const struct lease *), 
 		   const struct lease *newest,
 		   u_int32_t *associated_ips,
 		   unsigned int associated_ips_size) {
@@ -144,7 +125,7 @@ get_associated_ips(const struct lease *lease,
 }
 
 
-void
+void 
 dhcpleasequery(struct packet *packet, int ms_nulltp) {
 	char msgbuf[256];
 	char dbg_info[128];
@@ -162,6 +143,7 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 	unsigned char dhcpMsgType;
 	const char *dhcp_msg_type_name;
 	struct subnet *subnet;
+	struct group *relay_group;
 	struct option_state *options;
 	struct option_cache *oc;
 	int allow_leasequery;
@@ -184,36 +166,39 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 	/*
 	 * Prepare log information.
 	 */
-	snprintf(msgbuf, sizeof(msgbuf),
+	snprintf(msgbuf, sizeof(msgbuf), 
 		"DHCPLEASEQUERY from %s", inet_ntoa(packet->raw->giaddr));
 
-	/*
+	/* 
 	 * We can't reply if there is no giaddr field.
 	 */
 	if (!packet->raw->giaddr.s_addr) {
-		log_info("%s: missing giaddr, ciaddr is %s, no reply sent",
+		log_info("%s: missing giaddr, ciaddr is %s, no reply sent", 
 			 msgbuf, inet_ntoa(packet->raw->ciaddr));
 		return;
 	}
 
-	/*
-	 * Set up our options, scope, and, um... stuff.
-	 * This is basically copied from dhcpinform() in dhcp.c.
+	/* 
+	 * Initially we use the 'giaddr' subnet options scope to determine if
+	 * the giaddr-identified relay agent is permitted to perform a
+	 * leasequery.  The subnet is not required, and may be omitted, in
+	 * which case we are essentially interrogating the root options class
+	 * to find a globally permit.
 	 */
 	gip.len = sizeof(packet->raw->giaddr);
 	memcpy(gip.iabuf, &packet->raw->giaddr, sizeof(packet->raw->giaddr));
 
 	subnet = NULL;
 	find_subnet(&subnet, gip, MDL);
-	if (subnet == NULL) {
-		log_info("%s: unknown subnet for address %s",
-			 msgbuf, piaddr(gip));
-		return;
-	}
+	if (subnet != NULL)
+		relay_group = subnet->group;
+	else
+		relay_group = root_group;
+
+	subnet_dereference(&subnet, MDL);
 
 	options = NULL;
 	if (!option_state_allocate(&options, MDL)) {
-		subnet_dereference(&subnet, MDL);
 		log_error("No memory for option state.");
 		log_info("%s: out of memory, no reply sent", msgbuf);
 		return;
@@ -226,8 +211,9 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 				    packet->options,
 				    options,
 				    &global_scope,
-				    subnet->group,
+				    relay_group,
 				    NULL);
+
 	for (i=packet->class_count-1; i>=0; i--) {
 		execute_statements_in_scope(NULL,
 					    packet,
@@ -237,12 +223,10 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 					    options,
 					    &global_scope,
 					    packet->classes[i]->group,
-					    subnet->group);
+					    relay_group);
 	}
 
-	subnet_dereference(&subnet, MDL);
-
-	/*
+	/* 
 	 * Because LEASEQUERY has some privacy concerns, default to deny.
 	 */
 	allow_leasequery = 0;
@@ -263,14 +247,15 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 		return;
 	}
 
-	/*
+
+	/* 
 	 * Copy out the client IP address.
 	 */
 	cip.len = sizeof(packet->raw->ciaddr);
 	memcpy(cip.iabuf, &packet->raw->ciaddr, sizeof(packet->raw->ciaddr));
 
-	/*
-	 * If the client IP address is valid (not all zero), then we
+	/* 
+	 * If the client IP address is valid (not all zero), then we 
 	 * are looking for information about that IP address.
 	 */
 	assoc_ip_cnt = 0;
@@ -294,20 +279,20 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 		 */
 
 		memset(&uid, 0, sizeof(uid));
-		if (get_option(&uid,
+		if (get_option(&uid, 
 			       &dhcp_universe,
 			       packet,
 			       NULL,
 			       NULL,
 			       packet->options,
 			       NULL,
-			       packet->options,
+			       packet->options, 
 			       &global_scope,
 			       DHO_DHCP_CLIENT_IDENTIFIER,
 			       MDL)) {
 
-			snprintf(dbg_info,
-				 sizeof(dbg_info),
+			snprintf(dbg_info, 
+				 sizeof(dbg_info), 
 				 "client-id %s",
 				 print_hex_1(uid.len, uid.data, 60));
 
@@ -315,9 +300,9 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 			data_string_forget(&uid, MDL);
 			get_newest_lease(&lease, tmp_lease, next_uid);
 			assoc_ip_cnt = get_associated_ips(tmp_lease,
-							  next_uid,
+							  next_uid, 
 							  lease,
-							  assoc_ips,
+							  assoc_ips, 
 							  nassoc_ips);
 
 		} else {
@@ -331,23 +316,23 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 
 			h.hlen = packet->raw->hlen + 1;
 			h.hbuf[0] = packet->raw->htype;
-			memcpy(&h.hbuf[1],
-			       packet->raw->chaddr,
+			memcpy(&h.hbuf[1], 
+			       packet->raw->chaddr, 
 			       packet->raw->hlen);
 
-			snprintf(dbg_info,
-				 sizeof(dbg_info),
+			snprintf(dbg_info, 
+				 sizeof(dbg_info), 
 				 "MAC address %s",
-				 print_hw_addr(h.hbuf[0],
-					       h.hlen - 1,
+				 print_hw_addr(h.hbuf[0], 
+					       h.hlen - 1, 
 					       &h.hbuf[1]));
 
 			find_lease_by_hw_addr(&tmp_lease, h.hbuf, h.hlen, MDL);
 			get_newest_lease(&lease, tmp_lease, next_hw);
 			assoc_ip_cnt = get_associated_ips(tmp_lease,
-							  next_hw,
+							  next_hw, 
 							  lease,
-							  assoc_ips,
+							  assoc_ips, 
 							  nassoc_ips);
 
 		}
@@ -355,7 +340,7 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 		lease_dereference(&tmp_lease, MDL);
 
 		if (lease != NULL) {
-			memcpy(&packet->raw->ciaddr,
+			memcpy(&packet->raw->ciaddr, 
 			       lease->ip_addr.iabuf,
 			       sizeof(packet->raw->ciaddr));
 		}
@@ -372,10 +357,10 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 	}
 
 	/*
-	 * We now know the query target too, so can report this in
+	 * We now know the query target too, so can report this in 
 	 * our log message.
 	 */
-	snprintf(msgbuf, sizeof(msgbuf),
+	snprintf(msgbuf, sizeof(msgbuf), 
 		"DHCPLEASEQUERY from %s for %s",
 		inet_ntoa(packet->raw->giaddr), dbg_info);
 
@@ -395,21 +380,45 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 		}
 	}
 
-	/*
+	/* 
 	 * Set options that only make sense if we have an active lease.
 	 */
 
 	if (dhcpMsgType == DHCPLEASEACTIVE)
 	{
-
 		/*
+		 * RFC 4388 uses the PRL to request options for the agent to
+		 * receive that are "about" the client.  It is confusing
+		 * because in some cases it wants to know what was sent to
+		 * the client (lease times, adjusted), and in others it wants
+		 * to know information the client sent.  You're supposed to
+		 * know this on a case-by-case basis.
+		 *
+		 * "Name servers", "domain name", and the like from the relay
+		 * agent's scope seems less than useful.  Our options are to
+		 * restart the option cache from the lease's best point of view
+		 * (execute statements from the lease pool's group), or to
+		 * simply restart the option cache from empty.
+		 *
+		 * I think restarting the option cache from empty best
+		 * approaches RFC 4388's intent; specific options are included.
+		 */
+		option_state_dereference(&options, MDL);
+
+		if (!option_state_allocate(&options, MDL)) {
+			log_error("%s: out of memory, no reply sent", msgbuf);
+			lease_dereference(&lease, MDL);
+			return;
+		}
+
+		/* 
 		 * Set the hardware address fields.
 		 */
 
 		packet->raw->hlen = lease->hardware_addr.hlen - 1;
 		packet->raw->htype = lease->hardware_addr.hbuf[0];
-		memcpy(packet->raw->chaddr,
-		       &lease->hardware_addr.hbuf[1],
+		memcpy(packet->raw->chaddr, 
+		       &lease->hardware_addr.hbuf[1], 
 		       sizeof(packet->raw->chaddr));
 
 		/*
@@ -438,18 +447,19 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 		 */
 
 		lease_duration = lease->ends - lease->starts;
-		time_renewal = lease->starts +
+		time_renewal = lease->starts + 
 			(lease_duration / 2);
-		time_rebinding = lease->starts +
+		time_rebinding = lease->starts + 
 			(lease_duration / 2) +
 			(lease_duration / 4) +
 			(lease_duration / 8);
 
 		if (time_renewal > cur_time) {
 			time_renewal = htonl(time_renewal - cur_time);
-			if (!add_option(options,
+
+			if (!add_option(options, 
 					DHO_DHCP_RENEWAL_TIME,
-					&time_renewal,
+					&time_renewal, 
 					sizeof(time_renewal))) {
 				option_state_dereference(&options, MDL);
 				lease_dereference(&lease, MDL);
@@ -461,9 +471,10 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 
 		if (time_rebinding > cur_time) {
 			time_rebinding = htonl(time_rebinding - cur_time);
-			if (!add_option(options,
+
+			if (!add_option(options, 
 					DHO_DHCP_REBINDING_TIME,
-					&time_rebinding,
+					&time_rebinding, 
 					sizeof(time_rebinding))) {
 				option_state_dereference(&options, MDL);
 				lease_dereference(&lease, MDL);
@@ -475,6 +486,7 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 
 		if (lease->ends > cur_time) {
 			time_expiry = htonl(lease->ends - cur_time);
+
 			if (!add_option(options, 
 					DHO_DHCP_LEASE_TIME,
 					&time_expiry, 
@@ -487,42 +499,71 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 			}
 		}
 
+		/* Supply the Vendor-Class-Identifier. */
+		if (lease->scope != NULL) {
+			struct data_string vendor_class;
+
+			memset(&vendor_class, 0, sizeof(vendor_class));
+
+			if (find_bound_string(&vendor_class, lease->scope,
+					      "vendor-class-identifier")) {
+				if (!add_option(options,
+						DHO_VENDOR_CLASS_IDENTIFIER,
+						(void *)vendor_class.data,
+						vendor_class.len)) {
+					option_state_dereference(&options,
+								 MDL);
+					lease_dereference(&lease, MDL);
+					log_error("%s: error adding vendor "
+						  "class identifier, no reply "
+						  "sent", msgbuf);
+					data_string_forget(&vendor_class, MDL);
+					return;
+				}
+				data_string_forget(&vendor_class, MDL);
+			}
+		}
 
 		/*
 		 * Set the relay agent info.
+		 *
+		 * Note that because agent info is appended without regard
+		 * to the PRL in cons_options(), this will be sent as the
+		 * last option in the packet whether it is listed on PRL or
+		 * not.
 		 */
 
 		if (lease->agent_options != NULL) {
 			int idx = agent_universe.index;
-			struct option_chain_head **tmp1 =
+			struct option_chain_head **tmp1 = 
 				(struct option_chain_head **)
 				&(options->universes[idx]);
-				struct option_chain_head *tmp2 =
+				struct option_chain_head *tmp2 = 
 				(struct option_chain_head *)
 				lease->agent_options;
 
 			option_chain_head_reference(tmp1, tmp2, MDL);
 		}
 
-		/*
-		 * Set the client last transaction time.
+		/* 
+	 	 * Set the client last transaction time.
 		 * We check to make sure we have a timestamp. For
-		 * lease files that were saved before running a
+		 * lease files that were saved before running a 
 		 * timestamp-aware version of the server, this may
 		 * not be set.
-		 */
+	 	 */
 
 		if (lease->cltt != MIN_TIME) {
 			if (cur_time > lease->cltt) {
-				client_last_transaction_time =
+				client_last_transaction_time = 
 					htonl(cur_time - lease->cltt);
 			} else {
 				client_last_transaction_time = htonl(0);
 			}
-			if (!add_option(options,
+			if (!add_option(options, 
 					DHO_CLIENT_LAST_TRANSACTION_TIME,
 					&client_last_transaction_time,
-					sizeof(client_last_transaction_time))) {
+		     			sizeof(client_last_transaction_time))) {
 				option_state_dereference(&options, MDL);
 				lease_dereference(&lease, MDL);
 				log_info("%s: out of memory, no reply sent",
@@ -532,10 +573,10 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 		}
 
 		/*
-		 * Set associated IPs, if requested and there are some.
-		 */
+	 	 * Set associated IPs, if requested and there are some.
+	 	 */
 		if (want_associated_ip && (assoc_ip_cnt > 0)) {
-			if (!add_option(options,
+			if (!add_option(options, 
 					DHO_ASSOCIATED_IP,
 					assoc_ips,
 					assoc_ip_cnt * sizeof(assoc_ips[0]))) {
@@ -548,7 +589,7 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 		}
 	}
 
-	/*
+	/* 
 	 * Set the message type.
 	 */
 
@@ -557,9 +598,9 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 	/*
 	 * Set DHCP message type.
 	 */
-	if (!add_option(options,
+	if (!add_option(options, 
 		        DHO_DHCP_MESSAGE_TYPE,
-		        &dhcpMsgType,
+		        &dhcpMsgType, 
 			sizeof(dhcpMsgType))) {
 		option_state_dereference(&options, MDL);
 		lease_dereference(&lease, MDL);
@@ -575,18 +616,18 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 	/*
 	 * Figure out which address to use to send from.
 	 */
-	get_server_source_address(&siaddr, options, packet);
+	get_server_source_address(&siaddr, options, options, packet);
 
-	/*
+	/* 
 	 * Set up the option buffer.
 	 */
 
 	memset(&prl, 0, sizeof(prl));
-	oc = lookup_option(&dhcp_universe, options,
+	oc = lookup_option(&dhcp_universe, options, 
 			   DHO_DHCP_PARAMETER_REQUEST_LIST);
 	if (oc != NULL) {
-		evaluate_option_cache(&prl,
-				      packet,
+		evaluate_option_cache(&prl, 
+				      packet, 
 				      NULL,
 				      NULL,
 				      packet->options,
@@ -601,8 +642,8 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 		prl_ptr = NULL;
 	}
 
-	packet->packet_length = cons_options(packet,
-					     packet->raw,
+	packet->packet_length = cons_options(packet, 
+					     packet->raw, 
 					     lease,
 					     NULL,
 					     0,
@@ -611,7 +652,7 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 					     &global_scope,
 					     0,
 					     0,
-					     0,
+					     0, 
 					     prl_ptr,
 					     NULL);
 
@@ -625,7 +666,7 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 #endif
 	memset(to.sin_zero, 0, sizeof(to.sin_zero));
 
-	/*
+	/* 
 	 * Leasequery packets are be sent to the gateway address.
 	 */
 	to.sin_addr = packet->raw->giaddr;
@@ -635,7 +676,7 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 		to.sin_port = remote_port; /* XXXSK: For debugging. */
 	}
 
-	/*
+	/* 
 	 * The fallback_interface lets us send with a real IP
 	 * address. The packet interface sends from all-zeros.
 	 */
@@ -649,12 +690,12 @@ dhcpleasequery(struct packet *packet, int ms_nulltp) {
 	 * Report what we're sending.
 	 */
 	log_info("%s to %s for %s (%d associated IPs)",
-		dhcp_msg_type_name,
+		dhcp_msg_type_name, 
 		inet_ntoa(to.sin_addr), dbg_info, assoc_ip_cnt);
 
 	send_packet(interface,
 		    NULL,
-		    packet->raw,
+		    packet->raw, 
 		    packet->packet_length,
 		    siaddr,
 		    &to,
@@ -783,24 +824,24 @@ valid_query_msg(struct lq6_state *lq) {
 	oc = lookup_option(&dhcpv6_universe, packet->options, D6O_SERVERID);
 	if (oc != NULL) {
 		if (evaluate_option_cache(&lq->server_id, packet, NULL, NULL,
-					  packet->options, NULL,
+					  packet->options, NULL, 
 					  &global_scope, oc, MDL)) {
-			log_debug("Discarding %s from %s; "
+			log_debug("Discarding %s from %s; " 
 				  "server identifier found "
-				  "(CLIENTID %s, SERVERID %s)",
+				  "(CLIENTID %s, SERVERID %s)", 
 				  dhcpv6_type_names[packet->dhcpv6_msg_type],
 				  piaddr(packet->client_addr),
-				  print_hex_1(lq->client_id.len,
-						lq->client_id.data, 60),
+				  print_hex_1(lq->client_id.len, 
+				  	      lq->client_id.data, 60),
 				  print_hex_2(lq->server_id.len,
-						lq->server_id.data, 60));
+				  	      lq->server_id.data, 60));
 		} else {
-			log_debug("Discarding %s from %s; "
+			log_debug("Discarding %s from %s; " 
 				  "server identifier found "
-				  "(CLIENTID %s)",
+				  "(CLIENTID %s)", 
 				  dhcpv6_type_names[packet->dhcpv6_msg_type],
-				  print_hex_1(lq->client_id.len,
-						lq->client_id.data, 60),
+				  print_hex_1(lq->client_id.len, 
+				  	      lq->client_id.data, 60),
 				  piaddr(packet->client_addr));
 		}
 		goto exit;
@@ -857,7 +898,7 @@ set_error(struct lq6_state *lq, u_int16_t code, const char *message) {
 	putUShort(d.buffer->data, code);
 	memcpy(d.buffer->data + sizeof(code), message, d.len - sizeof(code));
 	if (!save_option_buffer(&dhcpv6_universe, lq->reply_opts,
-				d.buffer, (unsigned char *)d.data, d.len,
+				d.buffer, (unsigned char *)d.data, d.len, 
 				D6O_STATUS_CODE, 0)) {
 		log_error("set_error: error saving status code.");
 		ret_val = 0;
@@ -1060,7 +1101,7 @@ dhcpv6_leasequery(struct data_string *reply_ret, struct packet *packet) {
 	       lq.packet->dhcpv6_transaction_id,
 	       sizeof(lq.buf.reply.transaction_id));
 
-	/*
+	/* 
 	 * Because LEASEQUERY has some privacy concerns, default to deny.
 	 */
 	allow_lq = 0;
@@ -1083,7 +1124,7 @@ dhcpv6_leasequery(struct data_string *reply_ret, struct packet *packet) {
 		log_info("dhcpv6_leasequery: not allowed, query ignored.");
 		goto exit;
 	}
-
+	    
 	/*
 	 * Same than transmission of REPLY message in RFC 3315:
 	 *  server-id
@@ -1099,7 +1140,7 @@ dhcpv6_leasequery(struct data_string *reply_ret, struct packet *packet) {
 					lq.reply_opts,
 					NULL,
 					(unsigned char *)lq.server_id.data,
-					lq.server_id.len,
+					lq.server_id.len, 
 					D6O_SERVERID,
 					0)) {
 			log_error("dhcpv6_leasequery: "

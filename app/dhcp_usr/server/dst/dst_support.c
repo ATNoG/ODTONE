@@ -1,26 +1,10 @@
-//==============================================================================
-// Brief   : DST support
-// Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-//------------------------------------------------------------------------------
-// ODTONE - Open Dot Twenty One
-//
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
-//
-// This software is distributed under a license. The full license
-// agreement can be found in the file LICENSE in this distribution.
-// This software may not be copied, modified, sold or distributed
-// other than expressed in the named license agreement.
-//
-// This software is distributed without any warranty.
-//==============================================================================
-
-static const char rcsid[] = "$Header: /proj/cvs/prod/DHCP/dst/dst_support.c,v 1.6.6.1 2009-11-20 01:49:01 sar Exp $";
+static const char rcsid[] = "$Header: /tmp/cvstest/DHCP/dst/dst_support.c,v 1.6.6.1 2009/11/20 01:49:01 sar Exp $";
 
 
 /*
  * Portions Copyright (c) 1995-1998 by Trusted Information Systems, Inc.
  * Portions Copyright (c) 2007,2009 by Internet Systems Consortium, Inc. ("ISC")
+ * Portions Copyright (c) 2012 by Internet Systems Consortium, Inc. ("ISC")
  *
  * Permission to use, copy modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -75,6 +59,7 @@ dst_s_conv_bignum_u8_to_b64(char *out_buf, const unsigned out_len,
 {
 	const u_char *bp = bin_data;
 	char *op = out_buf;
+	int res = 0;
 	unsigned lenh = 0, len64 = 0;
 	unsigned local_in_len = bin_len;
 	unsigned local_out_len = out_len;
@@ -98,9 +83,10 @@ dst_s_conv_bignum_u8_to_b64(char *out_buf, const unsigned out_len,
 		local_out_len -= lenh;
 		op += lenh;
 	}
-	len64 = b64_ntop(bp, local_in_len, op, local_out_len - 2);
-	if (len64 < 0)
+	res = b64_ntop(bp, local_in_len, op, local_out_len - 2);
+	if (res < 0)
 		return (-1);
+	len64 = (unsigned) res;
 	op += len64++;
 	*(op++) = '\n';		/* put CR in the output */
 	*op = '\0';		/* make sure output is 0 terminated */
@@ -167,6 +153,7 @@ dst_s_conv_bignum_b64_to_u8(const char **buf,
 	unsigned blen;
 	char *bp;
 	u_char bstr[RAW_KEY_SIZE];
+	int res = 0;
 
 	if (buf == NULL || *buf == NULL) {	/* error checks */
 		EREPORT(("dst_s_conv_bignum_b64_to_u8: null input buffer.\n"));
@@ -176,12 +163,13 @@ dst_s_conv_bignum_b64_to_u8(const char **buf,
 	if (bp != NULL)
 		*bp = '\0';
 
-	blen = b64_pton(*buf, bstr, sizeof(bstr));
-	if (blen <= 0) {
+	res = b64_pton(*buf, bstr, sizeof(bstr));
+	if (res <= 0) {
 		EREPORT(("dst_s_conv_bignum_b64_to_u8: decoded value is null.\n"));
 		return (0);
 	}
-	else if (loclen < blen) {
+	blen = (unsigned) res;
+	if (loclen < blen) {
 		EREPORT(("dst_s_conv_bignum_b64_to_u8: decoded value is longer than output buffer.\n"));
 		return (0);
 	}
@@ -232,7 +220,7 @@ dst_s_id_calc(const u_char *key, const unsigned keysize)
 
 	if (!key)
 		return 0;
-
+ 
 	for (ac = 0; size > 1; size -= 2, kp += 2)
 		ac += ((*kp) << 8) + *(kp + 1);
 
@@ -243,15 +231,15 @@ dst_s_id_calc(const u_char *key, const unsigned keysize)
 	return (ac & 0xffff);
 }
 
-/*
+/* 
  * dst_s_dns_key_id() Function to calculated DNSSEC footprint from KEY record
  *   rdata (all of  record)
  * Input:
- *	dns_key_rdata: the raw data in wire format
- *      rdata_len: the size of the input data
+ *	dns_key_rdata: the raw data in wire format 
+ *      rdata_len: the size of the input data 
  * Output:
  *      the key footprint/id calculated from the key data 
- */
+ */ 
 u_int16_t
 dst_s_dns_key_id(const u_char *dns_key_rdata, const unsigned rdata_len)
 {
@@ -446,17 +434,17 @@ dst_s_fopen(const char *filename, const char *mode, unsigned perm)
 	unsigned plen = sizeof(pathname);
 
 	if (*dst_path != '\0') {
-		strcpy(pathname, dst_path);
+		strncpy(pathname, dst_path, PATH_MAX);
 		plen -= strlen(pathname);
 	}
-	else
+	else 
 		pathname[0] = '\0';
 
 	if (plen > strlen(filename))
 		strncpy(&pathname[PATH_MAX - plen], filename, plen-1);
-	else
+	else 
 		return (NULL);
-
+	
 	fp = fopen(pathname, mode);
 	if (perm)
 		chmod(pathname, perm);
@@ -465,7 +453,7 @@ dst_s_fopen(const char *filename, const char *mode, unsigned perm)
 
 #if 0
 void
-dst_s_dump(const int mode, const u_char *data, const int size,
+dst_s_dump(const int mode, const u_char *data, const int size, 
 	    const char *msg)
 {
 	if (size > 0) {

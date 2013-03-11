@@ -1,22 +1,10 @@
-//==============================================================================
-// Brief   : Handling for client classes
-// Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-//------------------------------------------------------------------------------
-// ODTONE - Open Dot Twenty One
-//
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
-//
-// This software is distributed under a license. The full license
-// agreement can be found in the file LICENSE in this distribution.
-// This software may not be copied, modified, sold or distributed
-// other than expressed in the named license agreement.
-//
-// This software is distributed without any warranty.
-//==============================================================================
+/* class.c
+
+   Handling for client classes. */
 
 /*
- * Copyright (c) 2004,2007,2009 by Internet Systems Consortium, Inc. ("ISC")
+ * Copyright (c) 2009,2012 by Internet Systems Consortium, Inc. ("ISC")
+ * Copyright (c) 2004,2007 by Internet Systems Consortium, Inc. ("ISC")
  * Copyright (c) 1998-2003 by Internet Software Consortium
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -198,7 +186,7 @@ int check_collection (packet, lease, collection)
 					}
 					memset (nc -> billed_leases, 0,
 						(nc -> lease_limit *
-						 sizeof nc -> billed_leases));
+						 sizeof (struct lease *)));
 				}
 				data_string_copy (&nc -> hash_string, &data,
 						  MDL);
@@ -255,6 +243,7 @@ isc_result_t unlink_class(struct class **class) {
 	return ISC_R_NOTFOUND;
 }
 
+	
 isc_result_t find_class (struct class **class, const char *name,
 			 const char *file, int line)
 {

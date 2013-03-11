@@ -17,7 +17,7 @@
 
 project dhcp_usr/server
 	: requirements
-	  <include>../include
+	  <include>../libs/includes
 	  <linkflags>"-lisc"
 	;
 
@@ -52,11 +52,7 @@ exe dhcpd
 	  dst/hmac_link.c
 	  dst/md5_dgst.c
 	  dst/prandom.c
-	  libdhcpctl
-	  libomapip
-	  libcommon
-	  libdns
-	  libisc
+	  libdhcp
 	;
 
 install install
@@ -65,14 +61,4 @@ install install
 	: <location>../../../dist
 	;
 
-#explicit-alias libcommon : ../libs/common//dhcp_common ;
-#explicit-alias libomapip : ../libs/omapip//dhcp_omapip ;
-#explicit-alias libdns    : ../libs/bind/dns//dhcp_dns ;
-#explicit-alias libdhcpctl : ../libs/dhcpctl//dhcp_ctl ;
-explicit-alias libcommon   : ../libs/libdhcp.a ;
-explicit-alias libomapip   : ../libs/libomapi.a ;
-explicit-alias libdns      : ../libs/libdns.a ;
-explicit-alias libisc      : ../libs/libisc.a ;
-explicit-alias libdhcpctl : ../libs/libdhcpctl.a ;
-
-
+explicit-alias libdhcp   : ../libs//libdhcp.a ;

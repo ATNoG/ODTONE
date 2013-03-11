@@ -1,22 +1,5 @@
-//==============================================================================
-// Brief   : Server-specific in-memory database support
-// Authors : Carlos Guimaraes <cguimaraes@av.it.pt>
-//------------------------------------------------------------------------------
-// ODTONE - Open Dot Twenty One
-//
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
-//
-// This software is distributed under a license. The full license
-// agreement can be found in the file LICENSE in this distribution.
-// This software may not be copied, modified, sold or distributed
-// other than expressed in the named license agreement.
-//
-// This software is distributed without any warranty.
-//==============================================================================
-
 /*
- * Copyright (C) 2007-2011 by Internet Systems Consortium, Inc. ("ISC")
+ * Copyright (C) 2007-2012 by Internet Systems Consortium, Inc. ("ISC")
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -31,9 +14,71 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
-/* TODO: assert() */
-/* TODO: simplify functions, as pool is now in iaaddr */
+/*!
+ * \todo assert()
+ * \todo simplify functions, as pool is now in iaaddr
+ */
 
+/*! \file server/mdb6.c
+ *
+ * \page ipv6structures IPv6 Structures Overview
+ *
+ * A brief description of the IPv6 structures as reverse engineered.
+ *
+ * There are three major data strucutes involved in the database:
+ *
+ * - ipv6_pool - this contains information about a pool of addresses or prefixes
+ *             that the server is using.  This includes a hash table that
+ *             tracks the active items and a pair of heap tables one for
+ *             active items and one for non-active items.  The heap tables
+ *             are used to determine the next items to be modified due to
+ *             timing events (expire mostly).
+ * - ia_xx   - this contains information about a single IA from a request
+ *             normally it will contain one pointer to a lease for the client
+ *             but it may contain more in some circumstances.  There are 3
+ *             hash tables to aid in accessing these one each for NA, TA and PD.
+ * - iasubopt- the v6 lease structure.  These are created dynamically when
+ *             a client asks for something and will eventually be destroyed
+ *             if the client doesn't re-ask for that item.  A lease has space
+ *             for backpointers to the IA and to the pool to which it belongs.
+ *             The pool backpointer is always filled, the IA pointer may not be.
+ *
+ * In normal use we then have something like this:
+ *
+ * \verbatim
+ * ia hash tables
+ *  ia_na_active                           +----------------+
+ *  ia_ta_active          +------------+   | pool           |
+ *  ia_pd_active          | iasubopt   |<--|  active hash   |
+ * +-----------------+    | aka lease  |<--|  active heap   |
+ * | ia_xx           |    |  pool ptr  |-->|                |
+ * |  iasubopt array |<---|  iaptr     |<--|  inactive heap |
+ * |   lease ptr     |--->|            |   |                |
+ * +-----------------+    +------------+   +----------------+
+ * \endverbatim
+ *
+ * For the pool either the inactive heap will have a pointer
+ * or both the active heap and the active hash will have pointers.
+ *
+ * I think there are several major items to notice.   The first is
+ * that as a lease moves around it will be added to and removed
+ * from the address hash table in the pool and between the active
+ * and inactive hash tables.  The hash table and the active heap
+ * are used when the lease is either active or abandoned.  The
+ * inactive heap is used for all other states.  In particular a
+ * lease that has expired or been released will be cleaned
+ * (DDNS removal etc) and then moved to the inactive heap.  After
+ * some time period (currently 1 hour) it will be freed.
+ *
+ * The second is that when a client requests specific addresses,
+ * either because it previously owned them or if the server supplied
+ * them as part of a solicit, the server will try to lookup the ia_xx
+ * associated with the client and find the addresses there.  If it
+ * does find appropriate leases it moves them from the old IA to
+ * a new IA and eventually replaces the old IA with the new IA
+ * in the IA hash tables.
+ *
+ */
 #include "config.h"
 
 #include <sys/types.h>
@@ -122,7 +167,7 @@ iasubopt_reference(struct iasubopt **iasubopt, struct iasubopt *src,
 /*
  * Dereference an IAADDR/PREFIX structure.
  *
- * If it is the last reference, then the memory for the
+ * If it is the last reference, then the memory for the 
  * structure is freed.
  */
 isc_result_t
@@ -158,7 +203,7 @@ iasubopt_dereference(struct iasubopt **iasubopt, const char *file, int line) {
 	return ISC_R_SUCCESS;
 }
 
-/*
+/* 
  * Make the key that we use for IA.
  */
 isc_result_t
@@ -185,12 +230,12 @@ ia_make_key(struct data_string *key, u_int32_t iaid,
  *   initialized to NULL
  * - iaid and duid are values from the client
  *
- * XXXsk: we don't concern ourself with the byte order of the IAID,
- *        which might be a problem if we transfer this structure
+ * XXXsk: we don't concern ourself with the byte order of the IAID, 
+ *        which might be a problem if we transfer this structure 
  *        between machines of different byte order
  */
 isc_result_t
-ia_allocate(struct ia_xx **ia, u_int32_t iaid,
+ia_allocate(struct ia_xx **ia, u_int32_t iaid, 
 	    const char *duid, unsigned int duid_len,
 	    const char *file, int line) {
 	struct ia_xx *tmp;
@@ -209,7 +254,7 @@ ia_allocate(struct ia_xx **ia, u_int32_t iaid,
 		return ISC_R_NOMEMORY;
 	}
 
-	if (ia_make_key(&tmp->iaid_duid, iaid,
+	if (ia_make_key(&tmp->iaid_duid, iaid, 
 			duid, duid_len, file, line) != ISC_R_SUCCESS) {
 		dfree(tmp, file, line);
 		return ISC_R_NOMEMORY;
@@ -250,7 +295,7 @@ ia_reference(struct ia_xx **ia, struct ia_xx *src,
 /*
  * Dereference an IA structure.
  *
- * If it is the last reference, then the memory for the
+ * If it is the last reference, then the memory for the 
  * structure is freed.
  */
 isc_result_t
@@ -274,7 +319,7 @@ ia_dereference(struct ia_xx **ia, const char *file, int line) {
 	if (tmp->refcnt == 0) {
 		if (tmp->iasubopt != NULL) {
 			for (i=0; i<tmp->num_iasubopt; i++) {
-				iasubopt_dereference(&(tmp->iasubopt[i]),
+				iasubopt_dereference(&(tmp->iasubopt[i]), 
 						     file, line);
 			}
 			dfree(tmp->iasubopt, file, line);
@@ -290,14 +335,14 @@ ia_dereference(struct ia_xx **ia, const char *file, int line) {
  * Add an IAADDR/PREFIX entry to an IA structure.
  */
 isc_result_t
-ia_add_iasubopt(struct ia_xx *ia, struct iasubopt *iasubopt,
+ia_add_iasubopt(struct ia_xx *ia, struct iasubopt *iasubopt, 
 		const char *file, int line) {
 	int max;
 	struct iasubopt **new;
 
-	/*
+	/* 
 	 * Grow our array if we need to.
-	 *
+	 * 
 	 * Note: we pick 4 as the increment, as that seems a reasonable
 	 *       guess as to how many addresses/prefixes we might expect
 	 *       on an interface.
@@ -308,13 +353,13 @@ ia_add_iasubopt(struct ia_xx *ia, struct iasubopt *iasubopt,
 		if (new == NULL) {
 			return ISC_R_NOMEMORY;
 		}
-		memcpy(new, ia->iasubopt,
+		memcpy(new, ia->iasubopt, 
 		       ia->num_iasubopt * sizeof(struct iasubopt *));
 		ia->iasubopt = new;
 		ia->max_iasubopt = max;
 	}
 
-	iasubopt_reference(&(ia->iasubopt[ia->num_iasubopt]), iasubopt,
+	iasubopt_reference(&(ia->iasubopt[ia->num_iasubopt]), iasubopt, 
 			   file, line);
 	ia->num_iasubopt++;
 
@@ -330,6 +375,8 @@ void
 ia_remove_iasubopt(struct ia_xx *ia, struct iasubopt *iasubopt,
 		   const char *file, int line) {
 	int i, j;
+        if (ia == NULL || iasubopt == NULL)
+            return;
 
 	for (i=0; i<ia->num_iasubopt; i++) {
 		if (ia->iasubopt[i] == iasubopt) {
@@ -367,7 +414,7 @@ ia_remove_all_lease(struct ia_xx *ia, const char *file, int line) {
  * Compare two IA.
  */
 isc_boolean_t
-ia_equal(const struct ia_xx *a, const struct ia_xx *b)
+ia_equal(const struct ia_xx *a, const struct ia_xx *b) 
 {
 	isc_boolean_t found;
 	int i, j;
@@ -381,7 +428,7 @@ ia_equal(const struct ia_xx *a, const struct ia_xx *b)
 		} else {
 			return ISC_FALSE;
 		}
-	}
+	}	
 
 	/*
 	 * Check the type is the same.
@@ -396,7 +443,7 @@ ia_equal(const struct ia_xx *a, const struct ia_xx *b)
 	if (a->iaid_duid.len != b->iaid_duid.len) {
 		return ISC_FALSE;
 	}
-	if (memcmp(a->iaid_duid.data,
+	if (memcmp(a->iaid_duid.data, 
 		   b->iaid_duid.data, a->iaid_duid.len) != 0) {
 		return ISC_FALSE;
 	}
@@ -417,7 +464,7 @@ ia_equal(const struct ia_xx *a, const struct ia_xx *b)
 			if (a->iasubopt[i]->plen != b->iasubopt[i]->plen)
 				continue;
 			if (memcmp(&(a->iasubopt[i]->addr),
-			           &(b->iasubopt[j]->addr),
+			           &(b->iasubopt[j]->addr), 
 				   sizeof(struct in6_addr)) == 0) {
 				found = ISC_TRUE;
 				break;
@@ -438,7 +485,7 @@ ia_equal(const struct ia_xx *a, const struct ia_xx *b)
  * Helper function for lease heaps.
  * Makes the top of the heap the oldest lease.
  */
-static isc_boolean_t
+static isc_boolean_t 
 lease_older(void *a, void *b) {
 	struct iasubopt *la = (struct iasubopt *)a;
 	struct iasubopt *lb = (struct iasubopt *)b;
@@ -447,7 +494,7 @@ lease_older(void *a, void *b) {
 		return difftime(la->soft_lifetime_end_time,
 				lb->soft_lifetime_end_time) < 0;
 	} else {
-		return difftime(la->hard_lifetime_end_time,
+		return difftime(la->hard_lifetime_end_time, 
 				lb->hard_lifetime_end_time) < 0;
 	}
 }
@@ -470,7 +517,7 @@ lease_index_changed(void *iasubopt, unsigned int new_heap_index) {
  */
 isc_result_t
 ipv6_pool_allocate(struct ipv6_pool **pool, u_int16_t type,
-		   const struct in6_addr *start_addr, int bits,
+		   const struct in6_addr *start_addr, int bits, 
 		   int units, const char *file, int line) {
 	struct ipv6_pool *tmp;
 
@@ -541,7 +588,7 @@ ipv6_pool_reference(struct ipv6_pool **pool, struct ipv6_pool *src,
 	return ISC_R_SUCCESS;
 }
 
-/*
+/* 
  * Note: Each IAADDR/PREFIX in a pool is referenced by the pool. This is needed
  * to prevent the lease from being garbage collected out from under the
  * pool.
@@ -554,7 +601,7 @@ ipv6_pool_reference(struct ipv6_pool **pool, struct ipv6_pool *src,
  * Helper function for pool cleanup.
  * Dereference each of the hash entries in a pool.
  */
-static isc_result_t
+static isc_result_t 
 dereference_hash_entry(const void *name, unsigned len, void *value) {
 	struct iasubopt *iasubopt = (struct iasubopt *)value;
 
@@ -577,7 +624,7 @@ dereference_heap_entry(void *value, void *dummy) {
 /*
  * Dereference an IPv6 pool structure.
  *
- * If it is the last reference, then the memory for the
+ * If it is the last reference, then the memory for the 
  * structure is freed.
  */
 isc_result_t
@@ -600,10 +647,10 @@ ipv6_pool_dereference(struct ipv6_pool **pool, const char *file, int line) {
 	if (tmp->refcnt == 0) {
 		iasubopt_hash_foreach(tmp->leases, dereference_hash_entry);
 		iasubopt_free_hash_table(&(tmp->leases), file, line);
-		isc_heap_foreach(tmp->active_timeouts,
+		isc_heap_foreach(tmp->active_timeouts, 
 				 dereference_heap_entry, NULL);
 		isc_heap_destroy(&(tmp->active_timeouts));
-		isc_heap_foreach(tmp->inactive_timeouts,
+		isc_heap_foreach(tmp->inactive_timeouts, 
 				 dereference_heap_entry, NULL);
 		isc_heap_destroy(&(tmp->inactive_timeouts));
 		dfree(tmp, file, line);
@@ -612,13 +659,13 @@ ipv6_pool_dereference(struct ipv6_pool **pool, const char *file, int line) {
 	return ISC_R_SUCCESS;
 }
 
-/*
+/* 
  * Create an address by hashing the input, and using that for
  * the non-network part.
  */
 static void
-build_address6(struct in6_addr *addr,
-	       const struct in6_addr *net_start_addr, int net_bits,
+build_address6(struct in6_addr *addr, 
+	       const struct in6_addr *net_start_addr, int net_bits, 
 	       const struct data_string *input) {
 	isc_md5_t ctx;
 	int net_bytes;
@@ -626,9 +673,9 @@ build_address6(struct in6_addr *addr,
 	char *str;
 	const char *net_str;
 
-	/*
+	/* 
 	 * Use MD5 to get a nice 128 bit hash of the input.
-	 * Yes, we know MD5 isn't cryptographically sound.
+	 * Yes, we know MD5 isn't cryptographically sound. 
 	 * No, we don't care.
 	 */
 	isc_md5_init(&ctx);
@@ -663,12 +710,12 @@ build_address6(struct in6_addr *addr,
 		str[8] &= ~0x02;
 }
 
-/*
+/* 
  * Create a temporary address by a variant of RFC 4941 algo.
  * Note: this should not be used for prefixes shorter than 64 bits.
  */
 static void
-build_temporary6(struct in6_addr *addr,
+build_temporary6(struct in6_addr *addr, 
 		 const struct in6_addr *net_start_addr, int net_bits,
 		 const struct data_string *input) {
 	static u_int32_t history[2];
@@ -685,7 +732,7 @@ build_temporary6(struct in6_addr *addr,
 		isc_random_get(&history[1]);
 	}
 
-	/*
+	/* 
 	 * Use MD5 as recommended by RFC 4941.
 	 */
 	isc_md5_init(&ctx);
@@ -746,14 +793,14 @@ static struct in6_addr resany;
  * - pool must be a pointer to a (struct pool *) pointer previously
  *   initialized to NULL
  *
- * Right now we simply hash the DUID, and if we get a collision, we hash
+ * Right now we simply hash the DUID, and if we get a collision, we hash 
  * again until we find a free address. We try this a fixed number of times,
  * to avoid getting stuck in a loop (this is important on small pools
  * where we can run out of space).
  *
  * We return the number of attempts that it took to find an available
  * lease. This tells callers when a pool is are filling up, as
- * well as an indication of how full the pool is; statistically the
+ * well as an indication of how full the pool is; statistically the 
  * more full a pool is the more attempts must be made before finding
  * a free lease. Realistically this will only happen in very full
  * pools.
@@ -762,7 +809,7 @@ static struct in6_addr resany;
  * the long term.
  */
 isc_result_t
-create_lease6(struct ipv6_pool *pool, struct iasubopt **addr,
+create_lease6(struct ipv6_pool *pool, struct iasubopt **addr, 
 	      unsigned int *attempts,
 	      const struct data_string *uid, time_t soft_lifetime_end_time) {
 	struct data_string ds;
@@ -785,7 +832,7 @@ create_lease6(struct ipv6_pool *pool, struct iasubopt **addr,
 		init_resiid = ISC_TRUE;
 	}
 
-	/*
+	/* 
 	 * Use the UID as our initial seed for the hash
 	 */
 	memset(&ds, 0, sizeof(ds));
@@ -801,7 +848,7 @@ create_lease6(struct ipv6_pool *pool, struct iasubopt **addr,
 			return ISC_R_NORESOURCES;
 		}
 
-		/*
+		/* 
 		 * Build a resource.
 		 */
 		switch (pool->pool_type) {
@@ -825,15 +872,14 @@ create_lease6(struct ipv6_pool *pool, struct iasubopt **addr,
 		}
 
 		/*
-		 * Avoid reserved interface IDs.
-		 * (cf. draft-krishnan-ipv6-reserved-iids-02.txt)
+		 * Avoid reserved interface IDs. (cf. RFC 5453)
 		 */
 		reserved_iid = ISC_FALSE;
-		if (memcmp(&tmp.s6_addr[8], &rtany, 8) == 0) {
+		if (memcmp(&tmp.s6_addr[8], &rtany.s6_addr[8], 8) == 0) {
 			reserved_iid = ISC_TRUE;
 		}
 		if (!reserved_iid &&
-		    (memcmp(&tmp.s6_addr[8], &resany, 7) == 0) &&
+		    (memcmp(&tmp.s6_addr[8], &resany.s6_addr[8], 7) == 0) &&
 		    ((tmp.s6_addr[15] & 0x80) == 0x80)) {
 			reserved_iid = ISC_TRUE;
 		}
@@ -850,7 +896,7 @@ create_lease6(struct ipv6_pool *pool, struct iasubopt **addr,
 		if (test_iaaddr != NULL)
 			iasubopt_dereference(&test_iaaddr, MDL);
 
-		/*
+		/* 
 		 * Otherwise, we create a new input, adding the address
 		 */
 		memset(&new_ds, 0, sizeof(new_ds));
@@ -869,7 +915,7 @@ create_lease6(struct ipv6_pool *pool, struct iasubopt **addr,
 
 	data_string_forget(&ds, MDL);
 
-	/*
+	/* 
 	 * We're happy with the address, create an IAADDR
 	 * to hold it.
 	 */
@@ -892,6 +938,145 @@ create_lease6(struct ipv6_pool *pool, struct iasubopt **addr,
 	return result;
 }
 
+
+/*!
+ *
+ * \brief Cleans up leases when reading from a lease file
+ *
+ * This function is only expected to be run when reading leases in from a file.
+ * It checks to see if a lease already exists for the new leases's address.
+ * We don't add expired leases to the structures when reading a lease file
+ * which limits what can happen.  We have two variables the owners of the leases
+ * being the same or different and the new lease being active or non-active:
+ * Owners active
+ * same   no     remove old lease and its connections
+ * same   yes    nothing to do, other code will update the structures.
+ * diff   no     nothing to do
+ * diff   yes    this combination shouldn't happen, we should only have a
+ *               single active lease per address at a time and that lease
+ *               should move to non-active before any other lease can
+ *               become active for that address.
+ *               Currently we delete the previous lease and pass an error
+ *               to the caller who should log an error.
+ *
+ * When we remove a lease we remove it from the hash table and active heap
+ * (remember only active leases are in the structures at this time) for the
+ * pool, and from the IA's array.  If, after we've removed the pointer from
+ * IA's array to the lease, the IA has no more pointers we remove it from
+ * the appropriate hash table as well.
+ *
+ * \param[in] ia_table = the hash table for the IA
+ * \param[in] pool     = the pool to update
+ * \param[in] lease    = the new lease we want to add
+ * \param[in] ia       = the new ia we are building
+ *
+ * \return
+ * ISC_R_SUCCESS = the incoming lease and any previous lease were in
+ *                 an expected state - one of the first 3 options above.
+ *                 If necessary the old lease was removed.
+ * ISC_R_FAILURE = there is already an active lease for the address in
+ *                 the incoming lease.  This shouldn't happen if it does
+ *                 flag an error for the caller to log.
+ */
+
+isc_result_t
+cleanup_lease6(ia_hash_t *ia_table,
+	       struct ipv6_pool *pool,
+	       struct iasubopt *lease,
+	       struct ia_xx *ia) {
+
+	struct iasubopt *test_iasubopt, *tmp_iasubopt;
+	struct ia_xx *old_ia;
+	isc_result_t status = ISC_R_SUCCESS;
+
+	test_iasubopt = NULL;
+	old_ia = NULL;
+
+	/*
+	 * Look up the address - if we don't find a lease
+	 * we don't need to do anything.
+	 */
+	if (iasubopt_hash_lookup(&test_iasubopt, pool->leases,
+				 &lease->addr, sizeof(lease->addr),
+				 MDL) == 0) {
+		return (ISC_R_SUCCESS);
+	}
+
+	if (test_iasubopt->ia == NULL) {
+		/* no old ia, no work to do */
+		iasubopt_dereference(&test_iasubopt, MDL);
+		return (status);
+	}
+
+	ia_reference(&old_ia, test_iasubopt->ia, MDL);
+
+	if ((old_ia->iaid_duid.len == ia->iaid_duid.len) &&
+	    (memcmp((unsigned char *)ia->iaid_duid.data,
+		    (unsigned char *)old_ia->iaid_duid.data,
+		    ia->iaid_duid.len) == 0)) {
+		/* same IA */
+		if ((lease->state == FTS_ACTIVE) ||
+		    (lease->state == FTS_ABANDONED)) {
+			/* still active, no need to delete */
+			goto cleanup;
+		}
+	} else {
+		/* different IA */
+		if ((lease->state != FTS_ACTIVE) &&
+		    (lease->state != FTS_ABANDONED)) {
+			/* new lease isn't active, no work */
+			goto cleanup;
+		}
+
+		/*
+		 * We appear to have two active leases, this shouldn't happen.
+		 * Before a second lease can be set to active the first lease
+		 * should be set to inactive (released, expired etc). For now
+		 * delete the previous lease and indicate a failure to the
+		 * caller so it can generate a warning.
+		 * In the future we may try and determine which is the better
+		 * lease to keep.
+		 */
+
+		status = ISC_R_FAILURE;
+	}
+
+	/*
+	 * Remove the old lease from the active heap and from the hash table
+	 * then remove the lease from the IA and clean up the IA if necessary.
+	 */
+	isc_heap_delete(pool->active_timeouts, test_iasubopt->heap_index);
+	pool->num_active--;
+
+	iasubopt_hash_delete(pool->leases, &test_iasubopt->addr,
+			     sizeof(test_iasubopt->addr), MDL);
+	ia_remove_iasubopt(old_ia, test_iasubopt, MDL);
+	if (old_ia->num_iasubopt <= 0) {
+		ia_hash_delete(ia_table,
+			       (unsigned char *)old_ia->iaid_duid.data,
+			       old_ia->iaid_duid.len, MDL);
+	}
+
+	/*
+	 * We derefenrece the subopt here as we've just removed it from
+	 * the hash table in the pool.  We need to make a copy as we
+	 * need to derefernece it again later.
+	 */
+	tmp_iasubopt = test_iasubopt;
+	iasubopt_dereference(&tmp_iasubopt, MDL);
+
+      cleanup:
+	ia_dereference(&old_ia, MDL);
+
+	/*
+	 * Clean up the reference, this is in addition to the deference
+	 * above after removing the entry from the hash table
+	 */
+	iasubopt_dereference(&test_iasubopt, MDL);
+
+	return (status);
+}
+
 /*
  * Put a lease in the pool directly. This is intended to be used when
  * loading leases from the file.
@@ -910,7 +1095,7 @@ add_lease6(struct ipv6_pool *pool, struct iasubopt *lease,
 	ipv6_pool_reference(&lease->ipv6_pool, pool, MDL);
 
 	/*
-	 * If this IAADDR/PREFIX is already in our structures, remove the
+	 * If this IAADDR/PREFIX is already in our structures, remove the 
 	 * old one.
 	 */
 	test_iasubopt = NULL;
@@ -933,7 +1118,7 @@ add_lease6(struct ipv6_pool *pool, struct iasubopt *lease,
 			pool->num_inactive--;
 		}
 
-		iasubopt_hash_delete(pool->leases, &test_iasubopt->addr,
+		iasubopt_hash_delete(pool->leases, &test_iasubopt->addr, 
 				     sizeof(test_iasubopt->addr), MDL);
 
 		/*
@@ -949,7 +1134,7 @@ add_lease6(struct ipv6_pool *pool, struct iasubopt *lease,
 		iasubopt_dereference(&tmp_iasubopt, MDL);
 	}
 
-	/*
+	/* 
 	 * Add IAADDR/PREFIX to our structures.
 	 */
 	tmp_iasubopt = NULL;
@@ -957,7 +1142,7 @@ add_lease6(struct ipv6_pool *pool, struct iasubopt *lease,
 	if ((tmp_iasubopt->state == FTS_ACTIVE) ||
 	    (tmp_iasubopt->state == FTS_ABANDONED)) {
 		tmp_iasubopt->hard_lifetime_end_time = valid_lifetime_end_time;
-		iasubopt_hash_add(pool->leases, &tmp_iasubopt->addr,
+		iasubopt_hash_add(pool->leases, &tmp_iasubopt->addr, 
 				  sizeof(tmp_iasubopt->addr), lease, MDL);
 		insert_result = isc_heap_insert(pool->active_timeouts,
 						tmp_iasubopt);
@@ -971,13 +1156,13 @@ add_lease6(struct ipv6_pool *pool, struct iasubopt *lease,
 			pool->num_inactive++;
 	}
 	if (insert_result != ISC_R_SUCCESS) {
-		iasubopt_hash_delete(pool->leases, &lease->addr,
+		iasubopt_hash_delete(pool->leases, &lease->addr, 
 				     sizeof(lease->addr), MDL);
 		iasubopt_dereference(&tmp_iasubopt, MDL);
 		return insert_result;
 	}
 
-	/*
+	/* 
 	 * Note: we intentionally leave tmp_iasubopt referenced; there
 	 * is a reference in the heap/hash, after all.
 	 */
@@ -993,13 +1178,45 @@ lease6_exists(const struct ipv6_pool *pool, const struct in6_addr *addr) {
 	struct iasubopt *test_iaaddr;
 
 	test_iaaddr = NULL;
-	if (iasubopt_hash_lookup(&test_iaaddr, pool->leases,
+	if (iasubopt_hash_lookup(&test_iaaddr, pool->leases, 
 				 (void *)addr, sizeof(*addr), MDL)) {
 		iasubopt_dereference(&test_iaaddr, MDL);
 		return ISC_TRUE;
 	} else {
 		return ISC_FALSE;
 	}
+}
+
+/*!
+ *
+ * \brief Check if address is available to a lease
+ *
+ * Determine if the address in the lease is available to that
+ * lease.  Either the address isn't in use or it is in use
+ * but by that lease.
+ *
+ * \param[in] lease = lease to check
+ *
+ * \return
+ * ISC_TRUE  = The lease is allowed to use that address
+ * ISC_FALSE = The lease isn't allowed to use that address
+ */
+isc_boolean_t
+lease6_usable(struct iasubopt *lease) {
+	struct iasubopt *test_iaaddr;
+	isc_boolean_t status = ISC_TRUE;
+
+	test_iaaddr = NULL;
+	if (iasubopt_hash_lookup(&test_iaaddr, lease->ipv6_pool->leases,
+				 (void *)&lease->addr,
+				 sizeof(lease->addr), MDL)) {
+		if (test_iaaddr != lease) {
+			status = ISC_FALSE;
+		}
+		iasubopt_dereference(&test_iaaddr, MDL);
+	}
+
+	return (status);
 }
 
 /*
@@ -1013,7 +1230,7 @@ move_lease_to_active(struct ipv6_pool *pool, struct iasubopt *lease) {
 	old_heap_index = lease->heap_index;
 	insert_result = isc_heap_insert(pool->active_timeouts, lease);
 	if (insert_result == ISC_R_SUCCESS) {
-		iasubopt_hash_add(pool->leases, &lease->addr,
+       		iasubopt_hash_add(pool->leases, &lease->addr, 
 				  sizeof(lease->addr), lease, MDL);
 		isc_heap_delete(pool->inactive_timeouts, old_heap_index);
 		pool->num_active++;
@@ -1023,29 +1240,49 @@ move_lease_to_active(struct ipv6_pool *pool, struct iasubopt *lease) {
 	return insert_result;
 }
 
-/*
- * Renew an lease in the pool.
+/*!
+ * \brief Renew a lease in the pool.
  *
- * To do this, first set the new hard_lifetime_end_time for the resource,
- * and then invoke renew_lease6() on it.
+ * The hard_lifetime_end_time of the lease should be set to
+ * the current expiration time.
+ * The soft_lifetime_end_time of the lease should be set to
+ * the desired expiration time.
  *
- * WARNING: lease times must only be extended, never reduced!!!
+ * This routine will compare the two and call the correct
+ * heap routine to move the lease.  If the lease is active
+ * and the new expiration time is greater (the normal case)
+ * then we call isc_heap_decreased() as a larger time is a
+ * lower priority.  If the new expiration time is less then
+ * we call isc_heap_increased().
+ *
+ * If the lease is abandoned then it will be on the active list
+ * and we will always call isc_heap_increased() as the previous
+ * expiration would have been all 1s (as close as we can get
+ * to infinite).
+ *
+ * If the lease is moving to active we call that routine
+ * which will move it from the inactive list to the active list.
+ *
+ * \param pool a pool the lease belongs to
+ * \param lease the lease to be renewed
+ *
+ * \return result of the renew operation (ISC_R_SUCCESS if successful,
+           ISC_R_NOMEMORY when run out of memory)
  */
 isc_result_t
 renew_lease6(struct ipv6_pool *pool, struct iasubopt *lease) {
-	/*
-	 * If we're already active, then we can just move our expiration
-	 * time down the heap.
-	 *
-	 * If we're abandoned then we are already on the active list
-	 * but we need to retag the lease and move our expiration
-	 * from infinite to the current value
-	 *
-	 * Otherwise, we have to move from the inactive heap to the
-	 * active heap.
-	 */
+	time_t old_end_time = lease->hard_lifetime_end_time;
+	lease->hard_lifetime_end_time = lease->soft_lifetime_end_time;
+	lease->soft_lifetime_end_time = 0;
+
 	if (lease->state == FTS_ACTIVE) {
-		isc_heap_decreased(pool->active_timeouts, lease->heap_index);
+		if (old_end_time <= lease->hard_lifetime_end_time) {
+			isc_heap_decreased(pool->active_timeouts,
+					   lease->heap_index);
+		} else {
+			isc_heap_increased(pool->active_timeouts,
+					   lease->heap_index);
+		}
 		return ISC_R_SUCCESS;
 	} else if (lease->state == FTS_ABANDONED) {
 		char tmp_addr[INET6_ADDRSTRLEN];
@@ -1064,7 +1301,7 @@ renew_lease6(struct ipv6_pool *pool, struct iasubopt *lease) {
  * Put the lease on our inactive pool, with the specified state.
  */
 static isc_result_t
-move_lease_to_inactive(struct ipv6_pool *pool, struct iasubopt *lease,
+move_lease_to_inactive(struct ipv6_pool *pool, struct iasubopt *lease, 
 		       binding_state_t state) {
 	isc_result_t insert_result;
 	int old_heap_index;
@@ -1075,7 +1312,7 @@ move_lease_to_inactive(struct ipv6_pool *pool, struct iasubopt *lease,
 #if defined (NSUPDATE)
 		/* Process events upon expiration. */
 		if (pool->pool_type != D6O_IA_PD) {
-			ddns_removals(NULL, lease, NULL);
+			(void) ddns_removals(NULL, lease, NULL, ISC_FALSE);
 		}
 #endif
 
@@ -1086,7 +1323,7 @@ move_lease_to_inactive(struct ipv6_pool *pool, struct iasubopt *lease,
 			binding_scope_dereference(&lease->scope, MDL);
 		}
 
-		iasubopt_hash_delete(pool->leases,
+		iasubopt_hash_delete(pool->leases, 
 				     &lease->addr, sizeof(lease->addr), MDL);
 		isc_heap_delete(pool->active_timeouts, old_heap_index);
 		lease->state = state;
@@ -1097,7 +1334,7 @@ move_lease_to_inactive(struct ipv6_pool *pool, struct iasubopt *lease,
 }
 
 /*
- * Expire the oldest lease if it's lifetime_end_time is
+ * Expire the oldest lease if it's lifetime_end_time is 
  * older than the given time.
  *
  * - leasep must be a pointer to a (struct iasubopt *) pointer previously
@@ -1169,12 +1406,12 @@ release_lease6(struct ipv6_pool *pool, struct iasubopt *lease) {
 	}
 }
 
-/*
+/* 
  * Create a prefix by hashing the input, and using that for
  * the part subject to allocation.
  */
-static void
-build_prefix6(struct in6_addr *pref,
+void
+build_prefix6(struct in6_addr *pref, 
 	      const struct in6_addr *net_start_pref,
 	      int pool_bits, int pref_bits,
 	      const struct data_string *input) {
@@ -1184,9 +1421,9 @@ build_prefix6(struct in6_addr *pref,
 	char *str;
 	const char *net_str;
 
-	/*
+	/* 
 	 * Use MD5 to get a nice 128 bit hash of the input.
-	 * Yes, we know MD5 isn't cryptographically sound.
+	 * Yes, we know MD5 isn't cryptographically sound. 
 	 * No, we don't care.
 	 */
 	isc_md5_init(&ctx);
@@ -1238,14 +1475,14 @@ build_prefix6(struct in6_addr *pref,
  * - pool must be a pointer to a (struct pool *) pointer previously
  *   initialized to NULL
  *
- * Right now we simply hash the DUID, and if we get a collision, we hash
+ * Right now we simply hash the DUID, and if we get a collision, we hash 
  * again until we find a free prefix. We try this a fixed number of times,
  * to avoid getting stuck in a loop (this is important on small pools
  * where we can run out of space).
  *
  * We return the number of attempts that it took to find an available
  * prefix. This tells callers when a pool is are filling up, as
- * well as an indication of how full the pool is; statistically the
+ * well as an indication of how full the pool is; statistically the 
  * more full a pool is the more attempts must be made before finding
  * a free prefix. Realistically this will only happen in very full
  * pools.
@@ -1254,7 +1491,7 @@ build_prefix6(struct in6_addr *pref,
  * the long term.
  */
 isc_result_t
-create_prefix6(struct ipv6_pool *pool, struct iasubopt **pref,
+create_prefix6(struct ipv6_pool *pool, struct iasubopt **pref, 
 	       unsigned int *attempts,
 	       const struct data_string *uid,
 	       time_t soft_lifetime_end_time) {
@@ -1265,7 +1502,7 @@ create_prefix6(struct ipv6_pool *pool, struct iasubopt **pref,
 	struct iasubopt *iapref;
 	isc_result_t result;
 
-	/*
+	/* 
 	 * Use the UID as our initial seed for the hash
 	 */
 	memset(&ds, 0, sizeof(ds));
@@ -1281,7 +1518,7 @@ create_prefix6(struct ipv6_pool *pool, struct iasubopt **pref,
 			return ISC_R_NORESOURCES;
 		}
 
-		/*
+		/* 
 		 * Build a prefix
 		 */
 		build_prefix6(&tmp, &pool->start_addr,
@@ -1297,7 +1534,7 @@ create_prefix6(struct ipv6_pool *pool, struct iasubopt **pref,
 		}
 		iasubopt_dereference(&test_iapref, MDL);
 
-		/*
+		/* 
 		 * Otherwise, we create a new input, adding the prefix
 		 */
 		memset(&new_ds, 0, sizeof(new_ds));
@@ -1316,7 +1553,7 @@ create_prefix6(struct ipv6_pool *pool, struct iasubopt **pref,
 
 	data_string_forget(&ds, MDL);
 
-	/*
+	/* 
 	 * We're happy with the prefix, create an IAPREFIX
 	 * to hold it.
 	 */
@@ -1351,7 +1588,7 @@ prefix6_exists(const struct ipv6_pool *pool,
 		return ISC_FALSE;
 
 	test_iapref = NULL;
-	if (iasubopt_hash_lookup(&test_iapref, pool->leases,
+	if (iasubopt_hash_lookup(&test_iapref, pool->leases, 
 				 (void *)pref, sizeof(*pref), MDL)) {
 		iasubopt_dereference(&test_iapref, MDL);
 		return ISC_TRUE;
@@ -1380,7 +1617,7 @@ mark_lease_unavailable(struct ipv6_pool *pool, const struct in6_addr *addr) {
 	return result;
 }
 
-/*
+/* 
  * Add a pool.
  */
 isc_result_t
@@ -1393,7 +1630,7 @@ add_ipv6_pool(struct ipv6_pool *pool) {
 	}
 
 	if (num_pools > 0) {
-		memcpy(new_pools, pools,
+		memcpy(new_pools, pools, 
 		       sizeof(struct ipv6_pool *) * num_pools);
 		dfree(pools, MDL);
 	}
@@ -1412,7 +1649,7 @@ cleanup_old_expired(struct ipv6_pool *pool) {
 	struct ia_xx *ia_active;
 	unsigned char *tmpd;
 	time_t timeout;
-
+	
 	while (pool->num_inactive > 0) {
 		tmp = (struct iasubopt *)
 				isc_heap_element(pool->inactive_timeouts, 1);
@@ -1445,7 +1682,7 @@ cleanup_old_expired(struct ipv6_pool *pool) {
 			    (ia_hash_lookup(&ia_active, ia_na_active, tmpd,
 					    ia->iaid_duid.len, MDL) == 0) &&
 			    (ia_active == ia)) {
-				ia_hash_delete(ia_na_active, tmpd,
+				ia_hash_delete(ia_na_active, tmpd, 
 					       ia->iaid_duid.len, MDL);
 			}
 			if ((ia->ia_type == D6O_IA_TA) &&
@@ -1453,7 +1690,7 @@ cleanup_old_expired(struct ipv6_pool *pool) {
 			    (ia_hash_lookup(&ia_active, ia_ta_active, tmpd,
 					    ia->iaid_duid.len, MDL) == 0) &&
 			    (ia_active == ia)) {
-				ia_hash_delete(ia_ta_active, tmpd,
+				ia_hash_delete(ia_ta_active, tmpd, 
 					       ia->iaid_duid.len, MDL);
 			}
 			if ((ia->ia_type == D6O_IA_PD) &&
@@ -1461,7 +1698,7 @@ cleanup_old_expired(struct ipv6_pool *pool) {
 			    (ia_hash_lookup(&ia_active, ia_pd_active, tmpd,
 					    ia->iaid_duid.len, MDL) == 0) &&
 			    (ia_active == ia)) {
-				ia_hash_delete(ia_pd_active, tmpd,
+				ia_hash_delete(ia_pd_active, tmpd, 
 					       ia->iaid_duid.len, MDL);
 			}
 			ia_dereference(&ia, MDL);
@@ -1474,15 +1711,20 @@ static void
 lease_timeout_support(void *vpool) {
 	struct ipv6_pool *pool;
 	struct iasubopt *lease;
-
+	
 	pool = (struct ipv6_pool *)vpool;
 	for (;;) {
 		/*
 		 * Get the next lease scheduled to expire.
 		 *
-		 * Note that if there are no leases in the pool,
-		 * expire_lease6() will return ISC_R_SUCCESS with
+		 * Note that if there are no leases in the pool, 
+		 * expire_lease6() will return ISC_R_SUCCESS with 
 		 * a NULL lease.
+		 *
+		 * expire_lease6() will call move_lease_to_inactive() which
+		 * calls ddns_removals() do we want that on the standard
+		 * expiration timer or a special 'depref' timer?  Original
+		 * query from DH, moved here by SAR.
 		 */
 		lease = NULL;
 		if (expire_lease6(&lease, pool, cur_time) != ISC_R_SUCCESS) {
@@ -1492,22 +1734,17 @@ lease_timeout_support(void *vpool) {
 			break;
 		}
 
-		/* Look to see if there were ddns updates, and if
-		 * so, drop them.
-		 *
-		 * DH: Do we want to do this on a special 'depref'
-		 * timer rather than expiration timer?
-		 */
-#if defined (NSUPDATE)
-		if (pool->pool_type != D6O_IA_PD) {
-			ddns_removals(NULL, lease, NULL);
-		}
-#endif
-
 		write_ia(lease->ia);
 
 		iasubopt_dereference(&lease, MDL);
 	}
+
+	/*
+	 * If appropriate commit and rotate the lease file
+	 * As commit_leases_timed() checks to see if we've done any writes
+	 * we don't bother tracking if this function called write _ia
+	 */
+	(void) commit_leases_timed();
 
 	/*
 	 * Do some cleanup of our expired leases.
@@ -1524,7 +1761,7 @@ lease_timeout_support(void *vpool) {
  * For a given pool, add a timer that will remove the next
  * lease to expire.
  */
-void
+void 
 schedule_lease_timeout(struct ipv6_pool *pool) {
 	struct iasubopt *tmp;
 	time_t timeout;
@@ -1559,7 +1796,7 @@ schedule_lease_timeout(struct ipv6_pool *pool) {
 		tv.tv_sec = next_timeout;
 		tv.tv_usec = 0;
 		add_timeout(&tv, lease_timeout_support, pool,
-			    (tvref_t)ipv6_pool_reference,
+			    (tvref_t)ipv6_pool_reference, 
 			    (tvunref_t)ipv6_pool_dereference);
 	}
 }
@@ -1576,7 +1813,7 @@ schedule_all_ipv6_lease_timeouts(void) {
 	}
 }
 
-/*
+/* 
  * Given an address and the length of the network mask, return
  * only the network portion.
  *
@@ -1586,7 +1823,7 @@ schedule_all_ipv6_lease_timeouts(void) {
  *   "2001:888:1936:2:216:6fff:fe49:7d9b", length 48 = "2001:888:1936::"
  */
 static void
-ipv6_network_portion(struct in6_addr *result,
+ipv6_network_portion(struct in6_addr *result, 
 		     const struct in6_addr *addr, int bits) {
 	unsigned char *addrp;
 	int mask_bits;
@@ -1595,11 +1832,11 @@ ipv6_network_portion(struct in6_addr *result,
 	int i;
 
 	static const unsigned char bitmasks[] = {
-		0x00, 0xFE, 0xFC, 0xF8,
-		0xF0, 0xE0, 0xC0, 0x80,
+		0x00, 0xFE, 0xFC, 0xF8, 
+		0xF0, 0xE0, 0xC0, 0x80, 
 	};
 
-	/*
+	/* 
 	 *  Sanity check our bits. ;)
 	 */
 	if ((bits < 0) || (bits > 128)) {
@@ -1607,13 +1844,13 @@ ipv6_network_portion(struct in6_addr *result,
 			  bits);
 	}
 
-	/*
+	/* 
 	 * Copy our address portion.
 	 */
 	*result = *addr;
 	addrp = ((unsigned char *)result) + 15;
 
-	/*
+	/* 
 	 * Zero out masked portion.
 	 */
 	mask_bits = 128 - bits;
@@ -1667,7 +1904,7 @@ find_ipv6_pool(struct ipv6_pool **pool, u_int16_t type,
 	for (i=0; i<num_pools; i++) {
 		if (pools[i]->pool_type != type)
 			continue;
-		if (ipv6_in_pool(addr, pools[i])) {
+		if (ipv6_in_pool(addr, pools[i])) { 
 			ipv6_pool_reference(pool, pools[i], MDL);
 			return ISC_R_SUCCESS;
 		}
@@ -1679,8 +1916,8 @@ find_ipv6_pool(struct ipv6_pool **pool, u_int16_t type,
  * Helper function for the various functions that act across all
  * pools.
  */
-static isc_result_t
-change_leases(struct ia_xx *ia,
+static isc_result_t 
+change_leases(struct ia_xx *ia, 
 	      isc_result_t (*change_func)(struct ipv6_pool *,
 					  struct iasubopt *)) {
 	isc_result_t retval;
@@ -1708,11 +1945,10 @@ change_leases(struct ia_xx *ia,
 /*
  * Renew all leases in an IA from all pools.
  *
- * The new hard_lifetime_end_time should be updated for the addresses/prefixes.
- *
- * WARNING: lease times must only be extended, never reduced!!!
+ * The new lifetime should be in the soft_lifetime_end_time
+ * and will be moved to hard_lifetime_end_time by renew_lease6.
  */
-isc_result_t
+isc_result_t 
 renew_leases(struct ia_xx *ia) {
 	return change_leases(ia, renew_lease6);
 }
@@ -1720,7 +1956,7 @@ renew_leases(struct ia_xx *ia) {
 /*
  * Release all leases in an IA from all pools.
  */
-isc_result_t
+isc_result_t 
 release_leases(struct ia_xx *ia) {
 	return change_leases(ia, release_lease6);
 }
@@ -1728,7 +1964,7 @@ release_leases(struct ia_xx *ia) {
 /*
  * Decline all leases in an IA from all pools.
  */
-isc_result_t
+isc_result_t 
 decline_leases(struct ia_xx *ia) {
 	return change_leases(ia, decline_lease6);
 }
@@ -1739,11 +1975,11 @@ decline_leases(struct ia_xx *ia) {
  */
 static int write_error;
 
-static isc_result_t
+static isc_result_t 
 write_ia_leases(const void *name, unsigned len, void *value) {
 	struct ia_xx *ia = (struct ia_xx *)value;
-
-	if (!write_error) {
+	
+	if (!write_error) { 
 		if (!write_ia(ia)) {
 			write_error = 1;
 		}
@@ -1790,7 +2026,7 @@ mark_hosts_unavailable_support(const void *name, unsigned len, void *value) {
 		return ISC_R_SUCCESS;
 	}
 
-	/*
+	/* 
 	 * Evaluate the fixed address.
 	 */
 	memset(&fixed_addr, 0, sizeof(fixed_addr));
@@ -1817,11 +2053,11 @@ mark_hosts_unavailable_support(const void *name, unsigned len, void *value) {
 	if (find_ipv6_pool(&p, D6O_IA_NA, &addr) == ISC_R_SUCCESS) {
 		mark_lease_unavailable(p, &addr);
 		ipv6_pool_dereference(&p, MDL);
-	}
+	} 
 	if (find_ipv6_pool(&p, D6O_IA_TA, &addr) == ISC_R_SUCCESS) {
 		mark_lease_unavailable(p, &addr);
 		ipv6_pool_dereference(&p, MDL);
-	}
+	} 
 
 	return ISC_R_SUCCESS;
 }
@@ -1847,7 +2083,7 @@ mark_phosts_unavailable_support(const void *name, unsigned len, void *value) {
 		return ISC_R_SUCCESS;
 	}
 
-	/*
+	/* 
 	 * Get the fixed prefixes.
 	 */
 	for (l = h->fixed_prefix; l != NULL; l = l->next) {
@@ -1871,7 +2107,7 @@ mark_phosts_unavailable_support(const void *name, unsigned len, void *value) {
 		}
 		mark_lease_unavailable(p, &pref);
 		ipv6_pool_dereference(&p, MDL);
-	}
+	} 
 
 	return ISC_R_SUCCESS;
 }
@@ -1881,7 +2117,7 @@ mark_phosts_unavailable(void) {
 	hash_foreach(host_name_hash, mark_phosts_unavailable_support);
 }
 
-void
+void 
 mark_interfaces_unavailable(void) {
 	struct interface_info *ip;
 	int i;
@@ -1891,682 +2127,21 @@ mark_interfaces_unavailable(void) {
 	while (ip != NULL) {
 		for (i=0; i<ip->v6address_count; i++) {
 			p = NULL;
-			if (find_ipv6_pool(&p, D6O_IA_NA, &ip->v6addresses[i])
+			if (find_ipv6_pool(&p, D6O_IA_NA, &ip->v6addresses[i]) 
 							== ISC_R_SUCCESS) {
-				mark_lease_unavailable(p,
+				mark_lease_unavailable(p, 
 						       &ip->v6addresses[i]);
 				ipv6_pool_dereference(&p, MDL);
-			}
-			if (find_ipv6_pool(&p, D6O_IA_TA, &ip->v6addresses[i])
+			} 
+			if (find_ipv6_pool(&p, D6O_IA_TA, &ip->v6addresses[i]) 
 							== ISC_R_SUCCESS) {
-				mark_lease_unavailable(p,
+				mark_lease_unavailable(p, 
 						       &ip->v6addresses[i]);
 				ipv6_pool_dereference(&p, MDL);
-			}
+			} 
 		}
 		ip = ip->next;
 	}
 }
 
-
-#ifdef UNIT_TEST
-#include <stdlib.h>
-
-int
-main(int argc, char *argv[]) {
-	struct iasubopt *iaaddr;
-	struct iasubopt *iaaddr_copy;
-	u_int32_t iaid;
-	struct ia_xx *ia_na;
-	struct ia_xx *ia_na_copy;
-	int i;
-	struct in6_addr addr;
-	struct ipv6_pool *pool;
-	struct ipv6_pool *pool_copy;
-	char addr_buf[INET6_ADDRSTRLEN];
-	char *uid;
-	struct data_string ds;
-	struct iasubopt *expired_iaaddr;
-	unsigned int attempts;
-
-	/*
-	 * Test 0: Basic iaaddr manipulation.
-	 */
-	iaaddr = NULL;
-	if (iasubopt_allocate(&iaaddr, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: iasubopt_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	if (iaaddr->state != FTS_FREE) {
-		printf("ERROR: bad state %s:%d\n", MDL);
-		return 1;
-	}
-	if (iaaddr->heap_index != -1) {
-		printf("ERROR: bad heap_index %s:%d\n", MDL);
-		return 1;
-	}
-	iaaddr_copy = NULL;
-	if (iasubopt_reference(&iaaddr_copy, iaaddr, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: iasubopt_reference() %s:%d\n", MDL);
-		return 1;
-	}
-	if (iasubopt_dereference(&iaaddr, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: iasubopt_reference() %s:%d\n", MDL);
-		return 1;
-	}
-	if (iasubopt_dereference(&iaaddr_copy, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: iasubopt_reference() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/*
-	 * Test 1: Error iaaddr manipulation.
-	 */
-	/* bogus allocate arguments */
-	if (iasubopt_allocate(NULL, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: iasubopt_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	iaaddr = (struct iasubopt *)1;
-	if (iasubopt_allocate(&iaaddr, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: iasubopt_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/* bogus reference arguments */
-	iaaddr = NULL;
-	if (iasubopt_allocate(&iaaddr, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: iasubopt_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	if (iasubopt_reference(NULL, iaaddr, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: iasubopt_reference() %s:%d\n", MDL);
-		return 1;
-	}
-	iaaddr_copy = (struct iasubopt *)1;
-	if (iasubopt_reference(&iaaddr_copy, iaaddr,
-			       MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: iasubopt_reference() %s:%d\n", MDL);
-		return 1;
-	}
-	iaaddr_copy = NULL;
-	if (iasubopt_reference(&iaaddr_copy, NULL, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: iasubopt_reference() %s:%d\n", MDL);
-		return 1;
-	}
-	if (iasubopt_dereference(&iaaddr, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: iasubopt_reference() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/* bogus dereference arguments */
-	if (iasubopt_dereference(NULL, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: iasubopt_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-	iaaddr = NULL;
-	if (iasubopt_dereference(&iaaddr, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: iasubopt_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/*
-	 * Test 2: Basic ia_na manipulation.
-	 */
-	iaid = 666;
-	ia_na = NULL;
-	if (ia_allocate(&ia_na, iaid, "TestDUID", 8, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ia_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	if (memcmp(ia_na->iaid_duid.data, &iaid, sizeof(iaid)) != 0) {
-		printf("ERROR: bad IAID_DUID %s:%d\n", MDL);
-		return 1;
-	}
-	if (memcmp(ia_na->iaid_duid.data+sizeof(iaid), "TestDUID", 8) != 0) {
-		printf("ERROR: bad IAID_DUID %s:%d\n", MDL);
-		return 1;
-	}
-	if (ia_na->num_iasubopt != 0) {
-		printf("ERROR: bad num_iasubopt %s:%d\n", MDL);
-		return 1;
-	}
-	ia_na_copy = NULL;
-	if (ia_reference(&ia_na_copy, ia_na, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ia_reference() %s:%d\n", MDL);
-		return 1;
-	}
-	iaaddr = NULL;
-	if (iasubopt_allocate(&iaaddr, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: iasubopt_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	if (ia_add_iasubopt(ia_na, iaaddr, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ia_add_iasubopt() %s:%d\n", MDL);
-		return 1;
-	}
-	ia_remove_iasubopt(ia_na, iaaddr, MDL);
-	if (iasubopt_dereference(&iaaddr, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: iasubopt_reference() %s:%d\n", MDL);
-		return 1;
-	}
-	if (ia_dereference(&ia_na, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ia_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-	if (ia_dereference(&ia_na_copy, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ia_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/*
-	 * Test 3: lots of iaaddr in our ia_na
-	 */
-
-	/* lots of iaaddr that we delete */
-	iaid = 666;
-	ia_na = NULL;
-	if (ia_allocate(&ia_na, iaid, "TestDUID", 8, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ia_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	for (i=0; i<100; i++) {
-		iaaddr = NULL;
-		if (iasubopt_allocate(&iaaddr, MDL) != ISC_R_SUCCESS) {
-			printf("ERROR: iasubopt_allocate() %s:%d\n", MDL);
-			return 1;
-		}
-		if (ia_add_iasubopt(ia_na, iaaddr, MDL) != ISC_R_SUCCESS) {
-			printf("ERROR: ia_add_iasubopt() %s:%d\n", MDL);
-			return 1;
-		}
-		if (iasubopt_dereference(&iaaddr, MDL) != ISC_R_SUCCESS) {
-			printf("ERROR: iasubopt_reference() %s:%d\n", MDL);
-			return 1;
-		}
-	}
-	for (i=0; i<100; i++) {
-		iaaddr = ia_na->iasubopt[random() % ia_na->num_iasubopt];
-		ia_remove_iasubopt(ia_na, iaaddr, MDL);
-	}
-	if (ia_dereference(&ia_na, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ia_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/* lots of iaaddr, let dereference cleanup */
-	iaid = 666;
-	ia_na = NULL;
-	if (ia_allocate(&ia_na, iaid, "TestDUID", 8, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ia_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	for (i=0; i<100; i++) {
-		iaaddr = NULL;
-		if (iasubopt_allocate(&iaaddr, MDL) != ISC_R_SUCCESS) {
-			printf("ERROR: iasubopt_allocate() %s:%d\n", MDL);
-			return 1;
-		}
-		if (ia_add_iasubopt(ia_na, iaaddr, MDL) != ISC_R_SUCCESS) {
-			printf("ERROR: ia_add_iasubopt() %s:%d\n", MDL);
-			return 1;
-		}
-		if (iasubopt_dereference(&iaaddr, MDL) != ISC_R_SUCCESS) {
-			printf("ERROR: iasubopt_reference() %s:%d\n", MDL);
-			return 1;
-		}
-	}
-	if (ia_dereference(&ia_na, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ia_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/*
-	 * Test 4: Errors in ia_na.
-	 */
-	/* bogus allocate arguments */
-	if (ia_allocate(NULL, 123, "", 0, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: ia_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	ia_na = (struct ia_na *)1;
-	if (ia_allocate(&ia_na, 456, "", 0, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: ia_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/* bogus reference arguments */
-	iaid = 666;
-	ia_na = NULL;
-	if (ia_allocate(&ia_na, iaid, "TestDUID", 8, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ia_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	if (ia_reference(NULL, ia_na, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: ia_reference() %s:%d\n", MDL);
-		return 1;
-	}
-	ia_na_copy = (struct ia_na *)1;
-	if (ia_reference(&ia_na_copy, ia_na, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: ia_reference() %s:%d\n", MDL);
-		return 1;
-	}
-	ia_na_copy = NULL;
-	if (ia_reference(&ia_na_copy, NULL, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: ia_reference() %s:%d\n", MDL);
-		return 1;
-	}
-	if (ia_dereference(&ia_na, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ia_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/* bogus dereference arguments */
-	if (ia_dereference(NULL, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: ia_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/* bogus remove */
-	iaid = 666;
-	ia_na = NULL;
-	if (ia_allocate(&ia_na, iaid, "TestDUID", 8, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ia_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	ia_remove_iasubopt(ia_na, NULL, MDL);
-	if (ia_dereference(&ia_na, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ia_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/*
-	 * Test 5: Basic ipv6_pool manipulation.
-	 */
-
-	/* allocate, reference */
-	inet_pton(AF_INET6, "1:2:3:4::", &addr);
-	pool = NULL;
-	if (ipv6_pool_allocate(&pool, 0, &addr, 64, 128, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ipv6_pool_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	if (pool->num_active != 0) {
-		printf("ERROR: bad num_active %s:%d\n", MDL);
-		return 1;
-	}
-	if (pool->bits != 64) {
-		printf("ERROR: bad bits %s:%d\n", MDL);
-		return 1;
-	}
-	inet_ntop(AF_INET6, &pool->start_addr, addr_buf, sizeof(addr_buf));
-	if (strcmp(inet_ntop(AF_INET6, &pool->start_addr, addr_buf,
-			     sizeof(addr_buf)), "1:2:3:4::") != 0) {
-		printf("ERROR: bad start_addr %s:%d\n", MDL);
-		return 1;
-	}
-	pool_copy = NULL;
-	if (ipv6_pool_reference(&pool_copy, pool, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ipv6_pool_reference() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/* create_lease6, renew_lease6, expire_lease6 */
-	uid = "client0";
-	memset(&ds, 0, sizeof(ds));
-	ds.len = strlen(uid);
-	if (!buffer_allocate(&ds.buffer, ds.len, MDL)) {
-		printf("Out of memory\n");
-		return 1;
-	}
-	ds.data = ds.buffer->data;
-	memcpy((char *)ds.data, uid, ds.len);
-	if (create_lease6(pool, &iaaddr,
-			  &attempts, &ds, 1) != ISC_R_SUCCESS) {
-		printf("ERROR: create_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (pool->num_inactive != 1) {
-		printf("ERROR: bad num_inactive %s:%d\n", MDL);
-		return 1;
-	}
-	if (renew_lease6(pool, iaaddr) != ISC_R_SUCCESS) {
-		printf("ERROR: renew_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (pool->num_active != 1) {
-		printf("ERROR: bad num_active %s:%d\n", MDL);
-		return 1;
-	}
-	expired_iaaddr = NULL;
-	if (expire_lease6(&expired_iaaddr, pool, 0) != ISC_R_SUCCESS) {
-		printf("ERROR: expire_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (expired_iaaddr != NULL) {
-		printf("ERROR: should not have expired a lease %s:%d\n", MDL);
-		return 1;
-	}
-	if (pool->num_active != 1) {
-		printf("ERROR: bad num_active %s:%d\n", MDL);
-		return 1;
-	}
-	if (expire_lease6(&expired_iaaddr, pool, 1000) != ISC_R_SUCCESS) {
-		printf("ERROR: expire_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (expired_iaaddr == NULL) {
-		printf("ERROR: should have expired a lease %s:%d\n", MDL);
-		return 1;
-	}
-	if (iasubopt_dereference(&expired_iaaddr, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: iasubopt_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-	if (pool->num_active != 0) {
-		printf("ERROR: bad num_active %s:%d\n", MDL);
-		return 1;
-	}
-	if (iasubopt_dereference(&iaaddr, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: iasubopt_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/* release_lease6, decline_lease6 */
-	if (create_lease6(pool, &iaaddr, &attempts,
-			  &ds, 1) != ISC_R_SUCCESS) {
-		printf("ERROR: create_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (renew_lease6(pool, iaaddr) != ISC_R_SUCCESS) {
-		printf("ERROR: renew_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (pool->num_active != 1) {
-		printf("ERROR: bad num_active %s:%d\n", MDL);
-		return 1;
-	}
-	if (release_lease6(pool, iaaddr) != ISC_R_SUCCESS) {
-		printf("ERROR: decline_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (pool->num_active != 0) {
-		printf("ERROR: bad num_active %s:%d\n", MDL);
-		return 1;
-	}
-	if (iasubopt_dereference(&iaaddr, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: iasubopt_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-	if (create_lease6(pool, &iaaddr, &attempts,
-			  &ds, 1) != ISC_R_SUCCESS) {
-		printf("ERROR: create_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (renew_lease6(pool, iaaddr) != ISC_R_SUCCESS) {
-		printf("ERROR: renew_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (pool->num_active != 1) {
-		printf("ERROR: bad num_active %s:%d\n", MDL);
-		return 1;
-	}
-	if (decline_lease6(pool, iaaddr) != ISC_R_SUCCESS) {
-		printf("ERROR: decline_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (pool->num_active != 1) {
-		printf("ERROR: bad num_active %s:%d\n", MDL);
-		return 1;
-	}
-	if (iasubopt_dereference(&iaaddr, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: iasubopt_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/* dereference */
-	if (ipv6_pool_dereference(&pool, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ipv6_pool_reference() %s:%d\n", MDL);
-		return 1;
-	}
-	if (ipv6_pool_dereference(&pool_copy, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ipv6_pool_reference() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/*
-	 * Test 6: Error ipv6_pool manipulation
-	 */
-	if (ipv6_pool_allocate(NULL, 0, &addr,
-			       64, 128, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: ipv6_pool_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	pool = (struct ipv6_pool *)1;
-	if (ipv6_pool_allocate(&pool, 0, &addr,
-			       64, 128, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: ipv6_pool_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	if (ipv6_pool_reference(NULL, pool, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: ipv6_pool_reference() %s:%d\n", MDL);
-		return 1;
-	}
-	pool_copy = (struct ipv6_pool *)1;
-	if (ipv6_pool_reference(&pool_copy, pool, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: ipv6_pool_reference() %s:%d\n", MDL);
-		return 1;
-	}
-	pool_copy = NULL;
-	if (ipv6_pool_reference(&pool_copy, NULL, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: ipv6_pool_reference() %s:%d\n", MDL);
-		return 1;
-	}
-	if (ipv6_pool_dereference(NULL, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: ipv6_pool_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-	if (ipv6_pool_dereference(&pool_copy, MDL) != DHCP_R_INVALIDARG) {
-		printf("ERROR: ipv6_pool_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/*
-	 * Test 7: order of expiration
-	 */
-	pool = NULL;
-	if (ipv6_pool_allocate(&pool, 0, &addr, 64, 128, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ipv6_pool_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	for (i=10; i<100; i+=10) {
-		if (create_lease6(pool, &iaaddr, &attempts,
-				  &ds, i) != ISC_R_SUCCESS) {
-			printf("ERROR: create_lease6() %s:%d\n", MDL);
-			return 1;
-		}
-		if (renew_lease6(pool, iaaddr) != ISC_R_SUCCESS) {
-			printf("ERROR: renew_lease6() %s:%d\n", MDL);
-			return 1;
-		}
-		if (iasubopt_dereference(&iaaddr, MDL) != ISC_R_SUCCESS) {
-			printf("ERROR: iasubopt_dereference() %s:%d\n", MDL);
-			return 1;
-		}
-		if (pool->num_active != (i / 10)) {
-			printf("ERROR: bad num_active %s:%d\n", MDL);
-			return 1;
-		}
-	}
-	if (pool->num_active != 9) {
-		printf("ERROR: bad num_active %s:%d\n", MDL);
-		return 1;
-	}
-	for (i=10; i<100; i+=10) {
-		if (expire_lease6(&expired_iaaddr,
-				  pool, 1000) != ISC_R_SUCCESS) {
-			printf("ERROR: expire_lease6() %s:%d\n", MDL);
-			return 1;
-		}
-		if (expired_iaaddr == NULL) {
-			printf("ERROR: should have expired a lease %s:%d\n",
-			       MDL);
-			return 1;
-		}
-		if (pool->num_active != (9 - (i / 10))) {
-			printf("ERROR: bad num_active %s:%d\n", MDL);
-			return 1;
-		}
-		if (expired_iaaddr->hard_lifetime_end_time != i) {
-			printf("ERROR: bad hard_lifetime_end_time %s:%d\n",
-			       MDL);
-			return 1;
-		}
-		if (iasubopt_dereference(&expired_iaaddr, MDL) !=
-				ISC_R_SUCCESS) {
-			printf("ERROR: iasubopt_dereference() %s:%d\n", MDL);
-			return 1;
-		}
-	}
-	if (pool->num_active != 0) {
-		printf("ERROR: bad num_active %s:%d\n", MDL);
-		return 1;
-	}
-	expired_iaaddr = NULL;
-	if (expire_lease6(&expired_iaaddr, pool, 1000) != ISC_R_SUCCESS) {
-		printf("ERROR: expire_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (ipv6_pool_dereference(&pool, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ipv6_pool_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-
-	/*
-	 * Test 8: small pool
-	 */
-	pool = NULL;
-	addr.s6_addr[14] = 0x81;
-	if (ipv6_pool_allocate(&pool, 0, &addr, 127, 128, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ipv6_pool_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	if (create_lease6(pool, &iaaddr, &attempts,
-			  &ds, 42) != ISC_R_SUCCESS) {
-		printf("ERROR: create_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (renew_lease6(pool, iaaddr) != ISC_R_SUCCESS) {
-		printf("ERROR: renew_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (iasubopt_dereference(&iaaddr, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: iasubopt_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-	if (create_lease6(pool, &iaaddr, &attempts,
-			  &ds, 11) != ISC_R_SUCCESS) {
-		printf("ERROR: create_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (renew_lease6(pool, iaaddr) != ISC_R_SUCCESS) {
-		printf("ERROR: renew_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (iasubopt_dereference(&iaaddr, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: iasubopt_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-	if (create_lease6(pool, &iaaddr, &attempts,
-			  &ds, 11) != ISC_R_NORESOURCES) {
-		printf("ERROR: create_lease6() %s:%d\n", MDL);
-		return 1;
-	}
-	if (ipv6_pool_dereference(&pool, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ipv6_pool_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-	addr.s6_addr[14] = 0;
-
-	/*
-	 * Test 9: functions across all pools
-	 */
-	pool = NULL;
-	if (ipv6_pool_allocate(&pool, 0, &addr, 64, 128, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ipv6_pool_allocate() %s:%d\n", MDL);
-		return 1;
-	}
-	if (add_ipv6_pool(pool) != ISC_R_SUCCESS) {
-		printf("ERROR: add_ipv6_pool() %s:%d\n", MDL);
-		return 1;
-	}
-	if (ipv6_pool_dereference(&pool, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ipv6_pool_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-	pool = NULL;
-	if (find_ipv6_pool(&pool, 0, &addr) != ISC_R_SUCCESS) {
-		printf("ERROR: find_ipv6_pool() %s:%d\n", MDL);
-		return 1;
-	}
-	if (ipv6_pool_dereference(&pool, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ipv6_pool_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-	inet_pton(AF_INET6, "1:2:3:4:ffff:ffff:ffff:ffff", &addr);
-	pool = NULL;
-	if (find_ipv6_pool(&pool, 0, &addr) != ISC_R_SUCCESS) {
-		printf("ERROR: find_ipv6_pool() %s:%d\n", MDL);
-		return 1;
-	}
-	if (ipv6_pool_dereference(&pool, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ipv6_pool_dereference() %s:%d\n", MDL);
-		return 1;
-	}
-	inet_pton(AF_INET6, "1:2:3:5::", &addr);
-	pool = NULL;
-	if (find_ipv6_pool(&pool, 0, &addr) != ISC_R_NOTFOUND) {
-		printf("ERROR: find_ipv6_pool() %s:%d\n", MDL);
-		return 1;
-	}
-	inet_pton(AF_INET6, "1:2:3:3:ffff:ffff:ffff:ffff", &addr);
-	pool = NULL;
-	if (find_ipv6_pool(&pool, 0, &addr) != ISC_R_NOTFOUND) {
-		printf("ERROR: find_ipv6_pool() %s:%d\n", MDL);
-		return 1;
-	}
-
-/*	iaid = 666;
-	ia_na = NULL;
-	if (ia_allocate(&ia_na, iaid, "TestDUID", 8, MDL) != ISC_R_SUCCESS) {
-		printf("ERROR: ia_allocate() %s:%d\n", MDL);
-		return 1;
-	}*/
-
-	{
-		struct in6_addr r;
-		struct data_string ds;
-		u_char data[16];
-		char buf[64];
-		int i, j;
-
-		memset(&ds, 0, sizeof(ds));
-		memset(data, 0xaa, sizeof(data));
-		ds.len = 16;
-		ds.data = data;
-
-		inet_pton(AF_INET6, "3ffe:501:ffff:100::", &addr);
-		for (i = 32; i < 42; i++)
-			for (j = i + 1; j < 49; j++) {
-				memset(&r, 0, sizeof(r));
-				memset(buf, 0, 64);
-				build_prefix6(&r, &addr, i, j, &ds);
-				inet_ntop(AF_INET6, &r, buf, 64);
-				printf("%d,%d-> %s/%d\n", i, j, buf, j);
-			}
-	}
-
-	printf("SUCCESS: all tests passed (ignore any warning messages)\n");
-	return 0;
-}
-#endif
+/* unittest moved to server/tests/mdb6_unittest.c */

@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
-// Copyright (C) 2009-2012 Universidade Aveiro
-// Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2009-2013 Universidade Aveiro
+// Copyright (C) 2009-2013 Instituto de Telecomunicações - Pólo Aveiro
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -50,13 +50,19 @@ dhcp_user::dhcp_user(boost::asio::io_service& io,
 	_nic       = nic;
 	_mihfid = mih::id("local-mihf");
 
+	sleep(10);
+	_sessions.push_back("wlan0");
+	_control.new_session("wlan0");
+	sleep(30);
+	_control.request("wlan0");
+
 	// Register with MIHF
-	mih::message m;
+	// mih::message m;
 
-	m << mih::indication(mih::indication::user_register);
-	m.destination(mih::id("local-mihf"));
+	// m << mih::indication(mih::indication::user_register);
+	// m.destination(mih::id("local-mihf"));
 
-	_mihf.async_send(m, boost::bind(&dhcp_user::user_reg_handler, this, boost::cref(cfg), _2));
+	// _mihf.async_send(m, boost::bind(&dhcp_user::user_reg_handler, this, boost::cref(cfg), _2));
 }
 
 /**
