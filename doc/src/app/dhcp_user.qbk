@@ -19,7 +19,7 @@
 
 The DHCP-User was implemented in order to enable the discovery of PoS entities
 according to the guidelines depicted in the RFC5678. It is a
-modification of the ”dhclient” software, which was extended to support the
+modification of the ”dhclient” software (version 4.2.5), which was extended to support the
 IEEE 802.21 standard and communicate via MIH protocol.
 
 The DHCP-User has two modes of discovery operations: explicit discovery or
@@ -36,7 +36,7 @@ forwarded to the MIHF through a "MIH_Capability_Discover.response" message.
 [note The DHCP-User is working only for Linux.]
 
 [note ODTONE also provides the DHCP server application, which is an modified version of the
-"dhcpd" supporting the IEEE 802.21 DHCP options.]
+"dhcpd" (version 4.2.5) supporting the IEEE 802.21 DHCP options.]
 
 [section:dhcp_usr_getStart Compilation dependencies]
 
@@ -115,8 +115,8 @@ addresses to use on networks that don't have DHCP servers.
 
 	# IPv6
 
-	also request dhcp6.option-ipv6-address-mos_ip;
-	also request dhcp6.option-ipv6-address-mos_fqdn;
+	also request dhcp6.option-ipv6-address-mos;
+	also request dhcp6.option-fqdn6-address-mos;
 ``
 
 [note For more information check the dhclient.conf man pages]
@@ -147,8 +147,8 @@ Comments begin with the # character and end at the end of the line.
 	subnet 192.168.1.0 netmask 255.255.255.0 {
 		    authoritative;
 		    range 192.168.1.10 192.168.1.30;
-		    option option-ipv4-address-mos_ip.is 10.110.1.1;
-		    option option-ipv4-address-mos_fqdn.is "odtone.test";
+		    option option-ipv4-address-mos.is 10.110.1.1;
+		    option option-fqdn-address-mos.is "odtone.test";
 	}
 
 	# IPv6
@@ -170,8 +170,8 @@ Comments begin with the # character and end at the end of the line.
 		            fixed-address6 2001:db8:0:1::127;
 		    }
 
-		    option dhcp6.option-ipv6-address-mos_ip 00:01:00:10:fe:80:00:00:00:00:00:00:02:03:1d:ff:fe:07:15:73 ;
-		    option dhcp6.option-ipv6-address-mos_fqdn 00:01:00:0d:06:6f:64:74:6f:6e:65:04:74:65:73:74:00 ;
+		    option dhcp6.option-ipv4-address-mos 00:01:00:10:fe:80:00:00:00:00:00:00:02:03:1d:ff:fe:07:15:73 ;
+		    option dhcp6.option-fqdn-address-mos 00:01:00:0d:06:6f:64:74:6f:6e:65:04:74:65:73:74:00 ;
 	}
 ``
 
