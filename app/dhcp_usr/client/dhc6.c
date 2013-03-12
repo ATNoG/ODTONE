@@ -454,7 +454,6 @@ void decode_mih6_options(struct packet *packet)
 	struct mih_options *head = NULL;
 	int i;
 
-	printf("\n\n\nVou enviar \n");
 	// Search for Address IPv6 MIH Options
 	for(i = 1; i < MoS_END; ++i) {
 		oc = lookup_option(&mos_ipv6_universe, packet->options, i);
@@ -496,18 +495,14 @@ void decode_mih6_options(struct packet *packet)
 	// Search for FQDN IPv6 MIH Options
 	for(i = 1; i < MoS_END; ++i) {
 		oc = lookup_option(&mos_fqdn6_universe, packet->options, i);
-		printf("lookup? ");
 		if(oc && evaluate_option_cache (&ds, (struct packet *)0,
 						(struct lease *)0, 0,
 						(struct option_state *)0,
 						packet->options,
 						&global_scope, oc, MDL)) {
-			printf("Evaluated? %d ", ds.len);
 			if (ds.len > 0) {
-				printf("Len? ");
 				int j;
 				for(j = 0; j < ds.len; ) {
-					printf("For each len?");
 					struct mih_options *pos;
 					pos = (struct mih_options*)malloc(sizeof(struct mih_options));
 
@@ -557,13 +552,8 @@ void decode_mih6_options(struct packet *packet)
 		}
 	}
 
-	printf("Sera que tenho?");
-	if(head == NULL) {
-		printf("NAO");
+	if(head == NULL)
 		return;
-	}
-
-	printf("SIM");
 
 	// Dispatch message
 	app_callback(app_callback_ctx, head);
