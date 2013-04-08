@@ -49,6 +49,7 @@ exe odtone-mihf
 	  ../../lib/odtone//odtone_base
 	  ../../lib/odtone/mih//odtone_mih
 	  ../../lib/odtone/sap//odtone_sap
+	  /boost//program_options
 	;
 
 install install
