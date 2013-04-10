@@ -113,14 +113,6 @@ use-project /odtone/sap  : lib/odtone/sap ;
 
 odtone.explicit-alias source-list
 	:
-#	  app/link_sap_icmp//link_sap_icmp
-#	  app/link_sap_icmp/link_sap_icmp.conf
-#	  app/dns_usr//dns_usr
-#	  app/dns_usr/dns_usr.conf
-#	  app/dhcp_usr/client//dhcp_usr
-#	  app/dhcp_usr/client/dhcp_usr.conf
-#	  app/dhcp_usr/server//dhcpd
-#	  app/dhcp_usr/server/dhcpd.conf
 	: <target-os>linux
 	;
 
@@ -139,14 +131,6 @@ install odtone-dist
 	  app/link_sap/link_sap.conf
 	  app/mih_usr//mih_usr
 	  app/mih_usr/mih_usr.conf
-	  app/sap_8023//sap_8023
-	  app/sap_8023/sap_8023.conf
-	  app/sap_80211//sap_80211
-	  app/sap_80211/sap_80211.conf
-#	  app/client//client
-#	  src/dummyserver//dummyserver
-#	  app/miis_rdf_server//miis_rdf_server
-#	  app/miis_rdf_server/miis_rdf_server.conf
 	  source-list
 	: <location>dist
 	;
