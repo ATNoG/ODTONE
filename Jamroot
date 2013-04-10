@@ -34,7 +34,6 @@ project odtone
 		<toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
 		<toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
 		<toolset>msvc:<define>_SECURE_SCL=0
-		<toolset>msvc-10.0:<define>BOOST_HAS_NULLPTR
 		<target-os>windows:<define>_WIN32_WINNT=0x0600
 	: usage-requirements
 		<include>inc

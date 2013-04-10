@@ -75,10 +75,6 @@
 #	define ODTONE_DEPRECATE
 #endif
 
-#if (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 6))
-#	define BOOST_HAS_NULLPTR
-#endif
-
 #define ODTONE_UNDEFINED_BOOL                           \
 	struct undefined_bool_t {                          \
 		void true_() {}                                \
@@ -118,7 +114,7 @@ typedef boost::intmax_t    sintmax; /**< Max bit size signed interger.		*/
 typedef boost::uintmax_t   uintmax; /**< Max bit size unsigned interger.	*/
 
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_HAS_NULLPTR
+#ifdef BOOST_NO_NULLPTR
 	struct nullptr_t { template<class T> operator T*() const { return 0; } };
 
 	static const nullptr_t nullptr = {};
@@ -148,7 +144,7 @@ inline ParentT* parent_of(MemberT* member, MemberT ParentT::* Member)
 } /* namespace odtone */
 
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_HAS_NULLPTR
+#ifdef BOOST_NO_NULLPTR
 	using odtone::nullptr;
 #endif
 
