@@ -61,7 +61,7 @@ handle wlan_open()
 	res = ::WlanOpenHandle(WLAN_API_VERSION, nullptr, &ver, &h);
 	if (res != ERROR_SUCCESS)
 		boost::throw_exception(boost::system::system_error(res,
-														   boost::system::get_system_category(),
+														   boost::system::system_category(),
 														   "win::wlan_open"));
 
 	return handle(h, detail::wlan_close);
@@ -80,7 +80,7 @@ void wlan_register_notification(handle const& h, wlan_register_notification_hand
 
 	delete cb;
 	boost::throw_exception(boost::system::system_error(res,
-													   boost::system::get_system_category(),
+													   boost::system::system_category(),
 													   "win::wlan_register_notification"));
 }
 
@@ -94,7 +94,7 @@ wlan_if_list wlan_enum_interfaces(handle const& h)
 		return wlan_if_list(iflist, ::WlanFreeMemory);
 
 	boost::throw_exception(boost::system::system_error(res,
-													   boost::system::get_system_category(),
+													   boost::system::system_category(),
 													   "win::wlan_enum_interfaces"));
 	return wlan_if_list();
 }
@@ -108,12 +108,12 @@ MIB_IF_ROW2 get_interface_info(const GUID& guid)
     DWORD res = ::ConvertInterfaceGuidToLuid(&guid, &iinf.InterfaceLuid);
     if(res != NO_ERROR)
         boost::throw_exception(boost::system::system_error(res,
-														   boost::system::get_system_category(),
+														   boost::system::system_category(),
 														   "ConvertInterfaceGuidToLuid"));
     res = ::GetIfEntry2(&iinf);
     if(res != NO_ERROR)
         boost::throw_exception(boost::system::system_error(res,
-														   boost::system::get_system_category(),
+														   boost::system::system_category(),
 														   "GetIfEntry2"));
     return iinf;
 }
@@ -132,7 +132,7 @@ std::string wstring_to_string(wchar_t const* str, size_t len)
 
 	} else {
 		boost::throw_exception(boost::system::system_error(::GetLastError(),
-														   boost::system::get_system_category(),
+														   boost::system::system_category(),
 														   "win::wstring_to_string"));
 	}
 
