@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>MIH Protocol C interface</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../extensions.html" title="ODTONE Extensions">
 <link rel="prev" href="mih_users_and_link_saps_configuration.html" title="MIH-Users and Link SAPs configuration">
@@ -56,7 +56,7 @@
         The mRALlteInt is compiled and installed in the mRALlteInt folder ("extensions/MIH_C_Protocol/LTE_link_Test/mRALlteInt").
         To compile it you just need to run the following command:
 </p>
-<pre class="programlisting">make
+<pre class="programlisting"><span class="identifier">make</span>
 </pre>
 <p>
       </p>
@@ -81,7 +81,7 @@
 <p>
         Messages are exchanged between the following entities:
 </p>
-<pre class="programlisting">mih_usr &lt;-&gt; ODTONE &lt;-&gt; mRALlteInt
+<pre class="programlisting"><span class="identifier">mih_usr</span> <span class="special">&lt;-&gt;</span> <span class="identifier">ODTONE</span> <span class="special">&lt;-&gt;</span> <span class="identifier">mRALlteInt</span>
 </pre>
 <p>
       </p>
@@ -95,9 +95,9 @@
         To test the validation scenario, execute the following programs, each in
         its own terminal, and in the following order:
 </p>
-<pre class="programlisting">./odtone-mihf
-./mRALlteInt &lt;LOG_location&gt; &lt;LOG_level&gt;
-./mih_usr --dest=mihf1
+<pre class="programlisting"><span class="special">./</span><span class="identifier">odtone</span><span class="special">-</span><span class="identifier">mihf</span>
+<span class="special">./</span><span class="identifier">mRALlteInt</span> <span class="special">&lt;</span><span class="identifier">LOG_location</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">LOG_level</span><span class="special">&gt;</span>
+<span class="special">./</span><span class="identifier">mih_usr</span> <span class="special">--</span><span class="identifier">dest</span><span class="special">=</span><span class="identifier">mihf1</span>
 </pre>
 <p>
       </p>

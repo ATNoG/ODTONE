@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class address_mac</title>
 <link rel="stylesheet" href="../../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.link.address_mac_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/link/address_mac.hpp&gt;">
 <link rel="prev" href="../ip/prefix_v6.html" title="Class prefix_v6">
@@ -31,40 +31,40 @@
   <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span><span class="special">&lt;</span> <span class="identifier">uint8</span><span class="special">,</span> <span class="number">6</span> <span class="special">&gt;</span> <a name="odtone.net.link.address_mac.bytes_type"></a><span class="identifier">bytes_type</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="address_mac.html#odtone.net.link.address_macconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="address_mac.html#idp4752440-bb"><span class="identifier">address_mac</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">explicit</span> <a class="link" href="address_mac.html#idp4752736-bb"><span class="identifier">address_mac</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">explicit</span> <a class="link" href="address_mac.html#idp4753808-bb"><span class="identifier">address_mac</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">bytes_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="address_mac.html#idp8745040-bb"><span class="identifier">address_mac</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="address_mac.html#idp8745600-bb"><span class="identifier">address_mac</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="address_mac.html#idp8747840-bb"><span class="identifier">address_mac</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">bytes_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="address_mac.html#idp5081832-bb">public static functions</a></span>
-  <span class="keyword">static</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <a class="link" href="address_mac.html#idp5082016-bb"><span class="identifier">from_string</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">static</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <a class="link" href="address_mac.html#idp5083776-bb"><span class="identifier">from_string</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="address_mac.html#idp8729264-bb">public static functions</a></span>
+  <span class="keyword">static</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <a class="link" href="address_mac.html#idp8729664-bb"><span class="identifier">from_string</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <a class="link" href="address_mac.html#idp8733168-bb"><span class="identifier">from_string</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="address_mac.html#idp5085536-bb">public member functions</a></span>
-  <span class="keyword">bool</span> <a class="link" href="address_mac.html#idp5085720-bb"><span class="keyword">operator</span><span class="special">&lt;</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="address_mac.html#idp4750288-bb"><span class="identifier">to_string</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">bytes_type</span> <a class="link" href="address_mac.html#idp4751392-bb"><span class="identifier">to_bytes</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="address_mac.html#idp8736672-bb">public member functions</a></span>
+  <span class="keyword">bool</span> <a class="link" href="address_mac.html#idp8737072-bb"><span class="keyword">operator</span><span class="special">&lt;</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="address_mac.html#idp8740800-bb"><span class="identifier">to_string</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">bytes_type</span> <a class="link" href="address_mac.html#idp8742928-bb"><span class="identifier">to_bytes</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="address_mac.html#idp4754888-bb">friend functions</a></span>
-  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="address_mac.html#idp4755096-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="address_mac.html#idp8750080-bb">friend functions</a></span>
+  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="address_mac.html#idp8750480-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="address_mac.html#odtone.net.link.address_macpublic-data-members">public data members</a></span>
   <span class="identifier">bytes_type</span> <a class="link" href="address_mac.html#odtone.net.link.address_mac._address"><span class="identifier">_address</span></a><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp21163696"></a><h2>Description</h2>
+<a name="idp89512240"></a><h2>Description</h2>
 <p>This class represents the MAC address. </p>
 <div class="refsect2">
-<a name="idp21164032"></a><h3>
+<a name="idp89512880"></a><h3>
 <a name="odtone.net.link.address_macconstruct-copy-destruct"></a><code class="computeroutput">address_mac</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="idp4752440-bb"></a><span class="identifier">address_mac</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp8745040-bb"></a><span class="identifier">address_mac</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty MAC address. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">explicit</span> <a name="idp4752736-bb"></a><span class="identifier">address_mac</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint8</span> address<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="idp8745600-bb"></a><span class="identifier">address_mac</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint8</span> address<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a MAC address.</p>
 <p>
 </p>
@@ -83,7 +83,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">explicit</span> <a name="idp4753808-bb"></a><span class="identifier">address_mac</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">bytes_type</span> <span class="special">&amp;</span> address<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="idp8747840-bb"></a><span class="identifier">address_mac</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">bytes_type</span> <span class="special">&amp;</span> address<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a MAC address.</p>
 <p>
 </p>
@@ -104,11 +104,11 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp21177056"></a><h3>
-<a name="idp5081832-bb"></a><code class="computeroutput">address_mac</code> public static functions</h3>
+<a name="idp89538176"></a><h3>
+<a name="idp8729264-bb"></a><code class="computeroutput">address_mac</code> public static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">static</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <a name="idp5082016-bb"></a><span class="identifier">from_string</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> str<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">static</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <a name="idp8729664-bb"></a><span class="identifier">from_string</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> str<span class="special">)</span><span class="special">;</span></pre>
 <p>Get the MAC address from a string.</p>
 <p>
 
@@ -134,7 +134,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">static</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <a name="idp5083776-bb"></a><span class="identifier">from_string</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span> str<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">static</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <a name="idp8733168-bb"></a><span class="identifier">from_string</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span> str<span class="special">)</span><span class="special">;</span></pre>
 <p>Get the MAC address from a string.</p>
 <p>
 
@@ -162,11 +162,11 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp21190456"></a><h3>
-<a name="idp5085536-bb"></a><code class="computeroutput">address_mac</code> public member functions</h3>
+<a name="idp89564432"></a><h3>
+<a name="idp8736672-bb"></a><code class="computeroutput">address_mac</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5085720-bb"></a><span class="keyword">operator</span><span class="special">&lt;</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <span class="special">&amp;</span> lhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp8737072-bb"></a><span class="keyword">operator</span><span class="special">&lt;</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <span class="special">&amp;</span> lhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Check if the MAC address is smaller than another MAC address.</p>
 <p>
 
@@ -192,7 +192,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="idp4750288-bb"></a><span class="identifier">to_string</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="idp8740800-bb"></a><span class="identifier">to_string</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Convert the MAC address to a string.</p>
 <p>
 </p>
@@ -205,7 +205,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">bytes_type</span> <a name="idp4751392-bb"></a><span class="identifier">to_bytes</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">bytes_type</span> <a name="idp8742928-bb"></a><span class="identifier">to_bytes</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MAC address raw bytes.</p>
 <p>
 </p>
@@ -220,10 +220,10 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp21205504"></a><h3>
-<a name="idp4754888-bb"></a><code class="computeroutput">address_mac</code> friend functions</h3>
+<a name="idp89593952"></a><h3>
+<a name="idp8750080-bb"></a><code class="computeroutput">address_mac</code> friend functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="idp4755096-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <span class="special">&amp;</span> mac<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="idp8750480-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="address_mac.html" title="Class address_mac">address_mac</a> <span class="special">&amp;</span> mac<span class="special">)</span><span class="special">;</span></pre>
 <p>MAC address output.</p>
 <p>
 
@@ -256,7 +256,7 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp21215824"></a><h3>
+<a name="idp89614208"></a><h3>
 <a name="odtone.net.link.address_macpublic-data-members"></a><code class="computeroutput">address_mac</code> 
         public
        public data members</h3>

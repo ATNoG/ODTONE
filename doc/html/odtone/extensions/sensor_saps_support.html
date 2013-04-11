@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Sensor SAPs Support</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../extensions.html" title="ODTONE Extensions">
 <link rel="prev" href="mih_protocol_c_interface.html" title="MIH Protocol C interface">
@@ -95,14 +95,14 @@
 <p>
           The ODTONE-MIHF configuration file:
 </p>
-<pre class="programlisting">[mihf]
-id = mihf1
-local_port = 1025
-remote_port = 4551
-peers = mihf2 0.0.0.0 4552 udp
-users = user 1234
-links = sensor_sap 1235 Sensor sensoraddress
-transport = udp
+<pre class="programlisting"><span class="special">[</span><span class="identifier">mihf</span><span class="special">]</span>
+<span class="identifier">id</span> <span class="special">=</span> <span class="identifier">mihf1</span>
+<span class="identifier">local_port</span> <span class="special">=</span> <span class="number">1025</span>
+<span class="identifier">remote_port</span> <span class="special">=</span> <span class="number">4551</span>
+<span class="identifier">peers</span> <span class="special">=</span> <span class="identifier">mihf2</span> <span class="number">0.0</span><span class="special">.</span><span class="number">0.0</span> <span class="number">4552</span> <span class="identifier">udp</span>
+<span class="identifier">users</span> <span class="special">=</span> <span class="identifier">user</span> <span class="number">1234</span>
+<span class="identifier">links</span> <span class="special">=</span> <span class="identifier">sensor_sap</span> <span class="number">1235</span> <span class="identifier">Sensor</span> <span class="identifier">sensoraddress</span>
+<span class="identifier">transport</span> <span class="special">=</span> <span class="identifier">udp</span>
 </pre>
 <p>
         </p>

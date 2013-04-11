@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class link</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../../odtone_sap_library.html#header..home.carlos.Projectos.odtone.inc.odtone.sap.link_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/sap/link.hpp&gt;">
 <link rel="prev" href="../../odtone_sap_library.html" title="ODTONE SAP Library">
@@ -28,31 +28,31 @@
 <span class="keyword">class</span> <a class="link" href="link.html" title="Class link">link</a> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">sap</span><span class="special">::</span><span class="identifier">sap</span> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="link.html#odtone.sap.linkconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="link.html#idp1425624-bb"><span class="identifier">link</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">config</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span><span class="special">,</span> 
+  <a class="link" href="link.html#idp10364624-bb"><span class="identifier">link</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">config</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span><span class="special">,</span> 
        <span class="keyword">const</span> <span class="identifier">default_handler</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="link.html#idp1504256-bb"><span class="special">~</span><span class="identifier">link</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="link.html#idp7896128-bb"><span class="special">~</span><span class="identifier">link</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="link.html#idp1421472-bb">public member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="link.html#idp1423424-bb"><span class="identifier">async_send</span></a><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">handler</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="link.html#idp7884128-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="link.html#idp7884528-bb"><span class="identifier">async_send</span></a><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">handler</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="link.html#idp1504552-bb">private member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="link.html#idp1504736-bb"><span class="identifier">recv_handler</span></a><span class="special">(</span><span class="identifier">buffer</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">,</span> 
+  <span class="comment">// <a class="link" href="link.html#idp7896688-bb">private member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="link.html#idp7897104-bb"><span class="identifier">recv_handler</span></a><span class="special">(</span><span class="identifier">buffer</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">,</span> 
                     <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="link.html#idp5093712-bb"><span class="identifier">send_handler</span></a><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">frame_vla</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">,</span> 
+  <span class="keyword">void</span> <a class="link" href="link.html#idp7902256-bb"><span class="identifier">send_handler</span></a><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">frame_vla</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">,</span> 
                     <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp18779768"></a><h2>Description</h2>
+<a name="idp84747200"></a><h2>Description</h2>
 <p>Link SAP I/O Service.</p>
 <p>This module handles the comunication between Link SAP and its local the MIHF. After being initialized, and in order to run this service, it must be invoked the run() method of the boost::asio::io_service associated. </p>
 <div class="refsect2">
-<a name="idp18780488"></a><h3>
+<a name="idp84748400"></a><h3>
 <a name="odtone.sap.linkconstruct-copy-destruct"></a><code class="computeroutput">link</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="idp1425624-bb"></a><span class="identifier">link</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">config</span> <span class="special">&amp;</span> cfg<span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span> io<span class="special">,</span> 
+<pre class="literallayout"><a name="idp10364624-bb"></a><span class="identifier">link</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">config</span> <span class="special">&amp;</span> cfg<span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span> io<span class="special">,</span> 
      <span class="keyword">const</span> <span class="identifier">default_handler</span> <span class="special">&amp;</span> h<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a Link SAP I/O Service. The defined callback is invoked when a request message is received The signature of the callback is: void(odtone::mih::message&amp;, const boost::system::error_code&amp;).</p>
 <p>
@@ -82,16 +82,16 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp1504256-bb"></a><span class="special">~</span><span class="identifier">link</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp7896128-bb"></a><span class="special">~</span><span class="identifier">link</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Destruct a Link SAP I/O Service. </p>
 </li>
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp18794328"></a><h3>
-<a name="idp1421472-bb"></a><code class="computeroutput">link</code> public member functions</h3>
+<a name="idp84775280"></a><h3>
+<a name="idp7884128-bb"></a><code class="computeroutput">link</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp1423424-bb"></a><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="special">&amp;</span> msg<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span> h <span class="special">=</span> <span class="identifier">handler</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp7884528-bb"></a><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="special">&amp;</span> msg<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span> h <span class="special">=</span> <span class="identifier">handler</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Asynchronously send a MIH message to the local MIHF. After sending the message, the callback is called to report the success or failure in delivering the message to the local MIHF. This method retuns immediately.</p>
 <p>
 </p>
@@ -117,11 +117,11 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp18803960"></a><h3>
-<a name="idp1504552-bb"></a><code class="computeroutput">link</code> private member functions</h3>
+<a name="idp84793968"></a><h3>
+<a name="idp7896688-bb"></a><code class="computeroutput">link</code> private member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp1504736-bb"></a><span class="identifier">recv_handler</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span> buff<span class="special">,</span> <span class="identifier">size_t</span> rbytes<span class="special">,</span> 
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp7897104-bb"></a><span class="identifier">recv_handler</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span> buff<span class="special">,</span> <span class="identifier">size_t</span> rbytes<span class="special">,</span> 
                   <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> ec<span class="special">)</span><span class="special">;</span></pre>
 <p>Received message callback. This function is executed to process the received messages. If this is a valid message, the message is dispatched to the handler defined by the user.</p>
 <p>
@@ -151,7 +151,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5093712-bb"></a><span class="identifier">send_handler</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">frame_vla</span> <span class="special">&amp;</span> fm<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span> h<span class="special">,</span> <span class="identifier">size_t</span> sbytes<span class="special">,</span> 
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp7902256-bb"></a><span class="identifier">send_handler</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">frame_vla</span> <span class="special">&amp;</span> fm<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span> h<span class="special">,</span> <span class="identifier">size_t</span> sbytes<span class="special">,</span> 
                   <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> ec<span class="special">)</span><span class="special">;</span></pre>
 <p>Sent message handler. After sending the message, this function is called to report the success or failure in delivering the message to the local MIHF.</p>
 <p>

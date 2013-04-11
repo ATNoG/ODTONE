@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class message</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.message_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/message.hpp&gt;">
 <link rel="prev" href="msg_id.html" title="Struct template msg_id">
@@ -28,62 +28,62 @@
 <span class="keyword">class</span> <a class="link" href="message.html" title="Class message">message</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="message.html#odtone.mih.messageconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="message.html#idp5556152-bb"><span class="identifier">message</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="message.html#idp5556712-bb"><span class="identifier">message</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  message&amp; <a class="link" href="message.html#idp5558288-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="message.html#idp5558000-bb"><span class="special">~</span><span class="identifier">message</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="message.html#idp10954688-bb"><span class="identifier">message</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="message.html#idp10955648-bb"><span class="identifier">message</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  message&amp; <a class="link" href="message.html#idp10958672-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="message.html#idp10958112-bb"><span class="special">~</span><span class="identifier">message</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="message.html#idp5513896-bb">public member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5514112-bb"><span class="identifier">reset</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5514808-bb"><span class="identifier">version</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5516256-bb"><span class="identifier">ackreq</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5517736-bb"><span class="identifier">ackrsp</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5519216-bb"><span class="identifier">uir</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5520720-bb"><span class="identifier">m</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5522176-bb"><span class="identifier">fn</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5523632-bb"><span class="identifier">sid</span></a><span class="special">(</span><span class="identifier">service</span><span class="special">::</span><span class="identifier">type</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5525104-bb"><span class="identifier">opcode</span></a><span class="special">(</span><span class="identifier">operation</span><span class="special">::</span><span class="identifier">type</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5526568-bb"><span class="identifier">aid</span></a><span class="special">(</span><span class="identifier">action</span><span class="special">::</span><span class="identifier">type</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5528032-bb"><span class="identifier">mid</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5529464-bb"><span class="identifier">tid</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5530912-bb"><span class="identifier">source</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5532584-bb"><span class="identifier">destination</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5534256-bb"><span class="identifier">payload</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="message.html" title="Class message">message</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">uint8</span> <a class="link" href="message.html#idp5536144-bb"><span class="identifier">version</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="message.html#idp5537248-bb"><span class="identifier">ackreq</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="message.html#idp5538376-bb"><span class="identifier">ackrsp</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="message.html#idp5539512-bb"><span class="identifier">uir</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="message.html#idp5540672-bb"><span class="identifier">m</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint8</span> <a class="link" href="message.html#idp5541784-bb"><span class="identifier">fn</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">service</span><span class="special">::</span><span class="identifier">type</span> <a class="link" href="message.html#idp5542896-bb"><span class="identifier">sid</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">operation</span><span class="special">::</span><span class="identifier">type</span> <a class="link" href="message.html#idp5544024-bb"><span class="identifier">opcode</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">action</span><span class="special">::</span><span class="identifier">type</span> <a class="link" href="message.html#idp5545144-bb"><span class="identifier">aid</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint16</span> <a class="link" href="message.html#idp5546264-bb"><span class="identifier">mid</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint16</span> <a class="link" href="message.html#idp5547344-bb"><span class="identifier">tid</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span> <a class="link" href="message.html#idp5548448-bb"><span class="identifier">source</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span> <a class="link" href="message.html#idp5549776-bb"><span class="identifier">destination</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="message.html#idp5551104-bb"><span class="identifier">input</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> <a class="link" href="message.html#idp5552336-bb"><span class="identifier">output</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp5553568-bb"><span class="identifier">get_frame</span></a><span class="special">(</span><span class="identifier">frame_vla</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="message.html#idp5555008-bb"><span class="identifier">has_service_specific_tlv</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="message.html#idp10873232-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10873632-bb"><span class="identifier">reset</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10875008-bb"><span class="identifier">version</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10877824-bb"><span class="identifier">ackreq</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10880672-bb"><span class="identifier">ackrsp</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10883520-bb"><span class="identifier">uir</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10886384-bb"><span class="identifier">m</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10889200-bb"><span class="identifier">fn</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10892016-bb"><span class="identifier">sid</span></a><span class="special">(</span><span class="identifier">service</span><span class="special">::</span><span class="identifier">type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10894848-bb"><span class="identifier">opcode</span></a><span class="special">(</span><span class="identifier">operation</span><span class="special">::</span><span class="identifier">type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10897664-bb"><span class="identifier">aid</span></a><span class="special">(</span><span class="identifier">action</span><span class="special">::</span><span class="identifier">type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10900496-bb"><span class="identifier">mid</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10903296-bb"><span class="identifier">tid</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10906112-bb"><span class="identifier">source</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10909376-bb"><span class="identifier">destination</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10912640-bb"><span class="identifier">payload</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="message.html" title="Class message">message</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">uint8</span> <a class="link" href="message.html#idp10916256-bb"><span class="identifier">version</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="message.html#idp10918384-bb"><span class="identifier">ackreq</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="message.html#idp10920528-bb"><span class="identifier">ackrsp</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="message.html#idp10922688-bb"><span class="identifier">uir</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="message.html#idp10924864-bb"><span class="identifier">m</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint8</span> <a class="link" href="message.html#idp10926992-bb"><span class="identifier">fn</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">service</span><span class="special">::</span><span class="identifier">type</span> <a class="link" href="message.html#idp10929120-bb"><span class="identifier">sid</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">operation</span><span class="special">::</span><span class="identifier">type</span> <a class="link" href="message.html#idp10931264-bb"><span class="identifier">opcode</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">action</span><span class="special">::</span><span class="identifier">type</span> <a class="link" href="message.html#idp10933392-bb"><span class="identifier">aid</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint16</span> <a class="link" href="message.html#idp10935536-bb"><span class="identifier">mid</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint16</span> <a class="link" href="message.html#idp10937632-bb"><span class="identifier">tid</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span> <a class="link" href="message.html#idp10939760-bb"><span class="identifier">source</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span> <a class="link" href="message.html#idp10942336-bb"><span class="identifier">destination</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="message.html#idp10944912-bb"><span class="identifier">input</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> <a class="link" href="message.html#idp10947312-bb"><span class="identifier">output</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp10949712-bb"><span class="identifier">get_frame</span></a><span class="special">(</span><span class="identifier">frame_vla</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="message.html#idp10952528-bb"><span class="identifier">has_service_specific_tlv</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp12020136"></a><h2>Description</h2>
+<a name="idp71840336"></a><h2>Description</h2>
 <p>MIH Message.</p>
 <p>This class is a high level representation of an MIH message. It provides access to all fields of the MIH message header, the destination and sources ID's (which is part of payload but common to all messages), and it also provides serialization/deserialization operations. </p>
 <div class="refsect2">
-<a name="idp12020880"></a><h3>
+<a name="idp71841584"></a><h3>
 <a name="odtone.mih.messageconstruct-copy-destruct"></a><code class="computeroutput">message</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="idp5556152-bb"></a><span class="identifier">message</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp10954688-bb"></a><span class="identifier">message</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty MIH Message.</p>
 <p>The defaults for each field are: version = 1; ackreq = false; ackrsp = false; uir = false; m = false; fn = 0; mid = 0; tid = 0; </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp5556712-bb"></a><span class="identifier">message</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span> fm<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp10955648-bb"></a><span class="identifier">message</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span> fm<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a MIH Message by extracting the data from a frame.</p>
 <p>
 </p>
@@ -102,7 +102,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout">message&amp; <a name="idp5558288-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span> fm<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout">message&amp; <a name="idp10958672-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span> fm<span class="special">)</span><span class="special">;</span></pre>
 <p>Extract the message data from a frame.</p>
 <p>
 
@@ -128,21 +128,21 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp5558000-bb"></a><span class="special">~</span><span class="identifier">message</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp10958112-bb"></a><span class="special">~</span><span class="identifier">message</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Destruct a MIH Message. </p>
 </li>
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp12037048"></a><h3>
-<a name="idp5513896-bb"></a><code class="computeroutput">message</code> public member functions</h3>
+<a name="idp71872816"></a><h3>
+<a name="idp10873232-bb"></a><code class="computeroutput">message</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5514112-bb"></a><span class="identifier">reset</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10873632-bb"></a><span class="identifier">reset</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Clear the payload. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5514808-bb"></a><span class="identifier">version</span><span class="special">(</span><span class="identifier">uint8</span> v<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10875008-bb"></a><span class="identifier">version</span><span class="special">(</span><span class="identifier">uint8</span> v<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the MIH Message Version.</p>
 <p>
 </p>
@@ -161,7 +161,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5516256-bb"></a><span class="identifier">ackreq</span><span class="special">(</span><span class="keyword">bool</span> v<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10877824-bb"></a><span class="identifier">ackreq</span><span class="special">(</span><span class="keyword">bool</span> v<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the MIH Message Acknowledge Request Flag.</p>
 <p>
 </p>
@@ -180,7 +180,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5517736-bb"></a><span class="identifier">ackrsp</span><span class="special">(</span><span class="keyword">bool</span> v<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10880672-bb"></a><span class="identifier">ackrsp</span><span class="special">(</span><span class="keyword">bool</span> v<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the MIH Message Acknowledge Response Flag.</p>
 <p>
 </p>
@@ -199,7 +199,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5519216-bb"></a><span class="identifier">uir</span><span class="special">(</span><span class="keyword">bool</span> v<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10883520-bb"></a><span class="identifier">uir</span><span class="special">(</span><span class="keyword">bool</span> v<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the MIH Message Unauthenticated Information Request Flag.</p>
 <p>
 </p>
@@ -218,7 +218,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5520720-bb"></a><span class="identifier">m</span><span class="special">(</span><span class="keyword">bool</span> v<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10886384-bb"></a><span class="identifier">m</span><span class="special">(</span><span class="keyword">bool</span> v<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the MIH Message More Fragment Flag.</p>
 <p>
 </p>
@@ -237,7 +237,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5522176-bb"></a><span class="identifier">fn</span><span class="special">(</span><span class="identifier">uint8</span> v<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10889200-bb"></a><span class="identifier">fn</span><span class="special">(</span><span class="identifier">uint8</span> v<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the MIH Message Fragment Number.</p>
 <p>
 </p>
@@ -256,7 +256,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5523632-bb"></a><span class="identifier">sid</span><span class="special">(</span><span class="identifier">service</span><span class="special">::</span><span class="identifier">type</span> v<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10892016-bb"></a><span class="identifier">sid</span><span class="special">(</span><span class="identifier">service</span><span class="special">::</span><span class="identifier">type</span> v<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the MIH Message ID Service Identifier.</p>
 <p>
 </p>
@@ -275,7 +275,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5525104-bb"></a><span class="identifier">opcode</span><span class="special">(</span><span class="identifier">operation</span><span class="special">::</span><span class="identifier">type</span> v<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10894848-bb"></a><span class="identifier">opcode</span><span class="special">(</span><span class="identifier">operation</span><span class="special">::</span><span class="identifier">type</span> v<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the MIH Message ID Operation Code.</p>
 <p>
 </p>
@@ -294,7 +294,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5526568-bb"></a><span class="identifier">aid</span><span class="special">(</span><span class="identifier">action</span><span class="special">::</span><span class="identifier">type</span> v<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10897664-bb"></a><span class="identifier">aid</span><span class="special">(</span><span class="identifier">action</span><span class="special">::</span><span class="identifier">type</span> v<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the MIH Message ID Action Identifier.</p>
 <p>
 </p>
@@ -313,7 +313,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5528032-bb"></a><span class="identifier">mid</span><span class="special">(</span><span class="identifier">uint16</span> v<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10900496-bb"></a><span class="identifier">mid</span><span class="special">(</span><span class="identifier">uint16</span> v<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the MIH Message ID.</p>
 <p>
 </p>
@@ -332,7 +332,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5529464-bb"></a><span class="identifier">tid</span><span class="special">(</span><span class="identifier">uint16</span> v<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10903296-bb"></a><span class="identifier">tid</span><span class="special">(</span><span class="identifier">uint16</span> v<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the MIH Message Transaction ID.</p>
 <p>
 </p>
@@ -351,7 +351,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5530912-bb"></a><span class="identifier">source</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span> id<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10906112-bb"></a><span class="identifier">source</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span> id<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the MIH Message Source ID.</p>
 <p>
 </p>
@@ -370,7 +370,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5532584-bb"></a><span class="identifier">destination</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span> id<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10909376-bb"></a><span class="identifier">destination</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span> id<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the MIH Message Destination ID.</p>
 <p>
 </p>
@@ -389,7 +389,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5534256-bb"></a><span class="identifier">payload</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="message.html" title="Class message">message</a> <span class="special">&amp;</span> msg<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10912640-bb"></a><span class="identifier">payload</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="message.html" title="Class message">message</a> <span class="special">&amp;</span> msg<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the message payload by copying it from another message. </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -416,7 +416,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint8</span> <a name="idp5536144-bb"></a><span class="identifier">version</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint8</span> <a name="idp10916256-bb"></a><span class="identifier">version</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MIH Message Version.</p>
 <p>
 </p>
@@ -429,7 +429,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5537248-bb"></a><span class="identifier">ackreq</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp10918384-bb"></a><span class="identifier">ackreq</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MIH Message Acknowledge Request Flag.</p>
 <p>
 </p>
@@ -442,7 +442,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5538376-bb"></a><span class="identifier">ackrsp</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp10920528-bb"></a><span class="identifier">ackrsp</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MIH Message Acknowledge Response Flag.</p>
 <p>
 </p>
@@ -455,7 +455,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5539512-bb"></a><span class="identifier">uir</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp10922688-bb"></a><span class="identifier">uir</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MIH Message Unauthenticated Information Request Flag.</p>
 <p>
 </p>
@@ -468,7 +468,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5540672-bb"></a><span class="identifier">m</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp10924864-bb"></a><span class="identifier">m</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MIH Message More Fragment Flag.</p>
 <p>
 </p>
@@ -481,7 +481,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint8</span> <a name="idp5541784-bb"></a><span class="identifier">fn</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint8</span> <a name="idp10926992-bb"></a><span class="identifier">fn</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MIH Message Fragment Number.</p>
 <p>
 </p>
@@ -494,7 +494,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">service</span><span class="special">::</span><span class="identifier">type</span> <a name="idp5542896-bb"></a><span class="identifier">sid</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">service</span><span class="special">::</span><span class="identifier">type</span> <a name="idp10929120-bb"></a><span class="identifier">sid</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MIH Message ID Service Identifier.</p>
 <p>
 </p>
@@ -507,7 +507,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">operation</span><span class="special">::</span><span class="identifier">type</span> <a name="idp5544024-bb"></a><span class="identifier">opcode</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">operation</span><span class="special">::</span><span class="identifier">type</span> <a name="idp10931264-bb"></a><span class="identifier">opcode</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MIH Message ID Operation Code.</p>
 <p>
 </p>
@@ -520,7 +520,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">action</span><span class="special">::</span><span class="identifier">type</span> <a name="idp5545144-bb"></a><span class="identifier">aid</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">action</span><span class="special">::</span><span class="identifier">type</span> <a name="idp10933392-bb"></a><span class="identifier">aid</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MIH Message ID Action Identifier.</p>
 <p>
 </p>
@@ -533,7 +533,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp5546264-bb"></a><span class="identifier">mid</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp10935536-bb"></a><span class="identifier">mid</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MIH Message ID.</p>
 <p>
 </p>
@@ -546,7 +546,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp5547344-bb"></a><span class="identifier">tid</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp10937632-bb"></a><span class="identifier">tid</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MIH Message Transaction ID.</p>
 <p>
 </p>
@@ -559,7 +559,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span> <a name="idp5548448-bb"></a><span class="identifier">source</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span> <a name="idp10939760-bb"></a><span class="identifier">source</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MIH Message Source ID.</p>
 <p>
 </p>
@@ -572,7 +572,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span> <a name="idp5549776-bb"></a><span class="identifier">destination</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">const</span> <a class="link" href="id.html" title="Class id">id</a> <span class="special">&amp;</span> <a name="idp10942336-bb"></a><span class="identifier">destination</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MIH Message Destination ID.</p>
 <p>
 </p>
@@ -585,7 +585,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp5551104-bb"></a><span class="identifier">input</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp10944912-bb"></a><span class="identifier">input</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Get the message's input archive.</p>
 <p>
 </p>
@@ -598,7 +598,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> <a name="idp5552336-bb"></a><span class="identifier">output</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> <a name="idp10947312-bb"></a><span class="identifier">output</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Get the message's output archive.</p>
 <p>
 </p>
@@ -611,7 +611,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp5553568-bb"></a><span class="identifier">get_frame</span><span class="special">(</span><span class="identifier">frame_vla</span> <span class="special">&amp;</span> fm<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10949712-bb"></a><span class="identifier">get_frame</span><span class="special">(</span><span class="identifier">frame_vla</span> <span class="special">&amp;</span> fm<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the MIH Message Frame.</p>
 <p>
 </p>
@@ -630,7 +630,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5555008-bb"></a><span class="identifier">has_service_specific_tlv</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp10952528-bb"></a><span class="identifier">has_service_specific_tlv</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Check if the MIH Message has service specific TLVs</p>
 <p>
 </p>

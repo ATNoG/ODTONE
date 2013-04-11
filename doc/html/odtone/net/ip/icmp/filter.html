@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class filter</title>
 <link rel="stylesheet" href="../../../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../../../index.html" title="ODTONE 0.4">
-<link rel="up" href="../icmp.html#idp20291344" title="Description">
+<link rel="up" href="../icmp.html#idp87803312" title="Description">
 <link rel="prev" href="../icmp.html" title="Struct icmp">
 <link rel="next" href="header.html" title="Class header">
 </head>
@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../icmp.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp20291344"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="header.html"><img src="../../../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../icmp.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp87803312"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="header.html"><img src="../../../../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.net.ip.icmp.filter"></a><div class="titlepage"></div>
@@ -29,44 +29,44 @@
 <span class="keyword">class</span> <a class="link" href="filter.html" title="Class filter">filter</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="filter.html#odtone.net.ip.icmp.filterconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="filter.html#idp4659096-bb"><span class="identifier">filter</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="filter.html#idp4659504-bb"><span class="identifier">filter</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">,</span> <span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="filter.html#idp10426432-bb"><span class="identifier">filter</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="filter.html#idp10427248-bb"><span class="identifier">filter</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">,</span> <span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="filter.html#idp4652904-bb">public member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="filter.html#idp4653088-bb"><span class="identifier">pass</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="filter.html#idp4653568-bb"><span class="identifier">pass</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="filter.html#idp4654392-bb"><span class="identifier">block</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="filter.html#idp4654872-bb"><span class="identifier">block</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">int</span> <a class="link" href="filter.html#idp4655696-bb"><span class="identifier">level</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">int</span> <a class="link" href="filter.html#idp4656544-bb"><span class="identifier">name</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> <a class="link" href="filter.html#idp4657392-bb"><span class="identifier">data</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">size_t</span> <a class="link" href="filter.html#idp4658248-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="filter.html#idp10414160-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="filter.html#idp10414560-bb"><span class="identifier">pass</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="filter.html#idp10415520-bb"><span class="identifier">pass</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="filter.html#idp10417168-bb"><span class="identifier">block</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="filter.html#idp10418128-bb"><span class="identifier">block</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">int</span> <a class="link" href="filter.html#idp10419776-bb"><span class="identifier">level</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">int</span> <a class="link" href="filter.html#idp10421440-bb"><span class="identifier">name</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> <a class="link" href="filter.html#idp10423104-bb"><span class="identifier">data</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_t</span> <a class="link" href="filter.html#idp10424768-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp20328376"></a><h2>Description</h2>
+<a name="idp87876352"></a><h2>Description</h2>
 <p>This class represents an ICMP filter. </p>
 <div class="refsect2">
-<a name="idp20328696"></a><h3>
+<a name="idp87877072"></a><h3>
 <a name="odtone.net.ip.icmp.filterconstruct-copy-destruct"></a><code class="computeroutput">filter</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><a name="idp4659096-bb"></a><span class="identifier">filter</span><span class="special">(</span><span class="keyword">bool</span> block<span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><a name="idp4659504-bb"></a><span class="identifier">filter</span><span class="special">(</span><span class="keyword">bool</span> block<span class="special">,</span> <span class="identifier">uint</span> except_value_type<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idp10426432-bb"></a><span class="identifier">filter</span><span class="special">(</span><span class="keyword">bool</span> block<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idp10427248-bb"></a><span class="identifier">filter</span><span class="special">(</span><span class="keyword">bool</span> block<span class="special">,</span> <span class="identifier">uint</span> except_value_type<span class="special">)</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp20334952"></a><h3>
-<a name="idp4652904-bb"></a><code class="computeroutput">filter</code> public member functions</h3>
+<a name="idp87889328"></a><h3>
+<a name="idp10414160-bb"></a><code class="computeroutput">filter</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="idp4653088-bb"></a><span class="identifier">pass</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="idp4653568-bb"></a><span class="identifier">pass</span><span class="special">(</span><span class="identifier">uint</span> type_value<span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="idp4654392-bb"></a><span class="identifier">block</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="idp4654872-bb"></a><span class="identifier">block</span><span class="special">(</span><span class="identifier">uint</span> type_value<span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">int</span> <a name="idp4655696-bb"></a><span class="identifier">level</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">int</span> <a name="idp4656544-bb"></a><span class="identifier">name</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> <a name="idp4657392-bb"></a><span class="identifier">data</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="identifier">size_t</span> <a name="idp4658248-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="idp10414560-bb"></a><span class="identifier">pass</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="idp10415520-bb"></a><span class="identifier">pass</span><span class="special">(</span><span class="identifier">uint</span> type_value<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="idp10417168-bb"></a><span class="identifier">block</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="idp10418128-bb"></a><span class="identifier">block</span><span class="special">(</span><span class="identifier">uint</span> type_value<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">int</span> <a name="idp10419776-bb"></a><span class="identifier">level</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">int</span> <a name="idp10421440-bb"></a><span class="identifier">name</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> <a name="idp10423104-bb"></a><span class="identifier">data</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">size_t</span> <a name="idp10424768-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 </div>
@@ -85,7 +85,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../icmp.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp20291344"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="header.html"><img src="../../../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../icmp.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp87803312"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="header.html"><img src="../../../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

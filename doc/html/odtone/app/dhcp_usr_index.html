@@ -22,14 +22,14 @@
 <div class="toc"><dl>
 <dt><span class="section"><a href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart">Compilation
         dependencies</a></span></dt>
-<dt><span class="section"><a href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart">Getting
+<dt><span class="section"><a href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart0">Getting
         Started</a></span></dt>
 </dl></div>
 <p>
         The DHCP-User was implemented in order to enable the discovery of PoS entities
         according to the guidelines depicted in the RFC5678. It is a modification
-        of the &#8221;dhclient&#8221; software, which was extended to support the IEEE 802.21
-        standard and communicate via MIH protocol.
+        of the &#8221;dhclient&#8221; software (version 4.2.5), which was extended to support
+        the IEEE 802.21 standard and communicate via MIH protocol.
       </p>
 <p>
         The DHCP-User has two modes of discovery operations: explicit discovery or
@@ -61,7 +61,8 @@
 </tr>
 <tr><td align="left" valign="top"><p>
           ODTONE also provides the DHCP server application, which is an modified
-          version of the "dhcpd" supporting the IEEE 802.21 DHCP options.
+          version of the "dhcpd" (version 4.2.5) supporting the IEEE 802.21
+          DHCP options.
         </p></td></tr>
 </table></div>
 <div class="section">
@@ -80,7 +81,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart"></a><a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart" title="Compilation dependencies">Getting
+<a name="odtone.app.dhcp_usr_index.dhcp_usr_getStart0"></a><a class="link" href="dhcp_usr_index.html#odtone.app.dhcp_usr_index.dhcp_usr_getStart0" title="Getting Started">Getting
         Started</a>
 </h4></div></div></div>
 <div class="toc"><dl>
@@ -175,8 +176,8 @@ request subnet-mask, broadcast-address, time-offset, routers,
 
 # IPv6
 
-also request dhcp6.option-ipv6-address-mos_ip;
-also request dhcp6.option-ipv6-address-mos_fqdn;
+also request dhcp6.option-ipv6-address-mos;
+also request dhcp6.option-fqdn6-address-mos;
 </pre>
 <p>
           </p>
@@ -223,8 +224,8 @@ log-facility local7;
 subnet 192.168.1.0 netmask 255.255.255.0 {
 	    authoritative;
 	    range 192.168.1.10 192.168.1.30;
-	    option option-ipv4-address-mos_ip.is 10.110.1.1;
-	    option option-ipv4-address-mos_fqdn.is "odtone.test";
+	    option option-ipv4-address-mos.is 10.110.1.1;
+	    option option-fqdn-address-mos.is "odtone.test";
 }
 
 # IPv6
@@ -246,8 +247,8 @@ subnet6 2000:aaaa:bbbb:cccc::/64 {
 	            fixed-address6 2001:db8:0:1::127;
 	    }
 
-	    option dhcp6.option-ipv6-address-mos_ip 00:01:00:10:fe:80:00:00:00:00:00:00:02:03:1d:ff:fe:07:15:73 ;
-	    option dhcp6.option-ipv6-address-mos_fqdn 00:01:00:0d:06:6f:64:74:6f:6e:65:04:74:65:73:74:00 ;
+	    option dhcp6.option-ipv4-address-mos 00:01:00:10:fe:80:00:00:00:00:00:00:02:03:1d:ff:fe:07:15:73 ;
+	    option dhcp6.option-fqdn-address-mos 00:01:00:0d:06:6f:64:74:6f:6e:65:04:74:65:73:74:00 ;
 }
 </pre>
 <p>

@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Struct other_l2_addr</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.address_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/address.hpp&gt;">
 <link rel="prev" href="l2_3gpp2_addr.html" title="Struct l2_3gpp2_addr">
@@ -27,25 +27,25 @@
 </span>
 <span class="keyword">struct</span> <a class="link" href="other_l2_addr.html" title="Struct other_l2_addr">other_l2_addr</a> <span class="special">{</span>
 
-  <span class="comment">// <a class="link" href="other_l2_addr.html#idp5893936-bb">public member functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="other_l2_addr.html#idp5894152-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="other_l2_addr.html#idp5896056-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="other_l2_addr.html" title="Struct other_l2_addr">other_l2_addr</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="other_l2_addr.html#idp11411424-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="other_l2_addr.html#idp11411824-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="other_l2_addr.html#idp11415520-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="other_l2_addr.html" title="Struct other_l2_addr">other_l2_addr</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="other_l2_addr.html#idp5897992-bb">friend functions</a></span>
-  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="other_l2_addr.html#idp5898200-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="other_l2_addr.html" title="Struct other_l2_addr">other_l2_addr</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="other_l2_addr.html#idp11419248-bb">friend functions</a></span>
+  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="other_l2_addr.html#idp11419648-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="other_l2_addr.html" title="Struct other_l2_addr">other_l2_addr</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="other_l2_addr.html#odtone.mih.other_l2_addrpublic-data-members">public data members</a></span>
   <span class="identifier">octet_string</span> <a class="link" href="other_l2_addr.html#odtone.mih.other_l2_addr.value"><span class="identifier">value</span></a><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp13645304"></a><h2>Description</h2>
+<a name="idp74871136"></a><h2>Description</h2>
 <p>Define OTHER_L2_ADDR data type. </p>
 <div class="refsect2">
-<a name="idp13645640"></a><h3>
-<a name="idp5893936-bb"></a><code class="computeroutput">other_l2_addr</code> public member functions</h3>
+<a name="idp74871808"></a><h3>
+<a name="idp11411424-bb"></a><code class="computeroutput">other_l2_addr</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp5894152-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp11411824-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize/deserialize the OTHER_L2_ADDR data type.</p>
 <p>
 </p>
@@ -64,7 +64,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp5896056-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="other_l2_addr.html" title="Struct other_l2_addr">other_l2_addr</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp11415520-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="other_l2_addr.html" title="Struct other_l2_addr">other_l2_addr</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Check if the OTHER_L2_ADDR is equal to another OTHER_L2_ADDR.</p>
 <p>
 
@@ -92,11 +92,11 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp13659032"></a><h3>
-<a name="idp5897992-bb"></a><code class="computeroutput">other_l2_addr</code> friend functions</h3>
+<a name="idp74897856"></a><h3>
+<a name="idp11419248-bb"></a><code class="computeroutput">other_l2_addr</code> friend functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
 <pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> 
-<a name="idp5898200-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="other_l2_addr.html" title="Struct other_l2_addr">other_l2_addr</a> <span class="special">&amp;</span> addr<span class="special">)</span><span class="special">;</span></pre>
+<a name="idp11419648-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="other_l2_addr.html" title="Struct other_l2_addr">other_l2_addr</a> <span class="special">&amp;</span> addr<span class="special">)</span><span class="special">;</span></pre>
 <p>OTHER_L2_ADDR data type output.</p>
 <p>
 
@@ -129,7 +129,7 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp13669376"></a><h3>
+<a name="idp74918160"></a><h3>
 <a name="odtone.mih.other_l2_addrpublic-data-members"></a><code class="computeroutput">other_l2_addr</code> 
         public
        public data members</h3>

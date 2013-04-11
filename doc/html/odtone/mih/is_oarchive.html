@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class template is_oarchive</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.archive_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/archive.hpp&gt;">
 <link rel="prev" href="is_iarchive/false_t.html" title="Class false_t">
@@ -32,22 +32,22 @@
   <span class="keyword">class</span> <a class="link" href="is_oarchive/false_t.html" title="Class false_t">false_t</a> <span class="special">{</span>
   <span class="special">}</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="is_oarchive.html#idp5213984-bb">private static functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">true_t</span> <a class="link" href="is_oarchive.html#idp5214200-bb"><span class="identifier">test</span></a><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">U</span><span class="special">::</span><span class="identifier">oarchive_type</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">false_t</span> <a class="link" href="is_oarchive.html#idp5215616-bb"><span class="identifier">test</span></a><span class="special">(</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="is_oarchive.html#idp10621088-bb">private static functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">true_t</span> <a class="link" href="is_oarchive.html#idp10621504-bb"><span class="identifier">test</span></a><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">U</span><span class="special">::</span><span class="identifier">oarchive_type</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">false_t</span> <a class="link" href="is_oarchive.html#idp10624304-bb"><span class="identifier">test</span></a><span class="special">(</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// public data members</span>
   <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">bool</span> <span class="identifier">value</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp11142736"></a><h2>Description</h2>
+<a name="idp70428176"></a><h2>Description</h2>
 <p>This class permits to check if a given class is an output archive. It has only a boolean value that is true when the given class is an output archive, or false otherwise. </p>
 <div class="refsect2">
-<a name="idp11143248"></a><h3>
-<a name="idp5213984-bb"></a><code class="computeroutput">is_oarchive</code> private static functions</h3>
+<a name="idp70429040"></a><h3>
+<a name="idp10621088-bb"></a><code class="computeroutput">is_oarchive</code> private static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">true_t</span> <a name="idp5214200-bb"></a><span class="identifier">test</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">U</span><span class="special">::</span><span class="identifier">oarchive_type</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">false_t</span> <a name="idp5215616-bb"></a><span class="identifier">test</span><span class="special">(</span><span class="special">...</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">true_t</span> <a name="idp10621504-bb"></a><span class="identifier">test</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">U</span><span class="special">::</span><span class="identifier">oarchive_type</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">false_t</span> <a name="idp10624304-bb"></a><span class="identifier">test</span><span class="special">(</span><span class="special">...</span><span class="special">)</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 </div>

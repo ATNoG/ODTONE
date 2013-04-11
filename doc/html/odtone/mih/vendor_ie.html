@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class vendor_ie</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.vendor_ie_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/vendor_ie.hpp&gt;">
 <link rel="prev" href="reg_request_code.html" title="Type definition reg_request_code">
@@ -28,30 +28,33 @@
 <span class="keyword">class</span> <a class="link" href="vendor_ie.html" title="Class vendor_ie">vendor_ie</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="vendor_ie.html#odtone.mih.vendor_ieconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="vendor_ie.html#idp6615392-bb"><span class="identifier">vendor_ie</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="vendor_ie.html#idp6615696-bb"><span class="identifier">vendor_ie</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="vendor_ie.html" title="Class vendor_ie">vendor_ie</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  vendor_ie&amp; <a class="link" href="vendor_ie.html#idp6616952-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="vendor_ie.html" title="Class vendor_ie">vendor_ie</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="vendor_ie.html#idp12810752-bb"><span class="identifier">vendor_ie</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="vendor_ie.html#idp12811328-bb"><span class="identifier">vendor_ie</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="vendor_ie.html" title="Class vendor_ie">vendor_ie</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  vendor_ie&amp; <a class="link" href="vendor_ie.html#idp12813760-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="vendor_ie.html" title="Class vendor_ie">vendor_ie</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="vendor_ie.html#idp6610912-bb">public member functions</a></span>
-  <span class="identifier">uint32</span> <a class="link" href="vendor_ie.html#idp6611128-bb"><span class="identifier">id</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="vendor_ie.html#idp6612200-bb"><span class="identifier">serialize</span></a><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="vendor_ie.html#idp6613800-bb"><span class="identifier">serialize</span></a><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="vendor_ie.html#idp12794592-bb">public member functions</a></span>
+  <span class="identifier">uint32</span> <a class="link" href="vendor_ie.html#idp12794992-bb"><span class="identifier">id</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">buffer</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <a class="link" href="vendor_ie.html#idp12797072-bb"><span class="identifier">data</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="vendor_ie.html#idp12799152-bb"><span class="identifier">id</span></a><span class="special">(</span><span class="identifier">uint32</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="vendor_ie.html#idp12801504-bb"><span class="identifier">data</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="vendor_ie.html#idp12804544-bb"><span class="identifier">serialize</span></a><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="vendor_ie.html#idp12807648-bb"><span class="identifier">serialize</span></a><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp18655768"></a><h2>Description</h2>
+<a name="idp84481840"></a><h2>Description</h2>
 <p>Define VENDOR_IE data type. </p>
 <div class="refsect2">
-<a name="idp18656144"></a><h3>
+<a name="idp84482560"></a><h3>
 <a name="odtone.mih.vendor_ieconstruct-copy-destruct"></a><code class="computeroutput">vendor_ie</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="idp6615392-bb"></a><span class="identifier">vendor_ie</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp12810752-bb"></a><span class="identifier">vendor_ie</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty Vendor_IE data type. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp6615696-bb"></a><span class="identifier">vendor_ie</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="vendor_ie.html" title="Class vendor_ie">vendor_ie</a> <span class="special">&amp;</span> lhs<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp12811328-bb"></a><span class="identifier">vendor_ie</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="vendor_ie.html" title="Class vendor_ie">vendor_ie</a> <span class="special">&amp;</span> lhs<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a Vendor_IE data type from another Vendor_IE data type.</p>
 <p>
 </p>
@@ -70,7 +73,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout">vendor_ie&amp; <a name="idp6616952-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="vendor_ie.html" title="Class vendor_ie">vendor_ie</a> <span class="special">&amp;</span> lhs<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout">vendor_ie&amp; <a name="idp12813760-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="vendor_ie.html" title="Class vendor_ie">vendor_ie</a> <span class="special">&amp;</span> lhs<span class="special">)</span><span class="special">;</span></pre>
 <p>Copy a Vendor_IE data type from another Vendor_IE data type.</p>
 <p>
 </p>
@@ -91,11 +94,11 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp18669328"></a><h3>
-<a name="idp6610912-bb"></a><code class="computeroutput">vendor_ie</code> public member functions</h3>
+<a name="idp84508240"></a><h3>
+<a name="idp12794592-bb"></a><code class="computeroutput">vendor_ie</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint32</span> <a name="idp6611128-bb"></a><span class="identifier">id</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint32</span> <a name="idp12794992-bb"></a><span class="identifier">id</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the Vendor_IE type.</p>
 <p>
 </p>
@@ -108,7 +111,32 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp6612200-bb"></a><span class="identifier">serialize</span><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">buffer</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <a name="idp12797072-bb"></a><span class="identifier">data</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Get the Vendor_IE data.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The Vendor_IE data. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12799152-bb"></a><span class="identifier">id</span><span class="special">(</span><span class="identifier">uint32</span> id<span class="special">)</span><span class="special">;</span></pre>
+<p>Set the Vendor_IE type.</p>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12801504-bb"></a><span class="identifier">data</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> raw<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
+<p>Set the Vendor_IE data.</p>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp12804544-bb"></a><span class="identifier">serialize</span><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Deserialize the Vendor_IE data type.</p>
 <p>
 </p>
@@ -127,7 +155,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp6613800-bb"></a><span class="identifier">serialize</span><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12807648-bb"></a><span class="identifier">serialize</span><span class="special">(</span><a class="link" href="oarchive.html" title="Class oarchive">oarchive</a> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize the Vendor_IE data type.</p>
 <p>
 </p>

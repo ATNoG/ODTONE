@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Struct iq_rdf_data</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.rdf_query_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/rdf_query.hpp&gt;">
 <link rel="prev" href="qos_param_val.html" title="Type definition qos_param_val">
@@ -27,33 +27,33 @@
 </span>
 <span class="keyword">struct</span> <a class="link" href="iq_rdf_data.html" title="Struct iq_rdf_data">iq_rdf_data</a> <span class="special">{</span>
   <span class="comment">// <a class="link" href="iq_rdf_data.html#odtone.mih.iq_rdf_dataconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="iq_rdf_data.html#idp6592592-bb"><span class="identifier">iq_rdf_data</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iq_rdf_data.html#idp12759456-bb"><span class="identifier">iq_rdf_data</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="iq_rdf_data.html#idp6590472-bb">public member functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="iq_rdf_data.html#idp6590688-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="iq_rdf_data.html#idp12755360-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="iq_rdf_data.html#idp12755760-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="iq_rdf_data.html#odtone.mih.iq_rdf_datapublic-data-members">public data members</a></span>
   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <span class="identifier">octet_string</span> <span class="special">&gt;</span> <a class="link" href="iq_rdf_data.html#odtone.mih.iq_rdf_data._mime"><span class="identifier">_mime</span></a><span class="special">;</span>
   <span class="identifier">octet_string</span> <a class="link" href="iq_rdf_data.html#odtone.mih.iq_rdf_data._data"><span class="identifier">_data</span></a><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp18468504"></a><h2>Description</h2>
+<a name="idp84103456"></a><h2>Description</h2>
 <p>IQ_RDF_DATA data type. </p>
 <div class="refsect2">
-<a name="idp18468872"></a><h3>
+<a name="idp84104160"></a><h3>
 <a name="odtone.mih.iq_rdf_dataconstruct-copy-destruct"></a><code class="computeroutput">iq_rdf_data</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp6592592-bb"></a><span class="identifier">iq_rdf_data</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp12759456-bb"></a><span class="identifier">iq_rdf_data</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a IQ_RDF_DATA data type. </p>
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp18472056"></a><h3>
-<a name="idp6590472-bb"></a><code class="computeroutput">iq_rdf_data</code> public member functions</h3>
+<a name="idp84110208"></a><h3>
+<a name="idp12755360-bb"></a><code class="computeroutput">iq_rdf_data</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp6590688-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp12755760-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize/deserialize the IQ_RDF_DATA data type.</p>
 <p>
 </p>
@@ -73,7 +73,7 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp18479136"></a><h3>
+<a name="idp84124128"></a><h3>
 <a name="odtone.mih.iq_rdf_datapublic-data-members"></a><code class="computeroutput">iq_rdf_data</code> 
         public
        public data members</h3>

@@ -3,17 +3,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>ODTONE Base Library</title>
 <link rel="stylesheet" href="boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="ODTONE 0.4">
 <link rel="up" href="odtone/library.html" title="Libraries">
 <link rel="prev" href="odtone/library.html" title="Libraries">
-<link rel="next" href="odtone/nullptr_t.html" title="Struct nullptr_t">
+<link rel="next" href="odtone/schar.html" title="Type definition schar">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="./images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="odtone/library.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="odtone/library.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="odtone/nullptr_t.html"><img src="images/next.png" alt="Next"></a>
+<a accesskey="p" href="odtone/library.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="odtone/library.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="odtone/schar.html"><img src="images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -23,6 +23,7 @@
 <dt><span class="section"><a href="odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.bind_rv_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/bind_rv.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.buffer_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/buffer.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.cast_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/cast.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.conf_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/conf.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.debug_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/debug.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.exception_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/exception.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.list_node_hpp">Header &lt;/home/carlos/Projectos/odtone/inc/odtone/list_node.hpp&gt;</a></span></dt>
@@ -49,7 +50,6 @@
 <a class="link" href="ODTONE_UNDEFINED_BOOL_TRUE.html" title="Macro ODTONE_UNDEFINED_BOOL_TRUE">ODTONE_UNDEFINED_BOOL_TRUE</a>
 <a class="link" href="ODTONE_UNDEFINED_BOOL_FALSE.html" title="Macro ODTONE_UNDEFINED_BOOL_FALSE">ODTONE_UNDEFINED_BOOL_FALSE</a></pre>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">odtone</span> <span class="special">{</span>
-  <span class="keyword">struct</span> <a class="link" href="odtone/nullptr_t.html" title="Struct nullptr_t">nullptr_t</a><span class="special">;</span>
   <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="keyword">char</span> <a class="link" href="odtone/schar.html" title="Type definition schar"><span class="identifier">schar</span></a><span class="special">;</span>
   <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="keyword">short</span> <a class="link" href="odtone/sshort.html" title="Type definition sshort"><span class="identifier">sshort</span></a><span class="special">;</span>
   <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="keyword">int</span> <a class="link" href="odtone/sint.html" title="Type definition sint"><span class="identifier">sint</span></a><span class="special">;</span>
@@ -70,8 +70,6 @@
   <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">int64_t</span> <a class="link" href="odtone/sint64.html" title="Type definition sint64"><span class="identifier">sint64</span></a><span class="special">;</span>
   <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intmax_t</span> <a class="link" href="odtone/sintmax.html" title="Type definition sintmax"><span class="identifier">sintmax</span></a><span class="special">;</span>
   <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">uintmax_t</span> <a class="link" href="odtone/uintmax.html" title="Type definition uintmax"><span class="identifier">uintmax</span></a><span class="special">;</span>
-
-  <span class="keyword">static</span> <span class="keyword">const</span> <a class="link" href="odtone/nullptr_t.html" title="Struct nullptr_t">nullptr_t</a> <a class="link" href="odtone/nullptr.html" title="Global nullptr">nullptr</a><span class="special">;</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> MemberT<span class="special">,</span> <span class="keyword">typename</span> ParentT<span class="special">&gt;</span> 
     <span class="identifier">MemberT</span> <span class="special">*</span> <a name="odtone.member_of"></a><span class="identifier">member_of</span><span class="special">(</span><span class="identifier">ParentT</span> <span class="special">*</span> parent<span class="special">,</span> <span class="identifier">MemberT</span> <span class="identifier">ParentT</span><span class="special">::</span><span class="special">*</span> Member<span class="special">)</span><span class="special">;</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ParentT<span class="special">,</span> <span class="keyword">typename</span> MemberT<span class="special">&gt;</span> 
@@ -105,6 +103,39 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
+<a name="header..home.carlos.Projectos.odtone.inc.odtone.conf_hpp"></a>Header &lt;<a href="../..//home/carlos/Projectos/odtone/inc/odtone/conf.hpp" target="_top">/home/carlos/Projectos/odtone/inc/odtone/conf.hpp</a>&gt;</h4></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">odtone</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">conf</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="odtone/conf/type_id_.html" title="Class template type_id_">type_id_</a><span class="special">;</span>
+
+    <span class="keyword">struct</span> <a class="link" href="odtone/conf/property_class.html" title="Struct property_class">property_class</a><span class="special">;</span>
+
+    <span class="keyword">class</span> <a class="link" href="odtone/conf/function.html" title="Class function">function</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Iterator<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="odtone/conf/skipper_grammar.html" title="Struct template skipper_grammar">skipper_grammar</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Iterator<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="odtone/conf/string_grammar.html" title="Struct template string_grammar">string_grammar</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Iterator<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="odtone/conf/ip4_grammar.html" title="Struct template ip4_grammar">ip4_grammar</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Iterator<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="odtone/conf/ip6_grammar.html" title="Struct template ip6_grammar">ip6_grammar</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Iterator<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="odtone/conf/parser_grammar.html" title="Struct template parser_grammar">parser_grammar</a><span class="special">;</span>
+
+    <span class="keyword">enum</span> <a name="odtone.conf.error_reason"></a>error_reason <span class="special">{</span> invalid_syntax, invalid_command, invalid_arg_type, 
+                        to_many_args, invalid_prop, invalid_prop_arg_type, 
+                        to_many_prop_args, error_reason_size <span class="special">}</span><span class="special">;</span>
+
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <span class="identifier">uint</span><span class="special">,</span> <span class="identifier">sint</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">address_v4</span><span class="special">,</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">address_v6</span> <span class="special">&gt;</span> <a name="odtone.conf.arg_type"></a><span class="identifier">arg_type</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">arg_type</span> <span class="special">&gt;</span> <a name="odtone.conf.args_type"></a><span class="identifier">args_type</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">args_type</span> <span class="special">&gt;</span> <a name="odtone.conf.prop_type"></a><span class="identifier">prop_type</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">args_type</span> <span class="special">&gt;</span> <a name="odtone.conf.pset_type"></a><span class="identifier">pset_type</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <a class="link" href="odtone/conf/function.html" title="Class function">function</a> <span class="special">&gt;</span> <a name="odtone.conf.functions"></a><span class="identifier">functions</span><span class="special">;</span>
+
+    <span class="keyword">static</span> <span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span><span class="keyword">const</span> <a class="link" href="odtone/conf/error_reason_string.html" title="Global error_reason_string">error_reason_string</a><span class="special">;</span>
+    <span class="keyword">bool</span> <a name="odtone.conf.exec"></a><span class="identifier">exec</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">::</span><span class="identifier">const_iterator</span> <span class="special">&amp;</span> begin<span class="special">,</span> 
+              <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">::</span><span class="identifier">const_iterator</span> end<span class="special">,</span> <span class="identifier">functions</span> <span class="keyword">const</span> <span class="special">&amp;</span> cm<span class="special">)</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
 <a name="header..home.carlos.Projectos.odtone.inc.odtone.debug_hpp"></a>Header &lt;<a href="../..//home/carlos/Projectos/odtone/inc/odtone/debug.hpp" target="_top">/home/carlos/Projectos/odtone/inc/odtone/debug.hpp</a>&gt;</h4></div></div></div>
 <pre class="synopsis">
 
@@ -125,8 +156,8 @@
 
   <span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <a class="link" href="odtone/k_bug_code_string.html" title="Global k_bug_code_string">k_bug_code_string</a><span class="special">;</span>
   <span class="keyword">void</span> <a class="link" href="odtone/setup_crash_handler.html" title="Function setup_crash_handler"><span class="identifier">setup_crash_handler</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="odtone/crash_idp3748416.html" title="Function crash"><span class="identifier">crash</span></a><span class="special">(</span><span class="identifier">bug</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">uint</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">ODTONE_NORETURN_BEGIN</span> <span class="keyword">void</span> <a class="link" href="odtone/crash_idp3751632.html" title="Function crash"><span class="identifier">crash</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="odtone/crash_ctx.html" title="Struct crash_ctx">crash_ctx</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="odtone/crash_idp8435776.html" title="Function crash"><span class="identifier">crash</span></a><span class="special">(</span><span class="identifier">bug</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">uint</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">ODTONE_NORETURN_BEGIN</span> <span class="keyword">void</span> <a class="link" href="odtone/crash_idp8442736.html" title="Function crash"><span class="identifier">crash</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="odtone/crash_ctx.html" title="Struct crash_ctx">crash_ctx</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span></pre>
 </div>
 <div class="section">
@@ -181,8 +212,8 @@
 <div class="titlepage"><div><div><h4 class="title">
 <a name="header..home.carlos.Projectos.odtone.inc.odtone.strutil_hpp"></a>Header &lt;<a href="../..//home/carlos/Projectos/odtone/inc/odtone/strutil.hpp" target="_top">/home/carlos/Projectos/odtone/inc/odtone/strutil.hpp</a>&gt;</h4></div></div></div>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">odtone</span> <span class="special">{</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="odtone/to_string_hex_idp3834752.html" title="Function to_string_hex"><span class="identifier">to_string_hex</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="odtone/to_string_hex_idp3836712.html" title="Function template to_string_hex"><span class="identifier">to_string_hex</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="odtone/to_string_hex_idp8619232.html" title="Function to_string_hex"><span class="identifier">to_string_hex</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="odtone/to_string_hex_idp8623312.html" title="Function template to_string_hex"><span class="identifier">to_string_hex</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
   <span class="identifier">uchar</span> <a class="link" href="odtone/hex_to_int.html" title="Function hex_to_int"><span class="identifier">hex_to_int</span></a><span class="special">(</span><span class="identifier">uchar</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span></pre>
 </div>
@@ -201,7 +232,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="odtone/library.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="odtone/library.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="odtone/nullptr_t.html"><img src="images/next.png" alt="Next"></a>
+<a accesskey="p" href="odtone/library.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="odtone/library.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="odtone/schar.html"><img src="images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

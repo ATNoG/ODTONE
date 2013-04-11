@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class iarchive</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.archive_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/archive.hpp&gt;">
 <link rel="prev" href="archive.html" title="Class archive">
@@ -32,43 +32,43 @@
   <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">const_iterator</span> <a name="odtone.mih.iarchive.const_iterator"></a><span class="identifier">const_iterator</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="iarchive.html#odtone.mih.iarchiveconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="iarchive.html#idp5171040-bb"><span class="identifier">iarchive</span></a><span class="special">(</span><a class="link" href="archive.html" title="Class archive">archive</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="iarchive.html#idp5172200-bb"><span class="identifier">iarchive</span></a><span class="special">(</span><a class="link" href="archive.html" title="Class archive">archive</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="iarchive.html#idp5173920-bb"><span class="identifier">iarchive</span></a><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iarchive.html#idp10538496-bb"><span class="identifier">iarchive</span></a><span class="special">(</span><a class="link" href="archive.html" title="Class archive">archive</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iarchive.html#idp10540768-bb"><span class="identifier">iarchive</span></a><span class="special">(</span><a class="link" href="archive.html" title="Class archive">archive</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iarchive.html#idp10544144-bb"><span class="identifier">iarchive</span></a><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="iarchive.html#idp1461272-bb">public member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="iarchive.html#idp1461488-bb"><span class="identifier">reset</span></a><span class="special">(</span><a class="link" href="archive.html" title="Class archive">archive</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="iarchive.html#idp1463032-bb"><span class="identifier">position</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">uint</span> <a class="link" href="iarchive.html#idp1464496-bb"><span class="identifier">position</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint</span> <a class="link" href="iarchive.html#idp1465608-bb"><span class="identifier">length</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="iarchive.html#idp1466664-bb"><span class="identifier">advance</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">const_iterator</span> <a class="link" href="iarchive.html#idp1468112-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">const_iterator</span> <a class="link" href="iarchive.html#idp1469424-bb"><span class="identifier">current</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">const_iterator</span> <a class="link" href="iarchive.html#idp1470608-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint</span> <a class="link" href="iarchive.html#idp1471840-bb"><span class="identifier">list_length</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp1472960-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="keyword">bool</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp5152520-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">uint8</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp5154368-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">uint16</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp5156216-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">uint32</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp5158064-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">uint64</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp5159912-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">sint8</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp5161760-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">sint16</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp5163608-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">sint32</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp5165456-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">sint64</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp5167304-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">octet_string</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp5169168-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="iarchive.html#idp8070000-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="iarchive.html#idp8070400-bb"><span class="identifier">reset</span></a><span class="special">(</span><a class="link" href="archive.html" title="Class archive">archive</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="iarchive.html#idp10480592-bb"><span class="identifier">position</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">uint</span> <a class="link" href="iarchive.html#idp10483328-bb"><span class="identifier">position</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint</span> <a class="link" href="iarchive.html#idp10485472-bb"><span class="identifier">length</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="iarchive.html#idp10487584-bb"><span class="identifier">advance</span></a><span class="special">(</span><span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="iarchive.html#idp10490400-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="iarchive.html#idp10492640-bb"><span class="identifier">current</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a class="link" href="iarchive.html#idp10494848-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint</span> <a class="link" href="iarchive.html#idp10497088-bb"><span class="identifier">list_length</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp10499232-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="keyword">bool</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp10502800-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">uint8</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp10506368-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">uint16</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp10509936-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">uint32</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp10513504-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">uint64</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp10517072-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">sint8</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp10520640-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">sint16</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp10524208-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">sint32</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp10527776-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">sint64</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp10531344-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">octet_string</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a class="link" href="iarchive.html#idp10534928-bb"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp10809784"></a><h2>Description</h2>
+<a name="idp69778272"></a><h2>Description</h2>
 <p>The MIH types support deserialization for the input archive. This particular archive does not include the TLV field, which is necessary to support the definition of new sequence types from existing MIH types. </p>
 <div class="refsect2">
-<a name="idp10810336"></a><h3>
+<a name="idp69779168"></a><h3>
 <a name="odtone.mih.iarchiveconstruct-copy-destruct"></a><code class="computeroutput">iarchive</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="idp5171040-bb"></a><span class="identifier">iarchive</span><span class="special">(</span><a class="link" href="archive.html" title="Class archive">archive</a> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp10538496-bb"></a><span class="identifier">iarchive</span><span class="special">(</span><a class="link" href="archive.html" title="Class archive">archive</a> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an input archive.</p>
 <p>
 </p>
@@ -87,7 +87,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp5172200-bb"></a><span class="identifier">iarchive</span><span class="special">(</span><a class="link" href="archive.html" title="Class archive">archive</a> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="identifier">uint</span> length<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp10540768-bb"></a><span class="identifier">iarchive</span><span class="special">(</span><a class="link" href="archive.html" title="Class archive">archive</a> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="identifier">uint</span> length<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an input archive.</p>
 <p>
 </p>
@@ -112,7 +112,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp5173920-bb"></a><span class="identifier">iarchive</span><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="identifier">uint</span> length<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp10544144-bb"></a><span class="identifier">iarchive</span><span class="special">(</span><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="identifier">uint</span> length<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an input archive.</p>
 <p>
 </p>
@@ -139,11 +139,11 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp10827296"></a><h3>
-<a name="idp1461272-bb"></a><code class="computeroutput">iarchive</code> public member functions</h3>
+<a name="idp69812528"></a><h3>
+<a name="idp8070000-bb"></a><code class="computeroutput">iarchive</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp1461488-bb"></a><span class="identifier">reset</span><span class="special">(</span><a class="link" href="archive.html" title="Class archive">archive</a> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp8070400-bb"></a><span class="identifier">reset</span><span class="special">(</span><a class="link" href="archive.html" title="Class archive">archive</a> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Overwrites the current data.</p>
 <p>
 </p>
@@ -162,7 +162,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp1463032-bb"></a><span class="identifier">position</span><span class="special">(</span><span class="identifier">uint</span> pos<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10480592-bb"></a><span class="identifier">position</span><span class="special">(</span><span class="identifier">uint</span> pos<span class="special">)</span><span class="special">;</span></pre>
 <p>Point to a new position in the input archive.</p>
 <p>
 </p>
@@ -181,7 +181,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint</span> <a name="idp1464496-bb"></a><span class="identifier">position</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint</span> <a name="idp10483328-bb"></a><span class="identifier">position</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the current position in the input archive.</p>
 <p>
 </p>
@@ -194,7 +194,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint</span> <a name="idp1465608-bb"></a><span class="identifier">length</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint</span> <a name="idp10485472-bb"></a><span class="identifier">length</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the length of the input archive.</p>
 <p>
 </p>
@@ -207,7 +207,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp1466664-bb"></a><span class="identifier">advance</span><span class="special">(</span><span class="identifier">uint</span> pos<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10487584-bb"></a><span class="identifier">advance</span><span class="special">(</span><span class="identifier">uint</span> pos<span class="special">)</span><span class="special">;</span></pre>
 <p>Advance the position in the input archive.</p>
 <p>
 </p>
@@ -226,7 +226,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="idp1468112-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="idp10490400-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>A random-access iterator addressing the first element in the input archive or to the location succeeding an empty archive. The iterator should always be compared with vector::end to ensure it is valid.</p>
 <p>
 </p>
@@ -239,7 +239,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="idp1469424-bb"></a><span class="identifier">current</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="idp10492640-bb"></a><span class="identifier">current</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>A random-access iterator addressing the current element in the input archive.</p>
 <p>
 </p>
@@ -252,7 +252,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="idp1470608-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="idp10494848-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>A random-access iterator to the end of the input archive object. If the archive is empty, vector::end == vector::begin.</p>
 <p>
 </p>
@@ -265,7 +265,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint</span> <a name="idp1471840-bb"></a><span class="identifier">list_length</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint</span> <a name="idp10497088-bb"></a><span class="identifier">list_length</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Get the size of a list of a particular data type.</p>
 <p>
 </p>
@@ -278,7 +278,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp1472960-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="keyword">bool</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp10499232-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="keyword">bool</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Get a boolean type value from the current position in the input archive.</p>
 <p>
 
@@ -304,7 +304,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp5152520-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">uint8</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp10502800-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">uint8</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Get a odtone::uint8 type value from the current position in the input archive.</p>
 <p>
 
@@ -330,7 +330,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp5154368-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">uint16</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp10506368-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">uint16</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Get a odtone::uint16 type value from the current position in the input archive.</p>
 <p>
 
@@ -356,7 +356,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp5156216-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">uint32</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp10509936-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">uint32</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Get a odtone::uint32 type value from the current position in the input archive.</p>
 <p>
 
@@ -382,7 +382,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp5158064-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">uint64</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp10513504-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">uint64</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Get a odtone::uint64 type value from the current position in the input archive.</p>
 <p>
 
@@ -408,7 +408,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp5159912-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">sint8</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp10517072-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">sint8</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Get a odtone::sint8 type value from the current position in the input archive.</p>
 <p>
 
@@ -434,7 +434,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp5161760-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">sint16</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp10520640-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">sint16</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Get a odtone::sint16 type value from the current position in the input archive.</p>
 <p>
 
@@ -460,7 +460,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp5163608-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">sint32</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp10524208-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">sint32</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Get a odtone::sint32 type value from the current position in the input archive.</p>
 <p>
 
@@ -486,7 +486,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp5165456-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">sint64</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp10527776-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">sint64</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Get a odtone::sint64 type value from the current position in the input archive.</p>
 <p>
 
@@ -512,7 +512,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp5167304-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">octet_string</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp10531344-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">octet_string</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Get a odtone::mih::octet_string type value from the current position in the input archive.</p>
 <p>
 
@@ -538,7 +538,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp5169168-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span> buf<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a class="link" href="iarchive.html" title="Class iarchive">iarchive</a> <span class="special">&amp;</span> <a name="idp10534928-bb"></a><span class="keyword">operator</span><span class="special">&amp;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span> buf<span class="special">)</span><span class="special">;</span></pre>
 <p>Get a list of a particular type value from the current position in the input archive.</p>
 <p>
 

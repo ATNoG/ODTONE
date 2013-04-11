@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class resolver</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.dns.resolver_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/dns/resolver.hpp&gt;">
 <link rel="prev" href="callback_info.html" title="Struct callback_info">
@@ -28,34 +28,35 @@
 <span class="keyword">class</span> <a class="link" href="resolver.html" title="Class resolver">resolver</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="resolver.html#odtone.dns.resolverconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="resolver.html#idp4569288-bb"><span class="identifier">resolver</span></a><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="resolver.html#idp4570344-bb"><span class="special">~</span><span class="identifier">resolver</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="resolver.html#idp7713600-bb"><span class="identifier">resolver</span></a><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="resolver.html#idp7715680-bb"><span class="special">~</span><span class="identifier">resolver</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="resolver.html#idp4566592-bb">public member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="resolver.html#idp4566776-bb"><span class="identifier">queue</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_query_type</span><span class="special">,</span> <span class="identifier">dns_callback_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="resolver.html#idp7708192-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="resolver.html#idp7708592-bb"><span class="identifier">queue</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_query_type</span><span class="special">,</span> <span class="identifier">dns_callback_t</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="resolver.html#idp4570600-bb">private member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="resolver.html#idp4570784-bb"><span class="identifier">receive_handler</span></a><span class="special">(</span><span class="identifier">buffer</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">,</span> 
+  <span class="comment">// <a class="link" href="resolver.html#idp7716240-bb">private member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="resolver.html#idp7716656-bb"><span class="identifier">receive_handler</span></a><span class="special">(</span><span class="identifier">buffer</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">,</span> 
                        <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="resolver.html#idp4573376-bb"><span class="identifier">callback</span></a><span class="special">(</span><span class="keyword">struct</span> <a class="link" href="query.html" title="Struct query">query</a><span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_status</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="resolver.html#idp4575488-bb"><span class="identifier">dns_queue</span></a><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_query_type</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> 
+  <span class="keyword">void</span> <a class="link" href="resolver.html#idp7721728-bb"><span class="identifier">send_handler</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="resolver.html#idp9248160-bb"><span class="identifier">callback</span></a><span class="special">(</span><span class="keyword">struct</span> <a class="link" href="query.html" title="Struct query">query</a><span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_status</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="resolver.html#idp9252336-bb"><span class="identifier">dns_queue</span></a><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_query_type</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> 
                  <span class="identifier">dns_callback_t</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="resolver.html#idp4579096-bb"><span class="identifier">dns_cancel</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="resolver.html#idp9259568-bb"><span class="identifier">dns_cancel</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span> <span class="keyword">struct</span> <a class="link" href="query.html" title="Struct query">query</a> <span class="special">&gt;</span> 
-  <a class="link" href="resolver.html#idp4580504-bb"><span class="identifier">find_cached_query</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_query_type</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span> <span class="keyword">struct</span> <a class="link" href="query.html" title="Struct query">query</a> <span class="special">&gt;</span> <a class="link" href="resolver.html#idp4582896-bb"><span class="identifier">find_active_query</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="resolver.html#idp4584784-bb"><span class="identifier">cleanup</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="resolver.html#idp9262336-bb"><span class="identifier">find_cached_query</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_query_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span> <span class="keyword">struct</span> <a class="link" href="query.html" title="Struct query">query</a> <span class="special">&gt;</span> <a class="link" href="resolver.html#idp9267104-bb"><span class="identifier">find_active_query</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="resolver.html#idp9270800-bb"><span class="identifier">cleanup</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp19699864"></a><h2>Description</h2>
+<a name="idp86630192"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="idp19700072"></a><h3>
+<a name="idp86630608"></a><h3>
 <a name="odtone.dns.resolverconstruct-copy-destruct"></a><code class="computeroutput">resolver</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="idp4569288-bb"></a><span class="identifier">resolver</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span> io<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp7713600-bb"></a><span class="identifier">resolver</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span> io<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct the DNS resolver.</p>
 <p>
 </p>
@@ -74,16 +75,16 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp4570344-bb"></a><span class="special">~</span><span class="identifier">resolver</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp7715680-bb"></a><span class="special">~</span><span class="identifier">resolver</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Destruct the DNS resolver. </p>
 </li>
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp19709024"></a><h3>
-<a name="idp4566592-bb"></a><code class="computeroutput">resolver</code> public member functions</h3>
+<a name="idp86648080"></a><h3>
+<a name="idp7708192-bb"></a><code class="computeroutput">resolver</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp4566776-bb"></a><span class="identifier">queue</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> host<span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_query_type</span> type<span class="special">,</span> 
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp7708592-bb"></a><span class="identifier">queue</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> host<span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_query_type</span> type<span class="special">,</span> 
            <span class="identifier">dns_callback_t</span> app_callback<span class="special">)</span><span class="special">;</span></pre>
 <p>Queries the DNS server.</p>
 <p>
@@ -114,11 +115,11 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp19717976"></a><h3>
-<a name="idp4570600-bb"></a><code class="computeroutput">resolver</code> private member functions</h3>
+<a name="idp86665824"></a><h3>
+<a name="idp7716240-bb"></a><code class="computeroutput">resolver</code> private member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp4570784-bb"></a><span class="identifier">receive_handler</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span> buff<span class="special">,</span> <span class="identifier">size_t</span> rbytes<span class="special">,</span> 
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp7716656-bb"></a><span class="identifier">receive_handler</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span> buff<span class="special">,</span> <span class="identifier">size_t</span> rbytes<span class="special">,</span> 
                      <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> error<span class="special">)</span><span class="special">;</span></pre>
 <p>Handle the reception of an asynchronous message.</p>
 <p>
@@ -148,7 +149,33 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp4573376-bb"></a><span class="identifier">callback</span><span class="special">(</span><span class="keyword">struct</span> <a class="link" href="query.html" title="Struct query">query</a> query<span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_status</span> status<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp7721728-bb"></a><span class="identifier">send_handler</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> ec<span class="special">,</span> 
+                  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> bytes_transferred<span class="special">)</span><span class="special">;</span></pre>
+<p>Handle of sending procedure.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">bytes_transferred</code></span></p></td>
+<td><p>Bytes transferred. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">ec</code></span></p></td>
+<td><p>The error code. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp9248160-bb"></a><span class="identifier">callback</span><span class="special">(</span><span class="keyword">struct</span> <a class="link" href="query.html" title="Struct query">query</a> query<span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_status</span> status<span class="special">)</span><span class="special">;</span></pre>
 <p>Find out if a given query is active.</p>
 <p>
 </p>
@@ -173,7 +200,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp4575488-bb"></a><span class="identifier">dns_queue</span><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span> ctx<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> name<span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_query_type</span> qtype<span class="special">,</span> 
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp9252336-bb"></a><span class="identifier">dns_queue</span><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span> ctx<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> name<span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_query_type</span> qtype<span class="special">,</span> 
                <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> dns_ip<span class="special">,</span> <span class="identifier">dns_callback_t</span> app_callback<span class="special">)</span><span class="special">;</span></pre>
 <p>Queue the resolution.</p>
 <p>
@@ -211,7 +238,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp4579096-bb"></a><span class="identifier">dns_cancel</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> context<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp9259568-bb"></a><span class="identifier">dns_cancel</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> context<span class="special">)</span><span class="special">;</span></pre>
 <p>Cancel the query.</p>
 <p>
 </p>
@@ -231,7 +258,7 @@
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span> <span class="keyword">struct</span> <a class="link" href="query.html" title="Struct query">query</a> <span class="special">&gt;</span> 
-<a name="idp4580504-bb"></a><span class="identifier">find_cached_query</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> name<span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_query_type</span> qtype<span class="special">)</span><span class="special">;</span></pre>
+<a name="idp9262336-bb"></a><span class="identifier">find_cached_query</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> name<span class="special">,</span> <span class="keyword">enum</span> <span class="identifier">dns_query_type</span> qtype<span class="special">)</span><span class="special">;</span></pre>
 <p>Find a given query in cache.</p>
 <p>
 
@@ -263,7 +290,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span> <span class="keyword">struct</span> <a class="link" href="query.html" title="Struct query">query</a> <span class="special">&gt;</span> <a name="idp4582896-bb"></a><span class="identifier">find_active_query</span><span class="special">(</span><span class="identifier">uint16</span> tid<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span> <span class="keyword">struct</span> <a class="link" href="query.html" title="Struct query">query</a> <span class="special">&gt;</span> <a name="idp9267104-bb"></a><span class="identifier">find_active_query</span><span class="special">(</span><span class="identifier">uint16</span> tid<span class="special">)</span><span class="special">;</span></pre>
 <p>Find out if a given query is active.</p>
 <p>
 
@@ -289,7 +316,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp4584784-bb"></a><span class="identifier">cleanup</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp9270800-bb"></a><span class="identifier">cleanup</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Cleanup expired queries. </p>
 </li>
 </ol></div>

@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class exception</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="ODTONE 0.4">
 <link rel="up" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.exception_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/exception.hpp&gt;">
 <link rel="prev" href="../ODTONE_NEVER_HERE.html" title="Macro ODTONE_NEVER_HERE">
@@ -28,21 +28,21 @@
 <span class="keyword">class</span> <a class="link" href="exception.html" title="Class exception">exception</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="exception.html#odtone.exceptionconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="exception.html#idp3758816-bb"><span class="identifier">exception</span></a><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <span class="special">=</span> <span class="string">"&lt;exception&gt;"</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="exception.html#idp8457824-bb"><span class="identifier">exception</span></a><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <span class="special">=</span> <span class="string">"&lt;exception&gt;"</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="exception.html#idp3757544-bb">public member functions</a></span>
-  <span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <a class="link" href="exception.html#idp3757728-bb"><span class="identifier">what</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="exception.html#idp8455248-bb">public member functions</a></span>
+  <span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <a class="link" href="exception.html#idp8455648-bb"><span class="identifier">what</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp10043440"></a><h2>Description</h2>
+<a name="idp68269104"></a><h2>Description</h2>
 <p>Base class for all ODTONE exceptions. This is the base class for all exceptions thrown by the ODTONE library. You are free to derive your own exception classes, or use a different hierarchy, or to throw non-class data (e.g., fundamental types). </p>
 <div class="refsect2">
-<a name="idp10044032"></a><h3>
+<a name="idp68270032"></a><h3>
 <a name="odtone.exceptionconstruct-copy-destruct"></a><code class="computeroutput">exception</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp3758816-bb"></a><span class="identifier">exception</span><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> what <span class="special">=</span> <span class="string">"&lt;exception&gt;"</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp8457824-bb"></a><span class="identifier">exception</span><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> what <span class="special">=</span> <span class="string">"&lt;exception&gt;"</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Constructor a new exception.</p>
 <p>
 </p>
@@ -62,10 +62,10 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp10050536"></a><h3>
-<a name="idp3757544-bb"></a><code class="computeroutput">exception</code> public member functions</h3>
+<a name="idp68282768"></a><h3>
+<a name="idp8455248-bb"></a><code class="computeroutput">exception</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <a name="idp3757728-bb"></a><span class="identifier">what</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <a name="idp8455648-bb"></a><span class="identifier">what</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get a string describing the general cause of the current error.</p>
 <p>
 </p>

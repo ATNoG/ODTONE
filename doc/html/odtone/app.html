@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Applications</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="ODTONE 0.4">
 <link rel="up" href="../index.html" title="ODTONE 0.4">
 <link rel="prev" href="mihf_internals/mih_primitives_mapped_in_mih_protocol_messages.html" title="MIH Primitives mapped in MIH Protocol Messages">
@@ -29,6 +29,10 @@
 <dt><span class="section"><a href="app/link_sap_icmp_index.html">ICMP Link SAP</a></span></dt>
 <dt><span class="section"><a href="app/client_index.html">Client</a></span></dt>
 <dt><span class="section"><a href="app/dummyserver_index.html">Dummyserver</a></span></dt>
+<dt><span class="section"><a href="app/sap_80211_linux_index.html">Linux sap_80211 Link
+      SAP</a></span></dt>
+<dt><span class="section"><a href="app/sap_80211_index.html">Windows sap_80211 Link SAP</a></span></dt>
+<dt><span class="section"><a href="app/sap_8023_index.html">Linux sap_8023 Link SAP</a></span></dt>
 </dl></div>
 <div class="variablelist">
 <p class="title"><b></b></p>
@@ -93,8 +97,33 @@
             the name implies, works like a dummy server. It is always listening (at
             port 4000) for incoming messages and it outputs them in the console.
           </p></dd>
+<dt><span class="term"><a class="link" href="app/sap_80211_linux_index.html" title="Linux sap_80211 Link SAP">Linux sap_80211 Link
+        SAP</a></span></dt>
+<dd><p>
+            The NL80211 SAP is a Linux implementation of a basic Link SAP. It supports
+            the most important events and commands for 802.11 devices. It is based
+            on the nl80211 generic protocol, and depends on the netlink library version
+            3.
+          </p></dd>
+<dt><span class="term"><a class="link" href="../">Windows sap_80211
+        Link SAP</a></span></dt>
+<dd><p>
+            The sap_80211 Link SAP is a Windows implementation of a Link SAP for
+            802.11 interfaces. It supports the most important events and commands
+            for 802.11 devices. It is based on the XXX.
+          </p></dd>
+<dt><span class="term"><a class="link" href="app/sap_8023_index.html" title="Linux sap_8023 Link SAP">Linux sap_8023 Link SAP</a></span></dt>
+<dd><p>
+            The 802.3 SAP is a Linux implementation of a basic Link SAP. It supports
+            the most important events and commands for 802.3 devices. It is based
+            on the route netlink protocol, and depends on the netlink library version
+            3.
+          </p></dd>
 </dl>
 </div>
+<p>
+      [sap_8023 Link SAP]
+    </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

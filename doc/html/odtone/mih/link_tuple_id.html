@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class link_tuple_id</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.link_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/link.hpp&gt;">
 <link rel="prev" href="link_id.html" title="Struct link_id">
@@ -28,34 +28,34 @@
 <span class="keyword">class</span> <a class="link" href="link_tuple_id.html" title="Class link_tuple_id">link_tuple_id</a> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">link_id</span> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="link_tuple_id.html#odtone.mih.link_tuple_idconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="link_tuple_id.html#idp6377000-bb"><span class="identifier">link_tuple_id</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="link_tuple_id.html#idp12345168-bb"><span class="identifier">link_tuple_id</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="link_tuple_id.html#idp6372936-bb">public member functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="link_tuple_id.html#idp6373152-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="link_tuple_id.html#idp6375056-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="link_tuple_id.html" title="Class link_tuple_id">link_tuple_id</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="link_tuple_id.html#idp12337344-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="link_tuple_id.html#idp12337744-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="link_tuple_id.html#idp12341440-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="link_tuple_id.html" title="Class link_tuple_id">link_tuple_id</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="link_tuple_id.html#odtone.mih.link_tuple_idpublic-data-members">public data members</a></span>
   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <span class="identifier">link_addr</span> <span class="special">&gt;</span> <a class="link" href="link_tuple_id.html#odtone.mih.link_tuple_id.poa_addr"><span class="identifier">poa_addr</span></a><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp17101744"></a><h2>Description</h2>
+<a name="idp81480768"></a><h2>Description</h2>
 <p>LINK_TUPLE_ID data type. </p>
 <div class="refsect2">
-<a name="idp17102080"></a><h3>
+<a name="idp81481440"></a><h3>
 <a name="odtone.mih.link_tuple_idconstruct-copy-destruct"></a><code class="computeroutput">link_tuple_id</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp6377000-bb"></a><span class="identifier">link_tuple_id</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp12345168-bb"></a><span class="identifier">link_tuple_id</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty LINK_TUPLE_ID data type. </p>
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp17105312"></a><h3>
-<a name="idp6372936-bb"></a><code class="computeroutput">link_tuple_id</code> public member functions</h3>
+<a name="idp81487568"></a><h3>
+<a name="idp12337344-bb"></a><code class="computeroutput">link_tuple_id</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp6373152-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp12337744-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize/deserialize the LINK_TUPLE_ID data type.</p>
 <p>
 </p>
@@ -74,7 +74,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp6375056-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="link_tuple_id.html" title="Class link_tuple_id">link_tuple_id</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp12341440-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="link_tuple_id.html" title="Class link_tuple_id">link_tuple_id</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Check if the LINK_TUPLE_ID data type is equal to another LINK_TUPLE_ID.</p>
 <p>
 
@@ -102,7 +102,7 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp17118640"></a><h3>
+<a name="idp81513616"></a><h3>
 <a name="odtone.mih.link_tuple_idpublic-data-members"></a><code class="computeroutput">link_tuple_id</code> 
         public
        public data members</h3>

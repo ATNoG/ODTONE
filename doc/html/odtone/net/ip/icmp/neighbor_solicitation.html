@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class neighbor_solicitation</title>
 <link rel="stylesheet" href="../../../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../../../index.html" title="ODTONE 0.4">
-<link rel="up" href="../icmp.html#idp20291344" title="Description">
+<link rel="up" href="../icmp.html#idp87803312" title="Description">
 <link rel="prev" href="neighbor_advertisement.html" title="Class neighbor_advertisement">
 <link rel="next" href="router_advertisement.html" title="Class router_advertisement">
 </head>
@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="neighbor_advertisement.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp20291344"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="router_advertisement.html"><img src="../../../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="neighbor_advertisement.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp87803312"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="router_advertisement.html"><img src="../../../../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.net.ip.icmp.neighbor_solicitation"></a><div class="titlepage"></div>
@@ -29,35 +29,35 @@
 <span class="keyword">class</span> <a class="link" href="neighbor_solicitation.html" title="Class neighbor_solicitation">neighbor_solicitation</a> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span><span class="special">::</span><span class="identifier">header</span> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="neighbor_solicitation.html#odtone.net.ip.icmp.neighbor_solicitationconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="neighbor_solicitation.html#idp4989064-bb"><span class="identifier">neighbor_solicitation</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="neighbor_solicitation.html#idp9452672-bb"><span class="identifier">neighbor_solicitation</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="neighbor_solicitation.html#idp4682928-bb">public member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="neighbor_solicitation.html#idp4683112-bb"><span class="identifier">target</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">address_v6</span><span class="special">::</span><span class="identifier">bytes_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">const</span> <span class="identifier">address_v6</span><span class="special">::</span><span class="identifier">bytes_type</span> <span class="special">&amp;</span> <a class="link" href="neighbor_solicitation.html#idp4684568-bb"><span class="identifier">target</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="neighbor_solicitation.html#idp9447328-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="neighbor_solicitation.html#idp9447728-bb"><span class="identifier">target</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">address_v6</span><span class="special">::</span><span class="identifier">bytes_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="identifier">address_v6</span><span class="special">::</span><span class="identifier">bytes_type</span> <span class="special">&amp;</span> <a class="link" href="neighbor_solicitation.html#idp9450544-bb"><span class="identifier">target</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="neighbor_solicitation.html#odtone.net.ip.icmp.neighbor_solicitationpublic-data-members">public data members</a></span>
   <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">uint8</span> <a class="link" href="neighbor_solicitation.html#odtone.net.ip.icmp.neighbor_solicitation.type_value"><span class="identifier">type_value</span></a><span class="special">;</span>
   <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">uint8</span> <a class="link" href="neighbor_solicitation.html#odtone.net.ip.icmp.neighbor_solicitation.code_value"><span class="identifier">code_value</span></a><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp20514632"></a><h2>Description</h2>
+<a name="idp88240816"></a><h2>Description</h2>
 <p>This class represents an ICMP Neighbor Solicitation packet. </p>
 <div class="refsect2">
-<a name="idp20515040"></a><h3>
+<a name="idp88241488"></a><h3>
 <a name="odtone.net.ip.icmp.neighbor_solicitationconstruct-copy-destruct"></a><code class="computeroutput">neighbor_solicitation</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp4989064-bb"></a><span class="identifier">neighbor_solicitation</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp9452672-bb"></a><span class="identifier">neighbor_solicitation</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty ICMP Neighbor Solicitation packet. </p>
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp20518360"></a><h3>
-<a name="idp4682928-bb"></a><code class="computeroutput">neighbor_solicitation</code> public member functions</h3>
+<a name="idp88247792"></a><h3>
+<a name="idp9447328-bb"></a><code class="computeroutput">neighbor_solicitation</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp4683112-bb"></a><span class="identifier">target</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">address_v6</span><span class="special">::</span><span class="identifier">bytes_type</span> <span class="special">&amp;</span> addr<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp9447728-bb"></a><span class="identifier">target</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">address_v6</span><span class="special">::</span><span class="identifier">bytes_type</span> <span class="special">&amp;</span> addr<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the Target address field value.</p>
 <p>
 </p>
@@ -76,7 +76,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">address_v6</span><span class="special">::</span><span class="identifier">bytes_type</span> <span class="special">&amp;</span> <a name="idp4684568-bb"></a><span class="identifier">target</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">address_v6</span><span class="special">::</span><span class="identifier">bytes_type</span> <span class="special">&amp;</span> <a name="idp9450544-bb"></a><span class="identifier">target</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the Target address field value.</p>
 <p>
 </p>
@@ -91,7 +91,7 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp20529904"></a><h3>
+<a name="idp88270480"></a><h3>
 <a name="odtone.net.ip.icmp.neighbor_solicitationpublic-data-members"></a><code class="computeroutput">neighbor_solicitation</code> 
         public
        public data members</h3>
@@ -122,7 +122,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="neighbor_advertisement.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp20291344"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="router_advertisement.html"><img src="../../../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="neighbor_advertisement.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp87803312"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="router_advertisement.html"><img src="../../../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

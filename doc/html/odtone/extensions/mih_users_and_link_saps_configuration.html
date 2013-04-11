@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>MIH-Users and Link SAPs configuration</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="ODTONE 0.4">
 <link rel="up" href="../extensions.html" title="ODTONE Extensions">
 <link rel="prev" href="remote_discovery.html" title="Remote discovery">
@@ -42,17 +42,17 @@
         You just need to configure in the MIH-User configuration file the following
         options:
 </p>
-<pre class="programlisting">##
-## Commands supported by the MIH-User
-## e.g.: commands = mih_link_get_parameters, mih_link_configure_thresholds
-##
-commands = &lt;comma separated list of supported commands&gt;
+<pre class="programlisting"><span class="error">#</span><span class="error">#</span>
+<span class="error">#</span><span class="preprocessor"># Commands</span> <span class="identifier">supported</span> <span class="identifier">by</span> <span class="identifier">the</span> <span class="identifier">MIH</span><span class="special">-</span><span class="identifier">User</span>
+<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.:</span> <span class="identifier">commands</span> <span class="special">=</span> <span class="identifier">mih_link_get_parameters</span><span class="special">,</span> <span class="identifier">mih_link_configure_thresholds</span>
+<span class="error">#</span><span class="preprocessor">#
+commands</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">comma</span> <span class="identifier">separated</span> <span class="identifier">list</span> <span class="identifier">of</span> <span class="identifier">supported</span> <span class="identifier">commands</span><span class="special">&gt;</span>
 
-##
-## Queries supported by the MIH-User
-## e.g: queries = iq_type_binary_data, iq_type_rdf_data
-##
-queries = &lt;comma separated list of supported queries&gt;
+<span class="error">#</span><span class="error">#</span>
+<span class="error">#</span><span class="preprocessor"># Queries</span> <span class="identifier">supported</span> <span class="identifier">by</span> <span class="identifier">the</span> <span class="identifier">MIH</span><span class="special">-</span><span class="identifier">User</span>
+<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">:</span> <span class="identifier">queries</span> <span class="special">=</span> <span class="identifier">iq_type_binary_data</span><span class="special">,</span> <span class="identifier">iq_type_rdf_data</span>
+<span class="error">#</span><span class="preprocessor">#
+queries</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">comma</span> <span class="identifier">separated</span> <span class="identifier">list</span> <span class="identifier">of</span> <span class="identifier">supported</span> <span class="identifier">queries</span><span class="special">&gt;</span>
 </pre>
 <p>
       </p>
@@ -63,13 +63,13 @@ queries = &lt;comma separated list of supported queries&gt;
         You need to configure in the ODTONE-MIHF configuration file the following
         options:
 </p>
-<pre class="programlisting">##
-## Comma separated list of local MIH User SAPs id's and ports
-## e.g.1: users = user 1234
-## e.g.2: users = user 1234 mih_net_ho_candidate_query iq_type_binary_data
-## e.g.3: users = user 1234 iq_type_binary_data
-##
-users = &lt;user sap id&gt; &lt;port&gt; [&lt;supported commands&gt; &lt;supported queries&gt;], ...
+<pre class="programlisting"><span class="error">#</span><span class="error">#</span>
+<span class="error">#</span><span class="preprocessor"># Comma</span> <span class="identifier">separated</span> <span class="identifier">list</span> <span class="identifier">of</span> <span class="identifier">local</span> <span class="identifier">MIH</span> <span class="identifier">User</span> <span class="identifier">SAPs</span> <span class="identifier">id</span><span class="error">'</span><span class="identifier">s</span> <span class="keyword">and</span> <span class="identifier">ports</span>
+<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.</span><span class="number">1</span><span class="special">:</span> <span class="identifier">users</span> <span class="special">=</span> <span class="identifier">user</span> <span class="number">1234</span>
+<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.</span><span class="number">2</span><span class="special">:</span> <span class="identifier">users</span> <span class="special">=</span> <span class="identifier">user</span> <span class="number">1234</span> <span class="identifier">mih_net_ho_candidate_query</span> <span class="identifier">iq_type_binary_data</span>
+<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.</span><span class="number">3</span><span class="special">:</span> <span class="identifier">users</span> <span class="special">=</span> <span class="identifier">user</span> <span class="number">1234</span> <span class="identifier">iq_type_binary_data</span>
+<span class="error">#</span><span class="preprocessor">#
+users</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">user</span> <span class="identifier">sap</span> <span class="identifier">id</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">port</span><span class="special">&gt;</span> <span class="special">[&lt;</span><span class="identifier">supported</span> <span class="identifier">commands</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">supported</span> <span class="identifier">queries</span><span class="special">&gt;],</span> <span class="special">...</span>
 </pre>
 <p>
       </p>
@@ -106,17 +106,17 @@ users = &lt;user sap id&gt; &lt;port&gt; [&lt;supported commands&gt; &lt;support
         You just need to configure in the Link SAP configuration file the following
         options:
 </p>
-<pre class="programlisting">##
-## Link SAP interface technology
-## e.g.: tec = 802_11
-##
-tec = &lt;interface&gt;
+<pre class="programlisting"><span class="error">#</span><span class="error">#</span>
+<span class="error">#</span><span class="preprocessor"># Link</span> <span class="identifier">SAP</span> <span class="identifier">interface</span> <span class="identifier">technology</span>
+<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.:</span> <span class="identifier">tec</span> <span class="special">=</span> <span class="number">802</span><span class="identifier">_11</span>
+<span class="error">#</span><span class="preprocessor">#
+tec</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">interface</span><span class="special">&gt;</span>
 
-##
-## Link SAP interface address
-## e.g.: link_addr = 00:11:22:33:44:55
-##
-link_addr = &lt;interface address&gt;
+<span class="error">#</span><span class="error">#</span>
+<span class="error">#</span><span class="preprocessor"># Link</span> <span class="identifier">SAP</span> <span class="identifier">interface</span> <span class="identifier">address</span>
+<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.:</span> <span class="identifier">link_addr</span> <span class="special">=</span> <span class="number">00</span><span class="special">:</span><span class="number">11</span><span class="special">:</span><span class="number">22</span><span class="special">:</span><span class="number">33</span><span class="special">:</span><span class="number">44</span><span class="special">:</span><span class="number">55</span>
+<span class="error">#</span><span class="preprocessor">#
+link_addr</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">interface</span> <span class="identifier">address</span><span class="special">&gt;</span>
 </pre>
 <p>
       </p>
@@ -127,11 +127,11 @@ link_addr = &lt;interface address&gt;
         You need to configure in the ODTONE-MIHF configuration file the following
         options:
 </p>
-<pre class="programlisting">##
-## Comma separated list of local MIH Link SAPs id's and ports.
-## e.g.: links = link 1235 802_11 00:11:22:33:44:55
-##
-links = &lt;link sap id&gt; &lt;port&gt; &lt;technology type&gt; &lt;interface&gt;, ...
+<pre class="programlisting"><span class="error">#</span><span class="error">#</span>
+<span class="error">#</span><span class="preprocessor"># Comma</span> <span class="identifier">separated</span> <span class="identifier">list</span> <span class="identifier">of</span> <span class="identifier">local</span> <span class="identifier">MIH</span> <span class="identifier">Link</span> <span class="identifier">SAPs</span> <span class="identifier">id</span><span class="error">'</span><span class="identifier">s</span> <span class="keyword">and</span> <span class="identifier">ports</span><span class="special">.</span>
+<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.:</span> <span class="identifier">links</span> <span class="special">=</span> <span class="identifier">link</span> <span class="number">1235</span> <span class="number">802</span><span class="identifier">_11</span> <span class="number">00</span><span class="special">:</span><span class="number">11</span><span class="special">:</span><span class="number">22</span><span class="special">:</span><span class="number">33</span><span class="special">:</span><span class="number">44</span><span class="special">:</span><span class="number">55</span>
+<span class="error">#</span><span class="preprocessor">#
+links</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">link</span> <span class="identifier">sap</span> <span class="identifier">id</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">port</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">technology</span> <span class="identifier">type</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">interface</span><span class="special">&gt;,</span> <span class="special">...</span>
 </pre>
 <p>
       </p>
@@ -159,42 +159,42 @@ links = &lt;link sap id&gt; &lt;port&gt; &lt;technology type&gt; &lt;interface&g
 <p>
         <span class="bold"><strong>MIH-User</strong></span>
 </p>
-<pre class="programlisting">odtone::mih::message m;
-boost::optional&lt;odtone::mih::mih_cmd_list&gt; supp_cmd = parse_supported_commands(cfg);
+<pre class="programlisting"><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="identifier">m</span><span class="special">;</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">mih_cmd_list</span><span class="special">&gt;</span> <span class="identifier">supp_cmd</span> <span class="special">=</span> <span class="identifier">parse_supported_commands</span><span class="special">(</span><span class="identifier">cfg</span><span class="special">);</span>
 
-m &lt;&lt; odtone::mih::indication(odtone::mih::indication::user_register)
-	&amp; odtone::mih::tlv_command_list(supp_cmd);
-m.destination(odtone::mih::id("local-mihf"));
+<span class="identifier">m</span> <span class="special">&lt;&lt;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">::</span><span class="identifier">user_register</span><span class="special">)</span>
+	<span class="special">&amp;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_command_list</span><span class="special">(</span><span class="identifier">supp_cmd</span><span class="special">);</span>
+<span class="identifier">m</span><span class="special">.</span><span class="identifier">destination</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">id</span><span class="special">(</span><span class="string">"local-mihf"</span><span class="special">));</span>
 
-_mihf.async_send(m, boost::bind(&amp;mih_user::user_reg_handler, this, boost::cref(cfg), _2));
+<span class="identifier">_mihf</span><span class="special">.</span><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">m</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">mih_user</span><span class="special">::</span><span class="identifier">user_reg_handler</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">cref</span><span class="special">(</span><span class="identifier">cfg</span><span class="special">),</span> <span class="identifier">_2</span><span class="special">));</span>
 </pre>
 <p>
       </p>
 <p>
         <span class="bold"><strong>MIIS RDF Server</strong></span>
 </p>
-<pre class="programlisting">odtone::mih::message m;
-boost::optional&lt;odtone::mih::iq_type_list&gt; supp_iq = parse_supported_queries(cfg);
+<pre class="programlisting"><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="identifier">m</span><span class="special">;</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">iq_type_list</span><span class="special">&gt;</span> <span class="identifier">supp_iq</span> <span class="special">=</span> <span class="identifier">parse_supported_queries</span><span class="special">(</span><span class="identifier">cfg</span><span class="special">);</span>
 
-m &lt;&lt; odtone::mih::indication(odtone::mih::indication::user_register)
-    &amp; odtone::mih::tlv_query_type_list(supp_iq);
-m.destination(odtone::mih::id("local-mihf"));
+<span class="identifier">m</span> <span class="special">&lt;&lt;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">::</span><span class="identifier">user_register</span><span class="special">)</span>
+    <span class="special">&amp;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_query_type_list</span><span class="special">(</span><span class="identifier">supp_iq</span><span class="special">);</span>
+<span class="identifier">m</span><span class="special">.</span><span class="identifier">destination</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">id</span><span class="special">(</span><span class="string">"local-mihf"</span><span class="special">));</span>
 
-_mihf.async_send(m, boost::bind(&amp;miis_rdf_server::user_reg_handler, this, boost::cref(cfg), _2));
+<span class="identifier">_mihf</span><span class="special">.</span><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">m</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">miis_rdf_server</span><span class="special">::</span><span class="identifier">user_reg_handler</span><span class="special">,</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">cref</span><span class="special">(</span><span class="identifier">cfg</span><span class="special">),</span> <span class="identifier">_2</span><span class="special">));</span>
 </pre>
 <p>
       </p>
 <p>
         <span class="bold"><strong>Link SAP</strong></span>
 </p>
-<pre class="programlisting">init();
+<pre class="programlisting"><span class="identifier">init</span><span class="special">();</span>
 </pre>
 <p>
       </p>
 <p>
         <span class="bold"><strong>Link SAP ICMP</strong></span>
 </p>
-<pre class="programlisting">register_local_mihf();
+<pre class="programlisting"><span class="identifier">register_local_mihf</span><span class="special">();</span>
 </pre>
 <p>
       </p>
