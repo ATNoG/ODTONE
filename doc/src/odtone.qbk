@@ -720,12 +720,17 @@ the new TLVs and its data type:
      a dummy server. It is always listening (at port 4000) for incoming messages and
      it outputs them in the console.]]
 
-    [[[link odtone.app.sap_80211_index sap_80211 Link SAP]]
+    [[[link odtone.app.sap_80211_linux_index Linux sap_80211 Link SAP]]
     [The NL80211 SAP is a Linux implementation of a basic Link SAP. It supports
      the most important events and commands for 802.11 devices. It is based on the nl80211
      generic protocol, and depends on the netlink library version 3.]]
 
-    [[[link odtone.app.sap_8023_index sap_8023 Link SAP]]
+    [[[link odtone.app.sap_80211_windows_index Windows sap_80211 Link SAP]]
+    [The sap_80211 Link SAP is a Windows implementation of a Link SAP for 802.11 interfaces.
+     It supports the most important events and commands for 802.11 devices. It is based on the
+     XXX.]]
+
+    [[[link odtone.app.sap_8023_index Linux sap_8023 Link SAP]]
     [The 802.3 SAP is a Linux implementation of a basic Link SAP. It supports
      the most important events and commands for 802.3 devices. It is based on the route netlink
      protocol, and depends on the netlink library version 3.]]
@@ -740,7 +745,8 @@ the new TLVs and its data type:
 [include app/link_sap_icmp.qbk]
 [include app/client.qbk]
 [include app/dummyserver.qbk]
-[include app/sap_80211.qbk]
+[include app/sap_80211_linux.qbk]
+[include app/sap_80211_windows.qbk]
 [include app/sap_8023.qbk]
 
 [endsect]

@@ -15,7 +15,7 @@
  / This software is distributed without any warranty.
  /=============================================================================]
 
-[section:sap_8023_index sap_8023 Link SAP]
+[section:sap_8023_index Linux sap_8023 Link SAP]
 
 The sap_8023 Link SAP is a Linux implementation of a Link SAP for 802.3 interfaces.
 

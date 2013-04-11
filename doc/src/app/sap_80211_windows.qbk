@@ -1,0 +1,388 @@
+[/==============================================================================
+ / Brief   : Windows sap_80211 Link SAP Documentation
+ / Authors : Marcelo Génio <marcelog@ua.pt>
+ /------------------------------------------------------------------------------
+ / ODTONE - Open Dot Twenty One
+ /
+ / Copyright (C) 2009-2013 Universidade Aveiro
+ / Copyright (C) 2009-2013 Instituto de Telecomunicações - Pólo Aveiro
+ /
+ / This software is distributed under a license. The full license
+ / agreement can be found in the file LICENSE in this distribution.
+ / This software may not be copied, modified, sold or distributed
+ / other than expressed in the named license agreement.
+ /
+ / This software is distributed without any warranty.
+ /=============================================================================]
+
+[section:sap_80211_index Windows sap_80211 Link SAP]
+
+The sap_80211 Link SAP is a Windows implementation of a Link SAP for 802.11 interfaces.
+
+[section Architecture]
+The following figure illustrates where the LinkSAP is positioned within the ODTONE architecture.
+
+[$./images/windows_link_sap_conceptual_view.png]
+
+This SAP works as a means of communication between the MIHF and a layer 2 interface.
+Although the SAP is instanced on an OS (in this case, Windows) its main purpose is to
+abstract the use of one, since its interface is the same as any SAP for any other device.
+
+[endsect][/Architecture]
+
+[section Getting Started]
+
+[section Configuration]
+The config file should be found in the root folder for the application.
+Configurable parameters are not case sensitive and can be found as follows
+(as shown in the file itself):
+
+[note
+[*interface_Mac :]
+The MAC Address for the 802.11 interface this SAP should run on. This should
+represent a network interface on the computer and should be formatted as
+xx:xx:xx:xx:xx:xx with “xx” being the MAC Address values.
+]
+
+[note
+[*myID :]
+The MIH ID for this SAP, this is used in communication with the MIHF to identify
+the SAP. This parameter is a string and its default value is “link1”.
+]
+
+[note
+[*rcv_port:]
+The port where this SAP will listen for communication from the MIHF. This
+parameter is an integer and its default value is “1235”.
+]
+
+[note
+[*send_port:]
+The port where this SAP will send information, has to be the same port as
+the MIHF is listening. This parameter is an integer and its default value is
+“1025”.
+]
+
+[note
+[*mihf_ip:]
+The IP for the MIHF communication with this SAP. This parameter is a string,
+should be formatted as an IP address – xxx.xxx.xxx.xxx – and defaults to
+“127.0.0.1”.
+]
+
+[note
+[*mihfID :]
+The ID for the MIHF this SAP will communicate with, this has to coincide with
+the ID given to the MIHF itself. This parameter is a string and its default
+value is “local-mihf”.
+]
+
+The following parameters are all Boolean in format, and represent possible
+event subscriptions and their default values:
+
+[note
+[*sub_LinkDet:]
+Event launched when a new network is detected. Defaults to true.
+]
+
+[note
+[*sub_LinkUp:]
+Event launched when a connection with a network is established.
+Defaults to true.
+]
+
+[note
+[*sub_LinkDown:]
+Event launched when a connection to a network is terminated or lost.
+Defaults to true.
+]
+
+[note
+[*sub_LinkParamRpt:]
+Event launched whenever a link parameter changes. Currently only supported 
+for Signal Strength of the current connection. Defaults to true.
+]
+
+[note
+[*sub_LinkGoingDown:]
+Event launched when the current connection is about to be lost. This is
+currently not implemented and defaults to false.
+]
+
+[note
+[*sub_HandoverIm:]
+Event launched when a handover is imminent. This is currently not
+implemented and defaults to false.
+]
+
+[note
+[*sub_HandoverCm:]
+Event launched when a handover is complete. This is currently not
+implemented and defaults to false.
+]
+
+[note
+[*sub_PDU_TransmitSt:]
+Event indicates the transmission status of a higher layer PDU by the
+link layer. This is currently not implemented and defaults to false.
+]
+
+[endsect][/Configuration]
+
+
+[section Running]
+To run the Link SAP simply run the executable and if the configurations
+are well made, the SAP should turn itself on and standby for
+commands from the MIHF.
+
+This SAP has been tested and is fully working on Windows Vista,
+7 and 8.
+
+It is also expected to run well in some versions of XP, but full
+compatibility is not guaranteed.
+
+[endsect][/Running]
+
+[endsect][/Getting Started]
+
+
+[section:sap_80211_support Support]
+This section is a reading on special considerations for the structuring of
+the code, and how to hack specific features.
+
+[section Events]
+
+[section Link_Going_Down]
+Not supported.
+[endsect][/Link_Going_Down]
+
+[section Link_Handover_Imminent]
+Not supported.
+[endsect][/Link_Handover_Imminent]
+
+[section Link_Handover_Complete]
+Not supported.
+[endsect][/Link_Handover_Complete]
+
+[section Link_PDU_Transmit_Status]
+Not supported.
+[endsect][/Link_PDU_Transmit_Status]
+
+[section Link_Detected]
+This event is launched whenever the Wlan API finishes a scan (represented
+by the API-defined ACM code for ScanComplete
+(Wlan.WlanNotificationCodeAcm.ScanComplete) and a new link is detected.
+
+Every time a scan is complete the discovered SSIDs are stored and
+compared with the previous registry. Any new links are sent to the
+MIHF as a Link_Detected.Indication message and the list of previously
+found SSIDs are replaced.
+
+[endsect][/Link_Detected]
+
+
+[section Link_Up]
+This event is launched whenever the Wlan API launches a ConnectionComplete
+ACM notification code (Wlan.WlanNotificationCodeAcm.ConnectionComplete).
+[endsect][/Link_Up]
+
+[section Link_Down]
+This event is launched whenever the Wlan API launches a Disconnected
+ACM notification code (Wlan.WlanNotificationCodeAcm.Disconnected).
+[endsect][/Link_Down]
+
+[section Link_Parameters_Report]
+This event is launched in 4 situations:
+
+* The Wlan API launches a SignalQualityChange MSM notification code (Wlan.WlanNotificationCodeMsm.SignalQualityChange)
+	
+* A threshold has been met for a certain parameter
+
+* A periodic report has been requested for a parameter
+
+* A Link_Get_Parameters.Request message is received
+
+Currently, not all parameters types are supported. Only the following:
+
+
+* ['LINK_PARAM_80211]
+
+	* ['RSSI]: actually, it's the signal energy in dBm.
+
+
+* ['LINK_PARAM_GEN]
+
+	* ['DATA_RATE]: the maximum allowed data transfer rate for the connected link.
+
+	* ['SIGNAL_STRENGTH]: the signal power in percentage.
+
+	* ['PACKET_ERROR_RATE]: the error rate for this link, in percentage,
+	counted as an all-time statistic, not just recently.
+
+[endsect][/section Link_Parameters_Report]
+
+[endsect][/Events]
+
+
+[section Commands]
+
+All commands are handled within the LINK_SAP_CS_80211. Connection.MIHProtocol.MessageHandler
+class, via the static method HandleMessage(Message).
+
+[section Capability_Discover]
+Defined in the HandleCapabilityDiscover function, this returns to the MIHF a list of
+supported commands and events by this SAP. This list can be changed within the code, in
+the LINK_SAP_80211.Capabilities.CapabilitiesHandler class, by changing the corresponding
+attributes.
+[endsect][/Capability_Discover]
+
+[section Event_Subscribe]
+Defined in the HandleSubscribe function, this registers within the SAP a subscription to
+a certain event, letting the SAP send its corresponding event message to the MIHF whenever
+it occurs.
+
+When a new subscription request is received, all existing subscriptions are kept and the
+new ones added [there is no replacement of subscriptions, you have to run an
+Event_Unsubscribe command].
+Subscriptions are initialized as specified on the configuration file.
+
+[endsect][/Event_Subscribe]
+
+[section Event_Unsubscribe]
+Defined in the HandleUnsubscribe function, this cancels an existing subscription to
+whatever events the Link_Event_List parameter has.
+[endsect][/Event_Unsubscribe]
+
+[section Link_Get_Parameters]
+Defined in the HandleGetParameters function, this handles parameter requests from
+the MIHF and returns them. Currently supported parameters are:
+
+Currently, not all parameters types are supported. Only the following:
+
+* ['LINK_PARAM_80211]
+
+	* ['RSSI]: actually, it's the signal energy in dBm.
+
+
+* ['LINK_PARAM_GEN]
+
+	* ['DATA_RATE]: the maximum allowed data transfer rate for the connected link.
+
+	* ['SIGNAL_STRENGTH]: the signal power in percentage.
+
+	* ['PACKET_ERROR_RATE]: the error rate for this link, in percentage,
+	counted as an all-time statistic, not just recently.
+
+The values for these parameters are taken from the
+LINK_SAP_CS_80211.Information.InterfaceInfoProvider.
+[endsect][/Link_Get_Parameters]
+
+[section Link_Configure_Thresholds]
+Defined in the HandleConfigThresholds function, this adds or removes one or several
+thresholds to a specific list according to the following parameters:
+
+* If a timer is specified, it is considered a periodic report, and the threshold is
+treated seperatly. So, it is checked at the specified interval and returned
+regardless of threshold value.
+
+* Any sent threshold, with or without timer is placed in a separate queue, whenever
+the threshold is met, the Link_Parameters_Report is sent and the threshold (in case
+it’s a one-shot) is deleted from the list.
+
+[endsect][/Link_Configure_Thresholds]
+
+[section Link_Action]
+Defined in the HandleCommandLinkActions function, this handles specific actions.
+After whatever the specified delay (note that this is a required parameter, even if 0)
+the action is carried out.
+
+For the ['LINK_AC_TYPE] actions, all are supported, except ['LINK_LOW_POWER],
+thus the list being:
+
+* ['LINK_DISCONNECT]: Disconnects the current connection
+
+* ['LINK_POWER_DOWN]: Disables the interface
+
+* ['LINK_POWER_UP] Enables the interface
+
+As for the ['LINK_AC_ATTR] additional actions, only one is supported:
+
+* ['LINK_SCAN]: This requests a network scan and returns results, however,
+the OS decides when it occurs so the response to this action is delayed and
+the MIHF should have that into account when considering response timeouts.
+
+
+[endsect][/Link_Action]
+
+[endsect][/Commands]
+
+[endsect][/Support]
+
+
+[section Extending]
+
+This section explains some extending procedures with coding examples.
+In the code sections, the comments will help look at the right content.
+
+[section Supporting new commands]
+In the Connection/MIHProtocol folder, you will find the MessageHandler.cs
+file, containing its corresponding class. To add a new handler, simply
+follow the pattern used and add a case for the ActionID you want along
+with the handler function. Note that the handle function must include the
+reply procedure.
+
+``
+public static void HandleMessage(Message m)
+       {
+            switch (m.MIHHeader.MID.AID)
+            {
+                case AIDGlobal.SERVICE_MANAGEMENT_MIH_CAPABILITY_DISCOVER:
+                    HandleCapabilityDiscover(m);
+                    break;
+                case AIDGlobal.COMMAND_SERVICE_MIH_LINK_ACTIONS:
+                    HandleCommandLinkActions(m);
+                    break;
+                case AIDGlobal.SERVICE_MANAGEMENT_MIH_EVENT_SUBSCRIBE:
+                    HandleSubscribe(m);
+                    break;
+                case AIDGlobal.SERVICE_MANAGEMENT_MIH_EVENT_UNSUBSCRIBE:
+                    HandleUnsubscribe(m);
+                    break;
+                case AIDGlobal.COMMAND_SERVICE_MIH_LINK_CONFIGURE_THRESHOLDS:
+                    HandleConfigThresholds(m);
+                    break;
+                case AIDGlobal.COMMAND_SERVICE_MIH_LINK_GET_PARAMETERS:
+                    HandleGetParameters(m);
+                    break;
+
+				// Your code goes here
+
+            }
+       }
+``
+
+Note that to add new functionalities you have to first add them to the
+AIDGlobal data. This can be done via the Message class in the DLL project
+(DLLs/MIH/MIHProtocol/Message.cs) on the GlobalAID enum (you also have to
+change any required enums, for example, if you want to add a command, you
+should also add to the AIDCommandService enum). You also have to set the global
+function to recognize it, this can be done by adding a case in the switch
+corresponding to your action type on the GetAID function. So, in short:
+
+* ['On the Message class (DLLs/MIH/MIHProtocol/Message.cs):]
+
+	# Add the new action to the corresponding enum (AIDCommandService, AIDEventService, etc)
+
+	# Add the new action to the AIDGlobal enum
+
+	# Add recognition on the GetAID function
+
+* ['On the MessageHandler class (Connection/MIHProtocol/MessageHandler.cs):]
+
+	# Handle the new action in the HandleMessage function
+
+[endsect][/Supporting new commands]
+
+[endsect][/Extending]
+
+[endsect][/sap_80211 Link SAP]

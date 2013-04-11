@@ -1,5 +1,5 @@
 [/==============================================================================
- / Brief   : sap_80211 Link SAP Documentation
+ / Brief   : Linux sap_80211 Link SAP Documentation
  / Authors : André Prata <aprata@av.it.pt>
  /------------------------------------------------------------------------------
  / ODTONE - Open Dot Twenty One
@@ -15,7 +15,7 @@
  / This software is distributed without any warranty.
  /=============================================================================]
 
-[section:sap_80211_index sap_80211 Link SAP]
+[section:sap_80211_linux_index Linux sap_80211 Link SAP]
 
 The sap_80211 Link SAP is a Linux implementation of a Link SAP for 802.11 interfaces.
 
@@ -126,7 +126,7 @@ The Link SAP should be launched with root permissions if such features are requi
 [endsect][/Getting Started]
 
 
-[section:sap_80211_support Support]
+[section:sap_80211_linux_support Support]
 This section is a reading on special considerations for the structuring of the code, and how to hack specific features.
 
 [section Events]
