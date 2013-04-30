@@ -33,17 +33,14 @@ namespace odtone {
  * Bad cast exception.
  */
 struct bad_cast : virtual public exception {
+	virtual const char* what() const throw() { return "bad cast"; }
 };
 
 /**
  * Bad truncate cast exception.
  */
 struct bad_truncate_cast : virtual public bad_cast {
-	/**
-	 * Construct a bad truncate cast exception.
-	 */
-	bad_truncate_cast() : exception("odtone::truncate_cast: bad cast")
-	{ }
+	virtual const char* what() const throw() { return "bad truncate cast"; }
 };
 
 ///////////////////////////////////////////////////////////////////////////////

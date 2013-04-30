@@ -33,11 +33,10 @@ namespace odtone { namespace mih {
  * Bad TLV exception.
  */
 struct bad_tlv : virtual public exception {
-	/**
-	 * Construct a bad TLV exception.
-	 */
-	bad_tlv() : exception("odtone::mih::tlv_fwd::serialize(iarchive&): TLV missmatch")
-	{ }
+	const char* what() const throw()
+	{
+		return "TLV missmatch";
+	}
 };
 
 ///////////////////////////////////////////////////////////////////////////////

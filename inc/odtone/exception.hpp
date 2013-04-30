@@ -19,44 +19,44 @@
 #define ODTONE_EXCEPTION__HPP_
 
 ///////////////////////////////////////////////////////////////////////////////
+#include <odtone/base.hpp>
 #include <boost/exception/exception.hpp>
 #include <boost/throw_exception.hpp>
+#include <boost/system/error_code.hpp>
 #include <exception>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
+using boost::throw_exception;
+
+///////////////////////////////////////////////////////////////////////////////
 /**
- * Base class for all ODTONE exceptions. 
- * This is the base class for all exceptions thrown by the ODTONE library.
- * You are free to derive your own exception classes, or use a different
- * hierarchy, or to throw non-class data (e.g., fundamental types).
+ * Base class for all ODTONE exceptions.
+ * This is the base class that all odtone exceptions derive from.
+ * Virtual inheritance must be used when deriving from this class!
+ *
+ * Example:
+ * struct file_error : virtual public odtone::exception { };
+ *
+ * struct file_read_error : virtual public file_error {
+ *     virtual const char* what() throw() { return "read file error"; }
+ * };
+ *
+ * struct file_write_error : virtual public file_error {
+ *     virtual const char* what() throw() { return "write file error"; }
+ * };
  */
-class exception
-	: virtual public boost::exception, virtual public std::exception {
-public:
-	/**
-	 * Constructor a new exception.
-	 *
-	 * @param what General cause of the exception error description.
-	 */
-	exception(char const* what = "<exception>") : _what(what)
-	{ }
+class exception : virtual public boost::exception, virtual public std::exception { };
 
-	/**
-	 * Get a string describing the general cause of the current error.
-	 *
-	 * @return A string describing the general cause of the current error.
-	 */
-	char const* what() const throw()
-	{
-		return _what;
-	}
+///////////////////////////////////////////////////////////////////////////////
+using boost::system::error_code;
 
-private:
-	char const* _what; /**< General cause of the exception error description.*/
-};
+inline error_code system_error_code(int val)
+{
+	return error_code(val, boost::system::system_category());
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace odtone */

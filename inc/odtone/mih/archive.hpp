@@ -39,11 +39,7 @@ struct iarchive_error : virtual public exception { };
  * iarchive end of file error exception.
  */
 struct iarchive_eof_error : virtual public iarchive_error {
-	/**
-	 * Construct an iarchive end of file error exception.
-	 */
-	iarchive_eof_error() : exception("odtone::mih::iarchive: end of stream")
-	{ }
+	const char* what() const throw() { return "odtone::mih::iarchive: end of stream"; }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -270,7 +266,7 @@ public:
 	}
 
 	/**
-	 * A random-access iterator addressing the first element in the input 
+	 * A random-access iterator addressing the first element in the input
 	 * archive or to the location succeeding an empty archive. The
 	 * iterator should always be compared with vector::end to ensure it
 	 * is valid.
@@ -408,7 +404,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * The MIH types support serialization for the output archive. This
- * particular archive does not include the TLV field, which is necessary 
+ * particular archive does not include the TLV field, which is necessary
  * to support the definition of new sequence types from existing MIH types.
  */
 class oarchive {

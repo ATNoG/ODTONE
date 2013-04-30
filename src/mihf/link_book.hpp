@@ -34,11 +34,7 @@ namespace odtone { namespace mihf {
  * Unknown Link SAP exception.
  */
 struct unknown_link_sap : virtual public exception {
-	/**
-	 * Construct a Unknown Link SAP exception.
-	 */
-	unknown_link_sap() : exception("Unknown Link SAP")
-	{ }
+	const char* what() const throw() { return "Unknown Link SAP"; }
 };
 
 /**

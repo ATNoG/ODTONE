@@ -35,11 +35,7 @@ namespace odtone { namespace mihf {
  * Unknown MIH-User exception.
  */
 struct unknown_mih_user : virtual public exception {
-	/**
-	 * Construct a Unknown MIH-User exception.
-	 */
-	unknown_mih_user() : exception("Unknown MIH-User")
-	{ }
+	const char* what() const throw() { return "Unknown MIH-User"; }
 };
 
 /**

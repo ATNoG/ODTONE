@@ -234,17 +234,6 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Percentage exception.
- */
-struct percentage_exception : virtual public exception {
-	/**
-	 * Construct a percentage exception.
-	 */
-	percentage_exception() : exception("odtone::mih::percentage: out of range")
-	{ }
-};
-
-/**
  * PERCENTAGE data type.
  */
 class percentage {
@@ -263,10 +252,7 @@ public:
 	 */
 	percentage& operator=(uint val)
 	{
-		if (val > 100)
-			boost::throw_exception(percentage_exception());
-
-		_val = val;
+		_val = std::min(val, 100u);
 		return *this;
 	}
 

@@ -133,11 +133,7 @@ typedef std::vector<ir_bin_data> ir_bin_data_list;
  * ir_bin_archive_error exception.
  */
 struct ir_bin_iarchive_error : virtual public exception {
-	/**
-	 * Construct a ir_bin_iarchive_erro exception.
-	 */
-	ir_bin_iarchive_error() : exception("odtone::mih::ir_bin_iarchive: invalid number of elements")
-	{ }
+	const char* what() const throw() { return "invalid number of elements"; }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
