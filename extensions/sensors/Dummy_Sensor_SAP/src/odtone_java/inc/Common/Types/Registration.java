@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2009-2012 2012 Universidade Aveiro - Instituto de
+// Copyright (c) 2009-2013 2013 Universidade Aveiro - Instituto de
 // Telecomunicacoes Polo Aveiro
 // This file is part of ODTONE - Open Dot Twenty One.
 //
