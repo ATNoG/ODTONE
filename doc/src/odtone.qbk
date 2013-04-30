@@ -1308,17 +1308,13 @@ Ireland, Oct 2011
 
 * Provision of extended support Linux and Windows IEEE 802.11 Link SAPs.
 * Provision of extended support Linux Ethernet Link SAP.
-* Update of DHCP-User to the last version of ISC's DHCP (4.2.5).
-* Base support for MIH Registration signalling.
-* Add CMake build support.
-* Provision of *.deb for the main
+* Provision of a C# MIH Protocol library.
+* Update of the DHCP MIH-User to the last version of ISC's DHCP (4.2.5).
+* Extended support for the MIH Registration signaling added.
+* Added CMake build support.
+* Provision of *.deb packages.
 * Several bug-fixes.
 * ODTONE documentation revision.
-* Related work based on ODTONE:
-	* EMICOM (Enhanced Media Independent COnnection Manager) project:
-	enhanced network management software integrated with the GNU/Linux desktop
-	OS by seamlessly replacing the most widely used Network Manager for the
-	platform.
 
 [endsect]
 
