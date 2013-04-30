@@ -1,8 +1,8 @@
 Project : ODTONE - Open Dot Twenty ONE
-Version : 0.4 Beta
+Version : 0.5 Beta
 URL     : http://helios.av.it.pt/projects/odtone
 
-The documentation is available in HTML format, see index.hml, it's organized in
+The documentation is available in HTML format, see index.html, it's organized in
 the following sections:
 - "Introduction"          : information about the project.
 - "Getting Started"       : build and install instructions for developers.
