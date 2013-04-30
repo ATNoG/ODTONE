@@ -49,20 +49,45 @@ private:
 typedef basic_const_string_ref<char>    const_string_ref;
 typedef basic_const_string_ref<wchar_t> const_wstring_ref;
 
+///////////////////////////////////////////////////////////////////////////////
+} /* namespace odtone */
+
+///////////////////////////////////////////////////////////////////////////////
+#include <odtone/win32.hpp> //included here because of const_string_ref dependency
+
+///////////////////////////////////////////////////////////////////////////////
+namespace odtone {
+
+///////////////////////////////////////////////////////////////////////////////
 #ifdef BOOST_WINDOWS
 
-#define ODTONE_L     L
-typedef wchar_t      char_t; /**< Wide char.	*/
-typedef std::wstring string; /**< Wide string.	*/
+/**
+ * Convert a UTF-8 string to native UTF representation
+ */
+inline std::wstring ustr(const_string_ref str)
+{
+	return win32::utf8_to_utf16(str);
+}
 
 #else
 
-#define ODTONE_L
-typedef char        char_t; /**< Char.		*/
-typedef std::string string; /**< String.	*/
+/**
+ * Convert a UTF-8 string to the native UTF representation
+ */
+inline char const* ustr(char const* str)
+{
+	return str;
+}
+
+/**
+ * Convert a UTF-8 string to the native UTF representation
+ */
+inline std::string const& ustr(std::string const& str)
+{
+	return str;
+}
 
 #endif
-
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace odtone */
 
