@@ -4,7 +4,7 @@
 <title>Class icmp6_ra_packet</title>
 <link rel="stylesheet" href="../../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../../index.html" title="ODTONE 0.4">
+<link rel="home" href="../../../index.html" title="ODTONE 0.5">
 <link rel="up" href="../../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.icmp.icmp6_ra_packet_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/ip/icmp/icmp6_ra_packet.hpp&gt;">
 <link rel="prev" href="icmp/router_solicitation.html" title="Class router_solicitation">
 <link rel="next" href="opt_link_layer.html" title="Class template opt_link_layer">
@@ -32,53 +32,51 @@
   <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">const_buffers_1</span> <span class="special">&gt;</span> <a name="odtone.net.ip.icmp6_ra_packet.const_buffers"></a><span class="identifier">const_buffers</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="icmp6_ra_packet.html#odtone.net.ip.icmp6_ra_packetconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="icmp6_ra_packet.html#idp9509568-bb"><span class="identifier">icmp6_ra_packet</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="icmp6_ra_packet.html#idp9509696-bb"><span class="identifier">icmp6_ra_packet</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">,</span> <span class="identifier">uint16</span><span class="special">,</span> <span class="identifier">uint32</span><span class="special">,</span> <span class="identifier">uint32</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="icmp6_ra_packet.html#idp8700960-bb"><span class="identifier">icmp6_ra_packet</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="icmp6_ra_packet.html#idp8701088-bb"><span class="identifier">icmp6_ra_packet</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">,</span> <span class="identifier">uint16</span><span class="special">,</span> <span class="identifier">uint32</span><span class="special">,</span> <span class="identifier">uint32</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="icmp6_ra_packet.html#idp9497568-bb">public member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="icmp6_ra_packet.html#idp9497968-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">,</span> <span class="identifier">uint16</span><span class="special">,</span> <span class="identifier">uint32</span><span class="special">,</span> <span class="identifier">uint32</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Option<span class="special">&gt;</span> <span class="identifier">Option</span> <span class="special">*</span> <a class="link" href="icmp6_ra_packet.html#idp9501680-bb"><span class="identifier">add_option</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Option<span class="special">&gt;</span> <span class="identifier">Option</span> <span class="special">*</span> <a class="link" href="icmp6_ra_packet.html#idp9503488-bb"><span class="identifier">add_option</span></a><span class="special">(</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="icmp6_ra_packet.html#idp9505984-bb"><span class="identifier">notify</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">ipv6_packet</span><span class="special">::</span><span class="identifier">pseudo_header</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">size_t</span> <a class="link" href="icmp6_ra_packet.html#idp9507648-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">const_buffers</span> <a class="link" href="icmp6_ra_packet.html#idp9508608-bb"><span class="identifier">cbuffer</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="icmp6_ra_packet.html#idp8688960-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="icmp6_ra_packet.html#idp8689360-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">,</span> <span class="identifier">uint16</span><span class="special">,</span> <span class="identifier">uint32</span><span class="special">,</span> <span class="identifier">uint32</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Option<span class="special">&gt;</span> <span class="identifier">Option</span> <span class="special">*</span> <a class="link" href="icmp6_ra_packet.html#idp8693072-bb"><span class="identifier">add_option</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Option<span class="special">&gt;</span> <span class="identifier">Option</span> <span class="special">*</span> <a class="link" href="icmp6_ra_packet.html#idp8694880-bb"><span class="identifier">add_option</span></a><span class="special">(</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="icmp6_ra_packet.html#idp8697376-bb"><span class="identifier">notify</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">ipv6_packet</span><span class="special">::</span><span class="identifier">pseudo_header</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">size_t</span> <a class="link" href="icmp6_ra_packet.html#idp8699040-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_buffers</span> <a class="link" href="icmp6_ra_packet.html#idp8700000-bb"><span class="identifier">cbuffer</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
   <span class="comment">// public data members</span>
   <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">uint8</span> <span class="identifier">ipv6_next_header</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp88615184"></a><h2>Description</h2>
+<a name="idp31775424"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="idp88615600"></a><h3>
+<a name="idp31775840"></a><h3>
 <a name="odtone.net.ip.icmp6_ra_packetconstruct-copy-destruct"></a><code class="computeroutput">icmp6_ra_packet</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><a name="idp9509568-bb"></a><span class="identifier">icmp6_ra_packet</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><a name="idp9509696-bb"></a><span class="identifier">icmp6_ra_packet</span><span class="special">(</span><span class="identifier">uint8</span> current_hop_limit<span class="special">,</span> <span class="identifier">uint16</span> lifetime<span class="special">,</span> 
+<li class="listitem"><pre class="literallayout"><a name="idp8700960-bb"></a><span class="identifier">icmp6_ra_packet</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idp8701088-bb"></a><span class="identifier">icmp6_ra_packet</span><span class="special">(</span><span class="identifier">uint8</span> current_hop_limit<span class="special">,</span> <span class="identifier">uint16</span> lifetime<span class="special">,</span> 
                 <span class="identifier">uint32</span> reachable_time<span class="special">,</span> <span class="identifier">uint32</span> retrans_timer<span class="special">)</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp88629952"></a><h3>
-<a name="idp9497568-bb"></a><code class="computeroutput">icmp6_ra_packet</code> public member functions</h3>
+<a name="idp31790256"></a><h3>
+<a name="idp8688960-bb"></a><code class="computeroutput">icmp6_ra_packet</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="idp9497968-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">uint8</span> current_hop_limit<span class="special">,</span> <span class="identifier">uint16</span> lifetime<span class="special">,</span> 
+<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="idp8689360-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">uint8</span> current_hop_limit<span class="special">,</span> <span class="identifier">uint16</span> lifetime<span class="special">,</span> 
                 <span class="identifier">uint32</span> reachable_time<span class="special">,</span> <span class="identifier">uint32</span> retrans_timer<span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Option<span class="special">&gt;</span> <span class="identifier">Option</span> <span class="special">*</span> <a name="idp9501680-bb"></a><span class="identifier">add_option</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Option<span class="special">&gt;</span> <span class="identifier">Option</span> <span class="special">*</span> <a name="idp9503488-bb"></a><span class="identifier">add_option</span><span class="special">(</span><span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="idp9505984-bb"></a><span class="identifier">notify</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">ipv6_packet</span><span class="special">::</span><span class="identifier">pseudo_header</span> <span class="special">&amp;</span> ph<span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="identifier">size_t</span> <a name="idp9507648-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="identifier">const_buffers</span> <a name="idp9508608-bb"></a><span class="identifier">cbuffer</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Option<span class="special">&gt;</span> <span class="identifier">Option</span> <span class="special">*</span> <a name="idp8693072-bb"></a><span class="identifier">add_option</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Option<span class="special">&gt;</span> <span class="identifier">Option</span> <span class="special">*</span> <a name="idp8694880-bb"></a><span class="identifier">add_option</span><span class="special">(</span><span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="idp8697376-bb"></a><span class="identifier">notify</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">ipv6_packet</span><span class="special">::</span><span class="identifier">pseudo_header</span> <span class="special">&amp;</span> ph<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">size_t</span> <a name="idp8699040-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">const_buffers</span> <a name="idp8700000-bb"></a><span class="identifier">cbuffer</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
-      Aveiro<br>Copyright &#169; 2009-2012 Instituto
-      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license

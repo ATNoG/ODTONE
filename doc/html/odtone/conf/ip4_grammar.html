@@ -4,7 +4,7 @@
 <title>Struct template ip4_grammar</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="home" href="../../index.html" title="ODTONE 0.5">
 <link rel="up" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.conf_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/conf.hpp&gt;">
 <link rel="prev" href="string_grammar.html" title="Struct template string_grammar">
 <link rel="next" href="ip6_grammar.html" title="Struct template ip6_grammar">
@@ -27,36 +27,34 @@
 </span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Iterator<span class="special">&gt;</span> 
 <span class="keyword">struct</span> <a class="link" href="ip4_grammar.html" title="Struct template ip4_grammar">ip4_grammar</a> <span class="special">{</span>
   <span class="comment">// <a class="link" href="ip4_grammar.html#odtone.conf.ip4_grammarconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="ip4_grammar.html#idp8308208-bb"><span class="identifier">ip4_grammar</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="ip4_grammar.html#idp7949904-bb"><span class="identifier">ip4_grammar</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="ip4_grammar.html#idp8305744-bb">public static functions</a></span>
-  <span class="keyword">static</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">address_v4</span> <a class="link" href="ip4_grammar.html#idp8306144-bb"><span class="identifier">conv</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="ip4_grammar.html#idp7947440-bb">public static functions</a></span>
+  <span class="keyword">static</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">address_v4</span> <a class="link" href="ip4_grammar.html#idp7947840-bb"><span class="identifier">conv</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// public data members</span>
   <span class="identifier">qi</span><span class="special">::</span><span class="identifier">rule</span><span class="special">&lt;</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">address_v4</span><span class="special">(</span><span class="special">)</span><span class="special">&gt;</span> <span class="identifier">ip4</span><span class="special">;</span>
   <span class="identifier">qi</span><span class="special">::</span><span class="identifier">uint_parser</span><span class="special">&lt;</span> <span class="identifier">uint8</span><span class="special">,</span> <span class="number">10</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">3</span> <span class="special">&gt;</span> <span class="identifier">u8</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp67048736"></a><h2>Description</h2>
+<a name="idp10212416"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="idp67049152"></a><h3>
+<a name="idp10212832"></a><h3>
 <a name="odtone.conf.ip4_grammarconstruct-copy-destruct"></a><code class="computeroutput">ip4_grammar</code> 
         public
        construct/copy/destruct</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="idp8308208-bb"></a><span class="identifier">ip4_grammar</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="idp7949904-bb"></a><span class="identifier">ip4_grammar</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp67055088"></a><h3>
-<a name="idp8305744-bb"></a><code class="computeroutput">ip4_grammar</code> public static functions</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">address_v4</span> <a name="idp8306144-bb"></a><span class="identifier">conv</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="special">&amp;</span> str<span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+<a name="idp10218704"></a><h3>
+<a name="idp7947440-bb"></a><code class="computeroutput">ip4_grammar</code> public static functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">address_v4</span> <a name="idp7947840-bb"></a><span class="identifier">conv</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="special">&amp;</span> str<span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
-      Aveiro<br>Copyright &#169; 2009-2012 Instituto
-      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license

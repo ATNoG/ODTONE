@@ -4,7 +4,7 @@
 <title>Class exception</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../index.html" title="ODTONE 0.4">
+<link rel="home" href="../index.html" title="ODTONE 0.5">
 <link rel="up" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.exception_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/exception.hpp&gt;">
 <link rel="prev" href="../ODTONE_NEVER_HERE.html" title="Macro ODTONE_NEVER_HERE">
 <link rel="next" href="list_node.html" title="Class list_node">
@@ -28,21 +28,21 @@
 <span class="keyword">class</span> <a class="link" href="exception.html" title="Class exception">exception</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="exception.html#odtone.exceptionconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="exception.html#idp8457824-bb"><span class="identifier">exception</span></a><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <span class="special">=</span> <span class="string">"&lt;exception&gt;"</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="exception.html#idp8099520-bb"><span class="identifier">exception</span></a><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <span class="special">=</span> <span class="string">"&lt;exception&gt;"</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="exception.html#idp8455248-bb">public member functions</a></span>
-  <span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <a class="link" href="exception.html#idp8455648-bb"><span class="identifier">what</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="exception.html#idp8096944-bb">public member functions</a></span>
+  <span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <a class="link" href="exception.html#idp8097344-bb"><span class="identifier">what</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp68269104"></a><h2>Description</h2>
+<a name="idp11432816"></a><h2>Description</h2>
 <p>Base class for all ODTONE exceptions. This is the base class for all exceptions thrown by the ODTONE library. You are free to derive your own exception classes, or use a different hierarchy, or to throw non-class data (e.g., fundamental types). </p>
 <div class="refsect2">
-<a name="idp68270032"></a><h3>
+<a name="idp11433744"></a><h3>
 <a name="odtone.exceptionconstruct-copy-destruct"></a><code class="computeroutput">exception</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp8457824-bb"></a><span class="identifier">exception</span><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> what <span class="special">=</span> <span class="string">"&lt;exception&gt;"</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp8099520-bb"></a><span class="identifier">exception</span><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> what <span class="special">=</span> <span class="string">"&lt;exception&gt;"</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Constructor a new exception.</p>
 <p>
 </p>
@@ -62,10 +62,10 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp68282768"></a><h3>
-<a name="idp8455248-bb"></a><code class="computeroutput">exception</code> public member functions</h3>
+<a name="idp11446480"></a><h3>
+<a name="idp8096944-bb"></a><code class="computeroutput">exception</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <a name="idp8455648-bb"></a><span class="identifier">what</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <a name="idp8097344-bb"></a><span class="identifier">what</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get a string describing the general cause of the current error.</p>
 <p>
 </p>
@@ -82,9 +82,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
-      Aveiro<br>Copyright &#169; 2009-2012 Instituto
-      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license

@@ -4,7 +4,7 @@
 <title>Struct network_type</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="home" href="../../index.html" title="ODTONE 0.5">
 <link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.information_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/information.hpp&gt;">
 <link rel="prev" href="parameters.html" title="Struct parameters">
 <link rel="next" href="system_info.html" title="Struct system_info">
@@ -27,13 +27,13 @@
 </span>
 <span class="keyword">struct</span> <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <span class="special">{</span>
   <span class="comment">// <a class="link" href="network_type.html#odtone.mih.network_typeconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="network_type.html#idp11950400-bb"><span class="identifier">network_type</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="network_type.html#idp11592512-bb"><span class="identifier">network_type</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="network_type.html#idp11946304-bb">public member functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="network_type.html#idp11946704-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="network_type.html#idp11588416-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="network_type.html#idp11588816-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="network_type.html#idp11950976-bb">friend functions</a></span>
-  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="network_type.html#idp11951376-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="network_type.html#idp11593088-bb">friend functions</a></span>
+  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="network_type.html#idp11593488-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="network_type.html#odtone.mih.network_typepublic-data-members">public data members</a></span>
   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <a class="link" href="link_type.html" title="Type definition link_type">link_type</a> <span class="special">&gt;</span> <a class="link" href="network_type.html#odtone.mih.network_type.link"><span class="identifier">link</span></a><span class="special">;</span>
@@ -41,23 +41,23 @@
   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <span class="identifier">type_ext</span> <span class="special">&gt;</span> <a class="link" href="network_type.html#odtone.mih.network_type.typeext"><span class="identifier">typeext</span></a><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp78455936"></a><h2>Description</h2>
+<a name="idp21660704"></a><h2>Description</h2>
 <p>NETWORK_TYPE data type. </p>
 <div class="refsect2">
-<a name="idp78456608"></a><h3>
+<a name="idp21661376"></a><h3>
 <a name="odtone.mih.network_typeconstruct-copy-destruct"></a><code class="computeroutput">network_type</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp11950400-bb"></a><span class="identifier">network_type</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp11592512-bb"></a><span class="identifier">network_type</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty NETWORK_TYPE data type. </p>
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp78462800"></a><h3>
-<a name="idp11946304-bb"></a><code class="computeroutput">network_type</code> public member functions</h3>
+<a name="idp21667632"></a><h3>
+<a name="idp11588416-bb"></a><code class="computeroutput">network_type</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp11946704-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp11588816-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize/deserialize the NETWORK_TYPE data type.</p>
 <p>
 </p>
@@ -77,10 +77,10 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp78476784"></a><h3>
-<a name="idp11950976-bb"></a><code class="computeroutput">network_type</code> friend functions</h3>
+<a name="idp21681552"></a><h3>
+<a name="idp11593088-bb"></a><code class="computeroutput">network_type</code> friend functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="idp11951376-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> os<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <span class="special">&amp;</span> nt<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="idp11593488-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> os<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <span class="special">&amp;</span> nt<span class="special">)</span><span class="special">;</span></pre>
 <p>NETWORK_TYPE data type output.</p>
 <p>
 
@@ -113,7 +113,7 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp78497008"></a><h3>
+<a name="idp21701952"></a><h3>
 <a name="odtone.mih.network_typepublic-data-members"></a><code class="computeroutput">network_type</code> 
         public
        public data members</h3>
@@ -136,9 +136,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
-      Aveiro<br>Copyright &#169; 2009-2012 Instituto
-      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license

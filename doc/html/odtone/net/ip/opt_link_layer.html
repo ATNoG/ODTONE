@@ -4,7 +4,7 @@
 <title>Class template opt_link_layer</title>
 <link rel="stylesheet" href="../../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../../index.html" title="ODTONE 0.4">
+<link rel="home" href="../../../index.html" title="ODTONE 0.5">
 <link rel="up" href="../../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.icmp.icmp_options_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/ip/icmp/icmp_options.hpp&gt;">
 <link rel="prev" href="icmp6_ra_packet.html" title="Class icmp6_ra_packet">
 <link rel="next" href="opt_prefix_info.html" title="Class opt_prefix_info">
@@ -28,36 +28,36 @@
 <span class="keyword">class</span> <a class="link" href="opt_link_layer.html" title="Class template opt_link_layer">opt_link_layer</a> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">option</span> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="opt_link_layer.html#odtone.net.ip.opt_link_layerconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="opt_link_layer.html#idp9523680-bb"><span class="identifier">opt_link_layer</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  opt_link_layer&amp; <a class="link" href="opt_link_layer.html#idp9523808-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="opt_link_layer.html#idp8715072-bb"><span class="identifier">opt_link_layer</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  opt_link_layer&amp; <a class="link" href="opt_link_layer.html#idp8715200-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="opt_link_layer.html#idp9518240-bb">public static functions</a></span>
-  <span class="keyword">static</span> self_type <span class="special">*</span> <a class="link" href="opt_link_layer.html#idp9518640-bb"><span class="identifier">cast</span></a><span class="special">(</span><a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="opt_link_layer.html#idp8709632-bb">public static functions</a></span>
+  <span class="keyword">static</span> self_type <span class="special">*</span> <a class="link" href="opt_link_layer.html#idp8710032-bb"><span class="identifier">cast</span></a><span class="special">(</span><a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="opt_link_layer.html#idp9522192-bb">public member functions</a></span>
-  <a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <a class="link" href="opt_link_layer.html#idp9522592-bb"><span class="identifier">to_mac</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="opt_link_layer.html#idp8713584-bb">public member functions</a></span>
+  <a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <a class="link" href="opt_link_layer.html#idp8713984-bb"><span class="identifier">to_mac</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
   <span class="comment">// public data members</span>
   <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">size_t</span> <span class="identifier">static_size</span><span class="special">;</span>
   <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">uint8</span> <span class="identifier">type_value</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp88754688"></a><h2>Description</h2>
+<a name="idp31914768"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="idp88755104"></a><h3>
+<a name="idp31915184"></a><h3>
 <a name="odtone.net.ip.opt_link_layerconstruct-copy-destruct"></a><code class="computeroutput">opt_link_layer</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><a name="idp9523680-bb"></a><span class="identifier">opt_link_layer</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout">opt_link_layer&amp; <a name="idp9523808-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <span class="special">&amp;</span> mac<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idp8715072-bb"></a><span class="identifier">opt_link_layer</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout">opt_link_layer&amp; <a name="idp8715200-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <span class="special">&amp;</span> mac<span class="special">)</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp88767472"></a><h3>
-<a name="idp9518240-bb"></a><code class="computeroutput">opt_link_layer</code> public static functions</h3>
+<a name="idp31927616"></a><h3>
+<a name="idp8709632-bb"></a><code class="computeroutput">opt_link_layer</code> public static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">static</span> self_type <span class="special">*</span> <a name="idp9518640-bb"></a><span class="identifier">cast</span><span class="special">(</span><a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span> opt<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">static</span> self_type <span class="special">*</span> <a name="idp8710032-bb"></a><span class="identifier">cast</span><span class="special">(</span><a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span> opt<span class="special">)</span><span class="special">;</span></pre>
 <p>Convert an IPv6 Options to an template class.</p>
 <p>
 
@@ -72,17 +72,15 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp88778256"></a><h3>
-<a name="idp9522192-bb"></a><code class="computeroutput">opt_link_layer</code> public member functions</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <a name="idp9522592-bb"></a><span class="identifier">to_mac</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li></ol></div>
+<a name="idp31938400"></a><h3>
+<a name="idp8713584-bb"></a><code class="computeroutput">opt_link_layer</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <a name="idp8713984-bb"></a><span class="identifier">to_mac</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li></ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
-      Aveiro<br>Copyright &#169; 2009-2012 Instituto
-      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license

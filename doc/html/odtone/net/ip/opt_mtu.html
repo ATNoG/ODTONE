@@ -4,7 +4,7 @@
 <title>Class opt_mtu</title>
 <link rel="stylesheet" href="../../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../../index.html" title="ODTONE 0.4">
+<link rel="home" href="../../../index.html" title="ODTONE 0.5">
 <link rel="up" href="../../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.icmp.icmp_options_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/ip/icmp/icmp_options.hpp&gt;">
 <link rel="prev" href="opt_prefix_info.html" title="Class opt_prefix_info">
 <link rel="next" href="opt_rdns.html" title="Class opt_rdns">
@@ -28,11 +28,11 @@
 <span class="keyword">class</span> <a class="link" href="opt_mtu.html" title="Class opt_mtu">opt_mtu</a> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">option</span> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="opt_mtu.html#odtone.net.ip.opt_mtuconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="opt_mtu.html#idp8642032-bb"><span class="identifier">opt_mtu</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="opt_mtu.html#idp8740480-bb"><span class="identifier">opt_mtu</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="opt_mtu.html#idp8639024-bb">public member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="opt_mtu.html#idp8639424-bb"><span class="identifier">set</span></a><span class="special">(</span><span class="identifier">uint32</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">uint32</span> <a class="link" href="opt_mtu.html#idp8641072-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="opt_mtu.html#idp8737472-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="opt_mtu.html#idp8737872-bb"><span class="identifier">set</span></a><span class="special">(</span><span class="identifier">uint32</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">uint32</span> <a class="link" href="opt_mtu.html#idp8739520-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
   <span class="comment">// public data members</span>
   <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">uint8</span> <span class="identifier">type_value</span><span class="special">;</span>
@@ -41,29 +41,27 @@
   <span class="identifier">uint32</span> <span class="identifier">_mtu</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp88951840"></a><h2>Description</h2>
+<a name="idp32112016"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="idp88952256"></a><h3>
+<a name="idp32112432"></a><h3>
 <a name="odtone.net.ip.opt_mtuconstruct-copy-destruct"></a><code class="computeroutput">opt_mtu</code> 
         public
        construct/copy/destruct</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="idp8642032-bb"></a><span class="identifier">opt_mtu</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="idp8740480-bb"></a><span class="identifier">opt_mtu</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp88958192"></a><h3>
-<a name="idp8639024-bb"></a><code class="computeroutput">opt_mtu</code> public member functions</h3>
+<a name="idp32118368"></a><h3>
+<a name="idp8737472-bb"></a><code class="computeroutput">opt_mtu</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="idp8639424-bb"></a><span class="identifier">set</span><span class="special">(</span><span class="identifier">uint32</span> val<span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="identifier">uint32</span> <a name="idp8641072-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="idp8737872-bb"></a><span class="identifier">set</span><span class="special">(</span><span class="identifier">uint32</span> val<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">uint32</span> <a name="idp8739520-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
-      Aveiro<br>Copyright &#169; 2009-2012 Instituto
-      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license

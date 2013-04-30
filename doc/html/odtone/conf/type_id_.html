@@ -4,7 +4,7 @@
 <title>Class template type_id_</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="home" href="../../index.html" title="ODTONE 0.5">
 <link rel="up" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.conf_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/conf.hpp&gt;">
 <link rel="prev" href="../truncate_cast.html" title="Function template truncate_cast">
 <link rel="next" href="property_class.html" title="Struct property_class">
@@ -28,28 +28,26 @@
 <span class="keyword">class</span> <a class="link" href="type_id_.html" title="Class template type_id_">type_id_</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
 
-  <span class="comment">// <a class="link" href="type_id_.html#idp8188336-bb">private member functions</a></span>
-   <a class="link" href="type_id_.html#idp8188752-bb"><span class="identifier">ODTONE_STATIC_ASSERT</span></a><span class="special">(</span><span class="special">(</span><span class="special">!</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">end</span><span class="special">&lt;</span> <span class="identifier">arg_type</span><span class="special">::</span><span class="identifier">types</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span> <span class="identifier">ft</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">,</span> 
+  <span class="comment">// <a class="link" href="type_id_.html#idp7830032-bb">private member functions</a></span>
+   <a class="link" href="type_id_.html#idp7830448-bb"><span class="identifier">ODTONE_STATIC_ASSERT</span></a><span class="special">(</span><span class="special">(</span><span class="special">!</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">end</span><span class="special">&lt;</span> <span class="identifier">arg_type</span><span class="special">::</span><span class="identifier">types</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span> <span class="identifier">ft</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">,</span> 
                         <span class="string">"Type not supported"</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// public data members</span>
   <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">uint</span> <span class="identifier">value</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp65486416"></a><h2>Description</h2>
+<a name="idp8650672"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="idp65486832"></a><h3>
-<a name="idp8188336-bb"></a><code class="computeroutput">type_id_</code> private member functions</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"> <a name="idp8188752-bb"></a><span class="identifier">ODTONE_STATIC_ASSERT</span><span class="special">(</span><span class="special">(</span><span class="special">!</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">end</span><span class="special">&lt;</span> <span class="identifier">arg_type</span><span class="special">::</span><span class="identifier">types</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span> <span class="identifier">ft</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">,</span> 
+<a name="idp8651088"></a><h3>
+<a name="idp7830032-bb"></a><code class="computeroutput">type_id_</code> private member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"> <a name="idp7830448-bb"></a><span class="identifier">ODTONE_STATIC_ASSERT</span><span class="special">(</span><span class="special">(</span><span class="special">!</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">end</span><span class="special">&lt;</span> <span class="identifier">arg_type</span><span class="special">::</span><span class="identifier">types</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span> <span class="identifier">ft</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">,</span> 
                       <span class="string">"Type not supported"</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
-      Aveiro<br>Copyright &#169; 2009-2012 Instituto
-      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license

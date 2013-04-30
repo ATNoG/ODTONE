@@ -4,7 +4,7 @@
 <title>Class option</title>
 <link rel="stylesheet" href="../../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../../index.html" title="ODTONE 0.4">
+<link rel="home" href="../../../index.html" title="ODTONE 0.5">
 <link rel="up" href="../../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.options_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/ip/options.hpp&gt;">
 <link rel="prev" href="opt_rdns.html" title="Class opt_rdns">
 <link rel="next" href="prefix_v6.html" title="Class prefix_v6">
@@ -28,24 +28,24 @@
 <span class="keyword">class</span> <a class="link" href="option.html" title="Class option">option</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="option.html#odtone.net.ip.optionconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="option.html#idp8675360-bb"><span class="identifier">option</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">,</span> <span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="option.html#idp10006384-bb"><span class="identifier">option</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">,</span> <span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="option.html#idp8659328-bb">public static functions</a></span>
-  <span class="keyword">static</span> <a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span> <a class="link" href="option.html#idp8659728-bb"><span class="identifier">cast</span></a><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="option.html#idp8664544-bb"><span class="identifier">cast</span></a><span class="special">(</span><a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">static</span> <span class="identifier">uint8</span> <a class="link" href="option.html#idp8668496-bb"><span class="identifier">type</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">static</span> <span class="identifier">size_t</span> <a class="link" href="option.html#idp8671728-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="option.html#idp8757840-bb">public static functions</a></span>
+  <span class="keyword">static</span> <a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span> <a class="link" href="option.html#idp8758240-bb"><span class="identifier">cast</span></a><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="option.html#idp8763056-bb"><span class="identifier">cast</span></a><span class="special">(</span><a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">uint8</span> <a class="link" href="option.html#idp8767008-bb"><span class="identifier">type</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">size_t</span> <a class="link" href="option.html#idp10002752-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp89105792"></a><h2>Description</h2>
+<a name="idp32265872"></a><h2>Description</h2>
 <p>This class represents the base IPv6 Options. </p>
 <div class="refsect2">
-<a name="idp89106528"></a><h3>
+<a name="idp32266608"></a><h3>
 <a name="odtone.net.ip.optionconstruct-copy-destruct"></a><code class="computeroutput">option</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp8675360-bb"></a><span class="identifier">option</span><span class="special">(</span><span class="identifier">uint8</span> type<span class="special">,</span> <span class="identifier">uint8</span> length<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp10006384-bb"></a><span class="identifier">option</span><span class="special">(</span><span class="identifier">uint8</span> type<span class="special">,</span> <span class="identifier">uint8</span> length<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an IPv6 Options.</p>
 <p>
 </p>
@@ -71,11 +71,11 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp89119216"></a><h3>
-<a name="idp8659328-bb"></a><code class="computeroutput">option</code> public static functions</h3>
+<a name="idp32279328"></a><h3>
+<a name="idp8757840-bb"></a><code class="computeroutput">option</code> public static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">static</span> <a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span> <a name="idp8659728-bb"></a><span class="identifier">cast</span><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span> data<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">static</span> <a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span> <a name="idp8758240-bb"></a><span class="identifier">cast</span><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span> data<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
 <p>Convert a byte buffer to an IPv6 Options.</p>
 <p>
 
@@ -107,7 +107,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">T</span> <span class="special">*</span> <a name="idp8664544-bb"></a><span class="identifier">cast</span><span class="special">(</span><a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span> opt<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">T</span> <span class="special">*</span> <a name="idp8763056-bb"></a><span class="identifier">cast</span><span class="special">(</span><a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span> opt<span class="special">)</span><span class="special">;</span></pre>
 <p>Convert an IPv6 Options to an template class.</p>
 <p>
 
@@ -121,7 +121,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">static</span> <span class="identifier">uint8</span> <a name="idp8668496-bb"></a><span class="identifier">type</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span> opt<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">static</span> <span class="identifier">uint8</span> <a name="idp8767008-bb"></a><span class="identifier">type</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span> opt<span class="special">)</span><span class="special">;</span></pre>
 <p>Get the IPv6 Options type.</p>
 <p>
 
@@ -135,7 +135,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">static</span> <span class="identifier">size_t</span> <a name="idp8671728-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span> opt<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">static</span> <span class="identifier">size_t</span> <a name="idp10002752-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span> opt<span class="special">)</span><span class="special">;</span></pre>
 <p>Get the IPv6 Options size.</p>
 <p>
 
@@ -154,9 +154,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
-      Aveiro<br>Copyright &#169; 2009-2012 Instituto
-      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license

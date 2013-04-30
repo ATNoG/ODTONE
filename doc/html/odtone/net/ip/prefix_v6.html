@@ -4,7 +4,7 @@
 <title>Class prefix_v6</title>
 <link rel="stylesheet" href="../../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../../index.html" title="ODTONE 0.4">
+<link rel="home" href="../../../index.html" title="ODTONE 0.5">
 <link rel="up" href="../../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.prefix_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/ip/prefix.hpp&gt;">
 <link rel="prev" href="option.html" title="Class option">
 <link rel="next" href="../link/address_mac.html" title="Class address_mac">
@@ -31,38 +31,38 @@
   <span class="keyword">typedef</span> <span class="identifier">address_v6</span><span class="special">::</span><span class="identifier">bytes_type</span> <a name="odtone.net.ip.prefix_v6.bytes_type"></a><span class="identifier">bytes_type</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="prefix_v6.html#odtone.net.ip.prefix_v6construct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="prefix_v6.html#idp8695344-bb"><span class="identifier">prefix_v6</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="prefix_v6.html#idp8695904-bb"><span class="identifier">prefix_v6</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">bytes_type</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="prefix_v6.html#idp8698992-bb"><span class="identifier">prefix_v6</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">address_v6</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="prefix_v6.html#idp10026368-bb"><span class="identifier">prefix_v6</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="prefix_v6.html#idp10026928-bb"><span class="identifier">prefix_v6</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">bytes_type</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="prefix_v6.html#idp10030016-bb"><span class="identifier">prefix_v6</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">address_v6</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">uint</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="prefix_v6.html#idp8681616-bb">public static functions</a></span>
-  <span class="keyword">static</span> <a class="link" href="prefix_v6.html" title="Class prefix_v6">prefix_v6</a> <a class="link" href="prefix_v6.html#idp8682016-bb"><span class="identifier">from_string</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="prefix_v6.html#idp10012640-bb">public static functions</a></span>
+  <span class="keyword">static</span> <a class="link" href="prefix_v6.html" title="Class prefix_v6">prefix_v6</a> <a class="link" href="prefix_v6.html#idp10013040-bb"><span class="identifier">from_string</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="prefix_v6.html#idp8685520-bb">public member functions</a></span>
-  <span class="keyword">const</span> <span class="identifier">bytes_type</span> <span class="special">&amp;</span> <a class="link" href="prefix_v6.html#idp8685920-bb"><span class="identifier">bytes</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint</span> <a class="link" href="prefix_v6.html#idp8688032-bb"><span class="identifier">length</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <a class="link" href="prefix_v6.html#idp8690144-bb"><span class="keyword">operator</span> <span class="identifier">undefined_bool</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="prefix_v6.html#idp8691104-bb"><span class="keyword">operator</span><span class="special">!</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="prefix_v6.html#idp8692064-bb"><span class="identifier">match</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">address_v6</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="prefix_v6.html#idp10016544-bb">public member functions</a></span>
+  <span class="keyword">const</span> <span class="identifier">bytes_type</span> <span class="special">&amp;</span> <a class="link" href="prefix_v6.html#idp10016944-bb"><span class="identifier">bytes</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint</span> <a class="link" href="prefix_v6.html#idp10019056-bb"><span class="identifier">length</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="prefix_v6.html#idp10021168-bb"><span class="keyword">operator</span> <span class="identifier">undefined_bool</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="prefix_v6.html#idp10022128-bb"><span class="keyword">operator</span><span class="special">!</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="prefix_v6.html#idp10023088-bb"><span class="identifier">match</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">address_v6</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="prefix_v6.html#idp8702064-bb">friend functions</a></span>
-  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="prefix_v6.html#idp8702464-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="prefix_v6.html" title="Class prefix_v6">prefix_v6</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="prefix_v6.html#idp10033088-bb">friend functions</a></span>
+  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="prefix_v6.html#idp10033488-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="prefix_v6.html" title="Class prefix_v6">prefix_v6</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp89312032"></a><h2>Description</h2>
+<a name="idp32471824"></a><h2>Description</h2>
 <p>This class represents the base IPv6 Prefix. </p>
 <div class="refsect2">
-<a name="idp89312768"></a><h3>
+<a name="idp32472560"></a><h3>
 <a name="odtone.net.ip.prefix_v6construct-copy-destruct"></a><code class="computeroutput">prefix_v6</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="idp8695344-bb"></a><span class="identifier">prefix_v6</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp10026368-bb"></a><span class="identifier">prefix_v6</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty IPv6 Prefix. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp8695904-bb"></a><span class="identifier">prefix_v6</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">bytes_type</span> <span class="special">&amp;</span> addr<span class="special">,</span> <span class="identifier">uint</span> length<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp10026928-bb"></a><span class="identifier">prefix_v6</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">bytes_type</span> <span class="special">&amp;</span> addr<span class="special">,</span> <span class="identifier">uint</span> length<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an IPv6 Prefix.</p>
 <p>
 </p>
@@ -87,7 +87,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp8698992-bb"></a><span class="identifier">prefix_v6</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">address_v6</span> <span class="special">&amp;</span> addr<span class="special">,</span> <span class="identifier">uint</span> length<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp10030016-bb"></a><span class="identifier">prefix_v6</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">address_v6</span> <span class="special">&amp;</span> addr<span class="special">,</span> <span class="identifier">uint</span> length<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an IPv6 Prefix.</p>
 <p>
 </p>
@@ -114,10 +114,10 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp89342672"></a><h3>
-<a name="idp8681616-bb"></a><code class="computeroutput">prefix_v6</code> public static functions</h3>
+<a name="idp32502528"></a><h3>
+<a name="idp10012640-bb"></a><code class="computeroutput">prefix_v6</code> public static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">static</span> <a class="link" href="prefix_v6.html" title="Class prefix_v6">prefix_v6</a> <a name="idp8682016-bb"></a><span class="identifier">from_string</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span> str<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">static</span> <a class="link" href="prefix_v6.html" title="Class prefix_v6">prefix_v6</a> <a name="idp10013040-bb"></a><span class="identifier">from_string</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span> str<span class="special">)</span><span class="special">;</span></pre>
 <p>Get the IPv6 Prefix from a string.</p>
 <p>
 
@@ -144,11 +144,11 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp89357488"></a><h3>
-<a name="idp8685520-bb"></a><code class="computeroutput">prefix_v6</code> public member functions</h3>
+<a name="idp32517344"></a><h3>
+<a name="idp10016544-bb"></a><code class="computeroutput">prefix_v6</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">bytes_type</span> <span class="special">&amp;</span> <a name="idp8685920-bb"></a><span class="identifier">bytes</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">bytes_type</span> <span class="special">&amp;</span> <a name="idp10016944-bb"></a><span class="identifier">bytes</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the IPv6 Prefix raw bytes.</p>
 <p>
 </p>
@@ -161,7 +161,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint</span> <a name="idp8688032-bb"></a><span class="identifier">length</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint</span> <a name="idp10019056-bb"></a><span class="identifier">length</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the IPv6 Prefix length.</p>
 <p>
 </p>
@@ -173,10 +173,10 @@
 </tr></tbody>
 </table></div>
 </li>
-<li class="listitem"><pre class="literallayout"><a name="idp8690144-bb"></a><span class="keyword">operator</span> <span class="identifier">undefined_bool</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">bool</span> <a name="idp8691104-bb"></a><span class="keyword">operator</span><span class="special">!</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idp10021168-bb"></a><span class="keyword">operator</span> <span class="identifier">undefined_bool</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">bool</span> <a name="idp10022128-bb"></a><span class="keyword">operator</span><span class="special">!</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp8692064-bb"></a><span class="identifier">match</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">address_v6</span> <span class="special">&amp;</span> addr<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp10023088-bb"></a><span class="identifier">match</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">address_v6</span> <span class="special">&amp;</span> addr<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Check if the IPv6 Prefix is equal to another IPv6 Prefix.</p>
 <p>
 
@@ -204,10 +204,10 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp89397072"></a><h3>
-<a name="idp8702064-bb"></a><code class="computeroutput">prefix_v6</code> friend functions</h3>
+<a name="idp32556736"></a><h3>
+<a name="idp10033088-bb"></a><code class="computeroutput">prefix_v6</code> friend functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="idp8702464-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="prefix_v6.html" title="Class prefix_v6">prefix_v6</a> <span class="special">&amp;</span> lhr<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="idp10033488-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="prefix_v6.html" title="Class prefix_v6">prefix_v6</a> <span class="special">&amp;</span> lhr<span class="special">)</span><span class="special">;</span></pre>
 <p>IPv6 Prefix output.</p>
 <p>
 
@@ -243,9 +243,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
-      Aveiro<br>Copyright &#169; 2009-2012 Instituto
-      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license

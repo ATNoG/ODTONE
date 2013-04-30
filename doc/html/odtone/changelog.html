@@ -4,8 +4,8 @@
 <title>Changelog</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../index.html" title="ODTONE 0.4">
-<link rel="up" href="../index.html" title="ODTONE 0.4">
+<link rel="home" href="../index.html" title="ODTONE 0.5">
+<link rel="up" href="../index.html" title="ODTONE 0.5">
 <link rel="prev" href="net/link/address_mac.html" title="Class address_mac">
 <link rel="next" href="license.html" title="License">
 </head>
@@ -20,389 +20,47 @@
 <a name="odtone.changelog"></a><a class="link" href="changelog.html" title="Changelog">Changelog</a>
 </h2></div></div></div>
 <p>
-      <span class="bold"><strong>ODTONE 0.4 - Open Dot Twenty ONE.</strong></span>
+      <span class="bold"><strong>ODTONE 0.5 - Open Dot Twenty ONE.</strong></span>
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-          Fixed wrong LINK_CMD_LIST, LINK_EVENT_LIST, MIH_CMD_LIST and MIH_EVENT_LIST
-          data type definition.
-          <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-                If your SAPs make use of any of these data types you should have
-                to update them (<a class="link" href="changelog.html#odtone.changelog.data_types_changes">see
-                more info below</a>).
-              </li></ul></div>
+          Provision of extended support Linux and Windows IEEE 802.11 Link SAPs.
         </li>
 <li class="listitem">
-          Redefinition of the interface used by MIH-Users to register themselves
-          with the local MIHF (<a class="link" href="changelog.html#odtone.changelog.mih_users_registration_changes">see
-          more info below</a>).
+          Provision of extended support Linux Ethernet Link SAP.
         </li>
 <li class="listitem">
-          Implementation of mechanisms for discovering remote peer MIHFs:
-          <div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">
-                DNS-User: discovery mechanim which uses DNS services;
-              </li>
-<li class="listitem">
-                DHCP-User: discovery mechanim which uses DHCP services.
-              </li>
-</ul></div>
+          Update of DHCP-User to the last version of ISC's DHCP (4.2.5).
         </li>
 <li class="listitem">
-          Response timers: all messages are associated with a timer, which replies
-          with a failure message in case of timeout.
+          Base support for MIH Registration signalling.
         </li>
 <li class="listitem">
-          Provision of a new Link SAP example: this new Link SAP uses the ICMP protocol
-          to detect the attachment of another node.
+          Add CMake build support.
         </li>
 <li class="listitem">
-          Definition of new messages in the client application.
-        </li>
-<li class="listitem">
-          Provision of a new library named NET library: it defines a set of classes
-          which offer several network protocols and terminology support.
+          Provision of *.deb for the main
         </li>
 <li class="listitem">
           Several bug-fixes.
         </li>
 <li class="listitem">
-          Fix compilation with more recent gcc version.
-        </li>
-<li class="listitem">
           ODTONE documentation revision.
         </li>
+<li class="listitem">
+          Related work based on ODTONE:
+          <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+                EMICOM (Enhanced Media Independent COnnection Manager) project: enhanced
+                network management software integrated with the GNU/Linux desktop
+                OS by seamlessly replacing the most widely used Network Manager for
+                the platform.
+              </li></ul></div>
+        </li>
 </ul></div>
-<h5>
-<a name="odtone.changelog.h0"></a>
-      <span><a name="odtone.changelog.data_types_changes"></a></span><a class="link" href="changelog.html#odtone.changelog.data_types_changes">Data
-      types changes</a>
-    </h5>
-<p>
-      In the ODTONE 0.4 release was redefined the LINK_CMD_LIST, LINK_EVENT_LIST,
-      MIH_CMD_LIST and MIH_EVENT_LIST that were not in accordance with the standard.
-    </p>
-<div class="important"><table border="0" summary="Important">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
-<th align="left">Important</th>
-</tr>
-<tr><td align="left" valign="top"><p>
-        Implementations of MIH-Users and Link_SAP modules using the LINK_CMD_LIST,
-        LINK_EVENT_LIST, MIH_CMD_LIST and/or MIH_EVENT_LIST datatypes need to change
-        their code, in order for it to work with the new changes. Take into consideration
-        that this is necessary for absolute interoperability with the standard.
-      </p></td></tr>
-</table></div>
-<p>
-      <span class="bold"><strong>Data type definitions on ODTONE 0.3 and earlier</strong></span>
-</p>
-<pre class="programlisting"><span class="comment">/**
- * The enumeration of MIH_EVENT_LIST and LINK_EVENT_LIST data type.
- */</span>
-<span class="keyword">enum</span> <span class="identifier">event_list_enum</span> <span class="special">{</span>
-        <span class="identifier">link_detected</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span>             <span class="comment">/**&lt; Link detected.             */</span>
-        <span class="identifier">link_up</span> <span class="special">=</span> <span class="number">1</span><span class="special">,</span>                   <span class="comment">/**&lt; Link up.                   */</span>
-        <span class="identifier">link_down</span> <span class="special">=</span> <span class="number">2</span><span class="special">,</span>                 <span class="comment">/**&lt; Link down.                 */</span>
-        <span class="identifier">link_parameters_report</span> <span class="special">=</span> <span class="number">3</span><span class="special">,</span>    <span class="comment">/**&lt; Link parameters report.    */</span>
-        <span class="identifier">link_going_down</span> <span class="special">=</span> <span class="number">4</span><span class="special">,</span>           <span class="comment">/**&lt; Link doing down.           */</span>
-        <span class="identifier">link_handover_imminent</span> <span class="special">=</span> <span class="number">5</span><span class="special">,</span>    <span class="comment">/**&lt; Link handover imminent.    */</span>
-        <span class="identifier">link_handover_complete</span> <span class="special">=</span> <span class="number">6</span><span class="special">,</span>    <span class="comment">/**&lt; Link handover complete.    */</span>
-        <span class="identifier">link_pdu_transmit_status</span> <span class="special">=</span> <span class="number">7</span><span class="special">,</span>  <span class="comment">/**&lt; Link PDU transmit status.  */</span>
-<span class="special">};</span>
-
-<span class="comment">/**
- * MIH_EVENT_LIST and LINK_EVENT_LIST data type.
- */</span>
-<span class="keyword">typedef</span> <span class="identifier">bitmap</span><span class="special">&lt;</span><span class="number">32</span><span class="special">,</span> <span class="identifier">event_list_enum</span><span class="special">&gt;</span> <span class="identifier">event_list</span><span class="special">;</span>
-
-<span class="comment">///////////////////////////////////////////////////////////////////////////////</span>
-<span class="comment">/**
- * The enumeration of MIH_CMD_LIST and LINK_CMD_LIST data type.
- */</span>
-<span class="keyword">enum</span> <span class="identifier">command_list_enum</span> <span class="special">{</span>
-        <span class="identifier">link_get_parameters</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span>       <span class="comment">/**&lt; Link get parameters.           */</span>
-        <span class="identifier">link_configure_thresholds</span> <span class="special">=</span> <span class="number">1</span><span class="special">,</span> <span class="comment">/**&lt; Link configure thresholds.     */</span>
-        <span class="identifier">link_actions</span> <span class="special">=</span> <span class="number">2</span><span class="special">,</span>              <span class="comment">/**&lt; Link actions.                  */</span>
-        <span class="identifier">net_ho_candidate_query</span> <span class="special">=</span> <span class="number">3</span><span class="special">,</span>    <span class="comment">/**&lt; NET handover candidate query.  */</span>
-        <span class="identifier">net_ho_commit</span> <span class="special">=</span> <span class="number">3</span><span class="special">,</span>             <span class="comment">/**&lt; NET handover commit.           */</span>
-        <span class="identifier">n2n_ho_query_resources</span> <span class="special">=</span> <span class="number">3</span><span class="special">,</span>    <span class="comment">/**&lt; N2N handover query resources.  */</span>
-        <span class="identifier">n2n_ho_commit</span> <span class="special">=</span> <span class="number">3</span><span class="special">,</span>             <span class="comment">/**&lt; N2N handover commit.           */</span>
-        <span class="identifier">n2n_ho_Complete</span> <span class="special">=</span> <span class="number">3</span><span class="special">,</span>           <span class="comment">/**&lt; N2N handover complete.         */</span>
-        <span class="identifier">mn_ho_candidate_query</span> <span class="special">=</span> <span class="number">4</span><span class="special">,</span>     <span class="comment">/**&lt; MN handover candidate query.   */</span>
-        <span class="identifier">mn_ho_commit</span> <span class="special">=</span> <span class="number">4</span><span class="special">,</span>              <span class="comment">/**&lt; MN handover commit.            */</span>
-        <span class="identifier">mn_ho_complete</span> <span class="special">=</span> <span class="number">4</span><span class="special">,</span>            <span class="comment">/**&lt; MN handover complete.          */</span>
-<span class="special">};</span>
-
-<span class="comment">/**
- * MIH_CMD_LIST and LINK_CMD_LIST data type.
- */</span>
-<span class="keyword">typedef</span> <span class="identifier">bitmap</span><span class="special">&lt;</span><span class="number">32</span><span class="special">,</span> <span class="identifier">command_list_enum</span><span class="special">&gt;</span> <span class="identifier">command_list</span><span class="special">;</span>
-</pre>
-<p>
-    </p>
-<p>
-      <span class="bold"><strong>Data type definitions on ODTONE 0.4</strong></span>
-</p>
-<pre class="programlisting"><span class="comment">/**
- * MIH_CMD_LIST data type enumeration.
- */</span>
-<span class="keyword">enum</span> <span class="identifier">mih_cmd_list_enum</span> <span class="special">{</span>
-	<span class="identifier">mih_cmd_link_get_parameters</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span>        <span class="comment">/**&lt; Link get parameters.           */</span>
-	<span class="identifier">mih_cmd_link_configure_thresholds</span> <span class="special">=</span> <span class="number">1</span><span class="special">,</span>  <span class="comment">/**&lt; Link configure thresholds.     */</span>
-	<span class="identifier">mih_cmd_link_actions</span> <span class="special">=</span> <span class="number">2</span><span class="special">,</span>               <span class="comment">/**&lt; Link actions.                  */</span>
-	<span class="identifier">mih_cmd_net_ho_candidate_query</span> <span class="special">=</span> <span class="number">3</span><span class="special">,</span>     <span class="comment">/**&lt; NET handover candidate query.  */</span>
-	<span class="identifier">mih_cmd_net_ho_commit</span> <span class="special">=</span> <span class="number">3</span><span class="special">,</span>              <span class="comment">/**&lt; NET handover commit.           */</span>
-	<span class="identifier">mih_cmd_n2n_ho_query_resources</span> <span class="special">=</span> <span class="number">3</span><span class="special">,</span>     <span class="comment">/**&lt; N2N handover query resources.  */</span>
-	<span class="identifier">mih_cmd_n2n_ho_commit</span> <span class="special">=</span> <span class="number">3</span><span class="special">,</span>              <span class="comment">/**&lt; N2N handover commit.           */</span>
-	<span class="identifier">mih_cmd_n2n_ho_complete</span> <span class="special">=</span> <span class="number">3</span><span class="special">,</span>            <span class="comment">/**&lt; N2N handover complete.         */</span>
-	<span class="identifier">mih_cmd_mn_ho_candidate_query</span> <span class="special">=</span> <span class="number">4</span><span class="special">,</span>      <span class="comment">/**&lt; MN handover candidate query.   */</span>
-	<span class="identifier">mih_cmd_mn_ho_commit</span> <span class="special">=</span> <span class="number">4</span><span class="special">,</span>               <span class="comment">/**&lt; MN handover commit.            */</span>
-	<span class="identifier">mih_cmd_mn_ho_complete</span> <span class="special">=</span> <span class="number">4</span><span class="special">,</span>             <span class="comment">/**&lt; MN handover complete.          */</span>
-<span class="special">};</span>
-
-<span class="comment">/**
- * MIH_CMD_LIST data type.
- */</span>
-<span class="keyword">typedef</span> <span class="identifier">bitmap</span><span class="special">&lt;</span><span class="number">32</span><span class="special">,</span> <span class="identifier">mih_cmd_list_enum</span><span class="special">&gt;</span> <span class="identifier">mih_cmd_list</span><span class="special">;</span>
-
-<span class="comment">/**
- * MIH_EVT_LIST data type enumeration.
- */</span>
-<span class="keyword">enum</span> <span class="identifier">mih_evt_list_enum</span> <span class="special">{</span>
-	<span class="identifier">mih_evt_link_detected</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span>              <span class="comment">/**&lt; Link detected.             */</span>
-	<span class="identifier">mih_evt_link_up</span> <span class="special">=</span> <span class="number">1</span><span class="special">,</span>                    <span class="comment">/**&lt; Link up.                   */</span>
-	<span class="identifier">mih_evt_link_down</span> <span class="special">=</span> <span class="number">2</span><span class="special">,</span>                  <span class="comment">/**&lt; Link down.                 */</span>
-	<span class="identifier">mih_evt_link_parameters_report</span> <span class="special">=</span> <span class="number">3</span><span class="special">,</span>     <span class="comment">/**&lt; Link parameters report.    */</span>
-	<span class="identifier">mih_evt_link_going_down</span> <span class="special">=</span> <span class="number">4</span><span class="special">,</span>            <span class="comment">/**&lt; Link doing down.           */</span>
-	<span class="identifier">mih_evt_link_handover_imminent</span> <span class="special">=</span> <span class="number">5</span><span class="special">,</span>     <span class="comment">/**&lt; Link handover imminent.    */</span>
-	<span class="identifier">mih_evt_link_handover_complete</span> <span class="special">=</span> <span class="number">6</span><span class="special">,</span>     <span class="comment">/**&lt; Link handover complete.    */</span>
-	<span class="identifier">mih_evt_link_pdu_transmit_status</span> <span class="special">=</span> <span class="number">7</span><span class="special">,</span>   <span class="comment">/**&lt; Link PDU transmit status.  */</span>
-<span class="special">};</span>
-
-<span class="comment">/**
- * MIH_EVT_LIST data type.
- */</span>
-<span class="keyword">typedef</span> <span class="identifier">bitmap</span><span class="special">&lt;</span><span class="number">32</span><span class="special">,</span> <span class="identifier">mih_evt_list_enum</span><span class="special">&gt;</span> <span class="identifier">mih_evt_list</span><span class="special">;</span>
-
-<span class="comment">/**
- * LINK_CMD_LIST data type enumeration.
- */</span>
-<span class="keyword">enum</span> <span class="identifier">link_cmd_list_enum</span> <span class="special">{</span>
-	<span class="identifier">cmd_link_event_subscribe</span>      <span class="special">=</span> <span class="number">1</span><span class="special">,</span>  <span class="comment">/**&lt; Event subscribe.       */</span>
-	<span class="identifier">cmd_link_event_unsubscribe</span>    <span class="special">=</span> <span class="number">2</span><span class="special">,</span>  <span class="comment">/**&lt; Event unsubscribe.     */</span>
-	<span class="identifier">cmd_link_get_parameters</span>       <span class="special">=</span> <span class="number">3</span><span class="special">,</span>  <span class="comment">/**&lt; Get parameters.        */</span>
-	<span class="identifier">cmd_link_configure_thresholds</span> <span class="special">=</span> <span class="number">4</span><span class="special">,</span>  <span class="comment">/**&lt; Configure thresholds.  */</span>
-	<span class="identifier">cmd_link_action</span>               <span class="special">=</span> <span class="number">5</span><span class="special">,</span>  <span class="comment">/**&lt; Action.                */</span>
-<span class="special">};</span>
-
-<span class="comment">/**
- * LINK_CMD_LIST data type.
- */</span>
-<span class="keyword">typedef</span> <span class="identifier">bitmap</span><span class="special">&lt;</span><span class="number">32</span><span class="special">,</span> <span class="identifier">link_cmd_list_enum</span><span class="special">&gt;</span> <span class="identifier">link_cmd_list</span><span class="special">;</span>
-
-<span class="comment">/**
- * LINK_EVT_LIST data type enumeration.
- */</span>
-<span class="keyword">enum</span> <span class="identifier">link_evt_list_enum</span> <span class="special">{</span>
-	<span class="identifier">evt_link_detected</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span>              <span class="comment">/**&lt; Link detected.             */</span>
-	<span class="identifier">evt_link_up</span> <span class="special">=</span> <span class="number">1</span><span class="special">,</span>                    <span class="comment">/**&lt; Link up.                   */</span>
-	<span class="identifier">evt_link_down</span> <span class="special">=</span> <span class="number">2</span><span class="special">,</span>                  <span class="comment">/**&lt; Link down.                 */</span>
-	<span class="identifier">evt_link_parameters_report</span> <span class="special">=</span> <span class="number">3</span><span class="special">,</span>     <span class="comment">/**&lt; Link parameters report.    */</span>
-	<span class="identifier">evt_link_going_down</span> <span class="special">=</span> <span class="number">4</span><span class="special">,</span>            <span class="comment">/**&lt; Link doing down.           */</span>
-	<span class="identifier">evt_link_handover_imminent</span> <span class="special">=</span> <span class="number">5</span><span class="special">,</span>     <span class="comment">/**&lt; Link handover imminent.    */</span>
-	<span class="identifier">evt_link_handover_complete</span> <span class="special">=</span> <span class="number">6</span><span class="special">,</span>     <span class="comment">/**&lt; Link handover complete.    */</span>
-	<span class="identifier">evt_link_pdu_transmit_status</span> <span class="special">=</span> <span class="number">7</span><span class="special">,</span>   <span class="comment">/**&lt; Link PDU transmit status.  */</span>
-<span class="special">};</span>
-
-<span class="comment">/**
- * LINK_EVT_LIST data type.
- */</span>
-<span class="keyword">typedef</span> <span class="identifier">bitmap</span><span class="special">&lt;</span><span class="number">32</span><span class="special">,</span> <span class="identifier">link_evt_list_enum</span><span class="special">&gt;</span> <span class="identifier">link_evt_list</span><span class="special">;</span>
-</pre>
-<p>
-    </p>
-<p>
-      Due to this changes the definition of two new TLVs were necessary, in order
-      to exchanges of LINK_CMD_LIST and LINK_EVENT_LIST data types between the MIHF
-      and the Link SAPs.
-    </p>
-<div class="table">
-<a name="odtone.changelog.tlvs_for_link_cmd_list_and_link_event_list"></a><p class="title"><b>Table&#160;3.&#160;TLVs for LINK_CMD_LIST and LINK_EVENT_LIST</b></p>
-<div class="table-contents"><table class="table" summary="TLVs for LINK_CMD_LIST and LINK_EVENT_LIST">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>
-              <p>
-                MIH_LINK_SAP Primitive
-              </p>
-            </th>
-<th>
-              <p>
-                TLV Type Name
-              </p>
-            </th>
-<th>
-              <p>
-                TLV Type Value
-              </p>
-            </th>
-<th>
-              <p>
-                Data type
-              </p>
-            </th>
-</tr></thead>
-<tbody>
-<tr>
-<td>
-              <p>
-                SupportedLinkEventList
-              </p>
-            </td>
-<td>
-              <p>
-                tlv_link_evt_list
-              </p>
-            </td>
-<td>
-              <p>
-                101
-              </p>
-            </td>
-<td>
-              <p>
-                LINK_EVT_LIST
-              </p>
-            </td>
-</tr>
-<tr>
-<td>
-              <p>
-                SupportedLinkCommandList
-              </p>
-            </td>
-<td>
-              <p>
-                tlv_link_cmd_list
-              </p>
-            </td>
-<td>
-              <p>
-                102
-              </p>
-            </td>
-<td>
-              <p>
-                LINK_CMD_LIST
-              </p>
-            </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<br class="table-break"><h5>
-<a name="odtone.changelog.h1"></a>
-      <span><a name="odtone.changelog.mih_users_registration_changes"></a></span><a class="link" href="changelog.html#odtone.changelog.mih_users_registration_changes">MIH-Users
-      registration changes</a>
-    </h5>
-<p>
-      The message used by the MIH-Users to register with the MIHF has been modified
-      in order to specifically define which commands and queries it supports. In
-      this way, the MIHF can properly forward the messages to the MIH-Users. Check
-      <a class="link" href="extensions/local_discovery.html" title="Local discovery">this</a> for more info
-      about the local discovery.
-    </p>
-<p>
-      <span class="bold"><strong>MIH_User_Register.indication definition on ODTONE 0.3</strong></span>
-    </p>
-<p>
-      <span class="inlinemediaobject"><img src=".././images/user_register_indication_message_old.png" alt="user_register_indication_message_old"></span>
-    </p>
-<p>
-      <span class="bold"><strong>MIH_User_Register.indication definition on ODTONE 0.4</strong></span>
-    </p>
-<p>
-      <span class="inlinemediaobject"><img src=".././images/user_register_indication_message.png" alt="user_register_indication_message"></span>
-    </p>
-<p>
-      <span class="bold"><strong>Changes in the code</strong></span>
-    </p>
-<p>
-      ODTONE 0.3:
-    </p>
-<p>
-</p>
-<pre class="programlisting"><span class="comment">// For the MIH-User</span>
-<span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="identifier">m</span><span class="special">;</span>
-
-<span class="identifier">m</span> <span class="special">&lt;&lt;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">::</span><span class="identifier">user_register</span><span class="special">)</span>
-    <span class="special">&amp;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_mbb_handover_support</span><span class="special">(</span><span class="keyword">true</span><span class="special">);</span>
-
-<span class="comment">// ----- || -------</span>
-<span class="comment">// For the MIIS</span>
-<span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="identifier">m</span><span class="special">;</span>
-
-<span class="identifier">m</span> <span class="special">&lt;&lt;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">::</span><span class="identifier">user_register</span><span class="special">)</span>
-    <span class="special">&amp;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_mbb_handover_support</span><span class="special">(</span><span class="keyword">false</span><span class="special">);</span>
-</pre>
-<p>
-    </p>
-<p>
-      ODTONE 0.4:
-    </p>
-<p>
-</p>
-<pre class="programlisting"><span class="comment">// For the MIH-User</span>
-<span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="identifier">m</span><span class="special">;</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">mih_cmd_list</span><span class="special">&gt;</span> <span class="identifier">supp_cmd</span> <span class="special">=</span> <span class="identifier">parse_supported_commands</span><span class="special">(</span><span class="identifier">cfg</span><span class="special">);</span>
-
-<span class="identifier">m</span> <span class="special">&lt;&lt;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">::</span><span class="identifier">user_register</span><span class="special">)</span>
-    <span class="special">&amp;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_command_list</span><span class="special">(</span><span class="identifier">supp_cmd</span><span class="special">);</span>
-
-<span class="comment">// ----- || -------</span>
-<span class="comment">// For the MIIS</span>
-<span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="identifier">m</span><span class="special">;</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">iq_type_list</span><span class="special">&gt;</span> <span class="identifier">supp_iq</span> <span class="special">=</span> <span class="identifier">parse_supported_queries</span><span class="special">(</span><span class="identifier">cfg</span><span class="special">);</span>
-
-<span class="identifier">m</span> <span class="special">&lt;&lt;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">::</span><span class="identifier">user_register</span><span class="special">)</span>
-    <span class="special">&amp;</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_query_type_list</span><span class="special">(</span><span class="identifier">supp_iq</span><span class="special">);</span>
-</pre>
-<p>
-    </p>
-<div class="note"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top"><p>
-        The MIH-User provided by ODTONE was modified in order to parse the supported
-        commands from the configuration file. The MIIS provided by ODTONE was modified
-        in order to parse the supported queries from the configuration file.
-      </p></td></tr>
-</table></div>
-<div class="note"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top"><p>
-        In the MIHF configuration file you can configure which commands and queries
-        a given MIH-User supports. If nothing is specified it assume that the MIH-User
-        supports all commands but it does not support any query.
-      </p></td></tr>
-</table></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
-      Aveiro<br>Copyright &#169; 2009-2012 Instituto
-      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license

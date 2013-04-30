@@ -4,7 +4,7 @@
 <title>Class template is_iarchive</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="home" href="../../index.html" title="ODTONE 0.5">
 <link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.archive_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/archive.hpp&gt;">
 <link rel="prev" href="oarchive.html" title="Class oarchive">
 <link rel="next" href="is_iarchive/false_t.html" title="Class false_t">
@@ -32,31 +32,29 @@
   <span class="keyword">class</span> <a class="link" href="is_iarchive/false_t.html" title="Class false_t">false_t</a> <span class="special">{</span>
   <span class="special">}</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="is_iarchive.html#idp10612192-bb">private static functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">true_t</span> <a class="link" href="is_iarchive.html#idp10612608-bb"><span class="identifier">test</span></a><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">U</span><span class="special">::</span><span class="identifier">iarchive_type</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">false_t</span> <a class="link" href="is_iarchive.html#idp10615408-bb"><span class="identifier">test</span></a><span class="special">(</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="is_iarchive.html#idp10254304-bb">private static functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">true_t</span> <a class="link" href="is_iarchive.html#idp10254720-bb"><span class="identifier">test</span></a><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">U</span><span class="special">::</span><span class="identifier">iarchive_type</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">false_t</span> <a class="link" href="is_iarchive.html#idp10257520-bb"><span class="identifier">test</span></a><span class="special">(</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// public data members</span>
   <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">bool</span> <span class="identifier">value</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp70358992"></a><h2>Description</h2>
+<a name="idp13523008"></a><h2>Description</h2>
 <p>This class allows to check if a given class is an input archive. It has only a boolean value that is true when the given class is an input archive, or false otherwise. </p>
 <div class="refsect2">
-<a name="idp70359856"></a><h3>
-<a name="idp10612192-bb"></a><code class="computeroutput">is_iarchive</code> private static functions</h3>
+<a name="idp13523872"></a><h3>
+<a name="idp10254304-bb"></a><code class="computeroutput">is_iarchive</code> private static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">true_t</span> <a name="idp10612608-bb"></a><span class="identifier">test</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">U</span><span class="special">::</span><span class="identifier">iarchive_type</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">false_t</span> <a name="idp10615408-bb"></a><span class="identifier">test</span><span class="special">(</span><span class="special">...</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">true_t</span> <a name="idp10254720-bb"></a><span class="identifier">test</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">U</span><span class="special">::</span><span class="identifier">iarchive_type</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">false_t</span> <a name="idp10257520-bb"></a><span class="identifier">test</span><span class="special">(</span><span class="special">...</span><span class="special">)</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
-      Aveiro<br>Copyright &#169; 2009-2012 Instituto
-      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license

@@ -4,7 +4,7 @@
 <title>Struct querier_loc</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="home" href="../../index.html" title="ODTONE 0.5">
 <link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.bin_query_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/bin_query.hpp&gt;">
 <link rel="prev" href="../../operator__.html" title="Function template operator++">
 <link rel="next" href="rpt_limit.html" title="Struct rpt_limit">
@@ -27,10 +27,10 @@
 </span>
 <span class="keyword">struct</span> <a class="link" href="querier_loc.html" title="Struct querier_loc">querier_loc</a> <span class="special">{</span>
   <span class="comment">// <a class="link" href="querier_loc.html#odtone.mih.querier_locconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="querier_loc.html#idp11588112-bb"><span class="identifier">querier_loc</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="querier_loc.html#idp11230224-bb"><span class="identifier">querier_loc</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="querier_loc.html#idp11584016-bb">public member functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="querier_loc.html#idp11584416-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="querier_loc.html#idp11226128-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="querier_loc.html#idp11226528-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="querier_loc.html#odtone.mih.querier_locpublic-data-members">public data members</a></span>
   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <span class="identifier">location</span> <span class="special">&gt;</span> <a class="link" href="querier_loc.html#odtone.mih.querier_loc._location"><span class="identifier">_location</span></a><span class="special">;</span>
@@ -38,23 +38,23 @@
   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <span class="identifier">nghb_radius</span> <span class="special">&gt;</span> <a class="link" href="querier_loc.html#odtone.mih.querier_loc._nghb_radius"><span class="identifier">_nghb_radius</span></a><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp75939936"></a><h2>Description</h2>
+<a name="idp19155392"></a><h2>Description</h2>
 <p>QUERIER_LOC data type. </p>
 <div class="refsect2">
-<a name="idp75940640"></a><h3>
+<a name="idp19156096"></a><h3>
 <a name="odtone.mih.querier_locconstruct-copy-destruct"></a><code class="computeroutput">querier_loc</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp11588112-bb"></a><span class="identifier">querier_loc</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp11230224-bb"></a><span class="identifier">querier_loc</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty QUERIER_LOC data type. </p>
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp75946768"></a><h3>
-<a name="idp11584016-bb"></a><code class="computeroutput">querier_loc</code> public member functions</h3>
+<a name="idp19162288"></a><h3>
+<a name="idp11226128-bb"></a><code class="computeroutput">querier_loc</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp11584416-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp11226528-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize/deserialize the QUERIER_LOC data type.</p>
 <p>
 </p>
@@ -74,7 +74,7 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp75960576"></a><h3>
+<a name="idp19176224"></a><h3>
 <a name="odtone.mih.querier_locpublic-data-members"></a><code class="computeroutput">querier_loc</code> 
         public
        public data members</h3>
@@ -97,9 +97,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
-      Aveiro<br>Copyright &#169; 2009-2012 Instituto
-      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license

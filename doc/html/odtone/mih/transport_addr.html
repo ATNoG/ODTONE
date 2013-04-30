@@ -4,7 +4,7 @@
 <title>Class transport_addr</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="ODTONE 0.4">
+<link rel="home" href="../../index.html" title="ODTONE 0.5">
 <link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.address_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/address.hpp&gt;">
 <link rel="prev" href="tlv_mos_dscv.html" title="Global tlv_mos_dscv">
 <link rel="next" href="mac_addr.html" title="Class mac_addr">
@@ -28,27 +28,27 @@
 <span class="keyword">class</span> <a class="link" href="transport_addr.html" title="Class transport_addr">transport_addr</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="transport_addr.html#odtone.mih.transport_addrconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="transport_addr.html#idp11304144-bb"><span class="identifier">transport_addr</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="transport_addr.html#idp11306112-bb"><span class="identifier">transport_addr</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="transport_addr.html#idp10946256-bb"><span class="identifier">transport_addr</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="transport_addr.html#idp10948224-bb"><span class="identifier">transport_addr</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="transport_addr.html#idp11310336-bb">public member functions</a></span>
-  <span class="identifier">uint16</span> <a class="link" href="transport_addr.html#idp11310736-bb"><span class="identifier">type</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="transport_addr.html#idp11312848-bb"><span class="identifier">type</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> <a class="link" href="transport_addr.html#idp11315648-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">size_t</span> <a class="link" href="transport_addr.html#idp11317840-bb"><span class="identifier">length</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="transport_addr.html#idp11319984-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="transport_addr.html#idp10952448-bb">public member functions</a></span>
+  <span class="identifier">uint16</span> <a class="link" href="transport_addr.html#idp10952848-bb"><span class="identifier">type</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="transport_addr.html#idp10954960-bb"><span class="identifier">type</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> <a class="link" href="transport_addr.html#idp10957760-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_t</span> <a class="link" href="transport_addr.html#idp10959952-bb"><span class="identifier">length</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="transport_addr.html#idp10962096-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp74173840"></a><h2>Description</h2>
+<a name="idp17446784"></a><h2>Description</h2>
 <p>TRANSPORT_ADDR data type. </p>
 <div class="refsect2">
-<a name="idp74174560"></a><h3>
+<a name="idp17447504"></a><h3>
 <a name="odtone.mih.transport_addrconstruct-copy-destruct"></a><code class="computeroutput">transport_addr</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="idp11304144-bb"></a><span class="identifier">transport_addr</span><span class="special">(</span><span class="identifier">uint16</span> type<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp10946256-bb"></a><span class="identifier">transport_addr</span><span class="special">(</span><span class="identifier">uint16</span> type<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a TRANSPORT_ADDR data type.</p>
 <p>
 </p>
@@ -67,7 +67,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp11306112-bb"></a><span class="identifier">transport_addr</span><span class="special">(</span><span class="identifier">uint16</span> type<span class="special">,</span> <span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> raw<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp10948224-bb"></a><span class="identifier">transport_addr</span><span class="special">(</span><span class="identifier">uint16</span> type<span class="special">,</span> <span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> raw<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a TRANSPORT_ADDR data type.</p>
 <p>
 </p>
@@ -98,11 +98,11 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp74199200"></a><h3>
-<a name="idp11310336-bb"></a><code class="computeroutput">transport_addr</code> public member functions</h3>
+<a name="idp17472032"></a><h3>
+<a name="idp10952448-bb"></a><code class="computeroutput">transport_addr</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp11310736-bb"></a><span class="identifier">type</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp10952848-bb"></a><span class="identifier">type</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the TRANSPORT_ADDR type.</p>
 <p>
 </p>
@@ -115,7 +115,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp11312848-bb"></a><span class="identifier">type</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint16</span> type<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp10954960-bb"></a><span class="identifier">type</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint16</span> type<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the TRANSPORT_ADDR type.</p>
 <p>
 </p>
@@ -134,7 +134,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> <a name="idp11315648-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> <a name="idp10957760-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the pointer to an array of characters which contains the transport address.</p>
 <p>
 </p>
@@ -147,7 +147,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">size_t</span> <a name="idp11317840-bb"></a><span class="identifier">length</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">size_t</span> <a name="idp10959952-bb"></a><span class="identifier">length</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the lenght of the transport address string.</p>
 <p>
 </p>
@@ -160,7 +160,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp11319984-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp10962096-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize/deserialize the TRANSPORT_ADDR data type.</p>
 <p>
 </p>
@@ -184,9 +184,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Universidade
-      Aveiro<br>Copyright &#169; 2009-2012 Instituto
-      de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
         This software is distributed under a license. The full license agreement
         can be found in the LICENSE in this distribution. This software may not be
         copied, modified, sold or distributed other than expressed in the named license
