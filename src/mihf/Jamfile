@@ -46,9 +46,7 @@ exe odtone-mihf
 	  local_transaction_pool.cpp
 	  meta_message.cpp
 	  discover_service.cpp
-	  ../../lib/odtone//odtone_base
-	  ../../lib/odtone/mih//odtone_mih
-	  ../../lib/odtone/sap//odtone_sap
+	  ../../lib/odtone//odtone
 	  /boost//program_options
 	;
 

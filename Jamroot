@@ -25,11 +25,8 @@ import path ;
 project odtone
 	: requirements
 		<include>inc
-		<link>static
 		<toolset>gcc:<cxxflags>-std=c++0x
-		<toolset>msvc:<runtime-link>static
 		<toolset>gcc-android:<runtime-link>static
-		<define>BOOST_ENABLE_ASSERT_HANDLER
 		<toolset>msvc:<define>BOOST_ALL_NO_LIB
 		<toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
 		<toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
@@ -98,29 +95,6 @@ rule runtime-lib ( name : basename ? )
 IMPORT $(__name__) : runtime-lib : : odtone.runtime-lib ;
 
 #
-# Add alias for external usage and project id's for internal usage
-#
-explicit-alias base : lib/odtone//odtone_base ;
-explicit-alias mih  : lib/odtone/mih//odtone_mih ;
-explicit-alias sap  : lib/odtone/sap//odtone_sap ;
-explicit-alias net  : lib/odtone/net//odtone_net ;
-
-use-project /odtone/base : lib/odtone ;
-use-project /odtone/mih  : lib/odtone/mih ;
-use-project /odtone/net  : lib/odtone/net ;
-use-project /odtone/sap  : lib/odtone/sap ;
-
-odtone.explicit-alias source-list
-	:
-	: <target-os>linux
-	;
-
-odtone.explicit-alias source-list
-	:
-	: <target-os>windows
-	;
-
-#
 # Build
 #
 install odtone-dist
@@ -130,7 +104,6 @@ install odtone-dist
 	  app/link_sap/link_sap.conf
 	  app/mih_usr//mih_usr
 	  app/mih_usr/mih_usr.conf
-	  source-list
 	: <location>dist
 	;
 

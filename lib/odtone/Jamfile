@@ -16,7 +16,7 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-project odtone/base
+project odtone
 	;
 
 odtone.runtime-lib pthread  ;
@@ -31,12 +31,29 @@ odtone.explicit-alias source-list
 	: <target-os>windows
 	;
 
-lib odtone_base
+lib odtone
 	: conf.cpp
 	  debug.cpp
 	  strutil.cpp
 	  logger.cpp
 	  source-list
+	  sap/sap.cpp
+	  sap/user.cpp
+	  sap/link.cpp
+	  mih/archive.cpp
+	  mih/config.cpp
+	  mih/message.cpp
+	  mih/types/address.cpp
+	  net/link/address_mac.cpp
+	  net/ip/prefix.cpp
+	  net/ip/icmp/icmp_parser.cpp
+	  net/dns/resolver.cpp
+	  net/dns/message.cpp
+	  net/dns/utils.cpp
 	  /boost//system
+	  /boost//thread
+	  /boost//program_options
+	  pthread
 	: <c++-template-depth>1024
+	  <define>BOOST_ENABLE_ASSERT_HANDLER
 	;

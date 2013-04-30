@@ -37,9 +37,7 @@ exe link_sap
 	  interface/interface.cpp
 	  interface/if_802_11.cpp
 	  source-list
-	  ../../lib/odtone//odtone_base
-	  ../../lib/odtone/mih//odtone_mih
-	  ../../lib/odtone/sap//odtone_sap
+	  ../../lib/odtone//odtone
 	;
 
 install install

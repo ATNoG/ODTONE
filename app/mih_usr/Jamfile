@@ -21,9 +21,7 @@ project mih_usr
 
 exe mih_usr
 	: mih_usr.cpp
-	  ../../lib/odtone//odtone_base
-	  ../../lib/odtone/mih//odtone_mih
-	  ../../lib/odtone/sap//odtone_sap
+	  ../../lib/odtone//odtone
 	;
 
 install install
