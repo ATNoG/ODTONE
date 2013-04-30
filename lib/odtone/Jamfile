@@ -36,6 +36,7 @@ lib odtone
 	  debug.cpp
 	  strutil.cpp
 	  logger.cpp
+	  win32.cpp
 	  source-list
 	  sap/sap.cpp
 	  sap/user.cpp
