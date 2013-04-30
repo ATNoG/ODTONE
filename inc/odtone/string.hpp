@@ -26,6 +26,29 @@
 namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
+template<class CharT>
+class basic_const_string_ref {
+public:
+	typedef CharT const* type;
+
+	basic_const_string_ref(type str)
+		: _str(str)
+	{ }
+	basic_const_string_ref(std::basic_string<CharT> const& str)
+		: _str(str.c_str())
+	{ }
+
+	operator type() const { return _str; }
+
+	CharT operator[](ptrdiff_t idx) const { return _str[idx]; }
+
+private:
+	type _str;
+};
+
+typedef basic_const_string_ref<char>    const_string_ref;
+typedef basic_const_string_ref<wchar_t> const_wstring_ref;
+
 #ifdef BOOST_WINDOWS
 
 #define ODTONE_L     L
