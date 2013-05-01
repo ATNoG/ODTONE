@@ -51,6 +51,8 @@ lib odtone
 	  net/dns/resolver.cpp
 	  net/dns/message.cpp
 	  net/dns/utils.cpp
+	  mihf/message.cpp
+	  /boost//headers
 	  /boost//system
 	  /boost//thread
 	  /boost//program_options
