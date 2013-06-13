@@ -26,6 +26,20 @@
 namespace odtone {
 
 ///////////////////////////////////////////////////////////////////////////////
+#ifdef BOOST_WINDOWS
+
+#define ODTONE_L     L
+typedef wchar_t      char_t; /**< Wide char.	*/
+typedef std::wstring string; /**< Wide string.	*/
+
+#else
+
+#define ODTONE_L
+typedef char        char_t; /**< Char.		*/
+typedef std::string string; /**< String.	*/
+
+#endif
+
 template<class CharT>
 class basic_const_string_ref {
 public:
