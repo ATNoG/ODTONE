@@ -38,9 +38,9 @@ exe dhcp_usr
 	  log.cpp
 	  main.cpp
 	  libdhcp
-	  ../../../lib/odtone//odtone_base
-	  ../../../lib/odtone/mih//odtone_mih
-	  ../../../lib/odtone/sap//odtone_sap
+	  ../../../lib/odtone//odtone
+	  /boost//program_options
+	  /boost//thread
 	;
 
 install install

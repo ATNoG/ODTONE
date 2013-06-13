@@ -32,10 +32,8 @@ exe dns_usr
 	  dns_usr.cpp
 	  query_book.cpp
 	  log.cpp
-	  ../../lib/odtone//odtone_base
-	  ../../lib/odtone/mih//odtone_mih
-	  ../../lib/odtone/sap//odtone_sap
-	  ../../lib/odtone/net//odtone_net
+	  ../../lib/odtone//odtone
+	  /boost//program_options
 	;
 
 install install

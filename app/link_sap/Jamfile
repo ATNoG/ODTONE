@@ -38,6 +38,8 @@ exe link_sap
 	  interface/if_802_11.cpp
 	  source-list
 	  ../../lib/odtone//odtone
+	  /boost//program_options
+	  /boost//thread
 	;
 
 install install

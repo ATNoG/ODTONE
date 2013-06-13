@@ -22,9 +22,9 @@ exe sap_8023
 	  linux/ethtool.cpp
 	  ../../lib/external/libnl//nlwrap
 	  ../../lib/external/libnl//libnl
-	  ../../lib/odtone//odtone_base
-	  ../../lib/odtone/mih//odtone_mih
-	  ../../lib/odtone/sap//odtone_sap
+	  ../../lib/odtone//odtone
+	  /boost//program_options
+	: <link>static
 	;
 
 install install

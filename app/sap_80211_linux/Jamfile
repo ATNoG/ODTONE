@@ -21,9 +21,9 @@ exe sap_80211
 	  linux/if_80211.cpp
 	  ../../lib/external/libnl//nlwrap
 	  ../../lib/external/libnl//libnl
-	  ../../lib/odtone//odtone_base
-	  ../../lib/odtone/mih//odtone_mih
-	  ../../lib/odtone/sap//odtone_sap
+	  ../../lib/odtone//odtone
+	  /boost//program_options
+	: <link>static
 	;
 
 install install

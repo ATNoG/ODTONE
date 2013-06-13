@@ -21,7 +21,7 @@ project client
 
 exe client
 	: client.cpp
-	  ../../lib/odtone//odtone_base
-	  ../../lib/odtone/mih//odtone_mih
+	  ../../lib/odtone//odtone
+	  /boost//program_options
 	;
 

@@ -21,10 +21,8 @@ project link_sap_icmp
 exe link_sap_icmp
 	: main.cpp
 	  link_sap.cpp
-	  ../../lib/odtone//odtone_base
-	  ../../lib/odtone/mih//odtone_mih
-	  ../../lib/odtone/sap//odtone_sap
-	  ../../lib/odtone/net//odtone_net
+	  ../../lib/odtone//odtone
+	  /boost//program_options
 	;
 
 install install

@@ -50,7 +50,7 @@ lib nlwrap
 	  nlwrap/rtnl_link.cpp
 	  nlwrap/rtnl_link_cache.cpp
 	  libnl
-	  ../../../lib/odtone//odtone_base
+	  ../../../lib/odtone//odtone
 	:
 	:
 	: <include>nlwrap

@@ -20,9 +20,9 @@ project miis_rdf_server
 
 exe miis_rdf_server
 	: miis_rdf_server.cpp
-	  ../../lib/odtone//odtone_base
-	  ../../lib/odtone/mih//odtone_mih
-	  ../../lib/odtone/sap//odtone_sap
+	  ../../lib/odtone//odtone
+	  /boost//program_options
+	  /boost//thread
 	: <linkflags>-lrdf
 	  <link>shared
 	;
