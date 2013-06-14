@@ -76,7 +76,7 @@ boost::logic::tribool interface::up(const boost::logic::tribool& tb)
  *
  * @param name The name of the generic interface.
  */
-void interface::name(const odtone::string& name)
+void interface::name(const std::string& name)
 {
 	_name = name;
 }

@@ -208,7 +208,7 @@ public:
 	 *
 	 * @return The name of the generic interface.
 	 */
-	const odtone::string& name() const
+	const std::string& name() const
 	{
 		return _name;
 	}
@@ -236,7 +236,7 @@ public:
 	 *
 	 * @param name The name of the generic interface.
 	 */
-	void name(const odtone::string& name);
+	void name(const std::string& name);
 
 	/**
 	 * Set the address of the generic interface.
@@ -252,7 +252,7 @@ private:
 protected:
 	if_id		           _id;			/**< Interface identifier.	*/
 	boost::logic::tribool  _up;			/**< Interface state.		*/
-	odtone::string         _name;		/**< Interface name.		*/
+	std::string         _name;		/**< Interface name.		*/
 	odtone::mih::link_addr _link_addr;	/**< Interface address.		*/
 };
 
