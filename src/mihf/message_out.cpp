@@ -51,8 +51,8 @@ void message_out::new_src_transaction(meta_message_ptr& m)
 	src_transaction_ptr t(new src_transaction_t(process_message, _netsap));
 
 	_tid++;
-	if (_tid == 0)		// don't send a message with a
-		_tid = 1;	// transaction id of 0
+	if (_tid == 0 || _tid > 4095)
+		_tid = 1;
 
 	_lpool.set_remote_tid(m->destination().to_string(), m->tid(), _tid);
 	m->tid(_tid);
