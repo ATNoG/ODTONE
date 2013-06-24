@@ -121,7 +121,7 @@ struct frame {
 	static const uint8 mask_opcode  = 0x0d;	/**< MIH Message ID Operation Code mask.						*/
 	static const uint8 mask_aid     = 0x03;	/**< Message ID Action Identifier mask.							*/
 	static const uint8 mask_rsvd2   = 0xf0;	/**< MIH Message Reserved Bit 2 mask.							*/
-	static const uint8 mask_tid     = 0xff;	/**< Message ID Transaction Identifier mask.					*/
+	static const uint8 mask_tid     = 0x0f;	/**< Message ID Transaction Identifier mask.					*/
 
 	/**
 	 * Convert a byte buffer to a frame.
@@ -514,8 +514,6 @@ inline void frame::mid(uint16 v)
  */
 inline void frame::tid(uint16 v)
 {
-	ODTONE_ASSERT(!(v & (uint16(~mask_tid) << 8)));
-
 	hdr[4] = (hdr[4] & ~mask_tid) | uint8(v >> 8);
 	hdr[5] = uint8(v & 0xff);
 }
