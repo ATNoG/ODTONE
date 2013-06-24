@@ -38,7 +38,7 @@ message_out::message_out(transaction_pool &tpool, local_transaction_pool &lpool,
 	  process_message(f),
 	  _netsap(netsap)
 {
-	_tid = mih::rand16();
+	_tid = mih::rand16() % 4095;
 }
 
 /**
