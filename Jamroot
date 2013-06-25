@@ -95,6 +95,11 @@ rule runtime-lib ( name : basename ? )
 IMPORT $(__name__) : runtime-lib : : odtone.runtime-lib ;
 
 #
+# Add alias for external usage
+#
+explicit-alias odtone : lib/odtone ;
+
+#
 # Build
 #
 install odtone-dist
