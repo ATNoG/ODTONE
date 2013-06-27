@@ -93,6 +93,7 @@ octet_string ip_addr::address() const
 void ip_addr::address(const octet_string& addr)
 {
 	boost::asio::ip::address address = boost::asio::ip::address::from_string(addr);
+	_addr = "";
 
 	if(address.is_v4()) {
 		_type = ip_addr::ipv4;
