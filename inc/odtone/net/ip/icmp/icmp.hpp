@@ -501,7 +501,7 @@ public:
 private:
 	::icmp6_filter _filter;	/**< Filter.	*/
 };
-#endif WIN32
+#endif /* WIN32 */
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace ip */ } /* namespace net */ } /* namespace odtone */
