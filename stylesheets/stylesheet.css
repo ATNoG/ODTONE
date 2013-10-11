@@ -369,6 +369,11 @@ footer a:hover {
 * html .clearfix {height: 1%;}
 .clearfix {display: block;}
 
+/* Extensions */
+.nav-item {
+  list-style: none;
+}
+
 /* #Media Queries
 ================================================== */
 
