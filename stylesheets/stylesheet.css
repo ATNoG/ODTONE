@@ -367,6 +367,31 @@ footer a:hover {
   list-style: none;
 }
 
+.userblock {
+  text-align: center;
+  list-style-type: none;
+}
+
+.userprofile {
+  padding: 0px 15px 20px 15px;
+  text-align: center;
+  list-style-type: none;
+  float: left;
+}
+
+.userpic {
+  border-radius: 50px;
+  position: relative;
+  display: block;
+  margin: 5px auto;
+  box-shadow: 0px 0px 0px 3px #4b4b4b, 0px 0px 10px 10px rgba(0, 0, 0, 0.3);
+  width: 100px;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
 /* #Media Queries
 ================================================== */
 
