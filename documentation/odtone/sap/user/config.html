@@ -1,0 +1,95 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Struct config</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="ODTONE 0.5">
+<link rel="up" href="../user.html#idp28266720" title="Description">
+<link rel="prev" href="../user.html" title="Class user">
+<link rel="next" href="../kConf_File.html" title="Global kConf_File">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../user.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../user.html#idp28266720"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../kConf_File.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="odtone.sap.user.config"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Struct config</span></h2>
+<p>odtone::sap::user::config</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../odtone_sap_library.html#header..home.carlos.Projectos.odtone.inc.odtone.sap.user_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/sap/user.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/sap/user.hpp</a>&gt;
+
+</span>
+
+<span class="keyword">struct</span> <a class="link" href="config.html" title="Struct config">config</a> <span class="special">{</span>
+  <span class="comment">// <a class="link" href="config.html#odtone.sap.user.configconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="config.html#idp7446912-bb"><span class="identifier">config</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="config.html#odtone.sap.user.configpublic-data-members">public data members</a></span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="config.html#odtone.sap.user.config.id"><span class="identifier">id</span></a><span class="special">;</span>
+  <span class="identifier">uint</span> <a class="link" href="config.html#odtone.sap.user.config.port"><span class="identifier">port</span></a><span class="special">;</span>
+  <span class="identifier">ip_address</span> <a class="link" href="config.html#odtone.sap.user.config.mihf_address"><span class="identifier">mihf_address</span></a><span class="special">;</span>
+  <span class="identifier">uint</span> <a class="link" href="config.html#odtone.sap.user.config.mihf_port"><span class="identifier">mihf_port</span></a><span class="special">;</span>
+  <span class="identifier">size_t</span> <a class="link" href="config.html#odtone.sap.user.config.buffer_length"><span class="identifier">buffer_length</span></a><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp28427312"></a><h2>Description</h2>
+<p>MIH-User SAP configurations structure. </p>
+<div class="refsect2">
+<a name="idp28427984"></a><h3>
+<a name="odtone.sap.user.configconstruct-copy-destruct"></a><code class="computeroutput">config</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="idp7446912-bb"></a><span class="identifier">config</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+</div>
+<div class="refsect2">
+<a name="idp28433856"></a><h3>
+<a name="odtone.sap.user.configpublic-data-members"></a><code class="computeroutput">config</code> 
+        public
+       public data members</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="odtone.sap.user.config.id"></a><span class="identifier">id</span><span class="special">;</span></pre>
+<p>Identifier. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">uint</span> <a name="odtone.sap.user.config.port"></a><span class="identifier">port</span><span class="special">;</span></pre>
+<p>Listening port. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">ip_address</span> <a name="odtone.sap.user.config.mihf_address"></a><span class="identifier">mihf_address</span><span class="special">;</span></pre>
+<p>MIHF IP address. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">uint</span> <a name="odtone.sap.user.config.mihf_port"></a><span class="identifier">mihf_port</span><span class="special">;</span></pre>
+<p>MIHF listening port. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">size_t</span> <a name="odtone.sap.user.config.buffer_length"></a><span class="identifier">buffer_length</span><span class="special">;</span></pre>
+<p>Receive Buffer Length. </p>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../user.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../user.html#idp28266720"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../kConf_File.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

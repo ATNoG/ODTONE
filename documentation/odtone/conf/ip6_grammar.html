@@ -1,0 +1,74 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Struct template ip6_grammar</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="ODTONE 0.5">
+<link rel="up" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.conf_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/conf.hpp&gt;">
+<link rel="prev" href="ip4_grammar.html" title="Struct template ip4_grammar">
+<link rel="next" href="parser_grammar.html" title="Struct template parser_grammar">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="ip4_grammar.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.conf_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="parser_grammar.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="odtone.conf.ip6_grammar"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Struct template ip6_grammar</span></h2>
+<p>odtone::conf::ip6_grammar</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.conf_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/conf.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/conf.hpp</a>&gt;
+
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Iterator<span class="special">&gt;</span> 
+<span class="keyword">struct</span> <a class="link" href="ip6_grammar.html" title="Struct template ip6_grammar">ip6_grammar</a> <span class="special">{</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">locals</span><span class="special">&lt;</span> <span class="identifier">uint</span> <span class="special">&gt;</span> <a name="odtone.conf.ip6_grammar.locals"></a><span class="identifier">locals</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="ip6_grammar.html#odtone.conf.ip6_grammarconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="ip6_grammar.html#idp7956832-bb"><span class="identifier">ip6_grammar</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="ip6_grammar.html#idp7954368-bb">public static functions</a></span>
+  <span class="keyword">static</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">address_v6</span> <a class="link" href="ip6_grammar.html#idp7954768-bb"><span class="identifier">conv</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// public data members</span>
+  <span class="identifier">qi</span><span class="special">::</span><span class="identifier">rule</span><span class="special">&lt;</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">locals</span><span class="special">,</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">address_v6</span><span class="special">(</span><span class="special">)</span><span class="special">&gt;</span> <span class="identifier">ip6</span><span class="special">;</span>
+  <span class="identifier">qi</span><span class="special">::</span><span class="identifier">uint_parser</span><span class="special">&lt;</span> <span class="identifier">uint16</span><span class="special">,</span> <span class="number">16</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">4</span> <span class="special">&gt;</span> <span class="identifier">h16</span><span class="special">;</span>
+  <a class="link" href="ip4_grammar.html" title="Struct template ip4_grammar">ip4_grammar</a><span class="special">&lt;</span> <span class="identifier">Iterator</span> <span class="special">&gt;</span> <span class="identifier">ip4</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp10286768"></a><h2>Description</h2>
+<div class="refsect2">
+<a name="idp10287184"></a><h3>
+<a name="odtone.conf.ip6_grammarconstruct-copy-destruct"></a><code class="computeroutput">ip6_grammar</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="idp7956832-bb"></a><span class="identifier">ip6_grammar</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+</div>
+<div class="refsect2">
+<a name="idp10293056"></a><h3>
+<a name="idp7954368-bb"></a><code class="computeroutput">ip6_grammar</code> public static functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">address_v6</span> <a name="idp7954768-bb"></a><span class="identifier">conv</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="special">&amp;</span> str<span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="ip4_grammar.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.conf_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="parser_grammar.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

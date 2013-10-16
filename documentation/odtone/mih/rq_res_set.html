@@ -1,0 +1,101 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Struct rq_res_set</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="ODTONE 0.5">
+<link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.handover_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/handover.hpp&gt;">
+<link rel="prev" href="tgt_net_info_1.html" title="Struct tgt_net_info_1">
+<link rel="next" href="asgn_res_set.html" title="Struct asgn_res_set">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="tgt_net_info_1.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.handover_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="asgn_res_set.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="odtone.mih.rq_res_set"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Struct rq_res_set</span></h2>
+<p>odtone::mih::rq_res_set</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.handover_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/handover.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/mih/types/handover.hpp</a>&gt;
+
+</span>
+<span class="keyword">struct</span> <a class="link" href="rq_res_set.html" title="Struct rq_res_set">rq_res_set</a> <span class="special">{</span>
+
+  <span class="comment">// <a class="link" href="rq_res_set.html#idp11425504-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="rq_res_set.html#idp11425904-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="rq_res_set.html#odtone.mih.rq_res_setpublic-data-members">public data members</a></span>
+  <a class="link" href="qos_list.html" title="Struct qos_list">qos_list</a> <a class="link" href="rq_res_set.html#odtone.mih.rq_res_set.mn_qos_list"><span class="identifier">mn_qos_list</span></a><span class="special">;</span>
+  <span class="identifier">tsp_container</span> <a class="link" href="rq_res_set.html#odtone.mih.rq_res_set.transport"><span class="identifier">transport</span></a><span class="special">;</span>
+  <a class="link" href="ho_cause.html" title="Type definition ho_cause">ho_cause</a> <a class="link" href="rq_res_set.html#odtone.mih.rq_res_set.cause"><span class="identifier">cause</span></a><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp20473072"></a><h2>Description</h2>
+<p>REQ_RES_SET data type. </p>
+<div class="refsect2">
+<a name="idp20473776"></a><h3>
+<a name="idp11425504-bb"></a><code class="computeroutput">rq_res_set</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp11425904-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<p>Serialize/deserialize the REQ_RES_SET data type.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">ar</code></span></p></td>
+<td><p>The archive to/from where serialize/deserialize the data type. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li></ol></div>
+</div>
+<div class="refsect2">
+<a name="idp20487712"></a><h3>
+<a name="odtone.mih.rq_res_setpublic-data-members"></a><code class="computeroutput">rq_res_set</code> 
+        public
+       public data members</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="qos_list.html" title="Struct qos_list">qos_list</a> <a name="odtone.mih.rq_res_set.mn_qos_list"></a><span class="identifier">mn_qos_list</span><span class="special">;</span></pre>
+<p>Resources parameters. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">tsp_container</span> <a name="odtone.mih.rq_res_set.transport"></a><span class="identifier">transport</span><span class="special">;</span></pre>
+<p>Transparent container. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="ho_cause.html" title="Type definition ho_cause">ho_cause</a> <a name="odtone.mih.rq_res_set.cause"></a><span class="identifier">cause</span><span class="special">;</span></pre>
+<p>Handover cause. </p>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="tgt_net_info_1.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.handover_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="asgn_res_set.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

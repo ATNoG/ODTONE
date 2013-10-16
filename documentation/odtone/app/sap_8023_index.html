@@ -1,0 +1,791 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Linux sap_8023 Link SAP</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="ODTONE 0.5">
+<link rel="up" href="../app.html" title="Applications">
+<link rel="prev" href="sap_80211_index.html" title="Windows sap_80211 Link SAP">
+<link rel="next" href="../extensions.html" title="ODTONE Extensions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="sap_80211_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="../extensions.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="odtone.app.sap_8023_index"></a><a class="link" href="sap_8023_index.html" title="Linux sap_8023 Link SAP">Linux sap_8023 Link SAP</a>
+</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.architecture">Architecture</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.requirements">Requirements</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.getting_started">Getting
+        Started</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support">Support</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.extending">Extending</a></span></dt>
+</dl></div>
+<p>
+        The sap_8023 Link SAP is a Linux implementation of a Link SAP for 802.3 interfaces.
+      </p>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.sap_8023_index.architecture"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.architecture" title="Architecture">Architecture</a>
+</h4></div></div></div>
+<p>
+          The following Figure shows a conceptual view of the Link SAP for Linux-based
+          devices:
+        </p>
+<p>
+          <span class="inlinemediaobject"><img src="../.././images/link_8023_conceptual_view.png" alt="link_8023_conceptual_view"></span>
+        </p>
+<p>
+          The code comprises the following components:
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              <span class="bold"><strong>main</strong></span>: This component handles the Link
+              SAP startup and communication with the MIHF. Messages received from
+              the MIHF are handled in the <span class="bold"><strong>default_handler</strong></span>
+              function which, in turn, calls other methods for each specific action.
+            </li>
+<li class="listitem">
+              <span class="bold"><strong>if_8023</strong></span>: This component implements
+              an abstraction for the network interface in the kernel. The <span class="bold"><strong>main</strong></span> component registers callbacks with this
+              component for receiving notifications for certain events such as link
+              up, etc.
+            </li>
+<li class="listitem">
+              <span class="bold"><strong>nlwrap</strong></span>: This component provides some
+              RAI wrappers for the libnl library.
+            </li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.sap_8023_index.requirements"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.requirements" title="Requirements">Requirements</a>
+</h4></div></div></div>
+<p>
+          This module has been tested with Linux versions 2.6.38-3.6.2 setup.
+        </p>
+<p>
+          The following adapter has been tested:
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              Intel PRO/1000 CT
+            </li></ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.sap_8023_index.getting_started"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.getting_started" title="Getting Started">Getting
+        Started</a>
+</h4></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.getting_started.configuration">Configuration</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.getting_started.running">Running</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.sap_8023_index.getting_started.configuration"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.getting_started.configuration" title="Configuration">Configuration</a>
+</h5></div></div></div>
+<p>
+            The Link SAP can be configured based on a set of parameters, which can
+            be configured either using an configuration file or passing them directly
+            in the command line.
+          </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">MIH</span> <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">Configuration</span><span class="special">:</span>
+	<span class="special">--</span><span class="identifier">help</span>                                <span class="identifier">Display</span> <span class="identifier">configuration</span> <span class="identifier">options</span>
+	<span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">file</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">sap_8023</span><span class="special">.</span><span class="identifier">conf</span><span class="special">)</span>      <span class="identifier">Configuration</span> <span class="identifier">File</span>
+	<span class="special">--</span><span class="identifier">conf</span><span class="special">.</span><span class="identifier">recv_buff_len</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">4096</span><span class="special">)</span>      <span class="identifier">Receive</span> <span class="identifier">Buffer</span> <span class="identifier">Length</span>
+
+	<span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">ip</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">127.0</span><span class="special">.</span><span class="number">0.1</span><span class="special">)</span>            <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">Ip</span>
+	<span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">local_port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1025</span><span class="special">)</span>         <span class="identifier">MIHF</span> <span class="identifier">Local</span> <span class="identifier">Communications</span> <span class="identifier">Port</span>
+	<span class="special">--</span><span class="identifier">mihf</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">local</span><span class="special">-</span><span class="identifier">mihf</span><span class="special">)</span>           <span class="identifier">Local</span> <span class="identifier">MIHF</span> <span class="identifier">Id</span>
+
+	<span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">verbosity</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">2</span><span class="special">)</span>             <span class="identifier">Log</span> <span class="identifier">level</span> <span class="special">[</span><span class="number">0</span><span class="special">-</span><span class="number">2</span><span class="special">]</span>
+	<span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">default_th_period</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1000</span><span class="special">)</span>  <span class="identifier">Default</span> <span class="identifier">threshold</span> <span class="identifier">checking</span> <span class="identifier">interval</span> <span class="special">(</span><span class="identifier">millis</span><span class="special">)</span>
+	<span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">link_addr</span> <span class="identifier">arg</span>                  <span class="identifier">Interface</span> <span class="identifier">address</span>
+	<span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">port</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="number">1235</span><span class="special">)</span>               <span class="identifier">Port</span>
+	<span class="special">--</span><span class="identifier">link</span><span class="special">.</span><span class="identifier">id</span> <span class="identifier">arg</span> <span class="special">(=</span><span class="identifier">link</span><span class="special">)</span>                 <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">Id</span>
+</pre>
+<p>
+          </p>
+<p>
+            Some parameters are mostly self-explanatory. The configuration should
+            usually hold the same parameters of the example configuration file, except
+            that the MAC address of the interface to be controlled needs to be indicated
+            for each link/system.
+          </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+              <span class="bold"><strong>default_th_period:</strong></span> When an MIH User
+              configures a threshold on the device, indicating a value and crossing
+              direction, the Link SAP is expected to trigger a <span class="bold"><strong>Link_Parameters_Report</strong></span>
+              message notifying the situation. Checking whether a certain parameter
+              has crossed a threshold requires periodic polling of the attribute.
+              This parameter sets the interval of that poll operation, in milliseconds.
+            </p>
+<p>
+              Usage: default_th_period = &lt;time in ms&gt;
+            </p>
+</td></tr>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.sap_8023_index.getting_started.running"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.getting_started.running" title="Running">Running</a>
+</h5></div></div></div>
+<p>
+            The Link SAP should usually be launched after the MIHF is running. The
+            running parameters can be configured via command line or a configuration
+            file.
+          </p>
+<p>
+            The Link SAP will bind commands and events to the network device with
+            the given MAC Address.
+          </p>
+<p>
+</p>
+<pre class="programlisting"><span class="error">$</span> <span class="special">./</span><span class="identifier">sap_8023</span>
+</pre>
+<p>
+          </p>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+              The Link SAP will run normally if launched by a regular user. However,
+              some commands such as Link Actions require super user permissions on
+              the system. The Link SAP should be launched with root permissions if
+              such features are required.
+            </p></td></tr>
+</table></div>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support" title="Support">Support</a>
+</h4></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events">Events</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.commands">Commands</a></span></dt>
+</dl></div>
+<p>
+          This section is a reading on special considerations for the structuring
+          of the code, and how to hack specific features.
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.events"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events" title="Events">Events</a>
+</h5></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_going_down">Link_Going_Down</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_handover_imminent">Link_Handover_Imminent</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_handover_complete">Link_Handover_Complete</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_pdu_transmit_status">Link_PDU_Transmit_Status</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_detected">Link_Detected</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_up">Link_Up</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_down">Link_Down</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_parameters_report">Link_Parameters_Report</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.events.link_going_down"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_going_down" title="Link_Going_Down">Link_Going_Down</a>
+</h6></div></div></div>
+<p>
+              Not supported.
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.events.link_handover_imminent"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_handover_imminent" title="Link_Handover_Imminent">Link_Handover_Imminent</a>
+</h6></div></div></div>
+<p>
+              Not supported.
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.events.link_handover_complete"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_handover_complete" title="Link_Handover_Complete">Link_Handover_Complete</a>
+</h6></div></div></div>
+<p>
+              Not supported.
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.events.link_pdu_transmit_status"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_pdu_transmit_status" title="Link_PDU_Transmit_Status">Link_PDU_Transmit_Status</a>
+</h6></div></div></div>
+<p>
+              Not supported.
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.events.link_detected"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_detected" title="Link_Detected">Link_Detected</a>
+</h6></div></div></div>
+<p>
+              Not supported.
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.events.link_up"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_up" title="Link_Up">Link_Up</a>
+</h6></div></div></div>
+<p>
+              This event is generated whenever the <span class="emphasis"><em>IF_OPER_UP</em></span>
+              <span class="emphasis"><em>LINK</em></span> flag gets set, and received by if_8023. It
+              will automatically call the <span class="emphasis"><em>dispatch_link_up()</em></span>
+              callback from <span class="bold"><strong>main</strong></span> with the appropriate
+              attributes.
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.events.link_down"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_down" title="Link_Down">Link_Down</a>
+</h6></div></div></div>
+<p>
+              This event is generated when the <span class="emphasis"><em>IF_OPER_UP</em></span> <span class="emphasis"><em>LINK</em></span>
+              flag is unset. The <span class="emphasis"><em>dispatch_link_down()</em></span> calback
+              from <span class="bold"><strong>main</strong></span> is called automatically.
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.events.link_parameters_report"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.events.link_parameters_report" title="Link_Parameters_Report">Link_Parameters_Report</a>
+</h6></div></div></div>
+<p>
+              For each configred periodic report there's a timer that triggers a
+              message of this type at the specified interval.
+            </p>
+<p>
+              For configured thresholds, a threshold check is performed periodically,
+              according to the <span class="bold"><strong>default_th_period</strong></span>
+              launching parameter. A <span class="emphasis"><em>Link_Parameters_Report</em></span>
+              message is sent everytime one of these checks detects a crossing of
+              the subscribed nature.
+            </p>
+<p>
+              Statistical counts for packets and bytes are obtained via the <span class="emphasis"><em>RTNL_GET_LINK</em></span>
+              Netlink command.
+            </p>
+<p>
+              Currently, not all parameters types are supported. Only the following:
+            </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                  <span class="emphasis"><em>LINK_PARAM_ETH</em></span>
+                  <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+                        there is none defined yet, actually.
+                      </li></ul></div>
+                </li>
+<li class="listitem">
+                  <span class="emphasis"><em>LINK_PARAM_GEN</em></span>
+                  <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+                        <span class="emphasis"><em>DATA_RATE</em></span>
+                      </li>
+<li class="listitem">
+                        <span class="emphasis"><em>PACKET_ERROR_RATE</em></span>: note, this is an
+                        all-time statistic (i.e., calculated from overall packet
+                        transmission and error counts!)
+                      </li>
+</ul></div>
+                </li>
+</ul></div>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.commands"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.commands" title="Commands">Commands</a>
+</h5></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.commands.capability_discover">Capability_Discover</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.commands.event_subscribe">Event_Subscribe</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.commands.event_unsubscribe">Event_Unsubscribe</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.commands.link_get_parameters">Link_Get_Parameters</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.commands.link_configure_thresholds">Link_Configure_Thresholds</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.commands.link_action">Link_Action</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.commands.capability_discover"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.commands.capability_discover" title="Capability_Discover">Capability_Discover</a>
+</h6></div></div></div>
+<p>
+              This command is immediatly responded with the list of supported Events
+              and Commands. This list of supported Events and Commands is statically
+              configured in the code, inside functions <span class="emphasis"><em>set_supported_event_list</em></span>
+              and <span class="emphasis"><em>set_supported_command_list</em></span> of <span class="bold"><strong>main</strong></span>.
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.commands.event_subscribe"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.commands.event_subscribe" title="Event_Subscribe">Event_Subscribe</a>
+</h6></div></div></div>
+<p>
+              The event subcription is set based on the supported Events and Commands
+              list. The resulting list is always considered at the event dispatch
+              callbacks, such that only subscribed events are transmitted. All supported
+              events are always successfully subscribed, even ones already subscribed.
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.commands.event_unsubscribe"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.commands.event_unsubscribe" title="Event_Unsubscribe">Event_Unsubscribe</a>
+</h6></div></div></div>
+<p>
+              The event unsubcription is set based on the subscribed Events and Commands
+              list. All supported events are always successfully unsubscribed, even
+              ones already unsubscribed.
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.commands.link_get_parameters"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.commands.link_get_parameters" title="Link_Get_Parameters">Link_Get_Parameters</a>
+</h6></div></div></div>
+<p>
+              The support parameters for this command include only some statistical
+              counts, obtained via the <span class="emphasis"><em>RTNL_GET_LINK</em></span> Netlink
+              command.
+            </p>
+<p>
+              Currently, not all parameters types are supported. Only the following:
+            </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                  <span class="emphasis"><em>LINK_PARAM_ETH</em></span>
+                  <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+                        there is none defined yet, actually.
+                      </li></ul></div>
+                </li>
+<li class="listitem">
+                  <span class="emphasis"><em>LINK_PARAM_GEN</em></span>
+                  <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+                        <span class="emphasis"><em>DATA_RATE</em></span>
+                      </li>
+<li class="listitem">
+                        <span class="emphasis"><em>PACKET_ERROR_RATE</em></span>: note, this is an
+                        all-time statistic (i.e., calculated from overall packet
+                        transmission and error counts!)
+                      </li>
+</ul></div>
+                </li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.commands.link_configure_thresholds"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.commands.link_configure_thresholds" title="Link_Configure_Thresholds">Link_Configure_Thresholds</a>
+</h6></div></div></div>
+<p>
+              New thresholds are added to one of two lists:
+            </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                  If the threshold configuration request indicates a <span class="emphasis"><em>period</em></span>,
+                  it is considered a periodic report parameter, and a new thread
+                  is started, polling for that parameter with the indicated <span class="emphasis"><em>period</em></span>.
+                </li>
+<li class="listitem">
+                  If no period is indicated, and a threshold value is set, the parameter
+                  will be added to a global list of thresholds that is checked periodically,
+                  according to the <span class="bold"><strong>defaul_th_period</strong></span>
+                  command line option.
+                  <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+                        one-shot thresholds are automatically removed by the periodic
+                        verification code.
+                      </li></ul></div>
+                </li>
+</ul></div>
+<p>
+              If the request is used to remove thresholds, the indicated ones are
+              removed from the respective lists.
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.sap_8023_support.commands.link_action"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.sap_8023_support.commands.link_action" title="Link_Action">Link_Action</a>
+</h6></div></div></div>
+<p>
+              This command is translated to kernel invocations, via the <span class="bold"><strong>if_8023</strong></span> module.
+            </p>
+<p>
+              Only the following <span class="emphasis"><em>LINK_AC_TYPE</em></span> actions are supported:
+            </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                  <span class="emphasis"><em>LINK_DISCONNECT</em></span>
+                </li>
+<li class="listitem">
+                  <span class="emphasis"><em>LINK_POWER_DOWN</em></span>
+                </li>
+<li class="listitem">
+                  <span class="emphasis"><em>LINK_POWER_UP</em></span>
+                </li>
+</ul></div>
+<p>
+              No <span class="emphasis"><em>LINK_AC_ATTR</em></span> is supported.
+            </p>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.sap_8023_index.extending"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.extending" title="Extending">Extending</a>
+</h4></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.extending.supporting_new_commands">Supporting
+          new commands</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.extending.supporting_new_events">Supporting
+          new events</a></span></dt>
+</dl></div>
+<p>
+          This section explains some extending procedures with coding examples. In
+          the code sections, the comments will help look at the right content.
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.sap_8023_index.extending.supporting_new_commands"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.extending.supporting_new_commands" title="Supporting new commands">Supporting
+          new commands</a>
+</h5></div></div></div>
+<p>
+            First of all, in order to add support for a new command in the Link SAP,
+            it needs to be set in the supported command list, so the capability discovery
+            from the MIHF receives this information correctly (it migh filter commands
+            if the Link does not support them).
+          </p>
+<p>
+            This is done in the <span class="emphasis"><em>set_supported_command_list()</em></span>
+            method of the <span class="bold"><strong>main</strong></span> component. For example:
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">set_supported_command_list</span><span class="special">()</span>
+<span class="special">{</span>
+	<span class="identifier">capabilities_command_list</span><span class="special">.</span><span class="identifier">set</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">cmd_link_event_subscribe</span><span class="special">);</span>
+	<span class="identifier">capabilities_command_list</span><span class="special">.</span><span class="identifier">set</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">cmd_link_event_unsubscribe</span><span class="special">);</span>
+	<span class="comment">// ...</span>
+	<span class="comment">// add new commands here:</span>
+	<span class="identifier">capabilities_command_list</span><span class="special">.</span><span class="identifier">set</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">cmd_link_new_command</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+          </p>
+<p>
+            The <span class="emphasis"><em>capabilities_command_list</em></span> then contains the
+            set of all the supported commands, and will be kept unmodified throughout
+            the running instance. This set is used in the response to the Link_Capability_Discover
+            message from the MIHF.
+          </p>
+<p>
+            In order to support the newly defined command, there must be code to
+            handle the respective funcionality, and produce the desired response.
+            The command requests are received in the <span class="emphasis"><em>default_handler()</em></span>
+            method of the main component. There, depending on the command, another
+            handler is dispatched. For example:
+          </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">default_handler</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span><span class="identifier">ios</span><span class="special">,</span> <span class="identifier">if_80211</span> <span class="special">&amp;</span><span class="identifier">fi</span><span class="special">,</span>
+                     <span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span><span class="special">&amp;</span> <span class="identifier">msg</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">)</span>
+<span class="special">{</span>
+	<span class="keyword">switch</span> <span class="special">(</span><span class="identifier">msg</span><span class="special">.</span><span class="identifier">mid</span><span class="special">())</span> <span class="special">{</span>
+		<span class="keyword">case</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">request</span><span class="special">::</span><span class="identifier">event_subscribe</span><span class="special">:</span>
+		<span class="special">{</span>
+			<span class="identifier">log_</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="string">"(command) Received event_subscribe message"</span><span class="special">);</span>
+			<span class="identifier">mih</span><span class="special">::</span><span class="identifier">link_evt_list</span> <span class="identifier">events</span><span class="special">;</span>
+			<span class="identifier">msg</span> <span class="special">&gt;&gt;</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">request</span><span class="special">()</span>
+				<span class="special">&amp;</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_link_evt_list</span><span class="special">(</span><span class="identifier">events</span><span class="special">);</span>
+
+			<span class="identifier">ios</span><span class="special">.</span><span class="identifier">dispatch</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">handle_event_subscribe</span><span class="special">,</span> <span class="identifier">msg</span><span class="special">.</span><span class="identifier">tid</span><span class="special">(),</span> <span class="identifier">events</span><span class="special">));</span>
+		<span class="special">}</span>
+		<span class="keyword">break</span><span class="special">;</span>
+
+		<span class="comment">// ...</span>
+		<span class="comment">// add new commands here</span>
+		<span class="keyword">case</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">request</span><span class="special">::</span><span class="identifier">new_command</span><span class="special">:</span>
+		<span class="special">{</span>
+			<span class="identifier">log_</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="string">"(command) Received new_command message"</span><span class="special">);</span>
+
+			<span class="comment">// unmarshall message, if required</span>
+			<span class="identifier">mih</span><span class="special">::</span><span class="identifier">new_parameter</span> <span class="identifier">param</span><span class="special">;</span>
+			<span class="identifier">msg</span> <span class="special">&gt;&gt;</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">request</span><span class="special">()</span>
+				<span class="special">&amp;</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_new_parameter</span><span class="special">(</span><span class="identifier">param</span><span class="special">);</span>
+
+			<span class="identifier">ios</span><span class="special">.</span><span class="identifier">dispatch</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">handle_new_command</span><span class="special">,</span> <span class="identifier">msg</span><span class="special">.</span><span class="identifier">tid</span><span class="special">(),</span> <span class="identifier">param</span><span class="special">));</span>
+		<span class="special">}</span>
+		<span class="keyword">break</span><span class="special">;</span>
+
+		<span class="keyword">default</span><span class="special">:</span>
+			<span class="identifier">log_</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="string">"(command) Received unknown MIH message"</span><span class="special">);</span>
+	<span class="special">}</span>
+<span class="special">}</span>
+</pre>
+<p>
+          </p>
+<p>
+            The dispatched handler is responsible for producing the message response.
+            This is the reason why the TID from the request message is always passed
+            to the handler code.
+          </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+              The unmarshalling does not need to occur in the <span class="emphasis"><em>default_handler</em></span>
+              message. The message can be passed to the dispatch method, which will
+              then have to read the TID and the parameters for setting the response.
+            </p></td></tr>
+</table></div>
+<p>
+            To respond to a command, the dispatch method must marshall the response
+            and send it to the MIHF using the correct TID, which will help the MIHF
+            deliver it to the right MIH User, as demonstrated by the following code:
+          </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handle_new_command</span><span class="special">(</span><span class="identifier">odtone</span><span class="special">::</span><span class="identifier">uint16</span> <span class="identifier">tid</span><span class="special">,</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">new_param</span> <span class="special">&amp;</span><span class="identifier">param</span><span class="special">)</span>
+<span class="special">{</span>
+	<span class="identifier">log_</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="string">"(command) Handling new_command"</span><span class="special">);</span>
+
+	<span class="comment">// prepare the response parameters</span>
+	<span class="identifier">mih</span><span class="special">::</span><span class="identifier">new_param</span> <span class="identifier">param</span><span class="special">;</span>
+
+	<span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="identifier">m</span><span class="special">;</span>
+	<span class="identifier">mih</span><span class="special">::</span><span class="identifier">status</span> <span class="identifier">st</span> <span class="special">=</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">status_success</span><span class="special">;</span>
+
+	<span class="identifier">m</span> <span class="special">&lt;&lt;</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">confirm</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">confirm</span><span class="special">::</span><span class="identifier">new_command</span><span class="special">)</span>
+		<span class="special">&amp;</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_status</span><span class="special">(</span><span class="identifier">st</span><span class="special">)</span>
+		<span class="special">&amp;</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">tlv_new_param</span><span class="special">(</span><span class="identifier">param</span><span class="special">);</span>
+
+	<span class="identifier">m</span><span class="special">.</span><span class="identifier">tid</span><span class="special">(</span><span class="identifier">tid</span><span class="special">);</span>
+
+	<span class="identifier">ls</span><span class="special">-&gt;</span><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">m</span><span class="special">);</span>
+	<span class="comment">// `ls' is a global variable that provides communication with the MIHF.</span>
+<span class="special">}</span>
+</pre>
+<p>
+          </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+              It is also possible to have the response be sent by a callback, other
+              than the handler method, as long as the correct TID is used and the
+              callback does not exceed the MIHF response timeout.
+            </p></td></tr>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.sap_8023_index.extending.supporting_new_events"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.extending.supporting_new_events" title="Supporting new events">Supporting
+          new events</a>
+</h5></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.extending.supporting_new_events.os_level_events">OS-level
+            events</a></span></dt>
+<dt><span class="section"><a href="sap_8023_index.html#odtone.app.sap_8023_index.extending.supporting_new_events.locally_triggered_events">Locally
+            triggered events</a></span></dt>
+</dl></div>
+<p>
+            In order to add support for a new event, it needs to be set in the supported
+            event list, so the capability discovery from the MIHF receives this information
+            correctly.
+          </p>
+<p>
+            This is done in the <span class="emphasis"><em>set_supported_event_list()</em></span> method
+            of the <span class="bold"><strong>main</strong></span> component. For example:
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">set_supported_event_list</span><span class="special">()</span>
+<span class="special">{</span>
+	<span class="identifier">capabilities_event_list</span><span class="special">.</span><span class="identifier">set</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">evt_link_detected</span><span class="special">);</span>
+	<span class="identifier">capabilities_event_list</span><span class="special">.</span><span class="identifier">set</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">evt_link_up</span><span class="special">);</span>
+	<span class="comment">// ...</span>
+	<span class="comment">// add new events here:</span>
+	<span class="identifier">capabilities_event_list</span><span class="special">.</span><span class="identifier">set</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">evt_new_event</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+          </p>
+<p>
+            Events can be generated at various levels. Most of the currently supported
+            events are generated at the kernel, and merely translated/handed to the
+            MIHF (e.g. Link_Up, Link_Down). Other events, however, such as Link_Parameters_Report,
+            are generated by the Link SAP code, via periodic verification of certain
+            parameters.
+          </p>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.extending.supporting_new_events.os_level_events"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.extending.supporting_new_events.os_level_events" title="OS-level events">OS-level
+            events</a>
+</h6></div></div></div>
+<p>
+              Events from the kernel are received via Netlink sockets. Depending
+              on the desired events, it migh be necessary to subscribe to the according
+              multicast groups. The <span class="bold"><strong>if_80211</strong></span> module
+              automatically subscribes to the <span class="emphasis"><em>RTMGRP_LINK</em></span> multicast
+              group:
+            </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">if_8023</span><span class="special">::</span><span class="identifier">if_8023</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span><span class="identifier">ios</span><span class="special">,</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">mac_addr</span> <span class="identifier">mac</span><span class="special">)</span> <span class="special">:</span> <span class="identifier">_ctx</span><span class="special">(</span><span class="identifier">ios</span><span class="special">)</span>
+<span class="special">{</span>
+	<span class="comment">// ...</span>
+	<span class="identifier">_socket</span><span class="special">.</span><span class="identifier">join_multicast_group</span><span class="special">(</span><span class="identifier">RTMGRP_LINK</span><span class="special">);</span>
+	<span class="comment">// ...</span>
+<span class="special">}</span>
+</pre>
+<p>
+            </p>
+<p>
+              The <span class="emphasis"><em>handle_nl_event()</em></span> method from the <span class="bold"><strong>if_8023</strong></span> component is the handler for events
+              received from the subcribed Netlink multicast groups. In order to generate
+              events from this handler, the <span class="bold"><strong>if_8023</strong></span>
+              module accepts callback registrations that are to be invoked after
+              specific events occur. For example, a <span class="emphasis"><em>link_up_handler</em></span>
+              callback is defined as follows:
+            </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">link_tuple_id</span> <span class="special">&amp;</span><span class="identifier">tuple_id</span><span class="special">,</span>
+                             <span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">link_addr</span><span class="special">&gt;</span> <span class="special">&amp;</span><span class="identifier">old_router</span><span class="special">,</span>
+                             <span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">link_addr</span><span class="special">&gt;</span> <span class="special">&amp;</span><span class="identifier">new_router</span><span class="special">,</span>
+                             <span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">&gt;</span> <span class="special">&amp;</span><span class="identifier">ip_renew</span><span class="special">,</span>
+                             <span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">ip_mob_mgmt</span><span class="special">&gt;</span> <span class="special">&amp;</span><span class="identifier">mobility_management</span><span class="special">)&gt;</span> <span class="identifier">link_up_handler</span><span class="special">;</span>
+
+<span class="comment">// new callback</span>
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">link_tuple_id</span> <span class="special">&amp;</span><span class="identifier">tuple_id</span><span class="special">)&gt;</span> <span class="identifier">new_event_handler</span><span class="special">;</span>
+</pre>
+<p>
+            </p>
+<p>
+              Once registered in the <span class="bold"><strong>if_8023</strong></span> object,
+              the callback may then used in this manner:
+            </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">handle_nl_event</span><span class="special">(</span><span class="identifier">nl_msg</span> <span class="special">*</span><span class="identifier">msg</span><span class="special">,</span> <span class="keyword">void</span> <span class="special">*</span><span class="identifier">arg</span><span class="special">)</span>
+<span class="special">{</span>
+	<span class="identifier">nlwrap</span><span class="special">::</span><span class="identifier">nl_msg</span> <span class="identifier">m</span><span class="special">(</span><span class="identifier">msg</span><span class="special">);</span>
+
+	<span class="comment">// ...</span>
+	<span class="keyword">if</span> <span class="special">(</span><span class="identifier">link_is_up</span><span class="special">)</span> <span class="special">{</span>
+		<span class="comment">// parse message attributes into...</span>
+		<span class="identifier">mih</span><span class="special">::</span><span class="identifier">link_tuple_id</span> <span class="identifier">lid</span><span class="special">;</span>
+		<span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">link_addr</span><span class="special">&gt;</span> <span class="identifier">old_router</span><span class="special">;</span>
+		<span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">link_addr</span><span class="special">&gt;</span> <span class="identifier">new_router</span><span class="special">;</span>
+		<span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">&gt;</span> <span class="identifier">ip_renew</span><span class="special">;</span>
+		<span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">ip_mob_mgmt</span><span class="special">&gt;</span> <span class="identifier">mobility_management</span><span class="special">;</span>
+
+		<span class="comment">// dispatch callback</span>
+		<span class="identifier">ios</span><span class="special">.</span><span class="identifier">dispatch</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(</span><span class="identifier">_link_up_handler</span><span class="special">,</span> <span class="identifier">lid</span><span class="special">,</span> <span class="identifier">old_router</span><span class="special">,</span> <span class="identifier">new_router</span><span class="special">,</span> <span class="identifier">ip_renew</span><span class="special">,</span> <span class="identifier">mobility_management</span><span class="special">));</span>
+	<span class="special">}</span>
+
+	<span class="comment">// new event</span>
+	<span class="keyword">else</span> <span class="keyword">if</span> <span class="special">(</span><span class="identifier">new_event_occurred</span><span class="special">)</span> <span class="special">{</span>
+		<span class="comment">// parse message attributes into...</span>
+		<span class="identifier">mih</span><span class="special">::</span><span class="identifier">link_tuple_id</span> <span class="identifier">lid</span><span class="special">;</span>
+
+		<span class="comment">// dispatch callback</span>
+		<span class="identifier">ios</span><span class="special">.</span><span class="identifier">dispatch</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(</span><span class="identifier">_new_event_handler</span><span class="special">,</span> <span class="identifier">lid</span><span class="special">));</span>
+	<span class="special">}</span>
+<span class="special">}</span>
+</pre>
+<p>
+            </p>
+<p>
+              An event received at the callback must then be delivered to the MIHF,
+              similarly to command responses (although the TID is not set as in that
+              case).
+            </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">dispatch_new_event</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">link_tuple_id</span> <span class="special">&amp;</span><span class="identifier">lid</span><span class="special">)</span>
+<span class="special">{</span>
+	<span class="keyword">if</span> <span class="special">(!</span><span class="identifier">subscribed_event_list</span><span class="special">.</span><span class="identifier">get</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">evt_new_event</span><span class="special">))</span> <span class="special">{</span>
+		<span class="keyword">return</span><span class="special">;</span>
+	<span class="special">}</span>
+
+	<span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="identifier">m</span><span class="special">;</span>
+	<span class="identifier">m</span> <span class="special">&lt;&lt;</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">::</span><span class="identifier">new_event</span><span class="special">);</span>
+
+	<span class="identifier">ls</span><span class="special">-&gt;</span><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">m</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="odtone.app.sap_8023_index.extending.supporting_new_events.locally_triggered_events"></a><a class="link" href="sap_8023_index.html#odtone.app.sap_8023_index.extending.supporting_new_events.locally_triggered_events" title="Locally triggered events">Locally
+            triggered events</a>
+</h6></div></div></div>
+<p>
+              The <span class="emphasis"><em>Link_Parameters_Report</em></span> event is an example
+              of a "manually" triggered event. These type of events are
+              dispatched in the same way of regular events:
+            </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">dispatch_new_event</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">link_tuple_id</span> <span class="special">&amp;</span><span class="identifier">lid</span><span class="special">)</span>
+<span class="special">{</span>
+	<span class="keyword">if</span> <span class="special">(!</span><span class="identifier">subscribed_event_list</span><span class="special">.</span><span class="identifier">get</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">evt_new_event</span><span class="special">))</span> <span class="special">{</span>
+		<span class="keyword">return</span><span class="special">;</span>
+	<span class="special">}</span>
+
+	<span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="identifier">m</span><span class="special">;</span>
+	<span class="identifier">m</span> <span class="special">&lt;&lt;</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">indication</span><span class="special">::</span><span class="identifier">new_event</span><span class="special">);</span>
+
+	<span class="identifier">ls</span><span class="special">-&gt;</span><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">m</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+            </p>
+<p>
+              They can be generated in any way the programmer desires. The implementation
+              of the <span class="emphasis"><em>Link_Parameters_Report</em></span> is done via independent
+              threads which poll for information at regular intervals and, if the
+              conditions designate the generation of an event, the <span class="emphasis"><em>dispath_event()</em></span>
+              method is called with the appropriate parameters.
+            </p>
+<p>
+              The periodic execution of the thread should be handled with the boost::io_service
+              mechanisms, in order to prevent concurrent operation with other Link
+              SAP services. the <span class="bold"><strong>timer_task</strong></span> class
+              assists in the creation of periodic code snippets, and is used for
+              the management of configured thresholds and consequent generation of
+              <span class="emphasis"><em>Link_Parameters_Report</em></span> events.
+            </p>
+</div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="sap_80211_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="../extensions.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

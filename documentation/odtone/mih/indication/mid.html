@@ -1,0 +1,134 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Type mid</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="ODTONE 0.5">
+<link rel="up" href="../indication.html#idp14800192" title="Description">
+<link rel="prev" href="../indication.html" title="Class indication">
+<link rel="next" href="../msg_id.html" title="Struct template msg_id">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../indication.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../indication.html#idp14800192"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../msg_id.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="odtone.mih.indication.mid"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Type mid</span></h2>
+<p>odtone::mih::indication::mid</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.indication_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/indication.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/mih/indication.hpp</a>&gt;
+
+</span>
+<span class="keyword">enum</span> <span class="identifier">mid</span> <span class="special">{</span> <a class="link" href="mid.html#odtone.mih.indication.mid.capability_discover">capability_discover</a> =  msg_id&lt;1, 3, 1&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.mih_register">mih_register</a> =  msg_id&lt;1, 3, 2&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.mih_deregister">mih_deregister</a> =  msg_id&lt;1, 3, 3&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.event_subscribe">event_subscribe</a> =  msg_id&lt;1, 3, 4&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.event_unsubscribe">event_unsubscribe</a> =  msg_id&lt;1, 3, 5&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.link_detected">link_detected</a> =  msg_id&lt;2, 3, 1&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.link_up">link_up</a> =  msg_id&lt;2, 3, 2&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.link_down">link_down</a> =  msg_id&lt;2, 3, 3&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.link_parameters_report">link_parameters_report</a> =  msg_id&lt;2, 3, 5&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.link_going_down">link_going_down</a> =  msg_id&lt;2, 3, 6&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.link_handover_imminent">link_handover_imminent</a> =  msg_id&lt;2, 3, 7&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.link_handover_complete">link_handover_complete</a> =  msg_id&lt;2, 3, 8&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.link_pdu_transmit_status">link_pdu_transmit_status</a> =  msg_id&lt;2, 3, 9&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.link_get_parameters">link_get_parameters</a> =  msg_id&lt;3, 3, 1&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.link_configure_threshold">link_configure_threshold</a> =  msg_id&lt;3, 3, 2&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.link_actions">link_actions</a> =  msg_id&lt;3, 3, 3&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.net_ho_candidate_query">net_ho_candidate_query</a> =  msg_id&lt;3, 3, 4&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.mn_ho_candidate_query">mn_ho_candidate_query</a> =  msg_id&lt;3, 3, 5&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.n2n_ho_query_resources">n2n_ho_query_resources</a> =  msg_id&lt;3, 3, 6&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.mn_ho_commit">mn_ho_commit</a> =  msg_id&lt;3, 3, 7&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.net_ho_commit">net_ho_commit</a> =  msg_id&lt;3, 3, 8&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.n2n_ho_commit">n2n_ho_commit</a> =  msg_id&lt;3, 3, 9&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.mn_ho_complete">mn_ho_complete</a> =  msg_id&lt;3, 3, 10&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.n2n_ho_complete">n2n_ho_complete</a> =  msg_id&lt;3, 3, 11&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.get_information">get_information</a> =  msg_id&lt;4, 3, 1&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.push_information">push_information</a> =  msg_id&lt;4, 3, 2&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.link_register">link_register</a> =  msg_id&lt;1, 3, 6&gt;::value, 
+           <a class="link" href="mid.html#odtone.mih.indication.mid.user_register">user_register</a> =  msg_id&lt;1, 3, 7&gt;::value <span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp14859056"></a><h2>Description</h2>
+<p>MIH Indication Message ID </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><code class="computeroutput">capability_discover</code><a name="odtone.mih.indication.mid.capability_discover"></a></span></dt>
+<dd><p>MIH_Capability_Discover.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">mih_register</code><a name="odtone.mih.indication.mid.mih_register"></a></span></dt>
+<dd><p>MIH_Register.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">mih_deregister</code><a name="odtone.mih.indication.mid.mih_deregister"></a></span></dt>
+<dd><p>MIH_DeRegister.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">event_subscribe</code><a name="odtone.mih.indication.mid.event_subscribe"></a></span></dt>
+<dd><p>MIH_Event_Subscribe.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">event_unsubscribe</code><a name="odtone.mih.indication.mid.event_unsubscribe"></a></span></dt>
+<dd><p>MIH_Event_Unsubscribe.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">link_detected</code><a name="odtone.mih.indication.mid.link_detected"></a></span></dt>
+<dd><p>MIH_Link_Detected.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">link_up</code><a name="odtone.mih.indication.mid.link_up"></a></span></dt>
+<dd><p>MIH_Link_Up.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">link_down</code><a name="odtone.mih.indication.mid.link_down"></a></span></dt>
+<dd><p>MIH_Link_Down.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">link_parameters_report</code><a name="odtone.mih.indication.mid.link_parameters_report"></a></span></dt>
+<dd><p>MIH_Link_Parameters_Report.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">link_going_down</code><a name="odtone.mih.indication.mid.link_going_down"></a></span></dt>
+<dd><p>MIH_Link_Going_Down.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">link_handover_imminent</code><a name="odtone.mih.indication.mid.link_handover_imminent"></a></span></dt>
+<dd><p>MIH_Link_Handover_Imminent.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">link_handover_complete</code><a name="odtone.mih.indication.mid.link_handover_complete"></a></span></dt>
+<dd><p>MIH_Link_Handover_Complete.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">link_pdu_transmit_status</code><a name="odtone.mih.indication.mid.link_pdu_transmit_status"></a></span></dt>
+<dd><p>MIH_Link_PDU_transmit_status.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">link_get_parameters</code><a name="odtone.mih.indication.mid.link_get_parameters"></a></span></dt>
+<dd><p>MIH_Link_Get_Parameters.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">link_configure_threshold</code><a name="odtone.mih.indication.mid.link_configure_threshold"></a></span></dt>
+<dd><p>MIH_Link_Configure_Thresholds.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">link_actions</code><a name="odtone.mih.indication.mid.link_actions"></a></span></dt>
+<dd><p>MIH_Link_Actions.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">net_ho_candidate_query</code><a name="odtone.mih.indication.mid.net_ho_candidate_query"></a></span></dt>
+<dd><p>MIH_Net_HO_Candidate_Query.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">mn_ho_candidate_query</code><a name="odtone.mih.indication.mid.mn_ho_candidate_query"></a></span></dt>
+<dd><p>MIH_MN_HO_Candidate_Query.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">n2n_ho_query_resources</code><a name="odtone.mih.indication.mid.n2n_ho_query_resources"></a></span></dt>
+<dd><p>MIH_N2N_HO_Query_Resources.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">mn_ho_commit</code><a name="odtone.mih.indication.mid.mn_ho_commit"></a></span></dt>
+<dd><p>MIH_MN_HO_Commit.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">net_ho_commit</code><a name="odtone.mih.indication.mid.net_ho_commit"></a></span></dt>
+<dd><p>MIH_Net_HO_Commit.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">n2n_ho_commit</code><a name="odtone.mih.indication.mid.n2n_ho_commit"></a></span></dt>
+<dd><p>MIH_N2N_HO_Commit.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">mn_ho_complete</code><a name="odtone.mih.indication.mid.mn_ho_complete"></a></span></dt>
+<dd><p>MIH_N2N_HO_Complete.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">n2n_ho_complete</code><a name="odtone.mih.indication.mid.n2n_ho_complete"></a></span></dt>
+<dd><p>MIH_N2N_HO_Commlete.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">get_information</code><a name="odtone.mih.indication.mid.get_information"></a></span></dt>
+<dd><p>MIH_Get_Information.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">push_information</code><a name="odtone.mih.indication.mid.push_information"></a></span></dt>
+<dd><p>MIH_Push_Information.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">link_register</code><a name="odtone.mih.indication.mid.link_register"></a></span></dt>
+<dd><p>Link_Register.indication </p></dd>
+<dt><span class="term"><code class="computeroutput">user_register</code><a name="odtone.mih.indication.mid.user_register"></a></span></dt>
+<dd><p>User_Register.indication </p></dd>
+</dl></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../indication.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../indication.html#idp14800192"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../msg_id.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

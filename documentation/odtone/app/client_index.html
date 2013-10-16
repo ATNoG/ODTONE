@@ -1,0 +1,154 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Client</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="ODTONE 0.5">
+<link rel="up" href="../app.html" title="Applications">
+<link rel="prev" href="link_sap_icmp_index.html" title="ICMP Link SAP">
+<link rel="next" href="dummyserver_index.html" title="Dummyserver">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="link_sap_icmp_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="dummyserver_index.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="odtone.app.client_index"></a><a class="link" href="client_index.html" title="Client">Client</a>
+</h3></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="client_index.html#odtone.app.client_index.client_getStart">Getting Started</a></span></dt></dl></div>
+<p>
+        The <span class="emphasis"><em>client</em></span> is a simple application that lets you send
+        any kind of message to a particular destination. In this way, oyou can send
+        a specific message to a specific destination in order to test its behaviour
+        easily and quickly.
+      </p>
+<p>
+        The destination could be either a MIHF or a MIH SAP (MIH-User/Link SAP).
+      </p>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="odtone.app.client_index.client_getStart"></a><a class="link" href="client_index.html#odtone.app.client_index.client_getStart" title="Getting Started">Getting Started</a>
+</h4></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="client_index.html#odtone.app.client_index.client_getStart.configuration">Configuration</a></span></dt>
+<dt><span class="section"><a href="client_index.html#odtone.app.client_index.client_getStart.extending">Extending</a></span></dt>
+<dt><span class="section"><a href="client_index.html#odtone.app.client_index.client_getStart.running">Running</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.client_index.client_getStart.configuration"></a><a class="link" href="client_index.html#odtone.app.client_index.client_getStart.configuration" title="Configuration">Configuration</a>
+</h5></div></div></div>
+<p>
+            The configuration of the client consists in defining the listening port
+            of message's destination.
+          </p>
+<p>
+            The listening port can be configured in two ways:
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                Passing it directly in command line:
+<pre class="programlisting">--port=&lt;port number&gt;
+</pre>
+              </li>
+<li class="listitem">
+                or configuring it in the configuration file:
+<pre class="programlisting">port = &lt;port number&gt;
+</pre>
+              </li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.client_index.client_getStart.extending"></a><a class="link" href="client_index.html#odtone.app.client_index.client_getStart.extending" title="Extending">Extending</a>
+</h5></div></div></div>
+<p>
+            It is possible to add new messages to the <span class="emphasis"><em>client</em></span>
+            with only 3 steps:
+          </p>
+<p>
+            <span class="bold"><strong>1st step:</strong></span> Define a new configuration
+            option.
+</p>
+<pre class="programlisting">desc.add_options()
+	// ...
+	(kConf_MIH_NewMessage, "Send a New Message")
+;
+</pre>
+<p>
+          </p>
+<p>
+            <span class="bold"><strong>2nd step:</strong></span> Define the function responsible
+            for creating and sending the message.
+          </p>
+<p>
+</p>
+<pre class="programlisting">void send_newMessage(handler &amp;sap, const char *dst)
+{
+	mih::message        p;
+
+	//...
+	// Define the message to send here
+	//...
+
+	sap.send(p);
+}
+</pre>
+<p>
+          </p>
+<p>
+            <span class="bold"><strong>3rd step:</strong></span> Add a condition in the main
+            function to decide which message will be sent.
+</p>
+<pre class="programlisting">if (cfg.count(kConf_MIH_NewMessage)) {
+	std::cout &lt;&lt; "sent a new message" &lt;&lt; std::endl;
+	send_newMessage(sap, argv[1]);
+}
+</pre>
+<p>
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="odtone.app.client_index.client_getStart.running"></a><a class="link" href="client_index.html#odtone.app.client_index.client_getStart.running" title="Running">Running</a>
+</h5></div></div></div>
+<p>
+            Before running the client, the message option corresponding to the message
+            that will be sent must be defined in the command line. In the next example,
+            the client will send a MIH_Link_Up.indication message.
+          </p>
+<p>
+            E.g.: ./client --indication.link_up
+          </p>
+<p>
+            By default, message's destination is <span class="emphasis"><em>local-mihf</em></span>.
+            However, it is possible to send the message to another destination using
+            the <span class="emphasis"><em>--dest</em></span> option (in the command line).
+          </p>
+<p>
+            After the <span class="emphasis"><em>client</em></span> send the message the application
+            will terminate.
+          </p>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="link_sap_icmp_index.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../app.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="dummyserver_index.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

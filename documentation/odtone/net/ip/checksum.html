@@ -1,0 +1,142 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class checksum</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../../index.html" title="ODTONE 0.5">
+<link rel="up" href="../../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.checksum_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/ip/checksum.hpp&gt;">
+<link rel="prev" href="../../dns/parse_srv_record.html" title="Function parse_srv_record">
+<link rel="next" href="icmp.html" title="Struct icmp">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../dns/parse_srv_record.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.checksum_hpp"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="icmp.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="odtone.net.ip.checksum"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class checksum</span></h2>
+<p>odtone::net::ip::checksum</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.checksum_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/ip/checksum.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/net/ip/checksum.hpp</a>&gt;
+
+</span>
+<span class="keyword">class</span> <a class="link" href="checksum.html" title="Class checksum">checksum</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// <a class="link" href="checksum.html#odtone.net.ip.checksumconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="checksum.html#idp9090832-bb"><span class="identifier">checksum</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="checksum.html#idp8980816-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="checksum.html#idp8981216-bb"><span class="identifier">update</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="checksum.html#idp9083424-bb"><span class="identifier">update</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint16</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">uint16</span> <a class="link" href="checksum.html#idp9087328-bb"><span class="identifier">final</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="checksum.html#idp9089440-bb"><span class="identifier">clear</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp30581600"></a><h2>Description</h2>
+<p>This class represents the checksum field in IP packets. </p>
+<div class="refsect2">
+<a name="idp30582352"></a><h3>
+<a name="odtone.net.ip.checksumconstruct-copy-destruct"></a><code class="computeroutput">checksum</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<pre class="literallayout"><a name="idp9090832-bb"></a><span class="identifier">checksum</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Construct an undefined checksum, i.e., it is set to zero value. </p>
+</li></ol></div>
+</div>
+<div class="refsect2">
+<a name="idp30588560"></a><h3>
+<a name="idp8980816-bb"></a><code class="computeroutput">checksum</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp8981216-bb"></a><span class="identifier">update</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> data<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
+<p>Update the checksum value based on the byte buffer.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">data</code></span></p></td>
+<td><p>Byte buffer. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">len</code></span></p></td>
+<td><p>Byte buffer length. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp9083424-bb"></a><span class="identifier">update</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">uint16</span> <span class="special">*</span> data<span class="special">,</span> <span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
+<p>Update the checksum value based on the byte buffer.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">data</code></span></p></td>
+<td><p>Byte buffer. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">len</code></span></p></td>
+<td><p>Byte buffer length. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp9087328-bb"></a><span class="identifier">final</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Get the value of the checksum.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The value of the checksum. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp9089440-bb"></a><span class="identifier">clear</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Clear the value of the checksum. </p>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../dns/parse_srv_record.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.checksum_hpp"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="icmp.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

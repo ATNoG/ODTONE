@@ -1,0 +1,148 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Struct template parser_grammar</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="ODTONE 0.5">
+<link rel="up" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.conf_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/conf.hpp&gt;">
+<link rel="prev" href="ip6_grammar.html" title="Struct template ip6_grammar">
+<link rel="next" href="parser_grammar/act_on_arg_.html" title="Struct act_on_arg_">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="ip6_grammar.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.conf_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="parser_grammar/act_on_arg_.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="odtone.conf.parser_grammar"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Struct template parser_grammar</span></h2>
+<p>odtone::conf::parser_grammar</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.conf_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/conf.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/conf.hpp</a>&gt;
+
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Iterator<span class="special">&gt;</span> 
+<span class="keyword">struct</span> <a class="link" href="parser_grammar.html" title="Struct template parser_grammar">parser_grammar</a> <span class="special">{</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <a class="link" href="skipper_grammar.html" title="Struct template skipper_grammar">skipper_grammar</a><span class="special">&lt;</span> <span class="identifier">Iterator</span> <span class="special">&gt;</span>                          <a name="odtone.conf.parser_grammar.skipper"></a><span class="identifier">skipper</span><span class="special">;</span>    
+  <span class="keyword">typedef</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">locals</span><span class="special">&lt;</span> <a class="link" href="function.html" title="Class function">function</a> <span class="keyword">const</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">args_type</span><span class="special">,</span> <span class="identifier">pset_type</span> <span class="special">&gt;</span> <a name="odtone.conf.parser_grammar.cmd_locals"></a><span class="identifier">cmd_locals</span><span class="special">;</span> 
+  <span class="keyword">typedef</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">locals</span><span class="special">&lt;</span> <a class="link" href="property_class.html" title="Struct property_class">property_class</a> <span class="keyword">const</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">uint</span> <span class="special">&gt;</span>           <a name="odtone.conf.parser_grammar.prop_locals"></a><span class="identifier">prop_locals</span><span class="special">;</span>
+
+  <span class="comment">// member classes/structs/unions</span>
+
+  <span class="keyword">struct</span> <a class="link" href="parser_grammar/act_on_arg_.html" title="Struct act_on_arg_">act_on_arg_</a> <span class="special">{</span>
+    <span class="comment">// member classes/structs/unions</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="special">&gt;</span> 
+    <span class="keyword">struct</span> <a class="link" href="parser_grammar/act_on_arg_/result.html" title="Struct template result">result</a> <span class="special">{</span>
+      <span class="comment">// types</span>
+      <span class="keyword">typedef</span> <span class="keyword">bool</span> <a class="link" href="parser_grammar/act_on_arg_/result.html#odtone.conf.parser_grammar.act_on_arg_.result.type"><span class="identifier">type</span></a><span class="special">;</span>
+    <span class="special">}</span><span class="special">;</span>
+
+    <span class="comment">// <a class="link" href="parser_grammar/act_on_arg_.html#idp7962224-bb">public member functions</a></span>
+    <span class="keyword">bool</span> <a class="link" href="parser_grammar/act_on_arg_.html#idp7962624-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><a class="link" href="function.html" title="Class function">function</a> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">args_type</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">arg_type</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">error_reason</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
+
+  <span class="keyword">struct</span> <a class="link" href="parser_grammar/act_on_name_.html" title="Struct act_on_name_">act_on_name_</a> <span class="special">{</span>
+    <span class="comment">// member classes/structs/unions</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="special">&gt;</span> 
+    <span class="keyword">struct</span> <a class="link" href="parser_grammar/act_on_name_/result.html" title="Struct template result">result</a> <span class="special">{</span>
+      <span class="comment">// types</span>
+      <span class="keyword">typedef</span> <span class="keyword">bool</span> <a class="link" href="parser_grammar/act_on_name_/result.html#odtone.conf.parser_grammar.act_on_name_.result.type"><span class="identifier">type</span></a><span class="special">;</span>
+    <span class="special">}</span><span class="special">;</span>
+
+    <span class="comment">// <a class="link" href="parser_grammar/act_on_name_.html#idp7970640-bb">public member functions</a></span>
+    <span class="keyword">bool</span> <a class="link" href="parser_grammar/act_on_name_.html#idp7971040-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><a class="link" href="function.html" title="Class function">function</a> <span class="keyword">const</span> <span class="special">*</span><span class="special">&amp;</span><span class="special">,</span> <span class="identifier">functions</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> 
+                    <span class="identifier">error_reason</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
+
+  <span class="keyword">struct</span> <a class="link" href="parser_grammar/act_on_prop_.html" title="Struct act_on_prop_">act_on_prop_</a> <span class="special">{</span>
+    <span class="comment">// member classes/structs/unions</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="special">&gt;</span> 
+    <span class="keyword">struct</span> <a class="link" href="parser_grammar/act_on_prop_/result.html" title="Struct template result">result</a> <span class="special">{</span>
+      <span class="comment">// types</span>
+      <span class="keyword">typedef</span> <span class="keyword">bool</span> <a class="link" href="parser_grammar/act_on_prop_/result.html#odtone.conf.parser_grammar.act_on_prop_.result.type"><span class="identifier">type</span></a><span class="special">;</span>
+    <span class="special">}</span><span class="special">;</span>
+
+    <span class="comment">// <a class="link" href="parser_grammar/act_on_prop_.html#idp7979056-bb">public member functions</a></span>
+    <span class="keyword">bool</span> <a class="link" href="parser_grammar/act_on_prop_.html#idp7979456-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><a class="link" href="property_class.html" title="Struct property_class">property_class</a> <span class="keyword">const</span> <span class="special">*</span><span class="special">&amp;</span><span class="special">,</span> <a class="link" href="function.html" title="Class function">function</a> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> 
+                    <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">error_reason</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+    <span class="keyword">bool</span> <a class="link" href="parser_grammar/act_on_prop_.html#idp7983744-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><a class="link" href="property_class.html" title="Struct property_class">property_class</a> <span class="keyword">const</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">arg_type</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">uint</span> <span class="special">&amp;</span><span class="special">,</span> 
+                    <span class="identifier">error_reason</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
+
+  <span class="keyword">struct</span> <a class="link" href="parser_grammar/error_handler_.html" title="Struct error_handler_">error_handler_</a> <span class="special">{</span>
+    <span class="comment">// member classes/structs/unions</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="special">&gt;</span> 
+    <span class="keyword">struct</span> <a class="link" href="parser_grammar/error_handler_/result.html" title="Struct template result">result</a> <span class="special">{</span>
+      <span class="comment">// types</span>
+      <span class="keyword">typedef</span> <span class="keyword">void</span> <a class="link" href="parser_grammar/error_handler_/result.html#odtone.conf.parser_grammar.error_handler_.result.type"><span class="identifier">type</span></a><span class="special">;</span>
+    <span class="special">}</span><span class="special">;</span>
+
+    <span class="comment">// <a class="link" href="parser_grammar/error_handler_.html#idp7992320-bb">public member functions</a></span>
+    <span class="keyword">void</span> <a class="link" href="parser_grammar/error_handler_.html#idp7992720-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">qi</span><span class="special">::</span><span class="identifier">info</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> 
+                    <span class="identifier">error_reason</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
+
+  <span class="keyword">struct</span> <a class="link" href="parser_grammar/run_cmd_.html" title="Struct run_cmd_">run_cmd_</a> <span class="special">{</span>
+    <span class="comment">// member classes/structs/unions</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="special">&gt;</span> 
+    <span class="keyword">struct</span> <a class="link" href="parser_grammar/run_cmd_/result.html" title="Struct template result">result</a> <span class="special">{</span>
+      <span class="comment">// types</span>
+      <span class="keyword">typedef</span> <span class="keyword">void</span> <a class="link" href="parser_grammar/run_cmd_/result.html#odtone.conf.parser_grammar.run_cmd_.result.type"><span class="identifier">type</span></a><span class="special">;</span>
+    <span class="special">}</span><span class="special">;</span>
+
+    <span class="comment">// <a class="link" href="parser_grammar/run_cmd_.html#idp8000576-bb">public member functions</a></span>
+    <span class="keyword">void</span> <a class="link" href="parser_grammar/run_cmd_.html#idp8000976-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><a class="link" href="function.html" title="Class function">function</a> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">args_type</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">pset_type</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="parser_grammar.html#odtone.conf.parser_grammarconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="parser_grammar.html#idp8025744-bb"><span class="identifier">parser_grammar</span></a><span class="special">(</span><span class="identifier">functions</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// public data members</span>
+  <span class="identifier">qi</span><span class="special">::</span><span class="identifier">rule</span><span class="special">&lt;</span> <span class="identifier">Iterator</span><span class="special">,</span> <a class="link" href="parser_grammar.html#odtone.conf.parser_grammar.skipper">skipper</a> <span class="special">&gt;</span> <span class="identifier">start</span><span class="special">;</span>
+  <span class="identifier">qi</span><span class="special">::</span><span class="identifier">rule</span><span class="special">&lt;</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">cmd_locals</span><span class="special">,</span> <a class="link" href="parser_grammar.html#odtone.conf.parser_grammar.skipper">skipper</a> <span class="special">&gt;</span> <span class="identifier">cmd</span><span class="special">;</span>
+  <span class="identifier">qi</span><span class="special">::</span><span class="identifier">rule</span><span class="special">&lt;</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> <a class="link" href="parser_grammar.html#odtone.conf.parser_grammar.skipper">skipper</a> <span class="special">&gt;</span> <span class="identifier">name</span><span class="special">;</span>
+  <span class="identifier">qi</span><span class="special">::</span><span class="identifier">rule</span><span class="special">&lt;</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">arg_type</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> <a class="link" href="parser_grammar.html#odtone.conf.parser_grammar.skipper">skipper</a> <span class="special">&gt;</span> <span class="identifier">arg</span><span class="special">;</span>
+  <span class="identifier">qi</span><span class="special">::</span><span class="identifier">rule</span><span class="special">&lt;</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">pset_type</span><span class="special">(</span><a class="link" href="function.html" title="Class function">function</a> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">,</span> <a class="link" href="parser_grammar.html#odtone.conf.parser_grammar.skipper">skipper</a> <span class="special">&gt;</span> <span class="identifier">pset</span><span class="special">;</span>
+  <span class="identifier">qi</span><span class="special">::</span><span class="identifier">rule</span><span class="special">&lt;</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">prop_type</span><span class="special">(</span><a class="link" href="function.html" title="Class function">function</a> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">,</span> <span class="identifier">prop_locals</span><span class="special">,</span> <a class="link" href="parser_grammar.html#odtone.conf.parser_grammar.skipper">skipper</a> <span class="special">&gt;</span> <span class="identifier">prop</span><span class="special">;</span>
+  <a class="link" href="string_grammar.html" title="Struct template string_grammar">string_grammar</a><span class="special">&lt;</span> <span class="identifier">Iterator</span> <span class="special">&gt;</span> <span class="identifier">str</span><span class="special">;</span>
+  <a class="link" href="ip4_grammar.html" title="Struct template ip4_grammar">ip4_grammar</a><span class="special">&lt;</span> <span class="identifier">Iterator</span> <span class="special">&gt;</span> <span class="identifier">ip4</span><span class="special">;</span>
+  <a class="link" href="ip6_grammar.html" title="Struct template ip6_grammar">ip6_grammar</a><span class="special">&lt;</span> <span class="identifier">Iterator</span> <span class="special">&gt;</span> <span class="identifier">ip6</span><span class="special">;</span>
+  <span class="identifier">functions</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">cmds</span><span class="special">;</span>
+  <span class="identifier">error_reason</span> <span class="identifier">ereason</span><span class="special">;</span>
+  <span class="identifier">ph</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span> <a class="link" href="parser_grammar/act_on_name_.html" title="Struct act_on_name_">act_on_name_</a> <span class="special">&gt;</span> <span class="identifier">act_on_name</span><span class="special">;</span>
+  <span class="identifier">ph</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span> <a class="link" href="parser_grammar/act_on_arg_.html" title="Struct act_on_arg_">act_on_arg_</a> <span class="special">&gt;</span> <span class="identifier">act_on_arg</span><span class="special">;</span>
+  <span class="identifier">ph</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span> <a class="link" href="parser_grammar/act_on_prop_.html" title="Struct act_on_prop_">act_on_prop_</a> <span class="special">&gt;</span> <span class="identifier">act_on_prop</span><span class="special">;</span>
+  <span class="identifier">ph</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span> <a class="link" href="parser_grammar/run_cmd_.html" title="Struct run_cmd_">run_cmd_</a> <span class="special">&gt;</span> <span class="identifier">run_cmd</span><span class="special">;</span>
+  <span class="identifier">ph</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span> <a class="link" href="parser_grammar/error_handler_.html" title="Struct error_handler_">error_handler_</a> <span class="special">&gt;</span> <span class="identifier">error_handler</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp10628304"></a><h2>Description</h2>
+<div class="refsect2">
+<a name="idp10628720"></a><h3>
+<a name="odtone.conf.parser_grammarconstruct-copy-destruct"></a><code class="computeroutput">parser_grammar</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a name="idp8025744-bb"></a><span class="identifier">parser_grammar</span><span class="special">(</span><span class="identifier">functions</span> <span class="keyword">const</span> <span class="special">&amp;</span> cm<span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2013 Universidade Aveiro<br>Copyright &#169; 2009-2013 Instituto de Telecomunica&#231;&#245;es - P&#243;lo Aveiro<p>
+        This software is distributed under a license. The full license agreement
+        can be found in the LICENSE in this distribution. This software may not be
+        copied, modified, sold or distributed other than expressed in the named license
+        agreement. This software is distributed without any warranty.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="ip6_grammar.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.conf_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="parser_grammar/act_on_arg_.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
