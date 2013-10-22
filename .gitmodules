@@ -1,3 +1,6 @@
 [submodule "extensions/MIH-Resource-Adaptor"]
 	path = extensions/MIH-Resource-Adaptor
 	url = https://github.com/ATNoG/MIH-Resource-Adaptor.git
+[submodule "extensions/MIH-JAVA-Library"]
+	path = extensions/MIH-JAVA-Library
+	url = https://github.com/ATNoG/MIH-JAVA-Library.git
