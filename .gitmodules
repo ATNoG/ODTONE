@@ -1,0 +1,3 @@
+[submodule "extensions/MIH-Resource-Adaptor"]
+	path = extensions/MIH-Resource-Adaptor
+	url = https://github.com/ATNoG/MIH-Resource-Adaptor.git
