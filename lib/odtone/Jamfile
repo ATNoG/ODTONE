@@ -16,7 +16,7 @@
 # This software is distributed without any warranty.
 #==============================================================================
 
-project odtone
+project libodtone
 	;
 
 odtone.runtime-lib pthread  ;
