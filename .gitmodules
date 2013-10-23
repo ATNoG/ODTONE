@@ -4,3 +4,6 @@
 [submodule "extensions/MIH-JAVA-Library"]
 	path = extensions/MIH-JAVA-Library
 	url = https://github.com/ATNoG/MIH-JAVA-Library.git
+[submodule "extensions/MIH-CSharp-Library"]
+	path = extensions/MIH-CSharp-Library
+	url = https://github.com/ATNoG/MIH-CSharp-Library.git
