@@ -54,7 +54,6 @@ lib odtone
 	  /boost//system
 	  /boost//thread
 	  /boost//program_options
-	  pthread
 	: <c++-template-depth>1024
 	  <define>BOOST_ENABLE_ASSERT_HANDLER
 	;
