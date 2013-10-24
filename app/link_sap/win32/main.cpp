@@ -19,6 +19,7 @@
 #include "../link_sap.hpp"
 #include "../interface/if_802_11.hpp"
 #include <odtone/debug.hpp>
+#include <odtone/strutil.hpp>
 #include <odtone/mih/types/information.hpp>
 #include <odtone/mih/types/capabilities.hpp>
 #include <boost/bind.hpp>
@@ -278,7 +279,7 @@ int main(int argc, char** argv)
 			interface* it;
 
 			it = new if_802_11(if_id(&iflst->InterfaceInfo[i].InterfaceGuid));
-			it->name(iflst->InterfaceInfo[i].strInterfaceDescription);
+			it->name(odtone::ustr(iflst->InterfaceInfo[i].strInterfaceDescription));
 			
 			MIB_IF_ROW2 it_info = link_sap::win32::get_interface_info(iflst->InterfaceInfo[i].InterfaceGuid);
 			it->link_addr(odtone::mih::mac_addr(it_info.PhysicalAddress, 
