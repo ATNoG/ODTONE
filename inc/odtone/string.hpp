@@ -52,44 +52,5 @@ typedef basic_const_string_ref<wchar_t> const_wstring_ref;
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace odtone */
 
-///////////////////////////////////////////////////////////////////////////////
-#include <odtone/win32.hpp> //included here because of const_string_ref dependency
-
-///////////////////////////////////////////////////////////////////////////////
-namespace odtone {
-
-///////////////////////////////////////////////////////////////////////////////
-#ifdef BOOST_WINDOWS
-
-/**
- * Convert a UTF-8 string to native UTF representation
- */
-inline std::wstring ustr(const_string_ref str)
-{
-	return win32::utf8_to_utf16(str);
-}
-
-#else
-
-/**
- * Convert a UTF-8 string to the native UTF representation
- */
-inline char const* ustr(char const* str)
-{
-	return str;
-}
-
-/**
- * Convert a UTF-8 string to the native UTF representation
- */
-inline std::string const& ustr(std::string const& str)
-{
-	return str;
-}
-
-#endif
-///////////////////////////////////////////////////////////////////////////////
-} /* namespace odtone */
-
 // EOF ////////////////////////////////////////////////////////////////////////
 #endif /* ODTONE_STRING__HPP_ */

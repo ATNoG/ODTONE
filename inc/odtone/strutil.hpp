@@ -21,6 +21,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
 #include <odtone/debug.hpp>
+#include <odtone/string.hpp>
+#include <odtone/win32.hpp>
 #include <string>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -64,6 +66,43 @@ inline uchar hex_to_int(uchar c)
 
 	return c - '0';
 }
+
+#ifdef _WIN32
+/**
+ * Convert a UTF-8 string to native UTF representation
+ */
+inline std::wstring ustr(const_string_ref str)
+{
+	return win32::utf8_to_utf16(str);
+}
+
+/**
+ * Convert a native UTF representation string to UTF-8
+ */
+inline std::string ustr(const_wstring_ref str)
+{
+	return win32::utf16_to_utf8(str);
+}
+
+#else
+
+/**
+ * Convert a UTF-8 string to the native UTF representation
+ */
+inline char const* ustr(char const* str)
+{
+	return str;
+}
+
+/**
+ * Convert a UTF-8 string to the native UTF representation
+ */
+inline std::string const& ustr(std::string const& str)
+{
+	return str;
+}
+
+#endif /* _WIN32 */
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace odtone */
