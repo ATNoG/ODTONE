@@ -24,7 +24,7 @@ namespace odtone { namespace win32 {
 ///////////////////////////////////////////////////////////////////////////////
 std::wstring utf8_to_utf16(const_string_ref src)
 {
-	if (!len || src[0] == '\0')
+	if (src[0] == '\0')
 		return std::wstring();
 
 	int len = detail::MultiByteToWideChar(detail::k_cp_utf8, detail::k_mb_err_inv_char,
@@ -35,25 +35,25 @@ std::wstring utf8_to_utf16(const_string_ref src)
 	std::wstring tmp(len - 1, L'\0');
 
 	len = detail::MultiByteToWideChar(detail::k_cp_utf8, detail::k_mb_err_inv_char,
-	                                   src, -1, tmp.data(), len);
+	                                   src, -1, &tmp[0], len);
 	ODTONE_ASSERT(len != 0);
 	return tmp;
 }
 
 std::string utf16_to_utf8(const_wstring_ref src)
 {
-	if (!len || src[0] == L'\0')
+	if (src[0] == L'\0')
 		return std::string();
 
 	int len = detail::WideCharToMultiByte(detail::k_cp_utf8, detail::k_wc_err_inv_char,
 	                                       src, -1, nullptr, 0, nullptr, nullptr);
-	if (!wlen)
+	if (!len)
 		return std::string();
 
 	std::string tmp(len - 1, '\0');
 
 	len = detail::WideCharToMultiByte(detail::k_cp_utf8, detail::k_wc_err_inv_char,
-	                                  src, -1, tmp.data(), len, nullptr, nullptr);
+	                                  src, -1, &tmp[0], len, nullptr, nullptr);
 	ODTONE_ASSERT(len != 0);
 	return tmp;
 }
