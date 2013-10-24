@@ -24,6 +24,8 @@
 #include <odtone/debug.hpp>
 #include <odtone/string.hpp>
 
+#include <boost/filesystem.hpp>
+
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace win32 {
 
