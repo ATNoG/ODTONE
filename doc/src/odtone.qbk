@@ -128,21 +128,24 @@ To compile ODTONE go to 'odtone' and run 'b2'.
 [*In a tarball]
 
 You can get the ODTONE source code tarball from our
-[@http://helios.av.it.pt/projects/odtone/files project page].
+[@http://atnog.av.it.pt/odtone/ project page].
 Then just unpack it and you are ready to compile and install ODTONE.
+
+[important If you get ODTONE source code via tarball, you will need to manually download the submodules.]
 
 [*From the git repository]
 
 You can create your own local copy of the ODTONE by cloning the git repository from
-[@http://helios.av.it.pt/projects/odtone/repository ODTONE repository].
-
-*[*Username:] user
-*[*-- No password]
-
+[@https://github.com/ATNoG/ODTONE ODTONE repository].
 
 To clone the git repository you must run the next command:
 ``
-	git clone https://user@helios.av.it.pt/git/odtone/ odtone
+	git clone https://github.com/ATNoG/ODTONE.git odtone
+``
+
+Then, in order to get all submodules provided by ODTONE run the next command:
+``
+	git submodule update --init
 ``
 
 [h3 3. Compiling ODTONE]
@@ -152,10 +155,17 @@ the right dependencies you can compile it. ODTONE does not require any special
 procedures or layout for installation.
 
 [table Platform Support
-    [[]        [x86-32]                 [x86-64]                 [ARM]]
-    [[Linux]   [[$./images/check.png]]  [[$./images/check.png]]  [[$./images/check.png]] ]
-    [[Windows] [[$./images/check.png]]  [[$./images/check.png]]  [[$./images/interrogation.png]]  ]
+    [[]        [x86-32]                 [x86-64]                ]
+    [[Linux]   [[$./images/check.png]]  [[$./images/check.png]] ]
+    [[Windows] [[$./images/check.png]]  [[$./images/check.png]] ]
 ]
+
+[table Platform Support
+    [[] []]
+    [[Android] [[$./images/check.png]]]
+    [[OpenWrt] [[$./images/check.png]]]
+]
+
 
 [note *For Linux*
 
@@ -197,6 +207,11 @@ while compiling.
 
 The Android SDK has the necessary tools to run, debug and deploy the ODTONE
 binaries.]
+
+[note *For OpenWrt*
+
+Check instruction provided in odtone-openwrt submodule (<ODTONE>/extensions/odtone-openwrt or
+[@https://github.com/ATNoG/odtone-openwrt ODTONE-OpenWrt project page])]
 
 [important By default, only the MIHF, the MIH-User and the Link SAP used in the
 demo are compiled. However, you can compile the remaining entities by defining their path
@@ -1272,33 +1287,25 @@ Ireland, Oct 2011
 [section:library Libraries]
 
 [variablelist
-    [[ODTONE Base] [
+    [[libodtone] [
     The ODTONE BASE library contains a set of classes which offers several helper
 	mechanisms (such as debug, list management, log, exceptions and random values
-    generation) to facilitate the information management.]]
+    generation) to facilitate the information management.
 
-    [[ODTONE MIH] [
-    The ODTONE MIH library defines all MIH data types presented in the 802.21
-    standard. In addition, it provides a set of classes which facilitates
-    the creation and parsing of MIH messages.]]
+	It defines all MIH data types presented in the 802.21 standard. In addition,
+	it provides a set of classes which facilitates the creation and parsing of
+	MIH messages.
 
-    [[ODTONE SAP] [
-    The ODTONE SAP library contains a set of I/O service classes, providing the ability
+	It also contains a set of I/O service classes, providing the ability
     to send and receive MIH messages. The implementation is based on the
     boost::asio and it only supports asynchronous operation.
-    [*Note:] It is important to be familiar with the boost::asio library.
-    It is also recommend to be familiar with boost::function and
-    boost::bind.]]
 
-    [[ODTONE NET] [
-	The ODTONE NET library defines a set of classes which offer several network
-	protocols and terminology support.]]
+    Finally, it provides a set of classes which offer several network
+	protocols and terminology support.
+    ]]
 ]
 
-[xinclude ../odtone_base_lib.xml]
-[xinclude ../odtone_mih_lib.xml]
-[xinclude ../odtone_sap_lib.xml]
-[xinclude ../odtone_net_lib.xml]
+[xinclude ../libodtone.xml]
 
 [endsect]
 

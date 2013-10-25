@@ -4,8 +4,8 @@
 #------------------------------------------------------------------------------
 # ODTONE - Open Dot Twenty One
 #
-# Copyright (C) 2009-2012 Universidade Aveiro
-# Copyright (C) 2009-2012 Instituto de Telecomunicações - Pólo Aveiro
+# Copyright (C) 2009-2013 Universidade Aveiro
+# Copyright (C) 2009-2013 Instituto de Telecomunicações - Pólo Aveiro
 #
 # This software is distributed under a license. The full license
 # agreement can be found in the file LICENSE in this distribution.
@@ -37,41 +37,27 @@ alias doxygen_parameters
 	  <doxygen:param>MACRO_EXPANSION=NO
 	;
 
-doxygen odtone_base_lib
-        : [ glob ../inc/odtone/*.hpp : ../inc/odtone/namespace.hpp ]
-          doxygen_parameters
-        : <reftitle>"ODTONE Base Library"
-        ;
-
-doxygen odtone_mih_lib
-        : [ glob ../inc/odtone/mih/*.hpp
-            glob ../inc/odtone/mih/types/*.hpp : ../inc/odtone/mih/namespace.hpp ]
-            doxygen_parameters
-        : <reftitle>"ODTONE MIH Library"
-        ;
-
-doxygen odtone_sap_lib
-        : [ glob ../inc/odtone/sap/*.hpp : ../inc/odtone/sap/namespace.hpp ]
-		  doxygen_parameters
-        : <reftitle>"ODTONE SAP Library"
-        ;
-
-doxygen odtone_net_lib
-        : [ glob ../inc/odtone/net/dns/*.hpp
+doxygen libodtone
+        : [ glob ../inc/odtone/*.hpp
+            glob ../inc/odtone/mih/*.hpp
+			glob ../inc/odtone/mih/types/*.hpp
+			glob ../inc/odtone/sap/*.hpp
+			glob ../inc/odtone/net/dns/*.hpp
             glob ../inc/odtone/net/ip/*.hpp
             glob ../inc/odtone/net/ip/icmp/*.hpp
-            glob ../inc/odtone/net/link/*.hpp : ../inc/odtone/net/namespace.hpp ]
-		  doxygen_parameters
-        : <reftitle>"ODTONE NET Library"
+            glob ../inc/odtone/net/link/*.hpp
+            	: ../inc/odtone/namespace.hpp
+            	  ../inc/odtone/mih/namespace.hpp
+            	  ../inc/odtone/sap/namespace.hpp
+            	  ../inc/odtone/net/namespace.hpp ]
+          doxygen_parameters
+        : <reftitle>"ODTONE Base Library"
         ;
 
 
 xml odtone-doc
 	: src/odtone.qbk
-	: <dependency>odtone_base_lib
-	  <dependency>odtone_mih_lib
-	  <dependency>odtone_sap_lib
-	  <dependency>odtone_net_lib
+	: <dependency>libodtone
 	;
 
 boostbook doc-html
