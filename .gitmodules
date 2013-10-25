@@ -7,3 +7,6 @@
 [submodule "extensions/MIH-CSharp-Library"]
 	path = extensions/MIH-CSharp-Library
 	url = https://github.com/ATNoG/MIH-CSharp-Library.git
+[submodule "extensions/odtone-openwrt"]
+	path = extensions/odtone-openwrt
+	url = https://github.com/ATNoG/odtone-openwrt.git
