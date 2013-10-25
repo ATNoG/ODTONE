@@ -4,8 +4,8 @@
 <title>Struct link_status_rsp</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="ODTONE 0.5">
-<link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.link_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/link.hpp&gt;">
+<link rel="home" href="../../index.html" title="ODTONE 0.6">
+<link rel="up" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.link_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/link.hpp&gt;">
 <link rel="prev" href="link_poa_list.html" title="Struct link_poa_list">
 <link rel="next" href="status_rsp.html" title="Struct status_rsp">
 </head>
@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="link_poa_list.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.link_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="status_rsp.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="link_poa_list.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.link_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="status_rsp.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.mih.link_status_rsp"></a><div class="titlepage"></div>
@@ -22,13 +22,13 @@
 <p>odtone::mih::link_status_rsp</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.link_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/link.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/mih/types/link.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.link_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/link.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/mih/types/link.hpp</a>&gt;
 
 </span>
 <span class="keyword">struct</span> <a class="link" href="link_status_rsp.html" title="Struct link_status_rsp">link_status_rsp</a> <span class="special">{</span>
 
-  <span class="comment">// <a class="link" href="link_status_rsp.html#idp12093488-bb">public member functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="link_status_rsp.html#idp12093888-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="link_status_rsp.html#idp13872912-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="link_status_rsp.html#idp13873312-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="link_status_rsp.html#odtone.mih.link_status_rsppublic-data-members">public data members</a></span>
   <span class="identifier">link_states_rsp_list</span> <a class="link" href="link_status_rsp.html#odtone.mih.link_status_rsp.states_rsp_list"><span class="identifier">states_rsp_list</span></a><span class="special">;</span>
@@ -36,13 +36,13 @@
   <span class="identifier">link_desc_rsp_list</span> <a class="link" href="link_status_rsp.html#odtone.mih.link_status_rsp.desc_rsp_list"><span class="identifier">desc_rsp_list</span></a><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp25412608"></a><h2>Description</h2>
+<a name="idp83766256"></a><h2>Description</h2>
 <p>LINK_STATUS_RSP data type. </p>
 <div class="refsect2">
-<a name="idp25413328"></a><h3>
-<a name="idp12093488-bb"></a><code class="computeroutput">link_status_rsp</code> public member functions</h3>
+<a name="idp83766976"></a><h3>
+<a name="idp13872912-bb"></a><code class="computeroutput">link_status_rsp</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp12093888-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp13873312-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize/deserialize the LINK_STATUS_RSP data type.</p>
 <p>
 </p>
@@ -62,7 +62,7 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp25427120"></a><h3>
+<a name="idp83780832"></a><h3>
 <a name="odtone.mih.link_status_rsppublic-data-members"></a><code class="computeroutput">link_status_rsp</code> 
         public
        public data members</h3>
@@ -95,7 +95,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="link_poa_list.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.link_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="status_rsp.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="link_poa_list.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.link_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="status_rsp.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

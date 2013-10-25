@@ -4,16 +4,16 @@
 <title>Class message</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="ODTONE 0.5">
-<link rel="up" href="../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.dns.message_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/dns/message.hpp&gt;">
-<link rel="prev" href="frame.html" title="Struct frame">
-<link rel="next" href="query.html" title="Struct query">
+<link rel="home" href="../../index.html" title="ODTONE 0.6">
+<link rel="up" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.dns.message_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/dns/message.hpp&gt;">
+<link rel="prev" href="../mih/operator_idp12378736.html" title="Function operator&gt;&gt;">
+<link rel="next" href="../mih/request.html" title="Class request">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="frame.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.dns.message_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="query.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../mih/operator_idp12378736.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.dns.message_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="../mih/request.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.dns.message"></a><div class="titlepage"></div>
@@ -22,68 +22,68 @@
 <p>odtone::dns::message</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.dns.message_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/dns/message.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/net/dns/message.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.dns.message_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/dns/message.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/net/dns/message.hpp</a>&gt;
 
 </span>
 <span class="keyword">class</span> <a class="link" href="message.html" title="Class message">message</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="message.html#odtone.dns.messageconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="message.html#idp7244720-bb"><span class="identifier">message</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="message.html#idp7245760-bb"><span class="identifier">message</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  message&amp; <a class="link" href="message.html#idp7249328-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="message.html#idp7248768-bb"><span class="special">~</span><span class="identifier">message</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="message.html#idp12469776-bb"><span class="identifier">message</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="message.html#idp12470816-bb"><span class="identifier">message</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  message&amp; <a class="link" href="message.html#idp12474384-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="message.html#idp12473824-bb"><span class="special">~</span><span class="identifier">message</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="message.html#idp7622112-bb">public member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp7622512-bb"><span class="identifier">tid</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp8821744-bb"><span class="identifier">qr</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp8824528-bb"><span class="identifier">opcode</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp8827280-bb"><span class="identifier">aa</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp8830064-bb"><span class="identifier">tc</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp8832816-bb"><span class="identifier">rd</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp8835568-bb"><span class="identifier">ra</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp8838352-bb"><span class="identifier">z</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp8841104-bb"><span class="identifier">rcode</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp8843856-bb"><span class="identifier">query</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="question.html" title="Struct question">question</a> <span class="special">&gt;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp8847056-bb"><span class="identifier">answer</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp8850320-bb"><span class="identifier">auth</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp8853600-bb"><span class="identifier">add</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">uint16</span> <a class="link" href="message.html#idp8856896-bb"><span class="identifier">tid</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="message.html#idp8859056-bb"><span class="identifier">qr</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint8</span> <a class="link" href="message.html#idp8861216-bb"><span class="identifier">opcode</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="message.html#idp8863344-bb"><span class="identifier">aa</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="message.html#idp8865504-bb"><span class="identifier">tc</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="message.html#idp8867632-bb"><span class="identifier">rd</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="message.html#idp8869760-bb"><span class="identifier">ra</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="message.html#idp8871920-bb"><span class="identifier">z</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint8</span> <a class="link" href="message.html#idp8874048-bb"><span class="identifier">rcode</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint16</span> <a class="link" href="message.html#idp8876176-bb"><span class="identifier">nquery</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint16</span> <a class="link" href="message.html#idp8878304-bb"><span class="identifier">nanswer</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint16</span> <a class="link" href="message.html#idp8880464-bb"><span class="identifier">nauth</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint16</span> <a class="link" href="message.html#idp8882624-bb"><span class="identifier">nadd</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="question.html" title="Struct question">question</a> <span class="special">&gt;</span> <a class="link" href="message.html#idp8884784-bb"><span class="identifier">query</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> <a class="link" href="message.html#idp7234288-bb"><span class="identifier">answer</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> <a class="link" href="message.html#idp7236736-bb"><span class="identifier">auth</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> <a class="link" href="message.html#idp7239312-bb"><span class="identifier">add</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="message.html#idp7241904-bb"><span class="identifier">get_frame</span></a><span class="special">(</span><span class="identifier">frame_vla</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="message.html#idp12389520-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp12389920-bb"><span class="identifier">tid</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp12392768-bb"><span class="identifier">qr</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp12395616-bb"><span class="identifier">opcode</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp12398432-bb"><span class="identifier">aa</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp12401280-bb"><span class="identifier">tc</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp12404096-bb"><span class="identifier">rd</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp12406912-bb"><span class="identifier">ra</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp12409760-bb"><span class="identifier">z</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp12412576-bb"><span class="identifier">rcode</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp12415392-bb"><span class="identifier">query</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="question.html" title="Struct question">question</a> <span class="special">&gt;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp12418656-bb"><span class="identifier">answer</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp12421920-bb"><span class="identifier">auth</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp12425200-bb"><span class="identifier">add</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">uint16</span> <a class="link" href="message.html#idp12428496-bb"><span class="identifier">tid</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="message.html#idp12430656-bb"><span class="identifier">qr</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint8</span> <a class="link" href="message.html#idp12432816-bb"><span class="identifier">opcode</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="message.html#idp12434944-bb"><span class="identifier">aa</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="message.html#idp12437104-bb"><span class="identifier">tc</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="message.html#idp12439232-bb"><span class="identifier">rd</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="message.html#idp12441360-bb"><span class="identifier">ra</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="message.html#idp12443520-bb"><span class="identifier">z</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint8</span> <a class="link" href="message.html#idp12445648-bb"><span class="identifier">rcode</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint16</span> <a class="link" href="message.html#idp12447776-bb"><span class="identifier">nquery</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint16</span> <a class="link" href="message.html#idp12449904-bb"><span class="identifier">nanswer</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint16</span> <a class="link" href="message.html#idp12452064-bb"><span class="identifier">nauth</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint16</span> <a class="link" href="message.html#idp12454224-bb"><span class="identifier">nadd</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="question.html" title="Struct question">question</a> <span class="special">&gt;</span> <a class="link" href="message.html#idp12456384-bb"><span class="identifier">query</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> <a class="link" href="message.html#idp12458944-bb"><span class="identifier">answer</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> <a class="link" href="message.html#idp12461504-bb"><span class="identifier">auth</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> <a class="link" href="message.html#idp12464080-bb"><span class="identifier">add</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="message.html#idp12466672-bb"><span class="identifier">get_frame</span></a><span class="special">(</span><a class="link" href="../../odtone_base_library.html#odtone.dns.frame_vla">frame_vla</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp29222560"></a><h2>Description</h2>
+<a name="idp73913952"></a><h2>Description</h2>
 <p>DNS Message</p>
 <p>The <a class="link" href="message.html" title="Class message">odtone::dns::message</a> is high level representation of an DNS message. It provides access to all fields of the DNS message header and to all resource records presented on the DNS Message.</p>
 <p>The <a class="link" href="message.html" title="Class message">odtone::dns::message</a> can be set from an <a class="link" href="frame.html" title="Struct frame">odtone::dns::frame</a> that was received or it can create an <a class="link" href="frame.html" title="Struct frame">odtone::dns::frame</a> ready to be sent. </p>
 <div class="refsect2">
-<a name="idp29227328"></a><h3>
+<a name="idp73918720"></a><h3>
 <a name="odtone.dns.messageconstruct-copy-destruct"></a><code class="computeroutput">message</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="idp7244720-bb"></a><span class="identifier">message</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp12469776-bb"></a><span class="identifier">message</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a default DNS Message.</p>
 <p>The defaults for each field are: tid = 0; qr = false; opcode = 0; aa = false; tc = false; rd = false; ra = false; z = false; rcode = false; nquery = false; nanswer = false; nauth = false; nadd = false; </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp7245760-bb"></a><span class="identifier">message</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span> fm<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp12470816-bb"></a><span class="identifier">message</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span> fm<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a DNS Message parsing all fields from a frame.</p>
 <p>
 </p>
@@ -102,7 +102,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout">message&amp; <a name="idp7249328-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span> fm<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout">message&amp; <a name="idp12474384-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="frame.html" title="Struct frame">frame</a> <span class="special">&amp;</span> fm<span class="special">)</span><span class="special">;</span></pre>
 <p>Extract the DNS Message fields from a given <code class="computeroutput"><a class="link" href="frame.html" title="Struct frame">odtone::dns::frame</a></code>.</p>
 <p>
 
@@ -128,17 +128,17 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp7248768-bb"></a><span class="special">~</span><span class="identifier">message</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp12473824-bb"></a><span class="special">~</span><span class="identifier">message</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Destruct a DNS Message. </p>
 </li>
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp29262640"></a><h3>
-<a name="idp7622112-bb"></a><code class="computeroutput">message</code> public member functions</h3>
+<a name="idp73954096"></a><h3>
+<a name="idp12389520-bb"></a><code class="computeroutput">message</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp7622512-bb"></a><span class="identifier">tid</span><span class="special">(</span><span class="identifier">uint16</span> tid<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12389920-bb"></a><span class="identifier">tid</span><span class="special">(</span><span class="identifier">uint16</span> tid<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the DNS Message Transaction Identifier.</p>
 <p>
 </p>
@@ -157,7 +157,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8821744-bb"></a><span class="identifier">qr</span><span class="special">(</span><span class="keyword">bool</span> qr<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12392768-bb"></a><span class="identifier">qr</span><span class="special">(</span><span class="keyword">bool</span> qr<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the DNS Message Query/Response Flag.</p>
 <p>
 </p>
@@ -176,7 +176,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8824528-bb"></a><span class="identifier">opcode</span><span class="special">(</span><span class="identifier">uint8</span> opcode<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12395616-bb"></a><span class="identifier">opcode</span><span class="special">(</span><span class="identifier">uint8</span> opcode<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the DNS Message Operation Code.</p>
 <p>
 </p>
@@ -195,7 +195,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8827280-bb"></a><span class="identifier">aa</span><span class="special">(</span><span class="keyword">bool</span> aa<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12398432-bb"></a><span class="identifier">aa</span><span class="special">(</span><span class="keyword">bool</span> aa<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the DNS Message Authoritative Answer Flag.</p>
 <p>
 </p>
@@ -214,7 +214,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8830064-bb"></a><span class="identifier">tc</span><span class="special">(</span><span class="keyword">bool</span> tc<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12401280-bb"></a><span class="identifier">tc</span><span class="special">(</span><span class="keyword">bool</span> tc<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the DNS Message Truncation Flag.</p>
 <p>
 </p>
@@ -233,7 +233,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8832816-bb"></a><span class="identifier">rd</span><span class="special">(</span><span class="keyword">bool</span> rd<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12404096-bb"></a><span class="identifier">rd</span><span class="special">(</span><span class="keyword">bool</span> rd<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the DNS Message Recursion Desired.</p>
 <p>
 </p>
@@ -252,7 +252,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8835568-bb"></a><span class="identifier">ra</span><span class="special">(</span><span class="keyword">bool</span> ra<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12406912-bb"></a><span class="identifier">ra</span><span class="special">(</span><span class="keyword">bool</span> ra<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the DNS Message Recursion Available.</p>
 <p>
 </p>
@@ -271,7 +271,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8838352-bb"></a><span class="identifier">z</span><span class="special">(</span><span class="keyword">bool</span> z<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12409760-bb"></a><span class="identifier">z</span><span class="special">(</span><span class="keyword">bool</span> z<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the DNS Message Zero.</p>
 <p>
 </p>
@@ -290,7 +290,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8841104-bb"></a><span class="identifier">rcode</span><span class="special">(</span><span class="identifier">uint8</span> rcode<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12412576-bb"></a><span class="identifier">rcode</span><span class="special">(</span><span class="identifier">uint8</span> rcode<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the DNS Message Response Code.</p>
 <p>
 </p>
@@ -309,7 +309,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8843856-bb"></a><span class="identifier">query</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="question.html" title="Struct question">question</a> <span class="special">&gt;</span> query<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12415392-bb"></a><span class="identifier">query</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="question.html" title="Struct question">question</a> <span class="special">&gt;</span> query<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the DNS Message Question list.</p>
 <p>
 </p>
@@ -328,7 +328,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8847056-bb"></a><span class="identifier">answer</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> answer<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12418656-bb"></a><span class="identifier">answer</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> answer<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the DNS Message Answer Record list.</p>
 <p>
 </p>
@@ -347,7 +347,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8850320-bb"></a><span class="identifier">auth</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> auth<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12421920-bb"></a><span class="identifier">auth</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> auth<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the DNS Message Authority Record list.</p>
 <p>
 </p>
@@ -366,7 +366,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8853600-bb"></a><span class="identifier">add</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> add<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12425200-bb"></a><span class="identifier">add</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> add<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the DNS Message Additional Record list.</p>
 <p>
 </p>
@@ -385,7 +385,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp8856896-bb"></a><span class="identifier">tid</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp12428496-bb"></a><span class="identifier">tid</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the DNS Message Transaction Identifier.</p>
 <p>
 </p>
@@ -398,7 +398,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp8859056-bb"></a><span class="identifier">qr</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp12430656-bb"></a><span class="identifier">qr</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the DNS Message Query/Response Flag.</p>
 <p>
 </p>
@@ -411,7 +411,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint8</span> <a name="idp8861216-bb"></a><span class="identifier">opcode</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint8</span> <a name="idp12432816-bb"></a><span class="identifier">opcode</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the DNS Message Operation Code.</p>
 <p>
 </p>
@@ -424,7 +424,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp8863344-bb"></a><span class="identifier">aa</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp12434944-bb"></a><span class="identifier">aa</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the DNS Message Authoritative Answer Flag.</p>
 <p>
 </p>
@@ -437,7 +437,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp8865504-bb"></a><span class="identifier">tc</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp12437104-bb"></a><span class="identifier">tc</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the DNS Message Truncation Flag.</p>
 <p>
 </p>
@@ -450,7 +450,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp8867632-bb"></a><span class="identifier">rd</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp12439232-bb"></a><span class="identifier">rd</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the DNS Message Recursion Desired.</p>
 <p>
 </p>
@@ -463,7 +463,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp8869760-bb"></a><span class="identifier">ra</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp12441360-bb"></a><span class="identifier">ra</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the DNS Message Recursion Available.</p>
 <p>
 </p>
@@ -476,7 +476,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp8871920-bb"></a><span class="identifier">z</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp12443520-bb"></a><span class="identifier">z</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the DNS Message Zero.</p>
 <p>
 </p>
@@ -489,7 +489,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint8</span> <a name="idp8874048-bb"></a><span class="identifier">rcode</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint8</span> <a name="idp12445648-bb"></a><span class="identifier">rcode</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the DNS Message Response Code.</p>
 <p>
 </p>
@@ -502,7 +502,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp8876176-bb"></a><span class="identifier">nquery</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp12447776-bb"></a><span class="identifier">nquery</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the DNS Message Question Count.</p>
 <p>
 </p>
@@ -515,7 +515,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp8878304-bb"></a><span class="identifier">nanswer</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp12449904-bb"></a><span class="identifier">nanswer</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the DNS Message Answer Record Count.</p>
 <p>
 </p>
@@ -528,7 +528,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp8880464-bb"></a><span class="identifier">nauth</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp12452064-bb"></a><span class="identifier">nauth</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the DNS Message Authority Record Count.</p>
 <p>
 </p>
@@ -541,7 +541,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp8882624-bb"></a><span class="identifier">nadd</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp12454224-bb"></a><span class="identifier">nadd</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the DNS Message Additional Record Count.</p>
 <p>
 </p>
@@ -554,7 +554,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="question.html" title="Struct question">question</a> <span class="special">&gt;</span> <a name="idp8884784-bb"></a><span class="identifier">query</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="question.html" title="Struct question">question</a> <span class="special">&gt;</span> <a name="idp12456384-bb"></a><span class="identifier">query</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Get the DNS Message Question list.</p>
 <p>
 </p>
@@ -567,7 +567,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> <a name="idp7234288-bb"></a><span class="identifier">answer</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> <a name="idp12458944-bb"></a><span class="identifier">answer</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Get the DNS Message Answer Record list.</p>
 <p>
 </p>
@@ -580,7 +580,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> <a name="idp7236736-bb"></a><span class="identifier">auth</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> <a name="idp12461504-bb"></a><span class="identifier">auth</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Get the DNS Message Authority Record list.</p>
 <p>
 </p>
@@ -593,7 +593,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> <a name="idp7239312-bb"></a><span class="identifier">add</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="resource_record.html" title="Struct resource_record">resource_record</a> <span class="special">&gt;</span> <a name="idp12464080-bb"></a><span class="identifier">add</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Get the DNS Message Additional Record list.</p>
 <p>
 </p>
@@ -606,7 +606,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp7241904-bb"></a><span class="identifier">get_frame</span><span class="special">(</span><span class="identifier">frame_vla</span> <span class="special">&amp;</span> fm<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp12466672-bb"></a><span class="identifier">get_frame</span><span class="special">(</span><a class="link" href="../../odtone_base_library.html#odtone.dns.frame_vla">frame_vla</a> <span class="special">&amp;</span> fm<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the DNS Message Frame.</p>
 <p>
 </p>
@@ -640,7 +640,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="frame.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.dns.message_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="query.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../mih/operator_idp12378736.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.dns.message_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="../mih/request.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

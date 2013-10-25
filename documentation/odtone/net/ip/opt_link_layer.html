@@ -4,8 +4,8 @@
 <title>Class template opt_link_layer</title>
 <link rel="stylesheet" href="../../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../../index.html" title="ODTONE 0.5">
-<link rel="up" href="../../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.icmp.icmp_options_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/ip/icmp/icmp_options.hpp&gt;">
+<link rel="home" href="../../../index.html" title="ODTONE 0.6">
+<link rel="up" href="../../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.icmp.icmp_options_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/ip/icmp/icmp_options.hpp&gt;">
 <link rel="prev" href="icmp6_ra_packet.html" title="Class icmp6_ra_packet">
 <link rel="next" href="opt_prefix_info.html" title="Class opt_prefix_info">
 </head>
@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="icmp6_ra_packet.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.icmp.icmp_options_hpp"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="opt_prefix_info.html"><img src="../../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="icmp6_ra_packet.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.icmp.icmp_options_hpp"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="opt_prefix_info.html"><img src="../../../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.net.ip.opt_link_layer"></a><div class="titlepage"></div>
@@ -22,42 +22,42 @@
 <p>odtone::net::ip::opt_link_layer</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.icmp.icmp_options_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/ip/icmp/icmp_options.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/net/ip/icmp/icmp_options.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.icmp.icmp_options_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/ip/icmp/icmp_options.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/net/ip/icmp/icmp_options.hpp</a>&gt;
 
 </span><span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">uint8</span> TypeValue<span class="special">&gt;</span> 
 <span class="keyword">class</span> <a class="link" href="opt_link_layer.html" title="Class template opt_link_layer">opt_link_layer</a> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">option</span> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="opt_link_layer.html#odtone.net.ip.opt_link_layerconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="opt_link_layer.html#idp8715072-bb"><span class="identifier">opt_link_layer</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  opt_link_layer&amp; <a class="link" href="opt_link_layer.html#idp8715200-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="opt_link_layer.html#idp14560272-bb"><span class="identifier">opt_link_layer</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  opt_link_layer&amp; <a class="link" href="opt_link_layer.html#idp14560400-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="opt_link_layer.html#idp8709632-bb">public static functions</a></span>
-  <span class="keyword">static</span> self_type <span class="special">*</span> <a class="link" href="opt_link_layer.html#idp8710032-bb"><span class="identifier">cast</span></a><span class="special">(</span><a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="opt_link_layer.html#idp14554832-bb">public static functions</a></span>
+  <span class="keyword">static</span> self_type <span class="special">*</span> <a class="link" href="opt_link_layer.html#idp14555232-bb"><span class="identifier">cast</span></a><span class="special">(</span><a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="opt_link_layer.html#idp8713584-bb">public member functions</a></span>
-  <a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <a class="link" href="opt_link_layer.html#idp8713984-bb"><span class="identifier">to_mac</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="opt_link_layer.html#idp14558784-bb">public member functions</a></span>
+  <a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <a class="link" href="opt_link_layer.html#idp14559184-bb"><span class="identifier">to_mac</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
   <span class="comment">// public data members</span>
   <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">size_t</span> <span class="identifier">static_size</span><span class="special">;</span>
   <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">uint8</span> <span class="identifier">type_value</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp31914768"></a><h2>Description</h2>
+<a name="idp88563120"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="idp31915184"></a><h3>
+<a name="idp88563536"></a><h3>
 <a name="odtone.net.ip.opt_link_layerconstruct-copy-destruct"></a><code class="computeroutput">opt_link_layer</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><a name="idp8715072-bb"></a><span class="identifier">opt_link_layer</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout">opt_link_layer&amp; <a name="idp8715200-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <span class="special">&amp;</span> mac<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idp14560272-bb"></a><span class="identifier">opt_link_layer</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout">opt_link_layer&amp; <a name="idp14560400-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <span class="special">&amp;</span> mac<span class="special">)</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp31927616"></a><h3>
-<a name="idp8709632-bb"></a><code class="computeroutput">opt_link_layer</code> public static functions</h3>
+<a name="idp88576032"></a><h3>
+<a name="idp14554832-bb"></a><code class="computeroutput">opt_link_layer</code> public static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">static</span> self_type <span class="special">*</span> <a name="idp8710032-bb"></a><span class="identifier">cast</span><span class="special">(</span><a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span> opt<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">static</span> self_type <span class="special">*</span> <a name="idp14555232-bb"></a><span class="identifier">cast</span><span class="special">(</span><a class="link" href="option.html" title="Class option">option</a> <span class="special">*</span> opt<span class="special">)</span><span class="special">;</span></pre>
 <p>Convert an IPv6 Options to an template class.</p>
 <p>
 
@@ -72,9 +72,9 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp31938400"></a><h3>
-<a name="idp8713584-bb"></a><code class="computeroutput">opt_link_layer</code> public member functions</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <a name="idp8713984-bb"></a><span class="identifier">to_mac</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li></ol></div>
+<a name="idp88586816"></a><h3>
+<a name="idp14558784-bb"></a><code class="computeroutput">opt_link_layer</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><a class="link" href="../link/address_mac.html" title="Class address_mac">link::address_mac</a> <a name="idp14559184-bb"></a><span class="identifier">to_mac</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li></ol></div>
 </div>
 </div>
 </div>
@@ -90,7 +90,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="icmp6_ra_packet.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.icmp.icmp_options_hpp"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="opt_prefix_info.html"><img src="../../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="icmp6_ra_packet.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.icmp.icmp_options_hpp"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="opt_prefix_info.html"><img src="../../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

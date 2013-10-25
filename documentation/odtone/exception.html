@@ -4,16 +4,16 @@
 <title>Class exception</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../index.html" title="ODTONE 0.5">
+<link rel="home" href="../index.html" title="ODTONE 0.6">
 <link rel="up" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.exception_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/exception.hpp&gt;">
-<link rel="prev" href="../ODTONE_NEVER_HERE.html" title="Macro ODTONE_NEVER_HERE">
+<link rel="prev" href="dylib.html" title="Class dylib">
 <link rel="next" href="list_node.html" title="Class list_node">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src=".././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../ODTONE_NEVER_HERE.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.exception_hpp"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="list_node.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="dylib.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.exception_hpp"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="list_node.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.exception"></a><div class="titlepage"></div>
@@ -26,58 +26,13 @@
 
 </span>
 <span class="keyword">class</span> <a class="link" href="exception.html" title="Class exception">exception</a> <span class="special">{</span>
-<span class="keyword">public</span><span class="special">:</span>
-  <span class="comment">// <a class="link" href="exception.html#odtone.exceptionconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="exception.html#idp8099520-bb"><span class="identifier">exception</span></a><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <span class="special">=</span> <span class="string">"&lt;exception&gt;"</span><span class="special">)</span><span class="special">;</span>
-
-  <span class="comment">// <a class="link" href="exception.html#idp8096944-bb">public member functions</a></span>
-  <span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <a class="link" href="exception.html#idp8097344-bb"><span class="identifier">what</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp11432816"></a><h2>Description</h2>
-<p>Base class for all ODTONE exceptions. This is the base class for all exceptions thrown by the ODTONE library. You are free to derive your own exception classes, or use a different hierarchy, or to throw non-class data (e.g., fundamental types). </p>
-<div class="refsect2">
-<a name="idp11433744"></a><h3>
-<a name="odtone.exceptionconstruct-copy-destruct"></a><code class="computeroutput">exception</code> 
-        public
-       construct/copy/destruct</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp8099520-bb"></a><span class="identifier">exception</span><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> what <span class="special">=</span> <span class="string">"&lt;exception&gt;"</span><span class="special">)</span><span class="special">;</span></pre>
-<p>Constructor a new exception.</p>
-<p>
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term">Parameters:</span></p></td>
-<td><div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><code class="computeroutput">what</code></span></p></td>
-<td><p>General cause of the exception error description. </p></td>
-</tr></tbody>
-</table></div></td>
-</tr></tbody>
-</table></div>
-</li></ol></div>
-</div>
-<div class="refsect2">
-<a name="idp11446480"></a><h3>
-<a name="idp8096944-bb"></a><code class="computeroutput">exception</code> public member functions</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> <a name="idp8097344-bb"></a><span class="identifier">what</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
-<p>Get a string describing the general cause of the current error.</p>
-<p>
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term">Returns:</span></p></td>
-<td><p>A string describing the general cause of the current error. </p></td>
-</tr></tbody>
-</table></div>
-</li></ol></div>
-</div>
+<a name="idp69384912"></a><h2>Description</h2>
+<p>Base class for all ODTONE exceptions. This is the base class that all odtone exceptions derive from. Virtual inheritance must be used when deriving from this class!</p>
+<p>Example: struct file_error : virtual public&#160;odtone::exception { };</p>
+<p>struct file_read_error : virtual public&#160;file_error { virtual const char* what() throw() { return "read file error"; } };</p>
+<p>struct file_write_error : virtual public&#160;file_error { virtual const char* what() throw() { return "write file error"; } }; </p>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
@@ -92,7 +47,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../ODTONE_NEVER_HERE.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.exception_hpp"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="list_node.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="dylib.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.exception_hpp"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="list_node.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

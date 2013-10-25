@@ -4,8 +4,8 @@
 <title>Class router_advertisement</title>
 <link rel="stylesheet" href="../../../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../../../index.html" title="ODTONE 0.5">
-<link rel="up" href="../icmp.html#idp30963088" title="Description">
+<link rel="home" href="../../../../index.html" title="ODTONE 0.6">
+<link rel="up" href="../icmp.html#idp87612096" title="Description">
 <link rel="prev" href="neighbor_solicitation.html" title="Class neighbor_solicitation">
 <link rel="next" href="router_solicitation.html" title="Class router_solicitation">
 </head>
@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../../../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="neighbor_solicitation.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp30963088"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="router_solicitation.html"><img src="../../../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="neighbor_solicitation.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp87612096"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="router_solicitation.html"><img src="../../../../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.net.ip.icmp.router_advertisement"></a><div class="titlepage"></div>
@@ -22,52 +22,52 @@
 <p>odtone::net::ip::icmp::router_advertisement</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../../odtone_net_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.icmp.icmp_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/ip/icmp/icmp.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/net/ip/icmp/icmp.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.net.ip.icmp.icmp_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/net/ip/icmp/icmp.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/net/ip/icmp/icmp.hpp</a>&gt;
 
 </span>
 
 <span class="keyword">class</span> <a class="link" href="router_advertisement.html" title="Class router_advertisement">router_advertisement</a> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">icmp</span><span class="special">::</span><span class="identifier">header</span> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="router_advertisement.html#odtone.net.ip.icmp.router_advertisementconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="router_advertisement.html#idp8678912-bb"><span class="identifier">router_advertisement</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="router_advertisement.html#idp14523936-bb"><span class="identifier">router_advertisement</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="router_advertisement.html#idp9163792-bb">public member functions</a></span>
-  <span class="identifier">uint8</span> <a class="link" href="router_advertisement.html#idp9164192-bb"><span class="identifier">current_hop_limit</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="router_advertisement.html#idp9166304-bb"><span class="identifier">M</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="router_advertisement.html#idp9168448-bb"><span class="identifier">O</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint16</span> <a class="link" href="router_advertisement.html#idp9170560-bb"><span class="identifier">lifetime</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint32</span> <a class="link" href="router_advertisement.html#idp9172672-bb"><span class="identifier">reachable_time</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">uint32</span> <a class="link" href="router_advertisement.html#idp9174784-bb"><span class="identifier">retrans_timer</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="router_advertisement.html#idp9176912-bb"><span class="identifier">current_hop_limit</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="router_advertisement.html#idp9179712-bb"><span class="identifier">M</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="router_advertisement.html#idp8667696-bb"><span class="identifier">O</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="router_advertisement.html#idp8670496-bb"><span class="identifier">lifetime</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="router_advertisement.html#idp8673296-bb"><span class="identifier">reachable_time</span></a><span class="special">(</span><span class="identifier">uint32</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="router_advertisement.html#idp8676096-bb"><span class="identifier">retrans_timer</span></a><span class="special">(</span><span class="identifier">uint32</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="router_advertisement.html#idp14493968-bb">public member functions</a></span>
+  <span class="identifier">uint8</span> <a class="link" href="router_advertisement.html#idp14494368-bb"><span class="identifier">current_hop_limit</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="router_advertisement.html#idp14496480-bb"><span class="identifier">M</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="router_advertisement.html#idp14498624-bb"><span class="identifier">O</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint16</span> <a class="link" href="router_advertisement.html#idp14500736-bb"><span class="identifier">lifetime</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint32</span> <a class="link" href="router_advertisement.html#idp14502848-bb"><span class="identifier">reachable_time</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint32</span> <a class="link" href="router_advertisement.html#idp14504960-bb"><span class="identifier">retrans_timer</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="router_advertisement.html#idp14507088-bb"><span class="identifier">current_hop_limit</span></a><span class="special">(</span><span class="identifier">uint8</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="router_advertisement.html#idp14509888-bb"><span class="identifier">M</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="router_advertisement.html#idp14512720-bb"><span class="identifier">O</span></a><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="router_advertisement.html#idp14515520-bb"><span class="identifier">lifetime</span></a><span class="special">(</span><span class="identifier">uint16</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="router_advertisement.html#idp14518320-bb"><span class="identifier">reachable_time</span></a><span class="special">(</span><span class="identifier">uint32</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="router_advertisement.html#idp14521120-bb"><span class="identifier">retrans_timer</span></a><span class="special">(</span><span class="identifier">uint32</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="router_advertisement.html#odtone.net.ip.icmp.router_advertisementpublic-data-members">public data members</a></span>
   <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">uint8</span> <a class="link" href="router_advertisement.html#odtone.net.ip.icmp.router_advertisement.type_value"><span class="identifier">type_value</span></a><span class="special">;</span>
   <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">uint8</span> <a class="link" href="router_advertisement.html#odtone.net.ip.icmp.router_advertisement.code_value"><span class="identifier">code_value</span></a><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp31521744"></a><h2>Description</h2>
+<a name="idp88170304"></a><h2>Description</h2>
 <p>This class represents an ICMP Router Advertisement packet. </p>
 <div class="refsect2">
-<a name="idp31522416"></a><h3>
+<a name="idp88170976"></a><h3>
 <a name="odtone.net.ip.icmp.router_advertisementconstruct-copy-destruct"></a><code class="computeroutput">router_advertisement</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp8678912-bb"></a><span class="identifier">router_advertisement</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp14523936-bb"></a><span class="identifier">router_advertisement</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty ICMP Router Advertisement packet. </p>
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp31528656"></a><h3>
-<a name="idp9163792-bb"></a><code class="computeroutput">router_advertisement</code> public member functions</h3>
+<a name="idp88177216"></a><h3>
+<a name="idp14493968-bb"></a><code class="computeroutput">router_advertisement</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint8</span> <a name="idp9164192-bb"></a><span class="identifier">current_hop_limit</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint8</span> <a name="idp14494368-bb"></a><span class="identifier">current_hop_limit</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the Current Hop Limit field value.</p>
 <p>
 </p>
@@ -80,7 +80,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp9166304-bb"></a><span class="identifier">M</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp14496480-bb"></a><span class="identifier">M</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the Managed Address Configuration flag value.</p>
 <p>
 </p>
@@ -93,7 +93,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp9168448-bb"></a><span class="identifier">O</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp14498624-bb"></a><span class="identifier">O</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the Other Configuration flag value.</p>
 <p>
 </p>
@@ -106,7 +106,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp9170560-bb"></a><span class="identifier">lifetime</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint16</span> <a name="idp14500736-bb"></a><span class="identifier">lifetime</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the Lifetime field value.</p>
 <p>
 </p>
@@ -119,7 +119,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint32</span> <a name="idp9172672-bb"></a><span class="identifier">reachable_time</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint32</span> <a name="idp14502848-bb"></a><span class="identifier">reachable_time</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the Reachable Time field value.</p>
 <p>
 </p>
@@ -132,7 +132,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">uint32</span> <a name="idp9174784-bb"></a><span class="identifier">retrans_timer</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">uint32</span> <a name="idp14504960-bb"></a><span class="identifier">retrans_timer</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the Retransmission Timer field value.</p>
 <p>
 </p>
@@ -145,7 +145,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp9176912-bb"></a><span class="identifier">current_hop_limit</span><span class="special">(</span><span class="identifier">uint8</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp14507088-bb"></a><span class="identifier">current_hop_limit</span><span class="special">(</span><span class="identifier">uint8</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the Current Hop Limit field value.</p>
 <p>
 </p>
@@ -164,7 +164,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp9179712-bb"></a><span class="identifier">M</span><span class="special">(</span><span class="keyword">bool</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp14509888-bb"></a><span class="identifier">M</span><span class="special">(</span><span class="keyword">bool</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the Managed Address Configuration flag value.</p>
 <p>
 </p>
@@ -183,7 +183,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8667696-bb"></a><span class="identifier">O</span><span class="special">(</span><span class="keyword">bool</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp14512720-bb"></a><span class="identifier">O</span><span class="special">(</span><span class="keyword">bool</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the Other Configuration flag value.</p>
 <p>
 </p>
@@ -202,7 +202,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8670496-bb"></a><span class="identifier">lifetime</span><span class="special">(</span><span class="identifier">uint16</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp14515520-bb"></a><span class="identifier">lifetime</span><span class="special">(</span><span class="identifier">uint16</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the Lifetime field value.</p>
 <p>
 </p>
@@ -221,7 +221,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8673296-bb"></a><span class="identifier">reachable_time</span><span class="special">(</span><span class="identifier">uint32</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp14518320-bb"></a><span class="identifier">reachable_time</span><span class="special">(</span><span class="identifier">uint32</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the Reachable Time field value.</p>
 <p>
 </p>
@@ -240,7 +240,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp8676096-bb"></a><span class="identifier">retrans_timer</span><span class="special">(</span><span class="identifier">uint32</span> val<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp14521120-bb"></a><span class="identifier">retrans_timer</span><span class="special">(</span><span class="identifier">uint32</span> val<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the Retransmission Timer field value.</p>
 <p>
 </p>
@@ -261,7 +261,7 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp31623776"></a><h3>
+<a name="idp88272336"></a><h3>
 <a name="odtone.net.ip.icmp.router_advertisementpublic-data-members"></a><code class="computeroutput">router_advertisement</code> 
         public
        public data members</h3>
@@ -290,7 +290,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="neighbor_solicitation.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp30963088"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="router_solicitation.html"><img src="../../../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="neighbor_solicitation.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../icmp.html#idp87612096"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="router_solicitation.html"><img src="../../../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

@@ -4,16 +4,16 @@
 <title>Class link</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="ODTONE 0.5">
-<link rel="up" href="../../odtone_sap_library.html#header..home.carlos.Projectos.odtone.inc.odtone.sap.link_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/sap/link.hpp&gt;">
-<link rel="prev" href="../../odtone_sap_library.html" title="ODTONE SAP Library">
+<link rel="home" href="../../index.html" title="ODTONE 0.6">
+<link rel="up" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.sap.link_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/sap/link.hpp&gt;">
+<link rel="prev" href="../mih/status_rsp_list.html" title="Type definition status_rsp_list">
 <link rel="next" href="kConf_MIH_SAP_id.html" title="Global kConf_MIH_SAP_id">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../../odtone_sap_library.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_sap_library.html#header..home.carlos.Projectos.odtone.inc.odtone.sap.link_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="kConf_MIH_SAP_id.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../mih/status_rsp_list.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.sap.link_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="kConf_MIH_SAP_id.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.sap.link"></a><div class="titlepage"></div>
@@ -22,37 +22,37 @@
 <p>odtone::sap::link</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_sap_library.html#header..home.carlos.Projectos.odtone.inc.odtone.sap.link_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/sap/link.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/sap/link.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.sap.link_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/sap/link.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/sap/link.hpp</a>&gt;
 
 </span>
 <span class="keyword">class</span> <a class="link" href="link.html" title="Class link">link</a> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">sap</span><span class="special">::</span><span class="identifier">sap</span> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="link.html#odtone.sap.linkconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="link.html#idp7454608-bb"><span class="identifier">link</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">config</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span><span class="special">,</span> 
+  <a class="link" href="link.html#idp14102208-bb"><span class="identifier">link</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../mih/config.html" title="Class config">mih::config</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span><span class="special">,</span> 
        <span class="keyword">const</span> <span class="identifier">default_handler</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="link.html#idp7459040-bb"><span class="special">~</span><span class="identifier">link</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="link.html#idp14107136-bb"><span class="special">~</span><span class="identifier">link</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="link.html#idp7519296-bb">public member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="link.html#idp7519696-bb"><span class="identifier">async_send</span></a><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">handler</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="link.html#idp14097152-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="link.html#idp14097552-bb"><span class="identifier">async_send</span></a><span class="special">(</span><a class="link" href="../mih/message.html" title="Class message">mih::message</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">handler</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="link.html#idp7459600-bb">private member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="link.html#idp7460016-bb"><span class="identifier">recv_handler</span></a><span class="special">(</span><span class="identifier">buffer</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">,</span> 
+  <span class="comment">// <a class="link" href="link.html#idp14107696-bb">private member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="link.html#idp14108112-bb"><span class="identifier">recv_handler</span></a><span class="special">(</span><a class="link" href="../buffer.html" title="Class template buffer">buffer</a><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">,</span> 
                     <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">void</span> <a class="link" href="link.html#idp7387968-bb"><span class="identifier">send_handler</span></a><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">frame_vla</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">,</span> 
+  <span class="keyword">void</span> <a class="link" href="link.html#idp14113552-bb"><span class="identifier">send_handler</span></a><span class="special">(</span><a class="link" href="../../odtone_base_library.html#odtone.mih.frame_vla">mih::frame_vla</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">,</span> 
                     <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp27908320"></a><h2>Description</h2>
+<a name="idp85034192"></a><h2>Description</h2>
 <p>Link SAP I/O Service.</p>
 <p>This module handles the comunication between Link SAP and its local the MIHF. After being initialized, and in order to run this service, it must be invoked the run() method of the boost::asio::io_service associated. </p>
 <div class="refsect2">
-<a name="idp27909520"></a><h3>
+<a name="idp85035392"></a><h3>
 <a name="odtone.sap.linkconstruct-copy-destruct"></a><code class="computeroutput">link</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="idp7454608-bb"></a><span class="identifier">link</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mih</span><span class="special">::</span><span class="identifier">config</span> <span class="special">&amp;</span> cfg<span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span> io<span class="special">,</span> 
+<pre class="literallayout"><a name="idp14102208-bb"></a><span class="identifier">link</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../mih/config.html" title="Class config">mih::config</a> <span class="special">&amp;</span> cfg<span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span> io<span class="special">,</span> 
      <span class="keyword">const</span> <span class="identifier">default_handler</span> <span class="special">&amp;</span> h<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a Link SAP I/O Service. The defined callback is invoked when a request message is received The signature of the callback is: void(odtone::mih::message&amp;, const boost::system::error_code&amp;).</p>
 <p>
@@ -82,16 +82,16 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp7459040-bb"></a><span class="special">~</span><span class="identifier">link</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp14107136-bb"></a><span class="special">~</span><span class="identifier">link</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Destruct a Link SAP I/O Service. </p>
 </li>
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp27936336"></a><h3>
-<a name="idp7519296-bb"></a><code class="computeroutput">link</code> public member functions</h3>
+<a name="idp85061232"></a><h3>
+<a name="idp14097152-bb"></a><code class="computeroutput">link</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp7519696-bb"></a><span class="identifier">async_send</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">message</span> <span class="special">&amp;</span> msg<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span> h <span class="special">=</span> <span class="identifier">handler</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp14097552-bb"></a><span class="identifier">async_send</span><span class="special">(</span><a class="link" href="../mih/message.html" title="Class message">mih::message</a> <span class="special">&amp;</span> msg<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span> h <span class="special">=</span> <span class="identifier">handler</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Asynchronously send a MIH message to the local MIHF. After sending the message, the callback is called to report the success or failure in delivering the message to the local MIHF. This method retuns immediately.</p>
 <p>
 </p>
@@ -117,11 +117,11 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp27955248"></a><h3>
-<a name="idp7459600-bb"></a><code class="computeroutput">link</code> private member functions</h3>
+<a name="idp85079200"></a><h3>
+<a name="idp14107696-bb"></a><code class="computeroutput">link</code> private member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp7460016-bb"></a><span class="identifier">recv_handler</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span> buff<span class="special">,</span> <span class="identifier">size_t</span> rbytes<span class="special">,</span> 
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp14108112-bb"></a><span class="identifier">recv_handler</span><span class="special">(</span><a class="link" href="../buffer.html" title="Class template buffer">buffer</a><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">&amp;</span> buff<span class="special">,</span> <span class="identifier">size_t</span> rbytes<span class="special">,</span> 
                   <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> ec<span class="special">)</span><span class="special">;</span></pre>
 <p>Received message callback. This function is executed to process the received messages. If this is a valid message, the message is dispatched to the handler defined by the user.</p>
 <p>
@@ -151,7 +151,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp7387968-bb"></a><span class="identifier">send_handler</span><span class="special">(</span><span class="identifier">mih</span><span class="special">::</span><span class="identifier">frame_vla</span> <span class="special">&amp;</span> fm<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span> h<span class="special">,</span> <span class="identifier">size_t</span> sbytes<span class="special">,</span> 
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp14113552-bb"></a><span class="identifier">send_handler</span><span class="special">(</span><a class="link" href="../../odtone_base_library.html#odtone.mih.frame_vla">mih::frame_vla</a> <span class="special">&amp;</span> fm<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">handler</span> <span class="special">&amp;</span> h<span class="special">,</span> <span class="identifier">size_t</span> sbytes<span class="special">,</span> 
                   <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> ec<span class="special">)</span><span class="special">;</span></pre>
 <p>Sent message handler. After sending the message, this function is called to report the success or failure in delivering the message to the local MIHF.</p>
 <p>
@@ -200,7 +200,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../../odtone_sap_library.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_sap_library.html#header..home.carlos.Projectos.odtone.inc.odtone.sap.link_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="kConf_MIH_SAP_id.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../mih/status_rsp_list.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.sap.link_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="kConf_MIH_SAP_id.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

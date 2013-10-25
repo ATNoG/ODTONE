@@ -4,7 +4,7 @@
 <title>Class template buffer_vla</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../index.html" title="ODTONE 0.5">
+<link rel="home" href="../index.html" title="ODTONE 0.6">
 <link rel="up" href="../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.buffer_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/buffer.hpp&gt;">
 <link rel="prev" href="buffer.html" title="Class template buffer">
 <link rel="next" href="bad_cast.html" title="Struct bad_cast">
@@ -28,42 +28,42 @@
 <span class="keyword">class</span> <a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">:</span> <span class="keyword">private</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">&lt;</span> <span class="identifier">uint8</span> <span class="special">&gt;</span> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="buffer_vla.html#odtone.buffer_vlaconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="buffer_vla.html#idp7791392-bb"><span class="identifier">buffer_vla</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="buffer_vla.html#idp7810016-bb"><span class="identifier">buffer_vla</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="buffer_vla.html#idp7810624-bb"><span class="identifier">buffer_vla</span></a><span class="special">(</span><a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="buffer_vla.html#idp7812912-bb"><span class="identifier">buffer_vla</span></a><span class="special">(</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
-  buffer_vla&amp; <a class="link" href="buffer_vla.html#idp7792656-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  buffer_vla&amp; <a class="link" href="buffer_vla.html#idp7814976-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="buffer_vla.html#idp11261680-bb"><span class="identifier">buffer_vla</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="buffer_vla.html#idp11280576-bb"><span class="identifier">buffer_vla</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="buffer_vla.html#idp11281184-bb"><span class="identifier">buffer_vla</span></a><span class="special">(</span><a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="buffer_vla.html#idp11283472-bb"><span class="identifier">buffer_vla</span></a><span class="special">(</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  buffer_vla&amp; <a class="link" href="buffer_vla.html#idp11262944-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  buffer_vla&amp; <a class="link" href="buffer_vla.html#idp11285536-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="buffer_vla.html#idp7788720-bb">private member functions</a></span>
-   <a class="link" href="buffer_vla.html#idp7789136-bb"><span class="identifier">ODTONE_STATIC_ASSERT</span></a><span class="special">(</span><span class="special">!</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_enum</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span> <span class="special">&amp;&amp;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_pod</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span> <span class="special">&amp;&amp;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_class</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">,</span> 
+  <span class="comment">// <a class="link" href="buffer_vla.html#idp11259008-bb">private member functions</a></span>
+   <a class="link" href="buffer_vla.html#idp11259424-bb"><span class="identifier">ODTONE_STATIC_ASSERT</span></a><span class="special">(</span><span class="special">!</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_enum</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span> <span class="special">&amp;&amp;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_pod</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span> <span class="special">&amp;&amp;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_class</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">,</span> 
                         <span class="string">"T must be a class/struct POD type"</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="buffer_vla.html#idp7793920-bb">public member functions</a></span>
-  <span class="keyword">void</span> <a class="link" href="buffer_vla.html#idp7794320-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">T</span> <span class="special">&amp;</span> <a class="link" href="buffer_vla.html#idp7797152-bb"><span class="keyword">operator</span><span class="special">*</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="buffer_vla.html#idp7799296-bb"><span class="keyword">operator</span><span class="special">-&gt;</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="buffer_vla.html#idp7801440-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> <a class="link" href="buffer_vla.html#idp7803584-bb"><span class="keyword">operator</span><span class="special">*</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="buffer_vla.html#idp7805728-bb"><span class="keyword">operator</span><span class="special">-&gt;</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="buffer_vla.html#idp7807872-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="buffer_vla.html#idp11264480-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="buffer_vla.html#idp11264880-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">T</span> <span class="special">&amp;</span> <a class="link" href="buffer_vla.html#idp11267712-bb"><span class="keyword">operator</span><span class="special">*</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="buffer_vla.html#idp11269856-bb"><span class="keyword">operator</span><span class="special">-&gt;</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="buffer_vla.html#idp11272000-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> <a class="link" href="buffer_vla.html#idp11274144-bb"><span class="keyword">operator</span><span class="special">*</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="buffer_vla.html#idp11276288-bb"><span class="keyword">operator</span><span class="special">-&gt;</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="buffer_vla.html#idp11278432-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp8312272"></a><h2>Description</h2>
+<a name="idp66076320"></a><h2>Description</h2>
 <p>A container (buffer) for 8-bit unsigned int data type with linear and finite sequence of elements. </p>
 <div class="refsect2">
-<a name="idp8313056"></a><h3>
+<a name="idp66077104"></a><h3>
 <a name="odtone.buffer_vlaconstruct-copy-destruct"></a><code class="computeroutput">buffer_vla</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"><a name="idp7791392-bb"></a><span class="identifier">buffer_vla</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idp11261680-bb"></a><span class="identifier">buffer_vla</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp7810016-bb"></a><span class="identifier">buffer_vla</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp11280576-bb"></a><span class="identifier">buffer_vla</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty buffer. The created buffer will be empty and with zero length. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp7810624-bb"></a><span class="identifier">buffer_vla</span><span class="special">(</span><a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;&amp;</span> buff<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp11281184-bb"></a><span class="identifier">buffer_vla</span><span class="special">(</span><a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;&amp;</span> buff<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct a buffer. The new created buffer will be a copy of another buffer.</p>
 <p>
 </p>
@@ -82,7 +82,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idp7812912-bb"></a><span class="identifier">buffer_vla</span><span class="special">(</span><span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp11283472-bb"></a><span class="identifier">buffer_vla</span><span class="special">(</span><span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty buffer. Although the created buffer is empty, it has the length defined at its creation.</p>
 <p>
 </p>
@@ -100,9 +100,9 @@
 </tr></tbody>
 </table></div>
 </li>
-<li class="listitem"><pre class="literallayout">buffer_vla&amp; <a name="idp7792656-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout">buffer_vla&amp; <a name="idp11262944-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
 <li class="listitem">
-<pre class="literallayout">buffer_vla&amp; <a name="idp7814976-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;&amp;</span> buff<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout">buffer_vla&amp; <a name="idp11285536-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><a class="link" href="buffer_vla.html" title="Class template buffer_vla">buffer_vla</a> <span class="special">&amp;&amp;</span> buff<span class="special">)</span><span class="special">;</span></pre>
 <p>Copy the elements from another buffer. The elements contained in the buffer will be overwrited.</p>
 <p>
 
@@ -130,17 +130,17 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp8358320"></a><h3>
-<a name="idp7788720-bb"></a><code class="computeroutput">buffer_vla</code> private member functions</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"> <a name="idp7789136-bb"></a><span class="identifier">ODTONE_STATIC_ASSERT</span><span class="special">(</span><span class="special">!</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_enum</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span> <span class="special">&amp;&amp;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_pod</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span> <span class="special">&amp;&amp;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_class</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">,</span> 
+<a name="idp66122240"></a><h3>
+<a name="idp11259008-bb"></a><code class="computeroutput">buffer_vla</code> private member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"> <a name="idp11259424-bb"></a><span class="identifier">ODTONE_STATIC_ASSERT</span><span class="special">(</span><span class="special">!</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_enum</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span> <span class="special">&amp;&amp;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_pod</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span> <span class="special">&amp;&amp;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_class</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">,</span> 
                       <span class="string">"T must be a class/struct POD type"</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp8381408"></a><h3>
-<a name="idp7793920-bb"></a><code class="computeroutput">buffer_vla</code> public member functions</h3>
+<a name="idp66145328"></a><h3>
+<a name="idp11264480-bb"></a><code class="computeroutput">buffer_vla</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">void</span> <a name="idp7794320-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp11264880-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="identifier">size_t</span> len<span class="special">)</span><span class="special">;</span></pre>
 <p>Set the number of elements the buffer can store.</p>
 <p>
 </p>
@@ -159,7 +159,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">T</span> <span class="special">&amp;</span> <a name="idp7797152-bb"></a><span class="keyword">operator</span><span class="special">*</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">T</span> <span class="special">&amp;</span> <a name="idp11267712-bb"></a><span class="keyword">operator</span><span class="special">*</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Get the reference to the first element of the buffer.</p>
 <p>
 </p>
@@ -172,7 +172,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">T</span> <span class="special">*</span> <a name="idp7799296-bb"></a><span class="keyword">operator</span><span class="special">-&gt;</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">T</span> <span class="special">*</span> <a name="idp11269856-bb"></a><span class="keyword">operator</span><span class="special">-&gt;</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Get the pointer to the first element of the buffer.</p>
 <p>
 </p>
@@ -185,7 +185,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">T</span> <span class="special">*</span> <a name="idp7801440-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">T</span> <span class="special">*</span> <a name="idp11272000-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Get the pointer to the first element of the buffer.</p>
 <p>
 </p>
@@ -198,7 +198,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> <a name="idp7803584-bb"></a><span class="keyword">operator</span><span class="special">*</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> <a name="idp11274144-bb"></a><span class="keyword">operator</span><span class="special">*</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the reference to the first element of the buffer.</p>
 <p>
 </p>
@@ -211,7 +211,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">*</span> <a name="idp7805728-bb"></a><span class="keyword">operator</span><span class="special">-&gt;</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">*</span> <a name="idp11276288-bb"></a><span class="keyword">operator</span><span class="special">-&gt;</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the pointer to the first element of the buffer.</p>
 <p>
 </p>
@@ -224,7 +224,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">*</span> <a name="idp7807872-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">*</span> <a name="idp11278432-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Get the pointer to the first element of the buffer.</p>
 <p>
 </p>
