@@ -26,6 +26,7 @@ sap/link.cpp
 sap/sap.cpp
 sap/user.cpp
 logger.cpp
+win32.cpp
 )
 
 if(MSVC)
