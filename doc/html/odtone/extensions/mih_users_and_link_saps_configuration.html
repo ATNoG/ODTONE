@@ -4,7 +4,7 @@
 <title>MIH-Users and Link SAPs configuration</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="ODTONE 0.5">
+<link rel="home" href="../../index.html" title="ODTONE 0.6">
 <link rel="up" href="../extensions.html" title="ODTONE Extensions">
 <link rel="prev" href="remote_discovery.html" title="Remote discovery">
 <link rel="next" href="mih_protocol_c_interface.html" title="MIH Protocol C interface">
@@ -42,17 +42,17 @@
         You just need to configure in the MIH-User configuration file the following
         options:
 </p>
-<pre class="programlisting"><span class="error">#</span><span class="error">#</span>
-<span class="error">#</span><span class="preprocessor"># Commands</span> <span class="identifier">supported</span> <span class="identifier">by</span> <span class="identifier">the</span> <span class="identifier">MIH</span><span class="special">-</span><span class="identifier">User</span>
-<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.:</span> <span class="identifier">commands</span> <span class="special">=</span> <span class="identifier">mih_link_get_parameters</span><span class="special">,</span> <span class="identifier">mih_link_configure_thresholds</span>
-<span class="error">#</span><span class="preprocessor">#
-commands</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">comma</span> <span class="identifier">separated</span> <span class="identifier">list</span> <span class="identifier">of</span> <span class="identifier">supported</span> <span class="identifier">commands</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="special">##</span>
+<span class="special">##</span> <span class="identifier">Commands</span> <span class="identifier">supported</span> <span class="identifier">by</span> <span class="identifier">the</span> <span class="identifier">MIH</span><span class="special">-</span><span class="identifier">User</span>
+<span class="special">##</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.:</span> <span class="identifier">commands</span> <span class="special">=</span> <span class="identifier">mih_link_get_parameters</span><span class="special">,</span> <span class="identifier">mih_link_configure_thresholds</span>
+<span class="special">##</span>
+<span class="identifier">commands</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">comma</span> <span class="identifier">separated</span> <span class="identifier">list</span> <span class="identifier">of</span> <span class="identifier">supported</span> <span class="identifier">commands</span><span class="special">&gt;</span>
 
-<span class="error">#</span><span class="error">#</span>
-<span class="error">#</span><span class="preprocessor"># Queries</span> <span class="identifier">supported</span> <span class="identifier">by</span> <span class="identifier">the</span> <span class="identifier">MIH</span><span class="special">-</span><span class="identifier">User</span>
-<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">:</span> <span class="identifier">queries</span> <span class="special">=</span> <span class="identifier">iq_type_binary_data</span><span class="special">,</span> <span class="identifier">iq_type_rdf_data</span>
-<span class="error">#</span><span class="preprocessor">#
-queries</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">comma</span> <span class="identifier">separated</span> <span class="identifier">list</span> <span class="identifier">of</span> <span class="identifier">supported</span> <span class="identifier">queries</span><span class="special">&gt;</span>
+<span class="special">##</span>
+<span class="special">##</span> <span class="identifier">Queries</span> <span class="identifier">supported</span> <span class="identifier">by</span> <span class="identifier">the</span> <span class="identifier">MIH</span><span class="special">-</span><span class="identifier">User</span>
+<span class="special">##</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">g</span><span class="special">:</span> <span class="identifier">queries</span> <span class="special">=</span> <span class="identifier">iq_type_binary_data</span><span class="special">,</span> <span class="identifier">iq_type_rdf_data</span>
+<span class="special">##</span>
+<span class="identifier">queries</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">comma</span> <span class="identifier">separated</span> <span class="identifier">list</span> <span class="identifier">of</span> <span class="identifier">supported</span> <span class="identifier">queries</span><span class="special">&gt;</span>
 </pre>
 <p>
       </p>
@@ -63,13 +63,13 @@ queries</span> <span class="special">=</span> <span class="special">&lt;</span><
         You need to configure in the ODTONE-MIHF configuration file the following
         options:
 </p>
-<pre class="programlisting"><span class="error">#</span><span class="error">#</span>
-<span class="error">#</span><span class="preprocessor"># Comma</span> <span class="identifier">separated</span> <span class="identifier">list</span> <span class="identifier">of</span> <span class="identifier">local</span> <span class="identifier">MIH</span> <span class="identifier">User</span> <span class="identifier">SAPs</span> <span class="identifier">id</span><span class="error">'</span><span class="identifier">s</span> <span class="keyword">and</span> <span class="identifier">ports</span>
-<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.</span><span class="number">1</span><span class="special">:</span> <span class="identifier">users</span> <span class="special">=</span> <span class="identifier">user</span> <span class="number">1234</span>
-<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.</span><span class="number">2</span><span class="special">:</span> <span class="identifier">users</span> <span class="special">=</span> <span class="identifier">user</span> <span class="number">1234</span> <span class="identifier">mih_net_ho_candidate_query</span> <span class="identifier">iq_type_binary_data</span>
-<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.</span><span class="number">3</span><span class="special">:</span> <span class="identifier">users</span> <span class="special">=</span> <span class="identifier">user</span> <span class="number">1234</span> <span class="identifier">iq_type_binary_data</span>
-<span class="error">#</span><span class="preprocessor">#
-users</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">user</span> <span class="identifier">sap</span> <span class="identifier">id</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">port</span><span class="special">&gt;</span> <span class="special">[&lt;</span><span class="identifier">supported</span> <span class="identifier">commands</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">supported</span> <span class="identifier">queries</span><span class="special">&gt;],</span> <span class="special">...</span>
+<pre class="programlisting"><span class="special">##</span>
+<span class="special">##</span> <span class="identifier">Comma</span> <span class="identifier">separated</span> <span class="identifier">list</span> <span class="identifier">of</span> <span class="identifier">local</span> <span class="identifier">MIH</span> <span class="identifier">User</span> <span class="identifier">SAPs</span> <span class="identifier">id</span><span class="error">'</span><span class="identifier">s</span> <span class="keyword">and</span> <span class="identifier">ports</span>
+<span class="special">##</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.</span><span class="number">1</span><span class="special">:</span> <span class="identifier">users</span> <span class="special">=</span> <span class="identifier">user</span> <span class="number">1234</span>
+<span class="special">##</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.</span><span class="number">2</span><span class="special">:</span> <span class="identifier">users</span> <span class="special">=</span> <span class="identifier">user</span> <span class="number">1234</span> <span class="identifier">mih_net_ho_candidate_query</span> <span class="identifier">iq_type_binary_data</span>
+<span class="special">##</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.</span><span class="number">3</span><span class="special">:</span> <span class="identifier">users</span> <span class="special">=</span> <span class="identifier">user</span> <span class="number">1234</span> <span class="identifier">iq_type_binary_data</span>
+<span class="special">##</span>
+<span class="identifier">users</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">user</span> <span class="identifier">sap</span> <span class="identifier">id</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">port</span><span class="special">&gt;</span> <span class="special">[&lt;</span><span class="identifier">supported</span> <span class="identifier">commands</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">supported</span> <span class="identifier">queries</span><span class="special">&gt;],</span> <span class="special">...</span>
 </pre>
 <p>
       </p>
@@ -106,17 +106,17 @@ users</span> <span class="special">=</span> <span class="special">&lt;</span><sp
         You just need to configure in the Link SAP configuration file the following
         options:
 </p>
-<pre class="programlisting"><span class="error">#</span><span class="error">#</span>
-<span class="error">#</span><span class="preprocessor"># Link</span> <span class="identifier">SAP</span> <span class="identifier">interface</span> <span class="identifier">technology</span>
-<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.:</span> <span class="identifier">tec</span> <span class="special">=</span> <span class="number">802</span><span class="identifier">_11</span>
-<span class="error">#</span><span class="preprocessor">#
-tec</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">interface</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="special">##</span>
+<span class="special">##</span> <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">interface</span> <span class="identifier">technology</span>
+<span class="special">##</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.:</span> <span class="identifier">tec</span> <span class="special">=</span> <span class="number">802</span><span class="identifier">_11</span>
+<span class="special">##</span>
+<span class="identifier">tec</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">interface</span><span class="special">&gt;</span>
 
-<span class="error">#</span><span class="error">#</span>
-<span class="error">#</span><span class="preprocessor"># Link</span> <span class="identifier">SAP</span> <span class="identifier">interface</span> <span class="identifier">address</span>
-<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.:</span> <span class="identifier">link_addr</span> <span class="special">=</span> <span class="number">00</span><span class="special">:</span><span class="number">11</span><span class="special">:</span><span class="number">22</span><span class="special">:</span><span class="number">33</span><span class="special">:</span><span class="number">44</span><span class="special">:</span><span class="number">55</span>
-<span class="error">#</span><span class="preprocessor">#
-link_addr</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">interface</span> <span class="identifier">address</span><span class="special">&gt;</span>
+<span class="special">##</span>
+<span class="special">##</span> <span class="identifier">Link</span> <span class="identifier">SAP</span> <span class="identifier">interface</span> <span class="identifier">address</span>
+<span class="special">##</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.:</span> <span class="identifier">link_addr</span> <span class="special">=</span> <span class="number">00</span><span class="special">:</span><span class="number">11</span><span class="special">:</span><span class="number">22</span><span class="special">:</span><span class="number">33</span><span class="special">:</span><span class="number">44</span><span class="special">:</span><span class="number">55</span>
+<span class="special">##</span>
+<span class="identifier">link_addr</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">interface</span> <span class="identifier">address</span><span class="special">&gt;</span>
 </pre>
 <p>
       </p>
@@ -127,11 +127,11 @@ link_addr</span> <span class="special">=</span> <span class="special">&lt;</span
         You need to configure in the ODTONE-MIHF configuration file the following
         options:
 </p>
-<pre class="programlisting"><span class="error">#</span><span class="error">#</span>
-<span class="error">#</span><span class="preprocessor"># Comma</span> <span class="identifier">separated</span> <span class="identifier">list</span> <span class="identifier">of</span> <span class="identifier">local</span> <span class="identifier">MIH</span> <span class="identifier">Link</span> <span class="identifier">SAPs</span> <span class="identifier">id</span><span class="error">'</span><span class="identifier">s</span> <span class="keyword">and</span> <span class="identifier">ports</span><span class="special">.</span>
-<span class="error">#</span><span class="preprocessor"># e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.:</span> <span class="identifier">links</span> <span class="special">=</span> <span class="identifier">link</span> <span class="number">1235</span> <span class="number">802</span><span class="identifier">_11</span> <span class="number">00</span><span class="special">:</span><span class="number">11</span><span class="special">:</span><span class="number">22</span><span class="special">:</span><span class="number">33</span><span class="special">:</span><span class="number">44</span><span class="special">:</span><span class="number">55</span>
-<span class="error">#</span><span class="preprocessor">#
-links</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">link</span> <span class="identifier">sap</span> <span class="identifier">id</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">port</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">technology</span> <span class="identifier">type</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">interface</span><span class="special">&gt;,</span> <span class="special">...</span>
+<pre class="programlisting"><span class="special">##</span>
+<span class="special">##</span> <span class="identifier">Comma</span> <span class="identifier">separated</span> <span class="identifier">list</span> <span class="identifier">of</span> <span class="identifier">local</span> <span class="identifier">MIH</span> <span class="identifier">Link</span> <span class="identifier">SAPs</span> <span class="identifier">id</span><span class="error">'</span><span class="identifier">s</span> <span class="keyword">and</span> <span class="identifier">ports</span><span class="special">.</span>
+<span class="special">##</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">g</span><span class="special">.:</span> <span class="identifier">links</span> <span class="special">=</span> <span class="identifier">link</span> <span class="number">1235</span> <span class="number">802</span><span class="identifier">_11</span> <span class="number">00</span><span class="special">:</span><span class="number">11</span><span class="special">:</span><span class="number">22</span><span class="special">:</span><span class="number">33</span><span class="special">:</span><span class="number">44</span><span class="special">:</span><span class="number">55</span>
+<span class="special">##</span>
+<span class="identifier">links</span> <span class="special">=</span> <span class="special">&lt;</span><span class="identifier">link</span> <span class="identifier">sap</span> <span class="identifier">id</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">port</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">technology</span> <span class="identifier">type</span><span class="special">&gt;</span> <span class="special">&lt;</span><span class="identifier">interface</span><span class="special">&gt;,</span> <span class="special">...</span>
 </pre>
 <p>
       </p>

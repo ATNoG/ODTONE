@@ -4,8 +4,8 @@
 <title>Struct ir_bin_iarchive_error</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="ODTONE 0.5">
-<link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.bin_response_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/bin_response.hpp&gt;">
+<link rel="home" href="../../index.html" title="ODTONE 0.6">
+<link rel="up" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.bin_response_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/bin_response.hpp&gt;">
 <link rel="prev" href="ir_bin_data/unspecified_bool_t.html" title="Struct unspecified_bool_t">
 <link rel="next" href="ir_bin_iarchive.html" title="Class ir_bin_iarchive">
 </head>
@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="ir_bin_data/unspecified_bool_t.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.bin_response_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="ir_bin_iarchive.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="ir_bin_data/unspecified_bool_t.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.bin_response_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="ir_bin_iarchive.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.mih.ir_bin_iarchive_error"></a><div class="titlepage"></div>
@@ -22,25 +22,21 @@
 <p>odtone::mih::ir_bin_iarchive_error</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.bin_response_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/bin_response.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/mih/types/bin_response.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.bin_response_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/bin_response.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/mih/types/bin_response.hpp</a>&gt;
 
 </span>
-<span class="keyword">struct</span> <a class="link" href="ir_bin_iarchive_error.html" title="Struct ir_bin_iarchive_error">ir_bin_iarchive_error</a> <span class="special">{</span>
-  <span class="comment">// <a class="link" href="ir_bin_iarchive_error.html#odtone.mih.ir_bin_iarchive_errorconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="ir_bin_iarchive_error.html#idp11296592-bb"><span class="identifier">ir_bin_iarchive_error</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+<span class="keyword">struct</span> <a class="link" href="ir_bin_iarchive_error.html" title="Struct ir_bin_iarchive_error">ir_bin_iarchive_error</a> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">odtone</span><span class="special">::</span><span class="identifier">exception</span> <span class="special">{</span>
+
+  <span class="comment">// <a class="link" href="ir_bin_iarchive_error.html#idp13075232-bb">public member functions</a></span>
+  <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a class="link" href="ir_bin_iarchive_error.html#idp13075632-bb"><span class="identifier">what</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp19652832"></a><h2>Description</h2>
+<a name="idp78002496"></a><h2>Description</h2>
 <p>ir_bin_archive_error exception. </p>
 <div class="refsect2">
-<a name="idp19653552"></a><h3>
-<a name="odtone.mih.ir_bin_iarchive_errorconstruct-copy-destruct"></a><code class="computeroutput">ir_bin_iarchive_error</code> 
-        public
-       construct/copy/destruct</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp11296592-bb"></a><span class="identifier">ir_bin_iarchive_error</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
-<p>Construct a ir_bin_iarchive_erro exception. </p>
-</li></ol></div>
+<a name="idp78003216"></a><h3>
+<a name="idp13075232-bb"></a><code class="computeroutput">ir_bin_iarchive_error</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a name="idp13075632-bb"></a><span class="identifier">what</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li></ol></div>
 </div>
 </div>
 </div>
@@ -56,7 +52,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="ir_bin_data/unspecified_bool_t.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.bin_response_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="ir_bin_iarchive.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="ir_bin_data/unspecified_bool_t.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.bin_response_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="ir_bin_iarchive.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

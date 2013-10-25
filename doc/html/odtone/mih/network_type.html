@@ -4,8 +4,8 @@
 <title>Struct network_type</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="ODTONE 0.5">
-<link rel="up" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.information_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/information.hpp&gt;">
+<link rel="home" href="../../index.html" title="ODTONE 0.6">
+<link rel="up" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.information_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/information.hpp&gt;">
 <link rel="prev" href="parameters.html" title="Struct parameters">
 <link rel="next" href="system_info.html" title="Struct system_info">
 </head>
@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="'ODTONE - Open Dot Twenty One'" width="100" height="100" src="../.././images/logo.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="parameters.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.information_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="system_info.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="parameters.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.information_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="system_info.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="odtone.mih.network_type"></a><div class="titlepage"></div>
@@ -22,18 +22,18 @@
 <p>odtone::mih::network_type</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.information_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/information.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/mih/types/information.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.information_hpp" title="Header &lt;/home/carlos/Projectos/odtone/inc/odtone/mih/types/information.hpp&gt;">/home/carlos/Projectos/odtone/inc/odtone/mih/types/information.hpp</a>&gt;
 
 </span>
 <span class="keyword">struct</span> <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <span class="special">{</span>
   <span class="comment">// <a class="link" href="network_type.html#odtone.mih.network_typeconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="network_type.html#idp11592512-bb"><span class="identifier">network_type</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="network_type.html#idp13371936-bb"><span class="identifier">network_type</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="network_type.html#idp11588416-bb">public member functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="network_type.html#idp11588816-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="network_type.html#idp13367840-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="network_type.html#idp13368240-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="network_type.html#idp11593088-bb">friend functions</a></span>
-  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="network_type.html#idp11593488-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="network_type.html#idp13372512-bb">friend functions</a></span>
+  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="network_type.html#idp13372912-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="network_type.html#odtone.mih.network_typepublic-data-members">public data members</a></span>
   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <a class="link" href="link_type.html" title="Type definition link_type">link_type</a> <span class="special">&gt;</span> <a class="link" href="network_type.html#odtone.mih.network_type.link"><span class="identifier">link</span></a><span class="special">;</span>
@@ -41,23 +41,23 @@
   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span> <a class="link" href="null.html" title="Struct null">null</a><span class="special">,</span> <span class="identifier">type_ext</span> <span class="special">&gt;</span> <a class="link" href="network_type.html#odtone.mih.network_type.typeext"><span class="identifier">typeext</span></a><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp21660704"></a><h2>Description</h2>
+<a name="idp80013248"></a><h2>Description</h2>
 <p>NETWORK_TYPE data type. </p>
 <div class="refsect2">
-<a name="idp21661376"></a><h3>
+<a name="idp80013920"></a><h3>
 <a name="odtone.mih.network_typeconstruct-copy-destruct"></a><code class="computeroutput">network_type</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idp11592512-bb"></a><span class="identifier">network_type</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idp13371936-bb"></a><span class="identifier">network_type</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p>Construct an empty NETWORK_TYPE data type. </p>
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp21667632"></a><h3>
-<a name="idp11588416-bb"></a><code class="computeroutput">network_type</code> public member functions</h3>
+<a name="idp80020048"></a><h3>
+<a name="idp13367840-bb"></a><code class="computeroutput">network_type</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp11588816-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ArchiveT<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp13368240-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">ArchiveT</span> <span class="special">&amp;</span> ar<span class="special">)</span><span class="special">;</span></pre>
 <p>Serialize/deserialize the NETWORK_TYPE data type.</p>
 <p>
 </p>
@@ -77,10 +77,10 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp21681552"></a><h3>
-<a name="idp11593088-bb"></a><code class="computeroutput">network_type</code> friend functions</h3>
+<a name="idp80033904"></a><h3>
+<a name="idp13372512-bb"></a><code class="computeroutput">network_type</code> friend functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="idp11593488-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> os<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <span class="special">&amp;</span> nt<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a name="idp13372912-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> os<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="network_type.html" title="Struct network_type">network_type</a> <span class="special">&amp;</span> nt<span class="special">)</span><span class="special">;</span></pre>
 <p>NETWORK_TYPE data type output.</p>
 <p>
 
@@ -113,7 +113,7 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp21701952"></a><h3>
+<a name="idp80054304"></a><h3>
 <a name="odtone.mih.network_typepublic-data-members"></a><code class="computeroutput">network_type</code> 
         public
        public data members</h3>
@@ -146,7 +146,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="parameters.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_mih_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.information_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="system_info.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="parameters.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../odtone_base_library.html#header..home.carlos.Projectos.odtone.inc.odtone.mih.types.information_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="system_info.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

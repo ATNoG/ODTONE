@@ -4,8 +4,8 @@
 <title>Getting Started</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../index.html" title="ODTONE 0.5">
-<link rel="up" href="../index.html" title="ODTONE 0.5">
+<link rel="home" href="../index.html" title="ODTONE 0.6">
+<link rel="up" href="../index.html" title="ODTONE 0.6">
 <link rel="prev" href="intro.html" title="Introduction">
 <link rel="next" href="mihf_internals.html" title="ODTONE MIHF internals">
 </head>
@@ -92,30 +92,38 @@
       <span class="bold"><strong>In a tarball</strong></span>
     </p>
 <p>
-      You can get the ODTONE source code tarball from our <a href="http://helios.av.it.pt/projects/odtone/files" target="_top">project
+      You can get the ODTONE source code tarball from our <a href="http://atnog.av.it.pt/odtone/" target="_top">project
       page</a>. Then just unpack it and you are ready to compile and install
       ODTONE.
     </p>
+<div class="important"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        If you get ODTONE source code via tarball, you will need to manually download
+        the submodules.
+      </p></td></tr>
+</table></div>
 <p>
       <span class="bold"><strong>From the git repository</strong></span>
     </p>
 <p>
       You can create your own local copy of the ODTONE by cloning the git repository
-      from <a href="http://helios.av.it.pt/projects/odtone/repository" target="_top">ODTONE
-      repository</a>.
+      from <a href="https://github.com/ATNoG/ODTONE" target="_top">ODTONE repository</a>.
     </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-          <span class="bold"><strong>Username:</strong></span> user
-        </li>
-<li class="listitem">
-          <span class="bold"><strong>-- No password</strong></span>
-        </li>
-</ul></div>
 <p>
       To clone the git repository you must run the next command:
 </p>
-<pre class="programlisting">git clone https://user@helios.av.it.pt/git/odtone/ odtone
+<pre class="programlisting">git clone https://github.com/ATNoG/ODTONE.git odtone
+</pre>
+<p>
+    </p>
+<p>
+      Then, in order to get all submodules provided by ODTONE run the next command:
+</p>
+<pre class="programlisting">git submodule update --init
 </pre>
 <p>
     </p>
@@ -136,7 +144,6 @@
 <col>
 <col>
 <col>
-<col>
 </colgroup>
 <thead><tr>
 <th>
@@ -151,22 +158,12 @@
                 x86-64
               </p>
             </th>
-<th>
-              <p>
-                ARM
-              </p>
-            </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
               <p>
                 Linux
-              </p>
-            </td>
-<td>
-              <p>
-                <span class="inlinemediaobject"><img src=".././images/check.png" alt="check"></span>
               </p>
             </td>
 <td>
@@ -196,9 +193,45 @@
                 <span class="inlinemediaobject"><img src=".././images/check.png" alt="check"></span>
               </p>
             </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><div class="table">
+<a name="odtone.getStart.platform_support0"></a><p class="title"><b>Table&#160;2.&#160;Platform Support</b></p>
+<div class="table-contents"><table class="table" summary="Platform Support">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+            </th>
+<th>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
 <td>
               <p>
-                <span class="inlinemediaobject"><img src=".././images/interrogation.png" alt="interrogation"></span>
+                Android
+              </p>
+            </td>
+<td>
+              <p>
+                <span class="inlinemediaobject"><img src=".././images/check.png" alt="check"></span>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                OpenWrt
+              </p>
+            </td>
+<td>
+              <p>
+                <span class="inlinemediaobject"><img src=".././images/check.png" alt="check"></span>
               </p>
             </td>
 </tr>
@@ -278,6 +311,22 @@
 <p>
         The Android SDK has the necessary tools to run, debug and deploy the ODTONE
         binaries.
+      </p>
+</td></tr>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+        <span class="bold"><strong>For OpenWrt</strong></span>
+      </p>
+<p>
+        Check instruction provided in odtone-openwrt submodule (&lt;ODTONE&gt;/extensions/odtone-openwrt
+        or <a href="https://github.com/ATNoG/odtone-openwrt" target="_top">ODTONE-OpenWrt project
+        page</a>)
       </p>
 </td></tr>
 </table></div>
