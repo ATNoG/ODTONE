@@ -18,7 +18,7 @@
 
 [article ODTONE
     [quickbook 1.5]
-    [version 0.5]
+    [version 0.6]
     [authors [Guimarães, Carlos]]
     [authors [Santos, Bruno]]
     [authors [Prata, André]]
@@ -1311,17 +1311,16 @@ Ireland, Oct 2011
 
 [section:changelog Changelog]
 
-[*ODTONE 0.5 - Open Dot Twenty ONE.]
+[*ODTONE 0.6 - Open Dot Twenty ONE]
 
-* Provision of extended support Linux and Windows IEEE 802.11 Link SAPs.
-* Provision of extended support Linux Ethernet Link SAP.
-* Provision of a C# MIH Protocol library.
-* Update of the DHCP MIH-User to the last version of ISC's DHCP (4.2.5).
-* Extended support for the MIH Registration signaling added.
-* Added CMake build support.
-* Provision of *.deb packages.
-* Several bug-fixes.
-* ODTONE documentation revision.
+* Fix transaction ID serialization/deserialization and improve its robustness
+* Improve robustness of IPv4/IPv6 encoding and decoding
+* Include a JAVA MIH Protocol library
+* Move some extensions to submodules (check documentation)
+* Merge all ODTONE libraries ('base', 'mih', 'sap' and 'net') in a single library (libodtone)
+* Add MIH Resource Adaptor for Mobicents JAIN SLEE (https://github.com/ATNoG/MIH-Resource-Adaptor)
+* Add OpenWrt ODTONE package (https://github.com/ATNoG/odtone-openwrt)
+* ODTONE website and documentation revision.
 
 [endsect]
 

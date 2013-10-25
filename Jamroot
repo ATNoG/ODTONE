@@ -117,7 +117,7 @@ install odtone-dist
 debian odtone-mihf
 	: <bin> src/mihf//odtone-mihf
 	  <etc> src/mihf/odtone.conf
-	: <version>0.4
+	: <version>0.6
 	  <section>net
 	  <maintainer-name>"Bruno Santos"
 	  <maintainer-email>"bsantos@av.it.pt"

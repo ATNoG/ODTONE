@@ -1,6 +1,6 @@
 Project : ODTONE - Open Dot Twenty ONE
 
-Version : 0.5 Beta
+Version : 0.6 Beta
 
 URL     : http://atnog.av.it.pt/odtone/
 
