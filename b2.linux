@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo b2 toolset=gcc-linux target-os=linux cxxflags=-std=c++0x $@
+b2 toolset=gcc-linux target-os=linux cxxflags=-std=c++0x $@

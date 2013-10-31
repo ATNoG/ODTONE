@@ -20,29 +20,23 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
-#include <odtone/mihf/service.hpp>
+#include <odtone/mihf/message.hpp>
+#include <boost/utility.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mihf {
 
 ////////////////////////////////////////////////////////////////////////////////
-class service::access_point : boost::noncopyable {
-protected:
-	access_point(service& core)
-		: core(core)
+class sap : boost::noncopyable, public boost::enable_shared_from_this<sap> {
+public:
+	virtual ~sap()
 	{ }
 
-public:
-	virtual ~access_point()
-	{ }
-
-	virtual bool request(message const& msg, response& resp) = 0;
-
-public:
-	service& core;
+	virtual bool request(message& msg) = 0;
 };
 
-typedef boost::shared_ptr<service::access_point> sap_ptr;
+typedef boost::shared_ptr<sap> sap_ptr;
 
 ////////////////////////////////////////////////////////////////////////////////
 } /* namespace mihf */ } /* namespace odtone */

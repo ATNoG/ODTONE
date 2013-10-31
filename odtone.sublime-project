@@ -1,0 +1,17 @@
+{
+	"folders":
+	[
+		{
+			"path": "inc"
+		},
+		{
+			"path": "lib"
+		},
+		{
+			"path": "src"
+		},
+		{
+			"path": "app/mihf"
+		}
+	]
+}

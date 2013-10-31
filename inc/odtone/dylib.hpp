@@ -62,7 +62,7 @@ class dylib {
 		if (!mod)
 			throw_exception(dylib_error(win32::error_string(win32::get_last_error())));
 	#else
-		void* mod = ::dlopen(filepath, RTLD_NOW);
+		void* mod = ::dlopen(filepath.data(), RTLD_NOW);
 		if (!mod)
 			throw_exception(dylib_error(::dlerror()));
 	#endif
@@ -111,7 +111,7 @@ public:
 	#ifdef _WIN32
 		return reinterpret_cast<type>(win32::get_library_symbol(_module.get(), name));
 	#else
-		return reinterpret_cast<type>(::dlsym(_module.get(), name));
+		return reinterpret_cast<type>(::dlsym(_module.get(), name.data()));
 	#endif
 	}
 

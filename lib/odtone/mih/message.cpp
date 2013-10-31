@@ -1,11 +1,12 @@
 //==============================================================================
 // Brief   : MIH Message
-// Authors : Bruno Santos <bsantos@av.it.pt>
+// Authors : Bruno Santos <bsantos@cppdev.net>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
 // Copyright (C) 2009-2013 Universidade Aveiro
 // Copyright (C) 2009-2013 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2013 Bruno Santos
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.

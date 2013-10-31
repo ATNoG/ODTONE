@@ -22,16 +22,18 @@
 #include <odtone/base.hpp>
 #include <odtone/dylib.hpp>
 #include <odtone/mihf/service.hpp>
-#include <odtone/mihf/sap.hpp>
 #include <boost/utility.hpp>
-#include "core_service.hpp"
+#include "core.hpp"
 #include <map>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mihf {
 
 ////////////////////////////////////////////////////////////////////////////////
+class service_access_point;
+
 class modules : boost::noncopyable {
+	typedef boost::shared_ptr<service_access_point> sap_ptr;
 	typedef sap_ptr sap_factory(service& srv);
 
 	struct entry {
@@ -46,14 +48,14 @@ public:
 	};
 
 public:
-	modules(core_service& core);
+	modules(core& c);
 	~modules();
 
 	bool load_sap(std::string const& name);
 	bool unload(std::string const& name);
 
 private:
-	core_service&                _core;
+	core&                        _core;
 	std::map<std::string, entry> _mods;
 };
 

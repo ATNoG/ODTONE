@@ -1,11 +1,12 @@
 //=============================================================================
 // Brief   : Message
-// Authors : Bruno Santos <bsantos@av.it.pt>
+// Authors : Bruno Santos <bsantos@cppdev.net>
 // ----------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
 //
 // Copyright (C) 2012-2013 Universidade Aveiro
 // Copyright (C) 2012-2013 Instituto de Telecomunicações - Pólo Aveiro
+// Copyright (C) 2013 Bruno Santos
 //
 // This software is distributed under a license. The full license
 // agreement can be found in the file LICENSE in this distribution.
@@ -20,18 +21,17 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
-#include <odtone/buffer.hpp>
 #include <boost/utility.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
+#include <boost/enable_shared_from_this.hpp>
 #include <boost/mpl/bool.hpp>
-#include <boost/tuple/tuple.hpp>
+#include <boost/function.hpp>
+#include <tuple>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mihf {
 
 ///////////////////////////////////////////////////////////////////////////////
-class message : boost::noncopyable {
+class message : boost::noncopyable, public boost::enable_shared_from_this<message> {
 protected:
 	message(uint mid);
 	message(std::string const& mihf, uint mid);
@@ -41,79 +41,81 @@ public:
 	std::string const& mihf() const { return _mihf; }
 	uint               mid() const  { return _mid; }
 
-	uint service_id() const { return (_mid >> 12  )      ; }
-	uint opcode() const     { return (_mid >> 10  ) & 0x3; }
-	uint action_id() const  { return (_mid & 0x3ff)      ; }
+	uchar  service() const { return (_mid >> 12  )      ; }
+	uchar  opcode() const  { return (_mid >> 10  ) & 0x3; }
+	ushort action() const  { return (_mid & 0x3ff)      ; }
 
 private:
-	std::string   _mihf;
-	uint          _mid;
+	std::string _mihf;
+	uint        _mid;
 };
 
-typedef boost::shared_ptr<message> message_ptr;
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-using boost::tuples::null_type;
-
-template<uint ServiceId, uint Opcode, uint ActionId,
-         class A1 = null_type, class A2 = null_type, class A3 = null_type,
-         class A4 = null_type, class A5 = null_type, class A6 = null_type,
-         class A7 = null_type, class A8 = null_type, class A9 = null_type>
-class message_;
-
-/*template<uint ServiceId, uint Opcode, uint ActionId, class... Args>
-struct message_ : public message {
+////////////////////////////////////////////////////////////////////////////////
+template<uint ServiceId, uint Opcode, uint ActionId, class ...Args>
+class message_ : public message {
 	typedef message_<ServiceId, Opcode, ActionId, Args...> this_type;
 
+public:
 	static const uint k_mid = ((ServiceId << 12) | ((Opcode << 10) & 0x3) | (ActionId & 0x3ff));
 
-	message_(Args&&... a)
-		: message(k_mid), args(std::forward<Args>(a)...)
+public:
+	message_(Args&& ...args)
+		: _args(std::forward<Args>(args)...)
 	{ }
 
-	message_(std::string const& mihf, Args&&... a)
-		: message(mihf, k_mid), args(std::forward<Args>(a)...)
+	message_(std::string const& mihf, Args&& ...args)
+		: message(mihf), _args(std::forward<Args>(args)...)
 	{ }
 
-	~message_()
-	{ }
-
-	boost::tuple<Args...> args;
-};*/
+private:
+	std::tuple<Args...> _args;
+};
 
 template<class T>
 struct is_message : boost::mpl::false_ { };
 
-//template<uint ServiceId, uint Opcode, uint ActionId, class... Args>
-//struct is_message<message_<ServiceId, Opcode, ActionId, Args...>> : boost::mpl::true_ { };
+template<uint ServiceId, uint Opcode, uint ActionId, class... Args>
+struct is_message<message_<ServiceId, Opcode, ActionId, Args...>> : boost::mpl::true_ { };
 
-template<uint ServiceId, uint Opcode, uint ActionId,
-         class A1, class A2, class A3,
-         class A4, class A5, class A6,
-         class A7, class A8, class A9>
-struct is_message<message_<ServiceId, Opcode, ActionId, A1, A2, A3, A4, A5, A6, A7, A8, A9> >
-	: boost::mpl::true_ { };
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 template<class T>
-inline T* message_cast(message* msg)
+inline typename boost::enable_if<is_message<T>, T>::type* message_cast(message* msg)
 {
-	ODTONE_STATIC_ASSERT(is_message<T>::value, "T must be a message type");
-
 	if (msg->mid() != T::k_mid)
-		return false;
+		return nullptr;
 	return static_cast<T*>(msg);
 }
 
 template<class T>
-inline T const* message_cast(message const* msg)
+inline typename boost::enable_if<is_message<T>, T>::type const* message_cast(message const* msg)
 {
-	ODTONE_STATIC_ASSERT(is_message<T>::value, "T must be a message type");
-
 	if (msg->mid() != T::k_mid)
-		return false;
+		return nullptr;
 	return static_cast<T const*>(msg);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+class send_message_functor {
+public:
+	send_message_functor()
+		: _func()
+	{ }
+
+	template<class F>
+	send_message_functor(F f)
+		: _func(f)
+	{ }
+
+	void operator()(message& msg) const
+	{
+		_func(msg);
+	}
+
+private:
+	boost::function<void(message&)> _func;
+};
+
+extern send_message_functor send_message;
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mihf */ } /* namespace odtone */

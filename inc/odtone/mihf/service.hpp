@@ -21,33 +21,37 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
 #include <odtone/mihf/message.hpp>
+#include <odtone/mihf/endpoint.hpp>
 #include <boost/utility.hpp>
-#include <boost/function.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/system/error_code.hpp>
+#include <boost/enable_shared_from_this.hpp>
+#include <boost/optional.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace odtone { namespace mihf {
 
 ////////////////////////////////////////////////////////////////////////////////
-using boost::system::error_code;
+class sap;
+class user;
 
 ////////////////////////////////////////////////////////////////////////////////
-typedef boost::function<void(error_code&, message const&)> response;
-
-class service : boost::noncopyable {
-public:
-	class user;
-	class access_point;
+class service : boost::noncopyable, public boost::enable_shared_from_this<service> {
+	typedef boost::shared_ptr<user> user_ptr;
+	typedef boost::shared_ptr<sap>  sap_ptr;
 
 public:
 	virtual ~service()
 	{ }
 
-	virtual bool indication(message const& msg) = 0;
-	virtual bool indication(message const& msg, response resp) = 0;
-	virtual bool request(message const& msg, response resp) = 0;
+	virtual bool dispatch(message& msg, endpoints& eps) = 0;
+
+	//events
+	virtual void event_add_user(user& u);
+	virtual void event_add_sap(sap& u);
+	virtual void event_remove_user(user& u);
+	virtual void event_remove_sap(sap& u);
 };
+
+typedef boost::shared_ptr<service> service_ptr;
 
 ////////////////////////////////////////////////////////////////////////////////
 } /* namespace mihf */ } /* namespace odtone */

@@ -15,11 +15,15 @@
 #==============================================================================
 
 odtone.runtime-lib dl ;
+odtone.runtime-lib pthread ;
+odtone.runtime-lib rt ;
 
 exe mihf
 	: main.cpp
-	  core_service.cpp
+	  core.cpp
 	  modules.cpp
 	  ../../lib/odtone//odtone
 	  dl
+	  pthread
+	  rt
 	;

@@ -21,6 +21,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <odtone/base.hpp>
 #include <string>
+#include <cstring>
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace odtone {
@@ -32,18 +33,20 @@ public:
 	typedef CharT const* type;
 
 	basic_const_string_ref(type str)
-		: _str(str)
+		: _str(str), _len(std::strlen(str))
 	{ }
 	basic_const_string_ref(std::basic_string<CharT> const& str)
-		: _str(str.c_str())
+		: _str(str.c_str()), _len(str.length())
 	{ }
 
-	operator type() const { return _str; }
+	char const* data() const { return _str; }
+	size_t length() const    { return _len; }
 
 	CharT operator[](ptrdiff_t idx) const { return _str[idx]; }
 
 private:
-	type _str;
+	type   _str;
+	size_t _len;
 };
 
 typedef basic_const_string_ref<char>    const_string_ref;

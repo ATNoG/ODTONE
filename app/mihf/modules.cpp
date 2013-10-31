@@ -27,8 +27,8 @@ namespace odtone { namespace mihf {
 //};
 
 ///////////////////////////////////////////////////////////////////////////////
-modules::modules(core_service& core)
-	: _core(core)
+modules::modules(core& c)
+	: _core(c)
 {
 }
 
@@ -57,8 +57,8 @@ bool modules::load_sap(std::string const& name)
 	if (!factory)
 		return false;
 
-	e.obj = factory(_core);
-	_core.add(e.obj);
+//	e.obj = factory(_core);
+//	_core.add(e.obj);
 	_mods[name] = e;
 	return true;
 }
@@ -71,7 +71,7 @@ bool modules::unload(std::string const& name)
 	if (i == _mods.end())
 		return false;
 
-	_core.remove(i->second.obj);
+//	_core.remove(i->second.obj);
 	_mods.erase(i);
 	return true;
 }

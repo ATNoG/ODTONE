@@ -15,7 +15,7 @@
 // This software is distributed without any warranty.
 //=============================================================================
 
-#include "core_service.hpp"
+#include "core.hpp"
 #include <boost/thread/thread.hpp>
 #include <boost/asio/io_service.hpp>
 #include <exception>
@@ -24,12 +24,15 @@
 namespace odtone { namespace mihf {
 
 ///////////////////////////////////////////////////////////////////////////////
+send_message_functor send_message;
+
+///////////////////////////////////////////////////////////////////////////////
 void main()
 {
 	size_t                  hc(boost::thread::hardware_concurrency());
 	boost::asio::io_service ios(hc);
 	boost::thread_group     tg;
-	core_service            cs;
+	core                    cs("hmm");
 
 	//TODO: init MIHF
 
