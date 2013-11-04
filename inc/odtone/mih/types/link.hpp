@@ -207,7 +207,8 @@ enum link_ac_type_enum {
 	link_ac_type_disconnect = 1,	/**< Link disconnect.	*/
 	link_ac_type_low_power  = 2,	/**< Link low power.	*/
 	link_ac_type_power_down = 3,	/**< Link power down.	*/
-	link_ac_type_power_up   = 4,	/**< Link power up.		*/
+	link_ac_type_power_up   = 4,	/**< Link power up.	*/
+	link_ac_type_configure	= 5,	/**< Link configure.	*/
 };
 
 /**
@@ -245,7 +246,7 @@ struct link_action {
 	 */
 	template<class ArchiveT>
 	void serialize(ArchiveT& ar)
-	{;
+	{
 		ar & type;
 		ar & attr;
 	}
@@ -286,7 +287,10 @@ enum link_type_enum {
 
 	link_type_802_16 = 27,			/**< Wireless - IEEE 802.16.	*/
 	link_type_802_20 = 28,			/**< Wireless - IEEE 802.20.	*/
-	link_type_802_22 = 29			/**< Wireless - IEEE 802.22.	*/
+	link_type_802_22 = 29,			/**< Wireless - IEEE 802.22.	*/
+	link_type_dvb = 40,			/**< DVB. 	*/
+	link_type_t_dmb = 41, 			/**< T-DMB. 	*/
+	link_type_atsc_mh = 42			/**< ATSC-M/H. 	*/
 };
 
 /**
@@ -353,6 +357,15 @@ enum link_param_gen_enum {
 	link_param_gen_sinr = 2,				/**< SINR.				*/
 	link_param_gen_throughput = 3,			/**< Throughput.		*/
 	link_param_gen_packet_error_rate = 4,	/**< Packet error rate.	*/
+	link_param_gen_c_frequency = 5,		/**< Channel central frequency. 	*/
+	link_param_gen_c_ch_bandwidth = 6,	/**< Channel central bandwidth. 	*/
+	link_param_gen_c_tx_power = 7,		/**< Channel central power. 		*/
+	link_param_gen_h_frequency = 8,		/**< Higher adjacent channel frequency.	*/
+	link_param_gen_h_ch_bandwidth = 9,	/**< Higher adjacent channel bandwidth.	*/
+	link_param_gen_h_tx_power = 10,		/**< Higher adjacent channel power.	*/
+	link_param_gen_l_frequency = 11,	/**< Lower adjacent channel frequency.	*/
+	link_param_gen_l_ch_bandwidth = 12,	/**< Lower adjacent channel bandwidth.	*/
+	link_param_gen_l_tx_power = 13,		/**< Lower adjacent channel power.	*/
 };
 
 /**
@@ -1054,6 +1067,93 @@ struct status_rsp {
  * LIST(SEQUENCE(LINK_ID,LINK_STATUS_RSP)) data type.
  */
 typedef std::vector<status_rsp> status_rsp_list;
+
+///////////////////////////////////////////////////////////////////////////////
+// New to 802.21b---
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * SUPPORTED_LINK_ACTIONS_LIST data type enumeration.
+ */
+enum supported_link_actions_enum {
+	supported_link_actions_disconnect	= 1,	/**< Disconnect action.		*/
+	supported_link_actions_low_power	= 2,	/**< Low power action.		*/
+	supported_link_actions_power_down	= 3,	/**< Power down action.		*/
+	supported_link_actions_power_up		= 4,	/**< Power up action.		*/
+	supported_link_actions_configure	= 5,	/**< Configure parameters action.*/
+};
+
+/**
+ * SUPPORTED_LINK_ACTTIONS_LIST data type.
+ */
+typedef bitmap<32, supported_link_actions_enum> supported_link_actions_list;
+
+/**
+ * FREQUENCY data type.
+ */
+typedef uint64 frequency;
+
+/**
+ * CH_BANDWIDTH data type.
+ */
+typedef uint32 ch_bandwidth;
+
+/**
+ * EIRP data type.
+ */
+typedef sint8 eirp;
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+/**
+ * CHANNEL_CONFIG_SET data type.
+ */
+struct channel_config_set {
+	frequency c_freq;		/**< Central channel frequency.	*/
+	ch_bandwidth c_bw;		/**< Central channel bandwidth.	*/
+	eirp c_pwr;			/**< Central channel power.	*/
+	frequency n_p_o_freq;		/**< Higher channel frequency.	*/
+	ch_bandwidth n_p_o_bw;		/**< Higher channel bandwidth.	*/
+	eirp n_p_o_pwr;			/**< Higher channel power.	*/
+	frequency n_m_o_freq;		/**< Lower channel frequency.	*/
+	ch_bandwidth n_m_o_bw;		/**< Lower channel bandwidth.	*/
+	eirp n_m_o_pwr;			/**< Lower channel power.	*/
+
+
+	/**
+	 * Serialize/deserialize the CHANNEL_CONFIG_SET data type.
+	 *
+	 * @param ar The archive to/from where serialize/deserialize the data type.
+	 */
+	template<class ArchiveT>
+	void serialize(ArchiveT& ar)
+	{
+		ar & c_freq;
+		ar & c_bw;
+		ar & c_pwr;
+		ar & n_p_o_freq;
+		ar & n_p_o_bw;
+		ar & n_p_o_pwr;
+		ar & n_m_o_freq;
+		ar & n_m_o_bw;
+		ar & n_m_o_pwr;
+	}
+};
+
+
+/**
+ * LINK_AC_PARAM data type.
+ */
+typedef boost::variant<null, channel_config_set> link_ac_param;
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// ---New to 802.21b (end)
+///////////////////////////////////////////////////////////////////////////////
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace mih */ } /*namespace odtone */
