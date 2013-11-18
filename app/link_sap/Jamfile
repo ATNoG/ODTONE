@@ -17,6 +17,9 @@
 #===============================================================================
 
 project link_sap
+	: requirements
+		<toolset>gcc:<linkflags>"-lrt"
+		<toolset>gcc-android:<linkflags>"-lrt"
 	;
 
 odtone.explicit-alias source-list
