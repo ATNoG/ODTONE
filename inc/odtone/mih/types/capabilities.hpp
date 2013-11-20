@@ -75,6 +75,7 @@ enum mih_cmd_list_enum {
 	mih_cmd_mn_ho_candidate_query = 4,		/**< MN handover candidate query	*/
 	mih_cmd_mn_ho_commit = 4,				/**< MN handover commit				*/
 	mih_cmd_mn_ho_complete = 4,				/**< MN handover complete			*/
+	mih_cmd_net_ho_best_commit = 5,			/**< Net handover best commit	*/
 };
 
 /**

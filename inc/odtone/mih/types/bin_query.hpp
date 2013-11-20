@@ -50,6 +50,10 @@ enum net_type_inc_enum {
 	net_type_inc_ieee802_16 = 9,		/**< IEEE 802.16	*/
 	net_type_inc_ieee802_20 = 10,		/**< IEEE 802.20	*/
 	net_type_inc_ieee802_22 = 11,		/**< IEEE 802.22	*/
+	net_type_inc_dvb = 12,			/**< Wireless DVB	*/
+	net_type_inc_t_dmb = 13,		/**< Wireless T-DMB	*/
+	net_type_inc_atsc_mh = 14,		/**< Wireless ATSC-M/H	*/
+	net_type_inc_xgp = 15,			/**< Wireless XGP	*/	
 };
 
 /**

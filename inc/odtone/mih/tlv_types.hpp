@@ -89,6 +89,7 @@ static const tlv_cast_<link_addr,             tlv_<60> > tlv_poa = {};
 static const tlv_cast_<bool,                  tlv_<61> > tlv_unauthenticated_info_req = {};
 static const tlv_cast_<network_type,          tlv_<62> > tlv_network_type = {};
 static const tlv_cast_<rq_res_set,            tlv_<63> > tlv_request_resource_set = {};
+static const tlv_cast_<group_info,	      tlv_<76> > tlv_group_info = {};
 
 // ODTONE specific TLVs
 static const tlv_cast_<link_evt_list,         tlv_<101> > tlv_link_evt_list = {};

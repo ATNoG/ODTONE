@@ -61,6 +61,7 @@ public:
 		n2n_ho_commit = msg_id<3, 3, 9>::value,				/**< MIH_N2N_HO_Commit.indication	*/
 		mn_ho_complete = msg_id<3, 3, 10>::value,			/**< MIH_N2N_HO_Complete.indication	*/
 		n2n_ho_complete = msg_id<3, 3, 11>::value,			/**< MIH_N2N_HO_Commlete.indication	*/
+		net_ho_bcst_commit = msg_id<3, 3, 12>::value,			/**< MIH_Net_HO_Bcst_Commit.indication	*/
 		get_information = msg_id<4, 3, 1>::value,			/**< MIH_Get_Information.indication	*/
 		push_information = msg_id<4, 3, 2>::value,			/**< MIH_Push_Information.indication*/
 		// ODTONE specific messages

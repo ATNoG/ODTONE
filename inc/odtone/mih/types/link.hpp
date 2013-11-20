@@ -288,6 +288,7 @@ enum link_type_enum {
 	link_type_802_16 = 27,			/**< Wireless - IEEE 802.16.	*/
 	link_type_802_20 = 28,			/**< Wireless - IEEE 802.20.	*/
 	link_type_802_22 = 29,			/**< Wireless - IEEE 802.22.	*/
+	link_type_xgp = 36,			/**< Wireless - XGP.		*/
 	link_type_dvb = 40,			/**< DVB. 	*/
 	link_type_t_dmb = 41, 			/**< T-DMB. 	*/
 	link_type_atsc_mh = 42			/**< ATSC-M/H. 	*/

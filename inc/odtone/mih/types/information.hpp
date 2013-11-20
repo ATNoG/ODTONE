@@ -376,6 +376,10 @@ enum netsubtype_enum {
 
 	netsubtype_iee80216_2_5GHz = 0,		/**< Wireless - IEEE 802.16	- 2.5GHz	*/
 	netsubtype_iee80216_3_5GHz = 1,		/**< Wireless - IEEE 802.16	- 3.5GHz	*/
+
+	netsubtype_other_dvb = 0,		/**< Wireless - Other	- DVB	*/
+	netsubtype_other_t_dmb = 1,		/**< Wireless - Other	- T-DMB	*/
+	netsubtype_other_atsc_mh = 2,		/**< Wireless - Other	- ATSC-M/H	*/
 };
 
 /**
