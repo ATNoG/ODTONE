@@ -412,6 +412,7 @@ enum status_enum {
 	status_rejected = 2,				/**< Status rejected.				*/
 	status_authorization_failure = 3,	/**< Status authorization failure.	*/
 	status_network_error = 4,			/**< Status network error.			*/
+	status_authentication_failure = 5,	/**< Status authentication failure.	*/
 };
 
 /**

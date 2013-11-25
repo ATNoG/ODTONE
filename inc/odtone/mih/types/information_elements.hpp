@@ -103,6 +103,10 @@ static const tlv_cast_<ie_poa_ip_addr,                tlv4_<0x10000205> > tlv_ie
 static const tlv_cast_<ie_container_poa,              tlv4_<0x10000302> > tlv_ie_container_poa = {};
 static const tlv_cast_<ie_container_network,          tlv4_<0x10000301> > tlv_ie_container_network = {};
 static const tlv_cast_<ie_container_list_of_networks, tlv4_<0x10000300> > tlv_ie_container_list_of_networks = {};
+static const tlv_cast_<ie_authenticator_link_addr,    tlv4_<0x10000206> > tlv_ie_authenticator_link_addr = {};
+static const tlv_cast_<ie_authenticator_ip_addr,      tlv4_<0x10000207> > tlv_ie_authenticator_ip_addr = {};
+static const tlv_cast_<ie_pos_ip_addr,		      tlv4_<0x10000208> > tlv_ie_pos_ip_addr = {};
+
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
