@@ -55,6 +55,11 @@ public:
 		mn_ho_complete = msg_id<3, 2, 10>::value,			/**< MIH_N2N_HO_Complete.response		*/
 		n2n_ho_complete = msg_id<3, 2, 11>::value,			/**< MIH_N2N_HO_Commlete.response		*/
 		get_information	= msg_id<4, 2, 1>::value,			/**< MIH_Get_Information.response		*/
+		// 802.21a Security-Related Messages
+		auth_request = msg_id<1, 2, 6>::value,			/**< MIH_Auth.response	*/
+		termination_auth = msg_id<1, 2, 7>::value,		/**< MIH_Termination_Auth.response	*/
+		push_key = msg_id<1, 2, 8>::value,			/**< MIH_Push_key.response		*/
+		ll_auth = msg_id<1, 2, 9>::value,			/**< MIH_LL_Auth.response		*/
 	};
 
 	/**

@@ -63,7 +63,9 @@ public:
 		n2n_ho_complete = msg_id<3, 3, 11>::value,			/**< MIH_N2N_HO_Commlete.indication	*/
 		net_ho_bcst_commit = msg_id<3, 3, 12>::value,			/**< MIH_Net_HO_Bcst_Commit.indication	*/
 		get_information = msg_id<4, 3, 1>::value,			/**< MIH_Get_Information.indication	*/
-		push_information = msg_id<4, 3, 2>::value,			/**< MIH_Push_Information.indication*/
+		push_information = msg_id<4, 3, 2>::value,			/**< MIH_Push_Information.indication	*/
+		// 802.21a Security-Related Messages
+		mih_auth = msg_id<1, 3, 6>::value,				/**< MIH_Auth.indication	*/
 		// ODTONE specific messages
 		link_register = msg_id<1, 3, 6>::value,				/**< Link_Register.indication	*/
 		user_register = msg_id<1, 3, 7>::value				/**< User_Register.indication	*/
