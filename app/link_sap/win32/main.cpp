@@ -104,7 +104,7 @@ void set_supported_link_tec(odtone::mih::octet_string &tec)
 	enum_map["GSM"]           = odtone::mih::link_type_gsm;
 	enum_map["GPRS"]          = odtone::mih::link_type_gprs;
 	enum_map["EDGE"]          = odtone::mih::link_type_edge;
-	enum_map["802.3"]         = odtone::mih::link_type_ethernet;
+	enum_map["802_3"]         = odtone::mih::link_type_ethernet;
 	enum_map["Other"]         = odtone::mih::link_type_wireless_other;
 	enum_map["802_11"]        = odtone::mih::link_type_802_11;
 	enum_map["CDMA2000"]      = odtone::mih::link_type_cdma2000;
