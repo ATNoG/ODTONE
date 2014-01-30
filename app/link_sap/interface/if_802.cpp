@@ -1,5 +1,5 @@
 //==============================================================================
-// Brief   : 802.11 Network Interface
+// Brief   : IEEE 802 Interface
 // Authors : Bruno Santos <bsantos@av.it.pt>
 //------------------------------------------------------------------------------
 // ODTONE - Open Dot Twenty One
@@ -15,32 +15,23 @@
 // This software is distributed without any warranty.
 //==============================================================================
 
-#ifndef LINK_SAP_NIC_IF_802_11__HPP_
-#define LINK_SAP_NIC_IF_802_11__HPP_
-
-///////////////////////////////////////////////////////////////////////////////
-#include "interface.hpp"
+#include "if_802.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace link_sap { namespace nic {
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * This class provides represents and stores information about an
- * IEEE 802.11 interface.
+ * Construct an IEEE 802 interface representation.
+ *
+ * @param id IEEE 802 interface identifier.
  */
-class if_802_11 : public interface {
-public:
-	/**
-	 * Construct an IEEE 802.11 interface representation.
-	 *
-	 * @param id IEEE 802.11 interface identifier.
-	 */
-	if_802_11(if_id const& id);
-};
+if_802::if_802(if_id const& id, odtone::mih::link_type lt)
+	: interface(id, lt)
+{
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 } /* namespace nic */ } /* namespace link_sap */
 
 // EOF ////////////////////////////////////////////////////////////////////////
-#endif /* LINK_SAP_NIC_IF_802_11__HPP_ */

@@ -20,7 +20,7 @@
 #include <odtone/mih/types/information.hpp>
 #include <odtone/mih/types/capabilities.hpp>
 #include "../link_sap.hpp"
-#include "../interface/if_802_11.hpp"
+#include "../interface/if_802.hpp"
 #include <odtone/debug.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
@@ -258,8 +258,7 @@ int main(int argc, char** argv)
 					if (lnk.has_qdisc())
 						std::cout << "if_qdisc: " << lnk.qdisc() << std::endl;
 
-
-					it = new link_sap::nic::if_802_11(link_sap::nic::if_id(lnk.index()));
+					it = new link_sap::nic::if_802(link_sap::nic::if_id(lnk.index()), link_id.type);
 
 					if (lnk.flags() & rtnetlink::if_link::up)
 						it->up(true);

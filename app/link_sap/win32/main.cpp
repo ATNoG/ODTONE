@@ -17,7 +17,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "../link_sap.hpp"
-#include "../interface/if_802_11.hpp"
+#include "../interface/if_802.hpp"
 #include <odtone/debug.hpp>
 #include <odtone/strutil.hpp>
 #include <odtone/mih/types/information.hpp>
@@ -278,7 +278,7 @@ int main(int argc, char** argv)
 		for (uint i = 0; i < iflst->dwNumberOfItems; ++i) {
 			interface* it;
 
-			it = new if_802_11(if_id(&iflst->InterfaceInfo[i].InterfaceGuid));
+			it = new if_802(if_id(&iflst->InterfaceInfo[i].InterfaceGuid), link_id.type);
 			it->name(odtone::ustr(iflst->InterfaceInfo[i].strInterfaceDescription));
 			
 			MIB_IF_ROW2 it_info = link_sap::win32::get_interface_info(iflst->InterfaceInfo[i].InterfaceGuid);

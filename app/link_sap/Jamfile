@@ -38,7 +38,7 @@ odtone.explicit-alias source-list
 exe link_sap
 	: link_sap.cpp
 	  interface/interface.cpp
-	  interface/if_802_11.cpp
+	  interface/if_802.cpp
 	  source-list
 	  ../../lib/odtone//odtone
 	  /boost//program_options
