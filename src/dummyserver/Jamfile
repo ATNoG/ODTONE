@@ -23,7 +23,6 @@ exe dummyserver
 	  udp_listener.cpp
 	  ../mihf/log.cpp
 	  ../mihf/meta_message.cpp
-	  ../../lib/odtone//odtone_base
-	  ../../lib/odtone/mih//odtone_mih
+	  ../../lib/odtone//odtone
 	;
 
