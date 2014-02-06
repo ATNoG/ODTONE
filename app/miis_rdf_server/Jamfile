@@ -24,7 +24,6 @@ exe miis_rdf_server
 	  /boost//program_options
 	  /boost//thread
 	: <linkflags>-lrdf
-	  <link>shared
 	;
 
 install install
