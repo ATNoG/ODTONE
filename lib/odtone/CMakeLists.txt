@@ -10,7 +10,6 @@ set(libodtone_SOVERSION "${libodtone_MAJOR_VERSION}.${libodtone_MINOR_VERSION}")
 
 set(libodtone_SRC
 strutil.cpp
-conf.cpp
 mih/types/address.cpp
 mih/config.cpp
 mih/archive.cpp
