@@ -78,6 +78,3 @@ the following sections:
 - "ODTONE extensions"     : extensions proposed by the ODTONE project
 - "Changelog"             : changes in this release
 - "Libraries"             : documentation for developers.
-
-
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/546181fccebb17541a2c3b076b9cfcb7 "githalytics.com")](http://githalytics.com/ATNoG/ODTONE)
