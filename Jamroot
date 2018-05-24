@@ -26,6 +26,7 @@ project odtone
 	: requirements
 		<include>inc
 		<link>static
+		<define>BOOST_ENABLE_ASSERT_HANDLER
 		<toolset>gcc:<cxxflags>-std=c++0x
 		<toolset>gcc-android:<runtime-link>static
 		<toolset>msvc:<define>BOOST_ALL_NO_LIB
