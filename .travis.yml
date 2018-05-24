@@ -1,0 +1,19 @@
+language: cpp
+sudo: false
+compiler:
+  - gcc
+addons:
+  apt:
+    packages:
+    - libboost-all-dev
+    - cmake
+    - libnl-3-dev
+    - libnl-route-3-dev
+    - libnl-genl-3-dev
+    - librdf0-dev
+script:
+- mkdir build
+- cd build
+- cmake ..
+# TODO: Add other targets
+- make odtone-link_sap odtone-mih_usr odtone-mihf odtone-sap_80211 odtone-sap_8023
