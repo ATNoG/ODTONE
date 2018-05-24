@@ -4,7 +4,7 @@ find_package(Threads REQUIRED)
 
 set(app_SRC
 interface/interface.cpp
-interface/if_802_11.cpp
+interface/if_802.cpp
 link_sap.cpp
 )
 
