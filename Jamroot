@@ -44,7 +44,7 @@ path-constant odtone-root : . ;
 # Import the boost project
 #
 local boost-major = 1 ;
-local boost-minor = 49 ;
+local boost-minor = 61 ;
 local boost-patch = 0 ;
 local boost-root ;
 

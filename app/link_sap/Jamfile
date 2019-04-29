@@ -18,7 +18,7 @@
 
 project link_sap
 	: requirements
-		<toolset>gcc:<linkflags>"-lrt"
+		<toolset>gcc:<linkflags>"-lrt -lpthread"
 		<toolset>gcc-android:<linkflags>"-lrt"
 	;
 
