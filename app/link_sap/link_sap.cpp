@@ -74,7 +74,7 @@ void link_sap::update(nic::interface* it)
 
 	} else {
 		boost::logic::tribool prev = ifi.first->up(it->up());
-		update = (prev != it->up());
+		update = (prev != it->up() ? true : false);
 	}
 
 	if (update) {
