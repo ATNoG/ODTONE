@@ -26,6 +26,7 @@ project odtone
 	: requirements
 		<include>inc
 		<link>static
+		<define>BOOST_ENABLE_ASSERT_HANDLER
 		<toolset>gcc:<cxxflags>-std=c++0x
 		<toolset>gcc-android:<runtime-link>static
 		<toolset>msvc:<define>BOOST_ALL_NO_LIB
@@ -44,7 +45,7 @@ path-constant odtone-root : . ;
 # Import the boost project
 #
 local boost-major = 1 ;
-local boost-minor = 49 ;
+local boost-minor = 69 ;
 local boost-patch = 0 ;
 local boost-root ;
 
